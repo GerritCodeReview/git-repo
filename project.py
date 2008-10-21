@@ -517,6 +517,9 @@ class Project(object):
         old_merge = self.bare_git.rev_parse('%s@{1}' % merge)
       except GitError:
         old_merge = merge
+      if old_merge == '0000000000000000000000000000000000000000' \
+         or old_merge == '':
+        old_merge = merge
     else:
       # The upstream switched on us.  Time to cross our fingers
       # and pray that the old upstream also wasn't in the habit
