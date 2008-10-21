@@ -920,8 +920,11 @@ class Project(object):
         if out:
           out = iter(out[:-1].split('\0'))
           while out:
-            info = out.next()
-            path = out.next()
+            try:
+              info = out.next()
+              path = out.next()
+            except StopIteration:
+              break
 
             class _Info(object):
               def __init__(self, path, omode, nmode, oid, nid, state):
