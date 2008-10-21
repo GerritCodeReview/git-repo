@@ -20,7 +20,7 @@ REPO_REV='stable'
 # limitations under the License.
 
 magic='--calling-python-from-/bin/sh--'
-"""exec" python2.4 -E "$0" "$@" """#$magic"
+"""exec" python -E "$0" "$@" """#$magic"
 if __name__ == '__main__':
   import sys
   if sys.argv[-1] == '#%s' % magic:
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 4)
+VERSION = (1, 5)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)

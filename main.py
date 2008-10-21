@@ -15,7 +15,7 @@
 # limitations under the License.
 
 magic='--calling-python-from-/bin/sh--'
-"""exec" python2.4 -E "$0" "$@" """#$magic"
+"""exec" python -E "$0" "$@" """#$magic"
 if __name__ == '__main__':
   import sys
   if sys.argv[-1] == '#%s' % magic:
