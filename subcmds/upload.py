@@ -158,6 +158,7 @@ changes in all projects listed in the manifest.
                  branch.project.relpath + '/',
                  branch.name)
           print >>sys.stderr, '%s' % branch.tip_url
+          print >>sys.stderr, '(as %s)' % branch.owner_email
           print >>sys.stderr, ''
 
     if have_errors:
