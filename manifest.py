@@ -26,6 +26,7 @@ from remote import Remote
 from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
+LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 
 class _Default(object):
   """Project defaults within the manifest."""
@@ -108,10 +109,20 @@ class Manifest(object):
 
   def _Load(self):
     if not self._loaded:
-      self._ParseManifest()
+      self._ParseManifest(True)
+
+      local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
+      if os.path.exists(local):
+        try:
+          real = self.manifestFile
+          self.manifestFile = local
+          self._ParseManifest(False)
+        finally:
+          self.manifestFile = real
+
       self._loaded = True
 
-  def _ParseManifest(self):
+  def _ParseManifest(self, is_root_file):
     root = xml.dom.minidom.parse(self.manifestFile)
     if not root or not root.childNodes:
       raise ManifestParseError, \
@@ -124,9 +135,10 @@ class Manifest(object):
             "no <manifest> in %s" % \
             self.manifestFile
 
-    self.branch = config.getAttribute('branch')
-    if not self.branch:
-      self.branch = 'default'
+    if is_root_file:
+      self.branch = config.getAttribute('branch')
+      if not self.branch:
+        self.branch = 'default'
 
     for node in config.childNodes:
       if node.nodeName == 'remote':
