@@ -45,6 +45,31 @@ def _info(fmt, *args):
 def not_rev(r):
   return '^' + r
 
+class DownloadedChange(object):
+  _commit_cache = None
+
+  def __init__(self, project, base, change_id, ps_id, commit):
+    self.project = project
+    self.base = base
+    self.change_id = change_id
+    self.ps_id = ps_id
+    self.commit = commit
+
+  @property
+  def commits(self):
+    if self._commit_cache is None:
+      self._commit_cache = self.project.bare_git.rev_list(
+        '--abbrev=8',
+        '--abbrev-commit',
+        '--pretty=oneline',
+        '--reverse',
+        '--date-order',
+        not_rev(self.base),
+        self.commit,
+        '--')
+    return self._commit_cache
+
+
 class ReviewableBranch(object):
   _commit_cache = None
 
@@ -611,6 +636,23 @@ class Project(object):
     # make src an absolute path
     src = os.path.join(self.worktree, src)
     self.copyfiles.append(_CopyFile(src, dest))
+
+  def DownloadPatchSet(self, change_id, patch_id):
+    """Download a single patch set of a single change to FETCH_HEAD.
+    """
+    remote = self.GetRemote(self.remote.name)
+
+    cmd = ['fetch', remote.name]
+    cmd.append('refs/changes/%2.2d/%d/%d' \
+               % (change_id % 100, change_id, patch_id))
+    cmd.extend(map(lambda x: str(x), remote.fetch))
+    if GitCommand(self, cmd, bare=True).Wait() != 0:
+      return None
+    return DownloadedChange(self,
+                            remote.ToLocal(self.revision),
+                            change_id,
+                            patch_id,
+                            self.bare_git.rev_parse('FETCH_HEAD'))
 
 
 ## Branch Management ##
