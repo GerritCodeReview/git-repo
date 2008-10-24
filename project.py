@@ -470,12 +470,37 @@ class Project(object):
       return False
     if not self._RemoteFetch():
       return False
+    self._RepairAndroidImportErrors()
     self._InitMRef()
     return True
     
   def _CopyFiles(self):
     for file in self.copyfiles:
       file._Copy()
+
+  def _RepairAndroidImportErrors(self):
+    if self.name in ['platform/external/iptables',
+                     'platform/external/libpcap',
+                     'platform/external/tcpdump',
+                     'platform/external/webkit',
+                     'platform/system/wlan/ti']:
+      # I hate myself for doing this...
+      #
+      # In the initial Android 1.0 release these projects were
+      # shipped, some users got them, and then the history had
+      # to be rewritten to correct problems with their imports.
+      # The 'android-1.0' tag may still be pointing at the old
+      # history, so we need to drop the tag and fetch it again.
+      #
+      try:
+        remote = self.GetRemote(self.remote.name)
+        relname = remote.ToLocal(R_HEADS + 'release-1.0')
+        tagname = R_TAGS + 'android-1.0'
+        if self._revlist(not_rev(relname), tagname):
+          cmd = ['fetch', remote.name, '+%s:%s' % (tagname, tagname)]
+          GitCommand(self, cmd, bare = True).Wait()
+      except GitError:
+        pass
 
   def Sync_LocalHalf(self):
     """Perform only the local IO portion of the sync process.
