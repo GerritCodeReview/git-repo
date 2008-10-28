@@ -466,8 +466,6 @@ class Project(object):
     for r in self.extraRemotes.values():
       if not self._RemoteFetch(r.name):
         return False
-    if not self._SnapshotDownload():
-      return False
     if not self._RemoteFetch():
       return False
     self._RepairAndroidImportErrors()
@@ -627,33 +625,6 @@ class Project(object):
         return False
 
     self._CopyFiles()
-    return True
-
-  def _SnapshotDownload(self):
-    if self.snapshots:
-      have = set(self._allrefs.keys())
-      need = []
-
-      for tag, sn in self.snapshots.iteritems():
-        if tag not in have:
-          need.append(sn)
-
-      if need:
-        print >>sys.stderr, """
-  ***   Downloading source(s) from a mirror site.     ***
-  ***   If the network hangs, kill and restart repo.  ***
-"""
-        for sn in need:
-          try:
-            sn.Import()
-          except ImportError, e:
-            print >>sys.stderr, \
-              'error: Cannot import %s: %s' \
-              % (self.name, e)
-            return False
-        cmd = ['repack', '-a', '-d', '-f', '-l']
-        if GitCommand(self, cmd, bare = True).Wait() != 0:
-          return False
     return True
 
   def AddCopyFile(self, src, dest):
