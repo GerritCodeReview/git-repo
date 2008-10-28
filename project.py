@@ -762,41 +762,9 @@ class Project(object):
   def _RemoteFetch(self, name=None):
     if not name:
       name = self.remote.name
-
-    hide_errors = False
-    if self.extraRemotes or self.snapshots:
-      hide_errors = True
-
-    proc = GitCommand(self,
+    return GitCommand(self,
                       ['fetch', name],
-                      bare = True,
-                      capture_stderr = hide_errors)
-    if hide_errors:
-      err = proc.process.stderr.fileno()
-      buf = ''
-      while True:
-        b = os.read(err, 256)
-        if b:
-          buf += b
-        while buf:
-          r = buf.find('remote: error: unable to find ')
-          if r >= 0:
-            lf = buf.find('\n')
-            if lf < 0:
-              break
-            buf = buf[lf + 1:]
-            continue
-
-          cr = buf.find('\r')
-          if cr < 0:
-            break
-          os.write(2, buf[0:cr + 1])
-          buf = buf[cr + 1:]
-        if not b:
-          if buf:
-            os.write(2, buf)
-          break
-    return proc.Wait() == 0
+                      bare = True).Wait() == 0
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
