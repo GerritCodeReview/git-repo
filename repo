@@ -202,6 +202,7 @@ def _CheckGitVersion():
   proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
   ver_str = proc.stdout.read().strip()
   proc.stdout.close()
+  proc.wait()
 
   if not ver_str.startswith('git version '):
     print >>sys.stderr, 'error: "%s" unsupported' % ver_str
