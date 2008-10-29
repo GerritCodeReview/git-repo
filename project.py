@@ -775,7 +775,11 @@ class Project(object):
       self.config.SetString('core.bare', None)
 
       hooks = self._gitdir_path('hooks')
-      for old_hook in os.listdir(hooks):
+      try:
+        to_rm = os.listdir(hooks)
+      except OSError:
+        to_rm = []
+      for old_hook in to_rm:
         os.remove(os.path.join(hooks, old_hook))
 
       # TODO(sop) install custom repo hooks
