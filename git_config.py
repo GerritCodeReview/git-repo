@@ -28,9 +28,13 @@ def IsId(rev):
 
 
 class GitConfig(object):
+  _ForUser = None
+
   @classmethod
   def ForUser(cls):
-    return cls(file = os.path.expanduser('~/.gitconfig'))
+    if cls._ForUser is None:
+      cls._ForUser = cls(file = os.path.expanduser('~/.gitconfig'))
+    return cls._ForUser
 
   @classmethod
   def ForRepository(cls, gitdir, defaults=None):
