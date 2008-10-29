@@ -17,7 +17,6 @@ import os
 import sys
 import xml.dom.minidom
 
-from editor import Editor
 from git_config import GitConfig, IsId
 from import_tar import ImportTar
 from import_zip import ImportZip
@@ -42,9 +41,7 @@ class Manifest(object):
     self.repodir = os.path.abspath(repodir)
     self.topdir = os.path.dirname(self.repodir)
     self.manifestFile = os.path.join(self.repodir, MANIFEST_FILE_NAME)
-
     self.globalConfig = GitConfig.ForUser()
-    Editor.globalConfig = self.globalConfig
 
     self.repoProject = MetaProject(self, 'repo',
       gitdir   = os.path.join(repodir, 'repo/.git'),

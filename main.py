@@ -28,6 +28,7 @@ import re
 import sys
 
 from command import InteractiveCommand, PagedCommand
+from editor import Editor
 from error import NoSuchProjectError
 from error import RepoChangedException
 from manifest import Manifest
@@ -77,6 +78,7 @@ class _Repo(object):
 
     cmd.repodir = self.repodir
     cmd.manifest = Manifest(cmd.repodir)
+    Editor.globalConfig = cmd.manifest.globalConfig
 
     if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig
