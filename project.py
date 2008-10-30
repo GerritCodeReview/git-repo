@@ -563,6 +563,15 @@ class Project(object):
           _info("[%s] Consider merging or rebasing the"
                 " unpublished commits.", self.name)
         return True
+      else:
+        # We can fast-forward safely.
+        #
+        try:
+          self._FastForward(rev)
+        except GitError:
+          return False
+        self._CopyFiles()
+        return True
 
     if merge == rev:
       try:
