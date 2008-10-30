@@ -563,7 +563,7 @@ class Project(object):
           _info("[%s] Consider merging or rebasing the"
                 " unpublished commits.", self.name)
         return True
-      else:
+      elif upstream_gain:
         # We can fast-forward safely.
         #
         try:
@@ -571,6 +571,10 @@ class Project(object):
         except GitError:
           return False
         self._CopyFiles()
+        return True
+      else:
+        # Trivially no changes in the upstream.
+        #
         return True
 
     if merge == rev:
