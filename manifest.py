@@ -18,8 +18,6 @@ import sys
 import xml.dom.minidom
 
 from git_config import GitConfig, IsId
-from import_tar import ImportTar
-from import_zip import ImportZip
 from project import Project, MetaProject, R_TAGS
 from remote import Remote
 from error import ManifestParseError
@@ -245,77 +243,7 @@ class Manifest(object):
       elif n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
 
-    to_resolve = []
-    by_version = {}
-
-    for n in node.childNodes:
-      if n.nodeName == 'import':
-        self._ParseImport(project, n, to_resolve, by_version)
-
-    for pair in to_resolve:
-      sn, pr = pair
-      try:
-        sn.SetParent(by_version[pr].commit)
-      except KeyError:
-        raise ManifestParseError, \
-              'snapshot %s not in project %s in %s' % \
-              (pr, project.name, self.manifestFile)
-
     return project
-
-  def _ParseImport(self, project, import_node, to_resolve, by_version):
-    first_url = None
-    for node in import_node.childNodes:
-      if node.nodeName == 'mirror':
-        first_url = self._reqatt(node, 'url')
-        break
-    if not first_url:
-      raise ManifestParseError, \
-            'mirror url required for project %s in %s' % \
-            (project.name, self.manifestFile)
-
-    imp = None
-    for cls in [ImportTar, ImportZip]:
-      if cls.CanAccept(first_url):
-        imp = cls()
-        break
-    if not imp:
-      raise ManifestParseError, \
-            'snapshot %s unsupported for project %s in %s' % \
-            (first_url, project.name, self.manifestFile)
-
-    imp.SetProject(project)
-
-    for node in import_node.childNodes:
-      if node.nodeName == 'remap':
-        old = node.getAttribute('strip')
-        new = node.getAttribute('insert')
-        imp.RemapPath(old, new)
-
-      elif node.nodeName == 'mirror':
-        imp.AddUrl(self._reqatt(node, 'url'))
-
-    for node in import_node.childNodes:
-      if node.nodeName == 'snapshot':
-        sn = imp.Clone()
-        sn.SetVersion(self._reqatt(node, 'version'))
-        sn.SetCommit(node.getAttribute('check'))
-
-        pr = node.getAttribute('prior')
-        if pr:
-          if IsId(pr):
-            sn.SetParent(pr)
-          else:
-            to_resolve.append((sn, pr))
-
-        rev = R_TAGS + sn.TagName
-
-        if rev in project.snapshots:
-          raise ManifestParseError, \
-                'duplicate snapshot %s for project %s in %s' % \
-                (sn.version, project.name, self.manifestFile)
-        project.snapshots[rev] = sn
-        by_version[sn.version] = sn
 
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
