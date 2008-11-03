@@ -64,3 +64,5 @@ class RepoChangedException(Exception):
      repo or manifest repositories.  In this special case we must
      use exec to re-execute repo with the new code and manifest.
   """
+  def __init__(self, extra_args=[]):
+    self.extra_args = extra_args

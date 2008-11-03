@@ -46,6 +46,32 @@ def _info(fmt, *args):
 def not_rev(r):
   return '^' + r
 
+
+hook_list = None
+def repo_hooks():
+  global hook_list
+  if hook_list is None:
+    d = os.path.abspath(os.path.dirname(__file__))
+    d = os.path.join(d , 'hooks')
+    hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
+  return hook_list
+
+def relpath(dst, src):
+  src = os.path.dirname(src)
+  top = os.path.commonprefix([dst, src])
+  if top.endswith('/'):
+    top = top[:-1]
+  else:
+    top = os.path.dirname(top)
+
+  tmp = src
+  rel = ''
+  while top != tmp:
+    rel += '../'
+    tmp = os.path.dirname(tmp)
+  return rel + dst[len(top) + 1:]
+
+
 class DownloadedChange(object):
   _commit_cache = None
 
@@ -472,7 +498,10 @@ class Project(object):
     self._RepairAndroidImportErrors()
     self._InitMRef()
     return True
-    
+
+  def PostRepoUpgrade(self):
+    self._InitHooks()
+
   def _CopyFiles(self):
     for file in self.copyfiles:
       file._Copy()
@@ -795,13 +824,28 @@ class Project(object):
         to_rm = []
       for old_hook in to_rm:
         os.remove(os.path.join(hooks, old_hook))
-
-      # TODO(sop) install custom repo hooks
+      self._InitHooks()
 
       m = self.manifest.manifestProject.config
       for key in ['user.name', 'user.email']:
         if m.Has(key, include_defaults = False):
           self.config.SetString(key, m.GetString(key))
+
+  def _InitHooks(self):
+    hooks = self._gitdir_path('hooks')
+    if not os.path.exists(hooks):
+      os.makedirs(hooks)
+    for stock_hook in repo_hooks():
+      dst = os.path.join(hooks, os.path.basename(stock_hook))
+      try:
+        os.symlink(relpath(stock_hook, dst), dst)
+      except OSError, e:
+        if e.errno == errno.EEXIST:
+          pass
+        elif e.errno == errno.EPERM:
+          raise GitError('filesystem must support symlinks')
+        else:
+          raise
 
   def _InitRemote(self):
     if self.remote.fetchUrl:
@@ -842,19 +886,6 @@ class Project(object):
     if not os.path.exists(dotgit):
       os.makedirs(dotgit)
 
-      topdir = os.path.commonprefix([self.gitdir, dotgit])
-      if topdir.endswith('/'):
-        topdir = topdir[:-1]
-      else:
-        topdir = os.path.dirname(topdir)
-
-      tmpdir = dotgit
-      relgit = ''
-      while topdir != tmpdir:
-        relgit += '../'
-        tmpdir = os.path.dirname(tmpdir)
-      relgit += self.gitdir[len(topdir) + 1:]
-
       for name in ['config',
                    'description',
                    'hooks',
@@ -866,8 +897,9 @@ class Project(object):
                    'rr-cache',
                    'svn']:
         try:
-          os.symlink(os.path.join(relgit, name),
-                     os.path.join(dotgit, name))
+          src = os.path.join(self.gitdir, name)
+          dst = os.path.join(dotgit, name)
+          os.symlink(relpath(src, dst), dst)
         except OSError, e:
           if e.errno == errno.EPERM:
             raise GitError('filesystem must support symlinks')

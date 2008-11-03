@@ -49,6 +49,9 @@ the manifest.
     p.add_option('--no-repo-verify',
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
+    p.add_option('--repo-upgraded',
+                 dest='repo_upgraded', action='store_true',
+                 help='perform additional actions after a repo upgrade')
 
   def _Fetch(self, *projects):
     fetched = set()
@@ -67,6 +70,11 @@ the manifest.
     mp = self.manifest.manifestProject
     mp.PreSync()
 
+    if opt.repo_upgraded:
+      for project in self.manifest.projects.values():
+        if project.Exists:
+          project.PostRepoUpgrade()
+
     all = self.GetProjects(args, missing_ok=True)
     fetched = self._Fetch(rp, mp, *all)
 
@@ -77,7 +85,7 @@ the manifest.
         if not rp.Sync_LocalHalf():
           sys.exit(1)
         print >>sys.stderr, 'info: Restarting repo with latest version'
-        raise RepoChangedException()
+        raise RepoChangedException(['--repo-upgraded'])
       else:
         print >>sys.stderr, 'warning: Skipped upgrade to unverified version'
 

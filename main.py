@@ -186,11 +186,13 @@ def _Main(argv):
     repo._Run(argv)
   except KeyboardInterrupt:
     sys.exit(1)
-  except RepoChangedException:
-    # If the repo or manifest changed, re-exec ourselves.
+  except RepoChangedException, rce:
+    # If repo changed, re-exec ourselves.
     #
+    argv = list(sys.argv)
+    argv.extend(rce.extra_args)
     try:
-      os.execv(__file__, sys.argv)
+      os.execv(__file__, argv)
     except OSError, e:
       print >>sys.stderr, 'fatal: cannot restart repo after upgrade'
       print >>sys.stderr, 'fatal: %s' % e
