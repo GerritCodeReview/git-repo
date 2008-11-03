@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import errno
 import filecmp
 import os
 import re
@@ -864,8 +865,14 @@ class Project(object):
                    'refs',
                    'rr-cache',
                    'svn']:
-        os.symlink(os.path.join(relgit, name),
-                   os.path.join(dotgit, name))
+        try:
+          os.symlink(os.path.join(relgit, name),
+                     os.path.join(dotgit, name))
+        except OSError, e:
+          if e.errno == errno.EPERM:
+            raise GitError('filesystem must support symlinks')
+          else:
+            raise
 
       rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
       rev = self.bare_git.rev_parse('%s^0' % rev)
