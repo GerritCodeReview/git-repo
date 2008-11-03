@@ -710,6 +710,22 @@ class Project(object):
     else:
       raise GitError('%s checkout %s ' % (self.name, rev))
 
+  def AbandonBranch(self, name):
+    """Destroy a local topic branch.
+    """
+    try:
+      tip_rev = self.bare_git.rev_parse(R_HEADS + name)
+    except GitError:
+      return
+
+    if self.CurrentBranch == name:
+      self._Checkout(
+        self.GetRemote(self.remote.name).ToLocal(self.revision),
+        quiet=True)
+
+    cmd = ['branch', '-D', name]
+    GitCommand(self, cmd, capture_stdout=True).Wait()
+
   def PruneHeads(self):
     """Prune any topic branches already merged into upstream.
     """
