@@ -45,16 +45,9 @@ class Manifest(object):
       gitdir   = os.path.join(repodir, 'repo/.git'),
       worktree = os.path.join(repodir, 'repo'))
 
-    wt     = os.path.join(repodir, 'manifests')
-    gd_new = os.path.join(repodir, 'manifests.git')
-    gd_old = os.path.join(wt, '.git')
-    if os.path.exists(gd_new) or not os.path.exists(gd_old):
-      gd = gd_new
-    else:
-      gd = gd_old
     self.manifestProject = MetaProject(self, 'manifests',
-      gitdir   = gd,
-      worktree = wt)
+      gitdir   = os.path.join(repodir, 'manifests.git'),
+      worktree = os.path.join(repodir, 'manifests'))
 
     self._Unload()
 
