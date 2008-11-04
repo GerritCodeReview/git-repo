@@ -18,7 +18,7 @@ import sys
 import xml.dom.minidom
 
 from git_config import GitConfig, IsId
-from project import Project, MetaProject, R_TAGS
+from project import Project, MetaProject, R_HEADS
 from remote import Remote
 from error import ManifestParseError
 
@@ -97,6 +97,12 @@ class Manifest(object):
 
   def _Load(self):
     if not self._loaded:
+      m = self.manifestProject
+      b = m.GetBranch(m.CurrentBranch).merge
+      if b.startswith(R_HEADS):
+        b = b[len(R_HEADS):]
+      self.branch = b
+
       self._ParseManifest(True)
 
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
@@ -122,11 +128,6 @@ class Manifest(object):
       raise ManifestParseError, \
             "no <manifest> in %s" % \
             self.manifestFile
-
-    if is_root_file:
-      self.branch = config.getAttribute('branch')
-      if not self.branch:
-        self.branch = 'default'
 
     for node in config.childNodes:
       if node.nodeName == 'remote':
