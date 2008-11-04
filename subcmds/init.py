@@ -57,6 +57,10 @@ default.xml will be used.
     g.add_option('-m', '--manifest-name',
                  dest='manifest_name', default='default.xml',
                  help='initial manifest file', metavar='NAME.xml')
+    g.add_option('--mirror',
+                 dest='mirror', action='store_true',
+                 help='mirror the forrest')
+
 
     # Tool
     g = p.add_option_group('Version options')
@@ -111,6 +115,9 @@ default.xml will be used.
       r.url = opt.manifest_url
       r.ResetFetch()
       r.Save()
+
+    if opt.mirror:
+      m.config.SetString('repo.mirror', 'true')
 
     m.Sync_NetworkHalf()
     m.Sync_LocalHalf()
@@ -185,9 +192,14 @@ default.xml will be used.
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
 
-    if os.isatty(0) and os.isatty(1):
+    if os.isatty(0) and os.isatty(1) and not opt.mirror:
       self._ConfigureUser()
       self._ConfigureColor()
 
+    if opt.mirror:
+      type = 'mirror '
+    else:
+      type = ''
+
     print ''
-    print 'repo initialized in %s' % self.manifest.topdir
+    print 'repo %sinitialized in %s' % (type, self.manifest.topdir)

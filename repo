@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 6)
+VERSION = (1, 7)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -115,6 +115,9 @@ group.add_option('-b', '--manifest-branch',
 group.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='initial manifest file', metavar='NAME.xml')
+group.add_option('--mirror',
+                 dest='mirror', action='store_true',
+                 help='mirror the forrest')
 
 # Tool
 group = init_optparse.add_option_group('Version options')

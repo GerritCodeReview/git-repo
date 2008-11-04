@@ -102,8 +102,9 @@ the manifest.
       self._Fetch(*missing)
 
     for project in all:
-      if not project.Sync_LocalHalf():
-        sys.exit(1)
+      if project.worktree:
+        if not project.Sync_LocalHalf():
+          sys.exit(1)
 
 
 def _VerifyTag(project):

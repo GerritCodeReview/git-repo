@@ -285,12 +285,14 @@ class Remote(object):
         return True
     return False
 
-  def ResetFetch(self):
+  def ResetFetch(self, mirror=False):
     """Set the fetch refspec to its default value.
     """
-    self.fetch = [RefSpec(True,
-                          'refs/heads/*',
-                          'refs/remotes/%s/*' % self.name)]
+    if mirror:
+      dst = 'refs/heads/*'
+    else:
+      dst = 'refs/remotes/%s/*' % self.name
+    self.fetch = [RefSpec(True, 'refs/heads/*', dst)]
 
   def Save(self):
     """Save this remote to the configuration.

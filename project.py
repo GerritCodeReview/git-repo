@@ -211,7 +211,10 @@ class Project(object):
                     gitdir = self.gitdir,
                     defaults =  self.manifest.globalConfig)
 
-    self.work_git = self._GitGetByExec(self, bare=False)
+    if self.worktree:
+      self.work_git = self._GitGetByExec(self, bare=False)
+    else:
+      self.work_git = None
     self.bare_git = self._GitGetByExec(self, bare=True)
 
   @property
@@ -489,14 +492,23 @@ class Project(object):
       print >>sys.stderr
       print >>sys.stderr, 'Initializing project %s ...' % self.name
       self._InitGitDir()
+
     self._InitRemote()
     for r in self.extraRemotes.values():
       if not self._RemoteFetch(r.name):
         return False
     if not self._RemoteFetch():
       return False
-    self._RepairAndroidImportErrors()
-    self._InitMRef()
+
+    if self.worktree:
+      self._RepairAndroidImportErrors()
+      self._InitMRef()
+    else:
+      self._InitMirrorHead()
+      try:
+        os.remove(os.path.join(self.gitdir, 'FETCH_HEAD'))
+      except OSError:
+        pass
     return True
 
   def PostRepoUpgrade(self):
@@ -792,9 +804,11 @@ class Project(object):
   def _RemoteFetch(self, name=None):
     if not name:
       name = self.remote.name
-    return GitCommand(self,
-                      ['fetch', name],
-                      bare = True).Wait() == 0
+    cmd = ['fetch']
+    if not self.worktree:
+      cmd.append('--update-head-ok')
+    cmd.append(name)
+    return GitCommand(self, cmd, bare = True).Wait() == 0
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
@@ -874,7 +888,10 @@ class Project(object):
       remote.url = url
       remote.review = self.remote.reviewUrl
 
-      remote.ResetFetch()
+      if self.worktree:
+        remote.ResetFetch(mirror=False)
+      else:
+        remote.ResetFetch(mirror=True)
       remote.Save()
 
     for r in self.extraRemotes.values():
@@ -896,6 +913,11 @@ class Project(object):
         remote = self.GetRemote(self.remote.name)
         dst = remote.ToLocal(self.revision)
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
+
+  def _InitMirrorHead(self):
+    dst = self.GetRemote(self.remote.name).ToLocal(self.revision)
+    msg = 'manifest set to %s' % self.revision
+    self.bare_git.SetHead(dst, message=msg)
 
   def _InitWorkTree(self):
     dotgit = os.path.join(self.worktree, '.git')

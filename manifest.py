@@ -88,6 +88,10 @@ class Manifest(object):
     self._Load()
     return self._default
 
+  @property
+  def IsMirror(self):
+    return self.manifestProject.config.GetBoolean('repo.mirror')
+
   def _Unload(self):
     self._loaded = False
     self._projects = {}
@@ -113,6 +117,10 @@ class Manifest(object):
           self._ParseManifest(False)
         finally:
           self.manifestFile = real
+
+      if self.IsMirror:
+        self._AddMetaProjectMirror(self.repoProject)
+        self._AddMetaProjectMirror(self.manifestProject)
 
       self._loaded = True
 
@@ -156,6 +164,40 @@ class Manifest(object):
                 'duplicate project %s in %s' % \
                 (project.name, self.manifestFile)
         self._projects[project.name] = project
+
+  def _AddMetaProjectMirror(self, m):
+    name = None
+    m_url = m.GetRemote(m.remote.name).url
+    if m_url.endswith('/.git'):
+      raise ManifestParseError, 'refusing to mirror %s' % m_url
+
+    if self._default and self._default.remote:
+      url = self._default.remote.fetchUrl
+      if not url.endswith('/'):
+        url += '/'
+      if m_url.startswith(url):
+        remote = self._default.remote
+        name = m_url[len(url):]
+
+    if name is None:
+      s = m_url.rindex('/') + 1
+      remote = Remote('origin', fetch = m_url[:s])
+      name = m_url[s:]
+
+    if name.endswith('.git'):
+      name = name[:-4]
+
+    if name not in self._projects:
+      m.PreSync()
+      gitdir = os.path.join(self.topdir, '%s.git' % name)
+      project = Project(manifest = self,
+                        name = name,
+                        remote = remote,
+                        gitdir = gitdir,
+                        worktree = None,
+                        relpath = None,
+                        revision = m.revision)
+      self._projects[project.name] = project
 
   def _ParseRemote(self, node):
     """
@@ -214,8 +256,13 @@ class Manifest(object):
             "project %s path cannot be absolute in %s" % \
             (name, self.manifestFile)
 
-    worktree = os.path.join(self.topdir, path)
-    gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
+    if self.IsMirror:
+      relpath = None
+      worktree = None
+      gitdir = os.path.join(self.topdir, '%s.git' % name)
+    else:
+      worktree = os.path.join(self.topdir, path)
+      gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
 
     project = Project(manifest = self,
                       name = name,
@@ -242,8 +289,10 @@ class Manifest(object):
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
     dest = self._reqatt(node, 'dest')
-    # src is project relative, and dest is relative to the top of the tree
-    project.AddCopyFile(src, os.path.join(self.topdir, dest))
+    if not self.IsMirror:
+      # src is project relative;
+      # dest is relative to the top of the tree
+      project.AddCopyFile(src, os.path.join(self.topdir, dest))
 
   def _get_remote(self, node):
     name = node.getAttribute('remote')
