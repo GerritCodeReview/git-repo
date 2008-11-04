@@ -1,0 +1,126 @@
+repo Manifest Format
+====================
+
+A repo manifest describes the structure of a repo client; that is
+the directories that are visible and where they should be obtained
+from with git.
+
+The basic structure of a manifest is a bare Git repository holding
+a single 'default.xml' XML file in the top level directory.
+
+Manifests are inherently version controlled, since they are kept
+within a Git repository.  Updates to manifests are automatically
+obtained by clients during `repo sync`.
+
+
+XML File Format
+---------------
+
+A manifest XML file (e.g. 'default.xml') roughly conforms to the
+following DTD:
+
+<!DOCTYPE manifest [
+  <!ELEMENT manifest (remote*, default?, project*)>
+
+  <!ELEMENT remote (EMPTY)>
+  <!ATTLIST remote name   ID    #REQUIRED>
+  <!ATTLIST remote fetch  CDATA #REQUIRED>
+  <!ATTLIST remote review CDATA #IMPLIED>
+
+  <!ELEMENT default (EMPTY)>
+  <!ATTLIST default remote   IDREF #IMPLIED>
+  <!ATTLIST default revision CDATA #IMPLIED>
+
+  <!ELEMENT project (remote*)>
+  <!ATTLIST project name     CDATA #REQUIRED>
+  <!ATTLIST project path     CDATA #IMPLIED>
+  <!ATTLIST project remote   IDREF #IMPLIED>
+  <!ATTLIST project revision CDATA #IMPLIED>
+]>
+
+A description of the elements and their attributes follows.
+
+
+Element manifest
+----------------
+
+The root element of the file.
+
+
+Element remote
+--------------
+
+One or more remote elements may be specified.  Each remote element
+specifies a Git URL shared by one or more projects and (optionally)
+the Gerrit review server those projects upload changes through.
+
+Attribute `name`: A short name unique to this manifest file.  The
+name specified here is used as the remote name in each project's
+.git/config, and is therefore automatically available to commands
+like `git fetch`, `git remote`, `git pull` and `git push`.
+
+Attribute `fetch`: The Git URL prefix for all projects which use
+this remote.  Each project's name is appended to this prefix to
+form the actual URL used to clone the project.
+
+Attribute `review`: Hostname of the Gerrit server where reviews
+are uploaded to by `repo upload`.  This attribute is optional;
+if not specified then `repo upload` will not function.
+
+
+Element default
+---------------
+
+At most one default element may be specified.  Its remote and
+revision attributes are used when a project element does not
+specify its own remote or revision attribute.
+
+Attribute `remote`: Name of a previously defined remote element.
+Project elements lacking a remote attribute of their own will use
+this remote.
+
+Attribute `revision`: Name of a Git branch (e.g. `master` or
+`refs/heads/master`).  Project elements lacking their own
+revision attribute will use this revision.
+
+
+Element project
+---------------
+
+One or more project elements may be specified.  Each element
+describes a single Git repository to be cloned into the repo
+client workspace.
+
+Attribute `name`: A unique name for this project.  The project's
+name is appended onto its remote's fetch URL to generate the actual
+URL to configure the Git remote with.  The URL gets formed as:
+
+  ${remote_fetch}/${project_name}.git
+
+where ${remote_fetch} is the remote's fetch attribute and
+${project_name} is the project's name attribute.  The suffix ".git"
+is always appended as repo assumes the upstream is a forrest of
+bare Git repositories.
+
+The project name must match the name Gerrit knows, if Gerrit is
+being used for code reviews.
+
+Attribute `path`: An optional path relative to the top directory
+of the repo client where the Git working directory for this project
+should be placed.  If not supplied the project name is used.
+
+Attribute `remote`: Name of a previously defined remote element.
+If not supplied the remote given by the default element is used.
+
+Attribute `revision`: Name of the Git branch the manifest wants
+to track for this project.  Names can be relative to refs/heads
+(e.g. just "master") or absolute (e.g. "refs/heads/master").
+Tags and/or explicit SHA-1s should work in theory, but have not
+been extensively tested.  If not supplied the revision given by
+the default element is used.
+
+Child element `remote`: Described like the top-level remote element,
+but adds an additional remote to only this project.  These additional
+remotes are fetched from first on the initial `repo sync`, causing
+the majority of the project's object database to be obtained through
+these additional remotes.
