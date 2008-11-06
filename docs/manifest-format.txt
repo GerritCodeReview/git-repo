@@ -20,7 +20,10 @@ A manifest XML file (e.g. 'default.xml') roughly conforms to the
 following DTD:
 
 <!DOCTYPE manifest [
-  <!ELEMENT manifest (remote*, default?, project*)>
+  <!ELEMENT manifest (remote*,
+                      default?,
+                      project*,
+                      add-remote*)>
 
   <!ELEMENT remote (EMPTY)>
   <!ATTLIST remote name         ID    #REQUIRED>
@@ -37,6 +40,13 @@ following DTD:
   <!ATTLIST project path     CDATA #IMPLIED>
   <!ATTLIST project remote   IDREF #IMPLIED>
   <!ATTLIST project revision CDATA #IMPLIED>
+
+  <!ELEMENT add-remote (EMPTY)>
+  <!ATTLIST add-remote to-project   ID    #REQUIRED>
+  <!ATTLIST add-remote name         ID    #REQUIRED>
+  <!ATTLIST add-remote fetch        CDATA #REQUIRED>
+  <!ATTLIST add-remote review       CDATA #IMPLIED>
+  <!ATTLIST add-remote project-name CDATA #IMPLIED>
 ]>
 
 A description of the elements and their attributes follows.
@@ -73,6 +83,18 @@ by the review server given in the review attribute of this element.
 Only permitted when the remote element is nested inside of a project
 element (see below).  If not given, defaults to the name supplied
 in the project's name attribute.
+
+Element add-remote
+------------------
+
+Adds a remote to an existing project, whose name is given by the
+to-project attribute.  This is functionally equivalent to nesting
+a remote element under the project, but has the advantage that it
+can be specified in the uesr's `local_manifest.xml` to add a remote
+to a project declared by the normal manifest.
+
+The element can be used to add a fork of an existing project that
+the user needs to work with.
 
 
 Element default

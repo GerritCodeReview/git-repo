@@ -165,6 +165,16 @@ class Manifest(object):
                 (project.name, self.manifestFile)
         self._projects[project.name] = project
 
+    for node in config.childNodes:
+      if node.nodeName == 'add-remote':
+        pn = self._reqatt(node, 'to-project')
+        project = self._projects.get(pn)
+        if not project:
+          raise ManifestParseError, \
+                'project %s not defined in %s' % \
+                (pn, self.manifestFile)
+        self._ParseProjectExtraRemote(project, node)
+
   def _AddMetaProjectMirror(self, m):
     name = None
     m_url = m.GetRemote(m.remote.name).url
@@ -281,17 +291,20 @@ class Manifest(object):
 
     for n in node.childNodes:
       if n.nodeName == 'remote':
-        r = self._ParseRemote(n)
-        if project.extraRemotes.get(r.name) \
-           or project.remote.name == r.name:
-          raise ManifestParseError, \
-                'duplicate remote %s in project %s in %s' % \
-                (r.name, project.name, self.manifestFile)
-        project.extraRemotes[r.name] = r
+        self._ParseProjectExtraRemote(project, n)
       elif n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
 
     return project
+
+  def _ParseProjectExtraRemote(self, project, n):
+    r = self._ParseRemote(n)
+    if project.extraRemotes.get(r.name) \
+       or project.remote.name == r.name:
+      raise ManifestParseError, \
+            'duplicate remote %s in project %s in %s' % \
+            (r.name, project.name, self.manifestFile)
+    project.extraRemotes[r.name] = r
 
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
