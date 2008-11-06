@@ -258,6 +258,7 @@ class Remote(object):
     self.name = name
     self.url = self._Get('url')
     self.review = self._Get('review')
+    self.projectname = self._Get('projectname')
     self.fetch = map(lambda x: RefSpec.FromString(x),
                      self._Get('fetch', all=True))
 
@@ -299,6 +300,7 @@ class Remote(object):
     """
     self._Set('url', self.url)
     self._Set('review', self.review)
+    self._Set('projectname', self.projectname)
     self._Set('fetch', map(lambda x: str(x), self.fetch))
 
   def _Set(self, key, value):

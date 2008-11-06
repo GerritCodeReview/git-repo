@@ -461,13 +461,17 @@ class Project(object):
     if not base_list:
       raise GitError('no base refs, cannot upload %s' % branch.name)
 
+    if not branch.remote.projectname:
+      branch.remote.projectname = self.name
+      branch.remote.Save()
+
     print >>sys.stderr, ''
     _info("Uploading %s to %s:", branch.name, self.name)
     try:
       UploadBundle(project = self,
                    server = branch.remote.review,
                    email = self.UserEmail,
-                   dest_project = self.name,
+                   dest_project = branch.remote.projectname,
                    dest_branch = dest_branch,
                    src_branch = R_HEADS + branch.name,
                    bases = base_list)
@@ -887,6 +891,8 @@ class Project(object):
       url += '/%s.git' % self.name
       remote.url = url
       remote.review = self.remote.reviewUrl
+      if remote.projectname is None:
+        remote.projectname = self.name
 
       if self.worktree:
         remote.ResetFetch(mirror=False)
@@ -898,6 +904,8 @@ class Project(object):
       remote = self.GetRemote(r.name)
       remote.url = r.fetchUrl
       remote.review = r.reviewUrl
+      if remote.projectname is None:
+        remote.projectname = self.name
       remote.ResetFetch()
       remote.Save()
 
