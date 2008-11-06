@@ -904,7 +904,9 @@ class Project(object):
       remote = self.GetRemote(r.name)
       remote.url = r.fetchUrl
       remote.review = r.reviewUrl
-      if remote.projectname is None:
+      if r.projectName:
+        remote.projectname = r.projectName
+      elif remote.projectname is None:
         remote.projectname = self.name
       remote.ResetFetch()
       remote.Save()

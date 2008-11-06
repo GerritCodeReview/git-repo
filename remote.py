@@ -14,8 +14,12 @@
 # limitations under the License.
 
 class Remote(object):
-  def __init__(self, name, fetch=None, review=None):
+  def __init__(self, name,
+               fetch=None,
+               review=None,
+               projectName=None):
     self.name = name
     self.fetchUrl = fetch
     self.reviewUrl = review
+    self.projectName = projectName
     self.requiredCommits = []

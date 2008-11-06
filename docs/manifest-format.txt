@@ -23,9 +23,10 @@ following DTD:
   <!ELEMENT manifest (remote*, default?, project*)>
 
   <!ELEMENT remote (EMPTY)>
-  <!ATTLIST remote name   ID    #REQUIRED>
-  <!ATTLIST remote fetch  CDATA #REQUIRED>
-  <!ATTLIST remote review CDATA #IMPLIED>
+  <!ATTLIST remote name         ID    #REQUIRED>
+  <!ATTLIST remote fetch        CDATA #REQUIRED>
+  <!ATTLIST remote review       CDATA #IMPLIED>
+  <!ATTLIST remote project-name CDATA #IMPLIED>
 
   <!ELEMENT default (EMPTY)>
   <!ATTLIST default remote   IDREF #IMPLIED>
@@ -66,6 +67,12 @@ form the actual URL used to clone the project.
 Attribute `review`: Hostname of the Gerrit server where reviews
 are uploaded to by `repo upload`.  This attribute is optional;
 if not specified then `repo upload` will not function.
+
+Attribute `project-name`: Specifies the name of this project used
+by the review server given in the review attribute of this element.
+Only permitted when the remote element is nested inside of a project
+element (see below).  If not given, defaults to the name supplied
+in the project's name attribute.
 
 
 Element default

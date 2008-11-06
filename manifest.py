@@ -206,10 +206,17 @@ class Manifest(object):
     name = self._reqatt(node, 'name')
     fetch = self._reqatt(node, 'fetch')
     review = node.getAttribute('review')
+    if review == '':
+      review = None
+
+    projectName = node.getAttribute('project-name')
+    if projectName == '':
+      projectName = None
 
     r = Remote(name=name,
                fetch=fetch,
-               review=review)
+               review=review,
+               projectName=projectName)
 
     for n in node.childNodes:
       if n.nodeName == 'require':
