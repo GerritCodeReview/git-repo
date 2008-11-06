@@ -124,3 +124,32 @@ but adds an additional remote to only this project.  These additional
 remotes are fetched from first on the initial `repo sync`, causing
 the majority of the project's object database to be obtained through
 these additional remotes.
+
+
+Local Manifest
+==============
+
+Additional remotes and projects may be added through a local
+manifest, stored in `$TOP_DIR/.repo/local_manifest.xml`.
+
+For example:
+
+----
+	$ cat .repo/local_manifest.xml
+	<?xml version="1.0" encoding="UTF-8"?>
+	<manifest>
+	  <project path="manifest"
+			   name="tools/manifest" />
+	  <project path="platform-manifest"
+			   name="platform/manifest" />
+	</manifest>
+----
+
+Users may add projects to the local manifest prior to a `repo sync`
+invocation, instructing repo to automatically download and manage
+these extra projects.
+
+Currently the only supported feature of a local manifest is to
+add new remotes and/or projects.  In the future a local manifest
+may support picking different revisions of a project, or deleting
+projects specified in the default manifest.
