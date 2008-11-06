@@ -241,6 +241,8 @@ class Manifest(object):
     d = _Default()
     d.remote = self._get_remote(node)
     d.revision = node.getAttribute('revision')
+    if d.revision == '':
+      d.revision = None
     return d
 
   def _ParseProject(self, node):
