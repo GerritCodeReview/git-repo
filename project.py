@@ -428,13 +428,21 @@ class Project(object):
       if branch in pubed and pubed[branch] == id:
         continue
 
-      branch = self.GetBranch(branch)
-      base = branch.LocalMerge
-      if branch.LocalMerge:
-        rb = ReviewableBranch(self, branch, base)
-        if rb.commits:
-          ready.append(rb)
+      rb = self.GetUploadableBranch(branch)
+      if rb:
+        ready.append(rb)
     return ready
+
+  def GetUploadableBranch(self, branch_name):
+    """Get a single uploadable branch, or None.
+    """
+    branch = self.GetBranch(branch_name)
+    base = branch.LocalMerge
+    if branch.LocalMerge:
+      rb = ReviewableBranch(self, branch, base)
+      if rb.commits:
+        return rb
+    return None
 
   def UploadForReview(self, branch=None):
     """Uploads the named branch for code review.
