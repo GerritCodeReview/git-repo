@@ -29,7 +29,7 @@ class Upload(InteractiveCommand):
   common = True
   helpSummary = "Upload changes for code review"
   helpUsage="""
-%prog [<project>]...
+%prog {[<project>]... | --replace <project>}
 """
   helpDescription = """
 The '%prog' command is used to send changes to the Gerrit code
@@ -45,6 +45,11 @@ by a relative or absolute path to the project's local directory. If
 no projects are specified, '%prog' will search for uploadable
 changes in all projects listed in the manifest.
 """
+
+  def _Options(self, p):
+    p.add_option('--replace',
+                 dest='replace', action='store_true',
+                 help='Upload replacement patchesets from this branch')
 
   def _SingleBranch(self, branch):
     project = branch.project
@@ -129,6 +134,50 @@ changes in all projects listed in the manifest.
       _die("nothing uncommented for upload")
     self._UploadAndReport(todo)
 
+  def _ReplaceBranch(self, project):
+    branch = project.CurrentBranch
+    if not branch:
+      print >>sys.stdout, "no branches ready for upload"
+      return
+    branch = project.GetUploadableBranch(branch)
+    if not branch:
+      print >>sys.stdout, "no branches ready for upload"
+      return
+
+    script = []
+    script.append('# Replacing from branch %s' % branch.name)
+    for commit in branch.commits:
+      script.append('[      ] %s' % commit)
+    script.append('')
+    script.append('# Insert change numbers in the brackets to add a new patch set.')
+    script.append('# To create a new change record, leave the brackets empty.')
+
+    script = Editor.EditString("\n".join(script)).split("\n")
+
+    change_re = re.compile(r'^\[\s*(\d{1,})\s*\]\s*([0-9a-f]{1,}) .*$')
+    to_replace = dict()
+    full_hashes = branch.unabbrev_commits
+
+    for line in script:
+      m = change_re.match(line)
+      if m:
+        f = m.group(2)
+        try:
+          f = full_hashes[f]
+        except KeyError:
+          print 'fh = %s' % full_hashes
+          print >>sys.stderr, "error: commit %s not found" % f
+          sys.exit(1)
+        to_replace[m.group(1)] = f
+
+    if not to_replace:
+      print >>sys.stderr, "error: no replacements specified"
+      print >>sys.stderr, "       use 'repo upload' without --replace"
+      sys.exit(1)
+
+    branch.replace_changes = to_replace
+    self._UploadAndReport([branch])
+
   def _UploadAndReport(self, todo):
     have_errors = False
     for branch in todo:
@@ -167,6 +216,14 @@ changes in all projects listed in the manifest.
   def Execute(self, opt, args):
     project_list = self.GetProjects(args)
     pending = []
+
+    if opt.replace:
+      if len(project_list) != 1:
+        print >>sys.stderr, \
+              'error: --replace requires exactly one project'
+        sys.exit(1)
+      self._ReplaceBranch(project_list[0])
+      return
 
     for project in project_list:
       avail = project.GetUploadableBranches()

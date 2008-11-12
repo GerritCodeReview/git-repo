@@ -75,6 +75,7 @@ def UploadBundle(project,
                  dest_branch,
                  src_branch,
                  bases,
+                 replace_changes = None,
                  save_cookies=True):
 
   srv = _GetRpcServer(email, server, save_cookies)
@@ -113,6 +114,10 @@ def UploadBundle(project,
         req.dest_branch = str(dest_branch)
         for c in revlist:
           req.contained_object.append(c)
+        for change_id,commit_id in replace_changes.iteritems():
+          r = req.replace.add()
+          r.change_id = change_id
+          r.object_id = commit_id
       else:
         req = UploadBundleContinue()
         req.bundle_id = bundle_id
@@ -148,6 +153,10 @@ def UploadBundle(project,
         elif rsp.status_code == UploadBundleResponse.UNAUTHORIZED_USER:
           reason = ('Unauthorized user.  Visit http://%s/hello to sign up.'
                     % server)
+        elif rsp.status_code == UploadBundleResponse.UNKNOWN_CHANGE:
+          reason = 'invalid change id'
+        elif rsp.status_code == UploadBundleResponse.CHANGE_CLOSED:
+          reason = 'one or more changes are closed'
         else:
           reason = 'unknown error ' + str(rsp.status_code)
         raise UploadError(reason)

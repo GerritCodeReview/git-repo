@@ -104,6 +104,7 @@ class ReviewableBranch(object):
     self.project = project
     self.branch = branch
     self.base = base
+    self.replace_changes = None
 
   @property
   def name(self):
@@ -124,6 +125,16 @@ class ReviewableBranch(object):
     return self._commit_cache
 
   @property
+  def unabbrev_commits(self):
+    r = dict()
+    for commit in self.project.bare_git.rev_list(
+        not_rev(self.base),
+        R_HEADS + self.name,
+        '--'):
+      r[commit[0:8]] = commit
+    return r
+
+  @property
   def date(self):
     return self.project.bare_git.log(
       '--pretty=format:%cd',
@@ -132,7 +143,8 @@ class ReviewableBranch(object):
       '--')
 
   def UploadForReview(self):
-    self.project.UploadForReview(self.name)
+    self.project.UploadForReview(self.name,
+                                 self.replace_changes)
 
   @property
   def tip_url(self):
@@ -444,7 +456,7 @@ class Project(object):
         return rb
     return None
 
-  def UploadForReview(self, branch=None):
+  def UploadForReview(self, branch=None, replace_changes=None):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -482,7 +494,8 @@ class Project(object):
                    dest_project = branch.remote.projectname,
                    dest_branch = dest_branch,
                    src_branch = R_HEADS + branch.name,
-                   bases = base_list)
+                   bases = base_list,
+                   replace_changes = replace_changes)
     except proto_client.ClientLoginError:
       raise UploadError('Login failure')
     except urllib2.HTTPError, e:
