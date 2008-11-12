@@ -27,28 +27,65 @@ _UPLOADBUNDLERESPONSE_CODETYPE = descriptor.EnumDescriptor(
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='UNKNOWN_PROJECT', index=3, number=2,
+      name='UNKNOWN_CHANGE', index=3, number=9,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='UNKNOWN_BRANCH', index=4, number=3,
+      name='CHANGE_CLOSED', index=4, number=10,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='UNKNOWN_BUNDLE', index=5, number=5,
+      name='UNKNOWN_PROJECT', index=5, number=2,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='NOT_BUNDLE_OWNER', index=6, number=6,
+      name='UNKNOWN_BRANCH', index=6, number=3,
       options=None,
       type=None),
     descriptor.EnumValueDescriptor(
-      name='BUNDLE_CLOSED', index=7, number=8,
+      name='UNKNOWN_BUNDLE', index=7, number=5,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='NOT_BUNDLE_OWNER', index=8, number=6,
+      options=None,
+      type=None),
+    descriptor.EnumValueDescriptor(
+      name='BUNDLE_CLOSED', index=9, number=8,
       options=None,
       type=None),
   ],
   options=None,
 )
+
+
+_REPLACEPATCHSET = descriptor.Descriptor(
+  name='ReplacePatchSet',
+  full_name='codereview.ReplacePatchSet',
+  filename='upload_bundle.proto',
+  containing_type=None,
+  fields=[
+    descriptor.FieldDescriptor(
+      name='change_id', full_name='codereview.ReplacePatchSet.change_id', index=0,
+      number=1, type=9, cpp_type=9, label=2,
+      default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='object_id', full_name='codereview.ReplacePatchSet.object_id', index=1,
+      number=2, type=9, cpp_type=9, label=2,
+      default_value=unicode("", "utf-8"),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],  # TODO(robinson): Implement.
+  enum_types=[
+  ],
+  options=None)
 
 
 _UPLOADBUNDLEREQUEST = descriptor.Descriptor(
@@ -88,6 +125,13 @@ _UPLOADBUNDLEREQUEST = descriptor.Descriptor(
     descriptor.FieldDescriptor(
       name='contained_object', full_name='codereview.UploadBundleRequest.contained_object', index=4,
       number=1, type=9, cpp_type=9, label=3,
+      default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    descriptor.FieldDescriptor(
+      name='replace', full_name='codereview.UploadBundleRequest.replace', index=5,
+      number=2, type=11, cpp_type=10, label=3,
       default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -174,7 +218,12 @@ _UPLOADBUNDLECONTINUE = descriptor.Descriptor(
   options=None)
 
 
+_UPLOADBUNDLEREQUEST.fields_by_name['replace'].message_type = _REPLACEPATCHSET
 _UPLOADBUNDLERESPONSE.fields_by_name['status_code'].enum_type = _UPLOADBUNDLERESPONSE_CODETYPE
+
+class ReplacePatchSet(message.Message):
+  __metaclass__ = reflection.GeneratedProtocolMessageType
+  DESCRIPTOR = _REPLACEPATCHSET
 
 class UploadBundleRequest(message.Message):
   __metaclass__ = reflection.GeneratedProtocolMessageType
