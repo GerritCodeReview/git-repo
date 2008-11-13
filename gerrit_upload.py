@@ -114,10 +114,11 @@ def UploadBundle(project,
         req.dest_branch = str(dest_branch)
         for c in revlist:
           req.contained_object.append(c)
-        for change_id,commit_id in replace_changes.iteritems():
-          r = req.replace.add()
-          r.change_id = change_id
-          r.object_id = commit_id
+        if replace_changes:
+          for change_id,commit_id in replace_changes.iteritems():
+            r = req.replace.add()
+            r.change_id = change_id
+            r.object_id = commit_id
       else:
         req = UploadBundleContinue()
         req.bundle_id = bundle_id
