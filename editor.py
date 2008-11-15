@@ -69,14 +69,14 @@ least one of these before using this command."""
       Returns:
         new value of edited text; None if editing did not succeed
     """
-    editor = cls._GetEditor()
+    editor = cls._GetEditor().split()
     fd, path = tempfile.mkstemp()
     try:
       os.write(fd, data)
       os.close(fd)
       fd = None
 
-      if subprocess.Popen([editor, path]).wait() != 0:
+      if subprocess.Popen(editor + [path]).wait() != 0:
         raise EditorError()
       return open(path).read()
     finally:
