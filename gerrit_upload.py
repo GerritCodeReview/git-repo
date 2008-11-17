@@ -75,6 +75,7 @@ def UploadBundle(project,
                  dest_branch,
                  src_branch,
                  bases,
+                 people,
                  replace_changes = None,
                  save_cookies=True):
 
@@ -112,6 +113,10 @@ def UploadBundle(project,
         req = UploadBundleRequest()
         req.dest_project = str(dest_project)
         req.dest_branch = str(dest_branch)
+        for e in people[0]:
+          req.reviewers.append(e)
+        for e in people[1]:
+          req.cc.append(e)
         for c in revlist:
           req.contained_object.append(c)
         if replace_changes:
@@ -158,6 +163,10 @@ def UploadBundle(project,
           reason = 'invalid change id'
         elif rsp.status_code == UploadBundleResponse.CHANGE_CLOSED:
           reason = 'one or more changes are closed'
+        elif rsp.status_code == UploadBundleResponse.UNKNOWN_EMAIL:
+          emails = [x for x in rsp.invalid_reviewers] + [
+                    x for x in rsp.invalid_cc]
+          reason = 'invalid email addresses: %s' % ", ".join(emails)
         else:
           reason = 'unknown error ' + str(rsp.status_code)
         raise UploadError(reason)

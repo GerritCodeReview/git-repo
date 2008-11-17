@@ -142,9 +142,10 @@ class ReviewableBranch(object):
       R_HEADS + self.name,
       '--')
 
-  def UploadForReview(self):
+  def UploadForReview(self, people):
     self.project.UploadForReview(self.name,
-                                 self.replace_changes)
+                                 self.replace_changes,
+                                 people)
 
   @property
   def tip_url(self):
@@ -456,7 +457,7 @@ class Project(object):
         return rb
     return None
 
-  def UploadForReview(self, branch=None, replace_changes=None):
+  def UploadForReview(self, branch=None, replace_changes=None, people=([],[])):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -495,6 +496,7 @@ class Project(object):
                    dest_branch = dest_branch,
                    src_branch = R_HEADS + branch.name,
                    bases = base_list,
+                   people = people,
                    replace_changes = replace_changes)
     except proto_client.ClientLoginError:
       raise UploadError('Login failure')
