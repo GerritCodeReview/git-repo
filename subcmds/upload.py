@@ -25,11 +25,17 @@ def _die(fmt, *args):
   print >>sys.stderr, 'error: %s' % msg
   sys.exit(1)
 
+def _SplitEmails(values):
+  result = []
+  for str in values:
+    result.extend([s.strip() for s in str.split(',')])
+  return result
+
 class Upload(InteractiveCommand):
   common = True
   helpSummary = "Upload changes for code review"
   helpUsage="""
-%prog {[<project>]... | --replace <project>}
+%prog [--re --cc] {[<project>]... | --replace <project>}
 """
   helpDescription = """
 The '%prog' command is used to send changes to the Gerrit code
@@ -44,14 +50,25 @@ at the command line.  Projects can be specified either by name, or
 by a relative or absolute path to the project's local directory. If
 no projects are specified, '%prog' will search for uploadable
 changes in all projects listed in the manifest.
+
+If the --reviewers or --cc options are passed, those emails are
+added to the respective list of users, and emails are sent to any
+new users.  Users passed to --reviewers must be already registered
+with the code review system, or the upload will fail.
 """
 
   def _Options(self, p):
     p.add_option('--replace',
                  dest='replace', action='store_true',
                  help='Upload replacement patchesets from this branch')
+    p.add_option('--re', '--reviewers',
+                 type='string',  action='append', dest='reviewers',
+                 help='Request reviews from these people.')
+    p.add_option('--cc',
+                 type='string',  action='append', dest='cc',
+                 help='Also send email to these email addresses.')
 
-  def _SingleBranch(self, branch):
+  def _SingleBranch(self, branch, people):
     project = branch.project
     name = branch.name
     date = branch.date
@@ -69,11 +86,11 @@ changes in all projects listed in the manifest.
     sys.stdout.write('(y/n)? ')
     answer = sys.stdin.readline().strip()
     if answer in ('y', 'Y', 'yes', '1', 'true', 't'):
-      self._UploadAndReport([branch])
+      self._UploadAndReport([branch], people)
     else:
       _die("upload aborted by user")
 
-  def _MultipleBranches(self, pending):
+  def _MultipleBranches(self, pending, people):
     projects = {}
     branches = {}
 
@@ -132,7 +149,7 @@ changes in all projects listed in the manifest.
         todo.append(branch)
     if not todo:
       _die("nothing uncommented for upload")
-    self._UploadAndReport(todo)
+    self._UploadAndReport(todo, people)
 
   def _ReplaceBranch(self, project):
     branch = project.CurrentBranch
@@ -176,13 +193,13 @@ changes in all projects listed in the manifest.
       sys.exit(1)
 
     branch.replace_changes = to_replace
-    self._UploadAndReport([branch])
+    self._UploadAndReport([branch], people)
 
-  def _UploadAndReport(self, todo):
+  def _UploadAndReport(self, todo, people):
     have_errors = False
     for branch in todo:
       try:
-        branch.UploadForReview()
+        branch.UploadForReview(people)
         branch.uploaded = True
       except UploadError, e:
         branch.error = e
@@ -216,6 +233,14 @@ changes in all projects listed in the manifest.
   def Execute(self, opt, args):
     project_list = self.GetProjects(args)
     pending = []
+    reviewers = []
+    cc = []
+
+    if opt.reviewers:
+      reviewers = _SplitEmails(opt.reviewers)
+    if opt.cc:
+      cc = _SplitEmails(opt.cc)
+    people = (reviewers,cc)
 
     if opt.replace:
       if len(project_list) != 1:
@@ -233,6 +258,6 @@ changes in all projects listed in the manifest.
     if not pending:
       print >>sys.stdout, "no branches ready for upload"
     elif len(pending) == 1 and len(pending[0][1]) == 1:
-      self._SingleBranch(pending[0][1][0])
+      self._SingleBranch(pending[0][1][0], people)
     else:
-      self._MultipleBranches(pending)
+      self._MultipleBranches(pending, people)
