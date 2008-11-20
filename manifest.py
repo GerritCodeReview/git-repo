@@ -138,6 +138,16 @@ class Manifest(object):
             self.manifestFile
 
     for node in config.childNodes:
+      if node.nodeName == 'remove-project':
+        name = self._reqatt(node, 'name')
+        try:
+          del self._projects[name]
+        except KeyError:
+          raise ManifestParseError, \
+                'project %s not found' % \
+                (name)
+
+    for node in config.childNodes:
       if node.nodeName == 'remote':
         remote = self._ParseRemote(node)
         if self._remotes.get(remote.name):

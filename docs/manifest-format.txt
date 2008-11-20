@@ -22,6 +22,7 @@ following DTD:
 <!DOCTYPE manifest [
   <!ELEMENT manifest (remote*,
                       default?,
+                      remove-project*,
                       project*,
                       add-remote*)>
 
@@ -47,6 +48,9 @@ following DTD:
   <!ATTLIST add-remote fetch        CDATA #REQUIRED>
   <!ATTLIST add-remote review       CDATA #IMPLIED>
   <!ATTLIST add-remote project-name CDATA #IMPLIED>
+
+  <!ELEMENT remove-project (EMPTY)>
+  <!ATTLIST remove-project name  CDATA #REQUIRED>
 ]>
 
 A description of the elements and their attributes follows.
@@ -153,6 +157,18 @@ but adds an additional remote to only this project.  These additional
 remotes are fetched from first on the initial `repo sync`, causing
 the majority of the project's object database to be obtained through
 these additional remotes.
+
+
+Element remove-project
+----------------------
+
+Deletes the named project from the internal manifest table, possibly
+allowing a subsequent project element in the same manifest file to
+replace the project with a different source.
+
+This element is mostly useful in the local_manifest.xml, where
+the user can remove a project, and possibly replace it with their
+own definition.
 
 
 Local Manifest
