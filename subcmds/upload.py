@@ -151,7 +151,7 @@ with the code review system, or the upload will fail.
       _die("nothing uncommented for upload")
     self._UploadAndReport(todo, people)
 
-  def _ReplaceBranch(self, project):
+  def _ReplaceBranch(self, project, people):
     branch = project.CurrentBranch
     if not branch:
       print >>sys.stdout, "no branches ready for upload"
@@ -247,7 +247,7 @@ with the code review system, or the upload will fail.
         print >>sys.stderr, \
               'error: --replace requires exactly one project'
         sys.exit(1)
-      self._ReplaceBranch(project_list[0])
+      self._ReplaceBranch(project_list[0], people)
       return
 
     for project in project_list:
