@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "z13103761b8fd7182c0d03cfc707aad92",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2008-12-03T16:11:20Z",
+      "side": 1,
+      "message": "Maybe that should all be on one line, as its rather short.",
+      "revId": "ce03a401c6fb5a890a3fbf03ab51f70a80370ec1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
