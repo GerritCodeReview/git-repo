@@ -178,6 +178,7 @@ with the code review system, or the upload will fail.
     for line in script:
       m = change_re.match(line)
       if m:
+        c = m.group(1)
         f = m.group(2)
         try:
           f = full_hashes[f]
@@ -185,7 +186,11 @@ with the code review system, or the upload will fail.
           print 'fh = %s' % full_hashes
           print >>sys.stderr, "error: commit %s not found" % f
           sys.exit(1)
-        to_replace[m.group(1)] = f
+        if c in to_replace:
+          print >>sys.stderr,\
+            "error: change %s cannot accept multiple commits" % c
+          sys.exit(1)
+        to_replace[c] = f
 
     if not to_replace:
       print >>sys.stderr, "error: no replacements specified"
