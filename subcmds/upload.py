@@ -55,6 +55,12 @@ If the --reviewers or --cc options are passed, those emails are
 added to the respective list of users, and emails are sent to any
 new users.  Users passed to --reviewers must be already registered
 with the code review system, or the upload will fail.
+
+If the --replace option is passed the user can designate which
+existing change(s) in Gerrit match up to the commits in the branch
+being uploaded.  For each matched pair of change,commit the commit
+will be added as a new patch set, completely replacing the set of
+files and description associated with the change in Gerrit.
 """
 
   def _Options(self, p):
