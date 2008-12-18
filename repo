@@ -2,7 +2,7 @@
 
 ## repo default configuration
 ##
-REPO_URL='git://android.kernel.org/tools/repo.git'
+REPO_URL='git://android.git.kernel.org/tools/repo.git'
 REPO_REV='stable'
 
 # Copyright (C) 2008 Google Inc.
@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 7)
+VERSION = (1, 8)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
