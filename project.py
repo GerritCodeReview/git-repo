@@ -940,7 +940,7 @@ class Project(object):
       ref = R_M + self.manifest.branch
 
       if IsId(self.revision):
-        dst = self.revision + '^0',
+        dst = self.revision + '^0'
         self.bare_git.UpdateRef(ref, dst, message = msg, detach = True)
       else:
         remote = self.GetRemote(self.remote.name)
