@@ -16,7 +16,8 @@
 import os
 import re
 import sys
-from error import GitError
+from urllib2 import urlopen, HTTPError
+from error import GitError, UploadError
 from git_command import GitCommand
 
 R_HEADS = 'refs/heads/'
@@ -261,6 +262,45 @@ class Remote(object):
     self.projectname = self._Get('projectname')
     self.fetch = map(lambda x: RefSpec.FromString(x),
                      self._Get('fetch', all=True))
+    self._review_protocol = None
+
+  @property
+  def ReviewProtocol(self):
+    if self._review_protocol is None:
+      if self.review is None:
+        return None
+
+      u = self.review
+      if not u.startswith('http:') and not u.startswith('https:'):
+        u = 'http://%s' % u
+      if not u.endswith('/'):
+        u += '/'
+      u += 'ssh_info'
+
+      try:
+        info = urlopen(u).read()
+        if info == 'NOT_AVAILABLE':
+          raise UploadError('Upload over ssh unavailable')
+
+        self._review_protocol = 'ssh'
+        self._review_host = info.split(" ")[0]
+        self._review_port = info.split(" ")[1]
+
+      except HTTPError, e:
+        if e.code == 404:
+          self._review_protocol = 'http-post'
+        else:
+          raise UploadError('Cannot guess Gerrit version')
+    return self._review_protocol
+
+  def SshReviewUrl(self, userEmail):
+    if self.ReviewProtocol != 'ssh':
+      return None
+    return 'ssh://%s@%s:%s/%s' % (
+      userEmail.split("@")[0],
+      self._review_host,
+      self._review_port,
+      self.projectname)
 
   def ToLocal(self, rev):
     """Convert a remote revision string to something we have locally.

@@ -46,6 +46,8 @@ def _info(fmt, *args):
 def not_rev(r):
   return '^' + r
 
+def sq(r):
+  return "'" + r.replace("'", "'\''") + "'"
 
 hook_list = None
 def repo_hooks():
@@ -475,33 +477,58 @@ class Project(object):
     if not dest_branch.startswith(R_HEADS):
       dest_branch = R_HEADS + dest_branch
 
-    base_list = []
-    for name, id in self._allrefs.iteritems():
-      if branch.remote.WritesTo(name):
-        base_list.append(not_rev(name))
-    if not base_list:
-      raise GitError('no base refs, cannot upload %s' % branch.name)
-
     if not branch.remote.projectname:
       branch.remote.projectname = self.name
       branch.remote.Save()
 
-    print >>sys.stderr, ''
-    _info("Uploading %s to %s:", branch.name, self.name)
-    try:
-      UploadBundle(project = self,
-                   server = branch.remote.review,
-                   email = self.UserEmail,
-                   dest_project = branch.remote.projectname,
-                   dest_branch = dest_branch,
-                   src_branch = R_HEADS + branch.name,
-                   bases = base_list,
-                   people = people,
-                   replace_changes = replace_changes)
-    except proto_client.ClientLoginError:
-      raise UploadError('Login failure')
-    except urllib2.HTTPError, e:
-      raise UploadError('HTTP error %d' % e.code)
+    if branch.remote.ReviewProtocol == 'http-post':
+      base_list = []
+      for name, id in self._allrefs.iteritems():
+        if branch.remote.WritesTo(name):
+          base_list.append(not_rev(name))
+      if not base_list:
+        raise GitError('no base refs, cannot upload %s' % branch.name)
+
+      print >>sys.stderr, ''
+      _info("Uploading %s to %s:", branch.name, self.name)
+      try:
+        UploadBundle(project = self,
+                     server = branch.remote.review,
+                     email = self.UserEmail,
+                     dest_project = branch.remote.projectname,
+                     dest_branch = dest_branch,
+                     src_branch = R_HEADS + branch.name,
+                     bases = base_list,
+                     people = people,
+                     replace_changes = replace_changes)
+      except proto_client.ClientLoginError:
+        raise UploadError('Login failure')
+      except urllib2.HTTPError, e:
+        raise UploadError('HTTP error %d' % e.code)
+
+    elif branch.remote.ReviewProtocol == 'ssh':
+      if dest_branch.startswith(R_HEADS):
+        dest_branch = dest_branch[len(R_HEADS):]
+
+      rp = ['gerrit receive-pack']
+      for e in people[0]:
+        rp.append('--reviewer=%s' % sq(e))
+      for e in people[1]:
+        rp.append('--cc=%s' % sq(e))
+
+      cmd = ['push']
+      cmd.append('--receive-pack=%s' % " ".join(rp))
+      cmd.append(branch.remote.SshReviewUrl(self.UserEmail))
+      cmd.append('%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch))
+      if replace_changes:
+        for change_id,commit_id in replace_changes.iteritems():
+          cmd.append('%s:refs/changes/%s/new' % (commit_id, change_id))
+      if GitCommand(self, cmd, bare = True).Wait() != 0:
+        raise UploadError('Upload failed')
+
+    else:
+        raise UploadError('Unsupported protocol %s' \
+          % branch.remote.review)
 
     msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
     self.bare_git.UpdateRef(R_PUB + branch.name,
