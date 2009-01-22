@@ -34,6 +34,17 @@ pwd is the project's working directory.
 
 REPO_PROJECT is set to the unique name of the project.
 
+REPO_PATH is the path relative the the root of the client.
+
+REPO_REMOTE is the name of the remote system from the manifest.
+
+REPO_LREV is the name of the revision from the manifest, translated
+to a local tracking branch.  If you need to pass the manifest
+revision to a locally executed git command, use REPO_LREV.
+
+REPO_RREV is the name of the revision from the manifest, exactly
+as written in the manifest.
+
 shell positional arguments ($1, $2, .., $#) are set to any arguments
 following <command>.
 
@@ -70,6 +81,12 @@ not redirected.
     for project in self.GetProjects(args):
       env = dict(os.environ.iteritems())
       env['REPO_PROJECT'] = project.name
+      env['REPO_PATH'] = project.relpath
+      env['REPO_REMOTE'] = project.remote.name
+      env['REPO_LREV'] = project\
+        .GetRemote(project.remote.name)\
+        .ToLocal(project.revision)
+      env['REPO_RREV'] = project.revision
 
       p = subprocess.Popen(cmd,
                            cwd = project.worktree,
