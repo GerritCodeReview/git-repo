@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "z3b6308d08dd34d691548b8373314ab45",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-01-22T16:06:30Z",
+      "side": 1,
+      "message": "I would say \"relative to the root of the client\".",
+      "revId": "caf8be4776ced8f35a80d6c2029c98bed055bd9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "z98b470f13ba0a2fd8563db7244224f25",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-01-22T16:06:30Z",
+      "side": 1,
+      "message": "I think we should also add:\n\nenv[\u0027REPO_LOCAL_REVISION\u0027] \u003d project.GetRemote(project.remote.name).ToLocal(project.revision)\n\ne.g. ~line 610 of project.py where we are getting the local name for the remote revision.  So if the manifest says \"master\" we get \"refs/remotes/korg/master\" back, which we can actually evaluate locally with git if need be.\n\nin which case maybe REPO_REVISION should be REPO_REMOTE_REVISION ?\n\nCan you think of any shorter names?  These are somewhat long for the two revision fields.  *sigh*",
+      "revId": "caf8be4776ced8f35a80d6c2029c98bed055bd9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
