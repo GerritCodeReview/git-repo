@@ -34,6 +34,12 @@ pwd is the project's working directory.
 
 REPO_PROJECT is set to the unique name of the project.
 
+REPO_PATH is the path relative the the root of the project.
+
+REPO_REMOTE is the name of the remote system from the manifest.
+
+REPO_REVISION is the name of the revision from the manifest.
+
 shell positional arguments ($1, $2, .., $#) are set to any arguments
 following <command>.
 
@@ -70,6 +76,9 @@ not redirected.
     for project in self.GetProjects(args):
       env = dict(os.environ.iteritems())
       env['REPO_PROJECT'] = project.name
+      env['REPO_PATH'] = project.relpath
+      env['REPO_REMOTE'] = project.remote.name
+      env['REPO_REVISION'] = project.revision
 
       p = subprocess.Popen(cmd,
                            cwd = project.worktree,
