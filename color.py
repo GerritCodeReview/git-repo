@@ -137,7 +137,7 @@ class Coloring(object):
     if v is None:
       return _Color(fg, bg, attr)
 
-    v = v.trim().lowercase()
+    v = v.strip().lower()
     if v == "reset":
       return RESET
     elif v == '':
