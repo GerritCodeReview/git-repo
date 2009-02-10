@@ -24,10 +24,8 @@ import urllib2
 from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId
-from gerrit_upload import UploadBundle
 from error import GitError, ImportError, UploadError
 from remote import Remote
-from codereview import proto_client
 
 HEAD    = 'HEAD'
 R_HEADS = 'refs/heads/'
@@ -481,32 +479,7 @@ class Project(object):
       branch.remote.projectname = self.name
       branch.remote.Save()
 
-    if branch.remote.ReviewProtocol == 'http-post':
-      base_list = []
-      for name, id in self._allrefs.iteritems():
-        if branch.remote.WritesTo(name):
-          base_list.append(not_rev(name))
-      if not base_list:
-        raise GitError('no base refs, cannot upload %s' % branch.name)
-
-      print >>sys.stderr, ''
-      _info("Uploading %s to %s:", branch.name, self.name)
-      try:
-        UploadBundle(project = self,
-                     server = branch.remote.review,
-                     email = self.UserEmail,
-                     dest_project = branch.remote.projectname,
-                     dest_branch = dest_branch,
-                     src_branch = R_HEADS + branch.name,
-                     bases = base_list,
-                     people = people,
-                     replace_changes = replace_changes)
-      except proto_client.ClientLoginError:
-        raise UploadError('Login failure')
-      except urllib2.HTTPError, e:
-        raise UploadError('HTTP error %d' % e.code)
-
-    elif branch.remote.ReviewProtocol == 'ssh':
+    if branch.remote.ReviewProtocol == 'ssh':
       if dest_branch.startswith(R_HEADS):
         dest_branch = dest_branch[len(R_HEADS):]
 

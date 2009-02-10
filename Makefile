@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GERRIT_SRC=../gerrit
-GERRIT_MODULES=codereview froofle
-
 all:
 
 clean:
 	find . -name \*.pyc -type f | xargs rm -f
-
-update-pyclient:
-	$(MAKE) -C $(GERRIT_SRC) release-pyclient
-	rm -rf $(GERRIT_MODULES)
-	(cd $(GERRIT_SRC)/release/pyclient && \
-	 find . -type f \
-	 | cpio -pd $(abspath .))
