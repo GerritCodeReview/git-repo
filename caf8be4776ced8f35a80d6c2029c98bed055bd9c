@@ -33,6 +33,23 @@
       "revId": "caf8be4776ced8f35a80d6c2029c98bed055bd9c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAACH///+U\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-02-18T22:00:10Z",
+      "side": 1,
+      "message": "How about REPO_LREV and REPO_RREV ?",
+      "revId": "caf8be4776ced8f35a80d6c2029c98bed055bd9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
