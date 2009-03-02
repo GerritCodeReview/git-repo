@@ -810,7 +810,7 @@ class Project(object):
 
     if cb and cb not in kill:
       kill.append(cb)
-      kill.sort()
+    kill.sort()
 
     kept = []
     for branch in kill:
