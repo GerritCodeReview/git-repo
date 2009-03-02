@@ -770,7 +770,8 @@ class Project(object):
     """
     cb = self.CurrentBranch
     kill = []
-    for name in self._allrefs.keys():
+    left = self._allrefs
+    for name in left.keys():
       if name.startswith(R_HEADS):
         name = name[len(R_HEADS):]
         if cb is None or name != cb:
@@ -783,14 +784,12 @@ class Project(object):
       self.work_git.DetachHead(HEAD)
       kill.append(cb)
 
-    deleted = set()
     if kill:
       try:
         old = self.bare_git.GetHead()
       except GitError:
         old = 'refs/heads/please_never_use_this_as_a_branch_name'
 
-      rm_re = re.compile(r"^Deleted branch (.*)\.$")
       try:
         self.bare_git.DetachHead(rev)
 
@@ -802,14 +801,12 @@ class Project(object):
         b.Wait()
       finally:
         self.bare_git.SetHead(old)
+        left = self._allrefs
 
-      for line in b.stdout.split("\n"):
-        m = rm_re.match(line)
-        if m:
-          deleted.add(m.group(1))
-
-      if deleted:
-        self.CleanPublishedCache()
+      for branch in kill:
+        if (R_HEADS + branch) not in left:
+          self.CleanPublishedCache()
+          break
 
     if cb and cb not in kill:
       kill.append(cb)
@@ -817,7 +814,7 @@ class Project(object):
 
     kept = []
     for branch in kill:
-      if branch not in deleted:
+      if (R_HEADS + branch) in left:
         branch = self.GetBranch(branch)
         base = branch.LocalMerge
         if not base:
