@@ -29,6 +29,7 @@ import sys
 
 from command import InteractiveCommand, PagedCommand
 from editor import Editor
+from error import ManifestInvalidRevisionError
 from error import NoSuchProjectError
 from error import RepoChangedException
 from manifest import Manifest
@@ -94,6 +95,9 @@ class _Repo(object):
     copts, cargs = cmd.OptionParser.parse_args(argv)
     try:
       cmd.Execute(copts, cargs)
+    except ManifestInvalidRevisionError, e:
+      print >>sys.stderr, 'error: %s' % str(e)
+      sys.exit(1)
     except NoSuchProjectError, e:
       if e.name:
         print >>sys.stderr, 'error: project %s not found' % e.name

@@ -17,6 +17,10 @@ class ManifestParseError(Exception):
   """Failed to parse the manifest file.
   """
 
+class ManifestInvalidRevisionError(Exception):
+  """The revision value in a project is incorrect.
+  """
+
 class EditorError(Exception):
   """Unspecified error from the user's text editor.
   """

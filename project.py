@@ -25,6 +25,7 @@ from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId
 from error import GitError, ImportError, UploadError
+from error import ManifestInvalidRevisionError
 from remote import Remote
 
 HEAD    = 'HEAD'
@@ -582,6 +583,12 @@ class Project(object):
 
     rem = self.GetRemote(self.remote.name)
     rev = rem.ToLocal(self.revision)
+    try:
+      self.bare_git.rev_parse('--verify', '%s^0' % rev)
+    except GitError:
+      raise ManifestInvalidRevisionError(
+        'revision %s in %s not found' % (self.revision, self.name))
+
     branch = self.CurrentBranch
 
     if branch is None:
