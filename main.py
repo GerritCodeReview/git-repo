@@ -46,6 +46,9 @@ global_options.add_option('-p', '--paginate',
 global_options.add_option('--no-pager',
                           dest='no_pager', action='store_true',
                           help='disable the pager')
+global_options.add_option('--version',
+                          dest='show_version', action='store_true',
+                          help='display this version of repo')
 
 class _Repo(object):
   def __init__(self, repodir):
@@ -68,6 +71,13 @@ class _Repo(object):
       name = 'help'
       argv = []
     gopts, gargs = global_options.parse_args(glob)
+
+    if gopts.show_version:
+      if name == 'help':
+        name = 'version'
+      else:
+        print >>sys.stderr, 'fatal: invalid usage of --version'
+        sys.exit(1)
 
     try:
       cmd = self.commands[name]
