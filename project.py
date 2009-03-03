@@ -358,7 +358,7 @@ class Project(object):
       else: f_status = '-'
 
       if i and i.src_path:
-        line = ' %s%s\t%s => (%s%%)' % (i_status, f_status,
+        line = ' %s%s\t%s => %s (%s%%)' % (i_status, f_status,
                                         i.src_path, p, i.level)
       else:
         line = ' %s%s\t%s' % (i_status, f_status, p)
