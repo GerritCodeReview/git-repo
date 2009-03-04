@@ -77,6 +77,7 @@ The most commonly used repo commands are:
       print fmt % (name, summary)
     print """
 See 'repo help <command>' for more information on a specific command.
+See 'repo help --all' for a complete list of recognized commands.
 """
 
   def _PrintCommandHelp(self, cmd):
