@@ -851,7 +851,11 @@ class Project(object):
     if not os.path.exists(self.gitdir):
       os.makedirs(self.gitdir)
       self.bare_git.init()
-      self.config.SetString('core.bare', None)
+
+      if self.manifest.IsMirror:
+        self.config.SetString('core.bare', 'true')
+      else:
+        self.config.SetString('core.bare', None)
 
       hooks = self._gitdir_path('hooks')
       try:
