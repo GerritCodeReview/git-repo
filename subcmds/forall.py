@@ -17,9 +17,9 @@ import re
 import os
 import sys
 import subprocess
-from command import Command
+from command import Command, MirrorSafeCommand
 
-class Forall(Command):
+class Forall(Command, MirrorSafeCommand):
   common = False
   helpSummary = "Run a shell command in each project"
   helpUsage = """
@@ -30,7 +30,8 @@ Executes the same shell command in each project.
 
 Environment
 -----------
-pwd is the project's working directory.
+pwd is the project's working directory.  If the current client is
+a mirror client, then pwd is the Git repository.
 
 REPO_PROJECT is set to the unique name of the project.
 
@@ -77,6 +78,7 @@ not redirected.
       cmd.append(cmd[0])
     cmd.extend(opt.command[1:])
 
+    mirror = self.manifest.IsMirror
     rc = 0
     for project in self.GetProjects(args):
       env = dict(os.environ.iteritems())
@@ -88,8 +90,14 @@ not redirected.
         .ToLocal(project.revision)
       env['REPO_RREV'] = project.revision
 
+      if mirror:
+        env['GIT_DIR'] = project.gitdir
+        cwd = project.gitdir
+      else:
+        cwd = project.worktree
+
       p = subprocess.Popen(cmd,
-                           cwd = project.worktree,
+                           cwd = cwd,
                            shell = shell,
                            env = env)
       r = p.wait()
