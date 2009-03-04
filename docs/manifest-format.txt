@@ -19,39 +19,39 @@ XML File Format
 A manifest XML file (e.g. 'default.xml') roughly conforms to the
 following DTD:
 
-<!DOCTYPE manifest [
-  <!ELEMENT manifest (remote*,
-                      default?,
-                      remove-project*,
-                      project*,
-                      add-remote*)>
-
-  <!ELEMENT remote (EMPTY)>
-  <!ATTLIST remote name         ID    #REQUIRED>
-  <!ATTLIST remote fetch        CDATA #REQUIRED>
-  <!ATTLIST remote review       CDATA #IMPLIED>
-  <!ATTLIST remote project-name CDATA #IMPLIED>
-
-  <!ELEMENT default (EMPTY)>
-  <!ATTLIST default remote   IDREF #IMPLIED>
-  <!ATTLIST default revision CDATA #IMPLIED>
-
-  <!ELEMENT project (remote*)>
-  <!ATTLIST project name     CDATA #REQUIRED>
-  <!ATTLIST project path     CDATA #IMPLIED>
-  <!ATTLIST project remote   IDREF #IMPLIED>
-  <!ATTLIST project revision CDATA #IMPLIED>
-
-  <!ELEMENT add-remote (EMPTY)>
-  <!ATTLIST add-remote to-project   ID    #REQUIRED>
-  <!ATTLIST add-remote name         ID    #REQUIRED>
-  <!ATTLIST add-remote fetch        CDATA #REQUIRED>
-  <!ATTLIST add-remote review       CDATA #IMPLIED>
-  <!ATTLIST add-remote project-name CDATA #IMPLIED>
-
-  <!ELEMENT remove-project (EMPTY)>
-  <!ATTLIST remove-project name  CDATA #REQUIRED>
-]>
+  <!DOCTYPE manifest [
+    <!ELEMENT manifest (remote*,
+                        default?,
+                        remove-project*,
+                        project*,
+                        add-remote*)>
+  
+    <!ELEMENT remote (EMPTY)>
+    <!ATTLIST remote name         ID    #REQUIRED>
+    <!ATTLIST remote fetch        CDATA #REQUIRED>
+    <!ATTLIST remote review       CDATA #IMPLIED>
+    <!ATTLIST remote project-name CDATA #IMPLIED>
+  
+    <!ELEMENT default (EMPTY)>
+    <!ATTLIST default remote   IDREF #IMPLIED>
+    <!ATTLIST default revision CDATA #IMPLIED>
+  
+    <!ELEMENT project (remote*)>
+    <!ATTLIST project name     CDATA #REQUIRED>
+    <!ATTLIST project path     CDATA #IMPLIED>
+    <!ATTLIST project remote   IDREF #IMPLIED>
+    <!ATTLIST project revision CDATA #IMPLIED>
+  
+    <!ELEMENT add-remote (EMPTY)>
+    <!ATTLIST add-remote to-project   ID    #REQUIRED>
+    <!ATTLIST add-remote name         ID    #REQUIRED>
+    <!ATTLIST add-remote fetch        CDATA #REQUIRED>
+    <!ATTLIST add-remote review       CDATA #IMPLIED>
+    <!ATTLIST add-remote project-name CDATA #IMPLIED>
+  
+    <!ELEMENT remove-project (EMPTY)>
+    <!ATTLIST remove-project name  CDATA #REQUIRED>
+  ]>
 
 A description of the elements and their attributes follows.
 
@@ -179,16 +179,14 @@ manifest, stored in `$TOP_DIR/.repo/local_manifest.xml`.
 
 For example:
 
-----
-	$ cat .repo/local_manifest.xml
-	<?xml version="1.0" encoding="UTF-8"?>
-	<manifest>
-	  <project path="manifest"
-			   name="tools/manifest" />
-	  <project path="platform-manifest"
-			   name="platform/manifest" />
-	</manifest>
-----
+  $ cat .repo/local_manifest.xml
+  <?xml version="1.0" encoding="UTF-8"?>
+  <manifest>
+    <project path="manifest"
+             name="tools/manifest" />
+    <project path="platform-manifest"
+             name="platform/manifest" />
+  </manifest>
 
 Users may add projects to the local manifest prior to a `repo sync`
 invocation, instructing repo to automatically download and manage

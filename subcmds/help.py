@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import sys
 from formatter import AbstractFormatter, DumbWriter
 
@@ -106,14 +107,24 @@ See 'repo help --all' for a complete list of recognized commands.
         body = body.strip()
         body = body.replace('%prog', me)
 
+        asciidoc_hdr = re.compile(r'^\n?([^\n]{1,})\n(={2,}|-{2,})$')
         for para in body.split("\n\n"):
           if para.startswith(' '):
             self.write('%s', para)
             self.nl()
             self.nl()
-          else:
-            self.wrap.add_flowing_data(para)
-            self.wrap.end_paragraph(1)
+            continue
+
+          m = asciidoc_hdr.match(para)
+          if m:
+            self.heading('%s', m.group(1))
+            self.nl()
+            self.heading('%s', ''.ljust(len(m.group(1)),'-'))
+            self.nl()
+            continue
+
+          self.wrap.add_flowing_data(para)
+          self.wrap.end_paragraph(1)
         self.wrap.end_paragraph(0)
 
     out = _Out(self.manifest.globalConfig)
