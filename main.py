@@ -27,7 +27,9 @@ import os
 import re
 import sys
 
-from command import InteractiveCommand, PagedCommand
+from command import InteractiveCommand
+from command import MirrorSafeCommand
+from command import PagedCommand
 from editor import Editor
 from error import ManifestInvalidRevisionError
 from error import NoSuchProjectError
@@ -90,6 +92,12 @@ class _Repo(object):
     cmd.repodir = self.repodir
     cmd.manifest = Manifest(cmd.repodir)
     Editor.globalConfig = cmd.manifest.globalConfig
+
+    if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
+      print >>sys.stderr, \
+            "fatal: '%s' requires a working directory"\
+            % name
+      sys.exit(1)
 
     if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig

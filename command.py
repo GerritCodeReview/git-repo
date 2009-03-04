@@ -114,3 +114,8 @@ class PagedCommand(Command):
   """Command which defaults to output in a pager, as its
      display tends to be larger than one screen full.
   """
+
+class MirrorSafeCommand(object):
+  """Command permits itself to run within a mirror,
+     and does not require a working directory.
+  """

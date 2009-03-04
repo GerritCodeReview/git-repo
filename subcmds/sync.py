@@ -19,11 +19,11 @@ import subprocess
 import sys
 
 from git_command import GIT
-from command import Command
+from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError
 from project import R_HEADS
 
-class Sync(Command):
+class Sync(Command, MirrorSafeCommand):
   common = True
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """

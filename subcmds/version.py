@@ -14,11 +14,11 @@
 # limitations under the License.
 
 import sys
-from command import Command
+from command import Command, MirrorSafeCommand
 from git_command import git
 from project import HEAD
 
-class Version(Command):
+class Version(Command, MirrorSafeCommand):
   common = False
   helpSummary = "Display the version of repo"
   helpUsage = """

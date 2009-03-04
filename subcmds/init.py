@@ -17,12 +17,12 @@ import os
 import sys
 
 from color import Coloring
-from command import InteractiveCommand
+from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from remote import Remote
 from git_command import git, MIN_GIT_VERSION
 
-class Init(InteractiveCommand):
+class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
   helpSummary = "Initialize repo in the current directory"
   helpUsage = """

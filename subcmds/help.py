@@ -17,9 +17,9 @@ import sys
 from formatter import AbstractFormatter, DumbWriter
 
 from color import Coloring
-from command import PagedCommand
+from command import PagedCommand, MirrorSafeCommand
 
-class Help(PagedCommand):
+class Help(PagedCommand, MirrorSafeCommand):
   common = False
   helpSummary = "Display detailed help on a command"
   helpUsage = """
