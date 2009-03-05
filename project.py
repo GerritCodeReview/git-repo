@@ -178,13 +178,15 @@ class DiffColoring(Coloring):
 
 
 class _CopyFile:
-  def __init__(self, src, dest):
+  def __init__(self, src, dest, abssrc, absdest):
     self.src = src
     self.dest = dest
+    self.abs_src = abssrc
+    self.abs_dest = absdest
 
   def _Copy(self):
-    src = self.src
-    dest = self.dest
+    src = self.abs_src
+    dest = self.abs_dest
     # copy file if it does not exist or is out of date
     if not os.path.exists(dest) or not filecmp.cmp(src, dest):
       try:
@@ -691,11 +693,11 @@ class Project(object):
     self._CopyFiles()
     return True
 
-  def AddCopyFile(self, src, dest):
+  def AddCopyFile(self, src, dest, absdest):
     # dest should already be an absolute path, but src is project relative
     # make src an absolute path
-    src = os.path.join(self.worktree, src)
-    self.copyfiles.append(_CopyFile(src, dest))
+    abssrc = os.path.join(self.worktree, src)
+    self.copyfiles.append(_CopyFile(src, dest, abssrc, absdest))
 
   def DownloadPatchSet(self, change_id, patch_id):
     """Download a single patch set of a single change to FETCH_HEAD.
