@@ -18,7 +18,7 @@ import sys
 import xml.dom.minidom
 
 from git_config import GitConfig, IsId
-from project import Project, MetaProject, R_HEADS
+from project import Project, MetaProject, R_HEADS, HEAD
 from remote import Remote
 from error import ManifestParseError
 
@@ -72,6 +72,76 @@ class Manifest(object):
       os.symlink('manifests/%s' % name, self.manifestFile)
     except OSError, e:
       raise ManifestParseError('cannot link manifest %s' % name)
+
+  def _RemoteToXml(self, r, doc, root):
+    e = doc.createElement('remote')
+    root.appendChild(e)
+    e.setAttribute('name', r.name)
+    e.setAttribute('fetch', r.fetchUrl)
+    if r.reviewUrl is not None:
+      e.setAttribute('review', r.reviewUrl)
+    if r.projectName is not None:
+      e.setAttribute('project-name', r.projectName)
+
+  def Save(self, fd, peg_rev=False):
+    """Write the current manifest out to the given file descriptor.
+    """
+    doc = xml.dom.minidom.Document()
+    root = doc.createElement('manifest')
+    doc.appendChild(root)
+
+    d = self.default
+    sort_remotes = list(self.remotes.keys())
+    sort_remotes.sort()
+
+    for r in sort_remotes:
+      self._RemoteToXml(self.remotes[r], doc, root)
+    if self.remotes:
+      root.appendChild(doc.createTextNode(''))
+
+    have_default = False
+    e = doc.createElement('default')
+    if d.remote:
+      have_default = True
+      e.setAttribute('remote', d.remote.name)
+    if d.revision:
+      have_default = True
+      e.setAttribute('revision', d.revision)
+    if have_default:
+      root.appendChild(e)
+      root.appendChild(doc.createTextNode(''))
+
+    sort_projects = list(self.projects.keys())
+    sort_projects.sort()
+
+    for p in sort_projects:
+      p = self.projects[p]
+      e = doc.createElement('project')
+      root.appendChild(e)
+      e.setAttribute('name', p.name)
+      if p.relpath != p.name:
+        e.setAttribute('path', p.relpath)
+      if not d.remote or p.remote.name != d.remote.name:
+        e.setAttribute('remote', p.remote.name)
+      if peg_rev:
+        if self.IsMirror:
+          e.setAttribute('revision',
+                         p.bare_git.rev_parse(p.revision + '^0'))
+        else:
+          e.setAttribute('revision',
+                         p.work_git.rev_parse(HEAD + '^0'))
+      elif not d.revision or p.revision != d.revision:
+        e.setAttribute('revision', p.revision)
+
+      for r in p.extraRemotes:
+        self._RemoteToXml(p.extraRemotes[r], doc, e)
+      for c in p.copyfiles:
+        ce = doc.createElement('copyfile')
+        ce.setAttribute('src', c.src)
+        ce.setAttribute('dest', c.dest)
+        e.appendChild(ce)
+
+    doc.writexml(fd, '', '  ', '\n', 'UTF-8')
 
   @property
   def projects(self):
@@ -324,7 +394,7 @@ class Manifest(object):
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree
-      project.AddCopyFile(src, os.path.join(self.topdir, dest))
+      project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
 
   def _get_remote(self, node):
     name = node.getAttribute('remote')
