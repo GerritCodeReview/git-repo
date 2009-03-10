@@ -27,6 +27,7 @@ import os
 import re
 import sys
 
+import git_command
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import PagedCommand
@@ -48,6 +49,9 @@ global_options.add_option('-p', '--paginate',
 global_options.add_option('--no-pager',
                           dest='no_pager', action='store_true',
                           help='disable the pager')
+global_options.add_option('--trace',
+                          dest='trace', action='store_true',
+                          help='trace git command execution')
 global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
@@ -74,6 +78,8 @@ class _Repo(object):
       argv = []
     gopts, gargs = global_options.parse_args(glob)
 
+    if gopts.trace:
+      git_command.TRACE = True
     if gopts.show_version:
       if name == 'help':
         name = 'version'
