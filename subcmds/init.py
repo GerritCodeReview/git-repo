@@ -89,8 +89,9 @@ default.xml will be used.
 
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
+    is_new = not m.Exists
 
-    if not m.Exists:
+    if is_new:
       if not opt.manifest_url:
         print >>sys.stderr, 'fatal: manifest url (-u) is required.'
         sys.exit(1)
@@ -117,7 +118,11 @@ default.xml will be used.
       r.Save()
 
     if opt.mirror:
-      m.config.SetString('repo.mirror', 'true')
+      if is_new:
+        m.config.SetString('repo.mirror', 'true')
+      else:
+        print >>sys.stderr, 'fatal: --mirror not supported on existing client'
+        sys.exit(1)
 
     m.Sync_NetworkHalf()
     m.Sync_LocalHalf()
