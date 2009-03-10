@@ -126,7 +126,8 @@ default.xml will be used.
 
     m.Sync_NetworkHalf()
     m.Sync_LocalHalf()
-    m.StartBranch('default')
+    if is_new:
+      m.StartBranch('default')
 
   def _LinkManifest(self, name):
     if not name:
