@@ -130,7 +130,7 @@ default.xml will be used.
       sys.exit(1)
 
     m.Sync_LocalHalf()
-    if is_new:
+    if is_new or m.CurrentBranch is None:
       m.StartBranch('default')
 
   def _LinkManifest(self, name):
