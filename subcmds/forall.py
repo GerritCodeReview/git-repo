@@ -82,16 +82,21 @@ not redirected.
     rc = 0
     for project in self.GetProjects(args):
       env = dict(os.environ.iteritems())
-      env['REPO_PROJECT'] = project.name
-      env['REPO_PATH'] = project.relpath
-      env['REPO_REMOTE'] = project.remote.name
-      env['REPO_LREV'] = project\
+      def setenv(name, val):
+        if val is None:
+          val = ''
+        env[name] = val
+
+      setenv('REPO_PROJECT', project.name)
+      setenv('REPO_PATH', project.relpath)
+      setenv('REPO_REMOTE', project.remote.name)
+      setenv('REPO_LREV', project\
         .GetRemote(project.remote.name)\
-        .ToLocal(project.revision)
-      env['REPO_RREV'] = project.revision
+        .ToLocal(project.revision))
+      setenv('REPO_RREV', project.revision)
 
       if mirror:
-        env['GIT_DIR'] = project.gitdir
+        setenv('GIT_DIR', project.gitdir)
         cwd = project.gitdir
       else:
         cwd = project.worktree
