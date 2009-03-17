@@ -124,7 +124,11 @@ default.xml will be used.
         print >>sys.stderr, 'fatal: --mirror not supported on existing client'
         sys.exit(1)
 
-    m.Sync_NetworkHalf()
+    if not m.Sync_NetworkHalf():
+      r = m.GetRemote(m.remote.name)
+      print >>sys.stderr, 'fatal: cannot obtain manifest %s' % r.url
+      sys.exit(1)
+
     m.Sync_LocalHalf()
     if is_new:
       m.StartBranch('default')
