@@ -202,11 +202,11 @@ default.xml will be used.
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
 
-    if os.isatty(0) and os.isatty(1) and not opt.mirror:
+    if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       self._ConfigureUser()
       self._ConfigureColor()
 
-    if opt.mirror:
+    if self.manifest.IsMirror:
       type = 'mirror '
     else:
       type = ''
