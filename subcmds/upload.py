@@ -234,9 +234,6 @@ files and description associated with the change in Gerrit.
           print >>sys.stderr, '[OK    ] %-15s %s' % (
                  branch.project.relpath + '/',
                  branch.name)
-          print >>sys.stderr, '%s' % branch.tip_url
-          print >>sys.stderr, '(as %s)' % branch.owner_email
-          print >>sys.stderr, ''
 
     if have_errors:
       sys.exit(1)
