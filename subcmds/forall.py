@@ -54,6 +54,11 @@ not redirected.
 """
 
   def _Options(self, p):
+    p.add_option('--manifest-only',
+                 help='Exclude repo and manifest mirrors',
+                 dest='manifest_only',
+                 action='store_true')
+
     def cmd(option, opt_str, value, parser):
       setattr(parser.values, option.dest, list(parser.rargs))
       while parser.rargs:
@@ -81,6 +86,9 @@ not redirected.
     mirror = self.manifest.IsMirror
     rc = 0
     for project in self.GetProjects(args):
+      if mirror and project.metaProject and opt.manifest_only:
+        continue
+
       env = dict(os.environ.iteritems())
       def setenv(name, val):
         if val is None:

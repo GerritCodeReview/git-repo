@@ -223,6 +223,7 @@ class Project(object):
     self.snapshots = {}
     self.extraRemotes = {}
     self.copyfiles = []
+    self.metaProject = False
     self.config = GitConfig.ForRepository(
                     gitdir = self.gitdir,
                     defaults =  self.manifest.globalConfig)
@@ -1167,6 +1168,7 @@ class MetaProject(Project):
                      remote = Remote('origin'),
                      relpath = '.repo/%s' % name,
                      revision = 'refs/heads/master')
+    self.metaProject = True
 
   def PreSync(self):
     if self.Exists:

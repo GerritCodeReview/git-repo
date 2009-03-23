@@ -287,6 +287,7 @@ class Manifest(object):
                         worktree = None,
                         relpath = None,
                         revision = m.revision)
+      project.metaProject = True
       self._projects[project.name] = project
 
   def _ParseRemote(self, node):
