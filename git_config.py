@@ -24,6 +24,8 @@ R_HEADS = 'refs/heads/'
 R_TAGS  = 'refs/tags/'
 ID_RE = re.compile('^[0-9a-f]{40}$')
 
+REVIEW_CACHE = dict()
+
 def IsId(rev):
   return ID_RE.match(rev)
 
@@ -280,25 +282,37 @@ class Remote(object):
           u += '/'
         u += 'ssh_info'
 
-      try:
-        info = urlopen(u).read()
-        if info == 'NOT_AVAILABLE':
-          raise UploadError('Upload over ssh unavailable')
-        if '<' in info:
-          # Assume the server gave us some sort of HTML
-          # response back, like maybe a login page.
-          #
-          raise UploadError('Cannot read %s:\n%s' % (u, info))
+      if u in REVIEW_CACHE:
+        info = REVIEW_CACHE[u]
+        self._review_protocol = info[0]
+        self._review_host = info[1]
+        self._review_port = info[2]
+      else:
+        try:
+          info = urlopen(u).read()
+          if info == 'NOT_AVAILABLE':
+            raise UploadError('Upload over ssh unavailable')
+          if '<' in info:
+            # Assume the server gave us some sort of HTML
+            # response back, like maybe a login page.
+            #
+            raise UploadError('Cannot read %s:\n%s' % (u, info))
 
-        self._review_protocol = 'ssh'
-        self._review_host = info.split(" ")[0]
-        self._review_port = info.split(" ")[1]
+          self._review_protocol = 'ssh'
+          self._review_host = info.split(" ")[0]
+          self._review_port = info.split(" ")[1]
+        except HTTPError, e:
+          if e.code == 404:
+            self._review_protocol = 'http-post'
+            self._review_host = None
+            self._review_port = None
+          else:
+            raise UploadError('Cannot guess Gerrit version')
 
-      except HTTPError, e:
-        if e.code == 404:
-          self._review_protocol = 'http-post'
-        else:
-          raise UploadError('Cannot guess Gerrit version')
+        REVIEW_CACHE[u] = (
+          self._review_protocol,
+          self._review_host,
+          self._review_port)
     return self._review_protocol
 
   def SshReviewUrl(self, userEmail):
