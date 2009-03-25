@@ -273,9 +273,12 @@ class Remote(object):
       u = self.review
       if not u.startswith('http:') and not u.startswith('https:'):
         u = 'http://%s' % u
-      if not u.endswith('/'):
-        u += '/'
-      u += 'ssh_info'
+      if u.endswith('/Gerrit'):
+        u = u[:len(u) - len('/Gerrit')]
+      if not u.endswith('/ssh_info'):
+        if not u.endswith('/'):
+          u += '/'
+        u += 'ssh_info'
 
       try:
         info = urlopen(u).read()
