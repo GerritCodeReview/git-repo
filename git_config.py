@@ -284,6 +284,11 @@ class Remote(object):
         info = urlopen(u).read()
         if info == 'NOT_AVAILABLE':
           raise UploadError('Upload over ssh unavailable')
+        if '<' in info:
+          # Assume the server gave us some sort of HTML
+          # response back, like maybe a login page.
+          #
+          raise UploadError('Cannot read %s:\n%s' % (u, info))
 
         self._review_protocol = 'ssh'
         self._review_host = info.split(" ")[0]
