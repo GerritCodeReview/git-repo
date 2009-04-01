@@ -22,7 +22,7 @@ active = False
 def RunPager(globalConfig):
   global active
 
-  if not os.isatty(0):
+  if not os.isatty(0) or not os.isatty(1):
     return
   pager = _SelectPager(globalConfig)
   if pager == '' or pager == 'cat':
