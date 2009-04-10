@@ -47,6 +47,9 @@ the manifest.
 """
 
   def _Options(self, p):
+    p.add_option('-n','--network-only',
+                 dest='network_only', action='store_true',
+                 help="fetch only, don't update working tree")
     p.add_option('--no-repo-verify',
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
@@ -89,6 +92,10 @@ the manifest.
         raise RepoChangedException(['--repo-upgraded'])
       else:
         print >>sys.stderr, 'warning: Skipped upgrade to unverified version'
+
+    if opt.network_only:
+      # bail out now; the rest touches the working tree
+      return
 
     if mp.HasChanges:
       if not mp.Sync_LocalHalf():
