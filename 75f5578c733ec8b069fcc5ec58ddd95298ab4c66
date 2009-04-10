@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAO3///68\u003d",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-04-10T19:51:02Z",
+      "side": 1,
+      "message": "Remove this line.",
+      "revId": "75f5578c733ec8b069fcc5ec58ddd95298ab4c66",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAO3///7A\u003d",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-04-10T19:51:02Z",
+      "side": 1,
+      "message": "Yea.\n\nShould we also mark an error status and make repo exit with a non-zero exit status, in case someone tried to script us?\n\nE.g. see sync.py or subcommand.py where we sys.exit(1) if things didn\u0027t work out perfectly for us.",
+      "revId": "75f5578c733ec8b069fcc5ec58ddd95298ab4c66",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
