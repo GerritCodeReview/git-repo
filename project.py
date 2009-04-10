@@ -748,16 +748,31 @@ class Project(object):
   def StartBranch(self, name):
     """Create a new branch off the manifest's revision.
     """
-    branch = self.GetBranch(name)
-    branch.remote = self.GetRemote(self.remote.name)
-    branch.merge = self.revision
+    try:
+      self.bare_git.rev_parse(R_HEADS + name)
+      exists = True
+    except GitError:
+      exists = False;
 
-    rev = branch.LocalMerge
-    cmd = ['checkout', '-b', branch.name, rev]
-    if GitCommand(self, cmd).Wait() == 0:
-      branch.Save()
+    if exists:
+      if name == self.CurrentBranch:
+        return True
+      else:
+        cmd = ['checkout', name, '--']
+        return GitCommand(self, cmd).Wait() == 0
+
     else:
-      raise GitError('%s checkout %s ' % (self.name, rev))
+      branch = self.GetBranch(name)
+      branch.remote = self.GetRemote(self.remote.name)
+      branch.merge = self.revision
+
+      rev = branch.LocalMerge
+      cmd = ['checkout', '-b', branch.name, rev]
+      if GitCommand(self, cmd).Wait() == 0:
+        branch.Save()
+        return True
+      else:
+        return False
 
   def CheckoutBranch(self, name):
     """Checkout a local topic branch.

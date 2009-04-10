@@ -47,5 +47,13 @@ the configuration data is set up properly.
       print >>sys.stderr, "error: '%s' is not a valid name" % nb
       sys.exit(1)
 
+    err = []
     for project in self.GetProjects(args[1:]):
-      project.StartBranch(nb)
+      if not project.StartBranch(nb):
+        err.append(project)
+
+    if err:
+      err.sort()
+      for p in err:
+        print >>sys.stderr, "error: cannot start in %s" % p.relpath
+      sys.exit(1)

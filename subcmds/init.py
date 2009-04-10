@@ -131,7 +131,9 @@ default.xml will be used.
 
     m.Sync_LocalHalf()
     if is_new or m.CurrentBranch is None:
-      m.StartBranch('default')
+      if not m.StartBranch('default'):
+        print >>sys.stderr, 'fatal: cannot create default in manifest'
+        sys.exit(1)
 
   def _LinkManifest(self, name):
     if not name:
