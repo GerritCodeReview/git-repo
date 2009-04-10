@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAO3///6s\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 1001401
+      },
+      "writtenOn": "2009-04-10T20:08:29Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "02d7945eb836f33f63b94fb2a556c844faf0ef8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAO3///6k\u003d",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001401
+      },
+      "writtenOn": "2009-04-10T20:08:29Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "02d7945eb836f33f63b94fb2a556c844faf0ef8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
