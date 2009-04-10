@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAO3///7s\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-04-10T17:12:24Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we return False here ?",
+      "revId": "0b29c8d57e938b1cabeea5f2ae29449b3ceb3380",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAO3///7o\u003d",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-04-10T17:12:24Z",
+      "side": 1,
+      "message": "Unnecessary line should be removed.",
+      "revId": "0b29c8d57e938b1cabeea5f2ae29449b3ceb3380",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAO3///7k\u003d",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-04-10T17:12:24Z",
+      "side": 1,
+      "message": "I wonder if we shouldn\u0027t error check this, like maybe:\n\n  if not project.CheckoutBranch(branch):\n    if project.name in args[1:]:\n      print \u003e\u003esys.stderr, \"error: %s in %s failed\" % (branch, project.name)\n\nSo that the user knows the branch checkout failed in a project name they specifically named on the command line?",
+      "revId": "0b29c8d57e938b1cabeea5f2ae29449b3ceb3380",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
