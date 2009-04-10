@@ -771,7 +771,7 @@ class Project(object):
 
     # Do the checkout
     cmd = ['checkout', name, '--']
-    return GitCommand(self, cmd, capture_stdout=True).Wait() == 0
+    return GitCommand(self, cmd).Wait() == 0
 
   def AbandonBranch(self, name):
     """Destroy a local topic branch.
