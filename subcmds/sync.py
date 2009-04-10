@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from optparse import SUPPRESS_HELP
 import os
 import re
 import subprocess
@@ -51,7 +52,7 @@ the manifest.
                  help='do not verify repo source code')
     p.add_option('--repo-upgraded',
                  dest='repo_upgraded', action='store_true',
-                 help='perform additional actions after a repo upgrade')
+                 help=SUPPRESS_HELP)
 
   def _Fetch(self, *projects):
     fetched = set()
