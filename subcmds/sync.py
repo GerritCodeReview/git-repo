@@ -44,12 +44,21 @@ line.  Projects can be specified either by name, or by a relative
 or absolute path to the project's local directory. If no projects
 are specified, '%prog' will synchronize all projects listed in
 the manifest.
+
+The -d/--detach option can be used to switch specified projects
+back to the manifest revision.  This option is especially helpful
+if the project is currently on a topic branch, but the manifest
+revision is temporarily needed.
 """
 
   def _Options(self, p):
     p.add_option('-n','--network-only',
                  dest='network_only', action='store_true',
                  help="fetch only, don't update working tree")
+    p.add_option('-d','--detach',
+                 dest='detach_head', action='store_true',
+                 help='detach projects back to manifest revision')
+
     p.add_option('--no-repo-verify',
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
@@ -68,6 +77,10 @@ the manifest.
     return fetched
 
   def Execute(self, opt, args):
+    if opt.network_only and opt.detach_head:
+      print >>sys.stderr, 'error: cannot combine -n and -d'
+      sys.exit(1)
+
     rp = self.manifest.repoProject
     rp.PreSync()
 
@@ -111,7 +124,8 @@ the manifest.
 
     for project in all:
       if project.worktree:
-        if not project.Sync_LocalHalf():
+        if not project.Sync_LocalHalf(
+            detach_head=opt.detach_head):
           sys.exit(1)
 
 

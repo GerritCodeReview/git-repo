@@ -573,7 +573,7 @@ class Project(object):
     for file in self.copyfiles:
       file._Copy()
 
-  def Sync_LocalHalf(self):
+  def Sync_LocalHalf(self, detach_head=False):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
 
@@ -594,7 +594,7 @@ class Project(object):
 
     branch = self.CurrentBranch
 
-    if branch is None:
+    if branch is None or detach_head:
       # Currently on a detached HEAD.  The user is assumed to
       # not have any local modifications worth worrying about.
       #
