@@ -306,6 +306,32 @@ class Project(object):
     """
     return self.config.GetBranch(name)
 
+  def GetBranches(self):
+    """Get all existing local branches.
+    """
+    current = self.CurrentBranch
+    all = self.bare_git.ListRefs()
+    heads = {}
+    pubd = {}
+
+    for name, id in all.iteritems():
+      if name.startswith(R_HEADS):
+        name = name[len(R_HEADS):]
+        b = self.GetBranch(name)
+        b.current = name == current
+        b.published = None
+        b.revision = id
+        heads[name] = b
+
+    for name, id in all.iteritems():
+      if name.startswith(R_PUB):
+        name = name[len(R_PUB):]
+        b = heads.get(name)
+        if b:
+          b.published = id
+
+    return heads
+
 
 ## Status Display ##
 
