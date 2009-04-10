@@ -733,6 +733,20 @@ class Project(object):
     else:
       raise GitError('%s checkout %s ' % (self.name, rev))
 
+  def CheckoutBranch(self, name):
+    """Checkout a local topic branch.
+    """
+
+    # Be sure the branch exists
+    try:
+      tip_rev = self.bare_git.rev_parse(R_HEADS + name)
+    except GitError:
+      return False;
+
+    # Do the checkout
+    cmd = ['checkout', name, '--']
+    return GitCommand(self, cmd, capture_stdout=True).Wait() == 0
+
   def AbandonBranch(self, name):
     """Destroy a local topic branch.
     """
