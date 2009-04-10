@@ -23,6 +23,7 @@ from git_command import GIT
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError
 from project import R_HEADS
+from progress import Progress
 
 class Sync(Command, MirrorSafeCommand):
   common = True
@@ -71,12 +72,16 @@ revision is temporarily needed.
 
   def _Fetch(self, *projects):
     fetched = set()
+    pm = Progress('Fetching projects', len(projects))
     for project in projects:
+      pm.update()
+
       if project.Sync_NetworkHalf():
         fetched.add(project.gitdir)
       else:
         print >>sys.stderr, 'error: Cannot fetch %s' % project.name
         sys.exit(1)
+    pm.end()
     return fetched
 
   def Execute(self, opt, args):
@@ -130,12 +135,14 @@ revision is temporarily needed.
             missing.append(project)
         self._Fetch(*missing)
 
+    pm = Progress('Syncing work tree', len(all))
     for project in all:
+      pm.update()
       if project.worktree:
         if not project.Sync_LocalHalf(
             detach_head=opt.detach_head):
           sys.exit(1)
-
+    pm.end()
 
 def _VerifyTag(project):
   gpg_dir = os.path.expanduser('~/.repoconfig/gnupg')
