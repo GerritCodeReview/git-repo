@@ -23,5 +23,12 @@ class Status(PagedCommand):
 """
 
   def Execute(self, opt, args):
-    for project in self.GetProjects(args):
-      project.PrintWorkTreeStatus()
+    all = self.GetProjects(args)
+    clean = 0
+
+    for project in all:
+      state = project.PrintWorkTreeStatus()
+      if state == 'CLEAN':
+        clean += 1
+    if len(all) == clean:
+      print 'nothing to commit (working directory clean)'

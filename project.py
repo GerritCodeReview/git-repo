@@ -352,7 +352,7 @@ class Project(object):
     df = self.work_git.DiffZ('diff-files')
     do = self.work_git.LsOthers()
     if not di and not df and not do:
-      return
+      return 'CLEAN'
 
     out = StatusColoring(self.config)
     out.project('project %-40s', self.relpath + '/')
@@ -400,6 +400,7 @@ class Project(object):
       else:
         out.write('%s', line)
       out.nl()
+    return 'DIRTY'
 
   def PrintWorkTreeDiff(self):
     """Prints the status of the repository to stdout.
