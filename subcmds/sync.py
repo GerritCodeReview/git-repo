@@ -52,6 +52,9 @@ revision is temporarily needed.
 """
 
   def _Options(self, p):
+    p.add_option('-l','--local-only',
+                 dest='local_only', action='store_true',
+                 help="only update working tree, don't fetch")
     p.add_option('-n','--network-only',
                  dest='network_only', action='store_true',
                  help="fetch only, don't update working tree")
@@ -80,6 +83,9 @@ revision is temporarily needed.
     if opt.network_only and opt.detach_head:
       print >>sys.stderr, 'error: cannot combine -n and -d'
       sys.exit(1)
+    if opt.network_only and opt.local_only:
+      print >>sys.stderr, 'error: cannot combine -n and -l'
+      sys.exit(1)
 
     rp = self.manifest.repoProject
     rp.PreSync()
@@ -93,34 +99,36 @@ revision is temporarily needed.
           project.PostRepoUpgrade()
 
     all = self.GetProjects(args, missing_ok=True)
-    fetched = self._Fetch(rp, mp, *all)
 
-    if rp.HasChanges:
-      print >>sys.stderr, 'info: A new version of repo is available'
-      print >>sys.stderr, ''
-      if opt.no_repo_verify or _VerifyTag(rp):
-        if not rp.Sync_LocalHalf():
+    if not opt.local_only:
+      fetched = self._Fetch(rp, mp, *all)
+
+      if rp.HasChanges:
+        print >>sys.stderr, 'info: A new version of repo is available'
+        print >>sys.stderr, ''
+        if opt.no_repo_verify or _VerifyTag(rp):
+          if not rp.Sync_LocalHalf():
+            sys.exit(1)
+          print >>sys.stderr, 'info: Restarting repo with latest version'
+          raise RepoChangedException(['--repo-upgraded'])
+        else:
+          print >>sys.stderr, 'warning: Skipped upgrade to unverified version'
+
+      if opt.network_only:
+        # bail out now; the rest touches the working tree
+        return
+
+      if mp.HasChanges:
+        if not mp.Sync_LocalHalf():
           sys.exit(1)
-        print >>sys.stderr, 'info: Restarting repo with latest version'
-        raise RepoChangedException(['--repo-upgraded'])
-      else:
-        print >>sys.stderr, 'warning: Skipped upgrade to unverified version'
 
-    if opt.network_only:
-      # bail out now; the rest touches the working tree
-      return
-
-    if mp.HasChanges:
-      if not mp.Sync_LocalHalf():
-        sys.exit(1)
-
-      self.manifest._Unload()
-      all = self.GetProjects(args, missing_ok=True)
-      missing = []
-      for project in all:
-        if project.gitdir not in fetched:
-          missing.append(project)
-      self._Fetch(*missing)
+        self.manifest._Unload()
+        all = self.GetProjects(args, missing_ok=True)
+        missing = []
+        for project in all:
+          if project.gitdir not in fetched:
+            missing.append(project)
+        self._Fetch(*missing)
 
     for project in all:
       if project.worktree:
