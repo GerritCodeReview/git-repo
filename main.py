@@ -28,6 +28,7 @@ import re
 import sys
 
 import git_command
+from git_config import close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import PagedCommand
@@ -211,7 +212,10 @@ def _Main(argv):
 
   repo = _Repo(opt.repodir)
   try:
-    repo._Run(argv)
+    try:
+      repo._Run(argv)
+    finally:
+      close_ssh()
   except KeyboardInterrupt:
     sys.exit(1)
   except RepoChangedException, rce:

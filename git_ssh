@@ -1,0 +1,2 @@
+#!/bin/sh
+exec ssh -o 'ControlPath ~/.ssh/master-%r@%h:%p' "$@"

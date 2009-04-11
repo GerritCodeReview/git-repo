@@ -15,7 +15,10 @@
 
 import os
 import re
+import subprocess
 import sys
+import time
+from signal import SIGTERM
 from urllib2 import urlopen, HTTPError
 from error import GitError, UploadError
 from git_command import GitCommand
@@ -253,6 +256,70 @@ class RefSpec(object):
     return s
 
 
+_ssh_cache = {}
+_ssh_master = True
+
+def _open_ssh(host, port=None):
+  global _ssh_master
+
+  if port is None:
+    port = 22
+
+  key = '%s:%s' % (host, port)
+  if key in _ssh_cache:
+    return True
+
+  if not _ssh_master \
+  or 'GIT_SSH' in os.environ \
+  or sys.platform == 'win32':
+    # failed earlier, or cygwin ssh can't do this
+    #
+    return False
+
+  command = ['ssh',
+             '-o','ControlPath ~/.ssh/master-%r@%h:%p',
+             '-p',port,
+             '-M',
+             '-N',
+             host]
+  try:
+    p = subprocess.Popen(command)
+  except Exception, e:
+    _ssh_master = False
+    print >>sys.stderr, \
+      '\nwarn: cannot enable ssh control master for %s:%s' \
+      % (host,port)
+    return False
+
+  _ssh_cache[key] = p
+  time.sleep(1)
+  return True
+
+def close_ssh():
+  for key,p in _ssh_cache.iteritems():
+    os.kill(p.pid, SIGTERM)
+  _ssh_cache.clear()
+
+URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
+URI_ALL = re.compile(r'^([a-z][a-z+]*)://([^@/]*@?[^/])/')
+
+def _preconnect(url):
+  m = URI_ALL.match(url)
+  if m:
+    scheme = m.group(1)
+    host = m.group(2)
+    if ':' in host:
+      host, port = host.split(':')
+    if scheme in ('ssh', 'git+ssh', 'ssh+git'):
+      return _open_ssh(host, port)
+    return False
+
+  m = URI_SCP.match(url)
+  if m:
+    host = m.group(1)
+    return _open_ssh(host)
+
+
 class Remote(object):
   """Configuration options related to a remote.
   """
@@ -265,6 +332,9 @@ class Remote(object):
     self.fetch = map(lambda x: RefSpec.FromString(x),
                      self._Get('fetch', all=True))
     self._review_protocol = None
+
+  def PreConnectFetch(self):
+    return _preconnect(self.url)
 
   @property
   def ReviewProtocol(self):
