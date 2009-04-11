@@ -16,6 +16,7 @@
 import os
 import sys
 import subprocess
+import tempfile
 from error import GitError
 from trace import REPO_TRACE, IsTrace, Trace
 
@@ -25,6 +26,27 @@ GIT_DIR = 'GIT_DIR'
 
 LAST_GITDIR = None
 LAST_CWD = None
+
+_ssh_proxy_path = None
+_ssh_sock_path = None
+
+def _ssh_sock(create=True):
+  global _ssh_sock_path
+  if _ssh_sock_path is None:
+    if not create:
+      return None
+    _ssh_sock_path = os.path.join(
+      tempfile.mkdtemp('', 'ssh-'),
+      'master-%r@%h:%p')
+  return _ssh_sock_path
+
+def _ssh_proxy():
+  global _ssh_proxy_path
+  if _ssh_proxy_path is None:
+    _ssh_proxy_path = os.path.join(
+      os.path.dirname(__file__),
+      'git_ssh')
+  return _ssh_proxy_path
 
 
 class _GitCall(object):
@@ -52,6 +74,7 @@ class GitCommand(object):
                capture_stdout = False,
                capture_stderr = False,
                disable_editor = False,
+               ssh_proxy = False,
                cwd = None,
                gitdir = None):
     env = dict(os.environ)
@@ -68,6 +91,9 @@ class GitCommand(object):
 
     if disable_editor:
       env['GIT_EDITOR'] = ':'
+    if ssh_proxy:
+      env['REPO_SSH_SOCK'] = _ssh_sock()
+      env['GIT_SSH'] = _ssh_proxy()
 
     if project:
       if not cwd:

@@ -969,11 +969,19 @@ class Project(object):
   def _RemoteFetch(self, name=None):
     if not name:
       name = self.remote.name
+
+    ssh_proxy = False
+    if self.GetRemote(name).PreConnectFetch():
+      ssh_proxy = True
+
     cmd = ['fetch']
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
-    return GitCommand(self, cmd, bare = True).Wait() == 0
+    return GitCommand(self,
+                      cmd,
+                      bare = True,
+                      ssh_proxy = ssh_proxy).Wait() == 0
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']

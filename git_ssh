@@ -1,0 +1,2 @@
+#!/bin/sh
+exec ssh -o "ControlPath $REPO_SSH_SOCK" "$@"
