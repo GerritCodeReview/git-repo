@@ -30,6 +30,13 @@ try:
 except KeyError:
   TRACE = False
 
+_ssh_proxy_path = None
+def _ssh_proxy():
+  global _ssh_proxy_path
+  if _ssh_proxy_path is None:
+    _ssh_proxy_path = os.path.join(os.path.dirname(__file__),'git_ssh')
+  return _ssh_proxy_path
+
 
 class _GitCall(object):
   def version(self):
@@ -56,6 +63,7 @@ class GitCommand(object):
                capture_stdout = False,
                capture_stderr = False,
                disable_editor = False,
+               ssh_proxy = False,
                cwd = None,
                gitdir = None):
     env = dict(os.environ)
@@ -72,6 +80,8 @@ class GitCommand(object):
 
     if disable_editor:
       env['GIT_EDITOR'] = ':'
+    if ssh_proxy:
+      env['GIT_SSH'] = _ssh_proxy()
 
     if project:
       if not cwd:
