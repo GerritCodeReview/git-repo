@@ -30,6 +30,7 @@ Executes the same shell command in each project.
 
 Environment
 -----------
+
 pwd is the project's working directory.  If the current client is
 a mirror client, then pwd is the Git repository.
 
