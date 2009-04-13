@@ -21,12 +21,14 @@ class Checkout(Command):
   helpSummary = "Checkout a branch for development"
   helpUsage = """
 %prog <branchname> [<project>...]
+"""
+  helpDescription = """
+The '%prog' command checks out an existing branch that was previously
+created by 'repo start'.
 
-This subcommand checks out an existing branch and
-is equivalent to the following git command run on
-every project or the list of specified projects:
+The command is equivalent to:
 
-"git checkout <branchname>"
+  repo forall [<project>...] -c git checkout <branchname>
 """
 
   def Execute(self, opt, args):
