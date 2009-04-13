@@ -20,6 +20,7 @@ import subprocess
 import sys
 
 from git_command import GIT
+from project import HEAD
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError
 from project import R_HEADS
@@ -99,26 +100,13 @@ revision is temporarily needed.
     mp.PreSync()
 
     if opt.repo_upgraded:
-      for project in self.manifest.projects.values():
-        if project.Exists:
-          project.PostRepoUpgrade()
+      _PostRepoUpgrade(self.manifest)
 
     all = self.GetProjects(args, missing_ok=True)
 
     if not opt.local_only:
       fetched = self._Fetch(rp, mp, *all)
-
-      if rp.HasChanges:
-        print >>sys.stderr, 'info: A new version of repo is available'
-        print >>sys.stderr, ''
-        if opt.no_repo_verify or _VerifyTag(rp):
-          if not rp.Sync_LocalHalf():
-            sys.exit(1)
-          print >>sys.stderr, 'info: Restarting repo with latest version'
-          raise RepoChangedException(['--repo-upgraded'])
-        else:
-          print >>sys.stderr, 'warning: Skipped upgrade to unverified version'
-
+      _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
         return
@@ -143,6 +131,27 @@ revision is temporarily needed.
             detach_head=opt.detach_head):
           sys.exit(1)
     pm.end()
+
+
+def _PostRepoUpgrade(manifest):
+  for project in manifest.projects.values():
+    if project.Exists:
+      project.PostRepoUpgrade()
+
+def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
+  if rp.HasChanges:
+    print >>sys.stderr, 'info: A new version of repo is available'
+    print >>sys.stderr, ''
+    if no_repo_verify or _VerifyTag(rp):
+      if not rp.Sync_LocalHalf():
+        sys.exit(1)
+      print >>sys.stderr, 'info: Restarting repo with latest version'
+      raise RepoChangedException(['--repo-upgraded'])
+    else:
+      print >>sys.stderr, 'warning: Skipped upgrade to unverified version'
+  else:
+    if verbose:
+      print >>sys.stderr, 'repo version %s is current' % rp.work_git.describe(HEAD)
 
 def _VerifyTag(project):
   gpg_dir = os.path.expanduser('~/.repoconfig/gnupg')
