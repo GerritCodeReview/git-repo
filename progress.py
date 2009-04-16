@@ -16,7 +16,7 @@
 import sys
 
 class Progress(object):
-  def __init__(self, title, total):
+  def __init__(self, title, total=0):
     self._title = title
     self._total = total
     self._done = 0
@@ -24,22 +24,35 @@ class Progress(object):
 
   def update(self, inc=1):
     self._done += inc
-    p = (100 * self._done) / self._total
 
-    if self._lastp != p:
-      self._lastp = p
-      sys.stderr.write('\r%s: %3d%% (%d/%d)  ' % (
+    if self._total <= 0:
+      sys.stderr.write('\r%s: %d, ' % (
+        self._title,
+        self._done))
+      sys.stderr.flush()
+    else:
+      p = (100 * self._done) / self._total
+
+      if self._lastp != p:
+        self._lastp = p
+        sys.stderr.write('\r%s: %3d%% (%d/%d)  ' % (
+          self._title,
+          p,
+          self._done,
+          self._total))
+        sys.stderr.flush()
+
+  def end(self):
+    if self._total <= 0:
+      sys.stderr.write('\r%s: %d, done.  \n' % (
+        self._title,
+        self._done))
+      sys.stderr.flush()
+    else:
+      p = (100 * self._done) / self._total
+      sys.stderr.write('\r%s: %3d%% (%d/%d), done.  \n' % (
         self._title,
         p,
         self._done,
         self._total))
       sys.stderr.flush()
-
-  def end(self):
-    p = (100 * self._done) / self._total
-    sys.stderr.write('\r%s: %3d%% (%d/%d), done.  \n' % (
-      self._title,
-      p,
-      self._done,
-      self._total))
-    sys.stderr.flush()
