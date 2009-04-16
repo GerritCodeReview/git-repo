@@ -34,6 +34,10 @@ R_TAGS  = 'refs/tags/'
 R_PUB   = 'refs/published/'
 R_M     = 'refs/remotes/m/'
 
+def _error(fmt, *args):
+  msg = fmt % args
+  print >>sys.stderr, 'error: %s' % msg
+
 def _warn(fmt, *args):
   msg = fmt % args
   print >>sys.stderr, 'warn: %s' % msg
@@ -199,9 +203,7 @@ class _CopyFile:
         mode = mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
         os.chmod(dest, mode)
       except IOError:
-           print >>sys.stderr, \
-              'error: Cannot copy file %s to %s' \
-              % (src, dest)
+        _error('Cannot copy file %s to %s', src, dest)
 
 
 class Project(object):
