@@ -20,6 +20,7 @@ from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from remote import Remote
+from project import SyncBuffer
 from git_command import git, MIN_GIT_VERSION
 
 class Init(InteractiveCommand, MirrorSafeCommand):
@@ -129,7 +130,10 @@ default.xml will be used.
       print >>sys.stderr, 'fatal: cannot obtain manifest %s' % r.url
       sys.exit(1)
 
-    m.Sync_LocalHalf()
+    syncbuf = SyncBuffer(m.config)
+    m.Sync_LocalHalf(syncbuf)
+    syncbuf.Finish()
+
     if is_new or m.CurrentBranch is None:
       if not m.StartBranch('default'):
         print >>sys.stderr, 'fatal: cannot create default in manifest'

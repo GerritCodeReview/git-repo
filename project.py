@@ -38,14 +38,6 @@ def _error(fmt, *args):
   msg = fmt % args
   print >>sys.stderr, 'error: %s' % msg
 
-def _warn(fmt, *args):
-  msg = fmt % args
-  print >>sys.stderr, 'warn: %s' % msg
-
-def _info(fmt, *args):
-  msg = fmt % args
-  print >>sys.stderr, 'info: %s' % msg
-
 def not_rev(r):
   return '^' + r
 
@@ -576,13 +568,9 @@ class Project(object):
     for file in self.copyfiles:
       file._Copy()
 
-  def Sync_LocalHalf(self, detach_head=False):
+  def Sync_LocalHalf(self, syncbuf):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
-
-       Return:
-         True:  the sync was successful
-         False: the sync requires user input
     """
     self._InitWorkTree()
     self.CleanPublishedCache()
@@ -597,19 +585,25 @@ class Project(object):
 
     branch = self.CurrentBranch
 
-    if branch is None or detach_head:
+    if branch is None or syncbuf.detach_head:
       # Currently on a detached HEAD.  The user is assumed to
       # not have any local modifications worth worrying about.
       #
+      if os.path.exists(os.path.join(self.worktree, '.dotest')) \
+      or os.path.exists(os.path.join(self.worktree, '.git', 'rebase-apply')):
+        syncbuf.fail(self, _PriorSyncFailedError())
+        return
+
       lost = self._revlist(not_rev(rev), HEAD)
       if lost:
-        _info("[%s] Discarding %d commits", self.name, len(lost))
+        syncbuf.info(self, "discarding %d commits", len(lost))
       try:
         self._Checkout(rev, quiet=True)
-      except GitError:
-        return False
+      except GitError, e:
+        syncbuf.fail(self, e)
+        return
       self._CopyFiles()
-      return True
+      return
 
     branch = self.GetBranch(branch)
     merge = branch.LocalMerge
@@ -618,16 +612,16 @@ class Project(object):
       # The current branch has no tracking configuration.
       # Jump off it to a deatched HEAD.
       #
-      _info("[%s] Leaving %s"
-            " (does not track any upstream)",
-            self.name,
-            branch.name)
+      syncbuf.info(self,
+                   "leaving %s; does not track upstream",
+                   branch.name)
       try:
         self._Checkout(rev, quiet=True)
-      except GitError:
-        return False
+      except GitError, e:
+        syncbuf.fail(self, e)
+        return
       self._CopyFiles()
-      return True
+      return
 
     upstream_gain = self._revlist(not_rev(HEAD), rev)
     pub = self.WasPublished(branch.name)
@@ -639,25 +633,24 @@ class Project(object):
           # commits are not yet merged upstream.  We do not want
           # to rewrite the published commits so we punt.
           #
-          _info("[%s] Branch %s is published,"
-                " but is now %d commits behind.",
-                self.name, branch.name, len(upstream_gain))
-          _info("[%s] Consider merging or rebasing the"
-                " unpublished commits.", self.name)
-        return True
+          syncbuf.info(self,
+                       "branch %s is published but is now %d commits behind",
+                       branch.name,
+                       len(upstream_gain))
+          syncbuf.info(self, "consider merging or rebasing the unpublished commits")
+        return
       elif upstream_gain:
         # We can fast-forward safely.
         #
-        try:
+        def _doff():
           self._FastForward(rev)
-        except GitError:
-          return False
-        self._CopyFiles()
-        return True
+          self._CopyFiles()
+        syncbuf.later1(self, _doff)
+        return
       else:
         # Trivially no changes in the upstream.
         #
-        return True
+        return
 
     if merge == rev:
       try:
@@ -672,8 +665,7 @@ class Project(object):
       # and pray that the old upstream also wasn't in the habit
       # of rebasing itself.
       #
-      _info("[%s] Manifest switched from %s to %s",
-            self.name, merge, rev)
+      syncbuf.info(self, "manifest switched %s...%s", merge, rev)
       old_merge = merge
 
     if rev == old_merge:
@@ -684,19 +676,19 @@ class Project(object):
     if not upstream_lost and not upstream_gain:
       # Trivially no changes caused by the upstream.
       #
-      return True
+      return
 
     if self.IsDirty(consider_untracked=False):
-      _warn('[%s] commit (or discard) uncommitted changes'
-            ' before sync', self.name)
-      return False
+      syncbuf.fail(self, _DirtyError())
+      return
 
     if upstream_lost:
       # Upstream rebased.  Not everything in HEAD
       # may have been caused by the user.
       #
-      _info("[%s] Discarding %d commits removed from upstream",
-            self.name, len(upstream_lost))
+      syncbuf.info(self,
+                   "discarding %d commits removed from upstream",
+                   len(upstream_lost))
 
     branch.remote = rem
     branch.merge = self.revision
@@ -704,23 +696,22 @@ class Project(object):
 
     my_changes = self._revlist(not_rev(old_merge), HEAD)
     if my_changes:
-      try:
+      def _dorebase():
         self._Rebase(upstream = old_merge, onto = rev)
-      except GitError:
-        return False
+        self._CopyFiles()
+      syncbuf.later2(self, _dorebase)
     elif upstream_lost:
       try:
         self._ResetHard(rev)
-      except GitError:
-        return False
+        self._CopyFiles()
+      except GitError, e:
+        syncbuf.fail(self, e)
+        return
     else:
-      try:
+      def _doff():
         self._FastForward(rev)
-      except GitError:
-        return False
-
-    self._CopyFiles()
-    return True
+        self._CopyFiles()
+      syncbuf.later1(self, _doff)
 
   def AddCopyFile(self, src, dest, absdest):
     # dest should already be an absolute path, but src is project relative
@@ -1210,6 +1201,113 @@ class Project(object):
           return r[:-1]
         return r
       return runner
+
+
+class _PriorSyncFailedError(Exception):
+  def __str__(self):
+    return 'prior sync failed; rebase still in progress'
+
+class _DirtyError(Exception):
+  def __str__(self):
+    return 'contains uncommitted changes'
+
+class _InfoMessage(object):
+  def __init__(self, project, text):
+    self.project = project
+    self.text = text
+
+  def Print(self, syncbuf):
+    syncbuf.out.info('%s/: %s', self.project.relpath, self.text)
+    syncbuf.out.nl()
+
+class _Failure(object):
+  def __init__(self, project, why):
+    self.project = project
+    self.why = why
+
+  def Print(self, syncbuf):
+    syncbuf.out.fail('error: %s/: %s',
+                     self.project.relpath,
+                     str(self.why))
+    syncbuf.out.nl()
+
+class _Later(object):
+  def __init__(self, project, action):
+    self.project = project
+    self.action = action
+
+  def Run(self, syncbuf):
+    out = syncbuf.out
+    out.project('project %s/', self.project.relpath)
+    out.nl()
+    try:
+      self.action()
+      out.nl()
+      return True
+    except GitError, e:
+      out.nl()
+      return False
+
+class _SyncColoring(Coloring):
+  def __init__(self, config):
+    Coloring.__init__(self, config, 'reposync')
+    self.project   = self.printer('header', attr = 'bold')
+    self.info      = self.printer('info')
+    self.fail      = self.printer('fail', fg='red')
+
+class SyncBuffer(object):
+  def __init__(self, config, detach_head=False):
+    self._messages = []
+    self._failures = []
+    self._later_queue1 = []
+    self._later_queue2 = []
+
+    self.out = _SyncColoring(config)
+    self.out.redirect(sys.stderr)
+
+    self.detach_head = detach_head
+    self.clean = True
+
+  def info(self, project, fmt, *args):
+    self._messages.append(_InfoMessage(project, fmt % args))
+
+  def fail(self, project, err=None):
+    self._failures.append(_Failure(project, err))
+    self.clean = False
+
+  def later1(self, project, what):
+    self._later_queue1.append(_Later(project, what))
+
+  def later2(self, project, what):
+    self._later_queue2.append(_Later(project, what))
+
+  def Finish(self):
+    self._PrintMessages()
+    self._RunLater()
+    self._PrintMessages()
+    return self.clean
+
+  def _RunLater(self):
+    for q in ['_later_queue1', '_later_queue2']:
+      if not self._RunQueue(q):
+        return
+
+  def _RunQueue(self, queue):
+    for m in getattr(self, queue):
+      if not m.Run(self):
+        self.clean = False
+        return False
+    setattr(self, queue, [])
+    return True
+
+  def _PrintMessages(self):
+    for m in self._messages:
+      m.Print(self)
+    for m in self._failures:
+      m.Print(self)
+
+    self._messages = []
+    self._failures = []
 
 
 class MetaProject(Project):

@@ -100,6 +100,9 @@ class Coloring(object):
     else:
       self._on = False
 
+  def redirect(self, out):
+    self._out = out
+
   @property
   def is_on(self):
     return self._on

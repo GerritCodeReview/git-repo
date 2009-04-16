@@ -24,6 +24,7 @@ from project import HEAD
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError
 from project import R_HEADS
+from project import SyncBuffer
 from progress import Progress
 
 class Sync(Command, MirrorSafeCommand):
@@ -112,7 +113,9 @@ revision is temporarily needed.
         return
 
       if mp.HasChanges:
-        if not mp.Sync_LocalHalf():
+        syncbuf = SyncBuffer(mp.config)
+        mp.Sync_LocalHalf(syncbuf)
+        if not syncbuf.Finish():
           sys.exit(1)
 
         self.manifest._Unload()
@@ -123,14 +126,17 @@ revision is temporarily needed.
             missing.append(project)
         self._Fetch(*missing)
 
+    syncbuf = SyncBuffer(mp.config,
+                         detach_head = opt.detach_head)
     pm = Progress('Syncing work tree', len(all))
     for project in all:
       pm.update()
       if project.worktree:
-        if not project.Sync_LocalHalf(
-            detach_head=opt.detach_head):
-          sys.exit(1)
+        project.Sync_LocalHalf(syncbuf)
     pm.end()
+    print >>sys.stderr
+    if not syncbuf.Finish():
+      sys.exit(1)
 
 
 def _PostRepoUpgrade(manifest):
@@ -143,7 +149,9 @@ def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
     print >>sys.stderr, 'info: A new version of repo is available'
     print >>sys.stderr, ''
     if no_repo_verify or _VerifyTag(rp):
-      if not rp.Sync_LocalHalf():
+      syncbuf = SyncBuffer(rp.config)
+      rp.Sync_LocalHalf(syncbuf)
+      if not syncbuf.Finish():
         sys.exit(1)
       print >>sys.stderr, 'info: Restarting repo with latest version'
       raise RepoChangedException(['--repo-upgraded'])
