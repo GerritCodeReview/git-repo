@@ -893,11 +893,11 @@ class Project(object):
       raise GitError('%s reset --hard %s ' % (self.name, rev))
 
   def _Rebase(self, upstream, onto = None):
-    cmd = ['rebase', '-i']
+    cmd = ['rebase']
     if onto is not None:
       cmd.extend(['--onto', onto])
     cmd.append(upstream)
-    if GitCommand(self, cmd, disable_editor=True).Wait() != 0:
+    if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s rebase %s ' % (self.name, upstream))
 
   def _FastForward(self, head):
