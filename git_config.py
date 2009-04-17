@@ -29,6 +29,13 @@ REVIEW_CACHE = dict()
 def IsId(rev):
   return ID_RE.match(rev)
 
+def _key(name):
+  parts = name.split('.')
+  if len(parts) < 2:
+    return name.lower()
+  parts[ 0] = parts[ 0].lower()
+  parts[-1] = parts[-1].lower()
+  return '.'.join(parts)
 
 class GitConfig(object):
   _ForUser = None
@@ -54,8 +61,7 @@ class GitConfig(object):
   def Has(self, name, include_defaults = True):
     """Return true if this configuration file has the key.
     """
-    name = name.lower()
-    if name in self._cache:
+    if _key(name) in self._cache:
       return True
     if include_defaults and self.defaults:
       return self.defaults.Has(name, include_defaults = True)
@@ -83,10 +89,8 @@ class GitConfig(object):
        This configuration file is used first, if the key is not
        defined or all = True then the defaults are also searched.
     """
-    name = name.lower()
-
     try:
-      v = self._cache[name]
+      v = self._cache[_key(name)]
     except KeyError:
       if self.defaults:
         return self.defaults.GetString(name, all = all)
@@ -110,16 +114,16 @@ class GitConfig(object):
        The supplied value should be either a string,
        or a list of strings (to store multiple values).
     """
-    name = name.lower()
+    key = _key(name)
 
     try:
-      old = self._cache[name]
+      old = self._cache[key]
     except KeyError:
       old = []
 
     if value is None:
       if old:
-        del self._cache[name]
+        del self._cache[key]
         self._do('--unset-all', name)
 
     elif isinstance(value, list):
@@ -130,13 +134,13 @@ class GitConfig(object):
         self.SetString(name, value[0])
 
       elif old != value:
-        self._cache[name] = list(value)
+        self._cache[key] = list(value)
         self._do('--replace-all', name, value[0])
         for i in xrange(1, len(value)):
           self._do('--add', name, value[i])
 
     elif len(old) != 1 or old[0] != value:
-      self._cache[name] = [value]
+      self._cache[key] = [value]
       self._do('--replace-all', name, value)
 
   def GetRemote(self, name):
@@ -172,7 +176,7 @@ class GitConfig(object):
       lf = d.index('\n')
       nul = d.index('\0', lf + 1)
 
-      key = d[0:lf]
+      key = _key(d[0:lf])
       val = d[lf + 1:nul]
 
       if key in c:
