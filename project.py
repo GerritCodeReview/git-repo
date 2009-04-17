@@ -637,7 +637,6 @@ class Project(object):
                        "branch %s is published but is now %d commits behind",
                        branch.name,
                        len(upstream_gain))
-          syncbuf.info(self, "consider merging or rebasing the unpublished commits")
         return
       elif upstream_gain:
         # We can fast-forward safely.
