@@ -61,6 +61,28 @@ existing change(s) in Gerrit match up to the commits in the branch
 being uploaded.  For each matched pair of change,commit the commit
 will be added as a new patch set, completely replacing the set of
 files and description associated with the change in Gerrit.
+
+Configuration
+-------------
+
+review.URL.autoupload:
+
+To disable the "Upload ... (y/n)?" prompt, you can set a per-project
+or global Git configuration option.  If review.URL.autoupload is set
+to "true" then repo will assume you always answer "y" at the prompt,
+and will not prompt you further.  If it is set to "false" then repo
+will assume you always answer "n", and will abort.
+
+The URL must match the review URL listed in the manifest XML file,
+or in the .git/config within the project.  For example:
+
+  [remote "origin"]
+    url = git://git.example.com/project.git
+    review = http://review.example.com/
+
+  [review "http://review.example.com/"]
+    autoupload = true
+
 """
 
   def _Options(self, p):
@@ -79,19 +101,29 @@ files and description associated with the change in Gerrit.
     name = branch.name
     date = branch.date
     list = branch.commits
+    remote = project.GetBranch(name).remote
 
-    print 'Upload project %s/:' % project.relpath
-    print '  branch %s (%2d commit%s, %s):' % (
-                  name,
-                  len(list),
-                  len(list) != 1 and 's' or '',
-                  date)
-    for commit in list:
-      print '         %s' % commit
+    key = 'review.%s.autoupload' % remote.review
+    answer = project.config.GetBoolean(key)
 
-    sys.stdout.write('(y/n)? ')
-    answer = sys.stdin.readline().strip()
-    if answer in ('y', 'Y', 'yes', '1', 'true', 't'):
+    if answer is False:
+      _die("upload blocked by %s = false" % key)
+
+    if answer is None:
+      print 'Upload project %s/:' % project.relpath
+      print '  branch %s (%2d commit%s, %s):' % (
+                    name,
+                    len(list),
+                    len(list) != 1 and 's' or '',
+                    date)
+      for commit in list:
+        print '         %s' % commit
+
+      sys.stdout.write('(y/n)? ')
+      answer = sys.stdin.readline().strip()
+      answer = answer in ('y', 'Y', 'yes', '1', 'true', 't')
+
+    if answer:
       self._UploadAndReport([branch], people)
     else:
       _die("upload aborted by user")
