@@ -18,6 +18,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 from git_command import GIT
 from project import HEAD
@@ -72,7 +73,7 @@ revision is temporarily needed.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _Fetch(self, *projects):
+  def _Fetch(self, projects):
     fetched = set()
     pm = Progress('Fetching projects', len(projects))
     for project in projects:
@@ -106,7 +107,14 @@ revision is temporarily needed.
     all = self.GetProjects(args, missing_ok=True)
 
     if not opt.local_only:
-      fetched = self._Fetch(rp, mp, *all)
+      to_fetch = []
+      now = time.time()
+      if (24 * 60 * 60) <= (now - rp.LastFetch):
+        to_fetch.append(rp)
+      to_fetch.append(mp)
+      to_fetch.extend(all)
+
+      fetched = self._Fetch(to_fetch)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
@@ -124,7 +132,7 @@ revision is temporarily needed.
         for project in all:
           if project.gitdir not in fetched:
             missing.append(project)
-        self._Fetch(*missing)
+        self._Fetch(missing)
 
     syncbuf = SyncBuffer(mp.config,
                          detach_head = opt.detach_head)

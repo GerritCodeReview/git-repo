@@ -1350,6 +1350,14 @@ class MetaProject(Project):
           self.revision = base
 
   @property
+  def LastFetch(self):
+    try:
+      fh = os.path.join(self.gitdir, 'FETCH_HEAD')
+      return os.path.getmtime(fh)
+    except OSError:
+      return 0
+
+  @property
   def HasChanges(self):
     """Has the remote received new commits not yet checked out?
     """
