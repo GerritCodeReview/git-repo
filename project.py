@@ -28,11 +28,7 @@ from error import GitError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
 from remote import Remote
 
-HEAD    = 'HEAD'
-R_HEADS = 'refs/heads/'
-R_TAGS  = 'refs/tags/'
-R_PUB   = 'refs/published/'
-R_M     = 'refs/remotes/m/'
+from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
 def _error(fmt, *args):
   msg = fmt % args
@@ -226,6 +222,7 @@ class Project(object):
     else:
       self.work_git = None
     self.bare_git = self._GitGetByExec(self, bare=True)
+    self.bare_ref = GitRefs(gitdir)
 
   @property
   def Exists(self):
@@ -301,7 +298,7 @@ class Project(object):
     """Get all existing local branches.
     """
     current = self.CurrentBranch
-    all = self.bare_git.ListRefs()
+    all = self._allrefs
     heads = {}
     pubd = {}
 
@@ -1030,31 +1027,12 @@ class Project(object):
 
   @property
   def _allrefs(self):
-    return self.bare_git.ListRefs()
+    return self.bare_ref.all
 
   class _GitGetByExec(object):
     def __init__(self, project, bare):
       self._project = project
       self._bare = bare
-
-    def ListRefs(self, *args):
-      cmdv = ['for-each-ref', '--format=%(objectname) %(refname)']
-      cmdv.extend(args)
-      p = GitCommand(self._project,
-                     cmdv,
-                     bare = self._bare,
-                     capture_stdout = True,
-                     capture_stderr = True)
-      r = {}
-      for line in p.process.stdout:
-        id, name = line[:-1].split(' ', 2)
-        r[name] = id
-      if p.Wait() != 0:
-        raise GitError('%s for-each-ref %s: %s' % (
-                       self._project.name,
-                       str(args),
-                       p.stderr))
-      return r
 
     def LsOthers(self):
       p = GitCommand(self._project,
