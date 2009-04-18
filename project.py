@@ -30,6 +30,21 @@ from remote import Remote
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
+def _lwrite(path, content):
+  lock = '%s.lock' % path
+
+  fd = open(lock, 'wb')
+  try:
+    fd.write(content)
+  finally:
+    fd.close()
+
+  try:
+    os.rename(lock, path)
+  except OSError:
+    os.remove(lock)
+    raise
+
 def _error(fmt, *args):
   msg = fmt % args
   print >>sys.stderr, 'error: %s' % msg
@@ -758,31 +773,54 @@ class Project(object):
   def StartBranch(self, name):
     """Create a new branch off the manifest's revision.
     """
-    try:
-      self.bare_git.rev_parse(R_HEADS + name)
-      exists = True
-    except GitError:
-      exists = False;
+    head = self.work_git.GetHead()
+    if head == (R_HEADS + name):
+      return True
 
-    if exists:
-      if name == self.CurrentBranch:
-        return True
-      else:
-        cmd = ['checkout', name, '--']
-        return GitCommand(self, cmd).Wait() == 0
+    all = self.bare_ref.all
+    if (R_HEADS + name) in all:
+      cmd = ['checkout', name, '--']
+      return GitCommand(self,
+                        cmd,
+                        capture_stdout = True).Wait() == 0
 
+    branch = self.GetBranch(name)
+    branch.remote = self.GetRemote(self.remote.name)
+    branch.merge = self.revision
+
+    rev = branch.LocalMerge
+    if rev in all:
+      revid = all[rev]
+    elif IsId(rev):
+      revid = rev
     else:
-      branch = self.GetBranch(name)
-      branch.remote = self.GetRemote(self.remote.name)
-      branch.merge = self.revision
+      revid = None
 
-      rev = branch.LocalMerge
-      cmd = ['checkout', '-b', branch.name, rev]
-      if GitCommand(self, cmd).Wait() == 0:
-        branch.Save()
-        return True
-      else:
-        return False
+    if head.startswith(R_HEADS):
+      try:
+        head = all[head]
+      except KeyError:
+        head = None
+
+    if revid and head and revid == head:
+      ref = os.path.join(self.gitdir, R_HEADS + name)
+      try:
+        os.makedirs(os.path.dirname(ref))
+      except OSError:
+        pass
+      _lwrite(ref, '%s\n' % revid)
+      _lwrite(os.path.join(self.worktree, '.git', HEAD),
+              'ref: %s%s\n' % (R_HEADS, name))
+      branch.Save()
+      return True
+
+    cmd = ['checkout', '-b', branch.name, rev]
+    if GitCommand(self,
+                  cmd,
+                  capture_stdout = True).Wait() == 0:
+      branch.Save()
+      return True
+    return False
 
   def CheckoutBranch(self, name):
     """Checkout a local topic branch.

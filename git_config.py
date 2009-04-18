@@ -57,6 +57,7 @@ class GitConfig(object):
     self.file = file
     self.defaults = defaults
     self._cache_dict = None
+    self._section_dict = None
     self._remotes = {}
     self._branches = {}
     self._pickle = os.path.join(
@@ -167,6 +168,33 @@ class GitConfig(object):
       b = Branch(self, name)
       self._branches[b.name] = b
     return b
+
+  def HasSection(self, section, subsection = ''):
+    """Does at least one key in section.subsection exist?
+    """
+    try:
+      return subsection in self._sections[section]
+    except KeyError:
+      return False
+
+  @property
+  def _sections(self):
+    d = self._section_dict
+    if d is None:
+      d = {}
+      for name in self._cache.keys():
+        p = name.split('.')
+        if 2 == len(p):
+          section = p[0]
+          subsect = ''
+        else:
+          section = p[0]
+          subsect = '.'.join(p[1:-1])
+        if section not in d:
+          d[section] = set()
+        d[section].add(subsect)
+        self._section_dict = d
+    return d
 
   @property
   def _cache(self):
@@ -443,11 +471,23 @@ class Branch(object):
   def Save(self):
     """Save this branch back into the configuration.
     """
-    self._Set('merge', self.merge)
-    if self.remote:
-      self._Set('remote', self.remote.name)
+    if self._config.HasSection('branch', self.name):
+      if self.remote:
+        self._Set('remote', self.remote.name)
+      else:
+        self._Set('remote', None)
+      self._Set('merge', self.merge)
+
     else:
-      self._Set('remote', None)
+      fd = open(self._config.file, 'ab')
+      try:
+        fd.write('[branch "%s"]\n' % self.name)
+        if self.remote:
+          fd.write('\tremote = %s\n' % self.remote.name)
+        if self.merge:
+          fd.write('\tmerge = %s\n' % self.merge)
+      finally:
+        fd.close()
 
   def _Set(self, key, value):
     key = 'branch.%s.%s' % (self.name, key)
