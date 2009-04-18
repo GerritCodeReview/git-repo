@@ -782,7 +782,8 @@ class Project(object):
       cmd = ['checkout', name, '--']
       return GitCommand(self,
                         cmd,
-                        capture_stdout = True).Wait() == 0
+                        capture_stdout = True,
+                        capture_stderr = True).Wait() == 0
 
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote(self.remote.name)
@@ -817,7 +818,8 @@ class Project(object):
     cmd = ['checkout', '-b', branch.name, rev]
     if GitCommand(self,
                   cmd,
-                  capture_stdout = True).Wait() == 0:
+                  capture_stdout = True,
+                  capture_stderr = True).Wait() == 0:
       branch.Save()
       return True
     return False

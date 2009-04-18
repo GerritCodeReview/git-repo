@@ -16,6 +16,7 @@
 import sys
 from command import Command
 from git_command import git
+from progress import Progress
 
 class Start(Command):
   common = True
@@ -38,9 +39,14 @@ revision specified in the manifest.
       sys.exit(1)
 
     err = []
-    for project in self.GetProjects(args[1:]):
+    all = self.GetProjects(args[1:])
+
+    pm = Progress('Starting %s' % nb, len(all))
+    for project in all:
+      pm.update()
       if not project.StartBranch(nb):
         err.append(project)
+    pm.end()
 
     if err:
       err.sort()
