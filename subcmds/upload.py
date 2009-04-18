@@ -38,22 +38,21 @@ class Upload(InteractiveCommand):
 %prog [--re --cc] {[<project>]... | --replace <project>}
 """
   helpDescription = """
-The '%prog' command is used to send changes to the Gerrit code
-review system.  It searches for changes in local projects that do
-not yet exist in the corresponding remote repository.  If multiple
-changes are found, '%prog' opens an editor to allow the
-user to choose which change to upload.  After a successful upload,
-repo prints the URL for the change in the Gerrit code review system.
+The '%prog' command is used to send changes to the Gerrit Code
+Review system.  It searches for topic branches in local projects
+that have not yet been published for review.  If multiple topic
+branches are found, '%prog' opens an editor to allow the user to
+select which branches to upload.
 
-'%prog' searches for uploadable changes in all projects listed
-at the command line.  Projects can be specified either by name, or
-by a relative or absolute path to the project's local directory. If
-no projects are specified, '%prog' will search for uploadable
-changes in all projects listed in the manifest.
+'%prog' searches for uploadable changes in all projects listed at
+the command line.  Projects can be specified either by name, or by
+a relative or absolute path to the project's local directory. If no
+projects are specified, '%prog' will search for uploadable changes
+in all projects listed in the manifest.
 
 If the --reviewers or --cc options are passed, those emails are
 added to the respective list of users, and emails are sent to any
-new users.  Users passed to --reviewers must be already registered
+new users.  Users passed as --reviewers must already be registered
 with the code review system, or the upload will fail.
 
 If the --replace option is passed the user can designate which
@@ -82,6 +81,11 @@ or in the .git/config within the project.  For example:
 
   [review "http://review.example.com/"]
     autoupload = true
+
+References
+----------
+
+Gerrit Code Review:  http://code.google.com/p/gerrit/
 
 """
 
