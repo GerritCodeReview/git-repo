@@ -862,18 +862,38 @@ class Project(object):
   def AbandonBranch(self, name):
     """Destroy a local topic branch.
     """
-    try:
-      tip_rev = self.bare_git.rev_parse(R_HEADS + name)
-    except GitError:
-      return
+    rev = R_HEADS + name
+    all = self.bare_ref.all
+    if rev not in all:
+      # Doesn't exist; assume already abandoned.
+      #
+      return True
 
-    if self.CurrentBranch == name:
-      self._Checkout(
-        self.GetRemote(self.remote.name).ToLocal(self.revision),
-        quiet=True)
+    head = self.work_git.GetHead()
+    if head == rev:
+      # We can't destroy the branch while we are sitting
+      # on it.  Switch to a detached HEAD.
+      #
+      head = all[head]
 
-    cmd = ['branch', '-D', name]
-    GitCommand(self, cmd, capture_stdout=True).Wait()
+      rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
+      if rev in all:
+        revid = all[rev]
+      elif IsId(rev):
+        revid = rev
+      else:
+        revid = None
+
+      if revid and head == revid:
+        _lwrite(os.path.join(self.worktree, '.git', HEAD),
+                '%s\n' % revid)
+      else:
+        self._Checkout(rev, quiet=True)
+
+    return GitCommand(self,
+                      ['branch', '-D', name],
+                      capture_stdout = True,
+                      capture_stderr = True).Wait() == 0
 
   def PruneHeads(self):
     """Prune any topic branches already merged into upstream.
