@@ -22,20 +22,10 @@ class Start(Command):
   helpSummary = "Start a new branch for development"
   helpUsage = """
 %prog <newbranchname> [<project>...]
-
-This subcommand starts a new branch of development that is automatically
-pulled from a remote branch.
-
-It is equivalent to the following git commands:
-
-"git branch --track <newbranchname> m/<codeline>",
-or 
-"git checkout --track -b <newbranchname> m/<codeline>".
-
-All three forms set up the config entries that repo bases some of its
-processing on.  Use %prog or git branch or checkout with --track to ensure
-the configuration data is set up properly.
-
+"""
+  helpDescription = """
+'%prog' begins a new branch of development, starting from the
+revision specified in the manifest.
 """
 
   def Execute(self, opt, args):
