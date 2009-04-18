@@ -96,6 +96,10 @@ Summarizes the currently available topic branches.
           n.append(name)
       names = n
 
+    if not names:
+      print >>sys.stderr, '   (no branches)'
+      return
+
     width = 25
     for name in names:
       if width < len(name):
