@@ -64,6 +64,19 @@ the following meanings:
     all = self.GetProjects(args)
     clean = 0
 
+    on = {}
+    for project in all:
+      cb = project.CurrentBranch
+      if cb:
+        if cb not in on:
+          on[cb] = []
+        on[cb].append(project)
+
+    branch_names = list(on.keys())
+    branch_names.sort()
+    for cb in branch_names:
+      print '# on branch %s' % cb
+
     for project in all:
       state = project.PrintWorkTreeStatus()
       if state == 'CLEAN':
