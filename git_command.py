@@ -17,18 +17,14 @@ import os
 import sys
 import subprocess
 from error import GitError
+from trace import REPO_TRACE, IsTrace, Trace
 
 GIT = 'git'
 MIN_GIT_VERSION = (1, 5, 4)
 GIT_DIR = 'GIT_DIR'
-REPO_TRACE = 'REPO_TRACE'
 
 LAST_GITDIR = None
 LAST_CWD = None
-try:
-  TRACE = os.environ[REPO_TRACE] == '1'
-except KeyError:
-  TRACE = False
 
 
 class _GitCall(object):
@@ -101,7 +97,7 @@ class GitCommand(object):
     else:
       stderr = None
 
-    if TRACE:
+    if IsTrace():
       global LAST_CWD
       global LAST_GITDIR
 
@@ -127,7 +123,7 @@ class GitCommand(object):
         dbg += ' 1>|'
       if stderr == subprocess.PIPE:
         dbg += ' 2>|'
-      print >>sys.stderr, dbg
+      Trace('%s', dbg)
 
     try:
       p = subprocess.Popen(command,

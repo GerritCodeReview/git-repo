@@ -27,7 +27,7 @@ import os
 import re
 import sys
 
-import git_command
+from trace import SetTrace
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import PagedCommand
@@ -79,7 +79,7 @@ class _Repo(object):
     gopts, gargs = global_options.parse_args(glob)
 
     if gopts.trace:
-      git_command.TRACE = True
+      SetTrace()
     if gopts.show_version:
       if name == 'help':
         name = 'version'

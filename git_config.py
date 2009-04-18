@@ -19,7 +19,8 @@ import re
 import sys
 from urllib2 import urlopen, HTTPError
 from error import GitError, UploadError
-from git_command import GitCommand, TRACE
+from trace import Trace
+from git_command import GitCommand
 
 R_HEADS = 'refs/heads/'
 R_TAGS  = 'refs/tags/'
@@ -189,8 +190,7 @@ class GitConfig(object):
     except OSError:
       return None
     try:
-      if TRACE:
-        print >>sys.stderr, ': unpickle %s' % self.file
+      Trace(': unpickle %s', self.file)
       return cPickle.load(open(self._pickle, 'r'))
     except IOError:
       os.remove(self._pickle)
