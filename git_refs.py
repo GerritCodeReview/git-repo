@@ -31,8 +31,7 @@ class GitRefs(object):
 
   @property
   def all(self):
-    if self._phyref is None or self._NeedUpdate():
-      self._LoadAll()
+    self._EnsureLoaded()
     return self._phyref
 
   def get(self, name):
@@ -51,6 +50,17 @@ class GitRefs(object):
 
       if name in self._mtime:
         del self._mtime[name]
+
+  def symref(self, name):
+    try:
+      self._EnsureLoaded()
+      return self._symref[name]
+    except KeyError:
+      return ''
+
+  def _EnsureLoaded(self):
+    if self._phyref is None or self._NeedUpdate():
+      self._LoadAll()
 
   def _NeedUpdate(self):
     for name, mtime in self._mtime.iteritems():

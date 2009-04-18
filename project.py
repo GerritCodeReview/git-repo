@@ -997,14 +997,17 @@ class Project(object):
     if self.manifest.branch:
       msg = 'manifest set to %s' % self.revision
       ref = R_M + self.manifest.branch
+      cur = self.bare_ref.symref(ref)
 
       if IsId(self.revision):
-        dst = self.revision + '^0'
-        self.bare_git.UpdateRef(ref, dst, message = msg, detach = True)
+        if cur != '' or self.bare_ref.get(ref) != self.revision:
+          dst = self.revision + '^0'
+          self.bare_git.UpdateRef(ref, dst, message = msg, detach = True)
       else:
         remote = self.GetRemote(self.remote.name)
         dst = remote.ToLocal(self.revision)
-        self.bare_git.symbolic_ref('-m', msg, ref, dst)
+        if cur != dst:
+          self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
   def _InitMirrorHead(self):
     dst = self.GetRemote(self.remote.name).ToLocal(self.revision)
