@@ -64,7 +64,7 @@ default.xml will be used.
 
 
     # Tool
-    g = p.add_option_group('Version options')
+    g = p.add_option_group('repo Version options')
     g.add_option('--repo-url',
                  dest='repo_url',
                  help='repo repository location', metavar='URL')

@@ -120,7 +120,7 @@ group.add_option('--mirror',
                  help='mirror the forrest')
 
 # Tool
-group = init_optparse.add_option_group('Version options')
+group = init_optparse.add_option_group('repo Version options')
 group.add_option('--repo-url',
                  dest='repo_url',
                  help='repo repository location', metavar='URL')

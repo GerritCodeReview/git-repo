@@ -35,10 +35,11 @@ need to be performed by an end-user.
 """
 
   def _Options(self, p):
-    p.add_option('--no-repo-verify',
+    g = p.add_option_group('repo Version options')
+    g.add_option('--no-repo-verify',
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
-    p.add_option('--repo-upgraded',
+    g.add_option('--repo-upgraded',
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
