@@ -162,6 +162,7 @@ class StatusColoring(Coloring):
     self.project   = self.printer('header',    attr = 'bold')
     self.branch    = self.printer('header',    attr = 'bold')
     self.nobranch  = self.printer('nobranch',  fg = 'red')
+    self.important = self.printer('important', fg = 'red')
 
     self.added     = self.printer('added',     fg = 'green')
     self.changed   = self.printer('changed',   fg = 'red')
@@ -244,6 +245,13 @@ class Project(object):
       return b[len(R_HEADS):]
     return None
 
+  def IsRebaseInProgress(self):
+    w = self.worktree
+    g = os.path.join(w, '.git')
+    return os.path.exists(os.path.join(g, 'rebase-apply')) \
+        or os.path.exists(os.path.join(g, 'rebase-merge')) \
+        or os.path.exists(os.path.join(w, '.dotest'))
+    
   def IsDirty(self, consider_untracked=True):
     """Is the working directory modified in some way?
     """
@@ -341,10 +349,11 @@ class Project(object):
                                '--unmerged',
                                '--ignore-missing',
                                '--refresh')
+    rb = self.IsRebaseInProgress()
     di = self.work_git.DiffZ('diff-index', '-M', '--cached', HEAD)
     df = self.work_git.DiffZ('diff-files')
     do = self.work_git.LsOthers()
-    if not di and not df and not do:
+    if not rb and not di and not df and not do:
       return 'CLEAN'
 
     out = StatusColoring(self.config)
@@ -356,6 +365,10 @@ class Project(object):
     else:
       out.branch('branch %s', branch)
     out.nl()
+
+    if rb:
+      out.important('prior sync failed; rebase still in progress')
+      out.nl()
 
     paths = list()
     paths.extend(di.keys())
@@ -611,8 +624,7 @@ class Project(object):
       # Currently on a detached HEAD.  The user is assumed to
       # not have any local modifications worth worrying about.
       #
-      if os.path.exists(os.path.join(self.worktree, '.dotest')) \
-      or os.path.exists(os.path.join(self.worktree, '.git', 'rebase-apply')):
+      if self.IsRebaseInProgress():
         syncbuf.fail(self, _PriorSyncFailedError())
         return
 
