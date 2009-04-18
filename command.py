@@ -27,6 +27,9 @@ class Command(object):
   manifest = None
   _optparse = None
 
+  def WantPager(self, opt):
+    return False
+
   @property
   def OptionParser(self):
     if self._optparse is None:
@@ -109,11 +112,15 @@ class InteractiveCommand(Command):
   """Command which requires user interaction on the tty and
      must not run within a pager, even if the user asks to.
   """
+  def WantPager(self, opt):
+    return False
 
 class PagedCommand(Command):
   """Command which defaults to output in a pager, as its
      display tends to be larger than one screen full.
   """
+  def WantPager(self, opt):
+    return True
 
 class MirrorSafeCommand(object):
   """Command permits itself to run within a mirror,

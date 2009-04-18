@@ -110,6 +110,9 @@ class Coloring(object):
   def write(self, fmt, *args):
     self._out.write(fmt % args)
 
+  def flush(self):
+    self._out.flush()
+
   def nl(self):
     self._out.write('\n')
 

@@ -105,6 +105,8 @@ class _Repo(object):
             % name
       sys.exit(1)
 
+    copts, cargs = cmd.OptionParser.parse_args(argv)
+
     if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig
       if gopts.pager:
@@ -112,11 +114,10 @@ class _Repo(object):
       else:
         use_pager = config.GetBoolean('pager.%s' % name)
         if use_pager is None:
-          use_pager = isinstance(cmd, PagedCommand)
+          use_pager = cmd.WantPager(copts)
       if use_pager:
         RunPager(config)
 
-    copts, cargs = cmd.OptionParser.parse_args(argv)
     try:
       cmd.Execute(copts, cargs)
     except ManifestInvalidRevisionError, e:

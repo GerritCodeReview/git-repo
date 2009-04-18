@@ -13,11 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import fcntl
 import re
 import os
+import select
 import sys
 import subprocess
+
+from color import Coloring
 from command import Command, MirrorSafeCommand
+
+_CAN_COLOR = [
+  'branch',
+  'diff',
+  'grep',
+  'log',
+]
+
+class ForallColoring(Coloring):
+  def __init__(self, config):
+    Coloring.__init__(self, config, 'forall')
+    self.project = self.printer('project', attr='bold')
+
 
 class Forall(Command, MirrorSafeCommand):
   common = False
@@ -27,6 +44,24 @@ class Forall(Command, MirrorSafeCommand):
 """
   helpDescription = """
 Executes the same shell command in each project.
+
+Output Formatting
+-----------------
+
+The -p option causes '%prog' to bind pipes to the command's stdin,
+stdout and stderr streams, and pipe all output into a continuous
+stream that is displayed in a single pager session.  Project headings
+are inserted before the output of each command is displayed.  If the
+command produces no output in a project, no heading is displayed.
+
+The formatting convention used by -p is very suitable for some
+types of searching, e.g. `repo forall -p -c git log -SFoo` will
+print all commits that add or remove references to Foo.
+
+The -v option causes '%prog' to display stderr messages if a
+command produces output only on stderr.  Normally the -p option
+causes command output to be suppressed until the command produces
+at least one byte of output on stdout.
 
 Environment
 -----------
@@ -50,8 +85,8 @@ as written in the manifest.
 shell positional arguments ($1, $2, .., $#) are set to any arguments
 following <command>.
 
-stdin, stdout, stderr are inherited from the terminal and are
-not redirected.
+Unless -p is used, stdin, stdout, stderr are inherited from the
+terminal and are not redirected.
 """
 
   def _Options(self, p):
@@ -64,6 +99,17 @@ not redirected.
                  dest='command',
                  action='callback',
                  callback=cmd)
+
+    g = p.add_option_group('Output')
+    g.add_option('-p',
+                 dest='project_header', action='store_true',
+                 help='Show project headers before output')
+    g.add_option('-v', '--verbose',
+                 dest='verbose', action='store_true',
+                 help='Show command error messages')
+
+  def WantPager(self, opt):
+    return opt.project_header
 
   def Execute(self, opt, args):
     if not opt.command:
@@ -79,8 +125,31 @@ not redirected.
       cmd.append(cmd[0])
     cmd.extend(opt.command[1:])
 
+    if  opt.project_header \
+    and not shell \
+    and cmd[0] == 'git':
+      # If this is a direct git command that can enable colorized
+      # output and the user prefers coloring, add --color into the
+      # command line because we are going to wrap the command into
+      # a pipe and git won't know coloring should activate.
+      #
+      for cn in cmd[1:]:
+        if not cn.startswith('-'):
+          break
+      if cn in _CAN_COLOR:
+        class ColorCmd(Coloring):
+          def __init__(self, config, cmd):
+            Coloring.__init__(self, config, cmd)
+        if ColorCmd(self.manifest.manifestProject.config, cn).is_on:
+          cmd.insert(cmd.index(cn) + 1, '--color')
+
     mirror = self.manifest.IsMirror
+    out = ForallColoring(self.manifest.manifestProject.config)
+    out.redirect(sys.stderr)
+
     rc = 0
+    first = True
+
     for project in self.GetProjects(args):
       env = dict(os.environ.iteritems())
       def setenv(name, val):
@@ -102,10 +171,76 @@ not redirected.
       else:
         cwd = project.worktree
 
+      if opt.project_header:
+        stdin = subprocess.PIPE
+        stdout = subprocess.PIPE
+        stderr = subprocess.PIPE
+      else:
+        stdin = None
+        stdout = None
+        stderr = None
+
       p = subprocess.Popen(cmd,
                            cwd = cwd,
                            shell = shell,
-                           env = env)
+                           env = env,
+                           stdin = stdin,
+                           stdout = stdout,
+                           stderr = stderr)
+
+      if opt.project_header:
+        class sfd(object):
+          def __init__(self, fd, dest):
+            self.fd = fd
+            self.dest = dest
+          def fileno(self):
+            return self.fd.fileno()
+
+        empty = True
+        didout = False
+        errbuf = ''
+
+        p.stdin.close()
+        s_in = [sfd(p.stdout, sys.stdout),
+                sfd(p.stderr, sys.stderr)]
+
+        for s in s_in:
+          flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
+          fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+
+        while s_in:
+          in_ready, out_ready, err_ready = select.select(s_in, [], [])
+          for s in in_ready:
+            buf = s.fd.read(4096)
+            if not buf:
+              s.fd.close()
+              s_in.remove(s)
+              continue
+
+            if not opt.verbose:
+              if s.fd == p.stdout:
+                didout = True
+              else:
+                errbuf += buf
+                continue
+
+            if empty:
+              if first:
+                first = False
+              else:
+                out.nl()
+              out.project('project %s/', project.relpath)
+              out.nl()
+              out.flush()
+              if errbuf:
+                sys.stderr.write(errbuf)
+                sys.stderr.flush()
+                errbuf = ''
+              empty = False
+
+            s.dest.write(buf)
+            s.dest.flush()
+
       r = p.wait()
       if r != 0 and r != rc:
         rc = r
