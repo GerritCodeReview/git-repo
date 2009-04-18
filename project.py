@@ -140,16 +140,6 @@ class ReviewableBranch(object):
                                  self.replace_changes,
                                  people)
 
-  @property
-  def tip_url(self):
-    me = self.project.GetBranch(self.name)
-    commit = self.project.bare_git.rev_parse(R_HEADS + self.name)
-    return 'http://%s/r/%s' % (me.remote.review, commit[0:12])
-
-  @property
-  def owner_email(self):
-    return self.project.UserEmail
-
 
 class StatusColoring(Coloring):
   def __init__(self, config):
