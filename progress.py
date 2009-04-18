@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import sys
+from time import time
 from trace import IsTrace
 
 class Progress(object):
@@ -22,12 +23,20 @@ class Progress(object):
     self._total = total
     self._done = 0
     self._lastp = -1
+    self._start = time()
+    self._show = False
 
   def update(self, inc=1):
     self._done += inc
 
     if IsTrace():
       return
+
+    if not self._show:
+      if 0.5 <= time() - self._start:
+        self._show = True
+      else:
+        return
 
     if self._total <= 0:
       sys.stderr.write('\r%s: %d, ' % (
@@ -47,7 +56,7 @@ class Progress(object):
         sys.stderr.flush()
 
   def end(self):
-    if IsTrace():
+    if IsTrace() or not self._show:
       return
 
     if self._total <= 0:
