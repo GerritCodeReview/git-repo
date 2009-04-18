@@ -237,10 +237,7 @@ class Project(object):
        The branch name omits the 'refs/heads/' prefix.
        None is returned if the project is on a detached HEAD.
     """
-    try:
-      b = self.work_git.GetHead()
-    except GitError:
-      return None
+    b = self.work_git.GetHead()
     if b.startswith(R_HEADS):
       return b[len(R_HEADS):]
     return None
@@ -817,9 +814,8 @@ class Project(object):
       kill.append(cb)
 
     if kill:
-      try:
-        old = self.bare_git.GetHead()
-      except GitError:
+      old = self.bare_git.GetHead()
+      if old is None:
         old = 'refs/heads/please_never_use_this_as_a_branch_name'
 
       try:
@@ -1125,7 +1121,14 @@ class Project(object):
         p.Wait()
 
     def GetHead(self):
-      return self.symbolic_ref(HEAD)
+      if self._bare:
+        path = os.path.join(self._project.gitdir, HEAD)
+      else:
+        path = os.path.join(self._project.worktree, '.git', HEAD)
+      line = open(path, 'r').read()
+      if line.startswith('ref: '):
+        return line[5:-1]
+      return line[:-1]
 
     def SetHead(self, ref, message=None):
       cmdv = []
