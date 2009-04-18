@@ -55,12 +55,12 @@ The '%prog' command stages files to prepare the next commit.
 
     out = _ProjectList(self.manifest.manifestProject.config)
     while True:
-      out.header('        %-20s %s', 'project', 'path')
+      out.header('        %s', 'project')
       out.nl()
 
       for i in xrange(0, len(all)):
         p = all[i]
-        out.write('%3d:    %-20s %s', i + 1, p.name, p.relpath + '/')
+        out.write('%3d:    %s', i + 1, p.relpath + '/')
         out.nl()
       out.nl()
 
