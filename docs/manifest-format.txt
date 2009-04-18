@@ -191,8 +191,3 @@ For example:
 Users may add projects to the local manifest prior to a `repo sync`
 invocation, instructing repo to automatically download and manage
 these extra projects.
-
-Currently the only supported feature of a local manifest is to
-add new remotes and/or projects.  In the future a local manifest
-may support picking different revisions of a project, or deleting
-projects specified in the default manifest.
