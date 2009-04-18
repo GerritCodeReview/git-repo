@@ -416,22 +416,31 @@ class Project(object):
 
 ## Publish / Upload ##
 
-  def WasPublished(self, branch):
+  def WasPublished(self, branch, all=None):
     """Was the branch published (uploaded) for code review?
        If so, returns the SHA-1 hash of the last published
        state for the branch.
     """
-    try:
-      return self.bare_git.rev_parse(R_PUB + branch)
-    except GitError:
-      return None
+    key = R_PUB + branch
+    if all is None:
+      try:
+        return self.bare_git.rev_parse(key)
+      except GitError:
+        return None
+    else:
+      try:
+        return all[key]
+      except KeyError:
+        return None
 
-  def CleanPublishedCache(self):
+  def CleanPublishedCache(self, all=None):
     """Prunes any stale published refs.
     """
+    if all is None:
+      all = self._allrefs
     heads = set()
     canrm = {}
-    for name, id in self._allrefs.iteritems():
+    for name, id in all.iteritems():
       if name.startswith(R_HEADS):
         heads.add(name)
       elif name.startswith(R_PUB):
@@ -567,17 +576,31 @@ class Project(object):
        Network access is not required.
     """
     self._InitWorkTree()
-    self.CleanPublishedCache()
+    all = self.bare_ref.all
+    self.CleanPublishedCache(all)
 
     rem = self.GetRemote(self.remote.name)
     rev = rem.ToLocal(self.revision)
-    try:
-      self.bare_git.rev_parse('--verify', '%s^0' % rev)
-    except GitError:
-      raise ManifestInvalidRevisionError(
-        'revision %s in %s not found' % (self.revision, self.name))
+    if rev in all:
+      revid = all[rev]
+    elif IsId(rev):
+      revid = rev
+    else:
+      try:
+        revid = self.bare_git.rev_parse('--verify', '%s^0' % rev)
+      except GitError:
+        raise ManifestInvalidRevisionError(
+          'revision %s in %s not found' % (self.revision, self.name))
 
-    branch = self.CurrentBranch
+    head = self.work_git.GetHead()
+    if head.startswith(R_HEADS):
+      branch = head[len(R_HEADS):]
+      try:
+        head = all[head]
+      except KeyError:
+        head = None
+    else:
+      branch = None
 
     if branch is None or syncbuf.detach_head:
       # Currently on a detached HEAD.  The user is assumed to
@@ -586,6 +609,11 @@ class Project(object):
       if os.path.exists(os.path.join(self.worktree, '.dotest')) \
       or os.path.exists(os.path.join(self.worktree, '.git', 'rebase-apply')):
         syncbuf.fail(self, _PriorSyncFailedError())
+        return
+
+      if head == revid:
+        # No changes; don't do anything further.
+        #
         return
 
       lost = self._revlist(not_rev(rev), HEAD)
@@ -597,6 +625,11 @@ class Project(object):
         syncbuf.fail(self, e)
         return
       self._CopyFiles()
+      return
+
+    if head == revid:
+      # No changes; don't do anything further.
+      #
       return
 
     branch = self.GetBranch(branch)
@@ -618,7 +651,7 @@ class Project(object):
       return
 
     upstream_gain = self._revlist(not_rev(HEAD), rev)
-    pub = self.WasPublished(branch.name)
+    pub = self.WasPublished(branch.name, all)
     if pub:
       not_merged = self._revlist(not_rev(rev), pub)
       if not_merged:
@@ -1142,6 +1175,7 @@ class Project(object):
       if not old:
         old = self.rev_parse(name)
       self.update_ref('-d', name, old)
+      self._project.bare_ref.deleted(name)
 
     def rev_list(self, *args):
       cmdv = ['rev-list']

@@ -41,6 +41,17 @@ class GitRefs(object):
     except KeyError:
       return ''
 
+  def deleted(self, name):
+    if self._phyref is not None:
+      if name in self._phyref:
+        del self._phyref[name]
+
+      if name in self._symref:
+        del self._symref[name]
+
+      if name in self._mtime:
+        del self._mtime[name]
+
   def _NeedUpdate(self):
     for name, mtime in self._mtime.iteritems():
       try:
