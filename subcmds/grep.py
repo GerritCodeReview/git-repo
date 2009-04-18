@@ -33,8 +33,8 @@ class Grep(PagedCommand):
   helpDescription = """
 Search for the specified patterns in all project files.
 
-Options
--------
+Boolean Options
+---------------
 
 The following options can appear as often as necessary to express
 the pattern to locate:
