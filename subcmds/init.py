@@ -35,9 +35,20 @@ The latest repo source code and manifest collection is downloaded
 from the server and is installed in the .repo/ directory in the
 current working directory.
 
-The optional <manifest> argument can be used to specify an alternate
-manifest to be used. If no manifest is specified, the manifest
-default.xml will be used.
+The optional -b argument can be used to select the manifest branch
+to checkout and use.  If no branch is specified, master is assumed.
+
+The optional -m argument can be used to specify an alternate manifest
+to be used. If no manifest is specified, the manifest default.xml
+will be used.
+
+Switching Manifest Branches
+---------------------------
+
+To switch to another manifest branch, `repo init -b otherbranch`
+may be used in an existing client.  However, as this only updates the
+manifest, a subsequent `repo sync` (or `repo sync -d`) is necessary
+to update the working directory files.
 """
 
   def _Options(self, p):
