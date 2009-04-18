@@ -124,7 +124,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       for commit in list:
         print '         %s' % commit
 
-      sys.stdout.write('(y/n)? ')
+      sys.stdout.write('to %s (y/n)? ' % remote.review)
       answer = sys.stdin.readline().strip()
       answer = answer in ('y', 'Y', 'yes', '1', 'true', 't')
 
