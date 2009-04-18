@@ -128,8 +128,8 @@ See 'repo help --all' for a complete list of recognized commands.
         self.wrap.end_paragraph(0)
 
     out = _Out(self.manifest.globalConfig)
-    cmd.OptionParser.print_help()
     out._PrintSection('Summary', 'helpSummary')
+    cmd.OptionParser.print_help()
     out._PrintSection('Description', 'helpDescription')
 
   def _Options(self, p):
