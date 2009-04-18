@@ -1070,9 +1070,7 @@ class Project(object):
       rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
       rev = self.bare_git.rev_parse('%s^0' % rev)
 
-      f = open(os.path.join(dotgit, HEAD), 'wb')
-      f.write("%s\n" % rev)
-      f.close()
+      _lwrite(os.path.join(dotgit, HEAD), '%s\n' % rev)
 
       cmd = ['read-tree', '--reset', '-u']
       cmd.append('-v')
@@ -1167,7 +1165,11 @@ class Project(object):
         path = os.path.join(self._project.gitdir, HEAD)
       else:
         path = os.path.join(self._project.worktree, '.git', HEAD)
-      line = open(path, 'r').read()
+      fd = open(path, 'rb')
+      try:
+        line = fd.read()
+      finally:
+        fd.close()
       if line.startswith('ref: '):
         return line[5:-1]
       return line[:-1]

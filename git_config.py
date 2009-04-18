@@ -219,7 +219,11 @@ class GitConfig(object):
       return None
     try:
       Trace(': unpickle %s', self.file)
-      return cPickle.load(open(self._pickle, 'r'))
+      fd = open(self._pickle, 'rb')
+      try:
+        return cPickle.load(fd)
+      finally:
+        fd.close()
     except IOError:
       os.remove(self._pickle)
       return None
@@ -229,9 +233,11 @@ class GitConfig(object):
 
   def _SavePickle(self, cache):
     try:
-      cPickle.dump(cache,
-                   open(self._pickle, 'w'),
-                   cPickle.HIGHEST_PROTOCOL)
+      fd = open(self._pickle, 'wb')
+      try:
+        cPickle.dump(cache, fd, cPickle.HIGHEST_PROTOCOL)
+      finally:
+        fd.close()
     except IOError:
       os.remove(self._pickle)
     except cPickle.PickleError:

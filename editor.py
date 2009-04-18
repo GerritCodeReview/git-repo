@@ -78,7 +78,11 @@ least one of these before using this command."""
 
       if subprocess.Popen(editor + [path]).wait() != 0:
         raise EditorError()
-      return open(path).read()
+      fd = open(path)
+      try:
+        return read()
+      finally:
+        fd.close()
     finally:
       if fd:
         os.close(fd)
