@@ -1353,7 +1353,25 @@ class MetaProject(Project):
   def HasChanges(self):
     """Has the remote received new commits not yet checked out?
     """
+    if not self.remote or not self.revision:
+      return False
+
+    all = self.bare_ref.all
     rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
-    if self._revlist(not_rev(HEAD), rev):
+    if rev in all:
+      revid = all[rev]
+    else:
+      revid = rev
+
+    head = self.work_git.GetHead()
+    if head.startswith(R_HEADS):
+      try:
+        head = all[head]
+      except KeyError:
+        head = None
+
+    if revid == head:
+      return False
+    elif self._revlist(not_rev(HEAD), rev):
       return True
     return False
