@@ -99,8 +99,6 @@ or in the .git/config within the project.  For example:
   def _SingleBranch(self, branch, people):
     project = branch.project
     name = branch.name
-    date = branch.date
-    list = branch.commits
     remote = project.GetBranch(name).remote
 
     key = 'review.%s.autoupload' % remote.review
@@ -110,6 +108,9 @@ or in the .git/config within the project.  For example:
       _die("upload blocked by %s = false" % key)
 
     if answer is None:
+      date = branch.date
+      list = branch.commits
+
       print 'Upload project %s/:' % project.relpath
       print '  branch %s (%2d commit%s, %s):' % (
                     name,
