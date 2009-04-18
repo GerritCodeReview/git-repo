@@ -49,7 +49,8 @@ revision specified in the manifest.
     pm.end()
 
     if err:
-      err.sort()
       for p in err:
-        print >>sys.stderr, "error: cannot start in %s" % p.relpath
+        print >>sys.stderr,\
+          "error: %s/: cannot start %s" \
+          % (p.relpath, nb)
       sys.exit(1)

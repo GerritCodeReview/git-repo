@@ -15,6 +15,7 @@
 
 import sys
 from command import Command
+from progress import Progress
 
 class Checkout(Command):
   common = True
@@ -35,13 +36,23 @@ The command is equivalent to:
     if not args:
       self.Usage()
 
-    retValue = 0;
+    nb = args[0]
+    err = []
+    all = self.GetProjects(args[1:])
 
-    branch = args[0]
-    for project in self.GetProjects(args[1:]):
-      if not project.CheckoutBranch(branch):
-        retValue = 1;
-        print >>sys.stderr, "error: checking out branch '%s' in %s failed" % (branch, project.name)
+    pm = Progress('Checkout %s' % nb, len(all))
+    for project in all:
+      pm.update()
+      if not project.CheckoutBranch(nb):
+        err.append(project)
+    pm.end()
 
-    if (retValue != 0):
-      sys.exit(retValue);
+    if err:
+      if len(err) == len(all):
+        print >>sys.stderr, 'error: no project has branch %s' % nb
+      else:
+        for p in err:
+          print >>sys.stderr,\
+            "error: %s/: cannot checkout %s" \
+            % (p.relpath, nb)
+      sys.exit(1)

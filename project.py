@@ -779,9 +779,8 @@ class Project(object):
 
     all = self.bare_ref.all
     if (R_HEADS + name) in all:
-      cmd = ['checkout', name, '--']
       return GitCommand(self,
-                        cmd,
+                        ['checkout', name, '--'],
                         capture_stdout = True,
                         capture_stderr = True).Wait() == 0
 
@@ -815,9 +814,8 @@ class Project(object):
       branch.Save()
       return True
 
-    cmd = ['checkout', '-b', branch.name, rev]
     if GitCommand(self,
-                  cmd,
+                  ['checkout', '-b', branch.name, rev],
                   capture_stdout = True,
                   capture_stderr = True).Wait() == 0:
       branch.Save()
@@ -827,16 +825,39 @@ class Project(object):
   def CheckoutBranch(self, name):
     """Checkout a local topic branch.
     """
+    rev = R_HEADS + name
+    head = self.work_git.GetHead()
+    if head == rev:
+      # Already on the branch
+      #
+      return True
 
-    # Be sure the branch exists
+    all = self.bare_ref.all
     try:
-      tip_rev = self.bare_git.rev_parse(R_HEADS + name)
-    except GitError:
-      return False;
+      revid = all[rev]
+    except KeyError:
+      # Branch does not exist in this project
+      #
+      return False
 
-    # Do the checkout
-    cmd = ['checkout', name, '--']
-    return GitCommand(self, cmd).Wait() == 0
+    if head.startswith(R_HEADS):
+      try:
+        head = all[head]
+      except KeyError:
+        head = None
+
+    if head == revid:
+      # Same revision; just update HEAD to point to the new
+      # target branch, but otherwise take no other action.
+      #
+      _lwrite(os.path.join(self.worktree, '.git', HEAD),
+              'ref: %s%s\n' % (R_HEADS, name))
+      return True
+
+    return GitCommand(self,
+                      ['checkout', name, '--'],
+                      capture_stdout = True,
+                      capture_stderr = True).Wait() == 0
 
   def AbandonBranch(self, name):
     """Destroy a local topic branch.
