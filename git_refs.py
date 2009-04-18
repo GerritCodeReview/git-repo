@@ -14,6 +14,8 @@
 # limitations under the License.
 
 import os
+import sys
+from git_command import TRACE
 
 HEAD    = 'HEAD'
 R_HEADS = 'refs/heads/'
@@ -63,6 +65,8 @@ class GitRefs(object):
       self._LoadAll()
 
   def _NeedUpdate(self):
+    if TRACE:
+      print >>sys.stderr, ': scan refs %s' % self._gitdir
     for name, mtime in self._mtime.iteritems():
       try:
         if mtime != os.path.getmtime(os.path.join(self._gitdir, name)):
@@ -72,6 +76,8 @@ class GitRefs(object):
     return False
 
   def _LoadAll(self):
+    if TRACE:
+      print >>sys.stderr, ': load refs %s' % self._gitdir
     self._phyref = {}
     self._symref = {}
     self._mtime = {}
