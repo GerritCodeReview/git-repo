@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import cPickle
 import os
 import re
 import sys
@@ -57,6 +58,9 @@ class GitConfig(object):
     self._cache_dict = None
     self._remotes = {}
     self._branches = {}
+    self._pickle = os.path.join(
+      os.path.dirname(self.file),
+      '.repopickle_' + os.path.basename(self.file))
 
   def Has(self, name, include_defaults = True):
     """Return true if this configuration file has the key.
@@ -170,6 +174,40 @@ class GitConfig(object):
     return self._cache_dict
 
   def _Read(self):
+    d = self._ReadPickle()
+    if d is None:
+      d = self._ReadGit()
+      self._SavePickle(d)
+    return d
+
+  def _ReadPickle(self):
+    try:
+      if os.path.getmtime(self._pickle) \
+      <= os.path.getmtime(self.file):
+        os.remove(self._pickle)
+        return None
+    except OSError:
+      return None
+    try:
+      return cPickle.load(open(self._pickle, 'r'))
+    except IOError:
+      os.remove(self._pickle)
+      return None
+    except cPickle.PickleError:
+      os.remove(self._pickle)
+      return None
+
+  def _SavePickle(self, cache):
+    try:
+      cPickle.dump(cache,
+                   open(self._pickle, 'w'),
+                   cPickle.HIGHEST_PROTOCOL)
+    except IOError:
+      os.remove(self._pickle)
+    except cPickle.PickleError:
+      os.remove(self._pickle)
+
+  def _ReadGit(self):
     d = self._do('--null', '--list')
     c = {}
     while d:
