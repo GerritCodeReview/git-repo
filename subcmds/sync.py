@@ -53,6 +53,35 @@ The -d/--detach option can be used to switch specified projects
 back to the manifest revision.  This option is especially helpful
 if the project is currently on a topic branch, but the manifest
 revision is temporarily needed.
+
+SSH Connections
+---------------
+
+If at least one project remote URL uses an SSH connection (ssh://,
+git+ssh://, or user@host:path syntax) repo will automatically
+enable the SSH ControlMaster option when connecting to that host.
+This feature permits other projects in the same '%prog' session to
+reuse the same SSH tunnel, saving connection setup overheads.
+
+To disable this behavior on UNIX platforms, set the GIT_SSH
+environment variable to 'ssh'.  For example:
+
+  export GIT_SSH=ssh
+  %prog
+
+Compatibility
+~~~~~~~~~~~~~
+
+This feature is automatically disabled on Windows, due to the lack
+of UNIX domain socket support.
+
+This feature is not compatible with url.insteadof rewrites in the
+user's ~/.gitconfig.  '%prog' is currently not able to perform the
+rewrite early enough to establish the ControlMaster tunnel.
+
+If the remote SSH daemon is Gerrit Code Review, version 2.0.10 or
+later is required to fix a server side protocol bug.
+
 """
 
   def _Options(self, p):
