@@ -145,7 +145,7 @@ terminal and are not redirected.
 
     mirror = self.manifest.IsMirror
     out = ForallColoring(self.manifest.manifestProject.config)
-    out.redirect(sys.stderr)
+    out.redirect(sys.stdout)
 
     rc = 0
     first = True
