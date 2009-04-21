@@ -337,11 +337,8 @@ class RefSpec(object):
 _ssh_cache = {}
 _ssh_master = True
 
-def _open_ssh(host, port=None):
+def _open_ssh(host, port):
   global _ssh_master
-
-  if port is None:
-    port = 22
 
   key = '%s:%s' % (host, port)
   if key in _ssh_cache:
@@ -397,6 +394,8 @@ def _preconnect(url):
     host = m.group(2)
     if ':' in host:
       host, port = host.split(':')
+    else:
+      port = 22
     if scheme in ('ssh', 'git+ssh', 'ssh+git'):
       return _open_ssh(host, port)
     return False
@@ -404,7 +403,7 @@ def _preconnect(url):
   m = URI_SCP.match(url)
   if m:
     host = m.group(1)
-    return _open_ssh(host)
+    return _open_ssh(host, 22)
 
 
 class Remote(object):
