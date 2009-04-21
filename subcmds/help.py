@@ -107,7 +107,7 @@ See 'repo help --all' for a complete list of recognized commands.
         body = body.strip()
         body = body.replace('%prog', me)
 
-        asciidoc_hdr = re.compile(r'^\n?([^\n]{1,})\n(={2,}|-{2,})$')
+        asciidoc_hdr = re.compile(r'^\n?([^\n]{1,})\n([=~-]{2,})$')
         for para in body.split("\n\n"):
           if para.startswith(' '):
             self.write('%s', para)
@@ -117,9 +117,19 @@ See 'repo help --all' for a complete list of recognized commands.
 
           m = asciidoc_hdr.match(para)
           if m:
-            self.heading('%s', m.group(1))
+            title = m.group(1)
+            type = m.group(2)
+            if type[0] in ('=', '-'):
+              p = self.heading
+            else:
+              def _p(fmt, *args):
+                self.write('  ')
+                self.heading(fmt, *args)
+              p = _p
+
+            p('%s', title)
             self.nl()
-            self.heading('%s', ''.ljust(len(m.group(1)),'-'))
+            p('%s', ''.ljust(len(title),type[0]))
             self.nl()
             continue
 
