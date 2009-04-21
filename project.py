@@ -682,17 +682,14 @@ class Project(object):
                        branch.name,
                        len(upstream_gain))
         return
-      elif upstream_gain:
-        # We can fast-forward safely.
+      elif pub == head:
+        # All published commits are merged, and thus we are a
+        # strict subset.  We can fast-forward safely.
         #
         def _doff():
           self._FastForward(rev)
           self._CopyFiles()
         syncbuf.later1(self, _doff)
-        return
-      else:
-        # Trivially no changes in the upstream.
-        #
         return
 
     if merge == rev:
