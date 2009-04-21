@@ -1137,6 +1137,7 @@ class Project(object):
       cmd.append('HEAD')
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError("cannot initialize work tree")
+      self._CopyFiles()
 
   def _gitdir_path(self, path):
     return os.path.join(self.gitdir, path)
