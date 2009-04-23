@@ -22,12 +22,17 @@ class Start(Command):
   common = True
   helpSummary = "Start a new branch for development"
   helpUsage = """
-%prog <newbranchname> [<project>...]
+%prog <newbranchname> [--all | <project>...]
 """
   helpDescription = """
 '%prog' begins a new branch of development, starting from the
 revision specified in the manifest.
 """
+
+  def _Options(self, p):
+    p.add_option('--all',
+                 dest='all', action='store_true',
+                 help='begin branch in all projects')
 
   def Execute(self, opt, args):
     if not args:
@@ -39,7 +44,14 @@ revision specified in the manifest.
       sys.exit(1)
 
     err = []
-    all = self.GetProjects(args[1:])
+    projects = []
+    if not opt.all:
+      projects = args[1:]
+      if len(projects) < 1:
+        print >>sys.stderr, "error: at least one project must be specified"
+        sys.exit(1)
+
+    all = self.GetProjects(projects)
 
     pm = Progress('Starting %s' % nb, len(all))
     for project in all:
