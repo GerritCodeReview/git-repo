@@ -346,7 +346,7 @@ def _open_ssh(host, port):
 
   if not _ssh_master \
   or 'GIT_SSH' in os.environ \
-  or sys.platform == 'win32':
+  or sys.platform in ('win32', 'cygwin'):
     # failed earlier, or cygwin ssh can't do this
     #
     return False
