@@ -155,6 +155,19 @@ class ReviewableBranch(object):
                                  self.replace_changes,
                                  people)
 
+  def GetPublishedRefs(self):
+    refs = {}
+    output = self.project.bare_git.ls_remote(
+      self.branch.remote.SshReviewUrl(self.project.UserEmail),
+      'refs/changes/*')
+    for line in output.split('\n'):
+      try:
+        (sha, ref) = line.split()
+        refs[sha] = ref
+      except ValueError:
+        pass
+
+    return refs
 
 class StatusColoring(Coloring):
   def __init__(self, config):
