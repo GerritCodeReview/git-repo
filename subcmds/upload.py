@@ -194,6 +194,18 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       _die("nothing uncommented for upload")
     self._UploadAndReport(todo, people)
 
+  def _FindGerritChange(self, branch):
+    last_pub = branch.project.WasPublished(branch.name)
+    if last_pub is None:
+      return ""
+
+    refs = branch.GetPublishedRefs()
+    try:
+      # refs/changes/XYZ/N --> XYZ
+      return refs.get(last_pub).split('/')[-2]
+    except:
+      return ""
+
   def _ReplaceBranch(self, project, people):
     branch = project.CurrentBranch
     if not branch:
@@ -206,8 +218,14 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
     script = []
     script.append('# Replacing from branch %s' % branch.name)
-    for commit in branch.commits:
-      script.append('[      ] %s' % commit)
+
+    if len(branch.commits) == 1:
+      change = self._FindGerritChange(branch)
+      script.append('[%-6s] %s' % (change, branch.commits[0]))
+    else:
+      for commit in branch.commits:
+        script.append('[      ] %s' % commit)
+
     script.append('')
     script.append('# Insert change numbers in the brackets to add a new patch set.')
     script.append('# To create a new change record, leave the brackets empty.')
