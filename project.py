@@ -155,6 +155,19 @@ class ReviewableBranch(object):
                                  self.replace_changes,
                                  people)
 
+  def FindLastPublishedRemote(self):
+    pub_sha = self.project.WasPublished(self.branch.name)
+    output = self.project.bare_git.ls_remote(self.branch.remote.name)
+    for line in output.split('\n'):
+      try:
+        (sha, ref) = line.split()
+        if sha == pub_sha:
+          return ref
+      except ValueError:
+        pass
+
+    return None
+
 
 class StatusColoring(Coloring):
   def __init__(self, config):
