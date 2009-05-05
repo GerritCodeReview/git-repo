@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAQn///5M\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-05-05T01:43:36Z",
+      "side": 1,
+      "message": "I wonder if we shouldn\u0027t try to translate the remote name into the ssh://...:29418/ URI used by repo upload when we actually go to do the push to the server.\n\nUsing the ssh://...:29418/ URI here would eliminate any mirroring lag caused by how review.source.android.com publishes through android.git.kernel.org.  Using the remote as-is may mean that you have to wait 3-5 minutes after a \"repo upload\" before \"repo upload --replace\" can magically give you a hint.  Using the ssh://...:29418/ URI means you would always be looking at the current data.",
+      "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAQn///5I\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-05-05T01:43:36Z",
+      "side": 1,
+      "message": "We should probably validate ref.startswith(\"refs/changes/\") here so we don\u0027t pick up lines where a change was submitted to a branch already and the branch is pointing exactly at the change.  Such cases wouldn\u0027t be parsed nicely by the caller.",
+      "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAQn///5E\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-05-05T01:43:36Z",
+      "side": 1,
+      "message": "Either validate this assumption here, or define FindLastPublishedRemote so this is always true.  (See my comment in FindPublishedRemote.)",
+      "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAQn///5A\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-05-05T01:43:36Z",
+      "side": 1,
+      "message": "NAK.\n\nThis doesn\u0027t work right when there are say 3 commits in this branch, corresponding to 3 different change numbers.\n\nReally we need to make 3 different calls to FindGerritChange, one per commit, which is horribly slow.  So you need to redefine FindGerritChange (and really FindLastPublishedRemote) to build a map of commit -\u003e change, and then try to use that here.\n\nBasically if we had uploaded 3 commits on this branch, and then rebase it, and now want to replace all 3 commits, you need to form some sort of mapping for commits in the \"git rev-list $branch..refs/published/$branch\" list onto change numbers and existing commits in \"git rev-list $refs/published/$branch..$branch\".  E.g.:\n\n  o--A--B--C  refs/published/devwork\n  \\\n   +-A\u0027-B\u0027-C\u0027 refs/heads/devwork\n\n  $ git ls-remote korg\n  ....\n  A         refs/changes/70/9070/1\n  B         refs/changes/71/9071/1\n  C         refs/changes/72/9072/1\n\nNow form a mapping of A\u0027 to A, and A to 9070, B\u0027 to B and B to 9071, and C\u0027 to C and C to 9072.",
+      "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
