@@ -169,6 +169,23 @@
       "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAQ3///+A\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-05-05T20:48:09Z",
+      "side": 1,
+      "message": "It really is difficult.\n\nIf the two lists are both len()\u003d\u003d1 then you can probably just assume A \u003d A\u0027 and thus the change number for A\u0027 is the change number for A.  This handles the simple case of having only one commit on the branch, which is typical Android workflow.\n\nIf the lists have a len()\u003e1 then you need to do some sort of fuzzy matching.  Perhaps if you get the subject line of each commit and try to match them up by that?  Given only 3 or so commits on each side, the subject lines are probably unique, and probably unmodified between A and A\u0027.  So matching by same subject line would be good enough most of the time to prefill the editor.",
+      "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
