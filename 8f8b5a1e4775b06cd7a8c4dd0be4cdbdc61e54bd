@@ -36,6 +36,23 @@
     },
     {
       "key": {
+        "uuid": "AAAAQ3////I\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-05-05T18:28:48Z",
+      "side": 1,
+      "message": "Look at git_config.py, SshReviewUrl method on the Remote object.  So maybe its just:\n\n  output \u003d self.project.bare_git.ls_remote(self.branch.remote.SshReviewUrl(self.project.UserEmail))",
+      "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAQn///5I\u003d",
         "filename": "project.py",
         "patchSetId": 1
