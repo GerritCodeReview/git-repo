@@ -152,6 +152,23 @@
       "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAQ3///+E\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000492
+      },
+      "writtenOn": "2009-05-05T20:42:05Z",
+      "side": 1,
+      "message": "OK, after much thrashing around, I still don\u0027t understand how to find the relationship between A\u0027 and A.  A to 9070 is straightforward: the commits will be the same.\n\nWhat am I missing here?",
+      "revId": "8f8b5a1e4775b06cd7a8c4dd0be4cdbdc61e54bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
