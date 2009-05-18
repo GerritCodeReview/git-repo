@@ -36,7 +36,7 @@ from editor import Editor
 from error import ManifestInvalidRevisionError
 from error import NoSuchProjectError
 from error import RepoChangedException
-from manifest import Manifest
+from manifest_xml import XmlManifest
 from pager import RunPager
 
 from subcmds import all as all_commands
@@ -97,7 +97,7 @@ class _Repo(object):
       sys.exit(1)
 
     cmd.repodir = self.repodir
-    cmd.manifest = Manifest(cmd.repodir)
+    cmd.manifest = XmlManifest(cmd.repodir)
     Editor.globalConfig = cmd.manifest.globalConfig
 
     if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:

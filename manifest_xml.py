@@ -32,7 +32,7 @@ class _Default(object):
   remote = None
 
 
-class Manifest(object):
+class XmlManifest(object):
   """manages the repo configuration file"""
 
   def __init__(self, repodir):

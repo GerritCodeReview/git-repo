@@ -505,7 +505,7 @@ def _RunSelf(wrapper_path):
   my_git = os.path.join(my_dir, '.git')
 
   if os.path.isfile(my_main) and os.path.isdir(my_git):
-    for name in ['manifest.py',
+    for name in ['git_config.py',
                  'project.py',
                  'subcmds']:
       if not os.path.exists(os.path.join(my_dir, name)):
