@@ -63,11 +63,6 @@ class Branches(Command):
 Summarizes the currently available topic branches.
 """
 
-  def _Options(self, p):
-    p.add_option('-a', '--all',
-                 dest='all', action='store_true',
-                 help='show all branches, not just the majority')
-
   def Execute(self, opt, args):
     projects = self.GetProjects(args)
     out = BranchColoring(self.manifest.manifestProject.config)
@@ -83,18 +78,6 @@ Summarizes the currently available topic branches.
 
     names = all.keys()
     names.sort()
-
-    if not opt.all and not args:
-      # No -a and no specific projects listed; try to filter the
-      # results down to only the majority of projects.
-      #
-      n = []
-      for name in names:
-        i = all[name]
-        if i.IsCurrent \
-        or 80 <= (100 * len(i.projects)) / project_cnt:
-          n.append(name)
-      names = n
 
     if not names:
       print >>sys.stderr, '   (no branches)'
@@ -126,7 +109,7 @@ Summarizes the currently available topic branches.
       hdr('%c%c %-*s' % (current, published, width, name))
       out.write(' |')
 
-      if in_cnt < project_cnt and (in_cnt == 1 or opt.all):
+      if in_cnt < project_cnt and (in_cnt == 1):
         fmt = out.write
         paths = []
         if in_cnt < project_cnt - in_cnt: 
