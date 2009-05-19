@@ -22,4 +22,3 @@ class Remote(object):
     self.fetchUrl = fetch
     self.reviewUrl = review
     self.projectName = projectName
-    self.requiredCommits = []

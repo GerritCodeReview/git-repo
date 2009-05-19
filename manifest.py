@@ -307,11 +307,6 @@ class Manifest(object):
                fetch=fetch,
                review=review,
                projectName=projectName)
-
-    for n in node.childNodes:
-      if n.nodeName == 'require':
-        r.requiredCommits.append(self._reqatt(n, 'commit'))
-
     return r
 
   def _ParseDefault(self, node):
