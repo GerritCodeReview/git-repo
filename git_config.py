@@ -172,6 +172,11 @@ class GitConfig(object):
       self._branches[b.name] = b
     return b
 
+  def GetSubSections(self, section):
+    """List all subsection names matching $section.*.*
+    """
+    return self._sections.get(section, set())
+
   def HasSection(self, section, subsection = ''):
     """Does at least one key in section.subsection exist?
     """
