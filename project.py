@@ -26,7 +26,6 @@ from git_command import GitCommand
 from git_config import GitConfig, IsId
 from error import GitError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
-from remote import Remote
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
@@ -212,6 +211,14 @@ class _CopyFile:
       except IOError:
         _error('Cannot copy file %s to %s', src, dest)
 
+class RemoteSpec(object):
+  def __init__(self,
+               name,
+               url = None,
+               review = None):
+    self.name = name
+    self.url = url
+    self.review = review
 
 class Project(object):
   def __init__(self,
@@ -1061,17 +1068,11 @@ class Project(object):
           raise
 
   def _InitRemote(self):
-    if self.remote.fetchUrl:
+    if self.remote.url:
       remote = self.GetRemote(self.remote.name)
-
-      url = self.remote.fetchUrl
-      while url.endswith('/'):
-        url = url[:-1]
-      url += '/%s.git' % self.name
-      remote.url = url
-      remote.review = self.remote.reviewUrl
-      if remote.projectname is None:
-        remote.projectname = self.name
+      remote.url = self.remote.url
+      remote.review = self.remote.review
+      remote.projectname = self.name
 
       if self.worktree:
         remote.ResetFetch(mirror=False)
@@ -1426,7 +1427,7 @@ class MetaProject(Project):
                      name = name,
                      gitdir = gitdir,
                      worktree = worktree,
-                     remote = Remote('origin'),
+                     remote = RemoteSpec('origin'),
                      relpath = '.repo/%s' % name,
                      revision = 'refs/heads/master')
 

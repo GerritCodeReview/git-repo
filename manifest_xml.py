@@ -18,8 +18,7 @@ import sys
 import xml.dom.minidom
 
 from git_config import GitConfig, IsId
-from project import Project, MetaProject, R_HEADS, HEAD
-from remote import Remote
+from project import RemoteSpec, Project, MetaProject, R_HEADS, HEAD
 from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
@@ -31,6 +30,21 @@ class _Default(object):
   revision = None
   remote = None
 
+class _XmlRemote(object):
+  def __init__(self,
+               name,
+               fetch=None,
+               review=None):
+    self.name = name
+    self.fetchUrl = fetch
+    self.reviewUrl = review
+
+  def ToRemoteSpec(self, projectName):
+    url = self.fetchUrl
+    while url.endswith('/'):
+      url = url[:-1]
+    url += '/%s.git' % projectName
+    return RemoteSpec(self.name, url, self.reviewUrl)
 
 class XmlManifest(object):
   """manages the repo configuration file"""
@@ -257,7 +271,7 @@ class XmlManifest(object):
 
     if name is None:
       s = m_url.rindex('/') + 1
-      remote = Remote('origin', fetch = m_url[:s])
+      remote = _XmlRemote('origin', m_url[:s])
       name = m_url[s:]
 
     if name.endswith('.git'):
@@ -268,7 +282,7 @@ class XmlManifest(object):
       gitdir = os.path.join(self.topdir, '%s.git' % name)
       project = Project(manifest = self,
                         name = name,
-                        remote = remote,
+                        remote = remote.ToRemoteSpec(name),
                         gitdir = gitdir,
                         worktree = None,
                         relpath = None,
@@ -284,7 +298,7 @@ class XmlManifest(object):
     review = node.getAttribute('review')
     if review == '':
       review = None
-    return Remote(name=name, fetch=fetch, review=review)
+    return _XmlRemote(name, fetch, review)
 
   def _ParseDefault(self, node):
     """
@@ -337,7 +351,7 @@ class XmlManifest(object):
 
     project = Project(manifest = self,
                       name = name,
-                      remote = remote,
+                      remote = remote.ToRemoteSpec(name),
                       gitdir = gitdir,
                       worktree = worktree,
                       relpath = path,

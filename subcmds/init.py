@@ -19,7 +19,6 @@ import sys
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
-from remote import Remote
 from project import SyncBuffer
 from git_command import git, MIN_GIT_VERSION
 
