@@ -23,31 +23,22 @@ following DTD:
     <!ELEMENT manifest (remote*,
                         default?,
                         remove-project*,
-                        project*,
-                        add-remote*)>
+                        project*)>
   
     <!ELEMENT remote (EMPTY)>
     <!ATTLIST remote name         ID    #REQUIRED>
     <!ATTLIST remote fetch        CDATA #REQUIRED>
     <!ATTLIST remote review       CDATA #IMPLIED>
-    <!ATTLIST remote project-name CDATA #IMPLIED>
   
     <!ELEMENT default (EMPTY)>
     <!ATTLIST default remote   IDREF #IMPLIED>
     <!ATTLIST default revision CDATA #IMPLIED>
   
-    <!ELEMENT project (remote*)>
+    <!ELEMENT project (EMPTY)>
     <!ATTLIST project name     CDATA #REQUIRED>
     <!ATTLIST project path     CDATA #IMPLIED>
     <!ATTLIST project remote   IDREF #IMPLIED>
     <!ATTLIST project revision CDATA #IMPLIED>
-  
-    <!ELEMENT add-remote (EMPTY)>
-    <!ATTLIST add-remote to-project   ID    #REQUIRED>
-    <!ATTLIST add-remote name         ID    #REQUIRED>
-    <!ATTLIST add-remote fetch        CDATA #REQUIRED>
-    <!ATTLIST add-remote review       CDATA #IMPLIED>
-    <!ATTLIST add-remote project-name CDATA #IMPLIED>
   
     <!ELEMENT remove-project (EMPTY)>
     <!ATTLIST remove-project name  CDATA #REQUIRED>
@@ -81,25 +72,6 @@ form the actual URL used to clone the project.
 Attribute `review`: Hostname of the Gerrit server where reviews
 are uploaded to by `repo upload`.  This attribute is optional;
 if not specified then `repo upload` will not function.
-
-Attribute `project-name`: Specifies the name of this project used
-by the review server given in the review attribute of this element.
-Only permitted when the remote element is nested inside of a project
-element (see below).  If not given, defaults to the name supplied
-in the project's name attribute.
-
-Element add-remote
-------------------
-
-Adds a remote to an existing project, whose name is given by the
-to-project attribute.  This is functionally equivalent to nesting
-a remote element under the project, but has the advantage that it
-can be specified in the uesr's `local_manifest.xml` to add a remote
-to a project declared by the normal manifest.
-
-The element can be used to add a fork of an existing project that
-the user needs to work with.
-
 
 Element default
 ---------------
@@ -151,13 +123,6 @@ to track for this project.  Names can be relative to refs/heads
 Tags and/or explicit SHA-1s should work in theory, but have not
 been extensively tested.  If not supplied the revision given by
 the default element is used.
-
-Child element `remote`: Described like the top-level remote element,
-but adds an additional remote to only this project.  These additional
-remotes are fetched from first on the initial `repo sync`, causing
-the majority of the project's object database to be obtained through
-these additional remotes.
-
 
 Element remove-project
 ----------------------

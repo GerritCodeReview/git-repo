@@ -230,7 +230,6 @@ class Project(object):
     self.relpath = relpath
     self.revision = revision
     self.snapshots = {}
-    self.extraRemotes = {}
     self.copyfiles = []
     self.config = GitConfig.ForRepository(
                     gitdir = self.gitdir,
@@ -579,9 +578,6 @@ class Project(object):
       self._InitGitDir()
 
     self._InitRemote()
-    for r in self.extraRemotes.values():
-      if not self._RemoteFetch(r.name):
-        return False
     if not self._RemoteFetch():
       return False
 
@@ -1081,17 +1077,6 @@ class Project(object):
         remote.ResetFetch(mirror=False)
       else:
         remote.ResetFetch(mirror=True)
-      remote.Save()
-
-    for r in self.extraRemotes.values():
-      remote = self.GetRemote(r.name)
-      remote.url = r.fetchUrl
-      remote.review = r.reviewUrl
-      if r.projectName:
-        remote.projectname = r.projectName
-      elif remote.projectname is None:
-        remote.projectname = self.name
-      remote.ResetFetch()
       remote.Save()
 
   def _InitMRef(self):
