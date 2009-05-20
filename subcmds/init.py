@@ -21,6 +21,7 @@ from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from project import SyncBuffer
 from git_command import git_require, MIN_GIT_VERSION
+from manifest_xml import XmlManifest
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
@@ -36,10 +37,6 @@ current working directory.
 
 The optional -b argument can be used to select the manifest branch
 to checkout and use.  If no branch is specified, master is assumed.
-
-The optional -m argument can be used to specify an alternate manifest
-to be used. If no manifest is specified, the manifest default.xml
-will be used.
 
 Switching Manifest Branches
 ---------------------------
@@ -65,9 +62,11 @@ to update the working directory files.
     g.add_option('-b', '--manifest-branch',
                  dest='manifest_branch',
                  help='manifest branch or revision', metavar='REVISION')
-    g.add_option('-m', '--manifest-name',
-                 dest='manifest_name', default='default.xml',
-                 help='initial manifest file', metavar='NAME.xml')
+    if isinstance(self.manifest, XmlManifest) \
+    or not self.manifest.manifestProject.Exists:
+      g.add_option('-m', '--manifest-name',
+                   dest='manifest_name', default='default.xml',
+                   help='initial manifest file', metavar='NAME.xml')
     g.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
@@ -216,7 +215,8 @@ to update the working directory files.
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
     self._SyncManifest(opt)
-    self._LinkManifest(opt.manifest_name)
+    if isinstance(self.manifest, XmlManifest):
+      self._LinkManifest(opt.manifest_name)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       self._ConfigureUser()
