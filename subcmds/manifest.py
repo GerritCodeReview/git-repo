@@ -17,6 +17,7 @@ import os
 import sys
 
 from command import PagedCommand
+from manifest_xml import XmlManifest
 
 def _doc(name):
   r = os.path.dirname(__file__)
@@ -31,7 +32,7 @@ class Manifest(PagedCommand):
   common = False
   helpSummary = "Manifest inspection utility"
   helpUsage = """
-%prog [-o {-|NAME.xml} [-r]]
+%prog [options]
 """
   _xmlHelp = """
 
@@ -50,13 +51,14 @@ in a Git repository for use during future 'repo init' invocations.
     return help
 
   def _Options(self, p):
-    p.add_option('-r', '--revision-as-HEAD',
-                 dest='peg_rev', action='store_true',
-                 help='Save revisions as current HEAD')
-    p.add_option('-o', '--output-file',
-                 dest='output_file',
-                 help='File to save the manifest to',
-                 metavar='-|NAME.xml')
+    if isinstance(self.manifest, XmlManifest):
+      p.add_option('-r', '--revision-as-HEAD',
+                   dest='peg_rev', action='store_true',
+                   help='Save revisions as current HEAD')
+      p.add_option('-o', '--output-file',
+                   dest='output_file',
+                   help='File to save the manifest to',
+                   metavar='-|NAME.xml')
 
   def _Output(self, opt):
     if opt.output_file == '-':
@@ -73,9 +75,10 @@ in a Git repository for use during future 'repo init' invocations.
     if args:
       self.Usage()
 
-    if opt.output_file is not None:
-      self._Output(opt)
-      return
+    if  isinstance(self.manifest, XmlManifest) \
+    and opt.output_file is not None:
+        self._Output(opt)
+        return
 
     print >>sys.stderr, 'error: no operation to perform'
     print >>sys.stderr, 'error: see repo help manifest'
