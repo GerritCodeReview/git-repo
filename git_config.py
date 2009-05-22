@@ -56,16 +56,20 @@ class GitConfig(object):
     return cls(file = os.path.join(gitdir, 'config'),
                defaults = defaults)
 
-  def __init__(self, file, defaults=None):
+  def __init__(self, file, defaults=None, pickleFile=None):
     self.file = file
     self.defaults = defaults
     self._cache_dict = None
     self._section_dict = None
     self._remotes = {}
     self._branches = {}
-    self._pickle = os.path.join(
-      os.path.dirname(self.file),
-      '.repopickle_' + os.path.basename(self.file))
+
+    if pickleFile is None:
+      self._pickle = os.path.join(
+        os.path.dirname(self.file),
+        '.repopickle_' + os.path.basename(self.file))
+    else:
+      self._pickle = pickleFile
 
   def Has(self, name, include_defaults = True):
     """Return true if this configuration file has the key.
