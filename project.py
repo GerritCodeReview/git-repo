@@ -228,14 +228,23 @@ class Project(object):
                gitdir,
                worktree,
                relpath,
-               revision):
+               revisionExpr,
+               revisionId):
     self.manifest = manifest
     self.name = name
     self.remote = remote
     self.gitdir = gitdir
     self.worktree = worktree
     self.relpath = relpath
-    self.revision = revision
+    self.revisionExpr = revisionExpr
+
+    if   revisionId is None \
+     and revisionExpr \
+     and IsId(revisionExpr):
+      self.revisionId = revisionExpr
+    else:
+      self.revisionId = revisionId
+
     self.snapshots = {}
     self.copyfiles = []
     self.config = GitConfig.ForRepository(
@@ -605,6 +614,23 @@ class Project(object):
     for file in self.copyfiles:
       file._Copy()
 
+  def GetRevisionId(self, all=None):
+    if self.revisionId:
+      return self.revisionId
+
+    rem = self.GetRemote(self.remote.name)
+    rev = rem.ToLocal(self.revisionExpr)
+
+    if all is not None and rev in all:
+      return all[rev]
+
+    try:
+      return self.bare_git.rev_parse('--verify', '%s^0' % rev)
+    except GitError:
+      raise ManifestInvalidRevisionError(
+        'revision %s in %s not found' % (self.revisionExpr,
+                                         self.name))
+
   def Sync_LocalHalf(self, syncbuf):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
@@ -613,19 +639,7 @@ class Project(object):
     all = self.bare_ref.all
     self.CleanPublishedCache(all)
 
-    rem = self.GetRemote(self.remote.name)
-    rev = rem.ToLocal(self.revision)
-    if rev in all:
-      revid = all[rev]
-    elif IsId(rev):
-      revid = rev
-    else:
-      try:
-        revid = self.bare_git.rev_parse('--verify', '%s^0' % rev)
-      except GitError:
-        raise ManifestInvalidRevisionError(
-          'revision %s in %s not found' % (self.revision, self.name))
-
+    revid = self.GetRevisionId(all)
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
       branch = head[len(R_HEADS):]
@@ -649,11 +663,11 @@ class Project(object):
         #
         return
 
-      lost = self._revlist(not_rev(rev), HEAD)
+      lost = self._revlist(not_rev(revid), HEAD)
       if lost:
         syncbuf.info(self, "discarding %d commits", len(lost))
       try:
-        self._Checkout(rev, quiet=True)
+        self._Checkout(revid, quiet=True)
       except GitError, e:
         syncbuf.fail(self, e)
         return
@@ -666,9 +680,8 @@ class Project(object):
       return
 
     branch = self.GetBranch(branch)
-    merge = branch.LocalMerge
 
-    if not merge:
+    if not branch.LocalMerge:
       # The current branch has no tracking configuration.
       # Jump off it to a deatched HEAD.
       #
@@ -676,17 +689,17 @@ class Project(object):
                    "leaving %s; does not track upstream",
                    branch.name)
       try:
-        self._Checkout(rev, quiet=True)
+        self._Checkout(revid, quiet=True)
       except GitError, e:
         syncbuf.fail(self, e)
         return
       self._CopyFiles()
       return
 
-    upstream_gain = self._revlist(not_rev(HEAD), rev)
+    upstream_gain = self._revlist(not_rev(HEAD), revid)
     pub = self.WasPublished(branch.name, all)
     if pub:
-      not_merged = self._revlist(not_rev(rev), pub)
+      not_merged = self._revlist(not_rev(revid), pub)
       if not_merged:
         if upstream_gain:
           # The user has published this branch and some of those
@@ -703,24 +716,15 @@ class Project(object):
         # strict subset.  We can fast-forward safely.
         #
         def _doff():
-          self._FastForward(rev)
+          self._FastForward(revid)
           self._CopyFiles()
         syncbuf.later1(self, _doff)
         return
 
-    # If the upstream switched on us, warn the user.
-    #
-    if merge != rev:
-      syncbuf.info(self, "manifest switched %s...%s", merge, rev)
-
     # Examine the local commits not in the remote.  Find the
     # last one attributed to this user, if any.
     #
-    local_changes = self._revlist(
-      not_rev(merge),
-      HEAD,
-      format='%H %ce')
-
+    local_changes = self._revlist(not_rev(revid), HEAD, format='%H %ce')
     last_mine = None
     cnt_mine = 0
     for commit in local_changes:
@@ -738,6 +742,19 @@ class Project(object):
       syncbuf.fail(self, _DirtyError())
       return
 
+    # If the upstream switched on us, warn the user.
+    #
+    if branch.merge != self.revisionExpr:
+      if branch.merge and self.revisionExpr:
+        syncbuf.info(self,
+                     'manifest switched %s...%s',
+                     branch.merge,
+                     self.revisionExpr)
+      elif branch.merge:
+        syncbuf.info(self,
+                     'manifest no longer tracks %s',
+                     branch.merge)
+
     if cnt_mine < len(local_changes):
       # Upstream rebased.  Not everything in HEAD
       # was created by this user.
@@ -746,25 +763,25 @@ class Project(object):
                    "discarding %d commits removed from upstream",
                    len(local_changes) - cnt_mine)
 
-    branch.remote = rem
-    branch.merge = self.revision
+    branch.remote = self.GetRemote(self.remote.name)
+    branch.merge = self.revisionExpr
     branch.Save()
 
     if cnt_mine > 0:
       def _dorebase():
-        self._Rebase(upstream = '%s^1' % last_mine, onto = rev)
+        self._Rebase(upstream = '%s^1' % last_mine, onto = revid)
         self._CopyFiles()
       syncbuf.later2(self, _dorebase)
     elif local_changes:
       try:
-        self._ResetHard(rev)
+        self._ResetHard(revid)
         self._CopyFiles()
       except GitError, e:
         syncbuf.fail(self, e)
         return
     else:
       def _doff():
-        self._FastForward(rev)
+        self._FastForward(revid)
         self._CopyFiles()
       syncbuf.later1(self, _doff)
 
@@ -786,7 +803,7 @@ class Project(object):
     if GitCommand(self, cmd, bare=True).Wait() != 0:
       return None
     return DownloadedChange(self,
-                            remote.ToLocal(self.revision),
+                            self.GetRevisionId(),
                             change_id,
                             patch_id,
                             self.bare_git.rev_parse('FETCH_HEAD'))
@@ -810,15 +827,8 @@ class Project(object):
 
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote(self.remote.name)
-    branch.merge = self.revision
-
-    rev = branch.LocalMerge
-    if rev in all:
-      revid = all[rev]
-    elif IsId(rev):
-      revid = rev
-    else:
-      revid = None
+    branch.merge = self.revisionExpr
+    revid = self.GetRevisionId(all)
 
     if head.startswith(R_HEADS):
       try:
@@ -839,7 +849,7 @@ class Project(object):
       return True
 
     if GitCommand(self,
-                  ['checkout', '-b', branch.name, rev],
+                  ['checkout', '-b', branch.name, revid],
                   capture_stdout = True,
                   capture_stderr = True).Wait() == 0:
       branch.Save()
@@ -900,19 +910,12 @@ class Project(object):
       #
       head = all[head]
 
-      rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
-      if rev in all:
-        revid = all[rev]
-      elif IsId(rev):
-        revid = rev
-      else:
-        revid = None
-
-      if revid and head == revid:
+      revid = self.GetRevisionId(all)
+      if head == revid:
         _lwrite(os.path.join(self.worktree, '.git', HEAD),
                 '%s\n' % revid)
       else:
-        self._Checkout(rev, quiet=True)
+        self._Checkout(revid, quiet=True)
 
     return GitCommand(self,
                       ['branch', '-D', name],
@@ -931,7 +934,7 @@ class Project(object):
         if cb is None or name != cb:
           kill.append(name)
 
-    rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
+    rev = self.GetRevisionId(left)
     if cb is not None \
        and not self._revlist(HEAD + '...' + rev) \
        and not self.IsDirty(consider_untracked = False):
@@ -1081,24 +1084,25 @@ class Project(object):
 
   def _InitMRef(self):
     if self.manifest.branch:
-      msg = 'manifest set to %s' % self.revision
-      ref = R_M + self.manifest.branch
-      cur = self.bare_ref.symref(ref)
-
-      if IsId(self.revision):
-        if cur != '' or self.bare_ref.get(ref) != self.revision:
-          dst = self.revision + '^0'
-          self.bare_git.UpdateRef(ref, dst, message = msg, detach = True)
-      else:
-        remote = self.GetRemote(self.remote.name)
-        dst = remote.ToLocal(self.revision)
-        if cur != dst:
-          self.bare_git.symbolic_ref('-m', msg, ref, dst)
+      self._InitAnyMRef(R_M + self.manifest.branch)
 
   def _InitMirrorHead(self):
-    dst = self.GetRemote(self.remote.name).ToLocal(self.revision)
-    msg = 'manifest set to %s' % self.revision
-    self.bare_git.SetHead(dst, message=msg)
+    self._InitAnyMRef(self, HEAD)
+
+  def _InitAnyMRef(self, ref):
+    cur = self.bare_ref.symref(ref)
+
+    if self.revisionId:
+      if cur != '' or self.bare_ref.get(ref) != self.revisionId:
+        msg = 'manifest set to %s' % self.revisionId
+        dst = self.revisionId + '^0'
+        self.bare_git.UpdateRef(ref, dst, message = msg, detach = True)
+    else:
+      remote = self.GetRemote(self.remote.name)
+      dst = remote.ToLocal(self.revisionExpr)
+      if cur != dst:
+        msg = 'manifest set to %s' % self.revisionExpr
+        self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
   def _InitWorkTree(self):
     dotgit = os.path.join(self.worktree, '.git')
@@ -1125,14 +1129,11 @@ class Project(object):
           else:
             raise
 
-      rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
-      rev = self.bare_git.rev_parse('%s^0' % rev)
-
-      _lwrite(os.path.join(dotgit, HEAD), '%s\n' % rev)
+      _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
 
       cmd = ['read-tree', '--reset', '-u']
       cmd.append('-v')
-      cmd.append('HEAD')
+      cmd.append(HEAD)
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError("cannot initialize work tree")
       self._CopyFiles()
@@ -1433,7 +1434,8 @@ class MetaProject(Project):
                      worktree = worktree,
                      remote = RemoteSpec('origin'),
                      relpath = '.repo/%s' % name,
-                     revision = 'refs/heads/master')
+                     revisionExpr = 'refs/heads/master',
+                     revisionId = None)
 
   def PreSync(self):
     if self.Exists:
@@ -1441,7 +1443,8 @@ class MetaProject(Project):
       if cb:
         base = self.GetBranch(cb).merge
         if base:
-          self.revision = base
+          self.revisionExpr = base
+          self.revisionId = None
 
   @property
   def LastFetch(self):
@@ -1455,16 +1458,11 @@ class MetaProject(Project):
   def HasChanges(self):
     """Has the remote received new commits not yet checked out?
     """
-    if not self.remote or not self.revision:
+    if not self.remote or not self.revisionExpr:
       return False
 
     all = self.bare_ref.all
-    rev = self.GetRemote(self.remote.name).ToLocal(self.revision)
-    if rev in all:
-      revid = all[rev]
-    else:
-      revid = rev
-
+    revid = self.GetRevisionId(all)
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
       try:
@@ -1474,6 +1472,6 @@ class MetaProject(Project):
 
     if revid == head:
       return False
-    elif self._revlist(not_rev(HEAD), rev):
+    elif self._revlist(not_rev(HEAD), revid):
       return True
     return False

@@ -160,10 +160,8 @@ terminal and are not redirected.
       setenv('REPO_PROJECT', project.name)
       setenv('REPO_PATH', project.relpath)
       setenv('REPO_REMOTE', project.remote.name)
-      setenv('REPO_LREV', project\
-        .GetRemote(project.remote.name)\
-        .ToLocal(project.revision))
-      setenv('REPO_RREV', project.revision)
+      setenv('REPO_LREV', project.GetRevisionId())
+      setenv('REPO_RREV', project.revisionExpr)
 
       if mirror:
         setenv('GIT_DIR', project.gitdir)

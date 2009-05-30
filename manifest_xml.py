@@ -27,7 +27,7 @@ LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 class _Default(object):
   """Project defaults within the manifest."""
 
-  revision = None
+  revisionExpr = None
   remote = None
 
 class _XmlRemote(object):
@@ -116,9 +116,9 @@ class XmlManifest(object):
     if d.remote:
       have_default = True
       e.setAttribute('remote', d.remote.name)
-    if d.revision:
+    if d.revisionExpr:
       have_default = True
-      e.setAttribute('revision', d.revision)
+      e.setAttribute('revision', d.revisionExpr)
     if have_default:
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
@@ -138,12 +138,12 @@ class XmlManifest(object):
       if peg_rev:
         if self.IsMirror:
           e.setAttribute('revision',
-                         p.bare_git.rev_parse(p.revision + '^0'))
+                         p.bare_git.rev_parse(p.revisionExpr + '^0'))
         else:
           e.setAttribute('revision',
                          p.work_git.rev_parse(HEAD + '^0'))
-      elif not d.revision or p.revision != d.revision:
-        e.setAttribute('revision', p.revision)
+      elif not d.revisionExpr or p.revisionExpr != d.revisionExpr:
+        e.setAttribute('revision', p.revisionExpr)
 
       for c in p.copyfiles:
         ce = doc.createElement('copyfile')
@@ -286,7 +286,8 @@ class XmlManifest(object):
                         gitdir = gitdir,
                         worktree = None,
                         relpath = None,
-                        revision = m.revision)
+                        revisionExpr = m.revisionExpr,
+                        revisionId = None)
       self._projects[project.name] = project
 
   def _ParseRemote(self, node):
@@ -306,9 +307,9 @@ class XmlManifest(object):
     """
     d = _Default()
     d.remote = self._get_remote(node)
-    d.revision = node.getAttribute('revision')
-    if d.revision == '':
-      d.revision = None
+    d.revisionExpr = node.getAttribute('revision')
+    if d.revisionExpr == '':
+      d.revisionExpr = None
     return d
 
   def _ParseProject(self, node):
@@ -325,10 +326,10 @@ class XmlManifest(object):
             "no remote for project %s within %s" % \
             (name, self.manifestFile)
 
-    revision = node.getAttribute('revision')
-    if not revision:
-      revision = self._default.revision
-    if not revision:
+    revisionExpr = node.getAttribute('revision')
+    if not revisionExpr:
+      revisionExpr = self._default.revisionExpr
+    if not revisionExpr:
       raise ManifestParseError, \
             "no revision for project %s within %s" % \
             (name, self.manifestFile)
@@ -355,7 +356,8 @@ class XmlManifest(object):
                       gitdir = gitdir,
                       worktree = worktree,
                       relpath = path,
-                      revision = revision)
+                      revisionExpr = revisionExpr,
+                      revisionId = None)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':

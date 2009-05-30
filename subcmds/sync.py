@@ -207,17 +207,14 @@ def _VerifyTag(project):
 warning: Cannot automatically authenticate repo."""
     return True
 
-  remote = project.GetRemote(project.remote.name)
-  ref = remote.ToLocal(project.revision)
-
   try:
-    cur = project.bare_git.describe(ref)
+    cur = project.bare_git.describe(project.GetRevisionId())
   except GitError:
     cur = None
 
   if not cur \
      or re.compile(r'^.*-[0-9]{1,}-g[0-9a-f]{1,}$').match(cur):
-    rev = project.revision
+    rev = project.revisionExpr
     if rev.startswith(R_HEADS):
       rev = rev[len(R_HEADS):]
 

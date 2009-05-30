@@ -113,12 +113,12 @@ to update the working directory files.
       m._InitGitDir()
 
       if opt.manifest_branch:
-        m.revision = opt.manifest_branch
+        m.revisionExpr = opt.manifest_branch
       else:
-        m.revision = 'refs/heads/master'
+        m.revisionExpr = 'refs/heads/master'
     else:
       if opt.manifest_branch:
-        m.revision = opt.manifest_branch
+        m.revisionExpr = opt.manifest_branch
       else:
         m.PreSync()
 
