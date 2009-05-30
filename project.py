@@ -708,28 +708,28 @@ class Project(object):
         syncbuf.later1(self, _doff)
         return
 
-    if merge == rev:
-      try:
-        old_merge = self.bare_git.rev_parse('%s@{1}' % merge)
-      except GitError:
-        old_merge = merge
-      if old_merge == '0000000000000000000000000000000000000000' \
-         or old_merge == '':
-        old_merge = merge
-    else:
-      # The upstream switched on us.  Time to cross our fingers
-      # and pray that the old upstream also wasn't in the habit
-      # of rebasing itself.
-      #
+    # If the upstream switched on us, warn the user.
+    #
+    if merge != rev:
       syncbuf.info(self, "manifest switched %s...%s", merge, rev)
-      old_merge = merge
 
-    if rev == old_merge:
-      upstream_lost = []
-    else:
-      upstream_lost = self._revlist(not_rev(rev), old_merge)
+    # Examine the local commits not in the remote.  Find the
+    # last one attributed to this user, if any.
+    #
+    local_changes = self._revlist(
+      not_rev(merge),
+      HEAD,
+      format='%H %ce')
 
-    if not upstream_lost and not upstream_gain:
+    last_mine = None
+    cnt_mine = 0
+    for commit in local_changes:
+      commit_id, committer_email = commit.split(' ', 2)
+      if committer_email == self.UserEmail:
+        last_mine = commit_id
+        cnt_mine += 1
+
+    if not local_changes and not upstream_gain:
       # Trivially no changes caused by the upstream.
       #
       return
@@ -738,25 +738,24 @@ class Project(object):
       syncbuf.fail(self, _DirtyError())
       return
 
-    if upstream_lost:
+    if cnt_mine < len(local_changes):
       # Upstream rebased.  Not everything in HEAD
-      # may have been caused by the user.
+      # was created by this user.
       #
       syncbuf.info(self,
                    "discarding %d commits removed from upstream",
-                   len(upstream_lost))
+                   len(local_changes) - cnt_mine)
 
     branch.remote = rem
     branch.merge = self.revision
     branch.Save()
 
-    my_changes = self._revlist(not_rev(old_merge), HEAD)
-    if my_changes:
+    if cnt_mine > 0:
       def _dorebase():
-        self._Rebase(upstream = old_merge, onto = rev)
+        self._Rebase(upstream = '%s^1' % last_mine, onto = rev)
         self._CopyFiles()
       syncbuf.later2(self, _dorebase)
-    elif upstream_lost:
+    elif local_changes:
       try:
         self._ResetHard(rev)
         self._CopyFiles()
@@ -1141,11 +1140,11 @@ class Project(object):
   def _gitdir_path(self, path):
     return os.path.join(self.gitdir, path)
 
-  def _revlist(self, *args):
-    cmd = []
-    cmd.extend(args)
-    cmd.append('--')
-    return self.work_git.rev_list(*args)
+  def _revlist(self, *args, **kw):
+    a = []
+    a.extend(args)
+    a.append('--')
+    return self.work_git.rev_list(*a, **kw)
 
   @property
   def _allrefs(self):
@@ -1270,8 +1269,11 @@ class Project(object):
       self.update_ref('-d', name, old)
       self._project.bare_ref.deleted(name)
 
-    def rev_list(self, *args):
-      cmdv = ['rev-list']
+    def rev_list(self, *args, **kw):
+      if 'format' in kw:
+        cmdv = ['log', '--pretty=format:%s' % kw['format']]
+      else:
+        cmdv = ['rev-list']
       cmdv.extend(args)
       p = GitCommand(self._project,
                      cmdv,
@@ -1280,7 +1282,9 @@ class Project(object):
                      capture_stderr = True)
       r = []
       for line in p.process.stdout:
-        r.append(line[:-1])
+        if line[-1] == '\n':
+          line = line[:-1]
+        r.append(line)
       if p.Wait() != 0:
         raise GitError('%s rev-list %s: %s' % (
                        self._project.name,
