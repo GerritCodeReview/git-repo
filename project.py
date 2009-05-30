@@ -605,6 +605,13 @@ class Project(object):
     for file in self.copyfiles:
       file._Copy()
 
+  def DeleteObsoletePaths(self, paths):
+    for path in paths:
+      try:
+        shutil.rmtree(path)
+      except OSError:
+        print >> sys.stderr, 'Error deleting obsolete path %s' % path
+
   def Sync_LocalHalf(self, syncbuf):
     """Perform only the local IO portion of the sync process.
        Network access is not required.

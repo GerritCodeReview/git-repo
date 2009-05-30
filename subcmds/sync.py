@@ -172,6 +172,7 @@ later is required to fix a server side protocol bug.
       if project.worktree:
         project.Sync_LocalHalf(syncbuf)
     pm.end()
+    project.DeleteObsoletePaths(self.manifest.removepaths)
     print >>sys.stderr
     if not syncbuf.Finish():
       sys.exit(1)

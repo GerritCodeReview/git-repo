@@ -172,9 +172,15 @@ class XmlManifest(object):
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
+  @property
+  def removepaths(self):
+    self._Load()
+    return self._remove_paths
+
   def _Unload(self):
     self._loaded = False
     self._projects = {}
+    self._remove_paths = []
     self._remotes = {}
     self._default = None
     self.branch = None
@@ -226,6 +232,11 @@ class XmlManifest(object):
           raise ManifestParseError, \
                 'project %s not found' % \
                 (name)
+
+    for node in config.childNodes:
+      if node.nodeName == 'remove-project-path':
+        path = self._reqatt(node, 'path')
+        self._remove_paths.append(path)
 
     for node in config.childNodes:
       if node.nodeName == 'remote':
