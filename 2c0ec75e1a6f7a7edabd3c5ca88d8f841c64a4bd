@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAVX///4o\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-05-30T01:17:49Z",
+      "side": 1,
+      "message": "We\u0027re starting to move away from XML based manifests, so I\u0027d rather not be adding more to this format.\n\nBut this is a hack to work around the larger issue of removing things not relevant to this manifest.  What if a project is added in \"master\" and I switch to \"cupcake\"?  Why should \"cupcake\" need to be modified to delete the new project in master?  Explicitly enumerating what to remove only really works in the forward case, not going backwards.\n\nI would much rather see repo store a list of the projects it knows about at the end of a sync, and stuff that into say $TOP_DIR/.repo/project.list.  On the next sync, read that list in, and compare it to the current manifest.  Anything in that list which is not in the manifest, delete it.  At the end of the sync, update the project list from the current manifest.",
+      "revId": "2c0ec75e1a6f7a7edabd3c5ca88d8f841c64a4bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
