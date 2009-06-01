@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAVX///2M\u003d",
+        "filename": ".pydevproject",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-01T21:45:25Z",
+      "side": 1,
+      "message": "We target 2.4.",
+      "revId": "f0b6a007fce1a1fbfe7df9abd73559b43eb6028b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
