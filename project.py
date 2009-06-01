@@ -1087,7 +1087,7 @@ class Project(object):
       self._InitAnyMRef(R_M + self.manifest.branch)
 
   def _InitMirrorHead(self):
-    self._InitAnyMRef(self, HEAD)
+    self._InitAnyMRef(HEAD)
 
   def _InitAnyMRef(self, ref):
     cur = self.bare_ref.symref(ref)
