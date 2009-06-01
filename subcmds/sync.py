@@ -16,6 +16,7 @@
 from optparse import SUPPRESS_HELP
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -117,6 +118,31 @@ later is required to fix a server side protocol bug.
     pm.end()
     return fetched
 
+  def UpdateProjectList(self):
+    new_project_paths = []
+    for project in self.manifest.projects.values():
+      new_project_paths.append(project.worktree)
+    file_name = 'project.list'
+    file_path = os.path.join(self.manifest.repodir, file_name)
+    old_project_paths = []
+
+    if os.path.exists(file_path):
+      fd = open(file_path, 'r')
+      try:
+        old_project_paths = fd.read().split('\n')
+      finally:
+        fd.close()
+      for path in old_project_paths:
+        if path not in new_project_paths:
+          print >>sys.stderr, 'Deleting obsolete path %s' % path
+          shutil.rmtree(path)
+
+    fd= open (file_path, 'w')
+    try:
+      fd.write('\n'.join(new_project_paths))
+    finally:
+      fd.close()
+
   def Execute(self, opt, args):
     if opt.network_only and opt.detach_head:
       print >>sys.stderr, 'error: cannot combine -n and -d'
@@ -172,6 +198,8 @@ later is required to fix a server side protocol bug.
       if project.worktree:
         project.Sync_LocalHalf(syncbuf)
     pm.end()
+
+    self.UpdateProjectList()
     print >>sys.stderr
     if not syncbuf.Finish():
       sys.exit(1)
