@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAV3///9Y\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T00:26:39Z",
+      "side": 1,
+      "message": "Use project.relpath instead, in case the user moves the repo checkout to another location.  IIRC project.worktree is an absolute path, so storing that and then renaming the repo checkout would cause everything to delete and recreate.",
+      "revId": "9271fce2ea68638471e144f334fffcc6a768fb5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAV3///9U\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T00:26:39Z",
+      "side": 1,
+      "message": "We probably should ensure the project is clean before doing this, otherwise a user might lose uncommitted changes they care about:\n\n  project \u003d Project(\n    manifest \u003d self.manifest,\n    name \u003d path,\n    remote \u003d RemoteSpec(\u0027origin\u0027),\n    gitdir \u003d os.path.join(self.manifest.topdir, path, \u0027.git\u0027),\n    worktree \u003d os.path.join(self.manifest.topdir, path),\n    relpath \u003d path,\n    revision \u003d \u0027HEAD\u0027)\n  if project.IsDirty:\n    print \u003e\u003esys.stderr, \u0027error: cannot remove %s: uncommitted changes are present\u0027 % project.relpath\n    print \u003e\u003esys.stderr, \u0027       commit changes, then run sync again\u0027\n  else:\n    shutil.rmtree(project.worktree)",
+      "revId": "9271fce2ea68638471e144f334fffcc6a768fb5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAV3///9c\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T00:26:39Z",
+      "side": 1,
+      "message": "Style nit: space before \u003d.",
+      "revId": "9271fce2ea68638471e144f334fffcc6a768fb5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAV3///9g\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T00:26:39Z",
+      "side": 1,
+      "message": "For safety we probably should delete old projects before doing the Sync_LocalHalf loop above.  That way if an old project suddenly becomes a subdirectory holding new projects, we won\u0027t wipe out the new projects when we delete the files related to the old project.",
+      "revId": "9271fce2ea68638471e144f334fffcc6a768fb5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
