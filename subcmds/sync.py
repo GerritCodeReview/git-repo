@@ -16,12 +16,15 @@
 from optparse import SUPPRESS_HELP
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
 
 from git_command import GIT
 from project import HEAD
+from project import Project
+from project import RemoteSpec
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError
 from project import R_HEADS
@@ -117,6 +120,48 @@ later is required to fix a server side protocol bug.
     pm.end()
     return fetched
 
+  def UpdateProjectList(self):
+    new_project_paths = []
+    for project in self.manifest.projects.values():
+      new_project_paths.append(project.relpath)
+    file_name = 'project.list'
+    file_path = os.path.join(self.manifest.repodir, file_name)
+    old_project_paths = []
+
+    if os.path.exists(file_path):
+      fd = open(file_path, 'r')
+      try:
+        old_project_paths = fd.read().split('\n')
+      finally:
+        fd.close()
+      for path in old_project_paths:
+        if path not in new_project_paths:
+          project = Project(
+                         manifest = self.manifest,
+                         name = path,
+                         remote = RemoteSpec('origin'),
+                         gitdir = os.path.join(self.manifest.topdir,
+                                               path, '.git'),
+                         worktree = os.path.join(self.manifest.topdir, path),
+                         relpath = path,
+                         revisionExpr = 'HEAD',
+                         revisionId = None)
+          if project.IsDirty():
+            print >>sys.stderr, 'error: Cannot remove project "%s": \
+uncommitted changes are present' % project.relpath
+            print >>sys.stderr, '       commit changes, then run sync again'
+            return -1
+          else:
+            print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
+            shutil.rmtree(project.worktree)
+
+    fd = open(file_path, 'w')
+    try:
+      fd.write('\n'.join(new_project_paths))
+    finally:
+      fd.close()
+    return 0
+
   def Execute(self, opt, args):
     if opt.network_only and opt.detach_head:
       print >>sys.stderr, 'error: cannot combine -n and -d'
@@ -163,6 +208,9 @@ later is required to fix a server side protocol bug.
           if project.gitdir not in fetched:
             missing.append(project)
         self._Fetch(missing)
+
+    if self.UpdateProjectList():
+      sys.exit(1)
 
     syncbuf = SyncBuffer(mp.config,
                          detach_head = opt.detach_head)
