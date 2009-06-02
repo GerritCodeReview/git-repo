@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAWH////M\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T17:29:15Z",
+      "side": 1,
+      "message": "Its certainly non-obvious why you would punt like this; sync otherwise updates as much as it can.  I know the real reason is you are trying to ensure the path will be in old_project_paths on the next cycle through sync.\n\nI think if you punt here, we need to stop the sync, period, because what if the old project is being replaced with a subdirectory of new projects, but the old project is dirty and can\u0027t be removed right away?  Right now, we\u0027d punt here, then fall through and initialize the new projects within the old project.  The user would resolve the issue with the old project, restart sync, we\u0027d delete the old project, and the new projects with it, possibly causing data loss if the user had already started to make uncommitted modifications in the new projects.\n\nNo, its never easy, is it?  :-)",
+      "revId": "173ded470974105a874a9e679d80b17904373c9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
