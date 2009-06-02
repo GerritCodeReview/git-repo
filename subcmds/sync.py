@@ -154,6 +154,14 @@ uncommitted changes are present' % project.relpath
           else:
             print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
             shutil.rmtree(project.worktree)
+            # Try deleting parent subdirs if they are empty
+            dir = os.path.dirname(project.worktree)
+            while dir != self.manifest.topdir:
+              try:
+                os.rmdir(dir)
+              except OSError:
+                break
+              dir = os.path.dirname(dir)
 
     fd = open(file_path, 'w')
     try:
