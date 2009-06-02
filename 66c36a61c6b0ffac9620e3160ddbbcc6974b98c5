@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAWH///+w\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T17:54:28Z",
+      "side": 1,
+      "message": "Style nit: No space between callable and open paren:\n\n  fd \u003d open(file_path, \u0027w\u0027)",
+      "revId": "66c36a61c6b0ffac9620e3160ddbbcc6974b98c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAWH///+4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T17:54:28Z",
+      "side": 1,
+      "message": "Yes, its fine.",
+      "revId": "66c36a61c6b0ffac9620e3160ddbbcc6974b98c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAWH///+0\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T17:54:28Z",
+      "side": 1,
+      "message": "Probably sys.exit(1) as the sync didn\u0027t complete yet.",
+      "revId": "66c36a61c6b0ffac9620e3160ddbbcc6974b98c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
