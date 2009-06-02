@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAWH///+g\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-06-02T18:08:17Z",
+      "side": 1,
+      "message": "As a follow-up, we should delete the parent directories until we can\u0027t anymore.  E.g.:\n\n  p \u003d os.path.dirname(project.worktree)\n  while p !\u003d self.manifest.topdir:\n    try:\n      os.rmdir(p)\n    except OSError:\n      break\n    p \u003d os.path.dirname(project.worktree)\n\nSo that if projects are in a subdirectory, and that subdirectory\u0027s contents are now entirely removed, that subdirectory also disappears.",
+      "revId": "4f2517ff1174cd485f0ac93705b0fa9348595f6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
