@@ -18,13 +18,22 @@ import sys
 
 from command import PagedCommand
 
+def _doc(name):
+  r = os.path.dirname(__file__)
+  r = os.path.dirname(r)
+  fd = open(os.path.join(r, 'docs', 'manifest_xml.txt'))
+  try:
+    return fd.read()
+  finally:
+    fd.close()
+
 class Manifest(PagedCommand):
   common = False
   helpSummary = "Manifest inspection utility"
   helpUsage = """
 %prog [-o {-|NAME.xml} [-r]]
 """
-  _helpDescription = """
+  _xmlHelp = """
 
 With the -o option, exports the current manifest for inspection.
 The manifest and (if present) local_manifest.xml are combined
@@ -35,13 +44,9 @@ in a Git repository for use during future 'repo init' invocations.
 
   @property
   def helpDescription(self):
-    help = self._helpDescription + '\n'
-    r = os.path.dirname(__file__)
-    r = os.path.dirname(r)
-    fd = open(os.path.join(r, 'docs', 'manifest-format.txt'))
-    for line in fd:
-      help += line
-    fd.close()
+    help = ''
+    if isinstance(self.manifest, XmlManifest):
+      help += self._xmlHelp + '\n' + _doc('manifest_xml.txt')
     return help
 
   def _Options(self, p):
