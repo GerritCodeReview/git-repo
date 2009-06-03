@@ -214,7 +214,7 @@ uncommitted changes are present' % project.relpath
         if not syncbuf.Finish():
           sys.exit(1)
 
-        self.manifest._Unload()
+        self.GetManifest(reparse=True)
         all = self.GetProjects(args, missing_ok=True)
         missing = []
         for project in all:

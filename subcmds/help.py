@@ -163,6 +163,7 @@ See 'repo help --all' for a complete list of recognized commands.
         print >>sys.stderr, "repo: '%s' is not a repo command." % name
         sys.exit(1)
 
+      cmd.repodir = self.repodir
       self._PrintCommandHelp(cmd)
 
     else:

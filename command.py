@@ -17,6 +17,8 @@ import os
 import optparse
 import sys
 
+import manifest_loader
+
 from error import NoSuchProjectError
 
 class Command(object):
@@ -24,7 +26,6 @@ class Command(object):
   """
 
   common = False
-  manifest = None
   _optparse = None
 
   def WantPager(self, opt):
@@ -57,6 +58,13 @@ class Command(object):
     """
     raise NotImplementedError
  
+  @property
+  def manifest(self):
+    return self.GetManifest()
+
+  def GetManifest(self, reparse=False):
+    return manifest_loader.GetManifest(self.repodir, reparse)
+
   def GetProjects(self, args, missing_ok=False):
     """A list of projects that match the arguments.
     """
