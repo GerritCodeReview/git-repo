@@ -733,9 +733,7 @@ class Project(object):
         last_mine = commit_id
         cnt_mine += 1
 
-    if not local_changes and not upstream_gain:
-      # Trivially no changes caused by the upstream.
-      #
+    if not upstream_gain and cnt_mine == len(local_changes):
       return
 
     if self.IsDirty(consider_untracked=False):
