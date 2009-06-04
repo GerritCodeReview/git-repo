@@ -123,7 +123,8 @@ later is required to fix a server side protocol bug.
   def UpdateProjectList(self):
     new_project_paths = []
     for project in self.manifest.projects.values():
-      new_project_paths.append(project.relpath)
+      if project.relpath:
+        new_project_paths.append(project.relpath)
     file_name = 'project.list'
     file_path = os.path.join(self.manifest.repodir, file_name)
     old_project_paths = []
@@ -135,6 +136,8 @@ later is required to fix a server side protocol bug.
       finally:
         fd.close()
       for path in old_project_paths:
+        if not path:
+          continue
         if path not in new_project_paths:
           project = Project(
                          manifest = self.manifest,
@@ -166,6 +169,7 @@ uncommitted changes are present' % project.relpath
     fd = open(file_path, 'w')
     try:
       fd.write('\n'.join(new_project_paths))
+      fd.write('\n')
     finally:
       fd.close()
     return 0
