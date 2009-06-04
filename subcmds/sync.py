@@ -217,6 +217,10 @@ uncommitted changes are present' % project.relpath
             missing.append(project)
         self._Fetch(missing)
 
+    if self.manifest.IsMirror:
+      # bail out now, we have no working tree
+      return
+
     if self.UpdateProjectList():
       sys.exit(1)
 
