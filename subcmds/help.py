@@ -94,6 +94,8 @@ See 'repo help --all' for a complete list of recognized commands.
           body = getattr(cmd, bodyAttr)
         except AttributeError:
           return
+        if body == '' or body is None:
+          return
 
         self.nl()
 
