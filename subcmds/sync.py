@@ -166,6 +166,7 @@ uncommitted changes are present' % project.relpath
                 break
               dir = os.path.dirname(dir)
 
+    new_project_paths.sort()
     fd = open(file_path, 'w')
     try:
       fd.write('\n'.join(new_project_paths))
