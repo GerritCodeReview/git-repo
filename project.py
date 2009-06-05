@@ -1102,30 +1102,37 @@ class Project(object):
         msg = 'manifest set to %s' % self.revisionExpr
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
+  def _LinkWorkTree(self, relink=False):
+    dotgit = os.path.join(self.worktree, '.git')
+    if not relink:
+      os.makedirs(dotgit)
+
+    for name in ['config',
+                 'description',
+                 'hooks',
+                 'info',
+                 'logs',
+                 'objects',
+                 'packed-refs',
+                 'refs',
+                 'rr-cache',
+                 'svn']:
+      try:
+        src = os.path.join(self.gitdir, name)
+        dst = os.path.join(dotgit, name)
+        if relink:
+          os.remove(dst)
+        os.symlink(relpath(src, dst), dst)
+      except OSError, e:
+        if e.errno == errno.EPERM:
+          raise GitError('filesystem must support symlinks')
+        else:
+          raise
+
   def _InitWorkTree(self):
     dotgit = os.path.join(self.worktree, '.git')
     if not os.path.exists(dotgit):
-      os.makedirs(dotgit)
-
-      for name in ['config',
-                   'description',
-                   'hooks',
-                   'info',
-                   'logs',
-                   'objects',
-                   'packed-refs',
-                   'refs',
-                   'rr-cache',
-                   'svn']:
-        try:
-          src = os.path.join(self.gitdir, name)
-          dst = os.path.join(dotgit, name)
-          os.symlink(relpath(src, dst), dst)
-        except OSError, e:
-          if e.errno == errno.EPERM:
-            raise GitError('filesystem must support symlinks')
-          else:
-            raise
+      self._LinkWorkTree()
 
       _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
 
