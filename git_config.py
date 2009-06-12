@@ -414,6 +414,7 @@ def _preconnect(url):
     host = m.group(1)
     return _open_ssh(host, 22)
 
+  return False
 
 class Remote(object):
   """Configuration options related to a remote.
