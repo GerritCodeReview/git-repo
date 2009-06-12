@@ -68,6 +68,30 @@ class _GitCall(object):
     return fun
 git = _GitCall()
 
+_git_version = None
+
+def git_require(min_version, fail=False):
+  global _git_version
+
+  if _git_version is None:
+    ver_str = git.version()
+    if ver_str.startswith('git version '):
+      _git_version = tuple(
+        map(lambda x: int(x),
+          ver_str[len('git version '):].strip().split('.')[0:3]
+        ))
+    else:
+      print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
+      sys.exit(1)
+
+  if min_version <= _git_version:
+    return True
+  if fail:
+    need = '.'.join(map(lambda x: str(x), min_version))
+    print >>sys.stderr, 'fatal: git %s or later required' % need
+    sys.exit(1)
+  return False
+
 class GitCommand(object):
   def __init__(self,
                project,

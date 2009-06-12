@@ -20,7 +20,7 @@ from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from project import SyncBuffer
-from git_command import git, MIN_GIT_VERSION
+from git_command import git_require, MIN_GIT_VERSION
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
@@ -84,19 +84,6 @@ to update the working directory files.
     g.add_option('--no-repo-verify',
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
-
-  def _CheckGitVersion(self):
-    ver_str = git.version()
-    if not ver_str.startswith('git version '):
-      print >>sys.stderr, 'error: "%s" unsupported' % ver_str
-      sys.exit(1)
-
-    ver_str = ver_str[len('git version '):].strip()
-    ver_act = tuple(map(lambda x: int(x), ver_str.split('.')[0:3]))
-    if ver_act < MIN_GIT_VERSION:
-      need = '.'.join(map(lambda x: str(x), MIN_GIT_VERSION))
-      print >>sys.stderr, 'fatal: git %s or later required' % need
-      sys.exit(1)
 
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
@@ -214,7 +201,7 @@ to update the working directory files.
       gc.SetString('color.ui', 'auto')
 
   def Execute(self, opt, args):
-    self._CheckGitVersion()
+    git_require(MIN_GIT_VERSION, fail=True)
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
 
