@@ -236,6 +236,9 @@ class GitConfig(object):
         return cPickle.load(fd)
       finally:
         fd.close()
+    except EOFError:
+      os.remove(self._pickle)
+      return None
     except IOError:
       os.remove(self._pickle)
       return None
