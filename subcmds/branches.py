@@ -61,6 +61,33 @@ class Branches(Command):
 %prog [<project>...]
 
 Summarizes the currently available topic branches.
+
+Branch Display
+--------------
+
+The branch display output by this command is organized into four
+columns of information; for example:
+
+ *P nocolor                   | in repo
+    repo2                     |
+
+The first column contains a * if the branch is the currently
+checked out branch in any of the specified projects, or a blank
+if no project has the branch checked out.
+
+The second column contains either blank, p or P, depending upon
+the upload status of the branch.
+
+ (blank): branch not yet published by repo upload
+       P: all commits were published by repo upload
+       p: only some commits were published by repo upload
+
+The third column contains the branch name.
+
+The fourth column (after the | separator) lists the projects that
+the branch appears in, or does not appear in.  If no project list
+is shown, then the branch appears in all projects.
+
 """
 
   def Execute(self, opt, args):
