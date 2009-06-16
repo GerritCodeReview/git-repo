@@ -388,7 +388,7 @@ def close_ssh():
     try:
       os.kill(p.pid, SIGTERM)
       p.wait()
-    catch OSError:
+    except OSError:
       pass
   _ssh_cache.clear()
 
