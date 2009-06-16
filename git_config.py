@@ -385,8 +385,11 @@ def _open_ssh(host, port):
 
 def close_ssh():
   for key,p in _ssh_cache.iteritems():
-    os.kill(p.pid, SIGTERM)
-    p.wait()
+    try:
+      os.kill(p.pid, SIGTERM)
+      p.wait()
+    catch OSError:
+      pass
   _ssh_cache.clear()
 
   d = _ssh_sock(create=False)
