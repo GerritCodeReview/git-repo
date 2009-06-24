@@ -76,8 +76,15 @@ least one of these before using this command."""
       os.close(fd)
       fd = None
 
-      if subprocess.Popen(editor + [path]).wait() != 0:
-        raise EditorError()
+      try:
+        rc = subprocess.Popen(editor + [path]).wait()
+      except OSError, e:
+        raise EditorError('editor failed, %s: %s %s'
+          % (str(e), cls._GetEditor(), path))
+      if rc != 0:
+        raise EditorError('editor failed with exit status %d: %s %s'
+          % (rc, cls._GetEditor(), path))
+
       fd2 = open(path)
       try:
         return fd2.read()

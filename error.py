@@ -24,6 +24,11 @@ class ManifestInvalidRevisionError(Exception):
 class EditorError(Exception):
   """Unspecified error from the user's text editor.
   """
+  def __init__(self, reason):
+    self.reason = reason
+
+  def __str__(self):
+    return self.reason
 
 class GitError(Exception):
   """Unspecified internal error from git.
