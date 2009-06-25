@@ -183,7 +183,7 @@ class XmlManifest(object):
     if not self._loaded:
       m = self.manifestProject
       b = m.GetBranch(m.CurrentBranch).merge
-      if b.startswith(R_HEADS):
+      if b is not None and b.startswith(R_HEADS):
         b = b[len(R_HEADS):]
       self.branch = b
 
