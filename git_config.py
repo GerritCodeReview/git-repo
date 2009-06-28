@@ -259,21 +259,26 @@ class GitConfig(object):
       os.remove(self._pickle)
 
   def _ReadGit(self):
-    d = self._do('--null', '--list')
-    c = {}
-    while d:
-      lf = d.index('\n')
-      nul = d.index('\0', lf + 1)
+    """
+    Read configuration data from git.
 
-      key = _key(d[0:lf])
-      val = d[lf + 1:nul]
+    This internal method populates the GitConfig cache.
+
+    """
+    d = self._do('--null', '--list').rstrip('\0')
+    c = {}
+    for line in d.split('\0'):
+      if '\n' in line:
+          key, val = line.split('\n', 1)
+      else:
+          key = line
+          val = None
 
       if key in c:
         c[key].append(val)
       else:
         c[key] = [val]
 
-      d = d[nul + 1:]
     return c
 
   def _do(self, *args):
