@@ -265,9 +265,11 @@ class GitConfig(object):
     This internal method populates the GitConfig cache.
 
     """
-    d = self._do('--null', '--list').rstrip('\0')
     c = {}
-    for line in d.split('\0'):
+    d = self._do('--null', '--list')
+    if d is None:
+      return c
+    for line in d.rstrip('\0').split('\0'):
       if '\n' in line:
           key, val = line.split('\n', 1)
       else:

@@ -39,5 +39,14 @@ class GitConfigUnitTest(unittest.TestCase):
         val = self.config.GetString('section.nonempty')
         self.assertEqual(val, 'true')
 
+    def test_GetString_from_missing_file(self):
+        """
+        Test missing config file
+        """
+        config_fixture = fixture('not.present.gitconfig')
+        config = git_config.GitConfig(config_fixture)
+        val = config.GetString('empty')
+        self.assertEqual(val, None)
+
 if __name__ == '__main__':
     unittest.main()
