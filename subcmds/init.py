@@ -148,20 +148,33 @@ to update the working directory files.
       print >>sys.stderr, 'fatal: %s' % str(e)
       sys.exit(1)
 
-  def _PromptKey(self, prompt, key, value):
+  def _Prompt(self, prompt, value):
     mp = self.manifest.manifestProject
 
     sys.stdout.write('%-10s [%s]: ' % (prompt, value))
     a = sys.stdin.readline().strip()
-    if a != '' and a != value:
-      mp.config.SetString(key, a)
+    if a == '':
+      return value
+    return a
 
   def _ConfigureUser(self):
     mp = self.manifest.manifestProject
 
-    print ''
-    self._PromptKey('Your Name', 'user.name', mp.UserName)
-    self._PromptKey('Your Email', 'user.email', mp.UserEmail)
+    while True:
+      print ''
+      name  = self._Prompt('Your Name', mp.UserName)
+      email = self._Prompt('Your Email', mp.UserEmail)
+
+      print ''
+      print 'Your identity is: %s <%s>' % (name, email)
+      sys.stdout.write('is this correct [yes/no]? ')
+      if 'yes' == sys.stdin.readline().strip():
+        break
+
+    if name != mp.UserName:
+      mp.config.SetString('user.name', name)
+    if email != mp.UserEmail:
+      mp.config.SetString('user.email', email)
 
   def _HasColorSet(self, gc):
     for n in ['ui', 'diff', 'status']:
