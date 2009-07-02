@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import re
 import sys
 import subprocess
 import tempfile
@@ -38,9 +39,10 @@ class Editor(object):
     if e:
       return e
 
-    e = cls.globalConfig.GetString('core.editor')
-    if e:
-      return e
+    if cls.globalConfig:
+      e = cls.globalConfig.GetString('core.editor')
+      if e:
+        return e
 
     e = os.getenv('VISUAL')
     if e:
@@ -69,21 +71,32 @@ least one of these before using this command."""
       Returns:
         new value of edited text; None if editing did not succeed
     """
-    editor = cls._GetEditor().split()
+    editor = cls._GetEditor()
+    if editor == ':':
+      return data
+
     fd, path = tempfile.mkstemp()
     try:
       os.write(fd, data)
       os.close(fd)
       fd = None
 
+      if re.compile("^.*[$ \t'].*$").match(editor):
+        args = [editor + ' "$@"']
+        shell = True
+      else:
+        args = [editor]
+        shell = False
+      args.append(path)
+
       try:
-        rc = subprocess.Popen(editor + [path]).wait()
+        rc = subprocess.Popen(args, shell=shell).wait()
       except OSError, e:
         raise EditorError('editor failed, %s: %s %s'
-          % (str(e), cls._GetEditor(), path))
+          % (str(e), editor, path))
       if rc != 0:
         raise EditorError('editor failed with exit status %d: %s %s'
-          % (rc, cls._GetEditor(), path))
+          % (rc, editor, path))
 
       fd2 = open(path)
       try:
