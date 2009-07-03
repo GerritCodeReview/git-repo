@@ -17,9 +17,14 @@ import os
 import sys
 import xml.dom.minidom
 
-from git_config import GitConfig, IsId
+from git_config import GitConfig
+from git_config import IsId
 from manifest import Manifest
-from project import RemoteSpec, Project, MetaProject, R_HEADS, HEAD
+from project import RemoteSpec
+from project import Project
+from project import MetaProject
+from project import R_HEADS
+from project import HEAD
 from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
