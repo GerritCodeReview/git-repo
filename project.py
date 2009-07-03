@@ -27,7 +27,7 @@ from git_config import GitConfig, IsId
 from error import GitError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
 
-from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
+from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
@@ -598,7 +598,7 @@ class Project(object):
       return False
 
     if self.worktree:
-      self._InitMRef()
+      self.manifest.SetMRefs(self)
     else:
       self._InitMirrorHead()
       try:
@@ -1079,10 +1079,6 @@ class Project(object):
       else:
         remote.ResetFetch(mirror=True)
       remote.Save()
-
-  def _InitMRef(self):
-    if self.manifest.branch:
-      self._InitAnyMRef(R_M + self.manifest.branch)
 
   def _InitMirrorHead(self):
     self._InitAnyMRef(HEAD)

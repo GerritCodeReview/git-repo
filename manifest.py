@@ -35,3 +35,10 @@ class Manifest(object):
   @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
+
+  @property
+  def projects(self):
+    return {}
+
+  def SetMRefs(self, project):
+    pass

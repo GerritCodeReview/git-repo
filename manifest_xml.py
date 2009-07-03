@@ -29,6 +29,7 @@ from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
+R_M = 'refs/remotes/m/'
 
 class _Default(object):
   """Project defaults within the manifest."""
@@ -167,6 +168,10 @@ class XmlManifest(Manifest):
   def default(self):
     self._Load()
     return self._default
+
+  def SetMRefs(self, project):
+    if self.branch:
+      project._InitAnyMRef(R_M + self.branch)
 
   def _Unload(self):
     self._loaded = False
