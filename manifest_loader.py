@@ -15,13 +15,17 @@
 
 from manifest_xml import XmlManifest
 
-def ParseManifest(repodir):
+def ParseManifest(repodir, type=None):
+  if type:
+    return type(repodir)
   return XmlManifest(repodir)
 
 _manifest = None
 
-def GetManifest(repodir, reparse=False):
+def GetManifest(repodir, reparse=False, type=None):
   global _manifest
-  if _manifest is None or reparse:
-    _manifest = ParseManifest(repodir)
+  if _manifest is None \
+  or reparse \
+  or (type and _manifest.__class__ != type):
+    _manifest = ParseManifest(repodir, type=type)
   return _manifest

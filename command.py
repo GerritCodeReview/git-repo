@@ -62,8 +62,10 @@ class Command(object):
   def manifest(self):
     return self.GetManifest()
 
-  def GetManifest(self, reparse=False):
-    return manifest_loader.GetManifest(self.repodir, reparse)
+  def GetManifest(self, reparse=False, type=None):
+    return manifest_loader.GetManifest(self.repodir,
+                                       reparse=reparse,
+                                       type=type)
 
   def GetProjects(self, args, missing_ok=False):
     """A list of projects that match the arguments.
