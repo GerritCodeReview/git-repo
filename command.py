@@ -71,6 +71,12 @@ class Command(object):
     """A list of projects that match the arguments.
     """
     all = self.manifest.projects
+
+    mp = self.manifest.manifestProject
+    if mp.relpath == '.':
+      all = dict(all)
+      all[mp.name] = mp
+
     result = []
 
     if not args:
@@ -91,7 +97,9 @@ class Command(object):
             for p in all.values():
               by_path[p.worktree] = p
 
-          if os.path.exists(path):
+          try:
+            project = by_path[path]
+          except KeyError:
             while path \
               and path != '/' \
               and path != self.manifest.topdir:
@@ -100,11 +108,6 @@ class Command(object):
                 break
               except KeyError:
                 path = os.path.dirname(path)
-          else:
-            try:
-              project = by_path[path]
-            except KeyError:
-              pass
 
         if not project:
           raise NoSuchProjectError(arg)
