@@ -55,6 +55,7 @@ need to be performed by an end-user.
         print >>sys.stderr, "error: can't update repo"
         sys.exit(1)
 
+      rp.bare_git.gc('--auto')
       _PostRepoFetch(rp,
                      no_repo_verify = opt.no_repo_verify,
                      verbose = True)

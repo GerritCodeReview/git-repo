@@ -118,6 +118,8 @@ later is required to fix a server side protocol bug.
         print >>sys.stderr, 'error: Cannot fetch %s' % project.name
         sys.exit(1)
     pm.end()
+    for project in projects:
+      project.bare_git.gc('--auto')
     return fetched
 
   def UpdateProjectList(self):
