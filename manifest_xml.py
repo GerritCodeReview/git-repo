@@ -169,6 +169,12 @@ class XmlManifest(Manifest):
     self._Load()
     return self._default
 
+  def InitBranch(self):
+    m = self.manifestProject
+    if m.CurrentBranch is None:
+      return m.StartBranch('default')
+    return True
+
   def SetMRefs(self, project):
     if self.branch:
       project._InitAnyMRef(R_M + self.branch)

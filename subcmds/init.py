@@ -130,10 +130,9 @@ to update the working directory files.
     m.Sync_LocalHalf(syncbuf)
     syncbuf.Finish()
 
-    if is_new or m.CurrentBranch is None:
-      if not m.StartBranch('default'):
-        print >>sys.stderr, 'fatal: cannot create default in manifest'
-        sys.exit(1)
+    if not self.manifest.InitBranch():
+      print >>sys.stderr, 'fatal: cannot create branch in manifest'
+      sys.exit(1)
 
   def _LinkManifest(self, name):
     if not name:

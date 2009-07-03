@@ -40,5 +40,8 @@ class Manifest(object):
   def projects(self):
     return {}
 
+  def InitBranch(self):
+    pass
+
   def SetMRefs(self, project):
     pass
