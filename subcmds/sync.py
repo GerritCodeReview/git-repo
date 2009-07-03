@@ -185,6 +185,8 @@ later is required to fix a server side protocol bug.
         t.join()
 
     pm.end()
+    for project in projects:
+      project.bare_git.gc('--auto')
     return fetched
 
   def UpdateProjectList(self):
