@@ -22,6 +22,7 @@ from error import ManifestParseError
 from project import SyncBuffer
 from git_command import git_require, MIN_GIT_VERSION
 from manifest_xml import XmlManifest
+from subcmds.sync import _ReloadManifest
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
@@ -143,9 +144,17 @@ to update the working directory files.
       print >>sys.stderr, 'fatal: cannot obtain manifest %s' % r.url
       sys.exit(1)
 
+    if not is_new:
+      # Force the manifest to load if it exists, the old graph
+      # may be needed inside of _ReloadManifest().
+      #
+      self.manifest.projects
+
     syncbuf = SyncBuffer(m.config)
     m.Sync_LocalHalf(syncbuf)
     syncbuf.Finish()
+    _ReloadManifest(self)
+    self._ApplyOptions(opt, is_new)
 
     if not self.manifest.InitBranch():
       print >>sys.stderr, 'fatal: cannot create branch in manifest'

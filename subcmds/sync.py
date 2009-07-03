@@ -215,8 +215,9 @@ uncommitted changes are present' % project.relpath
         mp.Sync_LocalHalf(syncbuf)
         if not syncbuf.Finish():
           sys.exit(1)
+        _ReloadManifest(self)
+        mp = self.manifest.manifestProject
 
-        self.GetManifest(reparse=True)
         all = self.GetProjects(args, missing_ok=True)
         missing = []
         for project in all:
@@ -243,6 +244,13 @@ uncommitted changes are present' % project.relpath
     if not syncbuf.Finish():
       sys.exit(1)
 
+def _ReloadManifest(cmd):
+  old = cmd.manifest
+  new = cmd.GetManifest(reparse=True)
+
+  if old.__class__ != new.__class__:
+    print >>sys.stderr, 'NOTICE: manifest format has changed  ***'
+    new.Upgrade_Local(old)
 
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():

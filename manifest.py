@@ -15,6 +15,7 @@
 
 import os
 
+from error import ManifestParseError
 from editor import Editor
 from git_config import GitConfig
 from project import MetaProject
@@ -45,3 +46,6 @@ class Manifest(object):
 
   def SetMRefs(self, project):
     pass
+
+  def Upgrade_Local(self, old):
+    raise ManifestParseError, 'unsupported upgrade path'
