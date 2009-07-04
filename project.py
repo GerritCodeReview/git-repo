@@ -1426,15 +1426,17 @@ class SyncBuffer(object):
 class MetaProject(Project):
   """A special project housed under .repo.
   """
-  def __init__(self, manifest, name, gitdir, worktree):
+  def __init__(self, manifest, name, gitdir, worktree, relpath=None):
     repodir = manifest.repodir
+    if relpath is None:
+      relpath = '.repo/%s' % name
     Project.__init__(self,
                      manifest = manifest,
                      name = name,
                      gitdir = gitdir,
                      worktree = worktree,
                      remote = RemoteSpec('origin'),
-                     relpath = '.repo/%s' % name,
+                     relpath = relpath,
                      revisionExpr = 'refs/heads/master',
                      revisionId = None)
 
