@@ -114,7 +114,8 @@ group.add_option('-b', '--manifest-branch',
                  help='manifest branch or revision', metavar='REVISION')
 group.add_option('-m', '--manifest-name',
                  dest='manifest_name',
-                 help='initial manifest file', metavar='NAME.xml')
+                 help='initial manifest file (deprecated)',
+                 metavar='NAME.xml')
 group.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
