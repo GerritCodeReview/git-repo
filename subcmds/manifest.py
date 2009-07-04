@@ -17,6 +17,7 @@ import os
 import sys
 
 from command import PagedCommand
+from manifest_submodule import SubmoduleManifest
 from manifest_xml import XmlManifest
 
 def _doc(name):
@@ -54,6 +55,9 @@ in a Git repository for use during future 'repo init' invocations.
 
   def _Options(self, p):
     if isinstance(self.manifest, XmlManifest):
+      p.add_option('--upgrade',
+                   dest='upgrade', action='store_true',
+                   help='Upgrade XML manifest to submodule')
       p.add_option('-r', '--revision-as-HEAD',
                    dest='peg_rev', action='store_true',
                    help='Save revisions as current HEAD')
@@ -61,6 +65,11 @@ in a Git repository for use during future 'repo init' invocations.
                    dest='output_file',
                    help='File to save the manifest to',
                    metavar='-|NAME.xml')
+
+  def WantPager(self, opt):
+    if isinstance(self.manifest, XmlManifest) and opt.upgrade:
+      return False
+    return True
 
   def _Output(self, opt):
     if opt.output_file == '-':
@@ -73,12 +82,36 @@ in a Git repository for use during future 'repo init' invocations.
     if opt.output_file != '-':
       print >>sys.stderr, 'Saved manifest to %s' % opt.output_file
 
+  def _Upgrade(self):
+    old = self.manifest
+
+    if isinstance(old, SubmoduleManifest):
+      print >>sys.stderr, 'error: already upgraded'
+      sys.exit(1)
+
+    old._Load()
+    for p in old.projects.values():
+      if not os.path.exists(p.gitdir) \
+      or not os.path.exists(p.worktree):
+        print >>sys.stderr, 'fatal: project "%s" missing' % p.relpath
+        sys.exit(1)
+
+    new = SubmoduleManifest(old.repodir)
+    new.FromXml_Local_1(old, checkout=False)
+    new.FromXml_Definition(old)
+    new.FromXml_Local_2(old)
+    print >>sys.stderr, 'upgraded manifest; commit result manually'
+
   def Execute(self, opt, args):
     if args:
       self.Usage()
 
-    if  isinstance(self.manifest, XmlManifest) \
-    and opt.output_file is not None:
+    if isinstance(self.manifest, XmlManifest):
+      if opt.upgrade:
+        self._Upgrade()
+        return
+
+      if opt.output_file is not None:
         self._Output(opt)
         return
 
