@@ -1,0 +1,130 @@
+repo Manifest Format (submodule)
+================================
+
+A repo manifest describes the structure of a repo client; that is
+the directories that are visible and where they should be obtained
+from with git.
+
+The basic structure of a manifest is a bare Git repository holding
+a 'gitmodules' file in the top level directory, and one or more
+gitlink references pointing at commits from the referenced projects.
+This is the same structure as used by 'git submodule'.
+
+Manifests are inherently version controlled, since they are kept
+within a Git repository.  Updates to manifests are automatically
+obtained by clients during `repo sync`.
+
+.gitmodules
+===========
+
+The '.gitmodules' file, located in the top-level directory of the
+client's working tree (or manifest repository), is a text file with
+a syntax matching the requirements of 'git config'.
+
+This file contains one subsection per project (also called a
+submodule by git), and the subsection value is a unique name to
+describe the project. Each submodule section must contain the
+following required keys:
+
+  * path
+  * url
+
+submodule.<name>.path
+---------------------
+
+Defines the path, relative to the top-level directory of the client's
+working tree, where the project is expected to be checked out. The
+path name must not end with a '/'. All paths must be unique within
+the .gitmodules file.
+
+At the specified path within the manifest repository a gitlink
+tree entry (an entry with file mode 160000) must exist referencing
+a commit SHA-1 from the project.  This tree entry specifies the
+exact version of the project that `repo sync` will synchronize the
+client's working tree to.
+
+submodule.<name>.url
+--------------------
+
+Defines a URL from where the project repository can be cloned.
+By default `repo sync` will clone from this URL whenever a user
+needs to access this project.
+
+submodule.<name>.revision
+-------------------------
+
+Name of the branch in the project repository that Gerrit Code Review
+should automatically refresh the project's gitlink entry from.
+
+If set, during submit of a change within the referenced project,
+Gerrit Code Review will automatically update the manifest
+repository's corresponding gitlink to the new commit SHA-1 of
+this branch.
+
+Valid values are a short branch name (e.g. 'master'), a full ref
+name (e.g. 'refs/heads/master'), or '.' to request using the same
+branch name as the manifest branch itself.  Since '.' automatically
+uses the manifest branch, '.' is the recommended value.
+
+If this key is not set, Gerrit Code Review will NOT automatically
+update the gitlink. An unset key requires the manifest maintainer
+to manually update the gitlink when it is necessary to reference
+a different revision of the project.
+
+submodule.<name>.update
+-----------------------
+
+This key is not supported by repo.  If set, it will be ignored.
+
+.review
+=======
+
+The optional '.review' file, located in the top-level directory of
+the client's working tree (or manifest repository), is a text file
+with a syntax matching the requirements of 'git config'.
+
+This file describes how `repo upload` should interact with the
+project's preferred code review system.
+
+review.url
+----------
+
+URL of the default Gerrit Code Review server.  If a project does
+not have a specific URL in the '.review' file, this default URL
+will be used instead.
+
+review.<name>.url
+-----------------
+
+Project specific URL of the Gerrit Code Review server, for the
+submodule whose project name is <name>.
+
+Example
+=======
+
+  $ cat .gitmodules
+  [submodule "app/Clock"]
+    path = clock
+    url = git://vcs.example.com/ClockWidget.git
+    revision = .
+  [submodule "app/Browser"]
+    path = net/browser
+    url = git://netgroup.example.com/network/web/Browser.git
+    revision = .
+
+  $ cat .review
+  [review]
+    url = vcs-gerrit.example.com
+  [review "app/Browser"]
+    url = netgroup.example.com
+
+In the above example, the app/Clock project will send its code
+reviews to the default server, vcs-gerrit.example.com, while
+app/Browser will send its code reviews to netgroup.example.com.
+
+See Also
+========
+
+ * http://www.kernel.org/pub/software/scm/git/docs/gitmodules.html
+ * http://www.kernel.org/pub/software/scm/git/docs/git-config.html
+ * http://code.google.com/p/gerrit/

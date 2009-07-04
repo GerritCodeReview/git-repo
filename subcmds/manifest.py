@@ -22,7 +22,7 @@ from manifest_xml import XmlManifest
 def _doc(name):
   r = os.path.dirname(__file__)
   r = os.path.dirname(r)
-  fd = open(os.path.join(r, 'docs', 'manifest_xml.txt'))
+  fd = open(os.path.join(r, 'docs', name))
   try:
     return fd.read()
   finally:
@@ -48,6 +48,8 @@ in a Git repository for use during future 'repo init' invocations.
     help = ''
     if isinstance(self.manifest, XmlManifest):
       help += self._xmlHelp + '\n' + _doc('manifest_xml.txt')
+    if isinstance(self.manifest, SubmoduleManifest):
+      help += _doc('manifest_submodule.txt')
     return help
 
   def _Options(self, p):

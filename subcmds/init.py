@@ -21,6 +21,7 @@ from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from project import SyncBuffer
 from git_command import git_require, MIN_GIT_VERSION
+from manifest_submodule import SubmoduleManifest
 from manifest_xml import XmlManifest
 from subcmds.sync import _ReloadManifest
 
@@ -143,6 +144,14 @@ to update the working directory files.
       r = m.GetRemote(m.remote.name)
       print >>sys.stderr, 'fatal: cannot obtain manifest %s' % r.url
       sys.exit(1)
+
+    if is_new and SubmoduleManifest.IsBare(m):
+      new = self.GetManifest(reparse=True, type=SubmoduleManifest)
+      if m.gitdir != new.manifestProject.gitdir:
+        os.rename(m.gitdir, new.manifestProject.gitdir)
+        new = self.GetManifest(reparse=True, type=SubmoduleManifest)
+      m = new.manifestProject
+      self._ApplyOptions(opt, is_new)
 
     if not is_new:
       # Force the manifest to load if it exists, the old graph

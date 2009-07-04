@@ -13,11 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from manifest_submodule import SubmoduleManifest
 from manifest_xml import XmlManifest
 
 def ParseManifest(repodir, type=None):
   if type:
     return type(repodir)
+  if SubmoduleManifest.Is(repodir):
+    return SubmoduleManifest(repodir)
   return XmlManifest(repodir)
 
 _manifest = None
