@@ -117,6 +117,7 @@ to update the working directory files.
     if opt.mirror:
       if is_new:
         m.config.SetString('repo.mirror', 'true')
+        m.config.ClearCache()
       else:
         print >>sys.stderr, 'fatal: --mirror not supported on existing client'
         sys.exit(1)
