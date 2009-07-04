@@ -1442,10 +1442,12 @@ class MetaProject(Project):
     if self.Exists:
       cb = self.CurrentBranch
       if cb:
-        base = self.GetBranch(cb).merge
-        if base:
-          self.revisionExpr = base
+        cb = self.GetBranch(cb)
+        if cb.merge:
+          self.revisionExpr = cb.merge
           self.revisionId = None
+        if cb.remote and cb.remote.name:
+          self.remote.name = cb.remote.name
 
   @property
   def LastFetch(self):

@@ -62,6 +62,10 @@ to update the working directory files.
     g.add_option('-b', '--manifest-branch',
                  dest='manifest_branch',
                  help='manifest branch or revision', metavar='REVISION')
+    g.add_option('-o', '--origin',
+                 dest='manifest_origin',
+                 help="use REMOTE instead of 'origin' to track upstream",
+                 metavar='REMOTE')
     if isinstance(self.manifest, XmlManifest) \
     or not self.manifest.manifestProject.Exists:
       g.add_option('-m', '--manifest-name',
@@ -84,6 +88,27 @@ to update the working directory files.
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
 
+  def _ApplyOptions(self, opt, is_new):
+    m = self.manifest.manifestProject
+
+    if is_new:
+      if opt.manifest_origin:
+        m.remote.name = opt.manifest_origin
+
+      if opt.manifest_branch:
+        m.revisionExpr = opt.manifest_branch
+      else:
+        m.revisionExpr = 'refs/heads/master'
+    else:
+      if opt.manifest_origin:
+        print >>sys.stderr, 'fatal: cannot change origin name'
+        sys.exit(1)
+
+      if opt.manifest_branch:
+        m.revisionExpr = opt.manifest_branch
+      else:
+        m.PreSync()
+
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
     is_new = not m.Exists
@@ -98,16 +123,7 @@ to update the working directory files.
         print >>sys.stderr, '   from %s' % opt.manifest_url
       m._InitGitDir()
 
-      if opt.manifest_branch:
-        m.revisionExpr = opt.manifest_branch
-      else:
-        m.revisionExpr = 'refs/heads/master'
-    else:
-      if opt.manifest_branch:
-        m.revisionExpr = opt.manifest_branch
-      else:
-        m.PreSync()
-
+    self._ApplyOptions(opt, is_new)
     if opt.manifest_url:
       r = m.GetRemote(m.remote.name)
       r.url = opt.manifest_url

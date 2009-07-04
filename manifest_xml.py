@@ -189,7 +189,10 @@ class XmlManifest(Manifest):
   def _Load(self):
     if not self._loaded:
       m = self.manifestProject
-      b = m.GetBranch(m.CurrentBranch).merge
+      b = m.GetBranch(m.CurrentBranch)
+      if b.remote and b.remote.name:
+        m.remote.name = b.remote.name
+      b = b.merge
       if b is not None and b.startswith(R_HEADS):
         b = b[len(R_HEADS):]
       self.branch = b

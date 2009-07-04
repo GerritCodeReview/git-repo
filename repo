@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 8)
+VERSION = (1, 9)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -109,6 +109,10 @@ group = init_optparse.add_option_group('Manifest options')
 group.add_option('-u', '--manifest-url',
                  dest='manifest_url',
                  help='manifest repository location', metavar='URL')
+group.add_option('-o', '--origin',
+                 dest='manifest_origin',
+                 help="use REMOTE instead of 'origin' to track upstream",
+                 metavar='REMOTE')
 group.add_option('-b', '--manifest-branch',
                  dest='manifest_branch',
                  help='manifest branch or revision', metavar='REVISION')
