@@ -203,6 +203,10 @@ class _CopyFile:
         # remove existing file first, since it might be read-only
         if os.path.exists(dest):
           os.remove(dest)
+        else:
+          dir = os.path.dirname(dest)
+          if not os.path.isdir(dir):
+            os.makedirs(dir)
         shutil.copy(src, dest)
         # make the file read-only
         mode = os.stat(dest)[stat.ST_MODE]
