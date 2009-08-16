@@ -356,10 +356,14 @@ class RefSpec(object):
 _ssh_cache = {}
 _ssh_master = True
 
-def _open_ssh(host, port):
+def _open_ssh(host, port=None):
   global _ssh_master
 
-  key = '%s:%s' % (host, port)
+  if port is not None:
+    key = '%s:%s' % (host, port)
+  else:
+    key = host
+
   if key in _ssh_cache:
     return True
 
@@ -372,10 +376,13 @@ def _open_ssh(host, port):
 
   command = ['ssh',
              '-o','ControlPath %s' % _ssh_sock(),
-             '-p',str(port),
              '-M',
              '-N',
              host]
+
+  if port is not None:
+    command[3:3] = ['-p',str(port)]
+
   try:
     Trace(': %s', ' '.join(command))
     p = subprocess.Popen(command)
@@ -417,7 +424,7 @@ def _preconnect(url):
     if ':' in host:
       host, port = host.split(':')
     else:
-      port = 22
+      port = None
     if scheme in ('ssh', 'git+ssh', 'ssh+git'):
       return _open_ssh(host, port)
     return False
@@ -425,7 +432,7 @@ def _preconnect(url):
   m = URI_SCP.match(url)
   if m:
     host = m.group(1)
-    return _open_ssh(host, 22)
+    return _open_ssh(host)
 
   return False
 
