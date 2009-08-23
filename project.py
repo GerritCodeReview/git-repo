@@ -1055,13 +1055,27 @@ class Project(object):
     if not os.path.exists(hooks):
       os.makedirs(hooks)
     for stock_hook in repo_hooks():
-      dst = os.path.join(hooks, os.path.basename(stock_hook))
+      name = os.path.basename(stock_hook)
+
+      if name in ('commit-msg') and not self.remote.review:
+        # Don't install a Gerrit Code Review hook if this
+        # project does not appear to use it for reviews.
+        #
+        continue
+
+      dst = os.path.join(hooks, name)
+      if os.path.islink(dst):
+        continue
+      if os.path.exists(dst):
+        if filecmp.cmp(stock_hook, dst, shallow=False):
+          os.remove(dst)
+        else:
+          _error("%s: Not replacing %s hook", self.relpath, name)
+          continue
       try:
         os.symlink(relpath(stock_hook, dst), dst)
       except OSError, e:
-        if e.errno == errno.EEXIST:
-          pass
-        elif e.errno == errno.EPERM:
+        if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
         else:
           raise
