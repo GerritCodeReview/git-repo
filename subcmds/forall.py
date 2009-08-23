@@ -169,6 +169,12 @@ terminal and are not redirected.
       else:
         cwd = project.worktree
 
+      if not os.path.exists(cwd):
+        if (opt.project_header and opt.verbose) \
+        or not opt.project_header:
+          print >>sys.stderr, 'skipping %s/' % project.relpath
+        continue
+
       if opt.project_header:
         stdin = subprocess.PIPE
         stdout = subprocess.PIPE
