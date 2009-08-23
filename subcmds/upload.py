@@ -283,15 +283,19 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         have_errors = True
 
     print >>sys.stderr, ''
-    print >>sys.stderr, '--------------------------------------------'
+    print >>sys.stderr, '----------------------------------------------------------------------'
 
     if have_errors:
       for branch in todo:
         if not branch.uploaded:
-          print >>sys.stderr, '[FAILED] %-15s %-15s  (%s)' % (
+          if len(str(branch.error)) <= 30:
+            fmt = ' (%s)'
+          else:
+            fmt = '\n       (%s)'
+          print >>sys.stderr, ('[FAILED] %-15s %-15s' + fmt) % (
                  branch.project.relpath + '/', \
                  branch.name, \
-                 branch.error)
+                 str(branch.error))
       print >>sys.stderr, ''
 
     for branch in todo:
