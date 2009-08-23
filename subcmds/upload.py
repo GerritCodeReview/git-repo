@@ -55,11 +55,11 @@ added to the respective list of users, and emails are sent to any
 new users.  Users passed as --reviewers must already be registered
 with the code review system, or the upload will fail.
 
-If the --replace option is passed the user can designate which
-existing change(s) in Gerrit match up to the commits in the branch
-being uploaded.  For each matched pair of change,commit the commit
-will be added as a new patch set, completely replacing the set of
-files and description associated with the change in Gerrit.
+If the --replace option (deprecated) is passed the user can designate
+which existing change(s) in Gerrit match up to the commits in the
+branch being uploaded.  For each matched pair of change,commit the
+commit will be added as a new patch set, completely replacing the
+set of files and description associated with the change in Gerrit.
 
 Configuration
 -------------
@@ -92,7 +92,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
   def _Options(self, p):
     p.add_option('--replace',
                  dest='replace', action='store_true',
-                 help='Upload replacement patchesets from this branch')
+                 help='Upload replacement patchsets from this branch (deprecated)')
     p.add_option('--re', '--reviewers',
                  type='string',  action='append', dest='reviewers',
                  help='Request reviews from these people.')
