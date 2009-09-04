@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAkX///9w\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-09-04T15:01:07Z",
+      "side": 1,
+      "message": "Hmm.  I\u0027m concerned about this assumption.  Yes most sites are running their Gerrit on 29418, but I don\u0027t think we should just flat out assume that in repo.  I also don\u0027t think we should assume it when there is a hostname lookup error.\n\nThe old line here happened because Andy wasn\u0027t connected to the VPN and tried to run \"repo upload\", the hostname didn\u0027t resolve, so we needed to trap the error and give a reasonable message back to the human.  Now when a hostname doesn\u0027t resolve we would assume port 29418 and try anyway?\n\nWhat I meant was, maybe we should modify the manifest format such that a review URL of \"ssh://host:port\" was valid, and then modify our manifests to point to the server directly with this format.  That means this block should revert, and the block above at line 474 where we parse \"u\" would need a condition for this new format.",
+      "revId": "059a9ae598a8c74d0bbd0ab967787b8a10a831a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
