@@ -500,7 +500,16 @@ class Remote(object):
           self._review_host = info.split(" ")[0]
           self._review_port = info.split(" ")[1]
         except urllib2.URLError, e:
-          raise UploadError('%s: %s' % (self.review, e.reason[1]))
+          # Assume ssh with port 29418 if we cannot connect via HTTP
+          self._review_protocol = 'ssh'
+          # extract host from URL
+          if u.startswith('http://'):
+            u = u[len('http://'):]
+          elif u.startswith('https://'):
+            u = u[len('https://'):]
+          u = u[:u.index('/')]
+          self._review_host = u
+          self._review_port = 29418
         except HTTPError, e:
           if e.code == 404:
             self._review_protocol = 'http-post'
