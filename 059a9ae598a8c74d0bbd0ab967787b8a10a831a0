@@ -16,6 +16,24 @@
       "revId": "059a9ae598a8c74d0bbd0ab967787b8a10a831a0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAkX///9o\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1000830
+      },
+      "writtenOn": "2009-09-04T15:25:37Z",
+      "side": 1,
+      "message": "Thanks, I\u0027ll give that a try.",
+      "parentUuid": "AAAAkX///9w\u003d",
+      "revId": "059a9ae598a8c74d0bbd0ab967787b8a10a831a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
