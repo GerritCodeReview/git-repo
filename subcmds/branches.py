@@ -136,7 +136,7 @@ is shown, then the branch appears in all projects.
       hdr('%c%c %-*s' % (current, published, width, name))
       out.write(' |')
 
-      if in_cnt < project_cnt and (in_cnt == 1):
+      if in_cnt < project_cnt:
         fmt = out.write
         paths = []
         if in_cnt < project_cnt - in_cnt: 
@@ -150,7 +150,8 @@ is shown, then the branch appears in all projects.
           for b in i.projects:
             have.add(b.project)
           for p in projects:
-            paths.append(p.relpath)
+            if not p in have:
+              paths.append(p.relpath)
 
         s = ' %s %s' % (type, ', '.join(paths))
         if width + 7 + len(s) < 80:
@@ -161,4 +162,6 @@ is shown, then the branch appears in all projects.
           for p in paths:
             out.nl()
             fmt('      %s' % p)
+      else:
+        out.write(' in all projects')
       out.nl()
