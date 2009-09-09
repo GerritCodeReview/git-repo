@@ -36,6 +36,9 @@ makes it available in your project's local working directory.
     pass
 
   def _ParseChangeIds(self, args):
+    if not args:
+      self.Usage()
+
     to_get = []
     project = None
 
