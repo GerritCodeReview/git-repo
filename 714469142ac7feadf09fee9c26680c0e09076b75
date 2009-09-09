@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAl3///5U\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-09-09T22:00:43Z",
+      "side": 1,
+      "message": "So users need to include \"@\" to use this variable?  As in I might want to set it as:\n\n  export REPO_SSH_ID\u003d\"$USER@\"\n\nIf I am using an LDAP directory and $USER is my SSH username to Gerrit?  Doesn\u0027t that seem a bit odd?\n\nAnd to avoid the email default we need to set the variable to the empty string:\n\n  export REPO_SSH_ID\u003d\"\"\n\nWhich just seems weird to me.\n\nThis feels like too much of a quick hack, making the user set an environment variable to avoid the current default behavior, behavior which we want to deprecate and not encourage in the future because as it turns out its wrong too often.  I guess that is why I have put off this change, its not pretty.\n\nI would prefer to have:\n\n* The default is \"not set\"/not supplied in URL and guessed by OpenSSH\n* During repo upgrade, save local part of email for this value\n\nHow about:\n\n* during repo selfupdate (PostRepoUpgrade in project.py) we copy the local part of userEmail into the remote\u0027s review field, effectively changing \"review.source.android.com\" to \"shawn.pearce@review.source.android.com\".\n* when setting the remote\u0027s review field from the manifest file, if the local config starts with a \"user@\" part, retain it.\n* when checking the type of the review server, if the local config starts with \"user@\" discard it to get the HTTP URL\n* when setting _review_host include the \"user@\" part if present\n* here we don\u0027t include the user part all\n\nThough I imagine we would need to have a check or something to remember we have upgraded this repo client already and don\u0027t always re-copy that local part of userEmail every time repo updates itself.  A user might have \"fixed\" their installation by deleting the user@ part from their review settings in configuration files and added it to ~/.ssh/config instead.  You could put a \"repo version\" property into the manifest project\u0027s configuration file, and if not present, assume the current state of needing to copy the email.",
+      "revId": "714469142ac7feadf09fee9c26680c0e09076b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
