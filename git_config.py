@@ -518,8 +518,12 @@ class Remote(object):
   def SshReviewUrl(self, userEmail):
     if self.ReviewProtocol != 'ssh':
       return None
-    return 'ssh://%s@%s:%s/%s' % (
-      userEmail.split("@")[0],
+    ssh_id = userEmail.split("@")[0] + "@"
+    if "REPO_SSH_ID" in os.environ:
+	ssh_id = os.environ.get("REPO_SSH_ID")
+
+    return 'ssh://%s%s:%s/%s' % (
+      ssh_id,
       self._review_host,
       self._review_port,
       self.projectname)
