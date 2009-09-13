@@ -610,6 +610,23 @@ class Project(object):
   def PostRepoUpgrade(self):
     self._InitHooks()
 
+    m = self.manifest
+    c = m.manifestProject.config
+    version = c.GetString("repo.version")
+
+    if version == None:
+      rv = self.remote.review
+      if rv != None and "@" not in rv:
+        self.remote.review = self.UserEmail.split("@")[0] + "@" + rv
+
+      for k, r in m.remotes.iteritems():
+        if r.reviewUrl != None and "@" not in r.reviewUrl:
+          r.reviewUrl = self.UserEmail.split("@")[0] + "@" + r.reviewUrl
+
+      fd = open(m._manifestFile, 'w')
+      m.Save(fd)
+      c.SetString("repo.version", "1")
+
   def _CopyFiles(self):
     for file in self.copyfiles:
       file._Copy()

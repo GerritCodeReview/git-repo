@@ -470,7 +470,13 @@ class Remote(object):
       if self.review is None:
         return None
 
+      email = None
       u = self.review
+      if("@" in u):
+        parts = u.split("@")
+        email = parts[0]
+        u = parts[1]
+
       if not u.startswith('http:') and not u.startswith('https:'):
         u = 'http://%s' % u
       if u.endswith('/Gerrit'):
@@ -509,6 +515,9 @@ class Remote(object):
           else:
             raise UploadError('Upload over ssh unavailable')
 
+        if email != None:
+          self._review_host = email + "@" + self._review_host
+
         REVIEW_CACHE[u] = (
           self._review_protocol,
           self._review_host,
@@ -518,8 +527,7 @@ class Remote(object):
   def SshReviewUrl(self, userEmail):
     if self.ReviewProtocol != 'ssh':
       return None
-    return 'ssh://%s@%s:%s/%s' % (
-      userEmail.split("@")[0],
+    return 'ssh://%s:%s/%s' % (
       self._review_host,
       self._review_port,
       self.projectname)
