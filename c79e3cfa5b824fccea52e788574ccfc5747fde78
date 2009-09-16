@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAm3///qY\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-09-16T22:27:43Z",
+      "side": 1,
+      "message": "Style nit: Unnecessary parens.",
+      "revId": "c79e3cfa5b824fccea52e788574ccfc5747fde78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAm3///qM\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-09-16T22:27:43Z",
+      "side": 1,
+      "message": "I think \"username\" or \"user\" is a better name for this variable.",
+      "revId": "c79e3cfa5b824fccea52e788574ccfc5747fde78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAm3///qw\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-09-16T22:27:43Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to overwrite the current manifest, that would cause havoc on the next `repo sync` because the manifest is dirty in the working directory (has the username added to it).\n\nConsequently I think the loop above on 622..625 is also unnecessary, we shouldn\u0027t be editing the in-memory representation of the manifest, only the self.remote.review URL stored in the per-project config files.",
+      "revId": "c79e3cfa5b824fccea52e788574ccfc5747fde78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAm3///qc\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-09-16T22:27:43Z",
+      "side": 1,
+      "message": "How does a new repo client set its repo.version to 1?  Shouldn\u0027t we set that inside of subcmds/init.py when we are setting up the directory for the first time?",
+      "revId": "c79e3cfa5b824fccea52e788574ccfc5747fde78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAm3///qg\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-09-16T22:27:43Z",
+      "side": 1,
+      "message": "You need to check for \"@\" in remote.review and preserve the left hand side of that \"@\" so the username you inserted during PostRepoUpgrade isn\u0027t discarded here.",
+      "revId": "c79e3cfa5b824fccea52e788574ccfc5747fde78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
