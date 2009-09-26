@@ -147,32 +147,36 @@ later is required to fix a server side protocol bug.
         if not path:
           continue
         if path not in new_project_paths:
-          project = Project(
-                         manifest = self.manifest,
-                         name = path,
-                         remote = RemoteSpec('origin'),
-                         gitdir = os.path.join(self.manifest.topdir,
-                                               path, '.git'),
-                         worktree = os.path.join(self.manifest.topdir, path),
-                         relpath = path,
-                         revisionExpr = 'HEAD',
-                         revisionId = None)
-          if project.IsDirty():
-            print >>sys.stderr, 'error: Cannot remove project "%s": \
+          """If the path has already been deleted, we don't need to do it
+          """
+          if os.path.exists(self.manifest.topdir + '/' + path):
+              project = Project(
+                             manifest = self.manifest,
+                             name = path,
+                             remote = RemoteSpec('origin'),
+                             gitdir = os.path.join(self.manifest.topdir,
+                                                   path, '.git'),
+                             worktree = os.path.join(self.manifest.topdir, path),
+                             relpath = path,
+                             revisionExpr = 'HEAD',
+                             revisionId = None)
+
+              if project.IsDirty():
+                print >>sys.stderr, 'error: Cannot remove project "%s": \
 uncommitted changes are present' % project.relpath
-            print >>sys.stderr, '       commit changes, then run sync again'
-            return -1
-          else:
-            print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
-            shutil.rmtree(project.worktree)
-            # Try deleting parent subdirs if they are empty
-            dir = os.path.dirname(project.worktree)
-            while dir != self.manifest.topdir:
-              try:
-                os.rmdir(dir)
-              except OSError:
-                break
-              dir = os.path.dirname(dir)
+                print >>sys.stderr, '       commit changes, then run sync again'
+                return -1
+              else:
+                print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
+                shutil.rmtree(project.worktree)
+                # Try deleting parent subdirs if they are empty
+                dir = os.path.dirname(project.worktree)
+                while dir != self.manifest.topdir:
+                  try:
+                    os.rmdir(dir)
+                  except OSError:
+                    break
+                  dir = os.path.dirname(dir)
 
     new_project_paths.sort()
     fd = open(file_path, 'w')
