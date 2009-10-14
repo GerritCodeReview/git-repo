@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import sys
+import os
 from time import time
 from trace import IsTrace
 
@@ -29,7 +30,7 @@ class Progress(object):
   def update(self, inc=1):
     self._done += inc
 
-    if IsTrace():
+    if IsTrace() or not os.isatty(1):
       return
 
     if not self._show:
