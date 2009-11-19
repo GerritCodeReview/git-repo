@@ -111,12 +111,18 @@ later is required to fix a server side protocol bug.
     pm = Progress('Fetching projects', len(projects))
     for project in projects:
       pm.update()
-
-      if project.Sync_NetworkHalf():
-        fetched.add(project.gitdir)
-      else:
-        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-        sys.exit(1)
+      retries = 0
+      while True:
+        if project.Sync_NetworkHalf():
+          fetched.add(project.gitdir)
+          break
+        else:
+          retries += 1
+          print >>sys.stderr, 'error: Cannot fetch %s (attempt %s of 20)' % (project.name, retries)
+          if retries == 20:
+            sys.exit(1)
+          else:
+            time.sleep(1)
     pm.end()
     for project in projects:
       project.bare_git.gc('--auto')
