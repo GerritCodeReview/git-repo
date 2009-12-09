@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAo3//+zg\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-12-09T18:40:39Z",
+      "side": 1,
+      "message": "This will always be false until mp.Sync_NetworkHalf is invoked.  Which means this will run every other repo sync cycle.  Basically you\u0027ll download the new manifest, but you won\u0027t actually use it until the *next* repo sync call made by the user, which is wrong.\n\nYou need to do mp.Sync_NetworkHalf(), and then after that do this if mp.HasChanges: SyncLocalHalf, then reload the manifest and get all projects, and *then* add them to the to_fetch list.",
+      "revId": "8f017c5c62a6445c10ddd2e017993fd33b338573",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAo3//+zo\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-12-09T18:40:39Z",
+      "side": 1,
+      "message": "This is too late.  on line 201 above we have already put all old projects into the to_fetch collection.  If a project used to be in the manifest, but now isn\u0027t, we\u0027ll still try to do a fetch against it during line 212 because its still in the to_fetch collection.",
+      "revId": "8f017c5c62a6445c10ddd2e017993fd33b338573",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
