@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAo3//+y4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-12-09T19:37:47Z",
+      "side": 1,
+      "message": "Should be guarded by\n\n  if not opt.local_only:\n\nso using -l avoids network traffic.",
+      "revId": "f2b4520d9428a6c5a8dffe61f941e7f0c2586796",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAo3//+y0\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2009-12-09T19:37:47Z",
+      "side": 1,
+      "message": "What is this function for?",
+      "revId": "f2b4520d9428a6c5a8dffe61f941e7f0c2586796",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
