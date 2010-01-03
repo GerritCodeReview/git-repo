@@ -461,8 +461,23 @@ class Remote(object):
                      self._Get('fetch', all=True))
     self._review_protocol = None
 
+  def _InsteadOf(self):
+    globCfg = GitConfig.ForUser()
+    urlList = globCfg.GetSubSections('url')
+
+    for url in urlList:
+      key = "url." + url + ".insteadOf"
+      insteadOfList = globCfg.GetString(key, all=True)
+
+      for insteadOf in insteadOfList:
+        if self.url.startswith(insteadOf):
+          return self.url.replace(insteadOf, url, 1)
+
+    return self.url
+
   def PreConnectFetch(self):
-    return _preconnect(self.url)
+    connectionUrl = self._InsteadOf()
+    return _preconnect(connectionUrl)
 
   @property
   def ReviewProtocol(self):
