@@ -15,6 +15,8 @@
 
 import re
 import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 from command import InteractiveCommand
 from editor import Editor
