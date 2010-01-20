@@ -1120,7 +1120,10 @@ class Project(object):
         try:
           src = os.path.join(self.gitdir, name)
           dst = os.path.join(dotgit, name)
-          os.symlink(relpath(src, dst), dst)
+          if os.path.islink(dst) or not os.path.exists(dst):
+            os.symlink(relpath(src, dst), dst)
+          else:
+            raise GitError('cannot overwrite a local work tree')
         except OSError, e:
           if e.errno == errno.EPERM:
             raise GitError('filesystem must support symlinks')
