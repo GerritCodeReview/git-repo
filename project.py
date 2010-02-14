@@ -1022,6 +1022,15 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s rebase %s ' % (self.name, upstream))
 
+  def _FormatPatch(self, rev, start_index=1):
+    cmd = ['format-patch',
+        '--start-number', str(start_index),
+        '--src-prefix='+self.relpath+"/",
+        '--dst-prefix='+self.relpath+"/",
+        rev]
+    if GitCommand(self, cmd).Wait() != 0:
+      raise GitError('%s format-patch %s ' % (self.name, rev))
+
   def _FastForward(self, head):
     cmd = ['merge', head]
     if GitCommand(self, cmd).Wait() != 0:
