@@ -405,3 +405,18 @@ class XmlManifest(Manifest):
             "no %s in <%s> within %s" % \
             (attname, node.nodeName, self._manifestFile)
     return v
+
+
+class BaselineXmlManifest(XmlManifest):
+  """manages the repo configuration file"""
+
+  def __init__(self, repodir, baseline):
+    Manifest.__init__(self, repodir)
+
+    self._manifestFile = os.path.join(self.repodir, 'manifests', baseline)
+    self.manifestProject = MetaProject(self, 'manifests',
+      gitdir   = os.path.join(repodir, 'manifests.git'),
+      worktree = os.path.join(repodir, 'manifests'))
+
+    self._Unload()
+
