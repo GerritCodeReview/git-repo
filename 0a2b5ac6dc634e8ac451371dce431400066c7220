@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAr3//+ZM\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:17:31Z",
+      "side": 1,
+      "message": "How do we do the same thing for a SubmoduleManifest?  The tip of master supports two different manifest styles as I\u0027m hoping to convert to SubmoduleManifest for Android in the future.",
+      "revId": "0a2b5ac6dc634e8ac451371dce431400066c7220",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
