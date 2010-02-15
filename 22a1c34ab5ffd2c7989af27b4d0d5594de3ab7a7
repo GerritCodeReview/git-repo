@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAr3//+ZA\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "Style-nit: The other summaries start with an uppercase letter, and don\u0027t end with trailing whitespace.  This might also be a bit long of a summary.  Perhaps instead \"Run format-patch on all projects\"?",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+ZE\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "You actually seem to accept:\n\n  %prog [--all | \u003cproject\u003e...] \u003cbase-file-name\u003e",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+Y8\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "This text belongs in helpDescription, not helpUsage.\n\nAlso, there is a trailing whitespace on this line.",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+Y4\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "Style-nit: Only one space after \"in\" operator.",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+Y0\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "Style-nit: Trailing whitespace.  Also you probably should explicitly return None here since the line right above you returned something.  I prefer explicitly denoting what our failure result is to the caller.",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+Yw\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "Style-nit: Trailing whitespace.",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+Ys\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "Style-nit: Trailing whitespace.",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+Yo\u003d",
+        "filename": "subcmds/format_patch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:22:31Z",
+      "side": 1,
+      "message": "Would it be better to use a progress meter like we do during sync?  Our progress.Progress object?",
+      "revId": "22a1c34ab5ffd2c7989af27b4d0d5594de3ab7a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
