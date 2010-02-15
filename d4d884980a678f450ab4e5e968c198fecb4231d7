@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAr3//+ZU\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1028,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:16:37Z",
+      "side": 1,
+      "message": "Style-nit: Please put spaces around operators like +.",
+      "revId": "d4d884980a678f450ab4e5e968c198fecb4231d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+Zc\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1030,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:16:37Z",
+      "side": 1,
+      "message": "format-patch takes a revision list specification.  Would it be easier if we explicitly did that here?\n\n  \u0027%s..%s\u0027 % (base, rev)\n\nand in the declaration:\n\n  def _FormatPatch(self, base\u003dNone, rev\u003dHEAD, start_index\u003d1):\n    if base is None:\n      base \u003d self.GetRevisionId()\n\nso that the default behavior is to provide patches relative to the upstream base given in the manifest, but the caller can alter that behavior to use a different base, and/or to use a different local branch.",
+      "revId": "d4d884980a678f450ab4e5e968c198fecb4231d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAr3//+ZY\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1032,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-02-15T17:16:37Z",
+      "side": 1,
+      "message": "Style-nit: unnecessary space at the end of the error message.",
+      "revId": "d4d884980a678f450ab4e5e968c198fecb4231d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
