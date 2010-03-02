@@ -706,10 +706,9 @@ class Project(object):
           # commits are not yet merged upstream.  We do not want
           # to rewrite the published commits so we punt.
           #
-          syncbuf.info(self,
-                       "branch %s is published but is now %d commits behind",
-                       branch.name,
-                       len(upstream_gain))
+          syncbuf.fail(self,
+                       "branch %s is published (but not merged) and is now %d commits behind"
+                       % (branch.name, len(upstream_gain)))
         return
       elif pub == head:
         # All published commits are merged, and thus we are a
