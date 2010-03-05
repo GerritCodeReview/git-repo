@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAvX////4\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1003324
+      },
+      "writtenOn": "2010-03-05T06:23:16Z",
+      "side": 1,
+      "message": "I see the logic you are employing here, this actually does both inform the user and call the fail buffer method. Nice :)",
+      "revId": "4c50deea28badb7007fa6b78c187de50eacdd07a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
