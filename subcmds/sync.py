@@ -111,7 +111,6 @@ later is required to fix a server side protocol bug.
     pm = Progress('Fetching projects', len(projects))
     for project in projects:
       pm.update()
-
       if project.Sync_NetworkHalf():
         fetched.add(project.gitdir)
       else:
@@ -194,6 +193,15 @@ uncommitted changes are present' % project.relpath
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest)
 
+    if not opt.local_only:
+      mp.Sync_NetworkHalf()
+
+    if mp.HasChanges:
+      syncbuf = SyncBuffer(mp.config)
+      mp.Sync_LocalHalf(syncbuf)
+      if not syncbuf.Finish():
+        sys.exit(1)
+      self.manifest._Unload()
     all = self.GetProjects(args, missing_ok=True)
 
     if not opt.local_only:
@@ -201,7 +209,6 @@ uncommitted changes are present' % project.relpath
       now = time.time()
       if (24 * 60 * 60) <= (now - rp.LastFetch):
         to_fetch.append(rp)
-      to_fetch.append(mp)
       to_fetch.extend(all)
 
       fetched = self._Fetch(to_fetch)
