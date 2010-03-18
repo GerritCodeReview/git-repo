@@ -136,7 +136,7 @@ is shown, then the branch appears in all projects.
       hdr('%c%c %-*s' % (current, published, width, name))
       out.write(' |')
 
-      if in_cnt < project_cnt and (in_cnt == 1):
+      if in_cnt < project_cnt:
         fmt = out.write
         paths = []
         if in_cnt < project_cnt - in_cnt: 
