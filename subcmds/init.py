@@ -165,6 +165,13 @@ to update the working directory files.
     _ReloadManifest(self)
     self._ApplyOptions(opt, is_new)
 
+    if isinstance(self.manifest, SubmoduleManifest):
+      m = self.manifest.manifestProject
+      r = m.GetRemote(m.remote.name)
+      r.review = self.manifest._review.GetString('review.url')
+      r.projectname = self.manifest._review.GetString('review.name')
+      r.Save()
+
     if not self.manifest.InitBranch():
       print >>sys.stderr, 'fatal: cannot create branch in manifest'
       sys.exit(1)

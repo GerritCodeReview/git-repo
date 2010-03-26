@@ -93,6 +93,11 @@ URL of the default Gerrit Code Review server.  If a project does
 not have a specific URL in the '.review' file, this default URL
 will be used instead.
 
+review.name
+----------
+
+Name of the manifest project on the Gerrit Code Review server.
+
 review.<name>.url
 -----------------
 
@@ -115,12 +120,15 @@ Example
   $ cat .review
   [review]
     url = vcs-gerrit.example.com
+    name = platform/manifest
   [review "app/Browser"]
     url = netgroup.example.com
 
 In the above example, the app/Clock project will send its code
 reviews to the default server, vcs-gerrit.example.com, while
 app/Browser will send its code reviews to netgroup.example.com.
+Changes on the manifest project will be sent to the project
+platform/manifest on the vcs-gerrit.example.com.
 
 See Also
 ========

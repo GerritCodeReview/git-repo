@@ -19,6 +19,7 @@ import sys
 from command import InteractiveCommand
 from editor import Editor
 from error import UploadError
+from manifest_submodule import SubmoduleManifest
 
 def _die(fmt, *args):
   msg = fmt % args
@@ -321,6 +322,16 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       avail = project.GetUploadableBranches()
       if avail:
         pending.append((project, avail))
+
+    def _manifest_last(a, b):
+      if a[0].relpath == '.':
+        return 1
+      elif b[0].relpath == '.':
+        return -1
+      return 0
+
+    if isinstance(self.manifest, SubmoduleManifest):
+      pending.sort(_manifest_last)
 
     if not pending:
       print >>sys.stdout, "no branches ready for upload"
