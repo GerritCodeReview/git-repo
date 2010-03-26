@@ -56,8 +56,9 @@ in a Git repository for use during future 'repo init' invocations.
   def _Options(self, p):
     if isinstance(self.manifest, XmlManifest):
       p.add_option('--upgrade',
-                   dest='upgrade', action='store_true',
-                   help='Upgrade XML manifest to submodule')
+                   dest='upgrade',
+                   help='Upgrade XML manifest to submodule, supply the <name> of the manifest project',
+                   metavar='<name>')
       p.add_option('-r', '--revision-as-HEAD',
                    dest='peg_rev', action='store_true',
                    help='Save revisions as current HEAD')
@@ -82,7 +83,7 @@ in a Git repository for use during future 'repo init' invocations.
     if opt.output_file != '-':
       print >>sys.stderr, 'Saved manifest to %s' % opt.output_file
 
-  def _Upgrade(self):
+  def _Upgrade(self, opt):
     old = self.manifest
 
     if isinstance(old, SubmoduleManifest):
@@ -96,10 +97,16 @@ in a Git repository for use during future 'repo init' invocations.
         print >>sys.stderr, 'fatal: project "%s" missing' % p.relpath
         sys.exit(1)
 
-    new = SubmoduleManifest(old.repodir)
+    new = SubmoduleManifest(old.repodir, opt.upgrade)
     new.FromXml_Local_1(old, checkout=False)
     new.FromXml_Definition(old)
     new.FromXml_Local_2(old)
+    
+    r = new.manifestProject.GetRemote(new.manifestProject.remote.name)
+    r.review = new._review.GetString('review.url')
+    r.projectname = new._review.GetString('review.name')
+    r.Save()
+    
     print >>sys.stderr, 'upgraded manifest; commit result manually'
 
   def Execute(self, opt, args):
@@ -108,7 +115,7 @@ in a Git repository for use during future 'repo init' invocations.
 
     if isinstance(self.manifest, XmlManifest):
       if opt.upgrade:
-        self._Upgrade()
+        self._Upgrade(opt)
         return
 
       if opt.output_file is not None:

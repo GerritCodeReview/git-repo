@@ -70,7 +70,7 @@ class SubmoduleManifest(Manifest):
       return False
     return True
 
-  def __init__(self, repodir):
+  def __init__(self, repodir, name=None):
     Manifest.__init__(self, repodir)
 
     gitdir = os.path.join(repodir, 'manifest.git')
@@ -83,10 +83,6 @@ class SubmoduleManifest(Manifest):
       worktree = self.topdir
       relpath  = '.'
 
-    self.manifestProject = MetaProject(self, '__manifest__',
-      gitdir   = gitdir,
-      worktree = worktree,
-      relpath  = relpath)
     self._modules = GitConfig(os.path.join(worktree, '.gitmodules'),
                               pickleFile = os.path.join(
                                 repodir, '.repopickle_gitmodules'
@@ -95,6 +91,14 @@ class SubmoduleManifest(Manifest):
                              pickleFile = os.path.join(
                                repodir, '.repopickle_review'
                              ))
+    if name is not None:
+      self._review.SetString('review.name', name)
+         
+    self.manifestProject = MetaProject(self, self._review.GetString('review.name'),
+      gitdir   = gitdir,
+      worktree = worktree,
+      relpath  = relpath)
+
     self._Unload()
 
   @property
