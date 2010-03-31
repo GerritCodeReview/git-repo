@@ -57,6 +57,11 @@ back to the manifest revision.  This option is especially helpful
 if the project is currently on a topic branch, but the manifest
 revision is temporarily needed.
 
+The -k/--keep-obsolete-projects keeps projects that were removed
+or renamed from the manifest so that any commits in those projects
+that have not yet been uploaded can be backed up or moved over to
+the new project.
+
 SSH Connections
 ---------------
 
@@ -97,6 +102,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
+    p.add_option('-k', '--keep-obsolete-projects',
+                 dest='keep_obsolete', action='store_true',
+                 help='Do not delete obsolete projects on sync')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -119,7 +127,7 @@ later is required to fix a server side protocol bug.
     pm.end()
     return fetched
 
-  def UpdateProjectList(self):
+  def _UpdateProjectList(self, opt):
     new_project_paths = []
     for project in self.manifest.projects.values():
       if project.relpath:
@@ -153,7 +161,7 @@ later is required to fix a server side protocol bug.
 uncommitted changes are present' % project.relpath
             print >>sys.stderr, '       commit changes, then run sync again'
             return -1
-          else:
+          elif not opt.keep_obsolete:
             print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
             shutil.rmtree(project.worktree)
             # Try deleting parent subdirs if they are empty
@@ -227,7 +235,7 @@ uncommitted changes are present' % project.relpath
       # bail out now, we have no working tree
       return
 
-    if self.UpdateProjectList():
+    if self._UpdateProjectList(opt):
       sys.exit(1)
 
     syncbuf = SyncBuffer(mp.config,
