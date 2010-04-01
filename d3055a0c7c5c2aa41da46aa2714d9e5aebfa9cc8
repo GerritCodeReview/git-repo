@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwX///4U\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T16:18:12Z",
+      "side": 1,
+      "message": "Should be:\n\n %prog {[\u003cproject\u003e...] | -i \u003cproject\u003e}",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///4Q\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T16:18:12Z",
+      "side": 1,
+      "message": "Style-nit: Drop the commented out code.",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///4I\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T16:18:12Z",
+      "side": 1,
+      "message": "Should we fail if we were given exactly one project?",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///4E\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T16:18:12Z",
+      "side": 1,
+      "message": "Should we fail if we were given exactly one project?",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///4A\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T16:18:12Z",
+      "side": 1,
+      "message": "I think project.GetRevisionId might be the better thing to use here.  That exactly matches the upstream from the manifest.  branch.LocalMerge is the cached name of the upstream branch to use, which only works if the manifest is following an upstream branch.  If its following a specific SHA-1 it won\u0027t exist at all.\n\nBut then I wonder, would a force flag in project.Sync_LocalHalf be better?  That knows how to do a rebase, including trying to rebase around a rebase that was done by the upstream server like when JBQ has to fix revision history in a project.  I wonder if this shouldn\u0027t just be a flag through that code path, disabling the bail out that happens when you have published changes.",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///4M\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T16:18:12Z",
+      "side": 1,
+      "message": "Use project.relpath instead of project.name.",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
