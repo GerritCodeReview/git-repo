@@ -167,8 +167,9 @@ to update the working directory files.
 
       print ''
       print 'Your identity is: %s <%s>' % (name, email)
-      sys.stdout.write('is this correct [yes/no]? ')
-      if 'yes' == sys.stdin.readline().strip():
+      sys.stdout.write('is this correct [y/n]? ')
+      a = sys.stdin.readline().strip()
+      if a in ('yes', 'y', 't', 'true'):
         break
 
     if name != mp.UserName:
