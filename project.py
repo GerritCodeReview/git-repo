@@ -1364,6 +1364,7 @@ class _Later(object):
 
   def Run(self, syncbuf):
     out = syncbuf.out
+    out.info("Running: " + repr(self))
     out.project('project %s/', self.project.relpath)
     out.nl()
     try:
@@ -1409,6 +1410,8 @@ class SyncBuffer(object):
 
   def Finish(self):
     self._PrintMessages()
+    self.out.info("Running 'later' queues 1 and 2...")
+    self.out.nl()
     self._RunLater()
     self._PrintMessages()
     return self.clean
