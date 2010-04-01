@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwX///4w\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T15:17:17Z",
+      "side": 1,
+      "message": "Style-nit:  Put statement on next line.",
+      "revId": "7376e35f27a6585149def82938c1ca99f36db2c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///4s\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-01T15:17:17Z",
+      "side": 1,
+      "message": "Interactive rebase is going to be weird here.  If the user changes \"pick\" to edit\" then we will move onto the next project before they can finish the current project.\n\nHow are we going to handle this?  Should the higher level repo rebase stop and ask the user to use repo rebase --continue to move on, instead of git rebase --continue?",
+      "revId": "7376e35f27a6585149def82938c1ca99f36db2c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
