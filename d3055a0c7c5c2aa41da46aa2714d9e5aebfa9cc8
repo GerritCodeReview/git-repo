@@ -70,6 +70,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwX///3k\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000701
+      },
+      "writtenOn": "2010-04-01T18:04:22Z",
+      "side": 1,
+      "message": "I think we should warn or fail, but not based on the number of projects.  It should be based on whether we\u0027re in \"all projects\" mode because we weren\u0027t given any projects.",
+      "parentUuid": "AAAAwX///4E\u003d",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///4A\u003d",
         "filename": "subcmds/rebase.py",
         "patchSetId": 2
