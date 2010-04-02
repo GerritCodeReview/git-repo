@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwX///zM\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-02T19:55:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///4U\u003d",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///4Q\u003d",
         "filename": "subcmds/rebase.py",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwX///zI\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-02T19:55:48Z",
+      "side": 1,
+      "message": "Done (well, changed to a proper comment)",
+      "parentUuid": "AAAAwX///4Q\u003d",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///4I\u003d",
         "filename": "subcmds/rebase.py",
         "patchSetId": 2
@@ -47,6 +83,24 @@
       "writtenOn": "2010-04-01T16:18:12Z",
       "side": 1,
       "message": "Should we fail if we were given exactly one project?",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///zE\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-02T19:55:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///4I\u003d",
       "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -88,6 +142,42 @@
     },
     {
       "key": {
+        "uuid": "AAAAwX///zA\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-02T19:55:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///4E\u003d",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///y8\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-02T19:55:48Z",
+      "side": 1,
+      "message": "It was easiest to bail out in the one project case; I\u0027m not 100% sure how to figure out whether we were handed zero projects (because GetProjects() turns that into a comprehensive list).",
+      "parentUuid": "AAAAwX///3k\u003d",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///4A\u003d",
         "filename": "subcmds/rebase.py",
         "patchSetId": 2
@@ -105,6 +195,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwX///y4\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-02T19:55:48Z",
+      "side": 1,
+      "message": "Done. (Well, the first ¶)",
+      "parentUuid": "AAAAwX///4A\u003d",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///4M\u003d",
         "filename": "subcmds/rebase.py",
         "patchSetId": 2
@@ -116,6 +224,24 @@
       "writtenOn": "2010-04-01T16:18:12Z",
       "side": 1,
       "message": "Use project.relpath instead of project.name.",
+      "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///y0\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-02T19:55:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///4M\u003d",
       "revId": "d3055a0c7c5c2aa41da46aa2714d9e5aebfa9cc8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
