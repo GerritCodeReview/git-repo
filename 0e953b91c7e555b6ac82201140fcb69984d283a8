@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwX///ro\u003d",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-06T01:18:52Z",
+      "side": 1,
+      "message": "Since this is unrelated to rebase itself, I would prefer if this was split into its own commit, with a message to explain why the extra verbosity is useful and how a user can enable it.",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///uI\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-06T01:18:52Z",
+      "side": 1,
+      "message": "Trailing whitespace",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///sE\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-06T01:18:52Z",
+      "side": 1,
+      "message": "s/branch/project/",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///sA\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-06T01:18:52Z",
+      "side": 1,
+      "message": "s/branch/project/",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
