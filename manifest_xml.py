@@ -65,8 +65,8 @@ class XmlManifest(object):
 
     self._Unload()
 
-  def Link(self, name):
-    """Update the repo metadata to use a different manifest.
+  def Override(self, name):
+    """Use a different manifest, just for the current instantiation.
     """
     path = os.path.join(self.manifestProject.worktree, name)
     if not os.path.isfile(path):
@@ -79,6 +79,11 @@ class XmlManifest(object):
       self._Load()
     finally:
       self.manifestFile = old
+
+  def Link(self, name):
+    """Update the repo metadata to use a different manifest.
+    """
+    self.Override(name)
 
     try:
       if os.path.exists(self.manifestFile):
@@ -120,6 +125,12 @@ class XmlManifest(object):
       have_default = True
       e.setAttribute('revision', d.revisionExpr)
     if have_default:
+      root.appendChild(e)
+      root.appendChild(doc.createTextNode(''))
+
+    if self._manifest_server:
+      e = doc.createElement('manifest-server')
+      e.setAttribute('url', self._manifest_server)
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
 
@@ -169,6 +180,11 @@ class XmlManifest(object):
     return self._default
 
   @property
+  def manifest_server(self):
+    self._Load()
+    return self._manifest_server
+
+  @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
@@ -178,6 +194,7 @@ class XmlManifest(object):
     self._remotes = {}
     self._default = None
     self.branch = None
+    self._manifest_server = None
 
   def _Load(self):
     if not self._loaded:
@@ -245,6 +262,15 @@ class XmlManifest(object):
         self._default = self._ParseDefault(node)
     if self._default is None:
       self._default = _Default()
+
+    for node in config.childNodes:
+      if node.nodeName == 'manifest-server':
+        url = self._reqatt(node, 'url')
+        if self._manifest_server is not None:
+            raise ManifestParseError, \
+                'duplicate manifest-server in %s' % \
+                (self.manifestFile)
+        self._manifest_server = url
 
     for node in config.childNodes:
       if node.nodeName == 'project':
@@ -315,7 +341,7 @@ class XmlManifest(object):
   def _ParseProject(self, node):
     """
     reads a <project> element from the manifest file
-    """ 
+    """
     name = self._reqatt(node, 'name')
 
     remote = self._get_remote(node)
