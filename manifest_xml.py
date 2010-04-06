@@ -65,8 +65,8 @@ class XmlManifest(object):
 
     self._Unload()
 
-  def Link(self, name):
-    """Update the repo metadata to use a different manifest.
+  def Override(self, name):
+    """Use a different manifest, just for the current instantiation.
     """
     path = os.path.join(self.manifestProject.worktree, name)
     if not os.path.isfile(path):
@@ -79,6 +79,11 @@ class XmlManifest(object):
       self._Load()
     finally:
       self.manifestFile = old
+
+  def Link(self, name):
+    """Update the repo metadata to use a different manifest.
+    """
+    self.Override(name)
 
     try:
       if os.path.exists(self.manifestFile):
