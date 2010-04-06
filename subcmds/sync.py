@@ -17,9 +17,11 @@ from optparse import SUPPRESS_HELP
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import time
+import xmlrpclib
 
 from git_command import GIT
 from project import HEAD
@@ -57,6 +59,9 @@ back to the manifest revision.  This option is especially helpful
 if the project is currently on a topic branch, but the manifest
 revision is temporarily needed.
 
+The -s/--smart-sync option can be used to specify the URL to a
+manifest server.
+
 SSH Connections
 ---------------
 
@@ -71,6 +76,23 @@ environment variable to 'ssh'.  For example:
 
   export GIT_SSH=ssh
   %prog
+
+Manifest server
+---------------
+
+The manifest server URL passed as an argument to --smart-sync points to
+an XML RPC service that will return a manifest in which each project
+is pegged to a known good revision for the current branch and
+target.
+
+The manifest server should implement:
+
+  GetApprovedManifest(branch, target)
+
+The target to use is defined by environment variables TARGET_PRODUCT
+and TARGET_BUILD_VARIANT. If those variables are not present, the
+program will call GetApprovedManifest without the target paramater
+and the manifest server should choose a reasonable default target.
 
 Compatibility
 ~~~~~~~~~~~~~
@@ -97,6 +119,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
+    p.add_option('-s', '--smart-sync',
+                 dest='smart_sync', metavar='URL',
+                 help='smart sync using manifest from a known good build')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -182,6 +207,39 @@ uncommitted changes are present' % project.relpath
       print >>sys.stderr, 'error: cannot combine -n and -l'
       sys.exit(1)
 
+    if opt.smart_sync:
+      try:
+        server = xmlrpclib.Server(opt.smart_sync)
+        p = self.manifest.manifestProject
+        b = p.GetBranch(p.CurrentBranch)
+        branch = b.merge
+
+        env = dict(os.environ)
+        if (env.has_key('TARGET_PRODUCT') and
+            env.has_key('TARGET_BUILD_VARIANT')):
+          target = '%s-%s' % (env['TARGET_PRODUCT'],
+                              env['TARGET_BUILD_VARIANT'])
+          [success, manifest_str] = server.GetApprovedManifest(branch, target)
+        else:
+          [success, manifest_str] = server.GetApprovedManifest(branch)
+
+        if success:
+          manifest_name = "smart_sync_override.xml"
+          manifest_path = os.path.join(self.manifest.manifestProject.worktree,
+                                       manifest_name)
+          f = open(manifest_path, 'w')
+          try:
+            f.write(manifest_str)
+          finally:
+            f.close()
+          self.manifest.Override(manifest_name)
+        else:
+          print >>sys.stderr, 'error: %s' % manifest_str
+      except socket.error:
+        print >>sys.stderr, 'error: cannot connect to manifest server %s' % (
+            opt.smart_sync)
+        sys.exit(1)
+
     rp = self.manifest.repoProject
     rp.PreSync()
 
@@ -237,6 +295,8 @@ uncommitted changes are present' % project.relpath
       pm.update()
       if project.worktree:
         project.Sync_LocalHalf(syncbuf)
+    if opt.smart_sync:
+      os.remove(manifest_path)
     pm.end()
     print >>sys.stderr
     if not syncbuf.Finish():
