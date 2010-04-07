@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwX///mk\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-07T14:56:10Z",
+      "side": 1,
+      "message": "I think we prefer --smart-sync for long option names.",
+      "revId": "d0a24ece20f5a88034ad364b416a1dd2e394226d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///mY\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-07T14:56:10Z",
+      "side": 1,
+      "message": "This is a lot to document, and its still not complete.  Maybe you should just document the tiny bit that this is the smart server URL right here, and then write a new section below SSH Connections that describes the smart sync XML RPC service in more detail, including how these environment variables impact the arguments passed to the service.\n\nI know that the smart sync stuff is meant to come from our build server.  But that doesn\u0027t help anyone else who is using repo, will see this flag come along, and want to do the same thing in their environment.",
+      "revId": "d0a24ece20f5a88034ad364b416a1dd2e394226d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///mg\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-07T14:56:10Z",
+      "side": 1,
+      "message": "--smart-sync",
+      "revId": "d0a24ece20f5a88034ad364b416a1dd2e394226d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///mc\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-07T14:56:10Z",
+      "side": 1,
+      "message": "Better approach is to use:\n\n  p \u003d self.manifest.manifestProject\n  b \u003d p.GetBranch(p.CurrentBranch)\n  branch \u003d b.merge\n\nThat why you are less dependent on assumptions about default being the branch the manifest project is on.",
+      "revId": "d0a24ece20f5a88034ad364b416a1dd2e394226d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
