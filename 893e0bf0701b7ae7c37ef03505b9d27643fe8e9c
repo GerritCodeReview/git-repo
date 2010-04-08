@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwX///dE\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-08T22:13:18Z",
+      "side": 1,
+      "message": "Add \"manifest-server?\" before this line.",
+      "revId": "893e0bf0701b7ae7c37ef03505b9d27643fe8e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///dI\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-08T22:13:18Z",
+      "side": 1,
+      "message": "How are these two arguments joined together into the target string?  Or maybe these should be passed as-is and let the XML RPC server join them together?",
+      "revId": "893e0bf0701b7ae7c37ef03505b9d27643fe8e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwX///c4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-08T22:13:18Z",
+      "side": 1,
+      "message": "I wonder, if we have the manifest in memory, can\u0027t we just pass the string down and parse it from memory rather than from file?  Or do we really need it in a file on disk?",
+      "revId": "893e0bf0701b7ae7c37ef03505b9d27643fe8e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
