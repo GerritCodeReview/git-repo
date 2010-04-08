@@ -368,6 +368,27 @@ class Project(object):
 
 ## Status Display ##
 
+  def HasChanges(self):
+    """Returns true if there are uncommitted changes.
+    """
+    self.work_git.update_index('-q',
+                               '--unmerged',
+                               '--ignore-missing',
+                               '--refresh')
+    if self.IsRebaseInProgress():
+      return True
+
+    if self.work_git.DiffZ('diff-index', '--cached', HEAD):
+      return True
+
+    if self.work_git.DiffZ('diff-files'):
+      return True
+
+    if self.work_git.LsOthers():
+      return True
+
+    return False
+
   def PrintWorkTreeStatus(self):
     """Prints the status of the repository to stdout.
     """

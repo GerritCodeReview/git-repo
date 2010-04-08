@@ -320,6 +320,21 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         people = copy.deepcopy(original_people)
         self._AppendAutoCcList(branch, people)
 
+        # Check if there are local changes that may have been forgotten
+        if branch.project.HasChanges():
+            key = 'review.%s.autoupload' % branch.project.remote.review
+            answer = branch.project.config.GetBoolean(key)
+
+            # if they want to auto upload, let's not ask because it could be automated
+            if answer is None:
+                sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/n) ')
+                a = sys.stdin.readline().strip().lower()
+                if a not in ('y', 'yes', 't', 'true', 'on'):
+                    print >>sys.stderr, "skipping upload"
+                    branch.uploaded = False
+                    branch.error = 'User aborted'
+                    continue
+
         branch.UploadForReview(people)
         branch.uploaded = True
       except UploadError, e:
