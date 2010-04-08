@@ -364,6 +364,20 @@ class Project(object):
 
 ## Status Display ##
 
+  def HasChanges(self):
+    self.work_git.update_index('-q',
+                               '--unmerged',
+                               '--ignore-missing',
+                               '--refresh')
+    rb = self.IsRebaseInProgress()
+    di = self.work_git.DiffZ('diff-index', '-M', '--cached', HEAD)
+    df = self.work_git.DiffZ('diff-files')
+    do = self.work_git.LsOthers()
+    if rb or di or df or do:
+      return True
+    else:
+      return False
+
   def PrintWorkTreeStatus(self):
     """Prints the status of the repository to stdout.
     """

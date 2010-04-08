@@ -291,9 +291,24 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     self._UploadAndReport([branch], people)
 
   def _UploadAndReport(self, todo, people):
+    rp = self.manifest.repoProject
+    key = 'review.%s.autoupload' % rp.remote.review
+    answer = self.manifest.repoProject.config.GetBoolean(key)
+
     have_errors = False
     for branch in todo:
       try:
+        # Check if there are local changes that may have been forgotten
+        if branch.project.HasChanges():
+            # if they want to auto upload, let's not ask because it could be automated
+            if answer is None:
+                sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/n) ')
+                a = sys.stdin.readline().strip().lower()
+                if a not in ('y', 'yes', 't', 'true', 'on'):
+                    print >>sys.stderr, "skipping upload"
+                    branch.uploaded = False
+                    continue
+
         branch.UploadForReview(people)
         branch.uploaded = True
       except UploadError, e:
