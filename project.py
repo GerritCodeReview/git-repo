@@ -437,7 +437,10 @@ class Project(object):
     return 'DIRTY'
 
   def PrintWorkTreeDiff(self):
-    """Prints the status of the repository to stdout.
+    HasChanges(self, True);
+
+  def HasChanges(self, toScreen=False):
+    """Gets the status of the repository.
     """
     out = DiffColoring(self.config)
     cmd = ['diff']
@@ -452,12 +455,17 @@ class Project(object):
     has_diff = False
     for line in p.process.stdout:
       if not has_diff:
-        out.nl()
-        out.project('project %s/' % self.relpath)
-        out.nl()
+        if toScreen:
+          out.nl()
+          out.project('project %s/' % self.relpath)
+          out.nl()
         has_diff = True
-      print line[:-1]
-    p.Wait()
+        break
+        if toScreen:
+          print line[:-1]
+    if toScreen:
+      p.Wait()
+    return has_diff
 
 
 ## Publish / Upload ##
