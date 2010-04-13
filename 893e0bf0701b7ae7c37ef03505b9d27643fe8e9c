@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn////4\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-13T16:12:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///dE\u003d",
+      "revId": "893e0bf0701b7ae7c37ef03505b9d27643fe8e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///dI\u003d",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn////0\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-13T16:12:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///dI\u003d",
+      "revId": "893e0bf0701b7ae7c37ef03505b9d27643fe8e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///c4\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2010-04-08T22:13:18Z",
       "side": 1,
       "message": "I wonder, if we have the manifest in memory, can\u0027t we just pass the string down and parse it from memory rather than from file?  Or do we really need it in a file on disk?",
+      "revId": "893e0bf0701b7ae7c37ef03505b9d27643fe8e9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn////w\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-13T16:12:01Z",
+      "side": 1,
+      "message": "I chose to do it like this because it was the simplest solution, given the current code :-). But also, I think it\u0027s nice to have the manifest in a file, so that we can look at what\u0027s on disk. When a developer tries to compare their build with someone else\u0027s it will even make more sense, because it will be easier to compare between the manifests than look at each project individually.",
+      "parentUuid": "AAAAwX///c4\u003d",
       "revId": "893e0bf0701b7ae7c37ef03505b9d27643fe8e9c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
