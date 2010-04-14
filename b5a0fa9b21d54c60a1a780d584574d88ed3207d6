@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwn///5Q\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:27:51Z",
+      "side": 1,
+      "message": "Hmmph.  I\u0027d rather not do this by forcing the encoding in one particular subcommand.  Almost everywhere else we treat strings mostly as binary, but do try to convert them to a specific charset when it makes sense.  Unfortunately we missed a spot.",
+      "revId": "b5a0fa9b21d54c60a1a780d584574d88ed3207d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
