@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwn///5w\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-14T21:17:04Z",
+      "side": 1,
+      "message": "What do you think about moving this condition up with the one above in a small function, so we can avoid having too many indentation levels here?",
+      "revId": "1d13e435473c83091e27e4df571504ef493282dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
