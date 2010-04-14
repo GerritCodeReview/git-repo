@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn///6U\u003d",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1367,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-14T16:04:45Z",
+      "side": 1,
+      "message": "Checked this in by mistake! It was there for my own debugging.",
+      "parentUuid": "AAAAwX///ro\u003d",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///uI\u003d",
         "filename": "subcmds/rebase.py",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2010-04-06T01:18:52Z",
       "side": 1,
       "message": "Trailing whitespace",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///6g\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-14T16:04:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///uI\u003d",
       "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn///6c\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-14T16:04:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///sE\u003d",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwX///sA\u003d",
         "filename": "subcmds/rebase.py",
         "patchSetId": 3
@@ -64,6 +118,24 @@
       "writtenOn": "2010-04-06T01:18:52Z",
       "side": 1,
       "message": "s/branch/project/",
+      "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///6Y\u003d",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2010-04-14T16:04:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwX///sA\u003d",
       "revId": "0e953b91c7e555b6ac82201140fcb69984d283a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
