@@ -16,6 +16,24 @@
       "revId": "1d13e435473c83091e27e4df571504ef493282dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///5k\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:20:27Z",
+      "side": 1,
+      "message": "Nah.  I\u0027ll just cherry-pick this onto stable and apply it.",
+      "parentUuid": "AAAAwn///5w\u003d",
+      "revId": "1d13e435473c83091e27e4df571504ef493282dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
