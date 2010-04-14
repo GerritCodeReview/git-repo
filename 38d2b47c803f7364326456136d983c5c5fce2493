@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAwn///4o\u003d",
+        "filename": "manifest_submodule.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Also document this in the docs/manifest_submodule.txt file.",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///5I\u003d",
+        "filename": "manifest_submodule.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace.",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///5E\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///5A\u003d",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///48\u003d",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///44\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///40\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///4w\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///4s\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-14T21:41:15Z",
+      "side": 1,
+      "message": "Style-int: Trailing whitespace",
+      "revId": "38d2b47c803f7364326456136d983c5c5fce2493",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
