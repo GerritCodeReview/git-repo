@@ -409,24 +409,29 @@ def close_ssh():
 URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
 URI_ALL = re.compile(r'^([a-z][a-z+]*)://([^@/]*@?[^/]*)/')
 
-def _preconnect(url):
+def _split_url(url):
   m = URI_ALL.match(url)
+  port = 22
+  scheme = 'ssh'
   if m:
     scheme = m.group(1)
     host = m.group(2)
     if ':' in host:
       host, port = host.split(':')
-    else:
-      port = 22
-    if scheme in ('ssh', 'git+ssh', 'ssh+git'):
-      return _open_ssh(host, port)
-    return False
 
-  m = URI_SCP.match(url)
-  if m:
+  elif URI_SCP.match(url):
+    m = URI_SCP.match(url)
     host = m.group(1)
-    return _open_ssh(host, 22)
+  else:
+    raise ValueError
 
+  return scheme, host, port
+
+def _preconnect(url):
+  scheme, host, port = _split_url(url)
+  m = URI_ALL.match(url)
+  if scheme in ('ssh', 'git+ssh', 'ssh+git'):
+    return _open_ssh(host, port)
   return False
 
 class Remote(object):
@@ -466,6 +471,18 @@ class Remote(object):
   def PreConnectFetch(self):
     connectionUrl = self._InsteadOf()
     return _preconnect(connectionUrl)
+
+  @property
+  def Host(self):
+    connectionUrl = self._InsteadOf()
+    scheme, host, port = _split_url(connectionUrl)
+    return host
+
+  @property
+  def Port(self):
+    connectionUrl = self._InsteadOf()
+    scheme, host, port = _split_url(connectionUrl)
+    return port
 
   @property
   def ReviewProtocol(self):
