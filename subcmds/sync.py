@@ -25,6 +25,7 @@ import xmlrpclib
 
 from git_command import GIT
 from git_refs import R_HEADS
+from git_command import GIT, ssh_sock
 from project import HEAD
 from project import Project
 from project import RemoteSpec
@@ -261,12 +262,16 @@ uncommitted changes are present' % project.relpath
       self.manifest._Unload()
     all = self.GetProjects(args, missing_ok=True)
 
+    current_sha = _FindProjectsRemoteHEAD(mp)
+
     if not opt.local_only:
       to_fetch = []
       now = time.time()
       if (24 * 60 * 60) <= (now - rp.LastFetch):
         to_fetch.append(rp)
-      to_fetch.extend(all)
+
+      filtered = _ProjectsNeedingFetch(all, current_sha)
+      to_fetch.extend(filtered)
 
       fetched = self._Fetch(to_fetch)
       _PostRepoFetch(rp, opt.no_repo_verify)
@@ -300,6 +305,56 @@ uncommitted changes are present' % project.relpath
     print >>sys.stderr
     if not syncbuf.Finish():
       sys.exit(1)
+
+def _FindProjectsRemoteHEAD(manifest):
+    mr = manifest.GetRemote(manifest.remote.name)
+    b = manifest.GetBranch(manifest.CurrentBranch)
+    branch = b.merge
+    ssh_proxy = mr.PreConnectFetch()
+    port = mr.Port
+    host = mr.Host
+
+    control_master = ""
+    if ssh_proxy:
+      control_master = "-o ControlPath %s" % ssh_sock()
+
+    current_sha = {}
+    p = subprocess.Popen(["ssh",
+                          control_master,
+                          "-p", port, host, "gerrit ls-projects",
+                          "-b", branch],
+                         stdin = subprocess.PIPE,
+                         stdout = subprocess.PIPE,
+                         stderr = subprocess.PIPE)
+    if p.stdin:
+      p.stdin.close()
+
+    if p.stdout:
+      stdout = p.stdout.read()
+      for line in stdout.splitlines():
+        sha, project = line.split(' ', 1)
+        current_sha[project] = sha
+      p.stdout.close()
+
+    if p.stderr:
+      for line in p.stderr:
+        print >>sys.stderr, line
+      p.stderr.close()
+    return current_sha
+
+def _ProjectsNeedingFetch(projects, shas):
+  result = []
+  for project in projects:
+    if project.name in shas:
+      try:
+        if shas[project.name] == project.GetRevisionId:
+          continue
+      except ManifestInvalidRevisionError:
+        """This is a newly created branch.
+        Ok to ignore, a fetch will fix this."""
+        pass
+    result.append(project)
+  return result
 
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():
