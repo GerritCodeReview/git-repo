@@ -18,6 +18,7 @@ import os
 import re
 import shutil
 import socket
+import string
 import subprocess
 import sys
 import time
@@ -195,6 +196,7 @@ uncommitted changes are present' % project.relpath
       print >>sys.stderr, 'error: cannot combine -n and -l'
       sys.exit(1)
 
+    env = dict(os.environ)
     if opt.smart_sync:
       if not self.manifest.manifest_server:
         print >>sys.stderr, \
@@ -206,7 +208,6 @@ uncommitted changes are present' % project.relpath
         b = p.GetBranch(p.CurrentBranch)
         branch = b.merge
 
-        env = dict(os.environ)
         if (env.has_key('TARGET_PRODUCT') and
             env.has_key('TARGET_BUILD_VARIANT')):
           target = '%s-%s' % (env['TARGET_PRODUCT'],
@@ -258,12 +259,37 @@ uncommitted changes are present' % project.relpath
       self.manifest._Unload()
     all = self.GetProjects(args, missing_ok=True)
 
+    current_sha = {}
+    p = subprocess.Popen(["ssh", "-p 29418", "localhost", "gerrit ls-projects",
+                          "-b refs/heads/master"],
+                         cwd = None,
+                         env = env,
+                         stdin = subprocess.PIPE,
+                         stdout = subprocess.PIPE,
+                         stderr = subprocess.PIPE)
+    if p.stdin:
+      p.stdin.close()
+
+    if p.stdout:
+      stdout = p.stdout.read()
+      for line in stdout.splitlines():
+        sha, project = string.split(line, " ", 1)
+        current_sha[project] = sha
+      p.stdout.close()
+
+    if p.stderr:
+      for line in p.stderr:
+        print >>sys.stderr, line
+      p.stderr.close()
+
     if not opt.local_only:
       to_fetch = []
       now = time.time()
       if (24 * 60 * 60) <= (now - rp.LastFetch):
         to_fetch.append(rp)
-      to_fetch.extend(all)
+
+      filtered = _ProjectsNeedingFetch(all, current_sha)
+      to_fetch.extend(filtered)
 
       fetched = self._Fetch(to_fetch)
       _PostRepoFetch(rp, opt.no_repo_verify)
@@ -297,6 +323,22 @@ uncommitted changes are present' % project.relpath
     print >>sys.stderr
     if not syncbuf.Finish():
       sys.exit(1)
+
+def _ProjectsNeedingFetch(projects, shas):
+  result = []
+  for project in projects:
+    if project.name in shas:
+      try:
+        if shas[project.name] == project.GetRevisionId:
+          print >>sys.stderr, "Will not fetch %s, already up to date" % \
+              project.name
+          continue
+      except ManifestInvalidRevisionError:
+        """This is a newly created branch.
+        Ok to ignore, a fetch will fix this."""
+        pass
+    result.append(project)
+  return result
 
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():
