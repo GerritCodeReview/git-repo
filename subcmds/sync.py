@@ -201,15 +201,17 @@ uncommitted changes are present' % project.relpath
         p = self.manifest.manifestProject
         b = p.GetBranch(p.CurrentBranch)
         branch = b.merge
+        if branch.startswith('refs/heads/'):
+          branch = branch[len('refs/heads/'):]
 
         env = dict(os.environ)
         if (env.has_key('TARGET_PRODUCT') and
             env.has_key('TARGET_BUILD_VARIANT')):
           target = '%s-%s' % (env['TARGET_PRODUCT'],
                               env['TARGET_BUILD_VARIANT'])
-          [success, manifest_str] = server.GetApprovedManifest(branch, target)
+          success, manifest_str = server.GetApprovedManifest(branch, target)
         else:
-          [success, manifest_str] = server.GetApprovedManifest(branch)
+          success, manifest_str = server.GetApprovedManifest(branch)
 
         if success:
           manifest_name = "smart_sync_override.xml"
