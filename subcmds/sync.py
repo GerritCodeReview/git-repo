@@ -226,13 +226,13 @@ uncommitted changes are present' % project.relpath
             f = open(manifest_path, 'w')
             try:
               f.write(manifest_str)
-              self.manifest.Override(manifest_name)
             finally:
               f.close()
           except IOError:
             print >>sys.stderr, 'error: cannot write manifest to %s' % \
                 manifest_path
             sys.exit(1)
+          self.manifest.Override(manifest_name)
         else:
           print >>sys.stderr, 'error: %s' % manifest_str
           sys.exit(1)
