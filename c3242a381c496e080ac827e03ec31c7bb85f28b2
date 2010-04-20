@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn///jk\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "string.split below",
+      "parentUuid": "AAAAwn///ms\u003d",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwn///mo\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -47,6 +65,24 @@
       "writtenOn": "2010-04-20T02:08:12Z",
       "side": 1,
       "message": "Obviously you can\u0027t assume port 29418 on localhost.  :-)\n\nYou\u0027ll need to use the PreConnectFetch method on a Remote object instance to set up the SSH tunnel before running the command, and make sure you use the SSH control master as specified by _ssh_sock in git_command.py.\n\nYou can only do this trick if the remote URL(s) for the projects to fetch from is ssh:// and points to the review server the projects use for review.  E.g. we can\u0027t run on this on the android open source project repositories, because the user is going against git:// there and might not have a registered user account with Gerrit to execute this command on.\n\nWorse, not every project in a manifest might be using the same branch.  Its possible to have dalvik point to refs/heads/experimental but everything else point to refs/heads/master (for example).  Since ls-projects only supports one branch, you\u0027ll have to come up with some sane way to select *which* branch you\u0027ll ask Gerrit about.",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///i0\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Yep. Thanks for the tip!",
+      "parentUuid": "AAAAwn///nQ\u003d",
       "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +123,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn///jY\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwn///nM\u003d",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwn///nE\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -98,6 +152,24 @@
       "writtenOn": "2010-04-20T02:08:12Z",
       "side": 1,
       "message": "It may be a better idea to process stderr after stdout hits EOF.  That\u0027s what we do in git_command.py when running any Git command.  Usually when stderr output occurs its the last message before the process exits, but it may have output KiB of data to stdout first.  If you read stderr-then-stdout that could deadlock.  But if you read stdout-then-stderr odds are it will work out OK, because the amount of messages going to stderr tends to be smaller the pipe buffer size.",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///jU\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwn///nE\u003d",
       "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -121,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn///jc\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwn///nI\u003d",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwn///m8\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -132,6 +222,24 @@
       "writtenOn": "2010-04-20T02:08:12Z",
       "side": 1,
       "message": "Limit the split to only 1, in case project contained a space.  Also, IIRC you don\u0027t need [] on the left side of this split.",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///jQ\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwn///m8\u003d",
       "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -155,6 +263,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn///jM\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwn///mw\u003d",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwn///m4\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -172,6 +298,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAwn///jE\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAwn///m4\u003d",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAwn///m0\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -183,6 +327,24 @@
       "writtenOn": "2010-04-20T02:08:12Z",
       "side": 1,
       "message": "No, rev_list(HEAD) would list everything in the project back to the beginning of time.  Very expensive.\n\nI think the better test here is:\n\n  if shas[project.name] \u003d\u003d project.GetRevisionId:\n\nThat way if the local tracking branch exactly matches what Gerrit has, nothing is done.  But if its different, we\u0027ll notice it and be able to fetch that project to try and make it current.\n\nYou need to wrap that GetRevisionId into a try/except.  It can raise ManifestInvalidRevisionError, which is OK, because a fetch at this point would fix the problem.  E.g. this can happen on a newly created branch.  If the client doesn\u0027t have it yet, but the manifest says to use it, GetRevisionId would raise this exception.",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAwn///jA\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-20T18:29:47Z",
+      "side": 1,
+      "message": "Done. I\u0027m wondering what would happen if we have created a topic branch on that project, though.\n\nWouldn\u0027t GetRevisionId return a different sha than the one returned from gerrit ls-projects? That would mean we call gerrit for no reason, since still might have our topic branch based on the same sha1 as what gerrit returned?",
+      "parentUuid": "AAAAwn///m0\u003d",
       "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
