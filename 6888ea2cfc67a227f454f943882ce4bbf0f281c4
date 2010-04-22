@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAw3///4g\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-22T23:58:02Z",
+      "side": 1,
+      "message": "Still need to abstract this to actually work.  :-)",
+      "revId": "6888ea2cfc67a227f454f943882ce4bbf0f281c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAw3///4s\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-22T23:58:02Z",
+      "side": 1,
+      "message": "Can\u0027t you do:\n\n  sha, project \u003d line.split(\u0027 \u0027, 1)\n\nWe do that elsewhere in repo if I recall.  Thus you also don\u0027t need to import string above.",
+      "revId": "6888ea2cfc67a227f454f943882ce4bbf0f281c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAw3///4o\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-22T23:58:02Z",
+      "side": 1,
+      "message": "Is this print too verbose?",
+      "revId": "6888ea2cfc67a227f454f943882ce4bbf0f281c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
