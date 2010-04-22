@@ -348,6 +348,24 @@
       "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAw3///4w\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-22T23:28:12Z",
+      "side": 1,
+      "message": "For the record, GetRevisonId returns the current SHA-1 of this project as per the manifest.  If the developer has started a topic branch and made commits on this, we still get the same manifest revision back from GetRevisionId.\n\nIf GetRevisonId matches Gerrit, nothing has changed on the server side that we care about, so we can skip the fetch.  But if its different, the server has changed since we last talked to it, so we need to fetch to get current.\n\nBut this isn\u0027t impacted by the local topic branch at all.",
+      "parentUuid": "AAAAwn///jA\u003d",
+      "revId": "c3242a381c496e080ac827e03ec31c7bb85f28b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
