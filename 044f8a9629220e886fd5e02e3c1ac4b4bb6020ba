@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAw3///5I\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-22T22:37:16Z",
+      "side": 1,
+      "message": "from git_refs import R_HEADS and use that instead.",
+      "revId": "044f8a9629220e886fd5e02e3c1ac4b4bb6020ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
