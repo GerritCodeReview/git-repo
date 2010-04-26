@@ -24,6 +24,7 @@ import time
 import xmlrpclib
 
 from git_command import GIT
+from git_refs import R_HEADS
 from project import HEAD
 from project import Project
 from project import RemoteSpec
@@ -205,6 +206,8 @@ uncommitted changes are present' % project.relpath
         p = self.manifest.manifestProject
         b = p.GetBranch(p.CurrentBranch)
         branch = b.merge
+        if branch.startswith(R_HEADS):
+          branch = branch[len(R_HEADS):]
 
         env = dict(os.environ)
         if (env.has_key('TARGET_PRODUCT') and
