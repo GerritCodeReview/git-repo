@@ -23,7 +23,7 @@ from signal import SIGTERM
 from urllib2 import urlopen, HTTPError
 from error import GitError, UploadError
 from trace import Trace
-from git_command import GitCommand, _ssh_sock
+from git_command import GitCommand, ssh_sock
 
 R_HEADS = 'refs/heads/'
 R_TAGS  = 'refs/tags/'
@@ -371,7 +371,7 @@ def _open_ssh(host, port):
     return False
 
   command = ['ssh',
-             '-o','ControlPath %s' % _ssh_sock(),
+             '-o','ControlPath %s' % ssh_sock(),
              '-p',str(port),
              '-M',
              '-N',
@@ -399,7 +399,7 @@ def close_ssh():
       pass
   _ssh_cache.clear()
 
-  d = _ssh_sock(create=False)
+  d = ssh_sock(create=False)
   if d:
     try:
       os.rmdir(os.path.dirname(d))

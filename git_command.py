@@ -30,7 +30,7 @@ LAST_CWD = None
 _ssh_proxy_path = None
 _ssh_sock_path = None
 
-def _ssh_sock(create=True):
+def ssh_sock(create=True):
   global _ssh_sock_path
   if _ssh_sock_path is None:
     if not create:
@@ -119,7 +119,7 @@ class GitCommand(object):
     if disable_editor:
       env['GIT_EDITOR'] = ':'
     if ssh_proxy:
-      env['REPO_SSH_SOCK'] = _ssh_sock()
+      env['REPO_SSH_SOCK'] = ssh_sock()
       env['GIT_SSH'] = _ssh_proxy()
 
     if project:
