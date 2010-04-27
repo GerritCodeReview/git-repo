@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAx3///4c\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-27T17:39:13Z",
+      "side": 1,
+      "message": "This isn\u0027t caught and we previously didn\u0027t raise.  Instead we simply ignored the control master code path and hoped Git would understand the URL given here.\n\nI\u0027d probably prefer to set scheme \u003d None in this case, so the if test below fails, and we return False from _preconnect.\n\nOr alternatively, catch this ValueError inside of _preconnect if you want _split_url to raise in other contexts when it doesn\u0027t understand the URL its being given.",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///5M\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-27T17:39:13Z",
+      "side": 1,
+      "message": "m is unused?",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///4E\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-27T17:39:13Z",
+      "side": 1,
+      "message": "_ names are supposed to be private to the module.  If you want to expose it for import, I think we should rename it first.\n\nUgh, I just realized this was my own code.  I already broke that rule.  OK, well, maybe we should consider fixing it anyway.",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///4A\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-27T17:39:13Z",
+      "side": 1,
+      "message": "I think your suggestion in the commit message of following the default branch in the manifest and just fetch the others is a reasonable idea.  Though it only applies for the XML formatted manifest.\n\nFor a submodule formatted manifest you\u0027d have to aggregate all of the projects and see what is the most commonly used branch name.  That\u0027s not that hard, just count up the number of projects using each branch name, and pick the one with the highest number of users.",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///38\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-27T17:39:13Z",
+      "side": 1,
+      "message": "This can return None, in which case we probably don\u0027t want to put the ControlPath argument into the command line.  If we do, the client will try to open \"None\" as a UNIX domain socket.\n\nI *think* that the current code for fetch manages to avoid this without actually checking for None because the ssh_proxy argument to GitCommand\u0027s constructor gets set to a False value if we aren\u0027t going to setup the ControlMaster process.",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///34\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-27T17:39:13Z",
+      "side": 1,
+      "message": "I didn\u0027t know you can set cwd to None.  Would it be better to just leave it off and allow it to use the current working directory?",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///30\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-04-27T17:39:13Z",
+      "side": 1,
+      "message": "This seems to be useless, since you don\u0027t modify the environment at all.  Maybe delete this line and the env \u003d dict(os.environ) above?",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
