@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAx3///rw\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-28T17:32:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAx3///4c\u003d",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAx3///5M\u003d",
         "filename": "git_config.py",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2010-04-27T17:39:13Z",
       "side": 1,
       "message": "m is unused?",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///rs\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-28T17:32:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAx3///5M\u003d",
       "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAx3///sE\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-28T17:32:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAx3///4E\u003d",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAx3///4A\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -64,6 +118,24 @@
       "writtenOn": "2010-04-27T17:39:13Z",
       "side": 1,
       "message": "I think your suggestion in the commit message of following the default branch in the manifest and just fetch the others is a reasonable idea.  Though it only applies for the XML formatted manifest.\n\nFor a submodule formatted manifest you\u0027d have to aggregate all of the projects and see what is the most commonly used branch name.  That\u0027s not that hard, just count up the number of projects using each branch name, and pick the one with the highest number of users.",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///sA\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-28T17:32:56Z",
+      "side": 1,
+      "message": "How can I tell whether I am using a submodule formatted manifest or an XML one? I wasn\u0027t aware this was already implemented :-)",
+      "parentUuid": "AAAAx3///4A\u003d",
       "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAx3///r8\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-28T17:32:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAx3///38\u003d",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAx3///34\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAx3///r4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-28T17:32:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAx3///34\u003d",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAx3///30\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -115,6 +223,24 @@
       "writtenOn": "2010-04-27T17:39:13Z",
       "side": 1,
       "message": "This seems to be useless, since you don\u0027t modify the environment at all.  Maybe delete this line and the env \u003d dict(os.environ) above?",
+      "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAx3///r0\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-04-28T17:32:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAx3///30\u003d",
       "revId": "d168e5c0188401cb6ade5cd400cf198121285b75",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
