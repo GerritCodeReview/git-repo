@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAx3///Pg\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-04T15:00:13Z",
+      "side": 1,
+      "message": "This break makes the following print unreachable, and prevents us from reading all of the lines in the output.  That essentially breaks \u0027repo diff\u0027.\n\nAlso, I\u0027m not sure this is the code path we want to use for this check.  Wouldn\u0027t PrintWorkTreeStatus be the better code to base upon?  Instead of getting the entire patch file, it computes the names of the paths that are affected in memory, and then if that list is non-empty, prints it to the output.",
+      "revId": "231d7b6a3211e9f5ec71a542a0109b0c195d5e40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
