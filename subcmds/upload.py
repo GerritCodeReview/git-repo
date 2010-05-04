@@ -20,6 +20,17 @@ from command import InteractiveCommand
 from editor import Editor
 from error import UploadError
 
+UNUSUAL_COMMIT_THRESHOLD = 3
+
+def _ConfirmManyUploads(multiple_branches=False):
+  if multiple_branches:
+    print "ATTENTION: One or more branches has an unusually high number of commits."
+  else:
+    print "ATTENTION: You are uploading an unusually high number of commits."
+  print "YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across branches?)"
+  answer = raw_input("If you are sure you intend to do this, type 'yes': ").strip()
+  return answer == "yes"
+
 def _die(fmt, *args):
   msg = fmt % args
   print >>sys.stderr, 'error: %s' % msg
@@ -129,6 +140,10 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       answer = answer in ('y', 'Y', 'yes', '1', 'true', 't')
 
     if answer:
+      if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
+        answer = _ConfirmManyUploads()
+
+    if answer:
       self._UploadAndReport([branch], people)
     else:
       _die("upload aborted by user")
@@ -192,6 +207,16 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         todo.append(branch)
     if not todo:
       _die("nothing uncommented for upload")
+
+    many_commits = False
+    for branch in todo:
+      if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
+        many_commits = True
+        break
+    if many_commits:
+      if not _ConfirmManyUploads(multiple_branches=True):
+        _die("upload aborted by user")
+
     self._UploadAndReport(todo, people)
 
   def _FindGerritChange(self, branch):
@@ -257,6 +282,10 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       print >>sys.stderr, "error: no replacements specified"
       print >>sys.stderr, "       use 'repo upload' without --replace"
       sys.exit(1)
+
+    if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
+      if not _ConfirmManyUploads(multiple_branches=True):
+        _die("upload aborted by user")
 
     branch.replace_changes = to_replace
     self._UploadAndReport([branch], people)
