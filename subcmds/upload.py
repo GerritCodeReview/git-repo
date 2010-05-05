@@ -20,7 +20,7 @@ from command import InteractiveCommand
 from editor import Editor
 from error import UploadError
 
-UNUSUAL_COMMIT_THRESHOLD = 3
+UNUSUAL_COMMIT_THRESHOLD = 5
 
 def _ConfirmManyUploads(multiple_branches=False):
   if multiple_branches:
