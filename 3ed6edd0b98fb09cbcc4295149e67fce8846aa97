@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAx3///Kg\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-05T00:02:58Z",
+      "side": 1,
+      "message": "This probably should be branch.commits here too.  to_replace can be shorter.  If the user rebased and has 50 commits, they might only type in 1 change number.  That 1 goes into to_replace, so len(to_replace) \u003d\u003d 1, but len(branch.commits) \u003d\u003d 50.  Its that condition we want to trap here and double check.",
+      "revId": "3ed6edd0b98fb09cbcc4295149e67fce8846aa97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
