@@ -20,6 +20,7 @@ import shutil
 import subprocess
 import sys
 import time
+import threading
 
 from git_command import GIT
 from project import HEAD
@@ -32,6 +33,7 @@ from project import SyncBuffer
 from progress import Progress
 
 class Sync(Command, MirrorSafeCommand):
+  jobs = 1
   common = True
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
@@ -97,6 +99,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
+    p.add_option('-j','--jobs',
+                 dest='jobs', action='store', type='int',
+                 help="number of projects to fetch simultaneously")
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -106,16 +111,32 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+  def _Fetch_helper(self, project, lock, fetched, pm, sem):
+      if not project.Sync_NetworkHalf():
+        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+        sem.release()
+        sys.exit(1)
+
+      lock.acquire()
+      fetched.add(project.gitdir)
+      pm.update()
+      lock.release()
+      sem.release()
+
   def _Fetch(self, projects):
     fetched = set()
+    lock = threading.Lock()
+    sem = threading.Semaphore(self.jobs)
     pm = Progress('Fetching projects', len(projects))
     for project in projects:
-      pm.update()
-      if project.Sync_NetworkHalf():
-        fetched.add(project.gitdir)
-      else:
-        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-        sys.exit(1)
+      sem.acquire()
+      t = threading.Thread(target = self._Fetch_helper,
+                           args = (project, lock, fetched, pm, sem))
+      t.start()
+
+    while threading.active_count() > 1:
+      time.sleep(3)
+
     pm.end()
     for project in projects:
       project.bare_git.gc('--auto')
@@ -177,6 +198,8 @@ uncommitted changes are present' % project.relpath
     return 0
 
   def Execute(self, opt, args):
+    if opt.jobs:
+      self.jobs = opt.jobs
     if opt.network_only and opt.detach_head:
       print >>sys.stderr, 'error: cannot combine -n and -d'
       sys.exit(1)
