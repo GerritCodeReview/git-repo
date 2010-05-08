@@ -23,6 +23,11 @@ import sys
 import time
 import xmlrpclib
 
+try:
+  import threading as _threading
+except ImportError:
+  import dummy_threading as _threading
+
 from git_command import GIT
 from git_refs import R_HEADS
 from project import HEAD
@@ -35,6 +40,7 @@ from project import SyncBuffer
 from progress import Progress
 
 class Sync(Command, MirrorSafeCommand):
+  jobs = 1
   common = True
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
@@ -104,6 +110,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
+    p.add_option('-j','--jobs',
+                 dest='jobs', action='store', type='int',
+                 help="number of projects to fetch simultaneously")
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -117,16 +126,44 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+  def _FetchHelper(self, project, lock, fetched, pm, sem):
+      if not project.Sync_NetworkHalf():
+        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+        sem.release()
+        sys.exit(1)
+
+      lock.acquire()
+      fetched.add(project.gitdir)
+      pm.update()
+      lock.release()
+      sem.release()
+
   def _Fetch(self, projects):
     fetched = set()
     pm = Progress('Fetching projects', len(projects))
-    for project in projects:
-      pm.update()
-      if project.Sync_NetworkHalf():
-        fetched.add(project.gitdir)
-      else:
-        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-        sys.exit(1)
+
+    if self.jobs == 1:
+      for project in projects:
+        pm.update()
+        if project.Sync_NetworkHalf():
+          fetched.add(project.gitdir)
+        else:
+          print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+          sys.exit(1)
+    else:
+      threads = set()
+      lock = _threading.Lock()
+      sem = _threading.Semaphore(self.jobs)
+      for project in projects:
+        sem.acquire()
+        t = _threading.Thread(target = self._FetchHelper,
+                             args = (project, lock, fetched, pm, sem))
+        threads.add(t)
+        t.start()
+
+      for t in threads:
+        t.join()
+
     pm.end()
     return fetched
 
@@ -190,6 +227,8 @@ uncommitted changes are present' % project.relpath
     return 0
 
   def Execute(self, opt, args):
+    if opt.jobs:
+      self.jobs = opt.jobs
     if opt.network_only and opt.detach_head:
       print >>sys.stderr, 'error: cannot combine -n and -d'
       sys.exit(1)
