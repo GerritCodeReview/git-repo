@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAyX///kc\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-10T16:34:25Z",
+      "side": 1,
+      "message": "s/project/projects/",
+      "revId": "40909ef8e9b5c22f315c0a1da9be38eed8b0a2dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAyX///kQ\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-10T16:34:25Z",
+      "side": 1,
+      "message": "This isn\u0027t a thread-safe object.  Concurrent updates from threads can result in undefined behavior.",
+      "revId": "40909ef8e9b5c22f315c0a1da9be38eed8b0a2dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAyX///kY\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-10T16:34:25Z",
+      "side": 1,
+      "message": "This is potentially going to destroy the host system.  Several hundred gc --auto tasks going at once would be bad.  We should instead do all of these *after* all of the network IO is done, and again limit it to the number of jobs passed on the command line.  Or maybe better, to 1 or 2 at most.  If it needs to do any work, gc --auto will probably spin up one thread per detected CPU core.  So running them in parallel is likely not a very large win.  Running too many at once is simply going to thrash the disk very badly, and potentially run you out of available memory.",
+      "revId": "40909ef8e9b5c22f315c0a1da9be38eed8b0a2dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAyX///kU\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-10T16:34:25Z",
+      "side": 1,
+      "message": "This set needs to be thread-safe since multiple threads are now adding to it after the fetch is performed.",
+      "revId": "40909ef8e9b5c22f315c0a1da9be38eed8b0a2dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAyX///kM\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-10T16:34:25Z",
+      "side": 1,
+      "message": "Does it really make sense to spawn 200+ threads at once to perform the fetch, when jobs is only 10?  Threads aren\u0027t free since they require virtual memory for the stack and stack protection frame.  We might be better off spawning one thread for each \"active job slot\" we are allowed to fetch.",
+      "revId": "40909ef8e9b5c22f315c0a1da9be38eed8b0a2dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
