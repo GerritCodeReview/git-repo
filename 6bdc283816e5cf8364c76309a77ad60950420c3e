@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAyX///Y0\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-10T23:47:10Z",
+      "side": 1,
+      "message": "What happens if this Python is built without threads?  If I read the Python documentation right, the \"import threading\" statement is what would blow up.  They suggest:\n\n  try:\n    import threading as _threading\n  except ImportError:\n    import dummy_threading as _threading\n\nBut then they don\u0027t explain what behavior dummy_threading has when you start a function.  Since we\u0027ve never required threading before, I\u0027m a bit leary of making this required even without --jobs being supplied on the command line.",
+      "revId": "6bdc283816e5cf8364c76309a77ad60950420c3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAyX///ZI\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-10T23:47:10Z",
+      "side": 1,
+      "message": "Since this is about reducing sync time through increased parallelism on the network, does it really make sense to sleep 3 seconds during each poll for completion?  Its more effort to code, but it probably makes more sense to use a Condition to wait for completion so the main thread can continue immediately after all fetches are completed.",
+      "revId": "6bdc283816e5cf8364c76309a77ad60950420c3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
