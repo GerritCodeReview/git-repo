@@ -94,7 +94,7 @@ later is required to fix a server side protocol bug.
 
 """
 
-  def _Options(self, p):
+  def _Options(self, p, show_smart=True):
     p.add_option('-l','--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -104,9 +104,10 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
-    p.add_option('-s', '--smart-sync',
-                 dest='smart_sync', action='store_true',
-                 help='smart sync using manifest from a known good build')
+    if show_smart:
+      p.add_option('-s', '--smart-sync',
+                   dest='smart_sync', action='store_true',
+                   help='smart sync using manifest from a known good build')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
