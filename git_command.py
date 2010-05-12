@@ -185,6 +185,9 @@ class GitCommand(object):
                            stdin = stdin,
                            stdout = stdout,
                            stderr = stderr)
+    except KeyboardException
+      p.terminate()
+      raise
     except Exception, e:
       raise GitError('%s: %s' % (command[1], e))
 
@@ -192,22 +195,26 @@ class GitCommand(object):
     self.stdin = p.stdin
 
   def Wait(self):
-    p = self.process
+    try:
+      p = self.process
 
-    if p.stdin:
-      p.stdin.close()
-      self.stdin = None
+      if p.stdin:
+        p.stdin.close()
+        self.stdin = None
 
-    if p.stdout:
-      self.stdout = p.stdout.read()
-      p.stdout.close()
-    else:
-      p.stdout = None
+      if p.stdout:
+        self.stdout = p.stdout.read()
+        p.stdout.close()
+      else:
+        p.stdout = None
 
-    if p.stderr:
-      self.stderr = p.stderr.read()
-      p.stderr.close()
-    else:
-      p.stderr = None
+      if p.stderr:
+        self.stderr = p.stderr.read()
+        p.stderr.close()
+      else:
+        p.stderr = None
 
-    return self.process.wait()
+      return self.process.wait()
+    except KeyboardInterrupt
+      self.process.terminate()
+      raise
