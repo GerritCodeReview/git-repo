@@ -23,7 +23,10 @@ from signal import SIGTERM
 from urllib2 import urlopen, HTTPError
 from error import GitError, UploadError
 from trace import Trace
-from git_command import GitCommand, ssh_sock
+
+from git_command import GitCommand
+from git_command import ssh_sock
+from git_command import terminate_ssh_clients
 
 R_HEADS = 'refs/heads/'
 R_TAGS  = 'refs/tags/'
@@ -391,6 +394,8 @@ def _open_ssh(host, port):
   return True
 
 def close_ssh():
+  terminate_ssh_clients()
+
   for key,p in _ssh_cache.iteritems():
     try:
       os.kill(p.pid, SIGTERM)
