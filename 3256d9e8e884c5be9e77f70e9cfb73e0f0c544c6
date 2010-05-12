@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAyn///pk\u003d",
+        "filename": "subcmds/smartsync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-12T00:49:48Z",
+      "side": 1,
+      "message": "Its 2010.",
+      "revId": "3256d9e8e884c5be9e77f70e9cfb73e0f0c544c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAyn///pc\u003d",
+        "filename": "subcmds/smartsync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-12T00:49:48Z",
+      "side": 1,
+      "message": "I know you are trying to get the help to avoid showing -s (since its enabled by default)... but this is ugly.  I\u0027d rather you call Sync._Options and pass in an optional named parameter that allows hiding the -s option.  That way this documentation doesn\u0027t get out of sync with sync\u0027s own documentation.",
+      "revId": "3256d9e8e884c5be9e77f70e9cfb73e0f0c544c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
