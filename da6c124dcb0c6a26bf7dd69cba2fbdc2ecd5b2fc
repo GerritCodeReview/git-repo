@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAyn///qM\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-12T00:30:48Z",
+      "side": 1,
+      "message": "Isn\u0027t p undefined here?",
+      "revId": "da6c124dcb0c6a26bf7dd69cba2fbdc2ecd5b2fc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAyn///qI\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-12T00:30:48Z",
+      "side": 1,
+      "message": "The caller (especially _RemoteFetch in project.py) could catch the interrupt before it can invoke Wait().  Which means you\u0027ve narrowed the window, but haven\u0027t closed it altogether.",
+      "revId": "da6c124dcb0c6a26bf7dd69cba2fbdc2ecd5b2fc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
