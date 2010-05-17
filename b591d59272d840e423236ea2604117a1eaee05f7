@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAzH///lg\u003d",
+        "filename": "subcmds/smartsync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-17T16:58:07Z",
+      "side": 1,
+      "message": "Import isn\u0027t necessary.",
+      "revId": "b591d59272d840e423236ea2604117a1eaee05f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
