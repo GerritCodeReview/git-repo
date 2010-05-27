@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAzH//+6c\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-27T22:12:03Z",
+      "side": 1,
+      "message": "This isn\u0027t going to work for AOSP.  For AOSP you\u0027ll get port 22, host android.git.kernel.org, and login will be refused, because users don\u0027t have access there... because the sync URL is a git:// URL and not an ssh:// URL.\n\nWe need a better plan for AOSP... or anyone else who isn\u0027t syncing against a Gerrit Code Review server.  I know at least one development team using Android syncs against Gitosis on port 22, so although they are using SSH, they can\u0027t take advantage of this smarter sync logic either.\n\nI think we should just disable this code path for those cases.  But we should try to be a bit smarter about it and not blindly assume we can connect over SSH.  Especially in the AOSP case, we don\u0027t want to flood their logs with failed SSH login attempts caused by repo.",
+      "revId": "57a1d0229648651776ae8a117362b7b088c895ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAzH//+6Y\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-27T22:12:03Z",
+      "side": 1,
+      "message": "This comment seems backwards to me.  We are skipping the project only if its already got the same revision, yes?",
+      "revId": "57a1d0229648651776ae8a117362b7b088c895ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
