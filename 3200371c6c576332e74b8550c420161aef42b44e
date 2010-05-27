@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAAzH//+6Q\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-27T22:20:13Z",
+      "side": 1,
+      "message": "Unnecessary import?",
+      "revId": "3200371c6c576332e74b8550c420161aef42b44e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAzH//+6M\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-27T22:20:13Z",
+      "side": 1,
+      "message": "Unnecessary import?",
+      "revId": "3200371c6c576332e74b8550c420161aef42b44e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAzH//+58\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 304,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-27T22:20:13Z",
+      "side": 1,
+      "message": "Style-nit:  \u003d\u003d True is the same as just testing the result of the method.  So you can drop the \u003d\u003d True here.",
+      "revId": "3200371c6c576332e74b8550c420161aef42b44e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAzH//+54\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-05-27T22:20:13Z",
+      "side": 1,
+      "message": "Do we want to mention which project this was found in?",
+      "revId": "3200371c6c576332e74b8550c420161aef42b44e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
