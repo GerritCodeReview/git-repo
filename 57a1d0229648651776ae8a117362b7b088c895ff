@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAAzX///oE\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-06-02T17:45:49Z",
+      "side": 1,
+      "message": "Ok, that makes sense. How about putting a special entry in the manifest that specifies whether it is possible to use this command or not? I don\u0027t want to make it a flag because I think it should be the default behavior.",
+      "parentUuid": "AAAAzH//+6c\u003d",
+      "revId": "57a1d0229648651776ae8a117362b7b088c895ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAAzH//+6Y\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2010-05-27T22:12:03Z",
       "side": 1,
       "message": "This comment seems backwards to me.  We are skipping the project only if its already got the same revision, yes?",
+      "revId": "57a1d0229648651776ae8a117362b7b088c895ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAAzX///oA\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1002957
+      },
+      "writtenOn": "2010-06-02T17:45:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAAzH//+6Y\u003d",
       "revId": "57a1d0229648651776ae8a117362b7b088c895ff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
