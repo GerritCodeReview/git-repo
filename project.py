@@ -283,7 +283,7 @@ class Project(object):
     return os.path.exists(os.path.join(g, 'rebase-apply')) \
         or os.path.exists(os.path.join(g, 'rebase-merge')) \
         or os.path.exists(os.path.join(w, '.dotest'))
-    
+
   def IsDirty(self, consider_untracked=True):
     """Is the working directory modified in some way?
     """
@@ -416,7 +416,7 @@ class Project(object):
 
       try: f = df[p]
       except KeyError: f = None
- 
+
       if i: i_status = i.status.upper()
       else: i_status = '-'
 
@@ -600,6 +600,18 @@ class Project(object):
     self._InitRemote()
     if not self._RemoteFetch():
       return False
+
+    #Check that the requested ref was found after fetch
+    #
+    try:
+      self.GetRevisionId()
+    except ManifestInvalidRevisionError:
+      # if the ref is a tag. We can try fetching
+      # the tag manually as a last resort
+      #
+      rev = self.revisionExpr
+      if rev.startswith(R_TAGS):
+        self._RemoteFetch(None, rev[len(R_TAGS):])
 
     if self.worktree:
       self._InitMRef()
@@ -982,7 +994,7 @@ class Project(object):
 
 ## Direct Git Commands ##
 
-  def _RemoteFetch(self, name=None):
+  def _RemoteFetch(self, name=None, tag=None):
     if not name:
       name = self.remote.name
 
@@ -994,6 +1006,9 @@ class Project(object):
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
+    if tag is not None:
+      cmd.append('tag')
+      cmd.append(tag)
     return GitCommand(self,
                       cmd,
                       bare = True,
