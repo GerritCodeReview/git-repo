@@ -279,7 +279,7 @@ class Project(object):
     return os.path.exists(os.path.join(g, 'rebase-apply')) \
         or os.path.exists(os.path.join(g, 'rebase-merge')) \
         or os.path.exists(os.path.join(w, '.dotest'))
-    
+
   def IsDirty(self, consider_untracked=True):
     """Is the working directory modified in some way?
     """
@@ -412,7 +412,7 @@ class Project(object):
 
       try: f = df[p]
       except KeyError: f = None
- 
+
       if i: i_status = i.status.upper()
       else: i_status = '-'
 
@@ -627,9 +627,12 @@ class Project(object):
     try:
       return self.bare_git.rev_parse('--verify', '%s^0' % rev)
     except GitError:
-      raise ManifestInvalidRevisionError(
-        'revision %s in %s not found' % (self.revisionExpr,
-                                         self.name))
+      if rev.startswith(R_TAGS) and self._RemoteFetch(None, rev[len(R_TAGS):]):
+        self.GetRevisionId(all)
+      else:
+        raise ManifestInvalidRevisionError(
+          'revision %s in %s not found' % (self.revisionExpr,
+                                           self.name))
 
   def Sync_LocalHalf(self, syncbuf):
     """Perform only the local IO portion of the sync process.
@@ -978,7 +981,7 @@ class Project(object):
 
 ## Direct Git Commands ##
 
-  def _RemoteFetch(self, name=None):
+  def _RemoteFetch(self, name=None, tag=None):
     if not name:
       name = self.remote.name
 
@@ -990,6 +993,9 @@ class Project(object):
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
+    if tag is not None:
+      cmd.append('tag')
+      cmd.append(tag)
     return GitCommand(self,
                       cmd,
                       bare = True,
