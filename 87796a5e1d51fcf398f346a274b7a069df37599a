@@ -16,6 +16,24 @@
       "revId": "87796a5e1d51fcf398f346a274b7a069df37599a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA0X///78\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1004026
+      },
+      "writtenOn": "2010-06-18T08:28:32Z",
+      "side": 1,
+      "message": "Very good point. I\u0027ll move this to a more suitable place",
+      "parentUuid": "AAAA0X///80\u003d",
+      "revId": "87796a5e1d51fcf398f346a274b7a069df37599a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
