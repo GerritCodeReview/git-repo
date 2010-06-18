@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA0X///8s\u003d",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-06-18T02:04:50Z",
+      "side": 1,
+      "message": "You can drop the -M flag and save the user some time.  We only care that there are differences, not what they are.  So making an add-delete pair into a rename is just a waste of time.",
+      "revId": "1eb5bb745f27d9ee02d582fa9250aa018df137fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA0X///8o\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-06-18T02:04:50Z",
+      "side": 1,
+      "message": "Why are you looking at .repo/repo for this configuration value, when elsewhere we use it in each individual project repository?",
+      "revId": "1eb5bb745f27d9ee02d582fa9250aa018df137fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA0X///8k\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-06-18T02:04:50Z",
+      "side": 1,
+      "message": "This line will fail if the following happens:\n\n* User has two commits, in two different projects\n* User uploads both commits\n* One project HasChanges is true\n* User answers \"no\"\n* The other project fails to upload\n\nBasically, you didn\u0027t fill in branch.error when yuo set branch.uploaded \u003d False when the user skipped the projct because it has changes, and now in this loop we don\u0027t have a value to print for branch.error.  I think Python will crash as error wasn\u0027t initialized.\n\nMaybe set branch.error \u003d \u0027User aborted\u0027 above?",
+      "revId": "1eb5bb745f27d9ee02d582fa9250aa018df137fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
