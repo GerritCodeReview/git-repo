@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA0X///80\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-06-18T01:52:25Z",
+      "side": 1,
+      "message": "I\u0027m not a fan of doing network IO inside of this particular getter method.  I\u0027d rather have the caller trap this during sync, and if its a tag, retry.  We should only be attempting network IO during sync, and only when the network half was enabled (-n flag or the default without -l).",
+      "revId": "87796a5e1d51fcf398f346a274b7a069df37599a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
