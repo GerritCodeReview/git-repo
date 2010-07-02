@@ -70,6 +70,9 @@ The -s/--smart-sync option can be used to sync to a known good
 build as specified by the manifest-server element in the current
 manifest.
 
+The -f/--force-broken option can be used to proceed with syncing
+other projects if a project sync fails.
+
 SSH Connections
 ---------------
 
@@ -101,6 +104,9 @@ later is required to fix a server side protocol bug.
 """
 
   def _Options(self, p, show_smart=True):
+    p.add_option('-f', '--force-broken',
+                 dest='force_broken', action='store_true',
+                 help="continue sync even if a project fails to sync")
     p.add_option('-l','--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -132,8 +138,11 @@ later is required to fix a server side protocol bug.
   def _FetchHelper(self, opt, project, lock, fetched, pm, sem):
       if not project.Sync_NetworkHalf(quiet=opt.quiet):
         print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-        sem.release()
-        sys.exit(1)
+        if opt.force_broken:
+          print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+        else:
+          sem.release()
+          sys.exit(1)
 
       lock.acquire()
       fetched.add(project.gitdir)
@@ -152,7 +161,10 @@ later is required to fix a server side protocol bug.
           fetched.add(project.gitdir)
         else:
           print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-          sys.exit(1)
+          if opt.force_broken:
+            print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+          else:
+            sys.exit(1)
     else:
       threads = set()
       lock = _threading.Lock()
