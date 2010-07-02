@@ -70,6 +70,9 @@ The -s/--smart-sync option can be used to sync to a known good
 build as specified by the manifest-server element in the current
 manifest.
 
+The -f/--force-broken option can be used to proceed with syncing
+other projects if a project sync fails.
+
 SSH Connections
 ---------------
 
@@ -101,6 +104,9 @@ later is required to fix a server side protocol bug.
 """
 
   def _Options(self, p, show_smart=True):
+    p.add_option('-f', '--force-broken',
+                 dest='force_broken', action='store_true',
+                 help="continue sync even if a project fails to sync")
     p.add_option('-l','--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -126,19 +132,23 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _FetchHelper(self, project, lock, fetched, pm, sem):
+  def _FetchHelper(self, opt, project, lock, fetched, pm, sem):
       if not project.Sync_NetworkHalf():
         print >>sys.stderr, 'error: Cannot fetch %s' % project.name
         sem.release()
-        sys.exit(1)
+        if not opt.force_broken:
+          sys.exit(1)
+        else:
+          print >>sys.stderr, 'Continuing to repo sync instead of bailing \
+because you wanted to'
+      else:
+        lock.acquire()
+        fetched.add(project.gitdir)
+        pm.update()
+        lock.release()
+        sem.release()
 
-      lock.acquire()
-      fetched.add(project.gitdir)
-      pm.update()
-      lock.release()
-      sem.release()
-
-  def _Fetch(self, projects):
+  def _Fetch(self, opt, projects):
     fetched = set()
     pm = Progress('Fetching projects', len(projects))
 
@@ -149,7 +159,11 @@ later is required to fix a server side protocol bug.
           fetched.add(project.gitdir)
         else:
           print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-          sys.exit(1)
+          if not opt.force_broken:
+            sys.exit(1)
+          else:
+            print >>sys.stderr, 'Continuing to repo sync instead of bailing \
+because you wanted to'
     else:
       threads = set()
       lock = _threading.Lock()
@@ -157,7 +171,7 @@ later is required to fix a server side protocol bug.
       for project in projects:
         sem.acquire()
         t = _threading.Thread(target = self._FetchHelper,
-                             args = (project, lock, fetched, pm, sem))
+                             args = (opt, project, lock, fetched, pm, sem))
         threads.add(t)
         t.start()
 
@@ -308,7 +322,7 @@ uncommitted changes are present' % project.relpath
         to_fetch.append(rp)
       to_fetch.extend(all)
 
-      fetched = self._Fetch(to_fetch)
+      fetched = self._Fetch(opt, to_fetch)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
