@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA1X///4M\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-07-15T23:42:08Z",
+      "side": 1,
+      "message": "Don\u0027t pass an empty arg here.  I\u0027m going to cherry-pick and fix it.",
+      "revId": "57e2ba925625d8fc5bce26e38e19675918b55b8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
