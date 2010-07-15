@@ -111,6 +111,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 """
 
   def _Options(self, p):
+    p.add_option('-t',
+                 dest='auto_topic', action='store_true',
+                 help='Send local branch name to Gerrit Code Review')
     p.add_option('--replace',
                  dest='replace', action='store_true',
                  help='Upload replacement patchesets from this branch')
@@ -121,7 +124,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                  type='string',  action='append', dest='cc',
                  help='Also send email to these email addresses.')
 
-  def _SingleBranch(self, branch, people):
+  def _SingleBranch(self, opt, branch, people):
     project = branch.project
     name = branch.name
     remote = project.GetBranch(name).remote
@@ -154,11 +157,11 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         answer = _ConfirmManyUploads()
 
     if answer:
-      self._UploadAndReport([branch], people)
+      self._UploadAndReport(opt, [branch], people)
     else:
       _die("upload aborted by user")
 
-  def _MultipleBranches(self, pending, people):
+  def _MultipleBranches(self, opt, pending, people):
     projects = {}
     branches = {}
 
@@ -227,7 +230,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       if not _ConfirmManyUploads(multiple_branches=True):
         _die("upload aborted by user")
 
-    self._UploadAndReport(todo, people)
+    self._UploadAndReport(opt, todo, people)
 
   def _AppendAutoCcList(self, branch, people):
     """
@@ -311,9 +314,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         _die("upload aborted by user")
 
     branch.replace_changes = to_replace
-    self._UploadAndReport([branch], people)
+    self._UploadAndReport(opt, [branch], people)
 
-  def _UploadAndReport(self, todo, original_people):
+  def _UploadAndReport(self, opt, todo, original_people):
     have_errors = False
     for branch in todo:
       try:
@@ -335,7 +338,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                     branch.error = 'User aborted'
                     continue
 
-        branch.UploadForReview(people)
+        branch.UploadForReview(people, auto_topic=opt.auto_topic)
         branch.uploaded = True
       except UploadError, e:
         branch.error = e
@@ -391,6 +394,6 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     if not pending:
       print >>sys.stdout, "no branches ready for upload"
     elif len(pending) == 1 and len(pending[0][1]) == 1:
-      self._SingleBranch(pending[0][1][0], people)
+      self._SingleBranch(opt, pending[0][1][0], people)
     else:
-      self._MultipleBranches(pending, people)
+      self._MultipleBranches(opt, pending, people)

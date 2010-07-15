@@ -149,10 +149,11 @@ class ReviewableBranch(object):
       R_HEADS + self.name,
       '--')
 
-  def UploadForReview(self, people):
+  def UploadForReview(self, people, auto_topic=False):
     self.project.UploadForReview(self.name,
                                  self.replace_changes,
-                                 people)
+                                 people,
+                                 auto_topic=auto_topic)
 
   def GetPublishedRefs(self):
     refs = {}
@@ -555,7 +556,10 @@ class Project(object):
         return rb
     return None
 
-  def UploadForReview(self, branch=None, replace_changes=None, people=([],[])):
+  def UploadForReview(self, branch=None,
+                      replace_changes=None,
+                      people=([],[]),
+                      auto_topic=False):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -587,10 +591,15 @@ class Project(object):
       for e in people[1]:
         rp.append('--cc=%s' % sq(e))
 
+      ref_spec = '%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch)
+      if auto_topic:
+        ref_spec = ref_spec + '/' + branch.name
+
       cmd = ['push']
       cmd.append('--receive-pack=%s' % " ".join(rp))
       cmd.append(branch.remote.SshReviewUrl(self.UserEmail))
-      cmd.append('%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch))
+      cmd.append(ref_spec)
+
       if replace_changes:
         for change_id,commit_id in replace_changes.iteritems():
           cmd.append('%s:refs/changes/%s/new' % (commit_id, change_id))
