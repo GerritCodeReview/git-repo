@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import re
 import sys
 
@@ -72,6 +73,14 @@ to "true" then repo will assume you always answer "y" at the prompt,
 and will not prompt you further.  If it is set to "false" then repo
 will assume you always answer "n", and will abort.
 
+review.URL.autocopy:
+
+To automatically copy a user or mailing list to all uploaded reviews,
+you can set a per-project or global Git option to do so. Specifically,
+review.URL.autocopy can be set to a comma separated list of reviewers
+who you always want copied on all uploads with a non-empty --re
+argument.
+
 The URL must match the review URL listed in the manifest XML file,
 or in the .git/config within the project.  For example:
 
@@ -81,6 +90,7 @@ or in the .git/config within the project.  For example:
 
   [review "http://review.example.com/"]
     autoupload = true
+    autocopy = johndoe@company.com,my-team-alias@company.com
 
 References
 ----------
@@ -194,6 +204,19 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       _die("nothing uncommented for upload")
     self._UploadAndReport(todo, people)
 
+  def _AppendAutoCcList(self, branch, people):
+    """
+    Appends the list of users in the CC list in the git project's config if a
+    non-empty reviewer list was found.
+    """
+
+    name = branch.name
+    project = branch.project
+    key = 'review.%s.autocopy' % project.GetBranch(name).remote.review
+    raw_list = project.config.GetString(key)
+    if not raw_list is None and len(people[0]) > 0:
+      people[1].extend([entry.strip() for entry in raw_list.split(',')])
+
   def _FindGerritChange(self, branch):
     last_pub = branch.project.WasPublished(branch.name)
     if last_pub is None:
@@ -261,10 +284,13 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     branch.replace_changes = to_replace
     self._UploadAndReport([branch], people)
 
-  def _UploadAndReport(self, todo, people):
+  def _UploadAndReport(self, todo, original_people):
     have_errors = False
     for branch in todo:
       try:
+        people = copy.deepcopy(original_people)
+        self._AppendAutoCcList(branch, people)
+
         branch.UploadForReview(people)
         branch.uploaded = True
       except UploadError, e:
