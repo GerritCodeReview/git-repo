@@ -37,6 +37,22 @@ branch but need to incorporate new upstream changes "underneath" them.
                 dest="interactive", action="store_true",
                 help="interactive rebase (single project only)")
 
+    p.add_option('-f', '--force-rebase',
+                 dest='force_rebase', action='store_true',
+                 help='Pass --force-rebase to git rebase')
+    p.add_option('--no-ff',
+                 dest='no_ff', action='store_true',
+                 help='Pass --no-ff to git rebase')
+    p.add_option('-q', '--quiet',
+                 dest='quiet', action='store_true',
+                 help='Pass --quiet to git rebase')
+    p.add_option('--autosquash',
+                 dest='autosquash', action='store_true',
+                 help='Pass --autosquash to git rebase')
+    p.add_option('--whitespace',
+                 dest='whitespace', action='store', metavar='WS',
+                 help='Pass --whitespace to git rebase')
+
   def Execute(self, opt, args):
     all = self.GetProjects(args)
     one_project = len(all) == 1
@@ -49,7 +65,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       cb = project.CurrentBranch
       if not cb:
         if one_project:
-          print >>sys.stderr, "error: project %s has a detatched HEAD" % project.name
+          print >>sys.stderr, "error: project %s has a detatched HEAD" % project.relpath
           return -1
         # ignore branches with detatched HEADs
         continue
@@ -57,19 +73,35 @@ branch but need to incorporate new upstream changes "underneath" them.
       upbranch = project.GetBranch(cb)
       if not upbranch.LocalMerge:
         if one_project:
-          print >>sys.stderr, "error: project %s does not track any remote branches" % project.name
+          print >>sys.stderr, "error: project %s does not track any remote branches" % project.relpath
           return -1
         # ignore branches without remotes
         continue
 
-      upstream = project.GetRevisionId()
-
       args = ["rebase"]
+
+      if opt.whitespace:
+        args.append('--whitespace=%s' % opt.whitespace)
+
+      if opt.quiet:
+        args.append('--quiet')
+
+      if opt.force_rebase:
+        args.append('--force-rebase')
+
+      if opt.no_ff:
+        args.append('--no-ff')
+
+      if opt.autosquash:
+        args.append('--autosquash')
+
       if opt.interactive:
         args.append("-i")
-      args.append(upstream)
 
-      print '# project %s: rebasing branch %s -> %s (%s)' % (
-        project.relpath, cb, upbranch.LocalMerge, upstream[0:7])
+      args.append(upbranch.LocalMerge)
+
+      print >>sys.stderr, '# %s: rebasing %s -> %s' % \
+        (project.relpath, cb, upbranch.LocalMerge)
+
       if GitCommand(project, args).Wait() != 0:
         return -1
