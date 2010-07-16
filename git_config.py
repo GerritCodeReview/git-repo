@@ -531,8 +531,11 @@ class Remote(object):
   def SshReviewUrl(self, userEmail):
     if self.ReviewProtocol != 'ssh':
       return None
+    username = self._config.GetString('review.%s.username' % self.review)
+    if username is None:
+      username = userEmail.split("@")[0]
     return 'ssh://%s@%s:%s/%s' % (
-      userEmail.split("@")[0],
+      username,
       self._review_host,
       self._review_port,
       self.projectname)
