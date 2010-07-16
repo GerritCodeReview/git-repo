@@ -92,6 +92,11 @@ review.URL.autocopy can be set to a comma separated list of reviewers
 who you always want copied on all uploads with a non-empty --re
 argument.
 
+review.URL.username:
+
+Override the username used to connect to Gerrit Code Review.
+By default the local part of the email address is used.
+
 The URL must match the review URL listed in the manifest XML file,
 or in the .git/config within the project.  For example:
 
