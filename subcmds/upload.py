@@ -262,7 +262,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     except:
       return ""
 
-  def _ReplaceBranch(self, project, people):
+  def _ReplaceBranch(self, opt, project, people):
     branch = project.CurrentBranch
     if not branch:
       print >>sys.stdout, "no branches ready for upload"
@@ -388,7 +388,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         print >>sys.stderr, \
               'error: --replace requires exactly one project'
         sys.exit(1)
-      self._ReplaceBranch(project_list[0], people)
+      self._ReplaceBranch(opt, project_list[0], people)
       return
 
     for project in project_list:
