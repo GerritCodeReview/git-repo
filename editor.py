@@ -82,12 +82,11 @@ least one of these before using this command."""
       fd = None
 
       if re.compile("^.*[$ \t'].*$").match(editor):
-        args = [editor + ' "$@"']
+        args = '%s "%s"' % (editor, path)
         shell = True
       else:
-        args = [editor]
+        args = [editor, path]
         shell = False
-      args.append(path)
 
       try:
         rc = subprocess.Popen(args, shell=shell).wait()
