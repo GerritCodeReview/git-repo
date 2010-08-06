@@ -51,6 +51,24 @@
       "revId": "60829ba72fe81b1de1c1e9c6e0de486e9e90bddd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA4H///yo\u003d",
+        "filename": "editor.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-08-06T18:53:27Z",
+      "side": 0,
+      "message": "But we\u0027re not passing \u0027sh\u0027 to the editor, we are passing it to the shell that is running our little script fragment:\n\n  $ sh -c \u0027./foo.sh -w \"$@\"\u0027 x \u0027a b\u0027\n  0\u003d./foo.sh\n  {-w}\n  {a b}\n\nNote that the x we passed in that first position is just eaten by the shell we are running.  \u0027sh\u0027 is probably the best name to pass here.",
+      "parentUuid": "AAAA4H///yw\u003d",
+      "revId": "60829ba72fe81b1de1c1e9c6e0de486e9e90bddd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
