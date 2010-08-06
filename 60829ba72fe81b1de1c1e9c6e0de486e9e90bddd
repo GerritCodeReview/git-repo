@@ -87,6 +87,24 @@
       "revId": "60829ba72fe81b1de1c1e9c6e0de486e9e90bddd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA4X////s\u003d",
+        "filename": "editor.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-08-06T19:21:49Z",
+      "side": 0,
+      "message": "I\u0027m concerned about the tempfile library doing something really stupid and giving me a file name with \u0027 in it.  :-\\\n\nUsing the approach we already use where its passed in its own argv slot reduces the changes that an insane temporary file name or path will cause us to break launching the editor.",
+      "parentUuid": "AAAA4X////8\u003d",
+      "revId": "60829ba72fe81b1de1c1e9c6e0de486e9e90bddd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
