@@ -16,6 +16,23 @@
       "revId": "60829ba72fe81b1de1c1e9c6e0de486e9e90bddd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA4H///zU\u003d",
+        "filename": "editor.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-08-06T18:28:51Z",
+      "side": 0,
+      "message": "Wouldn\u0027t this just be the easier change:\n\n  args \u003d [editor + \u0027 \"$@\"\u0027, \u0027sh\u0027]\n\nand leave args.append(path)?\n\nI think the issue we have been having is when we use this code path the first argument passed to the shell is eaten as $0 and then $@ is empty.  Putting in a dummy string \u0027sh\u0027 here will put \u0027sh\u0027 into $0 and leave the path that we append on line 90 in $1, which will then expand out with $@.",
+      "revId": "60829ba72fe81b1de1c1e9c6e0de486e9e90bddd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
