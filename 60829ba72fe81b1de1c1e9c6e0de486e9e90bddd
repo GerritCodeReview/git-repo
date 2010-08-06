@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA4H///0M\u003d",
+        "filename": "editor.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-08-06T14:44:47Z",
+      "side": 0,
+      "message": "We\u0027re losing the quoting, which IIRC we had to put in because on Mac OS X we had paths with spaces in our temporary file names.",
+      "revId": "60829ba72fe81b1de1c1e9c6e0de486e9e90bddd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
