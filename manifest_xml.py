@@ -14,11 +14,8 @@
 # limitations under the License.
 
 import os
-import sys
 import xml.dom.minidom
 
-from git_config import GitConfig
-from git_config import IsId
 from manifest import Manifest
 from project import RemoteSpec
 from project import Project

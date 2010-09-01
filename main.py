@@ -31,7 +31,6 @@ from trace import SetTrace
 from git_config import close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from command import PagedCommand
 from error import ManifestInvalidRevisionError
 from error import NoSuchProjectError
 from error import RepoChangedException

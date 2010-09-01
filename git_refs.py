@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import os
-import sys
 from trace import Trace
 
 HEAD    = 'HEAD'

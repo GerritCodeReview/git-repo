@@ -19,15 +19,14 @@ import re
 import shutil
 import stat
 import sys
-import urllib2
 
 from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId
-from error import GitError, ImportError, UploadError
+from error import GitError, UploadError
 from error import ManifestInvalidRevisionError
 
-from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB
+from git_refs import GitRefs, HEAD, R_HEADS, R_PUB
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
