@@ -1087,9 +1087,9 @@ class Project(object):
       remote.projectname = self.name
 
       if self.worktree:
-        remote.ResetFetch(mirror=False)
+        remote.ResetFetch(self.revisionExpr, mirror=False)
       else:
-        remote.ResetFetch(mirror=True)
+        remote.ResetFetch(self.revisionExpr, mirror=True)
       remote.Save()
 
   def _InitMirrorHead(self):
