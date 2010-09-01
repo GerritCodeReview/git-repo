@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAA7H///ow\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-09-01T23:22:53Z",
+      "side": 1,
+      "message": "If you want users to get this sooner rather than later, please rebase it onto stable.",
+      "revId": "6297905bec8a020257450f4405fd845392119d24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA7H///qQ\u003d",
         "filename": "git_config.py",
         "patchSetId": 1
@@ -13,6 +30,23 @@
       "writtenOn": "2010-09-01T22:44:15Z",
       "side": 1,
       "message": "Is there better place for this code?",
+      "revId": "6297905bec8a020257450f4405fd845392119d24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA7H///oo\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-09-01T23:22:53Z",
+      "side": 1,
+      "message": "Nak.  When mirror\u003dTrue we\u0027re going to fetch a tag into refs/heads/ which is evil and not something you should do.  Tags should always live under refs/tags.\n\nIf mirror\u003dTrue then local branch should be exactly remote branch.  But if rev !\u003d None than instead of * you can use rev:rev.",
       "revId": "6297905bec8a020257450f4405fd845392119d24",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
