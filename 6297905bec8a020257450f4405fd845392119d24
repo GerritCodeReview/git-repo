@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA7H///qQ\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 1004136
+      },
+      "writtenOn": "2010-09-01T22:44:15Z",
+      "side": 1,
+      "message": "Is there better place for this code?",
+      "revId": "6297905bec8a020257450f4405fd845392119d24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
