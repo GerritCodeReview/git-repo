@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA7H///m0\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1004136
+      },
+      "writtenOn": "2010-09-02T00:41:51Z",
+      "side": 1,
+      "message": "Ok, I hope this is correct.\n\nAt least I am able to checkout Android and switch branch.",
+      "revId": "bb54fc6b596c426bce9b13cbcaeeb5f283a7349c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
