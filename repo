@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 8)
+VERSION = (1, 9)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -118,6 +118,9 @@ group.add_option('-m', '--manifest-name',
 group.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
+group.add_option('--reference',
+                 dest='reference',
+                 help='location of mirror directory', metavar='DIR')
 
 # Tool
 group = init_optparse.add_option_group('repo Version options')

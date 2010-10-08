@@ -622,13 +622,14 @@ class Project(object):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
-    if not self.Exists:
+    is_new = not self.Exists
+    if is_new:
       print >>sys.stderr
       print >>sys.stderr, 'Initializing project %s ...' % self.name
       self._InitGitDir()
 
     self._InitRemote()
-    if not self._RemoteFetch():
+    if not self._RemoteFetch(initial = is_new):
       return False
 
     #Check that the requested ref was found after fetch
@@ -1024,13 +1025,67 @@ class Project(object):
 
 ## Direct Git Commands ##
 
-  def _RemoteFetch(self, name=None, tag=None):
+  def _RemoteFetch(self, name=None, tag=None, initial=False):
     if not name:
       name = self.remote.name
 
     ssh_proxy = False
     if self.GetRemote(name).PreConnectFetch():
       ssh_proxy = True
+
+    if initial:
+      alt = os.path.join(self.gitdir, 'objects/info/alternates')
+      try:
+        fd = open(alt, 'rb')
+        try:
+          ref_dir = fd.readline()
+          if ref_dir and ref_dir.endswith('\n'):
+            ref_dir = ref_dir[:-1]
+        finally:
+          fd.close()
+      except IOError, e:
+        ref_dir = None
+
+      if ref_dir and 'objects' == os.path.basename(ref_dir):
+        ref_dir = os.path.dirname(ref_dir)
+        packed_refs = os.path.join(self.gitdir, 'packed-refs')
+        remote = self.GetRemote(name)
+
+        all = self.bare_ref.all
+        ids = set(all.values())
+        tmp = set()
+
+        for r, id in GitRefs(ref_dir).all.iteritems():
+          if r not in all:
+            if r.startswith(R_TAGS) or remote.WritesTo(r):
+              all[r] = id
+              ids.add(id)
+              continue
+
+          if id in ids:
+            continue
+
+          r = 'refs/_alt/%s' % id
+          all[r] = id
+          ids.add(id)
+          tmp.add(r)
+
+        ref_names = list(all.keys())
+        ref_names.sort()
+
+        tmp_packed = ''
+        old_packed = ''
+
+        for r in ref_names:
+          line = '%s %s\n' % (all[r], r)
+          tmp_packed += line
+          if r not in tmp:
+            old_packed += line
+
+        _lwrite(packed_refs, tmp_packed)
+
+      else:
+        ref_dir = None
 
     cmd = ['fetch']
     if not self.worktree:
@@ -1039,10 +1094,21 @@ class Project(object):
     if tag is not None:
       cmd.append('tag')
       cmd.append(tag)
-    return GitCommand(self,
-                      cmd,
-                      bare = True,
-                      ssh_proxy = ssh_proxy).Wait() == 0
+
+    ok = GitCommand(self,
+                    cmd,
+                    bare = True,
+                    ssh_proxy = ssh_proxy).Wait() == 0
+
+    if initial:
+      if ref_dir:
+        if old_packed != '':
+          _lwrite(packed_refs, old_packed)
+        else:
+          os.remove(packed_refs)
+      self.bare_git.pack_refs('--all', '--prune')
+
+    return ok
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
@@ -1079,6 +1145,27 @@ class Project(object):
     if not os.path.exists(self.gitdir):
       os.makedirs(self.gitdir)
       self.bare_git.init()
+
+      mp = self.manifest.manifestProject
+      ref_dir = mp.config.GetString('repo.reference')
+
+      if ref_dir:
+        mirror_git = os.path.join(ref_dir, self.name + '.git')
+        repo_git = os.path.join(ref_dir, '.repo', 'projects',
+                                self.relpath + '.git')
+
+        if os.path.exists(mirror_git):
+          ref_dir = mirror_git
+
+        elif os.path.exists(repo_git):
+          ref_dir = repo_git
+
+        else:
+          ref_dir = None
+
+        if ref_dir:
+          _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
+                  os.path.join(ref_dir, 'objects') + '\n')
 
       if self.manifest.IsMirror:
         self.config.SetString('core.bare', 'true')
