@@ -262,6 +262,7 @@ class Project(object):
       self.work_git = None
     self.bare_git = self._GitGetByExec(self, bare=True)
     self.bare_ref = GitRefs(gitdir)
+    self.manifestdir = "";
 
   @property
   def Exists(self):
@@ -622,13 +623,14 @@ class Project(object):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
-    if not self.Exists:
-      print >>sys.stderr
-      print >>sys.stderr, 'Initializing project %s ...' % self.name
-      self._InitGitDir()
+    cloned = False
+    if not os.path.exists(self.gitdir) and not os.path.exists(self.worktree):
+      cloned = True
+      self._RemoteClone()
 
     self._InitRemote()
-    if not self._RemoteFetch():
+    
+    if not cloned and not self._RemoteFetch():
       return False
 
     #Check that the requested ref was found after fetch
@@ -1023,6 +1025,50 @@ class Project(object):
 
 
 ## Direct Git Commands ##
+
+  def _RemoteClone(self, name=None):
+    if not name:
+      name = self.remote.name
+
+    cnt = 0;
+    worktreeparent = os.path.abspath(self.worktree + "/..")
+
+    while cnt < 10 and not os.path.exists(worktreeparent):
+      try:
+        os.makedirs(worktreeparent)
+      except:
+        cnt = cnt + 1
+
+    cmd = ['clone', '-q', '-n']
+
+    if not self.masterdir:
+      master_dir = self.manifest.manifestProject.config.GetString('repo.master-dir')
+    else:
+      master_dir = self.masterdir;
+
+    if master_dir:
+      gitname = self.name + ".git"
+      aux_path = os.path.join(master_dir, gitname)
+
+      if os.path.exists(aux_path):
+        cmd.extend(['--reference', aux_path])
+
+    cmd.extend(['--', self.remote.url, self.worktree])
+
+    gitresult = GitCommand(self,
+                      cmd,
+                      bare = True,
+                      ssh_proxy = True).Wait() == 0
+
+    dotgit = os.path.join(self.worktree, ".git")
+    cnt = 0
+
+    while cnt < 10 and not os.path.exists(self.gitdir):
+      try:
+        os.renames(dotgit, self.gitdir)
+      except:
+        cnt = cnt + 1
+
 
   def _RemoteFetch(self, name=None, tag=None):
     if not name:

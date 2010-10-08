@@ -70,6 +70,14 @@ The -s/--smart-sync option can be used to sync to a known good
 build as specified by the manifest-server element in the current
 manifest.
 
+The -m/--master-dir option can be used to point to a directory that
+has the content of a --mirror sync. This will make the sync use as
+much as possible of the data in the master-directory when fetching 
+data from the server. This will make the sync go a lot faster as
+well as reducing data traffic on the network. When this option is
+provided to the sync command it overrides the -m option that is given
+to the init command.
+
 SSH Connections
 ---------------
 
@@ -113,6 +121,8 @@ later is required to fix a server side protocol bug.
     p.add_option('-j','--jobs',
                  dest='jobs', action='store', type='int',
                  help="number of projects to fetch simultaneously")
+    p.add_option('-d','--master-dir',
+		 dest='master_dir', action='store')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -138,7 +148,7 @@ later is required to fix a server side protocol bug.
       lock.release()
       sem.release()
 
-  def _Fetch(self, projects):
+  def _Fetch(self, projects, opt):
     fetched = set()
     pm = Progress('Fetching projects', len(projects))
 
@@ -156,6 +166,7 @@ later is required to fix a server side protocol bug.
       sem = _threading.Semaphore(self.jobs)
       for project in projects:
         sem.acquire()
+	project.masterdir = opt.master_dir
         t = _threading.Thread(target = self._FetchHelper,
                              args = (project, lock, fetched, pm, sem))
         threads.add(t)
@@ -308,7 +319,7 @@ uncommitted changes are present' % project.relpath
         to_fetch.append(rp)
       to_fetch.extend(all)
 
-      fetched = self._Fetch(to_fetch)
+      fetched = self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
@@ -320,7 +331,7 @@ uncommitted changes are present' % project.relpath
         for project in all:
           if project.gitdir not in fetched:
             missing.append(project)
-        self._Fetch(missing)
+        self._Fetch(missing, opt)
 
     if self.manifest.IsMirror:
       # bail out now, we have no working tree
