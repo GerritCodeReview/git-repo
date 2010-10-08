@@ -257,9 +257,11 @@ class GitConfig(object):
       finally:
         fd.close()
     except IOError:
-      os.remove(self._pickle)
+      if os.path.exists(self._pickle):
+        os.remove(self._pickle)
     except cPickle.PickleError:
-      os.remove(self._pickle)
+      if os.path.exists(self._pickle):
+        os.remove(self._pickle)
 
   def _ReadGit(self):
     """

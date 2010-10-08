@@ -41,6 +41,16 @@ The optional -m argument can be used to specify an alternate manifest
 to be used. If no manifest is specified, the manifest default.xml
 will be used.
 
+The --ref-dir option can be used to point to a directory that
+has the content of a --mirror sync. This will make the sync use as
+much as possible of the data in the reference-directory when fetching 
+data from the server. This will make the sync go a lot faster as
+well as reducing data traffic on the network. When this option is
+provided to the sync command it overrides the --ref-dir option that 
+is given to the init command. Giving the -m option to the init command 
+makes that value the default for the sync command.
+
+
 Switching Manifest Branches
 ---------------------------
 
@@ -71,7 +81,9 @@ to update the working directory files.
     g.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
-
+    g.add_option('--ref-dir',
+                 dest='ref_dir',
+                 help='location of mirror directory', metavar='DIR')
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -114,6 +126,9 @@ to update the working directory files.
       r.url = opt.manifest_url
       r.ResetFetch()
       r.Save()
+
+    if opt.ref_dir:
+      m.config.SetString('repo.reference-dir', opt.ref_dir)
 
     if opt.mirror:
       if is_new:
