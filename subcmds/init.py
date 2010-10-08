@@ -71,7 +71,9 @@ to update the working directory files.
     g.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
-
+    g.add_option('-d', '--master-dir',
+                 dest='master_dir',
+                 help='location of master mirror directory', metavar='DIR')
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -114,6 +116,9 @@ to update the working directory files.
       r.url = opt.manifest_url
       r.ResetFetch()
       r.Save()
+
+    if opt.master_dir:
+      m.config.SetString('repo.master-dir', opt.master_dir)
 
     if opt.mirror:
       if is_new:
