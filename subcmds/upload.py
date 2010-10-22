@@ -47,7 +47,7 @@ class Upload(InteractiveCommand):
   common = True
   helpSummary = "Upload changes for code review"
   helpUsage="""
-%prog [--re --cc] {[<project>]... | --replace <project>}
+%prog [--re --cc] [<project>]...
 """
   helpDescription = """
 The '%prog' command is used to send changes to the Gerrit Code
@@ -66,12 +66,6 @@ If the --reviewers or --cc options are passed, those emails are
 added to the respective list of users, and emails are sent to any
 new users.  Users passed as --reviewers must already be registered
 with the code review system, or the upload will fail.
-
-If the --replace option is passed the user can designate which
-existing change(s) in Gerrit match up to the commits in the branch
-being uploaded.  For each matched pair of change,commit the commit
-will be added as a new patch set, completely replacing the set of
-files and description associated with the change in Gerrit.
 
 Configuration
 -------------
@@ -119,9 +113,6 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     p.add_option('-t',
                  dest='auto_topic', action='store_true',
                  help='Send local branch name to Gerrit Code Review')
-    p.add_option('--replace',
-                 dest='replace', action='store_true',
-                 help='Upload replacement patchesets from this branch')
     p.add_option('--re', '--reviewers',
                  type='string',  action='append', dest='reviewers',
                  help='Request reviews from these people.')
@@ -262,65 +253,6 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     except:
       return ""
 
-  def _ReplaceBranch(self, opt, project, people):
-    branch = project.CurrentBranch
-    if not branch:
-      print >>sys.stdout, "no branches ready for upload"
-      return
-    branch = project.GetUploadableBranch(branch)
-    if not branch:
-      print >>sys.stdout, "no branches ready for upload"
-      return
-
-    script = []
-    script.append('# Replacing from branch %s' % branch.name)
-
-    if len(branch.commits) == 1:
-      change = self._FindGerritChange(branch)
-      script.append('[%-6s] %s' % (change, branch.commits[0]))
-    else:
-      for commit in branch.commits:
-        script.append('[      ] %s' % commit)
-
-    script.append('')
-    script.append('# Insert change numbers in the brackets to add a new patch set.')
-    script.append('# To create a new change record, leave the brackets empty.')
-
-    script = Editor.EditString("\n".join(script)).split("\n")
-
-    change_re = re.compile(r'^\[\s*(\d{1,})\s*\]\s*([0-9a-f]{1,}) .*$')
-    to_replace = dict()
-    full_hashes = branch.unabbrev_commits
-
-    for line in script:
-      m = change_re.match(line)
-      if m:
-        c = m.group(1)
-        f = m.group(2)
-        try:
-          f = full_hashes[f]
-        except KeyError:
-          print 'fh = %s' % full_hashes
-          print >>sys.stderr, "error: commit %s not found" % f
-          sys.exit(1)
-        if c in to_replace:
-          print >>sys.stderr,\
-            "error: change %s cannot accept multiple commits" % c
-          sys.exit(1)
-        to_replace[c] = f
-
-    if not to_replace:
-      print >>sys.stderr, "error: no replacements specified"
-      print >>sys.stderr, "       use 'repo upload' without --replace"
-      sys.exit(1)
-
-    if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
-      if not _ConfirmManyUploads(multiple_branches=True):
-        _die("upload aborted by user")
-
-    branch.replace_changes = to_replace
-    self._UploadAndReport(opt, [branch], people)
-
   def _UploadAndReport(self, opt, todo, original_people):
     have_errors = False
     for branch in todo:
@@ -382,14 +314,6 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     if opt.cc:
       cc = _SplitEmails(opt.cc)
     people = (reviewers,cc)
-
-    if opt.replace:
-      if len(project_list) != 1:
-        print >>sys.stderr, \
-              'error: --replace requires exactly one project'
-        sys.exit(1)
-      self._ReplaceBranch(opt, project_list[0], people)
-      return
 
     for project in project_list:
       avail = project.GetUploadableBranches()
