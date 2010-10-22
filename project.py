@@ -111,7 +111,6 @@ class ReviewableBranch(object):
     self.project = project
     self.branch = branch
     self.base = base
-    self.replace_changes = None
 
   @property
   def name(self):
@@ -151,7 +150,6 @@ class ReviewableBranch(object):
 
   def UploadForReview(self, people, auto_topic=False):
     self.project.UploadForReview(self.name,
-                                 self.replace_changes,
                                  people,
                                  auto_topic=auto_topic)
 
@@ -557,7 +555,6 @@ class Project(object):
     return None
 
   def UploadForReview(self, branch=None,
-                      replace_changes=None,
                       people=([],[]),
                       auto_topic=False):
     """Uploads the named branch for code review.
@@ -600,9 +597,6 @@ class Project(object):
       cmd.append(branch.remote.SshReviewUrl(self.UserEmail))
       cmd.append(ref_spec)
 
-      if replace_changes:
-        for change_id,commit_id in replace_changes.iteritems():
-          cmd.append('%s:refs/changes/%s/new' % (commit_id, change_id))
       if GitCommand(self, cmd, bare = True).Wait() != 0:
         raise UploadError('Upload failed')
 
