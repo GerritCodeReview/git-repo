@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA8H//+KA\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-10-28T01:41:12Z",
+      "side": 1,
+      "message": "Why?\n\nI think I understand the issue, you don\u0027t want the fetch client to become a control master for another fetch that is concurrently starting.  But we should explain that in a new paragraph in the commit message so we don\u0027t have to guess later.",
+      "revId": "8d0dcf9b361276ff8c8b5a6324cbd4a501e9c4dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
