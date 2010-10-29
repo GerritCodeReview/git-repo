@@ -16,6 +16,40 @@
       "revId": "bb54fc6b596c426bce9b13cbcaeeb5f283a7349c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA8H//970\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-10-29T15:08:46Z",
+      "side": 1,
+      "message": "Like below, this might cause us to fetch to a strange location.  Fetching a tag into the refs/heads/ area isn\u0027t something we encourage in Git because checking out an annotated tag and making a commit on top of that isn\u0027t supported.",
+      "revId": "bb54fc6b596c426bce9b13cbcaeeb5f283a7349c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA8H//974\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-10-29T15:08:46Z",
+      "side": 1,
+      "message": "IIRC rev can also be a SHA-1.  Or a tag.  Here we are going to configure it to ask for something that won\u0027t exist on the remote.  Which will cause the fetch to fail.\n\nSetting up this specification with this assumption here is going to be a problem.  We probably have to fetch refs/heads/* unless the name starts with refs/.  And that means you may need to change the Android manifests to use refs/heads/master as the default revision rather than just \"master\" in order to take advantage of this optimization to fetch only one branch.",
+      "revId": "bb54fc6b596c426bce9b13cbcaeeb5f283a7349c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
