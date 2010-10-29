@@ -110,6 +110,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
+    p.add_option('-q','--quiet',
+                 dest='quiet', action='store_true',
+                 help='be more quiet')
     p.add_option('-j','--jobs',
                  dest='jobs', action='store', type='int',
                  help="number of projects to fetch simultaneously")
@@ -126,8 +129,8 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _FetchHelper(self, project, lock, fetched, pm, sem):
-      if not project.Sync_NetworkHalf():
+  def _FetchHelper(self, opt, project, lock, fetched, pm, sem):
+      if not project.Sync_NetworkHalf(quiet=opt.quiet):
         print >>sys.stderr, 'error: Cannot fetch %s' % project.name
         sem.release()
         sys.exit(1)
@@ -138,14 +141,14 @@ later is required to fix a server side protocol bug.
       lock.release()
       sem.release()
 
-  def _Fetch(self, projects):
+  def _Fetch(self, projects, opt):
     fetched = set()
     pm = Progress('Fetching projects', len(projects))
 
     if self.jobs == 1:
       for project in projects:
         pm.update()
-        if project.Sync_NetworkHalf():
+        if project.Sync_NetworkHalf(quiet=opt.quiet):
           fetched.add(project.gitdir)
         else:
           print >>sys.stderr, 'error: Cannot fetch %s' % project.name
@@ -157,7 +160,12 @@ later is required to fix a server side protocol bug.
       for project in projects:
         sem.acquire()
         t = _threading.Thread(target = self._FetchHelper,
-                             args = (project, lock, fetched, pm, sem))
+                              args = (opt,
+                                      project,
+                                      lock,
+                                      fetched,
+                                      pm,
+                                      sem))
         threads.add(t)
         t.start()
 
@@ -291,7 +299,7 @@ uncommitted changes are present' % project.relpath
       _PostRepoUpgrade(self.manifest)
 
     if not opt.local_only:
-      mp.Sync_NetworkHalf()
+      mp.Sync_NetworkHalf(quiet=opt.quiet)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
@@ -308,7 +316,7 @@ uncommitted changes are present' % project.relpath
         to_fetch.append(rp)
       to_fetch.extend(all)
 
-      fetched = self._Fetch(to_fetch)
+      fetched = self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
@@ -320,7 +328,7 @@ uncommitted changes are present' % project.relpath
         for project in all:
           if project.gitdir not in fetched:
             missing.append(project)
-        self._Fetch(missing)
+        self._Fetch(missing, opt)
 
     if self.manifest.IsMirror:
       # bail out now, we have no working tree
