@@ -618,18 +618,19 @@ class Project(object):
 
 ## Sync ##
 
-  def Sync_NetworkHalf(self):
+  def Sync_NetworkHalf(self, quiet=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
     is_new = not self.Exists
     if is_new:
-      print >>sys.stderr
-      print >>sys.stderr, 'Initializing project %s ...' % self.name
+      if not quiet:
+        print >>sys.stderr
+        print >>sys.stderr, 'Initializing project %s ...' % self.name
       self._InitGitDir()
 
     self._InitRemote()
-    if not self._RemoteFetch(initial = is_new):
+    if not self._RemoteFetch(initial=is_new, quiet=quiet):
       return False
 
     #Check that the requested ref was found after fetch
@@ -642,7 +643,7 @@ class Project(object):
       #
       rev = self.revisionExpr
       if rev.startswith(R_TAGS):
-        self._RemoteFetch(None, rev[len(R_TAGS):])
+        self._RemoteFetch(None, rev[len(R_TAGS):], quiet=quiet)
 
     if self.worktree:
       self._InitMRef()
@@ -1025,7 +1026,9 @@ class Project(object):
 
 ## Direct Git Commands ##
 
-  def _RemoteFetch(self, name=None, tag=None, initial=False):
+  def _RemoteFetch(self, name=None, tag=None,
+                   initial=False,
+                   quiet=False):
     if not name:
       name = self.remote.name
 
@@ -1088,6 +1091,8 @@ class Project(object):
         ref_dir = None
 
     cmd = ['fetch']
+    if quiet:
+      cmd.append('--quiet')
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
