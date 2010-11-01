@@ -107,6 +107,15 @@ class XmlManifest(object):
     root = doc.createElement('manifest')
     doc.appendChild(root)
 
+    # Save out the notice.  There's a little bit of work here to give it the
+    # right whitespace, which assumes that the notice is automatically indented
+    # by 4 by minidom.
+    if self.notice:
+      notice_element = root.appendChild(doc.createElement('notice'))
+      notice_lines = self.notice.splitlines()
+      indented_notice = ('\n'.join(" "*4 + line for line in notice_lines))[4:]
+      notice_element.appendChild(doc.createTextNode(indented_notice))
+
     d = self.default
     sort_remotes = list(self.remotes.keys())
     sort_remotes.sort()
@@ -180,6 +189,11 @@ class XmlManifest(object):
     return self._default
 
   @property
+  def notice(self):
+    self._Load()
+    return self._notice
+
+  @property
   def manifest_server(self):
     self._Load()
     return self._manifest_server
@@ -193,6 +207,7 @@ class XmlManifest(object):
     self._projects = {}
     self._remotes = {}
     self._default = None
+    self._notice = None
     self.branch = None
     self._manifest_server = None
 
@@ -262,6 +277,14 @@ class XmlManifest(object):
         self._default = self._ParseDefault(node)
     if self._default is None:
       self._default = _Default()
+
+    for node in config.childNodes:
+      if node.nodeName == 'notice':
+        if self._notice is not None:
+          raise ManifestParseError, \
+                'duplicate notice in %s' % \
+                (self.manifestFile)
+        self._notice = self._ParseNotice(node)
 
     for node in config.childNodes:
       if node.nodeName == 'manifest-server':
@@ -337,6 +360,45 @@ class XmlManifest(object):
     if d.revisionExpr == '':
       d.revisionExpr = None
     return d
+
+  def _ParseNotice(self, node):
+    """
+    reads a <notice> element from the manifest file
+
+    The <notice> element is distinct from other tags in the XML in that the
+    data is conveyed between the start and end tag (it's not an empty-element
+    tag).
+
+    The white space (carriage returns, indentation) for the notice element is
+    relevant and is parsed in a way that is based on how python docstrings work.
+    In fact, the code is remarkably similar to here:
+      http://www.python.org/dev/peps/pep-0257/
+    """
+    # Get the data out of the node...
+    notice = node.childNodes[0].data
+
+    # Figure out minimum indentation, skipping the first line (the same line
+    # as the <notice> tag)...
+    minIndent = sys.maxint
+    lines = notice.splitlines()
+    for line in lines[1:]:
+      lstrippedLine = line.lstrip()
+      if lstrippedLine:
+        indent = len(line) - len(lstrippedLine)
+        minIndent = min(indent, minIndent)
+
+    # Strip leading / trailing blank lines and also indentation.
+    cleanLines = [lines[0].strip()]
+    for line in lines[1:]:
+      cleanLines.append(line[minIndent:].rstrip())
+
+    # Clear completely blank lines from front and back...
+    while cleanLines and not cleanLines[0]:
+      del cleanLines[0]
+    while cleanLines and not cleanLines[-1]:
+      del cleanLines[-1]
+
+    return '\n'.join(cleanLines)
 
   def _ParseProject(self, node):
     """

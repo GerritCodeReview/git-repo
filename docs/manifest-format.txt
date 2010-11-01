@@ -20,11 +20,14 @@ A manifest XML file (e.g. 'default.xml') roughly conforms to the
 following DTD:
 
   <!DOCTYPE manifest [
-    <!ELEMENT manifest (remote*,
+    <!ELEMENT manifest (notice?,
+                        remote*,
                         default?,
                         manifest-server?,
                         remove-project*,
                         project*)>
+  
+    <!ELEMENT notice (#PCDATA)>
   
     <!ELEMENT remote (EMPTY)>
     <!ATTLIST remote name         ID    #REQUIRED>

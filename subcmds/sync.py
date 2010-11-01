@@ -361,6 +361,11 @@ uncommitted changes are present' % project.relpath
     if not syncbuf.Finish():
       sys.exit(1)
 
+    # If there's a notice that's supposed to print at the end of the sync, print
+    # it now...
+    if self.manifest.notice:
+      print self.manifest.notice
+
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():
     if project.Exists:
