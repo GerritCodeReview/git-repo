@@ -34,6 +34,24 @@
       "revId": "2b8db3ce3e7344b9f3b5216637c5af0d54be5656",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA8H//9jI\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-02T18:14:36Z",
+      "side": 1,
+      "message": "Oh.  In that case we\u0027ll keep it then.  Thanks.",
+      "parentUuid": "AAAA8H//9jQ\u003d",
+      "revId": "2b8db3ce3e7344b9f3b5216637c5af0d54be5656",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
