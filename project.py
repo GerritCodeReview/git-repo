@@ -39,7 +39,8 @@ def _lwrite(path, content):
     fd.close()
 
   try:
-    os.rename(lock, path)
+    shutil.copy(lock, path)
+    os.remove(lock)
   except OSError:
     os.remove(lock)
     raise
@@ -77,7 +78,6 @@ def relpath(dst, src):
     rel += '../'
     tmp = os.path.dirname(tmp)
   return rel + dst[len(top) + 1:]
-
 
 class DownloadedChange(object):
   _commit_cache = None
@@ -840,7 +840,7 @@ class Project(object):
       except OSError:
         pass
       _lwrite(ref, '%s\n' % revid)
-      _lwrite(os.path.join(self.worktree, '.git', HEAD),
+      _lwrite(os.path.join(self.gitdir, HEAD),
               'ref: %s%s\n' % (R_HEADS, name))
       branch.Save()
       return True
@@ -1072,13 +1072,17 @@ class Project(object):
         else:
           _error("%s: Not replacing %s hook", self.relpath, name)
           continue
-      try:
-        os.symlink(relpath(stock_hook, dst), dst)
-      except OSError, e:
-        if e.errno == errno.EPERM:
-          raise GitError('filesystem must support symlinks')
-        else:
-          raise
+      if hasattr(os, 'symlink'):
+        try:
+          os.symlink(relpath(stock_hook, dst), dst)
+        except OSError, e:
+          if e.errno == errno.EPERM:
+            raise GitError('filesystem must support symlinks')
+          else:
+            raise
+      else:
+        # Windows user. Just copy this in
+        shutil.copy(stock_hook, dst)
 
   def _InitRemote(self):
     if self.remote.url:
@@ -1111,42 +1115,21 @@ class Project(object):
         msg = 'manifest set to %s' % self.revisionExpr
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
+  # Creates a git link between .git and the git bare repository
   def _LinkWorkTree(self, relink=False):
-    dotgit = os.path.join(self.worktree, '.git')
+    dotgit_path = os.path.join(self.worktree, '.git')
     if not relink:
-      os.makedirs(dotgit)
-
-    for name in ['config',
-                 'description',
-                 'hooks',
-                 'info',
-                 'logs',
-                 'objects',
-                 'packed-refs',
-                 'refs',
-                 'rr-cache',
-                 'svn']:
-      try:
-        src = os.path.join(self.gitdir, name)
-        dst = os.path.join(dotgit, name)
-        if relink:
-          os.remove(dst)
-        if os.path.islink(dst) or not os.path.exists(dst):
-          os.symlink(relpath(src, dst), dst)
-        else:
-          raise GitError('cannot overwrite a local work tree')
-      except OSError, e:
-        if e.errno == errno.EPERM:
-          raise GitError('filesystem must support symlinks')
-        else:
-          raise
+      os.makedirs(self.worktree)
+    if relink:
+      os.remove(dotgit_path)
+    dotgit = open(dotgit_path, 'w')
+    dotgit.write('gitdir: %s' % self.gitdir)
 
   def _InitWorkTree(self):
-    dotgit = os.path.join(self.worktree, '.git')
-    if not os.path.exists(dotgit):
+    if not os.path.exists(self.worktree):
       self._LinkWorkTree()
 
-      _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
+      _lwrite(os.path.join(self.gitdir, HEAD), '%s\n' % self.GetRevisionId())
 
       cmd = ['read-tree', '--reset', '-u']
       cmd.append('-v')
@@ -1238,10 +1221,7 @@ class Project(object):
         p.Wait()
 
     def GetHead(self):
-      if self._bare:
-        path = os.path.join(self._project.gitdir, HEAD)
-      else:
-        path = os.path.join(self._project.worktree, '.git', HEAD)
+      path = os.path.join(self._project.gitdir, HEAD)
       fd = open(path, 'rb')
       try:
         line = fd.read()
