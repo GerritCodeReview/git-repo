@@ -16,6 +16,7 @@
 import os
 import sys
 import xml.dom.minidom
+import shutil
 
 from git_config import GitConfig
 from git_config import IsId
@@ -81,12 +82,18 @@ class XmlManifest(Manifest):
     finally:
       self._manifestFile = old
 
-    try:
+    if hasattr(os, 'symlink'):
+      try:
+        if os.path.exists(self._manifestFile):
+          os.remove(self._manifestFile)
+        os.symlink('manifests/%s' % name, self._manifestFile)
+      except OSError, e:
+        raise ManifestParseError('cannot link manifest %s' % name)
+    else:
       if os.path.exists(self._manifestFile):
         os.remove(self._manifestFile)
-      os.symlink('manifests/%s' % name, self._manifestFile)
-    except OSError, e:
-      raise ManifestParseError('cannot link manifest %s' % name)
+        # Windows user. Just copy this in
+      shutil.copy('%s/%s' % (self.manifestProject.worktree, name), self._manifestFile)
 
   def _RemoteToXml(self, r, doc, root):
     e = doc.createElement('remote')
@@ -357,7 +364,7 @@ class XmlManifest(Manifest):
       worktree = None
       gitdir = os.path.join(self.topdir, '%s.git' % name)
     else:
-      worktree = os.path.join(self.topdir, path)
+      worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
 
     project = Project(manifest = self,

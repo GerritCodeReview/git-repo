@@ -50,7 +50,7 @@ def RunPager(globalConfig):
     _BecomePager(pager)
   except Exception:
     print >>sys.stderr, "fatal: cannot start pager '%s'" % pager
-    os.exit(255)
+    sys.exit(255)
 
 def _SelectPager(globalConfig):
   try:
@@ -67,7 +67,7 @@ def _SelectPager(globalConfig):
   except KeyError:
     pass
 
-  return 'less'
+  return ''
 
 def _BecomePager(pager):
   # Delaying execution of the pager until we have output
