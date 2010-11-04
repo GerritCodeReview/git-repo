@@ -432,7 +432,7 @@ def _FindRepo():
   dir = os.getcwd()
   repo = None
 
-  while dir != '/' and not repo:
+  while dir != '/' and not re.match('^[a-zA-Z]:[\\\/]$', dir) and not repo:
     repo = os.path.join(dir, repodir, REPO_MAIN)
     if not os.path.isfile(repo):
       repo = None
@@ -584,7 +584,8 @@ def main(orig_args):
   me.extend(orig_args)
   me.extend(extra_args)
   try:
-    os.execv(main, me)
+    subprocess.call(me, shell=True)
+    sys.exit(0);
   except OSError, e:
     print >>sys.stderr, "fatal: unable to start %s" % main
     print >>sys.stderr, "fatal: %s" % e

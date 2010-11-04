@@ -16,6 +16,7 @@
 import os
 import optparse
 import sys
+import re
 
 import manifest_loader
 
@@ -90,7 +91,7 @@ class Command(object):
         project = all.get(arg)
 
         if not project:
-          path = os.path.abspath(arg)
+          path = os.path.abspath(arg).replace('\\', '/')
 
           if not by_path:
             by_path = dict()
@@ -102,6 +103,7 @@ class Command(object):
           except KeyError:
             while path \
               and path != '/' \
+              and not re.match('^[a-zA-Z]:[\\\/]$', path) \
               and path != self.manifest.topdir:
               try:
                 project = by_path[path]
