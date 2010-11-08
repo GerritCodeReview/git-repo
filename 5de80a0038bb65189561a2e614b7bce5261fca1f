@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA8H//8xA\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1002619
+      },
+      "writtenOn": "2010-11-08T16:02:37Z",
+      "side": 1,
+      "message": "This isn\u0027t ideal because changes won\u0027t take effect without refreshing it.\n\nThis probably either needs to change to update the copy whenever there is a sync of the manifest project or reference a file directly in the manifest project.",
+      "revId": "5de80a0038bb65189561a2e614b7bce5261fca1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
