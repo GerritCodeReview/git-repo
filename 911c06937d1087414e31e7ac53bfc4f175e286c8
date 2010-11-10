@@ -1,0 +1,225 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA83///2I\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "These 4 things should probably be 4 separate commits, to make it easier to review.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///14\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Same comment as in repo, use r\u0027...\u0027 style string.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///1Q\u003d",
+        "filename": "manifest_submodule.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Why did this code move?  Its hard enough to review a lot of potentially breaking changes, its harder still when there are unnecessary code changes.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///1I\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "When the manifest repository changes, I don\u0027t think we call back through here to \"update\" manifest.xml.  Which means the client will continue to sync with the older copy of the manifest content, and won\u0027t pick up changes like an added or removed project.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///10\u003d",
+        "filename": "pager.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Why are we changing the default PAGER from \u0027less\u0027 to nothing?  This breaks a lot of existing users who are on UNIX and don\u0027t set the above variables.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///1w\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Rename works on UNIX.  It should also work on Windows... if it doesn\u0027t then you should try deleting the target (path) and renaming again.\n\nThe Git locking protocol was designed this way to try and avoid having a partially written file appear at the target.  We shouldn\u0027t break that behavior.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///1s\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "This beaks any existing repo client, unless we first automatically upgrade their \".git as a forest of symlinks\" into a \".git file pointing to another directory\".\n\nUnfortunately that means you may need to handle both cases in the repo code, because there are many existing \".git as a forest of symlinks\" clients already out there in active use by developers.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///1k\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1126,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Why not just use _lwrite?\n\n  _lwrite(dotgit_path, \u0027gitdir: %s\u0027 % self.gitdir);\n\nYou can replace the entire 4 lines (if relink: remove, open, write) with the single function call.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///1Y\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "See above, this breaks existing clients.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///1U\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1224,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Breaks existing clients.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///18\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Is three \\ really the correct number here?  I would have expected four to be necessary to get re.match() the input of [\\\\/] like we would expect it to take.\n\nThis is actually why Python has the r modifier for string literals, it reduces the number of \\ required:\n\n  re.match(r\u0027^[a-zA-Z]:[\\\\/]$\u0027, dir)",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///2A\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 587,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "I think this will break the pager behavior on UNIX systems.  repo forall or repo diff for example can start a pager, which must be the process that the user launched.  For that to work, this process needs to become the pager, which means this process needs to become the real repo main.\n\nI\u0027m also a bit worried about that shell\u003dTrue option, does this mean we are evaluating the string \u0027 \u0027.join(me) through the shell?  If so could we run into quoting problems or other accidental interpretation of the arguments by the shell?",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA83///2E\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-11-10T19:06:26Z",
+      "side": 1,
+      "message": "Does this work on Windows?  The reason I had to set O_NONBLOCK on these pipes is because we read(4096) below.  Stock Python blocks until 4096 bytes are consumed, or EOF is reached.\n\nThis can be a problem if the program being executed writes 50 bytes to stdout, and then writes 1 MB to stderr.  We\u0027ll be stuck waiting for another 4046 bytes on stdout, but the program will be stuck trying to wait for room on the stderr pipe.\n\nIs there another way in Win32 CPython to set a pipe to be non-blocking so we can get shorter-than-requested reads during our read loop below?",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
