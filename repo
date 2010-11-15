@@ -124,6 +124,9 @@ group.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
 
+group.add_option('--shared',
+                 dest='shared',
+                 help='location of shared directory', metavar='DIR')
 # Tool
 group = init_optparse.add_option_group('repo Version options')
 group.add_option('--repo-url',

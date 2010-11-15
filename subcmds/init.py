@@ -40,6 +40,9 @@ current working directory.
 The optional -b argument can be used to select the manifest branch
 to checkout and use.  If no branch is specified, master is assumed.
 
+The --shared option specified a location for repo to store its bare
+git repositories instead of creating one, which is the .repo/projects.
+
 Switching Manifest Branches
 ---------------------------
 
@@ -77,6 +80,10 @@ to update the working directory files.
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
 
+
+    g.add_option('--shared',
+                 dest='shared',
+                 help='location of shared directory', metavar='DIR')
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -132,6 +139,9 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
+    if opt.shared:
+      m.config.SetString('repo.shared', opt.shared)
+
     if opt.mirror:
       if is_new:
         m.config.SetString('repo.mirror', 'true')
@@ -180,6 +190,32 @@ to update the working directory files.
       print >>sys.stderr, "fatal: manifest '%s' not available" % name
       print >>sys.stderr, 'fatal: %s' % str(e)
       sys.exit(1)
+
+  def _LinkProjects(self):
+    mp = self.manifest.manifestProject
+    src_dir = os.path.expanduser(mp.config.GetString('repo.shared'))
+    dst_dir = os.path.expanduser(self.manifest.repodir + '/projects')
+
+    if not os.path.isdir(src_dir):
+      try:
+        os.mkdir(src_dir)
+      except OSError, e:
+        print >>sys.stderr, \
+              'fatal: cannot make %s directory: %s' % (
+              src_dir, e.strerror)
+
+    if os.path.exists(dst_dir):
+      if not os.path.islink(dst_dir) or os.readlink(dst_dir) != src_dir:
+        print >>sys.stderr, "fatal: cannot link '%s' to %s" % src_dir, dst_dir
+        sys.exit(1)
+
+    if src_dir:
+      try:
+        os.symlink(src_dir, dst_dir)
+      except OSError, e:
+        print >>sys.stderr, "fatal: cannot link '%s' to %s" % src_dir, dst_dir
+        print >>sys.stderr, 'fatal: %s' % str(e)
+        sys.exit(1)
 
   def _Prompt(self, prompt, value):
     mp = self.manifest.manifestProject
@@ -251,6 +287,8 @@ to update the working directory files.
     self._SyncManifest(opt)
     if isinstance(self.manifest, XmlManifest):
       self._LinkManifest(opt.manifest_name)
+
+    self._LinkProjects()
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       self._ConfigureUser()
