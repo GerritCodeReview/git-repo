@@ -1547,6 +1547,11 @@ class Project(object):
       cmd.append(HEAD)
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError("cannot initialize work tree")
+
+      rr_cache = os.path.join(self.gitdir, 'rr-cache')
+      if not os.path.exists(rr_cache):
+        os.makedirs(rr_cache)
+
       self._CopyFiles()
 
   def _gitdir_path(self, path):
