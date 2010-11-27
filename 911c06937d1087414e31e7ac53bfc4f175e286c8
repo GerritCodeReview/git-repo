@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "AAAA9n//+jI\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1005104
+      },
+      "writtenOn": "2010-11-27T17:47:03Z",
+      "side": 1,
+      "message": "Here to support both linux and windows you could do something like :\n\noldpath \u003d None\nwhile path \\\n  and path !\u003d oldpath \\     # Support both linux and windows.\n  and path !\u003d self.manifest.topdir:\n  try:\n    project \u003d by_path[path]\n    break\n  except KeyError:\n    oldpath \u003d path\n    path \u003d os.path.dirname(path)\n\nthis would remove the windowism. I believe all versions of dirname will return an unchanged path when you are already at the root.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA83///14\u003d",
         "filename": "command.py",
         "patchSetId": 5
@@ -141,6 +158,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA9n//+jE\u003d",
+        "filename": "pager.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1005104
+      },
+      "writtenOn": "2010-11-27T17:47:03Z",
+      "side": 1,
+      "message": "Windows has \"more\" (c:\\windows\\system32\\more.com)",
+      "parentUuid": "AAAA9n///x8\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA83///1w\u003d",
         "filename": "project.py",
         "patchSetId": 5
@@ -205,6 +240,23 @@
       "side": 1,
       "message": "Ah ya, good point. Do you feel we need to support both or automatically \"upgrade\" them to the gitlink format?",
       "parentUuid": "AAAA83///1s\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA9n//+jA\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1075,
+      "author": {
+        "id": 1005104
+      },
+      "writtenOn": "2010-11-27T17:47:03Z",
+      "side": 1,
+      "message": "Not a big deal for now, but python 3.2 now supports os.symlink natively on windows, however it works only for NTFS partitions on windows vista and above.   Eventually, once we want to start supporting python 3.x, this check should be made to take those cases into account too. (Or be replaced by an \"if not win:\" check. )",
       "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -309,6 +361,24 @@
       "side": 1,
       "message": "Three works. That sounds cleaner. Will change",
       "parentUuid": "AAAA83///18\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA9n//+i8\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1005104
+      },
+      "writtenOn": "2010-11-27T17:47:03Z",
+      "side": 1,
+      "message": "I think the same trick \"dir !\u003d olddir\"  would work here too and remove the windowism and regular expression.",
+      "parentUuid": "AAAA9n///xs\u003d",
       "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
