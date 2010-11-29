@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA9n//+aI\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1002619
+      },
+      "writtenOn": "2010-11-29T19:18:54Z",
+      "side": 1,
+      "message": "Done\n\nhttps://review.source.android.com/#change,19220",
+      "parentUuid": "AAAA9n//+jI\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA83///14\u003d",
         "filename": "command.py",
         "patchSetId": 5
@@ -81,6 +99,24 @@
       "writtenOn": "2010-11-27T21:52:08Z",
       "side": 1,
       "message": "It seems fragile. It happens that the environment values are unicode?",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA9n//+ak\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1002619
+      },
+      "writtenOn": "2010-11-29T19:18:54Z",
+      "side": 1,
+      "message": "I had unicode environment variables, so this was failing.\n\nMoved to https://review.source.android.com/#change,19219",
+      "parentUuid": "AAAA9n//+is\u003d",
       "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
