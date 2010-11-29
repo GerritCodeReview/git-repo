@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA9n//+ZM\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1002560
+      },
+      "writtenOn": "2010-11-29T18:14:15Z",
+      "side": 1,
+      "message": "env \u003d os.environ.copy() would be technically more correct but that\u0027s outside of the scope of this change.",
+      "revId": "f32da9a32549162483ca4f0753e77a09b7a11946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA9n//+Y0\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1002560
+      },
+      "writtenOn": "2010-11-29T18:14:15Z",
+      "side": 1,
+      "message": "The comment is a bit confusing since this code path is run on every platforms.\n\nI think you should fix all the places where env[] is used to encode the value at each places were relevant, instead of doing loop on the whole dict. I assume the failure you get is from either line 122, 123 or 134.",
+      "revId": "f32da9a32549162483ca4f0753e77a09b7a11946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
