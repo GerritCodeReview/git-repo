@@ -178,6 +178,10 @@ class GitCommand(object):
         dbg += ' 2>|'
       Trace('%s', dbg)
 
+    # encode the environment first for Windows
+    for var in env:
+      env[var] = env[var].encode()
+
     try:
       p = subprocess.Popen(command,
                            cwd = cwd,
