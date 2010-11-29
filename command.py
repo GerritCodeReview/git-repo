@@ -90,7 +90,7 @@ class Command(object):
         project = all.get(arg)
 
         if not project:
-          path = os.path.abspath(arg)
+          path = os.path.abspath(arg).replace('\\', '/')
 
           if not by_path:
             by_path = dict()
@@ -100,13 +100,15 @@ class Command(object):
           try:
             project = by_path[path]
           except KeyError:
+            oldpath = None
             while path \
-              and path != '/' \
+              and path != oldpath \
               and path != self.manifest.topdir:
               try:
                 project = by_path[path]
                 break
               except KeyError:
+                oldpath = path
                 path = os.path.dirname(path)
 
         if not project:

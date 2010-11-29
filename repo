@@ -432,10 +432,14 @@ def _FindRepo():
   dir = os.getcwd()
   repo = None
 
-  while dir != '/' and not repo:
+  olddir = None
+  while dir != '/' \
+    and dir != olddir \
+    and not repo:
     repo = os.path.join(dir, repodir, REPO_MAIN)
     if not os.path.isfile(repo):
       repo = None
+      olddir = dir
       dir = os.path.dirname(dir)
   return (repo, os.path.join(dir, repodir))
 
