@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA9n//+Yg\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002619
+      },
+      "writtenOn": "2010-11-30T19:38:56Z",
+      "side": 1,
+      "message": "Partially done. Will move the pager change to another change also.",
+      "parentUuid": "AAAA83///2I\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA9n//+jI\u003d",
         "filename": "command.py",
         "patchSetId": 5
@@ -258,6 +276,24 @@
       "side": 1,
       "message": "I agree, run something like:\n\nless \u003d which(\u0027less\u0027)\nif less:\n  return less\nif sys.platform \u003d\u003d \u0027win32\u0027:\n  return \u0027more\u0027\nreturn \u0027\u0027\n\nBut even the above code could be overkill.",
       "parentUuid": "AAAA9n//+jE\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA9n//+K8\u003d",
+        "filename": "pager.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1002619
+      },
+      "writtenOn": "2010-11-30T19:38:56Z",
+      "side": 1,
+      "message": "Does Py have a built in which() somewhere? I implemented it to try what you suggested but didn\u0027t want to be redundant.\n\nI hadn\u0027t realized Windows had \"more,\" so that\u0027s great but after I implemented that I noticed a bigger problem: Windows Python doesn\u0027t have os.fork() [ http://bugs.python.org/issue468153 ]\n\nWithout fork() it seems like the options are to either just output to the screen (not terrible) or queue up the output and then feed it all to the pager after. Thoughts?",
+      "parentUuid": "AAAA9n//+io\u003d",
       "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
