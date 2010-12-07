@@ -176,6 +176,23 @@
     },
     {
       "key": {
+        "uuid": "AAAA9n//+Yk\u003d",
+        "filename": "manifest_submodule.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1005104
+      },
+      "writtenOn": "2010-12-07T03:13:16Z",
+      "side": 1,
+      "message": "spacing is wrong. it needs 2 more spaces.",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA83///1I\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 5
