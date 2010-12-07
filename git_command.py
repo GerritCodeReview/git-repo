@@ -127,7 +127,7 @@ class GitCommand(object):
                ssh_proxy = False,
                cwd = None,
                gitdir = None):
-    env = dict(os.environ)
+    env = os.environ.copy()
 
     for e in [REPO_TRACE,
               GIT_DIR,
