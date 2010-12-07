@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA93///7M\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-12-07T17:58:59Z",
+      "side": 1,
+      "message": "Should this be encode() or encode(\u0027utf-8\u0027)?  I guess on Windows we want the environment to use the platform default encoding, so I probably need to change this to just be encode() ?",
+      "revId": "eb8ce18987c493386ed80cecb1bb9e56f4922182",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
