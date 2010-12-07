@@ -405,6 +405,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA93///4g\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2010-12-07T19:56:30Z",
+      "side": 1,
+      "message": "I think we could upgrade to the gitlink format if its not that format yet.  That may then simplify the code throughout the rest of repo.",
+      "parentUuid": "AAAA9n///x0\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA9n//+jA\u003d",
         "filename": "project.py",
         "patchSetId": 5
