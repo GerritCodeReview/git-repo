@@ -25,7 +25,10 @@ from signal import SIGTERM
 from urllib2 import urlopen, HTTPError
 from error import GitError, UploadError
 from trace import Trace
-from git_command import GitCommand, _ssh_sock
+
+from git_command import GitCommand
+from git_command import ssh_sock
+from git_command import terminate_ssh_clients
 
 R_HEADS = 'refs/heads/'
 R_TAGS  = 'refs/tags/'
@@ -365,18 +368,21 @@ class RefSpec(object):
     return s
 
 
-_ssh_cache = {}
+_master_processes = []
+_master_keys = set()
 _ssh_master = True
 
 def _open_ssh(host, port=None):
   global _ssh_master
 
+  # Check to see whether we already think that the master is running; if we
+  # think it's already running, return right away.
   if port is not None:
     key = '%s:%s' % (host, port)
   else:
     key = host
 
-  if key in _ssh_cache:
+  if key in _master_keys:
     return True
 
   if not _ssh_master \
@@ -386,15 +392,39 @@ def _open_ssh(host, port=None):
     #
     return False
 
-  command = ['ssh',
-             '-o','ControlPath %s' % _ssh_sock(),
-             '-M',
-             '-N',
-             host]
-
+  # We will make two calls to ssh; this is the common part of both calls.
+  command_base = ['ssh',
+                   '-o','ControlPath %s' % ssh_sock(),
+                   host]
   if port is not None:
-    command[3:3] = ['-p',str(port)]
+    command_base[1:1] = ['-p',str(port)]
 
+  # Since the key wasn't in _master_keys, we think that master isn't running.
+  # ...but before actually starting a master, we'll double-check.  This can
+  # be important because we can't tell that that 'git@myhost.com' is the same
+  # as 'myhost.com' where "User git" is setup in the user's ~/.ssh/config file.
+  check_command = command_base + ['-O','check']
+  try:
+    Trace(': %s', ' '.join(check_command))
+    check_process = subprocess.Popen(check_command,
+                                     stdout=subprocess.PIPE,
+                                     stderr=subprocess.PIPE)
+    check_process.communicate() # read output, but ignore it...
+    isnt_running = check_process.wait()
+
+    if not isnt_running:
+      # Our double-check found that the master _was_ infact running.  Add to
+      # the list of keys.
+      _master_keys.add(key)
+      return True
+  except Exception:
+    # Ignore excpetions.  We we will fall back to the normal command and print
+    # to the log there.
+    pass
+
+  command = command_base[:1] + \
+            ['-M', '-N'] + \
+            command_base[1:]
   try:
     Trace(': %s', ' '.join(command))
     p = subprocess.Popen(command)
@@ -405,20 +435,24 @@ def _open_ssh(host, port=None):
       % (host,port, str(e))
     return False
 
-  _ssh_cache[key] = p
+  _master_processes.append(p)
+  _master_keys.add(key)
   time.sleep(1)
   return True
 
 def close_ssh():
-  for key,p in _ssh_cache.iteritems():
+  terminate_ssh_clients()
+
+  for p in _master_processes:
     try:
       os.kill(p.pid, SIGTERM)
       p.wait()
     except OSError:
       pass
-  _ssh_cache.clear()
+  del _master_processes[:]
+  _master_keys.clear()
 
-  d = _ssh_sock(create=False)
+  d = ssh_sock(create=False)
   if d:
     try:
       os.rmdir(os.path.dirname(d))
@@ -540,8 +574,11 @@ class Remote(object):
   def SshReviewUrl(self, userEmail):
     if self.ReviewProtocol != 'ssh':
       return None
+    username = self._config.GetString('review.%s.username' % self.review)
+    if username is None:
+      username = userEmail.split("@")[0]
     return 'ssh://%s@%s:%s/%s' % (
-      userEmail.split("@")[0],
+      username,
       self._review_host,
       self._review_port,
       self.projectname)

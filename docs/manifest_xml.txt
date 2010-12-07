@@ -20,10 +20,14 @@ A manifest XML file (e.g. 'default.xml') roughly conforms to the
 following DTD:
 
   <!DOCTYPE manifest [
-    <!ELEMENT manifest (remote*,
+    <!ELEMENT manifest (notice?,
+                        remote*,
                         default?,
+                        manifest-server?,
                         remove-project*,
                         project*)>
+  
+    <!ELEMENT notice (#PCDATA)>
   
     <!ELEMENT remote (EMPTY)>
     <!ATTLIST remote name         ID    #REQUIRED>
@@ -33,6 +37,9 @@ following DTD:
     <!ELEMENT default (EMPTY)>
     <!ATTLIST default remote   IDREF #IMPLIED>
     <!ATTLIST default revision CDATA #IMPLIED>
+  
+    <!ELEMENT manifest-server (EMPTY)>
+    <!ATTLIST url              CDATA #REQUIRED>
   
     <!ELEMENT project (EMPTY)>
     <!ATTLIST project name     CDATA #REQUIRED>
@@ -87,6 +94,27 @@ this remote.
 Attribute `revision`: Name of a Git branch (e.g. `master` or
 `refs/heads/master`).  Project elements lacking their own
 revision attribute will use this revision.
+
+
+Element manifest-server
+-----------------------
+
+At most one manifest-server may be specified. The url attribute
+is used to specify the URL of a manifest server, which is an
+XML RPC service that will return a manifest in which each project
+is pegged to a known good revision for the current branch and
+target.
+
+The manifest server should implement:
+
+  GetApprovedManifest(branch, target)
+
+The target to use is defined by environment variables TARGET_PRODUCT
+and TARGET_BUILD_VARIANT. These variables are used to create a string
+of the form $TARGET_PRODUCT-$TARGET_BUILD_VARIANT, e.g. passion-userdebug.
+If one of those variables or both are not present, the program will call
+GetApprovedManifest without the target paramater and the manifest server
+should choose a reasonable default target.
 
 
 Element project

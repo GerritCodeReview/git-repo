@@ -40,6 +40,17 @@ current working directory.
 The optional -b argument can be used to select the manifest branch
 to checkout and use.  If no branch is specified, master is assumed.
 
+The optional -m argument can be used to specify an alternate manifest
+to be used. If no manifest is specified, the manifest default.xml
+will be used.
+
+The --reference option can be used to point to a directory that
+has the content of a --mirror sync. This will make the working
+directory use as much data as possible from the local reference
+directory when fetching from the server. This will make the sync
+go a lot faster by reducing data traffic on the network.
+
+
 Switching Manifest Branches
 ---------------------------
 
@@ -76,7 +87,9 @@ to update the working directory files.
     g.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='mirror the forrest')
-
+    g.add_option('--reference',
+                 dest='reference',
+                 help='location of mirror directory', metavar='DIR')
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -132,6 +145,9 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
+    if opt.reference:
+      m.config.SetString('repo.reference', opt.reference)
+
     if opt.mirror:
       if is_new:
         m.config.SetString('repo.mirror', 'true')
@@ -162,7 +178,11 @@ to update the working directory files.
     syncbuf = SyncBuffer(m.config)
     m.Sync_LocalHalf(syncbuf)
     syncbuf.Finish()
+
+    if isinstance(self.manifest, XmlManifest):
+      self._LinkManifest(opt.manifest_name)
     _ReloadManifest(self)
+
     self._ApplyOptions(opt, is_new)
 
     if not self.manifest.InitBranch():
@@ -200,8 +220,9 @@ to update the working directory files.
 
       print ''
       print 'Your identity is: %s <%s>' % (name, email)
-      sys.stdout.write('is this correct [yes/no]? ')
-      if 'yes' == sys.stdin.readline().strip():
+      sys.stdout.write('is this correct [y/n]? ')
+      a = sys.stdin.readline().strip()
+      if a in ('yes', 'y', 't', 'true'):
         break
 
     if name != mp.UserName:
@@ -249,8 +270,6 @@ to update the working directory files.
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
     self._SyncManifest(opt)
-    if isinstance(self.manifest, XmlManifest):
-      self._LinkManifest(opt.manifest_name)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       self._ConfigureUser()

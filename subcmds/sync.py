@@ -17,11 +17,19 @@ from optparse import SUPPRESS_HELP
 import os
 import re
 import shutil
+import socket
 import subprocess
 import sys
 import time
+import xmlrpclib
+
+try:
+  import threading as _threading
+except ImportError:
+  import dummy_threading as _threading
 
 from git_command import GIT
+from git_refs import R_HEADS
 from project import HEAD
 from project import Project
 from project import RemoteSpec
@@ -32,6 +40,7 @@ from project import SyncBuffer
 from progress import Progress
 
 class Sync(Command, MirrorSafeCommand):
+  jobs = 1
   common = True
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
@@ -56,6 +65,13 @@ The -d/--detach option can be used to switch specified projects
 back to the manifest revision.  This option is especially helpful
 if the project is currently on a topic branch, but the manifest
 revision is temporarily needed.
+
+The -s/--smart-sync option can be used to sync to a known good
+build as specified by the manifest-server element in the current
+manifest.
+
+The -f/--force-broken option can be used to proceed with syncing
+other projects if a project sync fails.
 
 SSH Connections
 ---------------
@@ -87,7 +103,10 @@ later is required to fix a server side protocol bug.
 
 """
 
-  def _Options(self, p):
+  def _Options(self, p, show_smart=True):
+    p.add_option('-f', '--force-broken',
+                 dest='force_broken', action='store_true',
+                 help="continue sync even if a project fails to sync")
     p.add_option('-l','--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -97,6 +116,16 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
+    p.add_option('-q','--quiet',
+                 dest='quiet', action='store_true',
+                 help='be more quiet')
+    p.add_option('-j','--jobs',
+                 dest='jobs', action='store', type='int',
+                 help="number of projects to fetch simultaneously")
+    if show_smart:
+      p.add_option('-s', '--smart-sync',
+                   dest='smart_sync', action='store_true',
+                   help='smart sync using manifest from a known good build')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -106,16 +135,55 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _Fetch(self, projects):
+  def _FetchHelper(self, opt, project, lock, fetched, pm, sem):
+      if not project.Sync_NetworkHalf(quiet=opt.quiet):
+        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+        if opt.force_broken:
+          print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+        else:
+          sem.release()
+          sys.exit(1)
+
+      lock.acquire()
+      fetched.add(project.gitdir)
+      pm.update()
+      lock.release()
+      sem.release()
+
+  def _Fetch(self, projects, opt):
     fetched = set()
     pm = Progress('Fetching projects', len(projects))
-    for project in projects:
-      pm.update()
-      if project.Sync_NetworkHalf():
-        fetched.add(project.gitdir)
-      else:
-        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-        sys.exit(1)
+
+    if self.jobs == 1:
+      for project in projects:
+        pm.update()
+        if project.Sync_NetworkHalf(quiet=opt.quiet):
+          fetched.add(project.gitdir)
+        else:
+          print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+          if opt.force_broken:
+            print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+          else:
+            sys.exit(1)
+    else:
+      threads = set()
+      lock = _threading.Lock()
+      sem = _threading.Semaphore(self.jobs)
+      for project in projects:
+        sem.acquire()
+        t = _threading.Thread(target = self._FetchHelper,
+                              args = (opt,
+                                      project,
+                                      lock,
+                                      fetched,
+                                      pm,
+                                      sem))
+        threads.add(t)
+        t.start()
+
+      for t in threads:
+        t.join()
+
     pm.end()
     for project in projects:
       project.bare_git.gc('--auto')
@@ -140,32 +208,36 @@ later is required to fix a server side protocol bug.
         if not path:
           continue
         if path not in new_project_paths:
-          project = Project(
-                         manifest = self.manifest,
-                         name = path,
-                         remote = RemoteSpec('origin'),
-                         gitdir = os.path.join(self.manifest.topdir,
-                                               path, '.git'),
-                         worktree = os.path.join(self.manifest.topdir, path),
-                         relpath = path,
-                         revisionExpr = 'HEAD',
-                         revisionId = None)
-          if project.IsDirty():
-            print >>sys.stderr, 'error: Cannot remove project "%s": \
+          """If the path has already been deleted, we don't need to do it
+          """
+          if os.path.exists(self.manifest.topdir + '/' + path):
+              project = Project(
+                             manifest = self.manifest,
+                             name = path,
+                             remote = RemoteSpec('origin'),
+                             gitdir = os.path.join(self.manifest.topdir,
+                                                   path, '.git'),
+                             worktree = os.path.join(self.manifest.topdir, path),
+                             relpath = path,
+                             revisionExpr = 'HEAD',
+                             revisionId = None)
+
+              if project.IsDirty():
+                print >>sys.stderr, 'error: Cannot remove project "%s": \
 uncommitted changes are present' % project.relpath
-            print >>sys.stderr, '       commit changes, then run sync again'
-            return -1
-          else:
-            print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
-            shutil.rmtree(project.worktree)
-            # Try deleting parent subdirs if they are empty
-            dir = os.path.dirname(project.worktree)
-            while dir != self.manifest.topdir:
-              try:
-                os.rmdir(dir)
-              except OSError:
-                break
-              dir = os.path.dirname(dir)
+                print >>sys.stderr, '       commit changes, then run sync again'
+                return -1
+              else:
+                print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
+                shutil.rmtree(project.worktree)
+                # Try deleting parent subdirs if they are empty
+                dir = os.path.dirname(project.worktree)
+                while dir != self.manifest.topdir:
+                  try:
+                    os.rmdir(dir)
+                  except OSError:
+                    break
+                  dir = os.path.dirname(dir)
 
     new_project_paths.sort()
     fd = open(file_path, 'w')
@@ -177,12 +249,59 @@ uncommitted changes are present' % project.relpath
     return 0
 
   def Execute(self, opt, args):
+    if opt.jobs:
+      self.jobs = opt.jobs
     if opt.network_only and opt.detach_head:
       print >>sys.stderr, 'error: cannot combine -n and -d'
       sys.exit(1)
     if opt.network_only and opt.local_only:
       print >>sys.stderr, 'error: cannot combine -n and -l'
       sys.exit(1)
+
+    if opt.smart_sync:
+      if not self.manifest.manifest_server:
+        print >>sys.stderr, \
+            'error: cannot smart sync: no manifest server defined in manifest'
+        sys.exit(1)
+      try:
+        server = xmlrpclib.Server(self.manifest.manifest_server)
+        p = self.manifest.manifestProject
+        b = p.GetBranch(p.CurrentBranch)
+        branch = b.merge
+        if branch.startswith(R_HEADS):
+          branch = branch[len(R_HEADS):]
+
+        env = dict(os.environ)
+        if (env.has_key('TARGET_PRODUCT') and
+            env.has_key('TARGET_BUILD_VARIANT')):
+          target = '%s-%s' % (env['TARGET_PRODUCT'],
+                              env['TARGET_BUILD_VARIANT'])
+          [success, manifest_str] = server.GetApprovedManifest(branch, target)
+        else:
+          [success, manifest_str] = server.GetApprovedManifest(branch)
+
+        if success:
+          manifest_name = "smart_sync_override.xml"
+          manifest_path = os.path.join(self.manifest.manifestProject.worktree,
+                                       manifest_name)
+          try:
+            f = open(manifest_path, 'w')
+            try:
+              f.write(manifest_str)
+            finally:
+              f.close()
+          except IOError:
+            print >>sys.stderr, 'error: cannot write manifest to %s' % \
+                manifest_path
+            sys.exit(1)
+          self.manifest.Override(manifest_name)
+        else:
+          print >>sys.stderr, 'error: %s' % manifest_str
+          sys.exit(1)
+      except socket.error:
+        print >>sys.stderr, 'error: cannot connect to manifest server %s' % (
+            self.manifest.manifest_server)
+        sys.exit(1)
 
     rp = self.manifest.repoProject
     rp.PreSync()
@@ -194,7 +313,7 @@ uncommitted changes are present' % project.relpath
       _PostRepoUpgrade(self.manifest)
 
     if not opt.local_only:
-      mp.Sync_NetworkHalf()
+      mp.Sync_NetworkHalf(quiet=opt.quiet)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
@@ -211,7 +330,7 @@ uncommitted changes are present' % project.relpath
         to_fetch.append(rp)
       to_fetch.extend(all)
 
-      fetched = self._Fetch(to_fetch)
+      fetched = self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
@@ -230,7 +349,7 @@ uncommitted changes are present' % project.relpath
         for project in all:
           if project.gitdir not in fetched:
             missing.append(project)
-        self._Fetch(missing)
+        self._Fetch(missing, opt)
 
     if self.manifest.IsMirror:
       # bail out now, we have no working tree
@@ -258,6 +377,9 @@ def _ReloadManifest(cmd):
   if old.__class__ != new.__class__:
     print >>sys.stderr, 'NOTICE: manifest format has changed  ***'
     new.Upgrade_Local(old)
+  else:
+    if new.notice:
+      print new.notice
 
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():

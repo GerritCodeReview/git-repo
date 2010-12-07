@@ -41,6 +41,14 @@ class Manifest(object):
   def projects(self):
     return {}
 
+  @property
+  def notice(self):
+    return None
+
+  @property
+  def manifest_server(self):
+    return None
+
   def InitBranch(self):
     pass
 

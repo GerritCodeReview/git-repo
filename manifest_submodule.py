@@ -102,6 +102,10 @@ class SubmoduleManifest(Manifest):
     self._Load()
     return self._projects
 
+  @property
+  def notice(self):
+    return self._modules.GetString('repo.notice')
+
   def InitBranch(self):
     m = self.manifestProject
     if m.CurrentBranch is None:
@@ -265,6 +269,9 @@ class SubmoduleManifest(Manifest):
     b = mp.GetBranch(mp.CurrentBranch).merge
     if b.startswith(R_HEADS):
       b = b[len(R_HEADS):]
+
+    if old.notice:
+      gm.SetString('repo.notice', old.notice)
 
     info = []
     pm = Progress('Converting manifest', len(sort_projects))

@@ -204,7 +204,7 @@ contain a line that matches both expressions:
           else:
             out.project('--- project %s ---' % project.relpath)
             out.nl()
-            out.write(p.stderr)
+            out.write("%s", p.stderr)
             out.nl()
         continue
       have_match = True
@@ -217,17 +217,17 @@ contain a line that matches both expressions:
       if have_rev and full_name:
         for line in r:
           rev, line = line.split(':', 1)
-          out.write(rev)
+          out.write("%s", rev)
           out.write(':')
           out.project(project.relpath)
           out.write('/')
-          out.write(line)
+          out.write("%s", line)
           out.nl()
       elif full_name:
         for line in r:
           out.project(project.relpath)
           out.write('/')
-          out.write(line)
+          out.write("%s", line)
           out.nl()
       else:
         for line in r:

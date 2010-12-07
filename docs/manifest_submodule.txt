@@ -76,6 +76,12 @@ submodule.<name>.update
 
 This key is not supported by repo.  If set, it will be ignored.
 
+repo.notice
+-----------
+
+A message displayed when repo sync uses this manifest.
+
+
 .review
 =======
 
