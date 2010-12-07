@@ -193,6 +193,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA93///6E\u003d",
+        "filename": "manifest_submodule.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1002619
+      },
+      "writtenOn": "2010-12-07T19:09:07Z",
+      "side": 1,
+      "message": "I was surprised no one had caught this when I noticed this before, but I do have that fixed locally. thanks.\n\nDone.",
+      "parentUuid": "AAAA9n//+Yk\u003d",
+      "revId": "911c06937d1087414e31e7ac53bfc4f175e286c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA83///1I\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 5
