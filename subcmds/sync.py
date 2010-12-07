@@ -269,7 +269,7 @@ uncommitted changes are present' % project.relpath
         if branch.startswith(R_HEADS):
           branch = branch[len(R_HEADS):]
 
-        env = dict(os.environ)
+        env = os.environ.copy()
         if (env.has_key('TARGET_PRODUCT') and
             env.has_key('TARGET_BUILD_VARIANT')):
           target = '%s-%s' % (env['TARGET_PRODUCT'],
@@ -413,9 +413,9 @@ warning: Cannot automatically authenticate repo."""
       % (project.name, rev)
     return False
 
-  env = dict(os.environ)
-  env['GIT_DIR'] = project.gitdir
-  env['GNUPGHOME'] = gpg_dir
+  env = os.environ.copy()
+  env['GIT_DIR'] = project.gitdir.encode()
+  env['GNUPGHOME'] = gpg_dir.encode()
 
   cmd = [GIT, 'tag', '-v', cur]
   proc = subprocess.Popen(cmd,

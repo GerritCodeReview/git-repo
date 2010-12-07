@@ -259,8 +259,8 @@ def _SetupGnuPG(quiet):
             gpg_dir, e.strerror)
       sys.exit(1)
 
-  env = dict(os.environ)
-  env['GNUPGHOME'] = gpg_dir
+  env = os.environ.copy()
+  env['GNUPGHOME'] = gpg_dir.encode()
 
   cmd = ['gpg', '--import']
   try:
@@ -378,8 +378,8 @@ def _Verify(cwd, branch, quiet):
         % (branch, cur)
       print >>sys.stderr
 
-  env = dict(os.environ)
-  env['GNUPGHOME'] = gpg_dir
+  env = os.environ.copy()
+  env['GNUPGHOME'] = gpg_dir.encode()
 
   cmd = [GIT, 'tag', '-v', cur]
   proc = subprocess.Popen(cmd,

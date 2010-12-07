@@ -112,6 +112,9 @@ def git_require(min_version, fail=False):
     sys.exit(1)
   return False
 
+def _setenv(env, name, value):
+  env[name] = value.encode()
+
 class GitCommand(object):
   def __init__(self,
                project,
@@ -137,10 +140,10 @@ class GitCommand(object):
         del env[e]
 
     if disable_editor:
-      env['GIT_EDITOR'] = ':'
+      _setenv(env, 'GIT_EDITOR', ':')
     if ssh_proxy:
-      env['REPO_SSH_SOCK'] = ssh_sock()
-      env['GIT_SSH'] = _ssh_proxy()
+      _setenv(env, 'REPO_SSH_SOCK', ssh_sock())
+      _setenv(env, 'GIT_SSH', _ssh_proxy())
 
     if project:
       if not cwd:
@@ -151,7 +154,7 @@ class GitCommand(object):
     command = [GIT]
     if bare:
       if gitdir:
-        env[GIT_DIR] = gitdir
+        _setenv(env, GIT_DIR, gitdir)
       cwd = None
     command.extend(cmdv)
 
