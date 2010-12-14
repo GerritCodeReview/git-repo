@@ -75,3 +75,14 @@ class RepoChangedException(Exception):
   """
   def __init__(self, extra_args=[]):
     self.extra_args = extra_args
+
+class HookError(Exception):
+  """Thrown if a 'repo-hook' could not be run.
+
+  The common case is that the file wasn't present when we tried to run it.
+  """
+  def __init__(self, path):
+    self.path = path
+
+  def __str__(self):
+    return "Couldn't run repo-hook: '%s'" % self.path

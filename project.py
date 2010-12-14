@@ -18,13 +18,14 @@ import os
 import re
 import shutil
 import stat
+import subprocess
 import sys
 import urllib2
 
 from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId
-from error import GitError, ImportError, UploadError
+from error import GitError, HookError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
@@ -54,14 +55,25 @@ def not_rev(r):
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
-hook_list = None
-def repo_hooks():
-  global hook_list
-  if hook_list is None:
+_project_hook_list = None
+def _project_hooks():
+  """List the hooks present in the 'hooks' directory.
+
+  These hooks are project hooks and are copied to the '.git/hooks' directory
+  of all subprojects.
+
+  This function caches the list of hooks (based on the contents of the
+  'repo/hooks' directory) on the first call.
+
+  Returns:
+    A list of absolute paths to all of the files in the hooks directory.
+  """
+  global _project_hook_list
+  if _project_hook_list is None:
     d = os.path.abspath(os.path.dirname(__file__))
     d = os.path.join(d , 'hooks')
-    hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
-  return hook_list
+    _project_hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
+  return _project_hook_list
 
 def relpath(dst, src):
   src = os.path.dirname(src)
@@ -222,6 +234,50 @@ class RemoteSpec(object):
     self.name = name
     self.url = url
     self.review = review
+
+class RepoHook(object):
+  """A RepoHook contains information about a script to run at a certain time.
+
+  You can have a hook specifying to run a certain (python) script after a
+  sync, or before an upload.
+
+  This shouldn't be confused with files in the 'repo/hooks' directory.  Those
+  files are copied into each '.git/hooks' folder for each project.  Repo-level
+  hooks are associated instead with repo actions.
+  """
+  def __init__(self,
+               hook_type,
+               script_path,
+               topdir):
+    """RepoHook constructor.
+
+    Params:
+      hook_type - A string representing the type of hook.
+      script_path - A path to a python script that should be run as the action
+                    of this hook.  Should be relative to the root of the repo
+                    project.
+      topdir - The script path will be considered relative to this directory.
+    """
+    self.hook_type = hook_type
+    self.script_path = script_path
+    self.topdir = topdir
+
+  def run(self):
+    """Run the hook, which must be a python script.
+
+    Returns:
+      The return code of the hook.
+    """
+    script_fullpath = os.path.join(self.topdir, self.script_path)
+
+    if not os.path.isfile(script_fullpath):
+      raise HookError(script_fullpath)
+
+    args = [ sys.executable, script_fullpath ]
+    rc = subprocess.Popen(args, cwd=self.topdir).wait()
+
+    return rc
+
 
 class Project(object):
   def __init__(self,
@@ -1189,10 +1245,10 @@ class Project(object):
     hooks = self._gitdir_path('hooks')
     if not os.path.exists(hooks):
       os.makedirs(hooks)
-    for stock_hook in repo_hooks():
+    for stock_hook in _project_hooks():
       name = os.path.basename(stock_hook)
 
-      if name in ('commit-msg') and not self.remote.review:
+      if name in ('commit-msg',) and not self.remote.review:
         # Don't install a Gerrit Code Review hook if this
         # project does not appear to use it for reviews.
         #

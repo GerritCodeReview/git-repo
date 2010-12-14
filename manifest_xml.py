@@ -18,7 +18,7 @@ import sys
 import xml.dom.minidom
 
 from git_config import GitConfig, IsId
-from project import RemoteSpec, Project, MetaProject, R_HEADS, HEAD
+from project import RemoteSpec, Project, RepoHook, MetaProject, R_HEADS, HEAD
 from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
@@ -143,6 +143,17 @@ class XmlManifest(object):
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
 
+    for hook_type, repo_hook in sorted(self.repo_hooks.iteritems()):
+      assert repo_hook.hook_type == hook_type
+
+      e = doc.createElement('repo-hook')
+      root.appendChild(e)
+      e.setAttribute('type', hook_type)
+      e.setAttribute('script', repo_hook.script_path)
+
+    if self.repo_hooks:
+      root.appendChild(doc.createTextNode(''))
+
     sort_projects = list(self.projects.keys())
     sort_projects.sort()
 
@@ -189,6 +200,11 @@ class XmlManifest(object):
     return self._default
 
   @property
+  def repo_hooks(self):
+    self._Load()
+    return self._repo_hooks
+
+  @property
   def notice(self):
     self._Load()
     return self._notice
@@ -207,6 +223,7 @@ class XmlManifest(object):
     self._projects = {}
     self._remotes = {}
     self._default = None
+    self._repo_hooks = {}
     self._notice = None
     self.branch = None
     self._manifest_server = None
@@ -277,6 +294,15 @@ class XmlManifest(object):
         self._default = self._ParseDefault(node)
     if self._default is None:
       self._default = _Default()
+
+    for node in config.childNodes:
+      if node.nodeName == 'repo-hook':
+        repo_hook = self._ParseRepoHook(node)
+        if self._repo_hooks.get(repo_hook.hook_type):
+          raise ManifestParseError, \
+                'duplicate hook %s in %s' % \
+                (repo_hook.hook_type, self.manifestFile)
+        self._repo_hooks[repo_hook.hook_type] = repo_hook
 
     for node in config.childNodes:
       if node.nodeName == 'notice':
@@ -360,6 +386,22 @@ class XmlManifest(object):
     if d.revisionExpr == '':
       d.revisionExpr = None
     return d
+
+  def _ParseRepoHook(self, node):
+    """
+    reads a <repo-hook> element from the manifest file
+    """
+    hook_type = self._reqatt(node, 'type')
+
+    script_path = self._reqatt(node, 'script')
+    if script_path.startswith('/'):
+      raise ManifestParseError, \
+            "hook %s script path cannot be absolute in %s" % \
+            (hook_type, self.manifestFile)
+
+    repo_hook = RepoHook(hook_type, script_path, self.topdir)
+
+    return repo_hook
 
   def _ParseNotice(self, node):
     """

@@ -19,7 +19,7 @@ import sys
 
 from command import InteractiveCommand
 from editor import Editor
-from error import UploadError
+from error import HookError, UploadError
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 
@@ -304,6 +304,17 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       sys.exit(1)
 
   def Execute(self, opt, args):
+    if 'preupload' in self.manifest.repo_hooks:
+      try:
+        result = self.manifest.repo_hooks['preupload'].run()
+      except HookError, e:
+        print >>sys.stderr, "ERROR: %s" % str(e)
+        return
+      if result != 0:
+        print >>sys.stderr, \
+              "ERROR: preupload repo-hook failed (error code %d)" % result
+        return
+
     project_list = self.GetProjects(args)
     pending = []
     reviewers = []

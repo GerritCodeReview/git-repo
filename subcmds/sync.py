@@ -34,7 +34,7 @@ from project import HEAD
 from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
-from error import RepoChangedException, GitError
+from error import HookError, RepoChangedException, GitError
 from project import R_HEADS
 from project import SyncBuffer
 from progress import Progress
@@ -365,6 +365,13 @@ uncommitted changes are present' % project.relpath
     # it now...
     if self.manifest.notice:
       print self.manifest.notice
+
+    # Run the postsync hook, if it's there.
+    if 'postsync' in self.manifest.repo_hooks:
+      try:
+        self.manifest.repo_hooks['postsync'].run()
+      except HookError, e:
+        print >>sys.stderr, "WARNING: %s" % str(e)
 
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():
