@@ -18,6 +18,10 @@ import os
 import re
 import subprocess
 import sys
+try:
+  import threading as _threading
+except ImportError:
+  import dummy_threading as _threading
 import time
 import urllib2
 
@@ -371,76 +375,97 @@ class RefSpec(object):
 _master_processes = []
 _master_keys = set()
 _ssh_master = True
+_master_keys_lock = None
+
+def init_ssh():
+  """Should be called once at the start of repo to init ssh master handling.
+
+  At the moment, all we do is to create our lock.
+  """
+  global _master_keys_lock
+  assert _master_keys_lock is None, "Should only call init_ssh once"
+  _master_keys_lock = _threading.Lock()
 
 def _open_ssh(host, port=None):
   global _ssh_master
 
-  # Check to see whether we already think that the master is running; if we
-  # think it's already running, return right away.
-  if port is not None:
-    key = '%s:%s' % (host, port)
-  else:
-    key = host
-
-  if key in _master_keys:
-    return True
-
-  if not _ssh_master \
-  or 'GIT_SSH' in os.environ \
-  or sys.platform in ('win32', 'cygwin'):
-    # failed earlier, or cygwin ssh can't do this
-    #
-    return False
-
-  # We will make two calls to ssh; this is the common part of both calls.
-  command_base = ['ssh',
-                   '-o','ControlPath %s' % ssh_sock(),
-                   host]
-  if port is not None:
-    command_base[1:1] = ['-p',str(port)]
-
-  # Since the key wasn't in _master_keys, we think that master isn't running.
-  # ...but before actually starting a master, we'll double-check.  This can
-  # be important because we can't tell that that 'git@myhost.com' is the same
-  # as 'myhost.com' where "User git" is setup in the user's ~/.ssh/config file.
-  check_command = command_base + ['-O','check']
+  # Acquire the lock.  This is needed to prevent opening multiple masters for
+  # the same host when we're running "repo sync -jN" (for N > 1) _and_ the
+  # manifest <remote fetch="ssh://xyz"> specifies a different host from the
+  # one that was passed to repo init.
+  _master_keys_lock.acquire()
   try:
-    Trace(': %s', ' '.join(check_command))
-    check_process = subprocess.Popen(check_command,
-                                     stdout=subprocess.PIPE,
-                                     stderr=subprocess.PIPE)
-    check_process.communicate() # read output, but ignore it...
-    isnt_running = check_process.wait()
 
-    if not isnt_running:
-      # Our double-check found that the master _was_ infact running.  Add to
-      # the list of keys.
-      _master_keys.add(key)
+    # Check to see whether we already think that the master is running; if we
+    # think it's already running, return right away.
+    if port is not None:
+      key = '%s:%s' % (host, port)
+    else:
+      key = host
+
+    if key in _master_keys:
       return True
-  except Exception:
-    # Ignore excpetions.  We we will fall back to the normal command and print
-    # to the log there.
-    pass
 
-  command = command_base[:1] + \
-            ['-M', '-N'] + \
-            command_base[1:]
-  try:
-    Trace(': %s', ' '.join(command))
-    p = subprocess.Popen(command)
-  except Exception, e:
-    _ssh_master = False
-    print >>sys.stderr, \
-      '\nwarn: cannot enable ssh control master for %s:%s\n%s' \
-      % (host,port, str(e))
-    return False
+    if not _ssh_master \
+    or 'GIT_SSH' in os.environ \
+    or sys.platform in ('win32', 'cygwin'):
+      # failed earlier, or cygwin ssh can't do this
+      #
+      return False
 
-  _master_processes.append(p)
-  _master_keys.add(key)
-  time.sleep(1)
-  return True
+    # We will make two calls to ssh; this is the common part of both calls.
+    command_base = ['ssh',
+                     '-o','ControlPath %s' % ssh_sock(),
+                     host]
+    if port is not None:
+      command_base[1:1] = ['-p',str(port)]
+
+    # Since the key wasn't in _master_keys, we think that master isn't running.
+    # ...but before actually starting a master, we'll double-check.  This can
+    # be important because we can't tell that that 'git@myhost.com' is the same
+    # as 'myhost.com' where "User git" is setup in the user's ~/.ssh/config file.
+    check_command = command_base + ['-O','check']
+    try:
+      Trace(': %s', ' '.join(check_command))
+      check_process = subprocess.Popen(check_command,
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
+      check_process.communicate() # read output, but ignore it...
+      isnt_running = check_process.wait()
+
+      if not isnt_running:
+        # Our double-check found that the master _was_ infact running.  Add to
+        # the list of keys.
+        _master_keys.add(key)
+        return True
+    except Exception:
+      # Ignore excpetions.  We we will fall back to the normal command and print
+      # to the log there.
+      pass
+
+    command = command_base[:1] + \
+              ['-M', '-N'] + \
+              command_base[1:]
+    try:
+      Trace(': %s', ' '.join(command))
+      p = subprocess.Popen(command)
+    except Exception, e:
+      _ssh_master = False
+      print >>sys.stderr, \
+        '\nwarn: cannot enable ssh control master for %s:%s\n%s' \
+        % (host,port, str(e))
+      return False
+
+    _master_processes.append(p)
+    _master_keys.add(key)
+    time.sleep(1)
+    return True
+  finally:
+    _master_keys_lock.release()
 
 def close_ssh():
+  global _master_keys_lock
+
   terminate_ssh_clients()
 
   for p in _master_processes:
@@ -458,6 +483,9 @@ def close_ssh():
       os.rmdir(os.path.dirname(d))
     except OSError:
       pass
+
+  # We're done with the lock, so we can delete it.
+  _master_keys_lock = None
 
 URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
 URI_ALL = re.compile(r'^([a-z][a-z+]*)://([^@/]*@?[^/]*)/')

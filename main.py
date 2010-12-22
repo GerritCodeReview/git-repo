@@ -28,7 +28,7 @@ import re
 import sys
 
 from trace import SetTrace
-from git_config import close_ssh
+from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import PagedCommand
@@ -212,6 +212,7 @@ def _Main(argv):
   repo = _Repo(opt.repodir)
   try:
     try:
+      init_ssh()
       repo._Run(argv)
     finally:
       close_ssh()
