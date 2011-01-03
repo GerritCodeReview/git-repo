@@ -488,6 +488,7 @@ def _Help(args):
   if args:
     if args[0] == 'init':
       init_optparse.print_help()
+      sys.exit(0)
     else:
       print >>sys.stderr,\
       "error: '%s' is not a bootstrap command.\n"\
