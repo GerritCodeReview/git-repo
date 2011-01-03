@@ -602,7 +602,7 @@ class Remote(object):
   def SshReviewUrl(self, userEmail):
     if self.ReviewProtocol != 'ssh':
       return None
-    username = self._config.GetString('review.%s.username' % self.review)
+    username = self._config.GetString('remote.%s.username' % self.name)
     if username is None:
       username = userEmail.split("@")[0]
     return 'ssh://%s@%s:%s/%s' % (
