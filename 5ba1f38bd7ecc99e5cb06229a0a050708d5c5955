@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA+3//9oE\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 1005287
+      },
+      "writtenOn": "2011-01-09T04:40:32Z",
+      "side": 1,
+      "message": "This really should be new style exception raising; while the source intermixes the two, new style should win out.",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
