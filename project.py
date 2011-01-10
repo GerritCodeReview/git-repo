@@ -54,14 +54,25 @@ def not_rev(r):
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
-hook_list = None
-def repo_hooks():
-  global hook_list
-  if hook_list is None:
+_project_hook_list = None
+def _ProjectHooks():
+  """List the hooks present in the 'hooks' directory.
+
+  These hooks are project hooks and are copied to the '.git/hooks' directory
+  of all subprojects.
+
+  This function caches the list of hooks (based on the contents of the
+  'repo/hooks' directory) on the first call.
+
+  Returns:
+    A list of absolute paths to all of the files in the hooks directory.
+  """
+  global _project_hook_list
+  if _project_hook_list is None:
     d = os.path.abspath(os.path.dirname(__file__))
     d = os.path.join(d , 'hooks')
-    hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
-  return hook_list
+    _project_hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
+  return _project_hook_list
 
 def relpath(dst, src):
   src = os.path.dirname(src)
@@ -1192,7 +1203,7 @@ class Project(object):
     hooks = self._gitdir_path('hooks')
     if not os.path.exists(hooks):
       os.makedirs(hooks)
-    for stock_hook in repo_hooks():
+    for stock_hook in _ProjectHooks():
       name = os.path.basename(stock_hook)
 
       if name in ('commit-msg',) and not self.remote.review:
