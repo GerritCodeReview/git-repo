@@ -435,7 +435,7 @@ class XmlManifest(object):
       worktree = None
       gitdir = os.path.join(self.topdir, '%s.git' % name)
     else:
-      worktree = os.path.join(self.topdir, path)
+      worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
 
     project = Project(manifest = self,

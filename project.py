@@ -236,8 +236,8 @@ class Project(object):
     self.manifest = manifest
     self.name = name
     self.remote = remote
-    self.gitdir = gitdir
-    self.worktree = worktree
+    self.gitdir = gitdir.replace('\\', '/')
+    self.worktree = worktree.replace('\\', '/')
     self.relpath = relpath
     self.revisionExpr = revisionExpr
 
