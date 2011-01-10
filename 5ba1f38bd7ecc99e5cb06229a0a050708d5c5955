@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA+3//9ds\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1004918
+      },
+      "writtenOn": "2011-01-10T18:04:10Z",
+      "side": 1,
+      "message": "I agree on the security vs usability concern. The reason we need this for chrome is because we would like to generate the right \"make\" files or equivalent for the platform (mac, win, linux) without requiring the developer to run a script by hand. \n\nFew other options I see are \n\n1) run hooks only if they are signed by a verifiable authority (can this be done easily ?) \n\n2) give an option to repo sync something like --run-hooks and choose a default (either we run-hooks by default or not)\n\n3) Force all developers to run a script by hand (this wont be acceptable for chrome developers who are migrating from gclient where they dont have an additional step) \n\n4) run the hook without verification as in this Changelist - but also warn/inform the user that this is being done. \n\nAny other suggestions on how to achieve this? I will CC a few Chromium Devs too on this review, since the postsync hook isn\u0027t really required for ChromiumOS.",
+      "parentUuid": "AAAA+3//9mU\u003d",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA+3//9mQ\u003d",
         "filename": "subcmds/upload.py",
         "patchSetId": 1
@@ -64,6 +82,24 @@
       "writtenOn": "2011-01-10T00:03:28Z",
       "side": 1,
       "message": "What is the value of this hook?  Since it doesn\u0027t get any information about what the user is uploading (which might even be a branch other than the one they have checked out!), how it can perform any useful validation that the upload would be \"sane\" according to the project\u0027s rules?",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA+3//9d4\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1004918
+      },
+      "writtenOn": "2011-01-10T18:04:10Z",
+      "side": 1,
+      "message": "This is usually used to check/enforce coding guidelines. Here is an example script http://src.chromium.org/svn/trunk/src/PRESUBMIT.py that could be run. It may have different guidelines for different repos/directories in the project. Could this be done on Gerrit somehow? But it would still be better to prevent a suprious upload of the CL. Any suggestions on how to implement this are welcome.",
+      "parentUuid": "AAAA+3//9mQ\u003d",
       "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
