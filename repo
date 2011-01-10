@@ -264,8 +264,8 @@ def _SetupGnuPG(quiet):
             gpg_dir, e.strerror)
       sys.exit(1)
 
-  env = dict(os.environ)
-  env['GNUPGHOME'] = gpg_dir
+  env = os.environ.copy()
+  env['GNUPGHOME'] = gpg_dir.encode()
 
   cmd = ['gpg', '--import']
   try:
@@ -383,8 +383,8 @@ def _Verify(cwd, branch, quiet):
         % (branch, cur)
       print >>sys.stderr
 
-  env = dict(os.environ)
-  env['GNUPGHOME'] = gpg_dir
+  env = os.environ.copy()
+  env['GNUPGHOME'] = gpg_dir.encode()
 
   cmd = [GIT, 'tag', '-v', cur]
   proc = subprocess.Popen(cmd,
@@ -488,6 +488,7 @@ def _Help(args):
   if args:
     if args[0] == 'init':
       init_optparse.print_help()
+      sys.exit(0)
     else:
       print >>sys.stderr,\
       "error: '%s' is not a bootstrap command.\n"\

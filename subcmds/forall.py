@@ -151,11 +151,11 @@ terminal and are not redirected.
     first = True
 
     for project in self.GetProjects(args):
-      env = dict(os.environ.iteritems())
+      env = os.environ.copy()
       def setenv(name, val):
         if val is None:
           val = ''
-        env[name] = val
+        env[name] = val.encode()
 
       setenv('REPO_PROJECT', project.name)
       setenv('REPO_PATH', project.relpath)
