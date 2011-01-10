@@ -16,6 +16,57 @@
       "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA+3//9mY\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-01-10T00:03:28Z",
+      "side": 1,
+      "message": "This sort of refactoring should be done in its own commit, prior to the introduction of the new repo-level hooks.",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA+3//9mU\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-01-10T00:03:28Z",
+      "side": 1,
+      "message": "I\u0027m concerned about the security of this hook.  If it exists, it executes as soon as the sync is complete, before the user has a chance to read the hook\u0027s source and determine if it is safe to run as their user account.\n\nGit itself has long avoided a checkout hook that comes as part of the repository, because Linus Torvalds and Junio C Hamano both feel quite strongly that the user should be able to audit the code before it executes locally.  repo init slightly breaks this by fetching repo from the upstream repository, but it only runs a signed version, and users do have the option to point their local ~/bin/repo to use a different upstream repo repository, one that they have already audited the contents of.",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA+3//9mQ\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-01-10T00:03:28Z",
+      "side": 1,
+      "message": "What is the value of this hook?  Since it doesn\u0027t get any information about what the user is uploading (which might even be a branch other than the one they have checked out!), how it can perform any useful validation that the upload would be \"sane\" according to the project\u0027s rules?",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
