@@ -71,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA+3//9dk\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1002560
+      },
+      "writtenOn": "2011-01-10T18:05:55Z",
+      "side": 1,
+      "message": "The best alternative I see is to not run hooks by default on first sync. Then one of these 2 is needed for continuous integration:\n\n1. Don\u0027t run hooks by default on first sync unless an argument (--run-hooks) is passed.\n2. Add \"repo runhooks\" or something like that.\n\nActually continuous integration could simply run repo sync two times in a row but I\u0027d prefer not to if possible.",
+      "parentUuid": "AAAA+3//9mU\u003d",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA+3//9mQ\u003d",
         "filename": "subcmds/upload.py",
         "patchSetId": 1
@@ -99,6 +117,24 @@
       "writtenOn": "2011-01-10T18:04:10Z",
       "side": 1,
       "message": "This is usually used to check/enforce coding guidelines. Here is an example script http://src.chromium.org/svn/trunk/src/PRESUBMIT.py that could be run. It may have different guidelines for different repos/directories in the project. Could this be done on Gerrit somehow? But it would still be better to prevent a suprious upload of the CL. Any suggestions on how to implement this are welcome.",
+      "parentUuid": "AAAA+3//9mQ\u003d",
+      "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA+3//9dc\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1002560
+      },
+      "writtenOn": "2011-01-10T18:05:55Z",
+      "side": 1,
+      "message": "The chromium\u0027s hook gets information by itself. I agree it\u0027s not the best and in repo it\u0027d make sense to preemptively pass as much information as sanely possible to make the hooks less spaghetti code.",
       "parentUuid": "AAAA+3//9mQ\u003d",
       "revId": "5ba1f38bd7ecc99e5cb06229a0a050708d5c5955",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
