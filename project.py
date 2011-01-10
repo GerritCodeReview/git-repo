@@ -237,7 +237,10 @@ class Project(object):
     self.name = name
     self.remote = remote
     self.gitdir = gitdir.replace('\\', '/')
-    self.worktree = worktree.replace('\\', '/')
+    if worktree:
+      self.worktree = worktree.replace('\\', '/')
+    else:
+      self.worktree = None
     self.relpath = relpath
     self.revisionExpr = revisionExpr
 
