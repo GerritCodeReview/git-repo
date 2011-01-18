@@ -101,6 +101,10 @@ class DownloadedChange(object):
         not_rev(self.base),
         self.commit,
         '--')
+    for charset in self._commit_cache:
+      for charx in charset:
+        if ord(charx) > 127:
+          return None
     return self._commit_cache
 
 
