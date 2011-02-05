@@ -885,7 +885,7 @@ class Project(object):
       except OSError:
         pass
       _lwrite(ref, '%s\n' % revid)
-      _lwrite(os.path.join(self.worktree, '.git', HEAD),
+      _lwrite(os.path.join(self.gitdir, HEAD),
               'ref: %s%s\n' % (R_HEADS, name))
       branch.Save()
       return True
@@ -926,7 +926,7 @@ class Project(object):
       # Same revision; just update HEAD to point to the new
       # target branch, but otherwise take no other action.
       #
-      _lwrite(os.path.join(self.worktree, '.git', HEAD),
+      _lwrite(os.path.join(self.gitdir, HEAD),
               'ref: %s%s\n' % (R_HEADS, name))
       return True
 
@@ -954,7 +954,7 @@ class Project(object):
 
       revid = self.GetRevisionId(all)
       if head == revid:
-        _lwrite(os.path.join(self.worktree, '.git', HEAD),
+        _lwrite(os.path.join(self.gitdir, HEAD),
                 '%s\n' % revid)
       else:
         self._Checkout(revid, quiet=True)
@@ -1250,41 +1250,16 @@ class Project(object):
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
   def _LinkWorkTree(self, relink=False):
-    dotgit = os.path.join(self.worktree, '.git')
-    if not relink:
-      os.makedirs(dotgit)
-
-    for name in ['config',
-                 'description',
-                 'hooks',
-                 'info',
-                 'logs',
-                 'objects',
-                 'packed-refs',
-                 'refs',
-                 'rr-cache',
-                 'svn']:
-      try:
-        src = os.path.join(self.gitdir, name)
-        dst = os.path.join(dotgit, name)
-        if relink:
-          os.remove(dst)
-        if os.path.islink(dst) or not os.path.exists(dst):
-          os.symlink(relpath(src, dst), dst)
-        else:
-          raise GitError('cannot overwrite a local work tree')
-      except OSError, e:
-        if e.errno == errno.EPERM:
-          raise GitError('filesystem must support symlinks')
-        else:
-          raise
+    dotgit_path = os.path.join(self.worktree, '.git')
+    if not relink and not os.path.isdir(self.worktree):
+      os.makedirs(self.worktree)
+    _lwrite(dotgit_path, 'gitdir: %s' % self.gitdir)
 
   def _InitWorkTree(self):
-    dotgit = os.path.join(self.worktree, '.git')
-    if not os.path.exists(dotgit):
+    if not os.path.exists(self.worktree):
       self._LinkWorkTree()
 
-      _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
+      _lwrite(os.path.join(self.gitdir, HEAD), '%s\n' % self.GetRevisionId())
 
       cmd = ['read-tree', '--reset', '-u']
       cmd.append('-v')
@@ -1292,6 +1267,16 @@ class Project(object):
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError("cannot initialize work tree")
       self._CopyFiles()
+    elif os.path.isdir(os.path.join(self.worktree, '.git')):
+      # This project has an old-style symlink to the contents of .git/.
+      # Convert to the new .git file.  Copy HEAD and index, then remove
+      # the .git folder and replace with a .git file.
+      os.rename(os.path.join(self.worktree, '.git', HEAD),
+                os.path.join(self.gitdir, HEAD))
+      os.rename(os.path.join(self.worktree, '.git', 'index'),
+                os.path.join(self.gitdir, 'index'))
+      shutil.rmtree(os.path.join(self.worktree, '.git'))
+      self._LinkWorkTree()
 
   def _gitdir_path(self, path):
     return os.path.join(self.gitdir, path)
@@ -1376,10 +1361,7 @@ class Project(object):
         p.Wait()
 
     def GetHead(self):
-      if self._bare:
-        path = os.path.join(self._project.gitdir, HEAD)
-      else:
-        path = os.path.join(self._project.worktree, '.git', HEAD)
+      path = os.path.join(self._project.gitdir, HEAD)
       fd = open(path, 'rb')
       try:
         line = fd.read()
