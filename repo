@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 10)
+VERSION = (1, 11)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -78,7 +78,7 @@ TACbBS+Up3RpfYVfd63c1cDdlru13pQAn3NQy/SN858MkxN+zym86UBgOad2
 """
 
 GIT = 'git'                     # our git command
-MIN_GIT_VERSION = (1, 5, 4)     # minimum supported git version
+MIN_GIT_VERSION = (1, 5, 6)     # minimum supported git version
 repodir = '.repo'               # name of repo's private directory
 S_repo = 'repo'                 # special repo reposiory
 S_manifests = 'manifests'       # special manifest repository
