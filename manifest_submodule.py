@@ -182,7 +182,7 @@ class SubmoduleManifest(Manifest):
     else:
       newmp._LinkWorkTree()
 
-    _lwrite(os.path.join(newmp.worktree,'.git',HEAD),
+    _lwrite(os.path.join(newmp.gitdir,HEAD),
             'ref: refs/heads/%s\n' % b)
 
   def _GuessRemoteName(self, old):
@@ -228,7 +228,7 @@ class SubmoduleManifest(Manifest):
       if not os.path.isdir(p.worktree):
         os.makedirs(p.worktree)
 
-      if os.path.isdir(os.path.join(p.worktree, '.git')):
+      if os.path.isfile(os.path.join(p.worktree, '.git')):
         p._LinkWorkTree(relink=True)
 
       self._CleanOldMRefs(p)
