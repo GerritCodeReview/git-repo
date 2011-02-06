@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA+3//53M\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1254,
+      "author": {
+        "id": 1000253
+      },
+      "writtenOn": "2011-02-06T03:19:29Z",
+      "side": 1,
+      "message": "I\u0027m not positive that I\u0027m handling relink correctly here.  This was taken from https://review.source.android.com//#change,18794",
+      "revId": "cd0b60d3b5082ebf6b2633d3eeb1d9fe0a66e62f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
