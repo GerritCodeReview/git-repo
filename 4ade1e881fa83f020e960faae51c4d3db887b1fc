@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA+3//4GM\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-02-21T19:53:07Z",
+      "side": 1,
+      "message": "Why are we introducing a new variable? Why not have init set review.%s.username and use the existing variable?",
+      "revId": "4ade1e881fa83f020e960faae51c4d3db887b1fc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
