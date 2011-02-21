@@ -604,6 +604,8 @@ class Remote(object):
       return None
     username = self._config.GetString('review.%s.username' % self.review)
     if username is None:
+      username = self._config.GetString('user.sshname')
+    if username is None:
       username = userEmail.split("@")[0]
     return 'ssh://%s@%s:%s/%s' % (
       username,
