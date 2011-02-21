@@ -217,9 +217,12 @@ to update the working directory files.
       print ''
       name  = self._Prompt('Your Name', mp.UserName)
       email = self._Prompt('Your Email', mp.UserEmail)
+      sshname = self._Prompt('Your Username on review server', mp.SshName)
 
       print ''
       print 'Your identity is: %s <%s>' % (name, email)
+      if sshname != mp.SshName:
+        print 'Your Username on review server is: %s' % sshname
       sys.stdout.write('is this correct [y/n]? ')
       a = sys.stdin.readline().strip()
       if a in ('yes', 'y', 't', 'true'):
@@ -229,6 +232,8 @@ to update the working directory files.
       mp.config.SetString('user.name', name)
     if email != mp.UserEmail:
       mp.config.SetString('user.email', email)
+    if sshname != mp.SshName:
+      mp.config.SetString('user.sshname', sshname)
 
   def _HasColorSet(self, gc):
     for n in ['ui', 'diff', 'status']:
