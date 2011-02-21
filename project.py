@@ -303,6 +303,7 @@ class Project(object):
 
   _userident_name = None
   _userident_email = None
+  _userident_sshname = None
 
   @property
   def UserName(self):
@@ -321,15 +322,25 @@ class Project(object):
       self._LoadUserIdentity()
     return self._userident_email
 
+  @property
+  def SshName(self):
+    """Obtain the user's ssh name.
+    """
+    if self._userident_sshname is None:
+      self._LoadUserIdentity()
+    return self._userident_sshname
+
   def _LoadUserIdentity(self):
       u = self.bare_git.var('GIT_COMMITTER_IDENT')
       m = re.compile("^(.*) <([^>]*)> ").match(u)
       if m:
         self._userident_name = m.group(1)
         self._userident_email = m.group(2)
+        self._userident_sshname = self._userident_email.split("@")[0]
       else:
         self._userident_name = ''
         self._userident_email = ''
+        self._userident_sshname = ''
 
   def GetRemote(self, name):
     """Get the configuration for a single remote.
@@ -1187,6 +1198,10 @@ class Project(object):
       for key in ['user.name', 'user.email']:
         if m.Has(key, include_defaults = False):
           self.config.SetString(key, m.GetString(key))
+
+      if m.Has('user.sshname', include_defaults = False):
+        key = 'review.%s.username' % self.remote.review
+        self.config.SetString(key, m.GetString('user.sshname'))
 
   def _InitHooks(self):
     hooks = self._gitdir_path('hooks')
