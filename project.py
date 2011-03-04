@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import traceback
 import errno
+import hashlib
 import filecmp
 import os
 import re
@@ -24,7 +26,7 @@ import urllib2
 from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId
-from error import GitError, ImportError, UploadError
+from error import GitError, HookError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
@@ -223,6 +225,256 @@ class RemoteSpec(object):
     self.url = url
     self.review = review
 
+class RepoHook(object):
+  """A RepoHook contains information about a script to run as a hook.
+
+  Hooks are used to run a python script before running an upload (for instance,
+  to run presubmit checks).  Eventually, we may have hooks for other actions.
+
+  This shouldn't be confused with files in the 'repo/hooks' directory.  Those
+  files are copied into each '.git/hooks' folder for each project.  Repo-level
+  hooks are associated instead with repo actions.
+
+  Hooks are always python.  When a hook is run, we will load the hook into the
+  interpreter and execute its main() function.
+  """
+  def __init__(self,
+               hook_type,
+               hooks_project,
+               topdir,
+               abort_if_user_denies=False):
+    """RepoHook constructor.
+
+    Params:
+      hook_type: A string representing the type of hook.  This is also used
+          to figure out the name of the file containing the hook.  For
+          example: 'pre-upload'.
+      hooks_project: The project containing the repo hooks.  If you have a
+          manifest, this is manifest.repo_hooks_project.  OK if this is None,
+          which will make the hook a no-op.
+      topdir: Repo's top directory (the one containing the .repo directory).
+          Scripts will run with CWD as this directory.  If you have a manifest,
+          this is manifest.topdir
+      abort_if_user_denies: If True, we'll throw a HookError() if the user
+          doesn't allow us to run the hook.
+    """
+    self._hook_type = hook_type
+    self._hooks_project = hooks_project
+    self._topdir = topdir
+    self._abort_if_user_denies = abort_if_user_denies
+
+    # Store the full path to the script for convenience.
+    if self._hooks_project:
+      self._script_fullpath = os.path.join(self._hooks_project.worktree,
+                                           self._hook_type + '.py')
+    else:
+      self._script_fullpath = None
+
+  def _GetHash(self):
+    """Return a hash (MD5 at the moment) of the contents of the hooks directory.
+
+    The hash has the property that if you change anything in the hook directory
+    at all (even 1 byte), the hash should change.
+
+    TODO(dianders): If we end up calling this function for many different hooks
+    and it is slow, we could cache the results.
+
+    SECURITY CONSIDERATION:
+      This hash only represents the contents of files in the hook directory, not
+      any other files imported or called by hooks.  Changes to imported files
+      can change the script behavior without affecting the hash.
+
+    Returns:
+      A string representing the hash.  This will always be ASCII so that it can
+      be printed to the user easily.
+    """
+    assert self._hooks_project, "Must have hooks to calculate their hash."
+
+    # Init the md5 hash, which we'll update with all the files.
+    full_hash = hashlib.md5()
+
+    # Walk through all files in the hooks dir, adding them to the hash
+    for root, dirs, files in os.walk(self._hooks_project.worktree):
+      # Pull the '.git' directory out of the list of things to walk.
+      # TODO(dianders): Ignore all dirs starting with .?
+      for dir_to_ignore in ['.git']:
+        if dir_to_ignore in dirs:
+          dirs.remove(dir_to_ignore)
+
+      # We calculate our hash based only on files.
+      for this_file in files:
+        full_path = os.path.join(root, this_file)
+
+        # Add the name of the file so that renames cause a hash change.
+        full_hash.update(full_path)
+
+        # Add the _hash_ of the file into the full hash.  I believe that the
+        # double-hashing prevents tricks where a user could shuffle contents
+        # from one file to another and manage to keep the same hash.
+        this_hash = hashlib.md5()
+        this_hash.update(open(full_path, 'rb').read())
+        full_hash.update(this_hash.digest())
+
+    return full_hash.hexdigest()
+
+  def _GetMustVerb(self):
+    """Return 'must' if the hook is required; 'should' if not."""
+    if self._abort_if_user_denies:
+      return 'must'
+    else:
+      return 'should'
+
+  def _CheckForHookApproval(self):
+    """Check to see whether this hook has been approved.
+
+    We'll look at the hash of all of the hooks.  If this matches the hash that
+    the user last approved, we're done.  If it doesn't, we'll ask the user
+    about approval.
+
+    Note that we ask permission for each individual hook even though we use
+    the hash of all hooks when detecting changes.  We'd like the user to be
+    able to approve / deny each hook individually.  We only use the hash of all
+    hooks because there is no other easy way to detect changes to local imports.
+
+    Returns:
+      True if this hook is approved to run; False otherwise.
+
+    Raises:
+      HookError: Raised if the user doesn't approve and abort_if_user_denies
+          was passed to the consturctor.
+    """
+    hooks_dir = self._hooks_project.worktree
+    hooks_config = self._hooks_project.config
+    git_approval_key = 'repo.hooks.%s.approvedhash' % self._hook_type
+
+    # Get the last hash that the user approved for this hook; may be None.
+    old_hash = hooks_config.GetString(git_approval_key)
+
+    # Get the current hash so we can tell if scripts changed since approval.
+    new_hash = self._GetHash()
+
+    if old_hash is not None:
+      # User previously approved hook and asked not to be prompted again.
+      if new_hash == old_hash:
+        # Approval matched.  We're done.
+        return True
+      else:
+        # Give the user a reason why we're prompting, since they last told
+        # us to "never ask again".
+        prompt = 'WARNING: Scripts have changed since %s was allowed.\n\n' % (
+            self._hook_type)
+    else:
+      prompt = ''
+
+    # Prompt the user if we're not on a tty; on a tty we'll assume "no".
+    if sys.stdout.isatty():
+      prompt += ('Repo %s run the script:\n'
+                 '  %s\n'
+                 '\n'
+                 'Do you want to allow this script to run '
+                 '(yes/yes-never-ask-again/NO)? ') % (
+                 self._GetMustVerb(), self._script_fullpath)
+      response = raw_input(prompt).lower()
+      print
+
+      # User is doing a one-time approval.
+      if response in ('y', 'yes'):
+        return True
+      elif response == 'yes-never-ask-again':
+        hooks_config.SetString(git_approval_key, new_hash)
+        return True
+
+    # For anything else, we'll assume no approval.
+    if self._abort_if_user_denies:
+      # TODO(dianders): If we change --no-verify to --bypass-hooks, update
+      # this message.
+      raise HookError('You must allow the %s hook or use --no-verify.' %
+                      self._hook_type)
+
+    return False
+
+  def _ExecuteHook(self):
+    """Actually execute the given hook.
+
+    This will run the hook's 'main' function in our python interpreter.
+    """
+    # Keep sys.path and CWD stashed away so that we can always restore them
+    # upon function exit.
+    orig_path = os.getcwd()
+    orig_syspath = sys.path
+
+    try:
+      # Always run hooks with CWD as topdir.
+      os.chdir(self._topdir)
+
+      # Put the hook dir as the first item of sys.path so hooks can do
+      # relative imports.  We want to replace the repo dir as [0] so
+      # hooks can't import repo files.
+      sys.path = [os.path.dirname(self._script_fullpath)] + sys.path[1:]
+
+      # Exec, storing global context in the context dict.  We catch exceptions
+      # and  convert to a HookError w/ just the failing traceback.
+      context = {}
+      try:
+        execfile(self._script_fullpath, context)
+      except Exception:
+        raise HookError('%s\nFailed to import %s hook; see traceback above.' % (
+                        traceback.format_exc(), self._hook_type))
+
+      # Running the script should have defined a main() function.
+      if 'main' not in context:
+        raise HookError('Missing main() in: "%s"' % self._script_fullpath)
+
+      # Call the main function in the hook.  If the hook should cause the
+      # build to fail, it will raise an Exception.  We'll catch that convert
+      # to a HookError w/ just the failing traceback.
+      #
+      # Hook main function should always be defined like:
+      #   def main(**kwargs):
+      # so that we can later expand the API.  We will pass a bogus
+      # hook_should_take_kwargs='yes' to help remind people of this.
+      try:
+        context['main'](hook_should_take_kwargs='yes')
+      except Exception:
+        raise HookError('%s\nFailed to run main() for %s hook; see traceback '
+                        'above.' % (
+                        traceback.format_exc(), self._hook_type))
+    finally:
+      # Restore sys.path and CWD.
+      sys.path = orig_syspath
+      os.chdir(orig_path)
+
+  def Run(self, user_allows_all_hooks):
+    """Run the hook.
+
+    If the hook doesn't exist (because there is no hooks project or because
+    this particular hook is not enabled), this is a no-op.
+
+    Args:
+      user_allows_all_hooks: If True, we will never prompt about running the
+          hook--we'll just assume it's OK to run it.
+
+    Raises:
+      HookError: If there was a problem finding the hook or the user declined
+          to run a required hook (from _CheckForHookApproval).
+    """
+    # No-op if there is no hooks project or if hook is disabled.
+    if ((not self._hooks_project) or
+        (self._hook_type not in self._hooks_project.enabled_repo_hooks)):
+      return
+
+    # Bail with a nice error if we can't find the hook.
+    if not os.path.isfile(self._script_fullpath):
+      raise HookError('Couldn\'t find repo hook: "%s"' % self._script_fullpath)
+
+    # Make sure the user is OK with running the hook.
+    if (not user_allows_all_hooks) and (not self._CheckForHookApproval()):
+      return
+
+    # Run the hook with the same version of python we're using.
+    self._ExecuteHook()
+
+
 class Project(object):
   def __init__(self,
                manifest,
@@ -263,6 +515,10 @@ class Project(object):
       self.work_git = None
     self.bare_git = self._GitGetByExec(self, bare=True)
     self.bare_ref = GitRefs(gitdir)
+
+    # This will be filled in if a project is later identified to be the
+    # project containing repo hooks.
+    self.enabled_repo_hooks = []
 
   @property
   def Exists(self):

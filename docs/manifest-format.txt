@@ -25,7 +25,8 @@ following DTD:
                         default?,
                         manifest-server?,
                         remove-project*,
-                        project*)>
+                        project*,
+                        repo-hooks?)>
   
     <!ELEMENT notice (#PCDATA)>
   
@@ -49,6 +50,10 @@ following DTD:
   
     <!ELEMENT remove-project (EMPTY)>
     <!ATTLIST remove-project name  CDATA #REQUIRED>
+
+    <!ELEMENT repo-hooks (EMPTY)>
+    <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
+    <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
   ]>
 
 A description of the elements and their attributes follows.
