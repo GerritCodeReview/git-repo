@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/H///aU\u003d",
+        "filename": "error.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "Use \u0027pass\u0027 to get default exception behavior (can pass a string as first argument and get it with str(e)).",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///aI\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "In previous iteration of this CL:\n  https://review.source.android.com/#change,19477\n\nBrian Harring requested that I use new-style exception raising for my exceptions.  To keep this function self-consistent, I have updated all exceptions to match my new ones.  Let me know if you would prefer this in another CL and I will separate.",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///Z8\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "I can take this out if you think it is overkill.",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///Z0\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "If you don\u0027t like the concept of enabled-list, I am happy to take it out.  \n\nThe \u0027git\u0027 command doesn\u0027t have this concept for its hooks--it just keys off the existence of the hook file.  We can do that as well if we want.  I would argue that we\u0027re a little different than git because in git\u0027s case the user is aware of hooks (he/she had to manually copy them to the hooks dir) and can troubleshoot if they aren\u0027t running.  In out case, the hooks got autoinstalled and the user may be less aware.\n\nI am also happy to change format from being away from space-separated list.",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///XQ\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "See upload.py for details about this TODO.",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///XM\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "I moved to this type of execution (rather than subprocess) after looking closer at the way \u0027git cl\u0027 works (git clused currently in Chromium OS).  It seems more extensible and also avoids the overhead of a subprocess launch.\n\nI can change back to a subprocess launch if you\u0027d like, though.",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///XI\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "The \u0027hook_should_take_kwargs\u0027 is a bit of a hack.  If you have a better suggestion, I\u0027m all ears!  :)",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///XE\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-04T23:09:32Z",
+      "side": 1,
+      "message": "I\u0027d rather rename these to \u0027bypass-hooks\u0027 and \u0027allow-all-hooks\u0027 to make them clearer, but will keep them as \u0027verify\u0027 and \u0027no-verify\u0027 if you want.  Please let me know.  Thanks!",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
