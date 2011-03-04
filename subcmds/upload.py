@@ -19,7 +19,8 @@ import sys
 
 from command import InteractiveCommand
 from editor import Editor
-from error import UploadError
+from error import HookError, UploadError
+from project import RepoHook
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 
@@ -119,6 +120,29 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     p.add_option('--cc',
                  type='string',  action='append', dest='cc',
                  help='Also send email to these email addresses.')
+
+    # Options relating to upload hook.  Note that verify and no-verify are NOT
+    # opposites of each other, which is why they store to different locations.
+    # We are using them to match 'git commit' syntax.
+    #
+    # Combinations:
+    # - no-verify=False, verify=False (DEFAULT):
+    #   If stdout is a tty, can prompt about running upload hooks if needed.
+    #   If user denies running hooks, the upload is cancelled.  If stdout is
+    #   not a tty and we would need to prompt about upload hooks, upload is
+    #   cancelled.
+    # - no-verify=False, verify=True:
+    #   Always run upload hooks with no prompt.
+    # - no-verify=True, verify=False:
+    #   Never run upload hooks, but upload anyway (AKA bypass hooks).
+    # - no-verify=True, verify=True:
+    #   Invalid
+    p.add_option('--no-verify',
+                 dest='bypass_hooks', action='store_true',
+                 help='Do not run the upload hook.')
+    p.add_option('--verify',
+                 dest='allow_all_hooks', action='store_true',
+                 help='Run the upload hook without prompting.')
 
   def _SingleBranch(self, opt, branch, people):
     project = branch.project
@@ -313,16 +337,26 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     reviewers = []
     cc = []
 
+    for project in project_list:
+      avail = project.GetUploadableBranches()
+      if avail:
+        pending.append((project, avail))
+
+    if pending and (not opt.bypass_hooks):
+      hook = RepoHook('pre-upload', self.manifest.repo_hooks_project,
+                      self.manifest.topdir, abort_if_user_denies=True)
+      pending_proj_names = [project.name for (project, avail) in pending]
+      try:
+        hook.Run(opt.allow_all_hooks, project_list=pending_proj_names)
+      except HookError, e:
+        print >>sys.stderr, "ERROR: %s" % str(e)
+        return
+
     if opt.reviewers:
       reviewers = _SplitEmails(opt.reviewers)
     if opt.cc:
       cc = _SplitEmails(opt.cc)
     people = (reviewers,cc)
-
-    for project in project_list:
-      avail = project.GetUploadableBranches()
-      if avail:
-        pending.append((project, avail))
 
     if not pending:
       print >>sys.stdout, "no branches ready for upload"
