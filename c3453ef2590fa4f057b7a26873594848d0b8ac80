@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/H///Uw\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-05T02:13:23Z",
+      "side": 1,
+      "message": "If the user removes the hook project, we should also treat that as though there was no \u003chook-project\u003e element... that is the hooks are disabled.",
+      "parentUuid": "AAAA/H///Z8\u003d",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/H///Z0\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -64,6 +82,58 @@
       "writtenOn": "2011-03-04T23:09:32Z",
       "side": 1,
       "message": "If you don\u0027t like the concept of enabled-list, I am happy to take it out.  \n\nThe \u0027git\u0027 command doesn\u0027t have this concept for its hooks--it just keys off the existence of the hook file.  We can do that as well if we want.  I would argue that we\u0027re a little different than git because in git\u0027s case the user is aware of hooks (he/she had to manually copy them to the hooks dir) and can troubleshoot if they aren\u0027t running.  In out case, the hooks got autoinstalled and the user may be less aware.\n\nI am also happy to change format from being away from space-separated list.",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///Us\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-05T02:13:23Z",
+      "side": 1,
+      "message": "This is fine for now. I agree we probably should have the manifest try to flag what should be, rather than just relying on the repository.",
+      "parentUuid": "AAAA/H///Z0\u003d",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///Uo\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-05T02:13:23Z",
+      "side": 1,
+      "message": "No it doesn\u0027t. We just have to parse repo-hooks childNodes after the project childNodes. Which you already do above. :-)",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///Ug\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-05T02:13:23Z",
+      "side": 1,
+      "message": "Why MD5? Why not just rely on the git commit SHA-1?",
       "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -132,6 +202,23 @@
       "writtenOn": "2011-03-04T23:09:32Z",
       "side": 1,
       "message": "I\u0027d rather rename these to \u0027bypass-hooks\u0027 and \u0027allow-all-hooks\u0027 to make them clearer, but will keep them as \u0027verify\u0027 and \u0027no-verify\u0027 if you want.  Please let me know.  Thanks!",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///Uk\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-05T02:13:23Z",
+      "side": 1,
+      "message": "I\u0027d rather stick with --no-verify here to match git commit.",
       "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
