@@ -273,11 +273,10 @@ class XmlManifest(object):
               'project %s not found' %
               (name))
 
-        # Double-check that user isn't removing project specified as repo-hooks.
+        # If the manifest removes the hooks project, treat it as if it deleted
+        # the repo-hooks element too.
         if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-          raise ManifestParseError(
-              'can\'t remove repo-hooks project %s' %
-              (name))
+          self._repo_hooks_project = None
 
     for node in config.childNodes:
       if node.nodeName == 'remote':
@@ -337,7 +336,6 @@ class XmlManifest(object):
               (self.manifestFile))
 
         # Store a reference to the Project.
-        # NOTE: requires that repo-hooks element comes _after_ the project.
         try:
           self._repo_hooks_project = self._projects[repo_hooks_project]
         except KeyError:

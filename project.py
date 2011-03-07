@@ -14,7 +14,6 @@
 
 import traceback
 import errno
-import hashlib
 import filecmp
 import os
 import re
@@ -271,13 +270,10 @@ class RepoHook(object):
       self._script_fullpath = None
 
   def _GetHash(self):
-    """Return a hash (MD5 at the moment) of the contents of the hooks directory.
+    """Return a hash of the contents of the hooks directory.
 
-    The hash has the property that if you change anything in the hook directory
-    at all (even 1 byte), the hash should change.
-
-    TODO(dianders): If we end up calling this function for many different hooks
-    and it is slow, we could cache the results.
+    We'll just use git to do this.  This hash has the property that if anything
+    changes in the directory we will return a different has.
 
     SECURITY CONSIDERATION:
       This hash only represents the contents of files in the hook directory, not
@@ -290,32 +286,16 @@ class RepoHook(object):
     """
     assert self._hooks_project, "Must have hooks to calculate their hash."
 
-    # Init the md5 hash, which we'll update with all the files.
-    full_hash = hashlib.md5()
-
-    # Walk through all files in the hooks dir, adding them to the hash
-    for root, dirs, files in os.walk(self._hooks_project.worktree):
-      # Pull the '.git' directory out of the list of things to walk.
-      # TODO(dianders): Ignore all dirs starting with .?
-      for dir_to_ignore in ['.git']:
-        if dir_to_ignore in dirs:
-          dirs.remove(dir_to_ignore)
-
-      # We calculate our hash based only on files.
-      for this_file in files:
-        full_path = os.path.join(root, this_file)
-
-        # Add the name of the file so that renames cause a hash change.
-        full_hash.update(full_path)
-
-        # Add the _hash_ of the file into the full hash.  I believe that the
-        # double-hashing prevents tricks where a user could shuffle contents
-        # from one file to another and manage to keep the same hash.
-        this_hash = hashlib.md5()
-        this_hash.update(open(full_path, 'rb').read())
-        full_hash.update(this_hash.digest())
-
-    return full_hash.hexdigest()
+    # We will use the work_git object rather than just calling GetRevisionId().
+    # That gives us a hash of the latest checked in version of the files that
+    # the user will actually be executing.  Specifically, GetRevisionId()
+    # doesn't appear to change even if a user checks out a different version
+    # of the hooks repo (via git checkout) nor if a user commits their own revs.
+    #
+    # NOTE: Local changes will not be factored into this hash.  I think this
+    # is OK, since we're really only worried about warning the user about
+    # upstream changes.
+    return self._hooks_project.work_git.rev_parse('HEAD')
 
   def _GetMustVerb(self):
     """Return 'must' if the hook is required; 'should' if not."""
@@ -386,8 +366,6 @@ class RepoHook(object):
 
     # For anything else, we'll assume no approval.
     if self._abort_if_user_denies:
-      # TODO(dianders): If we change --no-verify to --bypass-hooks, update
-      # this message.
       raise HookError('You must allow the %s hook or use --no-verify.' %
                       self._hook_type)
 
@@ -1702,6 +1680,22 @@ class Project(object):
       return r
 
     def __getattr__(self, name):
+      """Allow arbitrary git commands using pythonic syntax.
+
+      This allows you to do things like:
+        git_obj.rev_parse('HEAD')
+
+      Since we don't have a 'rev_parse' method defined, the __getattr__ will
+      run.  We'll replace the '_' with a '-' and try to run a git command.
+      Any other arguments will be passed to the git command.
+
+      Args:
+        name: The name of the git command to call.  Any '_' characters will
+            be replaced with '-'.
+
+      Returns:
+        A callable object that will try to call git with the named command.
+      """
       name = name.replace('_', '-')
       def runner(*args):
         cmdv = [name]

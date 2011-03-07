@@ -137,8 +137,6 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     #   Never run upload hooks, but upload anyway (AKA bypass hooks).
     # - no-verify=True, verify=True:
     #   Invalid
-    #
-    # TODO(dianders): Rename "no-verify" to "bypass-hooks" to match "git cl"?
     p.add_option('--no-verify',
                  dest='bypass_hooks', action='store_true',
                  help='Do not run the upload hook.')
