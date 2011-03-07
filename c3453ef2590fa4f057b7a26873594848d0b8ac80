@@ -71,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/H///NM\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-07T18:01:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/H///Uw\u003d",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/H///Z0\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -123,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/H///NI\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-07T18:01:27Z",
+      "side": 1,
+      "message": "You\u0027re right!  ...guess I confused myself.  Removed comment.  :)",
+      "parentUuid": "AAAA/H///Uo\u003d",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/H///Ug\u003d",
         "filename": "project.py",
         "patchSetId": 5
@@ -134,6 +170,24 @@
       "writtenOn": "2011-03-05T02:13:23Z",
       "side": 1,
       "message": "Why MD5? Why not just rely on the git commit SHA-1?",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///NA\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-07T18:01:27Z",
+      "side": 1,
+      "message": "Good call!  New code uses work_git.rev_parse(\u0027HEAD\u0027).  PTAL.",
+      "parentUuid": "AAAA/H///Ug\u003d",
       "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -219,6 +273,24 @@
       "writtenOn": "2011-03-05T02:13:23Z",
       "side": 1,
       "message": "I\u0027d rather stick with --no-verify here to match git commit.",
+      "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/H///M8\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-07T18:01:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/H///Uk\u003d",
       "revId": "c3453ef2590fa4f057b7a26873594848d0b8ac80",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
