@@ -691,11 +691,11 @@ class Project(object):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
-    self._InitWorkTree()
     all = self.bare_ref.all
     self.CleanPublishedCache(all)
-
     revid = self.GetRevisionId(all)
+
+    self._InitWorkTree()
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
       branch = head[len(R_HEADS):]
