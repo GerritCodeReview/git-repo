@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/X///7A\u003d",
+        "filename": "subcmds/list.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-15T01:34:03Z",
+      "side": 1,
+      "message": "\"for to the\"? Awkward sentence, please rephrase.",
+      "revId": "2605e59134e44403800cb1b8d0ee758d7082e552",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///68\u003d",
+        "filename": "subcmds/list.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-15T01:34:03Z",
+      "side": 1,
+      "message": "FWIW, I would put path first then name, as most users are going to use the path in the working directory as how they access the project.\n\nI don\u0027t know about the Chrome/Chrome OS manifests, but for Android most project names start with \"platform/\" but this doesn\u0027t exist in the relpath. So it might make sense to flip the order around so Android engineers see:\n\n  dalvik         : platform/dalvik\n  frameworks/base: platform/frameworks/base",
+      "revId": "2605e59134e44403800cb1b8d0ee758d7082e552",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
