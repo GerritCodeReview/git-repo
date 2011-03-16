@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAA/X///pc\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-16T23:12:32Z",
+      "side": 1,
+      "message": "NOTE: err_event will never be set if \u0027--force-broken\u0027 has been passed.  That matches the -j1 case, where repo doesn\u0027t appear to consider a sync error as a real error when \u0027--force-broken\u0027 is set.  \n\nI\u0027m happy to change things, though.",
+      "revId": "30d1f20fbbeabc04e33973f01a1338abe160352d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///qM\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
