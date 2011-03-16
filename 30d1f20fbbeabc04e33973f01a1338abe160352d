@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/X///qM\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-16T22:58:19Z",
+      "side": 1,
+      "message": "NOTE: Moved lock() a little earlier because I noticed that printing between various threads was getting jumbled.  This helped.",
+      "revId": "30d1f20fbbeabc04e33973f01a1338abe160352d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///qI\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-16T22:58:19Z",
+      "side": 1,
+      "message": "I catch _all_ exceptions here so that I can make sure to set err_event.  There didn\u0027t appear to be any way in python threading for the parent thread to tell whether the child thread exited with an exception.  \n\nI wanted to make sure that if Sync_NetworkHalf() somehow decided to raise an exception (instead of just returning False) that we\u0027d still detect the failure.  This seemed the cleanest way.",
+      "revId": "30d1f20fbbeabc04e33973f01a1338abe160352d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///qA\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-16T22:58:19Z",
+      "side": 1,
+      "message": "Finally gets executed in all cases (normal exit of the try block or exceptional exit of the try block).  We always make sure to release our resources.",
+      "revId": "30d1f20fbbeabc04e33973f01a1338abe160352d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///p8\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-16T22:58:19Z",
+      "side": 1,
+      "message": "Could do a sys.exit() right away, but I think threads will be happier if we just let them exit normally.  Is this OK?",
+      "revId": "30d1f20fbbeabc04e33973f01a1338abe160352d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
