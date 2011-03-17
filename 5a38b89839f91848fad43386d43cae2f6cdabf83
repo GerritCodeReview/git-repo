@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/X///kY\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-17T16:23:37Z",
+      "side": 1,
+      "message": "Why amend? Why not use --no-commit with cherry-pick above and then commit directly here? Even with --no-commit cherry-pick should return 0 on success (clean merge) and non-0 on failure (merge conflict).",
+      "revId": "5a38b89839f91848fad43386d43cae2f6cdabf83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///kc\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-17T16:23:37Z",
+      "side": 1,
+      "message": "You don\u0027t need to compute this, if the user deletes the old Change-Id shouldn\u0027t their commit-msg-hook automatically create a new one?",
+      "revId": "5a38b89839f91848fad43386d43cae2f6cdabf83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
