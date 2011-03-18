@@ -650,13 +650,23 @@ class Project(object):
 
     return False
 
-  def PrintWorkTreeStatus(self):
+  def PrintWorkTreeStatus(self, output_lock=None):
     """Prints the status of the repository to stdout.
+
+    Args:
+      output_lock: If specified, this lock will be acquired during any
+        output to standard output.
     """
     if not os.path.isdir(self.worktree):
-      print ''
-      print 'project %s/' % self.relpath
-      print '  missing (run "repo sync")'
+      try:
+        if output_lock is not None:
+          output_lock.acquire()
+        print ''
+        print 'project %s/' % self.relpath
+        print '  missing (run "repo sync")'
+      finally:
+        if output_lock is not None:
+          output_lock.release()
       return
 
     self.work_git.update_index('-q',
@@ -670,56 +680,65 @@ class Project(object):
     if not rb and not di and not df and not do:
       return 'CLEAN'
 
-    out = StatusColoring(self.config)
-    out.project('project %-40s', self.relpath + '/')
+    try:
+      if output_lock is not None:
+        output_lock.acquire()
 
-    branch = self.CurrentBranch
-    if branch is None:
-      out.nobranch('(*** NO BRANCH ***)')
-    else:
-      out.branch('branch %s', branch)
-    out.nl()
+      out = StatusColoring(self.config)
+      out.project('project %-40s', self.relpath + '/')
 
-    if rb:
-      out.important('prior sync failed; rebase still in progress')
+      branch = self.CurrentBranch
+      if branch is None:
+        out.nobranch('(*** NO BRANCH ***)')
+      else:
+        out.branch('branch %s', branch)
       out.nl()
 
-    paths = list()
-    paths.extend(di.keys())
-    paths.extend(df.keys())
-    paths.extend(do)
+      if rb:
+        out.important('prior sync failed; rebase still in progress')
+        out.nl()
 
-    paths = list(set(paths))
-    paths.sort()
+      paths = list()
+      paths.extend(di.keys())
+      paths.extend(df.keys())
+      paths.extend(do)
 
-    for p in paths:
-      try: i = di[p]
-      except KeyError: i = None
+      paths = list(set(paths))
+      paths.sort()
 
-      try: f = df[p]
-      except KeyError: f = None
+      for p in paths:
+        try: i = di[p]
+        except KeyError: i = None
 
-      if i: i_status = i.status.upper()
-      else: i_status = '-'
+        try: f = df[p]
+        except KeyError: f = None
 
-      if f: f_status = f.status.lower()
-      else: f_status = '-'
+        if i: i_status = i.status.upper()
+        else: i_status = '-'
 
-      if i and i.src_path:
-        line = ' %s%s\t%s => %s (%s%%)' % (i_status, f_status,
+        if f: f_status = f.status.lower()
+        else: f_status = '-'
+
+        if i and i.src_path:
+          line = ' %s%s\t%s => %s (%s%%)' % (i_status, f_status,
                                         i.src_path, p, i.level)
-      else:
-        line = ' %s%s\t%s' % (i_status, f_status, p)
+        else:
+          line = ' %s%s\t%s' % (i_status, f_status, p)
 
-      if i and not f:
-        out.added('%s', line)
-      elif (i and f) or (not i and f):
-        out.changed('%s', line)
-      elif not i and not f:
-        out.untracked('%s', line)
-      else:
-        out.write('%s', line)
-      out.nl()
+        if i and not f:
+          out.added('%s', line)
+        elif (i and f) or (not i and f):
+          out.changed('%s', line)
+        elif not i and not f:
+          out.untracked('%s', line)
+        else:
+          out.write('%s', line)
+        out.nl()
+
+    finally:
+      if output_lock is not None:
+        output_lock.release()
+
     return 'DIRTY'
 
   def PrintWorkTreeDiff(self):
