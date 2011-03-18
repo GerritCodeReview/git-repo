@@ -15,7 +15,15 @@
 
 from command import PagedCommand
 
+try:
+  import threading as _threading
+except ImportError:
+  import dummy_threading as _threading
+
+import sys
+
 class Status(PagedCommand):
+  jobs = 1
   common = True
   helpSummary = "Show the working tree status"
   helpUsage = """
@@ -26,6 +34,10 @@ class Status(PagedCommand):
 and the most recent commit on this branch (HEAD), in each project
 specified.  A summary is displayed, one line per file where there
 is a difference between these three states.
+
+The -j/--jobs option can be used to run multiple status queries
+in parallel. If this option is used, the order of the projects
+in the output will be non-deterministic.
 
 Status Display
 --------------
@@ -60,9 +72,25 @@ the following meanings:
 
 """
 
+  def _Options(self, p):
+    p.add_option('-j', '--jobs',
+                 dest='jobs', action='store', type='int',
+                 help="number of projects to check simultaneously")
+
+  def _StatusHelper(self, project, lock, sem):
+    state = project.PrintWorkTreeStatus(lock)
+    if state == 'CLEAN':
+      lock.acquire()
+      self._clean += 1
+      lock.release()
+    sem.release()
+
   def Execute(self, opt, args):
+    if opt.jobs:
+      self.jobs = opt.jobs
+
     all = self.GetProjects(args)
-    clean = 0
+    self._clean = 0
 
     on = {}
     for project in all:
@@ -77,9 +105,22 @@ the following meanings:
     for cb in branch_names:
       print '# on branch %s' % cb
 
-    for project in all:
-      state = project.PrintWorkTreeStatus()
-      if state == 'CLEAN':
-        clean += 1
-    if len(all) == clean:
+    if self.jobs == 1:
+      for project in all:
+        state = project.PrintWorkTreeStatus()
+        if state == 'CLEAN':
+          self._clean += 1
+    else:
+      threads = set()
+      lock = _threading.Lock()
+      sem = _threading.Semaphore(self.jobs)
+      for project in all:
+        sem.acquire()
+        t = _threading.Thread(target = self._StatusHelper,
+                              args = (project, lock, sem))
+        threads.add(t)
+        t.start()
+      for t in threads:
+        t.join()
+    if len(all) == self._clean:
       print 'nothing to commit (working directory clean)'

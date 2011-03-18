@@ -650,7 +650,7 @@ class Project(object):
 
     return False
 
-  def PrintWorkTreeStatus(self):
+  def PrintWorkTreeStatus(self, output_lock = None):
     """Prints the status of the repository to stdout.
     """
     if not os.path.isdir(self.worktree):
@@ -669,6 +669,9 @@ class Project(object):
     do = self.work_git.LsOthers()
     if not rb and not di and not df and not do:
       return 'CLEAN'
+
+    if output_lock:
+      output_lock.acquire()
 
     out = StatusColoring(self.config)
     out.project('project %-40s', self.relpath + '/')
@@ -720,6 +723,10 @@ class Project(object):
       else:
         out.write('%s', line)
       out.nl()
+
+    if output_lock:
+      output_lock.release()
+
     return 'DIRTY'
 
   def PrintWorkTreeDiff(self):
