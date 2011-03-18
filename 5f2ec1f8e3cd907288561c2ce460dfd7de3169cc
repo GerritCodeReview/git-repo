@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/X///dI\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "nit: no spaces around \u0027\u003d\u0027 sign.  http://www.python.org/dev/peps/pep-0008/",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///dM\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "Please document output_lock in docstring.\n\nArgs:\n  output_lock: If non-None, we\u0027ll acquire this lock (when?)",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///cc\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "You don\u0027t want the output_lock here, too?",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///dE\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "nit: Better to check for \u0027is None\u0027 in this case, in case some future lock changes the definition of bool.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///c8\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "Locks are better handled using \"try / finally\".  Like this:\n\nlock.acquire()\ntry:\n  # Do your stuff\nfinally:\n  lock.release()\n\n...avoids future bugs if exceptions are thrown or someone adds a \"return\" statement.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///cw\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "add default\u003d1",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///ck\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "Docstring?\n\n...be sure to include that this function communicates to main thread through \u0027self._clean\u0027.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///cY\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "Put \u0027release\u0027 in a finally statement so that you are guaranteed to release the semaphore, even in the case of an exception.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///cs\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "Can get rid of this and just use opt.jobs once \"default\u003d1\" added above.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///cg\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-18T15:48:17Z",
+      "side": 1,
+      "message": "nit: no space around \u0027\u003d\u0027.  PEP-8.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
