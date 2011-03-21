@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/X///SA\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/X///dI\u003d",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///dM\u003d",
         "filename": "project.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2011-03-18T15:48:17Z",
       "side": 1,
       "message": "Please document output_lock in docstring.\n\nArgs:\n  output_lock: If non-None, we\u0027ll acquire this lock (when?)",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///R8\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/X///dM\u003d",
       "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/X///R4\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done, an alternative would be to merge this output into a single line and hope it\u0027s atomic, but just acquiring the lock is better.",
+      "parentUuid": "AAAA/X///cc\u003d",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///dE\u003d",
         "filename": "project.py",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2011-03-18T15:48:17Z",
       "side": 1,
       "message": "nit: Better to check for \u0027is None\u0027 in this case, in case some future lock changes the definition of bool.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///R0\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/X///dE\u003d",
       "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/X///Rw\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 727,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "I was thinking that, but repo sync didn\u0027t use it, but this is much better.",
+      "parentUuid": "AAAA/X///c8\u003d",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///cw\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 1
@@ -98,6 +188,24 @@
       "writtenOn": "2011-03-18T15:48:17Z",
       "side": 1,
       "message": "add default\u003d1",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///Rs\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/X///cw\u003d",
       "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/X///Ro\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/X///ck\u003d",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///cY\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 1
@@ -132,6 +258,24 @@
       "writtenOn": "2011-03-18T15:48:17Z",
       "side": 1,
       "message": "Put \u0027release\u0027 in a finally statement so that you are guaranteed to release the semaphore, even in the case of an exception.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///Rk\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "I think the chance of self._clean throwing an exception is small, so I left that one as-is instead of putting another try/finally there.",
+      "parentUuid": "AAAA/X///cY\u003d",
       "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/X///Rg\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/X///cs\u003d",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///cg\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 1
@@ -166,6 +328,24 @@
       "writtenOn": "2011-03-18T15:48:17Z",
       "side": 1,
       "message": "nit: no space around \u0027\u003d\u0027.  PEP-8.",
+      "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///Rc\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1005729
+      },
+      "writtenOn": "2011-03-21T10:49:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAA/X///cg\u003d",
       "revId": "5f2ec1f8e3cd907288561c2ce460dfd7de3169cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
