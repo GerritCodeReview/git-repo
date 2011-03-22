@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/X///Gc\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-22T03:35:52Z",
+      "side": 1,
+      "message": "nit: first line should be summary (and less than 80 characters).\n\nThen, blank line, then any other text needed.",
+      "revId": "cfb380e49bc9cd1b8037a3a621c9c584f3b08764",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X///GY\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-03-22T03:35:52Z",
+      "side": 1,
+      "message": "Neat!",
+      "revId": "cfb380e49bc9cd1b8037a3a621c9c584f3b08764",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
