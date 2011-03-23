@@ -164,31 +164,32 @@ later is required to fix a server side protocol bug.
       # - We always make sure we call sem.release().
       # - We always make sure we unlock the lock if we locked it.
       try:
-        success = project.Sync_NetworkHalf(quiet=opt.quiet)
+        try:
+          success = project.Sync_NetworkHalf(quiet=opt.quiet)
 
-        # Lock around all the rest of the code, since printing, updating a set
-        # and Progress.update() are not thread safe.
-        lock.acquire()
-        did_lock = True
+          # Lock around all the rest of the code, since printing, updating a set
+          # and Progress.update() are not thread safe.
+          lock.acquire()
+          did_lock = True
 
-        if not success:
-          print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-          if opt.force_broken:
-            print >>sys.stderr, 'warn: --force-broken, continuing to sync'
-          else:
-            raise _FetchError()
+          if not success:
+            print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+            if opt.force_broken:
+              print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+            else:
+              raise _FetchError()
 
-        fetched.add(project.gitdir)
-        pm.update()
-      except BaseException, e:
-        # Notify the _Fetch() function about all errors.
-        err_event.set()
+          fetched.add(project.gitdir)
+          pm.update()
+        except BaseException, e:
+          # Notify the _Fetch() function about all errors.
+          err_event.set()
 
-        # If we got our own _FetchError, we don't want a stack trace.
-        # However, if we got something else (something in Sync_NetworkHalf?),
-        # we'd like one (so re-raise after we've set err_event).
-        if not isinstance(e, _FetchError):
-          raise
+          # If we got our own _FetchError, we don't want a stack trace.
+          # However, if we got something else (something in Sync_NetworkHalf?),
+          # we'd like one (so re-raise after we've set err_event).
+          if not isinstance(e, _FetchError):
+            raise
       finally:
         if did_lock:
           lock.release()
