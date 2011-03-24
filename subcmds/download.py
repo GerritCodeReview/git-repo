@@ -33,7 +33,9 @@ makes it available in your project's local working directory.
 """
 
   def _Options(self, p):
-    pass
+    p.add_option('-c','--cherry-pick',
+                 dest='cherrypick', action='store_true',
+                 help="cherry-pick instead of checkout")
 
   def _ParseChangeIds(self, args):
     if not args:
@@ -78,4 +80,7 @@ makes it available in your project's local working directory.
           % (project.name, change_id, ps_id, len(dl.commits))
         for c in dl.commits:
           print >>sys.stderr, '  %s' % (c)
-      project._Checkout(dl.commit)
+      if opt.cherrypick:
+	project._CherryPick(dl.commit)
+      else:
+	project._Checkout(dl.commit)
