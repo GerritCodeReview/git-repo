@@ -1637,6 +1637,14 @@ class Project(object):
       if self._allrefs:
         raise GitError('%s checkout %s ' % (self.name, rev))
 
+  def _CherryPick(self, rev, quiet=False):
+    cmd = ['cherry-pick']
+    cmd.append(rev)
+    cmd.append('--')
+    if GitCommand(self, cmd).Wait() != 0:
+      if self._allrefs:
+        raise GitError('%s cherry-pick %s ' % (self.name, rev))
+
   def _ResetHard(self, rev, quiet=True):
     cmd = ['reset', '--hard']
     if quiet:
