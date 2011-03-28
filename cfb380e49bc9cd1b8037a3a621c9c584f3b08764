@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAA/X//+hM\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-03-28T14:21:01Z",
+      "side": 1,
+      "message": "This isn\u0027t acceptable. Users will want them to occur in the same order as -j1.",
+      "revId": "cfb380e49bc9cd1b8037a3a621c9c584f3b08764",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///Gc\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 3
