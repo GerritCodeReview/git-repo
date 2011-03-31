@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/X///GA\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2011-03-31T14:14:59Z",
+      "side": 1,
+      "message": "With --no-commit (to stage the files) and later commit, we will lose the original author and date information (on a \"clean\" cherry-pick). It will be a bit kludgy to extract and later restore, or what do you think?",
+      "parentUuid": "AAAA/X///kY\u003d",
+      "revId": "5a38b89839f91848fad43386d43cae2f6cdabf83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/X///kc\u003d",
         "filename": "subcmds/cherry_pick.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2011-03-17T16:23:37Z",
       "side": 1,
       "message": "You don\u0027t need to compute this, if the user deletes the old Change-Id shouldn\u0027t their commit-msg-hook automatically create a new one?",
+      "revId": "5a38b89839f91848fad43386d43cae2f6cdabf83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/X//+OY\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2011-03-31T14:14:59Z",
+      "side": 1,
+      "message": "Thanks - you are completely correct. This will get rid of a lot of code...",
+      "parentUuid": "AAAA/X///kc\u003d",
       "revId": "5a38b89839f91848fad43386d43cae2f6cdabf83",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
