@@ -650,13 +650,18 @@ class Project(object):
 
     return False
 
-  def PrintWorkTreeStatus(self):
+  def PrintWorkTreeStatus(self, output_redir=None):
     """Prints the status of the repository to stdout.
+
+    Args:
+      output: If specified, redirect the output to this object.
     """
     if not os.path.isdir(self.worktree):
-      print ''
-      print 'project %s/' % self.relpath
-      print '  missing (run "repo sync")'
+      if output_redir == None:
+        output_redir = sys.stdout
+      print >>output_redir, ''
+      print >>output_redir, 'project %s/' % self.relpath
+      print >>output_redir, '  missing (run "repo sync")'
       return
 
     self.work_git.update_index('-q',
@@ -671,6 +676,8 @@ class Project(object):
       return 'CLEAN'
 
     out = StatusColoring(self.config)
+    if not output_redir == None:
+      out.redirect(output_redir)
     out.project('project %-40s', self.relpath + '/')
 
     branch = self.CurrentBranch
@@ -720,6 +727,7 @@ class Project(object):
       else:
         out.write('%s', line)
       out.nl()
+
     return 'DIRTY'
 
   def PrintWorkTreeDiff(self):
