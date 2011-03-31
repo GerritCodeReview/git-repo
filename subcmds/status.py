@@ -15,6 +15,15 @@
 
 from command import PagedCommand
 
+try:
+  import threading as _threading
+except ImportError:
+  import dummy_threading as _threading
+
+import itertools
+import sys
+import StringIO
+
 class Status(PagedCommand):
   common = True
   helpSummary = "Show the working tree status"
@@ -26,6 +35,9 @@ class Status(PagedCommand):
 and the most recent commit on this branch (HEAD), in each project
 specified.  A summary is displayed, one line per file where there
 is a difference between these three states.
+
+The -j/--jobs option can be used to run multiple status queries
+in parallel.
 
 Status Display
 --------------
@@ -60,9 +72,34 @@ the following meanings:
 
 """
 
+  def _Options(self, p):
+    p.add_option('-j', '--jobs',
+                 dest='jobs', action='store', type='int', default=2,
+                 help="number of projects to check simultaneously")
+
+  def _StatusHelper(self, project, clean_counter, sem, output):
+    """Obtains the status for a specific project.
+
+    Obtains the status for a project, redirecting the output to
+    the specified object. It will release the semaphore
+    when done.
+
+    Args:
+      project: Project to get status of.
+      clean_counter: Counter for clean projects.
+      sem: Semaphore, will call release() when complete.
+      output: Where to output the status.
+    """
+    try:
+      state = project.PrintWorkTreeStatus(output)
+      if state == 'CLEAN':
+        clean_counter.next()
+    finally:
+      sem.release()
+
   def Execute(self, opt, args):
     all = self.GetProjects(args)
-    clean = 0
+    counter = itertools.count()
 
     on = {}
     for project in all:
@@ -77,9 +114,24 @@ the following meanings:
     for cb in branch_names:
       print '# on branch %s' % cb
 
-    for project in all:
-      state = project.PrintWorkTreeStatus()
-      if state == 'CLEAN':
-        clean += 1
-    if len(all) == clean:
+    if opt.jobs == 1:
+      for project in all:
+        state = project.PrintWorkTreeStatus()
+        if state == 'CLEAN':
+          counter.next()
+    else:
+      sem = _threading.Semaphore(opt.jobs)
+      threads_and_output = []
+      for project in all:
+        sem.acquire()
+        output = StringIO.StringIO()
+        t = _threading.Thread(target=self._StatusHelper,
+                              args=(project, counter, sem, output))
+        threads_and_output.append((t, output))
+        t.start()
+      for (t, output) in threads_and_output:
+        t.join()
+        sys.stdout.write(output.getvalue())
+        output.close()
+    if len(all) == counter.next():
       print 'nothing to commit (working directory clean)'
