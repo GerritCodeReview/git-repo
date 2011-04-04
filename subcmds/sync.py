@@ -218,7 +218,7 @@ later is required to fix a server side protocol bug.
       for project in projects:
         # Check for any errors before starting any new threads.
         # ...we'll let existing threads finish, though.
-        if err_event.is_set():
+        if err_event.isSet():
           break
 
         sem.acquire()
@@ -237,7 +237,7 @@ later is required to fix a server side protocol bug.
         t.join()
 
       # If we saw an error, exit with code 1 so that other scripts can check.
-      if err_event.is_set():
+      if err_event.isSet():
         print >>sys.stderr, '\nerror: Exited sync due to fetch errors'
         sys.exit(1)
 
