@@ -114,6 +114,12 @@ to update the working directory files.
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
 
+    # Other
+    g = p.add_option_group('Other options')
+    g.add_option('--config-name',
+                 dest='config_name', action="store_true", default=False,
+                 help='Always prompt for name/e-mail')
+
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
     is_new = not m.Exists
@@ -212,6 +218,24 @@ fatal: missing manifest url (-u) and no default found.
       return value
     return a
 
+  def _ShouldConfigureUser(self):
+    gc = self.manifest.globalConfig
+    mp = self.manifest.manifestProject
+
+    # If we don't have local settings, get from global.
+    if not mp.config.Has('user.name') or not mp.config.Has('user.email'):
+      if not gc.Has('user.name') or not gc.Has('user.email'):
+        return True
+
+      mp.config.SetString('user.name', gc.GetString('user.name'))
+      mp.config.SetString('user.email', gc.GetString('user.email'))
+
+    print ''
+    print 'Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
+                                         mp.config.GetString('user.email'))
+    print 'If you want to change this, please re-run \'repo init\' with --config-name'
+    return False
+
   def _ConfigureUser(self):
     mp = self.manifest.manifestProject
 
@@ -294,7 +318,8 @@ fatal: missing manifest url (-u) and no default found.
     self._LinkManifest(opt.manifest_name)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
-      self._ConfigureUser()
+      if opt.config_name or self._ShouldConfigureUser():
+        self._ConfigureUser()
       self._ConfigureColor()
 
     self._ConfigureDepth(opt)

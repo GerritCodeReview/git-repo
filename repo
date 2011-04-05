@@ -139,6 +139,11 @@ group.add_option('--no-repo-verify',
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
 
+# Other
+group = init_optparse.add_option_group('Other options')
+group.add_option('--config-name',
+                 dest='config_name', action="store_true", default=False,
+                 help='Always prompt for name/e-mail')
 
 class CloneFailure(Exception):
   """Indicate the remote clone of repo itself failed.
