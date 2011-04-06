@@ -943,6 +943,22 @@ class Project(object):
         'revision %s in %s not found' % (self.revisionExpr,
                                          self.name))
 
+  def MustNetworkSync(self):
+    if not self.Exists:
+      return True
+
+    rev = self.revisionId
+    if not rev and self.revisionExpr.startswith(R_TAGS):
+      rev = self.revisionExpr
+    if not rev:
+      return True
+
+    try:
+      self.bare_git.rev_parse('--quiet', '--verify', '%s^0' % rev)
+      return False
+    except GitError:
+      return True
+
   def Sync_LocalHalf(self, syncbuf):
     """Perform only the local IO portion of the sync process.
        Network access is not required.

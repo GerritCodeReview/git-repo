@@ -130,6 +130,9 @@ later is required to fix a server side protocol bug.
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
                    help='smart sync using manifest from a known good build')
+    p.add_option('-z', '--lazy-sync',
+                 dest='lazy_sync', action='store_true',
+                 help='syncs only projects on branches (not SHA1s or tags)')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -165,7 +168,10 @@ later is required to fix a server side protocol bug.
       # - We always make sure we unlock the lock if we locked it.
       try:
         try:
-          success = project.Sync_NetworkHalf(quiet=opt.quiet)
+          if opt.lazy_sync and not project.MustNetworkSync():
+            success = True
+          else:
+            success = project.Sync_NetworkHalf(quiet=opt.quiet)
 
           # Lock around all the rest of the code, since printing, updating a set
           # and Progress.update() are not thread safe.
@@ -202,7 +208,10 @@ later is required to fix a server side protocol bug.
     if self.jobs == 1:
       for project in projects:
         pm.update()
-        if project.Sync_NetworkHalf(quiet=opt.quiet):
+
+        if opt.lazy_sync and not project.MustNetworkSync():
+          fetched.add(project.gitdir)
+        elif project.Sync_NetworkHalf(quiet=opt.quiet):
           fetched.add(project.gitdir)
         else:
           print >>sys.stderr, 'error: Cannot fetch %s' % project.name
