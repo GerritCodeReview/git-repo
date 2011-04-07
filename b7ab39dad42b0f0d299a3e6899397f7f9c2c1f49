@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAA/n///c0\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1211,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-04-07T20:49:14Z",
+      "side": 1,
+      "message": "The tri-state is OK for now. Hopefully we don\u0027t need to move to an enum here.",
+      "parentUuid": "AAAA/n///fY\u003d",
+      "revId": "b7ab39dad42b0f0d299a3e6899397f7f9c2c1f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAA/n///fU\u003d",
         "filename": "subcmds/abandon.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2011-04-07T18:51:39Z",
       "side": 1,
       "message": "I\u0027m happy to take this out if you don\u0027t like it.  To me, it seemed useful to get the list of places where the abandon happened.",
+      "revId": "b7ab39dad42b0f0d299a3e6899397f7f9c2c1f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/n///cs\u003d",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-04-07T20:49:14Z",
+      "side": 1,
+      "message": "I\u0027m not sure its really that useful, but I can see how someone might like it. So I\u0027m inclined to leave it in.",
+      "parentUuid": "AAAA/n///fU\u003d",
       "revId": "b7ab39dad42b0f0d299a3e6899397f7f9c2c1f49",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
