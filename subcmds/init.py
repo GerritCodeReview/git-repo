@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import shutil
 import sys
 
 from color import Coloring
@@ -137,6 +138,11 @@ to update the working directory files.
     if not m.Sync_NetworkHalf():
       r = m.GetRemote(m.remote.name)
       print >>sys.stderr, 'fatal: cannot obtain manifest %s' % r.url
+
+      # Better delete the manifest git dir if we created it; otherwise next
+      # time (when user fixes problems) we won't go through the "is_new" logic.
+      if is_new:
+        shutil.rmtree(m.gitdir)
       sys.exit(1)
 
     syncbuf = SyncBuffer(m.config)
