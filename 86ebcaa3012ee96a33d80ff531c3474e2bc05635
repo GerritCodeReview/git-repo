@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/n///eY\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1004907
+      },
+      "writtenOn": "2011-04-07T19:58:13Z",
+      "side": 1,
+      "message": "Like in CL 22207, I will use another scheme if you don\u0027t like this tristate.",
+      "revId": "86ebcaa3012ee96a33d80ff531c3474e2bc05635",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
