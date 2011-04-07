@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/n///b0\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-04-07T21:15:52Z",
+      "side": 1,
+      "message": "Copyright date is wrong, should be 2010.",
+      "revId": "5a74ddd783fecd2abbe79cda683ed430d44caf03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/n///bw\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-04-07T21:15:52Z",
+      "side": 1,
+      "message": "We should check that args.length \u003d\u003d 1.",
+      "revId": "5a74ddd783fecd2abbe79cda683ed430d44caf03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/n///bs\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-04-07T21:15:52Z",
+      "side": 1,
+      "message": "There isn\u0027t anything valuable on stdout if there is a non-zero exit code.",
+      "revId": "5a74ddd783fecd2abbe79cda683ed430d44caf03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/n///bg\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-04-07T21:15:52Z",
+      "side": 1,
+      "message": "I\u0027m still not happy about the amend here. Since you pulled the author in from the cat-file output, you could have preserved it with a --author command line flag here after passing --no-commit to cherry-pick earlier. But I\u0027m not going to nit-pick over it, this is an acceptable (if not ideal) way to implement the feature.",
+      "revId": "5a74ddd783fecd2abbe79cda683ed430d44caf03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
