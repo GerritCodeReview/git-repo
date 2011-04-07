@@ -1204,13 +1204,19 @@ class Project(object):
 
   def AbandonBranch(self, name):
     """Destroy a local topic branch.
+
+    Args:
+      name: The name of the branch to abandon.
+
+    Returns:
+      True if the abandon succeeded; False if it didn't; None if the branch
+      didn't exist.
     """
     rev = R_HEADS + name
     all = self.bare_ref.all
     if rev not in all:
-      # Doesn't exist; assume already abandoned.
-      #
-      return True
+      # Doesn't exist
+      return None
 
     head = self.work_git.GetHead()
     if head == rev:

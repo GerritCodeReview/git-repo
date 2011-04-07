@@ -41,21 +41,30 @@ It is equivalent to "git branch -D <branchname>".
 
     nb = args[0]
     err = []
+    success = []
     all = self.GetProjects(args[1:])
 
     pm = Progress('Abandon %s' % nb, len(all))
     for project in all:
       pm.update()
-      if not project.AbandonBranch(nb):
-        err.append(project)
+
+      status = project.AbandonBranch(nb)
+      if status is not None:
+        if status:
+          success.append(project)
+        else:
+          err.append(project)
     pm.end()
 
     if err:
-      if len(err) == len(all):
-        print >>sys.stderr, 'error: no project has branch %s' % nb
-      else:
-        for p in err:
-          print >>sys.stderr,\
-            "error: %s/: cannot abandon %s" \
-            % (p.relpath, nb)
+      for p in err:
+        print >>sys.stderr,\
+          "error: %s/: cannot abandon %s" \
+          % (p.relpath, nb)
       sys.exit(1)
+    elif not success:
+      print >>sys.stderr, 'error: no project has branch %s' % nb
+      sys.exit(1)
+    else:
+      print >>sys.stderr, 'Abandoned in %d project(s):\n  %s' % (
+            len(success), '\n  '.join(p.relpath for p in success))
