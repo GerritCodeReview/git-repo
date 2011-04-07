@@ -1167,6 +1167,13 @@ class Project(object):
 
   def CheckoutBranch(self, name):
     """Checkout a local topic branch.
+
+        Args:
+          name: The name of the branch to checkout.
+
+        Returns:
+          True if the checkout succeeded; False if it didn't; None if the branch
+          didn't exist.
     """
     rev = R_HEADS + name
     head = self.work_git.GetHead()
@@ -1181,7 +1188,7 @@ class Project(object):
     except KeyError:
       # Branch does not exist in this project
       #
-      return False
+      return None
 
     if head.startswith(R_HEADS):
       try:

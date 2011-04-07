@@ -38,21 +38,27 @@ The command is equivalent to:
 
     nb = args[0]
     err = []
+    success = []
     all = self.GetProjects(args[1:])
 
     pm = Progress('Checkout %s' % nb, len(all))
     for project in all:
       pm.update()
-      if not project.CheckoutBranch(nb):
-        err.append(project)
+
+      status = project.CheckoutBranch(nb)
+      if status is not None:
+        if status:
+          success.append(project)
+        else:
+          err.append(project)
     pm.end()
 
     if err:
-      if len(err) == len(all):
-        print >>sys.stderr, 'error: no project has branch %s' % nb
-      else:
-        for p in err:
-          print >>sys.stderr,\
-            "error: %s/: cannot checkout %s" \
-            % (p.relpath, nb)
+      for p in err:
+        print >>sys.stderr,\
+          "error: %s/: cannot checkout %s" \
+          % (p.relpath, nb)
+      sys.exit(1)
+    elif not success:
+      print >>sys.stderr, 'error: no project has branch %s' % nb
       sys.exit(1)
