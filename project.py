@@ -1484,10 +1484,13 @@ class Project(object):
     for stock_hook in _ProjectHooks():
       name = os.path.basename(stock_hook)
 
-      if name in ('commit-msg',) and not self.remote.review:
+      if name in ('commit-msg',) and not self.remote.review \
+            and not self is self.manifest.manifestProject:
         # Don't install a Gerrit Code Review hook if this
         # project does not appear to use it for reviews.
         #
+        # Since the manifest project is one of those, but also
+        # managed through gerrit, it's excluded
         continue
 
       dst = os.path.join(hooks, name)
