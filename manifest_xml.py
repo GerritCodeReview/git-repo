@@ -209,7 +209,11 @@ class XmlManifest(object):
   @property
   def manifest_server(self):
     self._Load()
-    return self._manifest_server
+
+    if self._manifest_server:
+      return self._manifest_server
+
+    return self.globalConfig.GetString("repo.default-manifest-server")
 
   @property
   def IsMirror(self):

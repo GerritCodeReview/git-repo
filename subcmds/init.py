@@ -22,6 +22,7 @@ from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from project import SyncBuffer
 from git_command import git_require, MIN_GIT_VERSION
+from git_config import GitConfig
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
@@ -101,8 +102,15 @@ to update the working directory files.
 
     if is_new:
       if not opt.manifest_url:
-        print >>sys.stderr, 'fatal: manifest url (-u) is required.'
-        sys.exit(1)
+        url = GitConfig.ForUser().GetString("repo.default-manifest-url")
+        opt.manifest_url = url
+        if not url:
+          print >>sys.stderr, """\
+fatal: missing manifest url (-u) and no default found.
+
+  tip: The global git configuration key 'repo.default-manifest-url' can
+       be used to specify a default url."""
+          sys.exit(1)
 
       if not opt.quiet:
         print >>sys.stderr, 'Getting manifest ...'

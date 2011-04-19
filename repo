@@ -144,7 +144,7 @@ def _Init(args):
   """Installs repo by cloning it over the network.
   """
   opt, args = init_optparse.parse_args(args)
-  if args or not opt.manifest_url:
+  if args:
     init_optparse.print_usage()
     sys.exit(1)
 
