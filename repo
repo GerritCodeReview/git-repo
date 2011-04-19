@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 10)
+VERSION = (1, 13)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -144,7 +144,7 @@ def _Init(args):
   """Installs repo by cloning it over the network.
   """
   opt, args = init_optparse.parse_args(args)
-  if args or not opt.manifest_url:
+  if args:
     init_optparse.print_usage()
     sys.exit(1)
 
