@@ -72,7 +72,8 @@ revision is temporarily needed.
 
 The -s/--smart-sync option can be used to sync to a known good
 build as specified by the manifest-server element in the current
-manifest.
+manifest. The -t/--smart-tag option is similar and allows you to
+specify a custom tag/label.
 
 The -f/--force-broken option can be used to proceed with syncing
 other projects if a project sync fails.
@@ -130,6 +131,9 @@ later is required to fix a server side protocol bug.
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
                    help='smart sync using manifest from a known good build')
+      p.add_option('-t', '--smart-tag',
+                   dest='smart_tag', action='store',
+                   help='smart sync using manifest from a known tag')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -315,27 +319,31 @@ uncommitted changes are present' % project.relpath
       print >>sys.stderr, 'error: cannot combine -n and -l'
       sys.exit(1)
 
-    if opt.smart_sync:
+    if opt.smart_sync or opt.smart_tag:
       if not self.manifest.manifest_server:
         print >>sys.stderr, \
             'error: cannot smart sync: no manifest server defined in manifest'
         sys.exit(1)
       try:
         server = xmlrpclib.Server(self.manifest.manifest_server)
-        p = self.manifest.manifestProject
-        b = p.GetBranch(p.CurrentBranch)
-        branch = b.merge
-        if branch.startswith(R_HEADS):
-          branch = branch[len(R_HEADS):]
+        if opt.smart_sync:
+          p = self.manifest.manifestProject
+          b = p.GetBranch(p.CurrentBranch)
+          branch = b.merge
+          if branch.startswith(R_HEADS):
+            branch = branch[len(R_HEADS):]
 
-        env = os.environ.copy()
-        if (env.has_key('TARGET_PRODUCT') and
-            env.has_key('TARGET_BUILD_VARIANT')):
-          target = '%s-%s' % (env['TARGET_PRODUCT'],
-                              env['TARGET_BUILD_VARIANT'])
-          [success, manifest_str] = server.GetApprovedManifest(branch, target)
+          env = os.environ.copy()
+          if (env.has_key('TARGET_PRODUCT') and
+              env.has_key('TARGET_BUILD_VARIANT')):
+            target = '%s-%s' % (env['TARGET_PRODUCT'],
+                                env['TARGET_BUILD_VARIANT'])
+            [success, manifest_str] = server.GetApprovedManifest(branch, target)
+          else:
+            [success, manifest_str] = server.GetApprovedManifest(branch)
         else:
-          [success, manifest_str] = server.GetApprovedManifest(branch)
+          assert(opt.smart_tag)
+          [success, manifest_str] = server.GetManifest(opt.smart_tag)
 
         if success:
           manifest_name = "smart_sync_override.xml"
