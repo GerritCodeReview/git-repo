@@ -162,7 +162,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       date = branch.date
       list = branch.commits
 
-      print 'Upload project %s/:' % project.relpath
+      print 'Upload project %s/ to remote branch %s:' % (project.relpath, project.revisionExpr)
       print '  branch %s (%2d commit%s, %s):' % (
                     name,
                     len(list),
@@ -202,11 +202,12 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
         if b:
           script.append('#')
-        script.append('#  branch %s (%2d commit%s, %s):' % (
+        script.append('#  branch %s (%2d commit%s, %s) to remote branch %s:' % (
                       name,
                       len(list),
                       len(list) != 1 and 's' or '',
-                      date))
+                      date,
+                      project.revisionExpr))
         for commit in list:
           script.append('#         %s' % commit)
         b[name] = branch
