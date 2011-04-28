@@ -298,18 +298,41 @@ class XmlManifest(object):
 
       self._loaded = True
 
-  def _ParseManifest(self, is_root_file):
-    root = xml.dom.minidom.parse(self.manifestFile)
+  def _ParseManifestObject(self, path):
+    root = xml.dom.minidom.parse(path)
     if not root or not root.childNodes:
-      raise ManifestParseError(
-          "no root node in %s" %
-          self.manifestFile)
+      raise ManifestParseError("no root node in %s" % (path,))
 
     config = root.childNodes[0]
     if config.nodeName != 'manifest':
-      raise ManifestParseError(
-          "no <manifest> in %s" %
-          self.manifestFile)
+      raise ManifestParseError("no <manifest> in %s" % (path,))
+
+    return config
+
+  def _ParseManifest(self, is_root_file):
+    config = self._ParseManifestObject(self.manifestFile)
+
+    for node in config.childNodes:
+        if node.nodeName == 'include':
+            name = self._reqatt(node, 'name')
+            fp = os.path.join(self.manifestProject.worktree, name)
+            if not os.path.isfile(fp):
+                raise ManifestParseError, \
+                    "include %s doesn't exist or isn't a file" % \
+                    (name,)
+            try:
+                subconfig = self._ParseManifestObject(fp)
+            # should isolate this to the exact exception, but that's
+            # tricky.  actual parsing implementation may vary.
+            except (KeyboardInterrupt, RuntimeError, SystemExit):
+                raise
+            except Exception, e:
+                raise ManifestParseError(
+                    "failed parsing included manifest %s: %s", (name, e))
+
+            for sub_node in subconfig.childNodes:
+                config.appendChild(sub_node.cloneNode(True))
+
 
     for node in config.childNodes:
       if node.nodeName == 'remove-project':

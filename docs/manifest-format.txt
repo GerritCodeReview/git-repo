@@ -63,6 +63,9 @@ following DTD:
     <!ELEMENT repo-hooks (EMPTY)>
     <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
     <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
+
+    <!ELEMENT include      (EMPTY)>
+    <!ATTLIST include name CDATA #REQUIRED>
   ]>
 
 A description of the elements and their attributes follows.
@@ -191,6 +194,16 @@ replace the project with a different source.
 This element is mostly useful in the local_manifest.xml, where
 the user can remove a project, and possibly replace it with their
 own definition.
+
+Element include
+---------------
+
+This element provides the capability of including another manifest
+file into the originating manifest.  Normal rules apply for the
+target manifest to include- it must be a usable manifest on it's own.
+
+Attribute `name`; the manifest to include, specified relative to
+the manifest repositories root.
 
 
 Local Manifest
