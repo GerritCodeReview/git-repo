@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAA/3///as\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-04-29T15:25:40Z",
+      "side": 1,
+      "message": "How does this fix anything? Not all subcmds return a result code when they finish executing. Many use sys.exit(1) directly. For example, Abandon. :-)\n\nI\u0027ll admit, our error handling is sort of a mess, and a cop-out by using sys.exit. So I applaud the idea of trying to get better status codes, but I\u0027m not convinced this patch is sufficient.",
+      "revId": "1f4060fddfc9a70a854d89a3f356a3b3486239ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
