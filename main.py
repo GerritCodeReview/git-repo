@@ -65,6 +65,7 @@ class _Repo(object):
     all_commands['branch'] = all_commands['branches']
 
   def _Run(self, argv):
+    result = 0
     name = None
     glob = []
 
@@ -88,7 +89,7 @@ class _Repo(object):
         name = 'version'
       else:
         print >>sys.stderr, 'fatal: invalid usage of --version'
-        sys.exit(1)
+        return 1
 
     try:
       cmd = self.commands[name]
@@ -96,7 +97,7 @@ class _Repo(object):
       print >>sys.stderr,\
             "repo: '%s' is not a repo command.  See 'repo help'."\
             % name
-      sys.exit(1)
+      return 1
 
     cmd.repodir = self.repodir
     cmd.manifest = XmlManifest(cmd.repodir)
@@ -106,7 +107,7 @@ class _Repo(object):
       print >>sys.stderr, \
             "fatal: '%s' requires a working directory"\
             % name
-      sys.exit(1)
+      return 1
 
     copts, cargs = cmd.OptionParser.parse_args(argv)
 
@@ -122,16 +123,18 @@ class _Repo(object):
         RunPager(config)
 
     try:
-      cmd.Execute(copts, cargs)
+      result = cmd.Execute(copts, cargs)
     except ManifestInvalidRevisionError, e:
       print >>sys.stderr, 'error: %s' % str(e)
-      sys.exit(1)
+      return 1
     except NoSuchProjectError, e:
       if e.name:
         print >>sys.stderr, 'error: project %s not found' % e.name
       else:
         print >>sys.stderr, 'error: no project in current directory'
-      sys.exit(1)
+      return 1
+
+    return result
 
 def _MyWrapperPath():
   return os.path.join(os.path.dirname(__file__), 'repo')
@@ -200,6 +203,8 @@ def _PruneOptions(argv, opt):
     i += 1
 
 def _Main(argv):
+  result = 0
+
   opt = optparse.OptionParser(usage="repo wrapperinfo -- ...")
   opt.add_option("--repo-dir", dest="repodir",
                  help="path to .repo/")
@@ -217,7 +222,7 @@ def _Main(argv):
   try:
     try:
       init_ssh()
-      repo._Run(argv)
+      result = repo._Run(argv) or 0
     finally:
       close_ssh()
   except KeyboardInterrupt:
@@ -233,6 +238,8 @@ def _Main(argv):
       print >>sys.stderr, 'fatal: cannot restart repo after upgrade'
       print >>sys.stderr, 'fatal: %s' % e
       sys.exit(128)
+
+  sys.exit(result)
 
 if __name__ == '__main__':
   _Main(sys.argv[1:])
