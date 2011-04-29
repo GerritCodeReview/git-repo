@@ -16,6 +16,24 @@
       "revId": "1f4060fddfc9a70a854d89a3f356a3b3486239ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAA/3///ak\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2011-04-29T15:39:00Z",
+      "side": 1,
+      "message": "It makes the situation strictly better, though. \n\nFor subcmds that use sys.exit() directly, we\u0027re no worse off (and arguably those were working well anyway).\n\nFor subcmds that return a value, we are now no longer ignoring it.\n\nWith this patch we can, over time, migrate subcmds from category 1 to category 2.\n\nI guess the alternative is to look around for subcmds currently returning a value (maybe only rebase?) and change them to use sys.exit (ugh).",
+      "parentUuid": "AAAA/3///as\u003d",
+      "revId": "1f4060fddfc9a70a854d89a3f356a3b3486239ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
