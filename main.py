@@ -73,6 +73,7 @@ class _Repo(object):
     all_commands['branch'] = all_commands['branches']
 
   def _Run(self, argv):
+    result = 0
     name = None
     glob = []
 
@@ -96,7 +97,7 @@ class _Repo(object):
         name = 'version'
       else:
         print >>sys.stderr, 'fatal: invalid usage of --version'
-        sys.exit(1)
+        return 1
 
     try:
       cmd = self.commands[name]
@@ -104,7 +105,7 @@ class _Repo(object):
       print >>sys.stderr,\
             "repo: '%s' is not a repo command.  See 'repo help'."\
             % name
-      sys.exit(1)
+      return 1
 
     cmd.repodir = self.repodir
     cmd.manifest = XmlManifest(cmd.repodir)
@@ -114,7 +115,7 @@ class _Repo(object):
       print >>sys.stderr, \
             "fatal: '%s' requires a working directory"\
             % name
-      sys.exit(1)
+      return 1
 
     copts, cargs = cmd.OptionParser.parse_args(argv)
 
@@ -132,7 +133,7 @@ class _Repo(object):
     try:
       start = time.time()
       try:
-        cmd.Execute(copts, cargs)
+        result = cmd.Execute(copts, cargs)
       finally:
         elapsed = time.time() - start
         hours, remainder = divmod(elapsed, 3600)
@@ -146,16 +147,18 @@ class _Repo(object):
               % (hours, minutes, seconds)
     except DownloadError, e:
       print >>sys.stderr, 'error: %s' % str(e)
-      sys.exit(1)
+      return 1
     except ManifestInvalidRevisionError, e:
       print >>sys.stderr, 'error: %s' % str(e)
-      sys.exit(1)
+      return 1
     except NoSuchProjectError, e:
       if e.name:
         print >>sys.stderr, 'error: project %s not found' % e.name
       else:
         print >>sys.stderr, 'error: no project in current directory'
-      sys.exit(1)
+      return 1
+
+    return result
 
 def _MyRepoPath():
   return os.path.dirname(__file__)
@@ -316,6 +319,8 @@ def init_http():
   urllib2.install_opener(urllib2.build_opener(*handlers))
 
 def _Main(argv):
+  result = 0
+
   opt = optparse.OptionParser(usage="repo wrapperinfo -- ...")
   opt.add_option("--repo-dir", dest="repodir",
                  help="path to .repo/")
@@ -334,11 +339,11 @@ def _Main(argv):
     try:
       init_ssh()
       init_http()
-      repo._Run(argv)
+      result = repo._Run(argv) or 0
     finally:
       close_ssh()
   except KeyboardInterrupt:
-    sys.exit(1)
+    result = 1
   except RepoChangedException, rce:
     # If repo changed, re-exec ourselves.
     #
@@ -349,7 +354,9 @@ def _Main(argv):
     except OSError, e:
       print >>sys.stderr, 'fatal: cannot restart repo after upgrade'
       print >>sys.stderr, 'fatal: %s' % e
-      sys.exit(128)
+      result = 128
+
+  sys.exit(result)
 
 if __name__ == '__main__':
   _Main(sys.argv[1:])
