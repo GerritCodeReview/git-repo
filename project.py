@@ -1370,6 +1370,13 @@ class Project(object):
         ref_dir = None
 
     cmd = ['fetch']
+
+    # The --depth option only affects the initial fetch; after that we'll do
+    # full fetches of changes.
+    depth = self.manifest.manifestProject.config.GetString('repo.depth')
+    if depth and initial:
+      cmd.append('--depth=%s' % depth)
+
     if quiet:
       cmd.append('--quiet')
     if not self.worktree:
