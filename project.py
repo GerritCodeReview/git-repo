@@ -1368,6 +1368,9 @@ class Project(object):
         ref_dir = None
 
     cmd = ['fetch']
+    depth = self.manifest.manifestProject.config.GetString('repo.depth')
+    if depth and (depth != '-1'):
+      cmd.append('--depth=%s' % depth)
     if quiet:
       cmd.append('--quiet')
     if not self.worktree:

@@ -82,6 +82,9 @@ to update the working directory files.
     g.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
+    g.add_option('--depth', type='int', default=-1,
+                 dest='depth',
+                 help='create a shallow clone with given depth; see git clone')
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -232,6 +235,13 @@ to update the working directory files.
     if a in ('y', 'yes', 't', 'true', 'on'):
       gc.SetString('color.ui', 'auto')
 
+  def _ConfigureDepth(self, opt):
+    """Configure the depth we'll sync down."""
+    # TODO(dianders): If user re-runs 'repo init' on an already initted
+    # repo, I don't think that the depth will take effect (will it?)
+    depth = str(opt.depth)
+    self.manifest.manifestProject.config.SetString('repo.depth', str(opt.depth))
+
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
     self._SyncManifest(opt)
@@ -240,6 +250,8 @@ to update the working directory files.
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       self._ConfigureUser()
       self._ConfigureColor()
+
+    self._ConfigureDepth(opt)
 
     if self.manifest.IsMirror:
       type = 'mirror '
