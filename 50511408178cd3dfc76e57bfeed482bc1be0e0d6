@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABBn///f0\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-05-26T18:39:53Z",
+      "side": 1,
+      "message": "Lets leave the default as None.",
+      "revId": "50511408178cd3dfc76e57bfeed482bc1be0e0d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABBn///fs\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-05-26T18:39:53Z",
+      "side": 1,
+      "message": "On the next sync, it would, because you always pass the --depth flag to git fetch when repo.depth exists.",
+      "revId": "50511408178cd3dfc76e57bfeed482bc1be0e0d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABBn///fw\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-05-26T18:39:53Z",
+      "side": 1,
+      "message": "If opt.depth is None we shouldn\u0027t modify the repo.depth string. This way a user who runs `repo init --depth 1` and later `repo init -b foo` doesn\u0027t change their depth setting, unless they also pass a new --depth flag.\n\nIf opt.depth \u003c\u003d 0 we should clear the depth string.",
+      "revId": "50511408178cd3dfc76e57bfeed482bc1be0e0d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
