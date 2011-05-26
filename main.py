@@ -39,6 +39,23 @@ from pager import RunPager
 
 from subcmds import all as all_commands
 
+# TODO: When python2 is no longer supported, do the following:
+# * s/_print/print/
+# * Delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+# Normally, we would get print, etc. by doing:
+# from __future__ import print_function, etc.
+# but the bash magic prevents us from doing that since that must be done at the
+# beginning of the file
+def _print(*args, **kwargs):
+  kwargs.get('file', sys.stdout).write(' '.join(args) + '\n')
+try:
+  range=xrange
+  # If we get here, we are using python2
+except NameError:
+  pass
+# END PYTHON2 DUCK PUNCHING, etc
+
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
                  )
@@ -66,7 +83,7 @@ class _Repo(object):
     name = None
     glob = []
 
-    for i in xrange(0, len(argv)):
+    for i in range(0, len(argv)):
       if not argv[i].startswith('-'):
         name = argv[i]
         if i > 0:
@@ -119,10 +136,10 @@ class _Repo(object):
 
     try:
       cmd.Execute(copts, cargs)
-    except ManifestInvalidRevisionError, e:
+    except ManifestInvalidRevisionError as e:
       print >>sys.stderr, 'error: %s' % str(e)
       sys.exit(1)
-    except NoSuchProjectError, e:
+    except NoSuchProjectError as e:
       if e.name:
         print >>sys.stderr, 'error: project %s not found' % e.name
       else:
@@ -134,14 +151,15 @@ def _MyWrapperPath():
 
 def _CurrentWrapperVersion():
   VERSION = None
-  pat = re.compile(r'^VERSION *=')
+  pat = re.compile(r'VERSION *= (.*)')
   fd = open(_MyWrapperPath())
   for line in fd:
-    if pat.match(line):
+    match = pat.match(line)
+    if match:
       fd.close()
-      exec line
+      VERSION = eval(match.group(1))
       return VERSION
-  raise NameError, 'No VERSION in repo script'
+  raise NameError('No VERSION in repo script')
 
 def _CheckWrapperVersion(ver, repo_path):
   if not repo_path:
@@ -218,14 +236,14 @@ def _Main(argv):
       close_ssh()
   except KeyboardInterrupt:
     sys.exit(1)
-  except RepoChangedException, rce:
+  except RepoChangedException as rce:
     # If repo changed, re-exec ourselves.
     #
     argv = list(sys.argv)
     argv.extend(rce.extra_args)
     try:
       os.execv(__file__, argv)
-    except OSError, e:
+    except OSError as e:
       print >>sys.stderr, 'fatal: cannot restart repo after upgrade'
       print >>sys.stderr, 'fatal: %s' % e
       sys.exit(128)

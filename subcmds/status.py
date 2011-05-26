@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+# END PYTHON2 DUCK PUNCHING, etc
+
 from command import PagedCommand
 
 class Status(PagedCommand):
@@ -75,11 +80,11 @@ the following meanings:
     branch_names = list(on.keys())
     branch_names.sort()
     for cb in branch_names:
-      print '# on branch %s' % cb
+      print('# on branch %s' % cb)
 
     for project in all:
       state = project.PrintWorkTreeStatus()
       if state == 'CLEAN':
         clean += 1
     if len(all) == clean:
-      print 'nothing to commit (working directory clean)'
+      print('nothing to commit (working directory clean)')

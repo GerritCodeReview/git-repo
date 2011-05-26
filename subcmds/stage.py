@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+# END PYTHON2 DUCK PUNCHING, etc
+
 import sys
 
 from color import Coloring
@@ -50,7 +55,7 @@ The '%prog' command stages files to prepare the next commit.
   def _Interactive(self, opt, args):
     all = filter(lambda x: x.IsDirty(), self.GetProjects(args))
     if not all:
-      print >>sys.stderr,'no projects have uncommitted modifications'
+      print('no projects have uncommitted modifications', file=sys.stderr)
       return
 
     out = _ProjectList(self.manifest.manifestProject.config)
@@ -101,7 +106,7 @@ The '%prog' command stages files to prepare the next commit.
       if len(p) == 1:
         _AddI(p[0])
         continue
-    print 'Bye.'
+    print('Bye.')
 
 def _AddI(project):
   p = GitCommand(project, ['add', '--interactive'], bare=False)

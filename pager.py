@@ -80,5 +80,5 @@ def _BecomePager(pager):
 
   try:
     os.execvp(pager, [pager])
-  except OSError, e:
+  except OSError as e:
     os.execv('/bin/sh', ['sh', '-c', pager])
