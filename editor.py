@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+# END PYTHON2 DUCK PUNCHING, etc
+
 import os
 import re
 import sys
@@ -53,10 +58,10 @@ class Editor(object):
       return e
 
     if os.getenv('TERM') == 'dumb':
-      print >>sys.stderr,\
+      print(
 """No editor specified in GIT_EDITOR, core.editor, VISUAL or EDITOR.
 Tried to fall back to vi but terminal is dumb.  Please configure at
-least one of these before using this command."""
+least one of these before using this command.""", file=sys.stderr)
       sys.exit(1)
 
     return 'vi'

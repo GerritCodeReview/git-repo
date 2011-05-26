@@ -181,7 +181,7 @@ class GitConfig(object):
       elif old != value:
         self._cache[key] = list(value)
         self._do('--replace-all', name, value[0])
-        for i in xrange(1, len(value)):
+        for i in range(1, len(value)):
           self._do('--add', name, value[i])
 
     elif len(old) != 1 or old[0] != value:
@@ -466,9 +466,10 @@ def _open_ssh(host, port=None):
       p = subprocess.Popen(command)
     except Exception as e:
       _ssh_master = False
-      print >>sys.stderr, \
-        '\nwarn: cannot enable ssh control master for %s:%s\n%s' \
-        % (host,port, str(e))
+      print(file=sys.stderr)
+      print('warn: cannot enable ssh control master for %s:%s' % (host, port),
+            file=sys.stderr)
+      print(str(e), file=sys.stderr)
       return False
 
     _master_processes.append(p)

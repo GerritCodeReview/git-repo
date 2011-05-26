@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+# END PYTHON2 DUCK PUNCHING, etc
+
 import fcntl
 import re
 import os
@@ -172,7 +177,7 @@ terminal and are not redirected.
       if not os.path.exists(cwd):
         if (opt.project_header and opt.verbose) \
         or not opt.project_header:
-          print >>sys.stderr, 'skipping %s/' % project.relpath
+          print('skipping %s/' % project.relpath, file=sys.stderr)
         continue
 
       if opt.project_header:

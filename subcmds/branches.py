@@ -13,6 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+try:
+  range=xrange
+  # If we get here, we are using python2
+  class dict2(dict):
+    def iteritems(self):
+      return self.items()
+  sys.modules['__builtin__'].dict = dict2
+except NameError:
+  pass
+# END PYTHON2 DUCK PUNCHING, etc
+
 import sys
 from color import Coloring
 from command import Command
@@ -97,7 +111,7 @@ is shown, then the branch appears in all projects.
     project_cnt = len(projects)
 
     for project in projects:
-      for name, b in project.GetBranches().iteritems():
+      for name, b in project.GetBranches().items():
         b.project = project
         if name not in all:
           all[name] = BranchInfo(name)
@@ -107,7 +121,7 @@ is shown, then the branch appears in all projects.
     names.sort()
 
     if not names:
-      print >>sys.stderr, '   (no branches)'
+      print('   (no branches)', file=sys.stderr)
       return
 
     width = 25

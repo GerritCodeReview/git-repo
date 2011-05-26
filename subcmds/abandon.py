@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+# END PYTHON2 DUCK PUNCHING, etc
+
 import sys
 from command import Command
 from git_command import git
@@ -36,7 +41,7 @@ It is equivalent to "git branch -D <branchname>".
 
     nb = args[0]
     if not git.check_ref_format('heads/%s' % nb):
-      print >>sys.stderr, "error: '%s' is not a valid name" % nb
+      print("error: '%s' is not a valid name" % nb, file=sys.stderr)
       sys.exit(1)
 
     nb = args[0]
@@ -52,10 +57,9 @@ It is equivalent to "git branch -D <branchname>".
 
     if err:
       if len(err) == len(all):
-        print >>sys.stderr, 'error: no project has branch %s' % nb
+        print('error: no project has branch %s' % nb, file=sys.stderr)
       else:
         for p in err:
-          print >>sys.stderr,\
-            "error: %s/: cannot abandon %s" \
-            % (p.relpath, nb)
+          print("error: %s/: cannot abandon %s" % (p.relpath, nb),
+                file=sys.stderr)
       sys.exit(1)

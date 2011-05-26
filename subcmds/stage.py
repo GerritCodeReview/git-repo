@@ -16,6 +16,11 @@
 # TODO: When python2 is no longer supported, delete the following block of code
 # BEGIN PYTHON2 DUCK PUNCHING, etc
 from __future__ import print_function
+try:
+  range=xrange
+  # If we get here, we are using python2
+except NameError:
+  pass
 # END PYTHON2 DUCK PUNCHING, etc
 
 import sys
@@ -63,7 +68,7 @@ The '%prog' command stages files to prepare the next commit.
       out.header('        %s', 'project')
       out.nl()
 
-      for i in xrange(0, len(all)):
+      for i in range(0, len(all)):
         p = all[i]
         out.write('%3d:    %s', i + 1, p.relpath + '/')
         out.nl()

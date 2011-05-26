@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+# END PYTHON2 DUCK PUNCHING, etc
+
 import sys
 import os
 import shutil
@@ -171,7 +176,7 @@ class SubmoduleManifest(Manifest):
       newmp.bare_git.remote('rename', old_remote, act_remote)
       newmp.config.ClearCache()
     newmp.remote.name = act_remote
-    print >>sys.stderr, "Assuming remote named '%s'" % act_remote
+    print("Assuming remote named '%s'" % act_remote, file=sys.stderr)
 
     if checkout:
       for p in old.projects.values():
@@ -241,7 +246,7 @@ class SubmoduleManifest(Manifest):
       self.SetMRefs(p)
     pm.end()
     for i in info:
-      print >>sys.stderr, i
+      print(i, file=sys.stderr)
 
   def _CleanOldMRefs(self, p):
     all_refs = p._allrefs
@@ -305,7 +310,7 @@ class SubmoduleManifest(Manifest):
     mp.work_git.add('.gitignore', '.gitmodules', '.review')
     pm.end()
     for i in info:
-      print >>sys.stderr, i
+      print(i, file=sys.stderr)
 
   def _Unload(self):
     self._loaded = False
@@ -317,7 +322,7 @@ class SubmoduleManifest(Manifest):
     if not self._loaded:
       f = os.path.join(self.repodir, manifest_xml.LOCAL_MANIFEST_NAME)
       if os.path.exists(f):
-        print >>sys.stderr, 'warning: ignoring %s' % f
+        print('warning: ignoring %s' % f, file=sys.stderr)
 
       m = self.manifestProject
       b = m.CurrentBranch

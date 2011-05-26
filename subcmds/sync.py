@@ -407,7 +407,7 @@ def _PostRepoUpgrade(manifest):
 def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
   if rp.HasChanges:
     print('info: A new version of repo is available', file=sys.stderr)
-    print (file=sys.stderr)
+    print(file=sys.stderr)
     if no_repo_verify or _VerifyTag(rp):
       syncbuf = SyncBuffer(rp.config)
       rp.Sync_LocalHalf(syncbuf)
