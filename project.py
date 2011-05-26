@@ -791,7 +791,7 @@ class Project(object):
       if R_HEADS + n not in heads:
         self.bare_git.DeleteRef(name, id)
 
-  def GetUploadableBranches(self):
+  def GetUploadableBranches(self, selected_branch=None):
     """List any branches which can be uploaded for review.
     """
     heads = {}
@@ -806,6 +806,8 @@ class Project(object):
     ready = []
     for branch, id in heads.iteritems():
       if branch in pubed and pubed[branch] == id:
+        continue
+      if selected_branch and branch != selected_branch:
         continue
 
       rb = self.GetUploadableBranch(branch)

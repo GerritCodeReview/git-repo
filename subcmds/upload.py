@@ -120,6 +120,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     p.add_option('--cc',
                  type='string',  action='append', dest='cc',
                  help='Also send email to these email addresses.')
+    p.add_option('--br',
+                 type='string',  action='store', dest='branch',
+                 help='Branch to upload.')
 
     # Options relating to upload hook.  Note that verify and no-verify are NOT
     # opposites of each other, which is why they store to different locations.
@@ -336,9 +339,13 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     pending = []
     reviewers = []
     cc = []
+    branch = None
+
+    if opt.branch:
+      branch = opt.branch
 
     for project in project_list:
-      avail = project.GetUploadableBranches()
+      avail = project.GetUploadableBranches(branch)
       if avail:
         pending.append((project, avail))
 
