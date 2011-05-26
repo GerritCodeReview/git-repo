@@ -13,6 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+try:
+  range=xrange
+  # If we get here, we are using python2
+  import sys
+  import xmlrpclib
+  import imp
+  sys.modules['xmlrpc'] = imp.new_module('xmlrpc')
+  sys.modules['xmlrpc'].client = sys.modules['xmlrpclib']
+  sys.modules['xmlrpc.client'] = sys.modules['xmlrpclib']
+except NameError:
+  pass
+# END PYTHON2 DUCK PUNCHING, etc
+
 from optparse import SUPPRESS_HELP
 import os
 import re
@@ -21,7 +37,7 @@ import socket
 import subprocess
 import sys
 import time
-import xmlrpclib
+import xmlrpc.client
 
 try:
   import threading as _threading
@@ -137,9 +153,9 @@ later is required to fix a server side protocol bug.
 
   def _FetchHelper(self, opt, project, lock, fetched, pm, sem):
       if not project.Sync_NetworkHalf(quiet=opt.quiet):
-        print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+        print('error: Cannot fetch %s' % project.name, file=sys.stderr)
         if opt.force_broken:
-          print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+          print('warn: --force-broken, continuing to sync', file=sys.stderr)
         else:
           sem.release()
           sys.exit(1)
@@ -160,9 +176,9 @@ later is required to fix a server side protocol bug.
         if project.Sync_NetworkHalf(quiet=opt.quiet):
           fetched.add(project.gitdir)
         else:
-          print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+          print('error: Cannot fetch %s' % project.name, file=sys.stderr)
           if opt.force_broken:
-            print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+            print('warn: --force-broken, continuing to sync', file=sys.stderr)
           else:
             sys.exit(1)
     else:
@@ -223,12 +239,14 @@ later is required to fix a server side protocol bug.
                              revisionId = None)
 
               if project.IsDirty():
-                print >>sys.stderr, 'error: Cannot remove project "%s": \
-uncommitted changes are present' % project.relpath
-                print >>sys.stderr, '       commit changes, then run sync again'
+                print('error: Cannot remove project "%s": uncommitted '
+                      'changes are present' % project.relpath, file=sys.stderr)
+                print('       commit changes, then run sync again',
+                      file=sys.stderr)
                 return -1
               else:
-                print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
+                print('Deleting obsolete path %s' % project.worktree,
+                      file=sys.stderr)
                 shutil.rmtree(project.worktree)
                 # Try deleting parent subdirs if they are empty
                 dir = os.path.dirname(project.worktree)
@@ -252,19 +270,19 @@ uncommitted changes are present' % project.relpath
     if opt.jobs:
       self.jobs = opt.jobs
     if opt.network_only and opt.detach_head:
-      print >>sys.stderr, 'error: cannot combine -n and -d'
+      print('error: cannot combine -n and -d', file=sys.stderr)
       sys.exit(1)
     if opt.network_only and opt.local_only:
-      print >>sys.stderr, 'error: cannot combine -n and -l'
+      print('error: cannot combine -n and -l', file=sys.stderr)
       sys.exit(1)
 
     if opt.smart_sync:
       if not self.manifest.manifest_server:
-        print >>sys.stderr, \
-            'error: cannot smart sync: no manifest server defined in manifest'
+        print('error: cannot smart sync: no manifest server defined in '
+              'manifest', file=sys.stderr)
         sys.exit(1)
       try:
-        server = xmlrpclib.Server(self.manifest.manifest_server)
+        server = xmlrpc.client.Server(self.manifest.manifest_server)
         p = self.manifest.manifestProject
         b = p.GetBranch(p.CurrentBranch)
         branch = b.merge
@@ -291,16 +309,16 @@ uncommitted changes are present' % project.relpath
             finally:
               f.close()
           except IOError:
-            print >>sys.stderr, 'error: cannot write manifest to %s' % \
-                manifest_path
+            print('error: cannot write manifest to %s' % manifest_path,
+                  file=sys.stderr)
             sys.exit(1)
           self.manifest.Override(manifest_name)
         else:
-          print >>sys.stderr, 'error: %s' % manifest_str
+          print('error: %s' % manifest_str, file=sys.stderr)
           sys.exit(1)
       except socket.error:
-        print >>sys.stderr, 'error: cannot connect to manifest server %s' % (
-            self.manifest.manifest_server)
+        print('error: cannot connect to manifest server %s' %
+              (self.manifest.manifest_server), file=sys.stderr)
         sys.exit(1)
 
     rp = self.manifest.repoProject
@@ -366,7 +384,7 @@ uncommitted changes are present' % project.relpath
       if project.worktree:
         project.Sync_LocalHalf(syncbuf)
     pm.end()
-    print >>sys.stderr
+    print(file=sys.stderr)
     if not syncbuf.Finish():
       sys.exit(1)
 
@@ -375,11 +393,11 @@ def _ReloadManifest(cmd):
   new = cmd.GetManifest(reparse=True)
 
   if old.__class__ != new.__class__:
-    print >>sys.stderr, 'NOTICE: manifest format has changed  ***'
+    print('NOTICE: manifest format has changed  ***', file=sys.stderr)
     new.Upgrade_Local(old)
   else:
     if new.notice:
-      print new.notice
+      print(new.notice)
 
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():
@@ -388,27 +406,28 @@ def _PostRepoUpgrade(manifest):
 
 def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
   if rp.HasChanges:
-    print >>sys.stderr, 'info: A new version of repo is available'
-    print >>sys.stderr, ''
+    print('info: A new version of repo is available', file=sys.stderr)
+    print (file=sys.stderr)
     if no_repo_verify or _VerifyTag(rp):
       syncbuf = SyncBuffer(rp.config)
       rp.Sync_LocalHalf(syncbuf)
       if not syncbuf.Finish():
         sys.exit(1)
-      print >>sys.stderr, 'info: Restarting repo with latest version'
+      print('info: Restarting repo with latest version', file=sys.stderr)
       raise RepoChangedException(['--repo-upgraded'])
     else:
-      print >>sys.stderr, 'warning: Skipped upgrade to unverified version'
+      print('warning: Skipped upgrade to unverified version', file=sys.stderr)
   else:
     if verbose:
-      print >>sys.stderr, 'repo version %s is current' % rp.work_git.describe(HEAD)
+      print('repo version %s is current' % rp.work_git.describe(HEAD),
+            file=sys.stderr)
 
 def _VerifyTag(project):
   gpg_dir = os.path.expanduser('~/.repoconfig/gnupg')
   if not os.path.exists(gpg_dir):
-    print >>sys.stderr,\
-"""warning: GnuPG was not available during last "repo init"
-warning: Cannot automatically authenticate repo."""
+    print('warning: GnuPG was not available during last "repo init"',
+          file=sys.stderr)
+    print('warning: Cannot automatically authenticate repo.', file=sys.stderr)
     return True
 
   try:
@@ -422,10 +441,9 @@ warning: Cannot automatically authenticate repo."""
     if rev.startswith(R_HEADS):
       rev = rev[len(R_HEADS):]
 
-    print >>sys.stderr
-    print >>sys.stderr,\
-      "warning: project '%s' branch '%s' is not signed" \
-      % (project.name, rev)
+    print(file=sys.stderr)
+    print("warning: project '%s' branch '%s' is not signed"
+          % (project.name, rev), file=sys.stderr)
     return False
 
   env = os.environ.copy()
@@ -444,9 +462,9 @@ warning: Cannot automatically authenticate repo."""
   proc.stderr.close()
 
   if proc.wait() != 0:
-    print >>sys.stderr
-    print >>sys.stderr, out
-    print >>sys.stderr, err
-    print >>sys.stderr
+    print(file=sys.stderr)
+    print(out, file=sys.stderr)
+    print(err, file=sys.stderr)
+    print(file=sys.stderr)
     return False
   return True

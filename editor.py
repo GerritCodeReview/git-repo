@@ -91,7 +91,7 @@ least one of these before using this command."""
 
       try:
         rc = subprocess.Popen(args, shell=shell).wait()
-      except OSError, e:
+      except OSError as e:
         raise EditorError('editor failed, %s: %s %s'
           % (str(e), editor, path))
       if rc != 0:

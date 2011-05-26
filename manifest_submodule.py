@@ -145,7 +145,7 @@ class SubmoduleManifest(Manifest):
       self.FromXml_Local_1(old, checkout=True)
       self.FromXml_Local_2(old)
     else:
-      raise ManifestParseError, 'cannot upgrade manifest'
+      raise ManifestParseError('cannot upgrade manifest')
 
   def FromXml_Local_1(self, old, checkout):
     os.rename(old.manifestProject.gitdir,
@@ -155,7 +155,7 @@ class SubmoduleManifest(Manifest):
     oldBranch = oldmp.CurrentBranch
     b = oldmp.GetBranch(oldBranch).merge
     if not b:
-      raise ManifestParseError, 'cannot upgrade manifest'
+      raise ManifestParseError('cannot upgrade manifest')
     if b.startswith(R_HEADS):
       b = b[len(R_HEADS):]
 
@@ -322,7 +322,7 @@ class SubmoduleManifest(Manifest):
       m = self.manifestProject
       b = m.CurrentBranch
       if not b:
-        raise ManifestParseError, 'manifest cannot be on detached HEAD'
+        raise ManifestParseError('manifest cannot be on detached HEAD')
       b = m.GetBranch(b).merge
       if b.startswith(R_HEADS):
         b = b[len(R_HEADS):]
@@ -342,17 +342,15 @@ class SubmoduleManifest(Manifest):
     for name in self._modules.GetSubSections('submodule'):
       p = self._ParseProject(name)
       if self._projects.get(p.name):
-        raise ManifestParseError, 'duplicate project "%s"' % p.name
+        raise ManifestParseError('duplicate project "%s"' % p.name)
       if byPath.get(p.relpath):
-        raise ManifestParseError, 'duplicate path "%s"' % p.relpath
+        raise ManifestParseError('duplicate path "%s"' % p.relpath)
       self._projects[p.name] = p
       byPath[p.relpath] = p
 
     for relpath in self._allRevisionIds.keys():
       if relpath not in byPath:
-        raise ManifestParseError, \
-          'project "%s" not in .gitmodules' \
-          % relpath
+        raise ManifestParseError('project "%s" not in .gitmodules' % relpath)
 
   def _Remote(self):
     m = self.manifestProject
@@ -447,7 +445,7 @@ class SubmoduleManifest(Manifest):
   def _AddMetaProjectMirror(self, m):
     m_url = m.GetRemote(m.remote.name).url
     if m_url.endswith('/.git'):
-      raise ManifestParseError, 'refusing to mirror %s' % m_url
+      raise ManifestParseError('refusing to mirror %s' % m_url)
 
     name = self._GuessMetaName(m_url)
     if name.endswith('.git'):

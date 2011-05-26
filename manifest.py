@@ -56,4 +56,4 @@ class Manifest(object):
     pass
 
   def Upgrade_Local(self, old):
-    raise ManifestParseError, 'unsupported upgrade path'
+    raise ManifestParseError('unsupported upgrade path')

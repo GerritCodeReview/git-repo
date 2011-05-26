@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+from __future__ import print_function
+# END PYTHON2 DUCK PUNCHING, etc
+
 from color import Coloring
 from command import PagedCommand
 
@@ -51,9 +56,9 @@ class Prune(PagedCommand):
 
       commits = branch.commits
       date = branch.date
-      print '%s %-33s (%2d commit%s, %s)' % (
+      print('%s %-33s (%2d commit%s, %s)' % (
             branch.name == project.CurrentBranch and '*' or ' ',
             branch.name,
             len(commits),
             len(commits) != 1 and 's' or ' ',
-            date)
+            date))
