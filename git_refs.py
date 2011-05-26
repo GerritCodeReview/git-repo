@@ -13,6 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, delete the following block of code
+# BEGIN PYTHON2 DUCK PUNCHING, etc
+try:
+  range=xrange
+  # If we get here, we are using python2
+  class dict2(dict):
+    def iteritems(self):
+      return self.items()
+  sys.modules['__builtin__'].dict = dict2
+except NameError:
+  pass
+# END PYTHON2 DUCK PUNCHING, etc
+
 import os
 import sys
 from trace import Trace
@@ -66,7 +79,7 @@ class GitRefs(object):
   def _NeedUpdate(self):
     Trace(': scan refs %s', self._gitdir)
 
-    for name, mtime in self._mtime.iteritems():
+    for name, mtime in self._mtime.items():
       try:
         if mtime != os.path.getmtime(os.path.join(self._gitdir, name)):
           return True
@@ -89,7 +102,7 @@ class GitRefs(object):
     attempts = 0
     while scan and attempts < 5:
       scan_next = {}
-      for name, dest in scan.iteritems():
+      for name, dest in scan.items():
         if dest in self._phyref:
           self._phyref[name] = self._phyref[dest]
         else:
@@ -144,7 +157,7 @@ class GitRefs(object):
     except IOError:
       return
     try:
-      id = fd.readline()
+      id = fd.readline().decode()
     finally:
       fd.close()
 

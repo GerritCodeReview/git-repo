@@ -113,7 +113,7 @@ def git_require(min_version, fail=False):
   return False
 
 def _setenv(env, name, value):
-  env[name] = value.encode()
+  env[name] = value
 
 class GitCommand(object):
   def __init__(self,
@@ -203,12 +203,12 @@ class GitCommand(object):
 
     try:
       p = subprocess.Popen(command,
-                           cwd = cwd,
-                           env = env,
-                           stdin = stdin,
-                           stdout = stdout,
-                           stderr = stderr)
-    except Exception, e:
+                           cwd=cwd,
+                           env=env,
+                           stdin=stdin,
+                           stdout=stdout,
+                           stderr=stderr)
+    except Exception as e:
       raise GitError('%s: %s' % (command[1], e))
 
     if ssh_proxy:
@@ -225,13 +225,13 @@ class GitCommand(object):
       self.stdin = None
 
     if p.stdout:
-      self.stdout = p.stdout.read()
+      self.stdout = p.stdout.read().decode()
       p.stdout.close()
     else:
       p.stdout = None
 
     if p.stderr:
-      self.stderr = p.stderr.read()
+      self.stderr = p.stderr.read().decode()
       p.stderr.close()
     else:
       p.stderr = None
