@@ -15,7 +15,7 @@
 # limitations under the License.
 
 magic='--calling-python-from-/bin/sh--'
-"""exec" python -E "$0" "$@" """#$magic"
+"""exec" $([[ "$(python --version 2>&1)" > "Python 2.8" ]] && echo "python2" || echo "python") -E "$0" "$@" """#$magic"
 if __name__ == '__main__':
   import sys
   if sys.argv[-1] == '#%s' % magic:
