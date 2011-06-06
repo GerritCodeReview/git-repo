@@ -929,6 +929,14 @@ class Project(object):
       is_new = not self.Exists
     if is_new:
       self._InitGitDir()
+
+    # Prune any branches that have been removed on the remote:
+    if not is_new:
+      if GitCommand(self,
+                    ['remote', 'prune', self.remote.name],
+                    bare=True).Wait() != 0:
+        return False
+
     self._InitRemote()
 
     if is_new:
