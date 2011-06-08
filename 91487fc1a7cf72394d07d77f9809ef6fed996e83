@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABCH///2w\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1373,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-06-08T14:13:15Z",
+      "side": 1,
+      "message": "Always passing this option can cause the history to become disconnected. Suppose a client initializes with depth\u003d1 and gets the current branch. Then the project moves forward 25 commits. When the client does a repo sync to pick up the latest history, he will get exactly 1 commit again, and miss the 24 intervening commits. Git can\u0027t connect the commit we already have with the commit it just got, so the project goes to having exactly 1 commit again.\n\nBut if the project moves forward only 1 commit, the fetch will work and the history is connected.\n\nI think you only want this flag on the initial fetch in this repository.",
+      "revId": "91487fc1a7cf72394d07d77f9809ef6fed996e83",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
