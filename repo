@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 10)
+VERSION = (1, 11)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -121,6 +121,10 @@ group.add_option('--mirror',
 group.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
+group.add_option('--depth', type='int', default=None,
+                 dest='depth',
+                 help='create a shallow clone with given depth; see git clone')
+
 
 # Tool
 group = init_optparse.add_option_group('repo Version options')
@@ -596,4 +600,3 @@ def main(orig_args):
 
 if __name__ == '__main__':
   main(sys.argv[1:])
-
