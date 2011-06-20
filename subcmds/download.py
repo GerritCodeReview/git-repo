@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import os
 import re
 import sys
@@ -61,21 +64,19 @@ makes it available in your project's local working directory.
     for project, change_id, ps_id in self._ParseChangeIds(args):
       dl = project.DownloadPatchSet(change_id, ps_id)
       if not dl:
-        print >>sys.stderr, \
-          '[%s] change %d/%d not found' \
-          % (project.name, change_id, ps_id)
+        print('[%s] change %d/%d not found' % (project.name, change_id, ps_id),
+              file=sys.stderr)
         sys.exit(1)
 
       if not dl.commits:
-        print >>sys.stderr, \
-          '[%s] change %d/%d has already been merged' \
-          % (project.name, change_id, ps_id)
+        print('[%s] change %d/%d has already been merged'
+              % (project.name, change_id, ps_id), file=sys.stderr)
         continue
 
       if len(dl.commits) > 1:
-        print >>sys.stderr, \
-          '[%s] %d/%d depends on %d unmerged changes:' \
-          % (project.name, change_id, ps_id, len(dl.commits))
+        print('[%s] %d/%d depends on %d unmerged changes:'
+              % (project.name, change_id, ps_id, len(dl.commits)),
+              file=sys.stderr)
         for c in dl.commits:
-          print >>sys.stderr, '  %s' % (c)
+          print('  %s' % c, file=sys.stderr)
       project._Checkout(dl.commit)

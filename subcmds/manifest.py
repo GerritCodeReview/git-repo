@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import os
 import sys
 
@@ -80,27 +83,27 @@ in a Git repository for use during future 'repo init' invocations.
                        peg_rev = opt.peg_rev)
     fd.close()
     if opt.output_file != '-':
-      print >>sys.stderr, 'Saved manifest to %s' % opt.output_file
+      print('Saved manifest to %s' % opt.output_file, file=sys.stderr)
 
   def _Upgrade(self):
     old = self.manifest
 
     if isinstance(old, SubmoduleManifest):
-      print >>sys.stderr, 'error: already upgraded'
+      print('error: already upgraded', file=sys.stderr)
       sys.exit(1)
 
     old._Load()
     for p in old.projects.values():
       if not os.path.exists(p.gitdir) \
       or not os.path.exists(p.worktree):
-        print >>sys.stderr, 'fatal: project "%s" missing' % p.relpath
+        print('fatal: project "%s" missing' % p.relpath, file=sys.stderr)
         sys.exit(1)
 
     new = SubmoduleManifest(old.repodir)
     new.FromXml_Local_1(old, checkout=False)
     new.FromXml_Definition(old)
     new.FromXml_Local_2(old)
-    print >>sys.stderr, 'upgraded manifest; commit result manually'
+    print('upgraded manifest; commit result manually', file=sys.stderr)
 
   def Execute(self, opt, args):
     if args:
@@ -115,6 +118,6 @@ in a Git repository for use during future 'repo init' invocations.
         self._Output(opt)
         return
 
-    print >>sys.stderr, 'error: no operation to perform'
-    print >>sys.stderr, 'error: see repo help manifest'
+    print('error: no operation to perform', file=sys.stderr)
+    print('error: see repo help manifest', file=sys.stderr)
     sys.exit(1)

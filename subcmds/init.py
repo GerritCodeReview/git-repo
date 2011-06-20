@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import os
 import sys
 
@@ -116,7 +119,7 @@ to update the working directory files.
         m.revisionExpr = 'refs/heads/master'
     else:
       if opt.manifest_origin:
-        print >>sys.stderr, 'fatal: cannot change origin name'
+        print('fatal: cannot change origin name', file=sys.stderr)
         sys.exit(1)
 
       if opt.manifest_branch:
@@ -130,12 +133,12 @@ to update the working directory files.
 
     if is_new:
       if not opt.manifest_url:
-        print >>sys.stderr, 'fatal: manifest url (-u) is required.'
+        print('fatal: manifest url (-u) is required.', file=sys.stderr)
         sys.exit(1)
 
       if not opt.quiet:
-        print >>sys.stderr, 'Getting manifest ...'
-        print >>sys.stderr, '   from %s' % opt.manifest_url
+        print('Getting manifest ...', file=sys.stderr)
+        print('   from %s' % opt.manifest_url, file=sys.stderr)
       m._InitGitDir()
 
     self._ApplyOptions(opt, is_new)
@@ -153,12 +156,13 @@ to update the working directory files.
         m.config.SetString('repo.mirror', 'true')
         m.config.ClearCache()
       else:
-        print >>sys.stderr, 'fatal: --mirror not supported on existing client'
+        print('fatal: --mirror not supported on existing client',
+              file=sys.stderr)
         sys.exit(1)
 
     if not m.Sync_NetworkHalf():
       r = m.GetRemote(m.remote.name)
-      print >>sys.stderr, 'fatal: cannot obtain manifest %s' % r.url
+      print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
       sys.exit(1)
 
     if is_new and SubmoduleManifest.IsBare(m):
@@ -186,19 +190,19 @@ to update the working directory files.
     self._ApplyOptions(opt, is_new)
 
     if not self.manifest.InitBranch():
-      print >>sys.stderr, 'fatal: cannot create branch in manifest'
+      print('fatal: cannot create branch in manifest', file=sys.stderr)
       sys.exit(1)
 
   def _LinkManifest(self, name):
     if not name:
-      print >>sys.stderr, 'fatal: manifest name (-m) is required.'
+      print('fatal: manifest name (-m) is required.', file=sys.stderr)
       sys.exit(1)
 
     try:
       self.manifest.Link(name)
-    except ManifestParseError, e:
-      print >>sys.stderr, "fatal: manifest '%s' not available" % name
-      print >>sys.stderr, 'fatal: %s' % str(e)
+    except ManifestParseError as e:
+      print("fatal: manifest '%s' not available" % name, file=sys.stderr)
+      print('fatal: %s' % str(e), file=sys.stderr)
       sys.exit(1)
 
   def _Prompt(self, prompt, value):
@@ -214,12 +218,12 @@ to update the working directory files.
     mp = self.manifest.manifestProject
 
     while True:
-      print ''
+      print()
       name  = self._Prompt('Your Name', mp.UserName)
       email = self._Prompt('Your Email', mp.UserEmail)
 
-      print ''
-      print 'Your identity is: %s <%s>' % (name, email)
+      print()
+      print('Your identity is: %s <%s>' % (name, email))
       sys.stdout.write('is this correct [y/n]? ')
       a = sys.stdin.readline().strip()
       if a in ('yes', 'y', 't', 'true'):
@@ -247,8 +251,8 @@ to update the working directory files.
         self._on = True
     out = _Test()
 
-    print ''
-    print "Testing colorized output (for 'repo diff', 'repo status'):"
+    print()
+    print("Testing colorized output (for 'repo diff', 'repo status'):")
 
     for c in ['black','red','green','yellow','blue','magenta','cyan']:
       out.write(' ')
@@ -280,5 +284,5 @@ to update the working directory files.
     else:
       type = ''
 
-    print ''
-    print 'repo %sinitialized in %s' % (type, self.manifest.topdir)
+    print()
+    print('repo %sinitialized in %s' % (type, self.manifest.topdir))

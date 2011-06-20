@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import re
 import sys
 from formatter import AbstractFormatter, DumbWriter
@@ -31,11 +34,11 @@ Displays detailed usage information about a command.
 """
 
   def _PrintAllCommands(self):
-    print 'usage: repo COMMAND [ARGS]'
-    print """
+    print('usage: repo COMMAND [ARGS]')
+    print("""
 The complete list of recognized repo commands are:
-"""
-    commandNames = self.commands.keys()
+""")
+    commandNames = list(self.commands.keys())
     commandNames.sort()
 
     maxlen = 0
@@ -49,16 +52,16 @@ The complete list of recognized repo commands are:
         summary = command.helpSummary.strip()
       except AttributeError:
         summary = ''
-      print fmt % (name, summary)
-    print """
+      print(fmt % (name, summary))
+    print("""
 See 'repo help <command>' for more information on a specific command.
-"""
+""")
 
   def _PrintCommonCommands(self):
-    print 'usage: repo COMMAND [ARGS]'
-    print """
+    print('usage: repo COMMAND [ARGS]')
+    print("""
 The most commonly used repo commands are:
-"""
+""")
     commandNames = [name 
                     for name in self.commands.keys()
                     if self.commands[name].common]
@@ -75,11 +78,11 @@ The most commonly used repo commands are:
         summary = command.helpSummary.strip()
       except AttributeError:
         summary = ''
-      print fmt % (name, summary)
-    print """
+      print(fmt % (name, summary))
+    print("""
 See 'repo help <command>' for more information on a specific command.
 See 'repo help --all' for a complete list of recognized commands.
-"""
+""")
 
   def _PrintCommandHelp(self, cmd):
     class _Out(Coloring):
@@ -162,7 +165,7 @@ See 'repo help --all' for a complete list of recognized commands.
       try:
         cmd = self.commands[name]
       except KeyError:
-        print >>sys.stderr, "repo: '%s' is not a repo command." % name
+        print("repo: '%s' is not a repo command." % name, file=sys.stderr)
         sys.exit(1)
 
       cmd.repodir = self.repodir

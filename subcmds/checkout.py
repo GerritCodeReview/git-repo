@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import sys
 from command import Command
 from progress import Progress
@@ -49,10 +52,9 @@ The command is equivalent to:
 
     if err:
       if len(err) == len(all):
-        print >>sys.stderr, 'error: no project has branch %s' % nb
+        print('error: no project has branch %s' % nb, file=sys.stderr)
       else:
         for p in err:
-          print >>sys.stderr,\
-            "error: %s/: cannot checkout %s" \
-            % (p.relpath, nb)
+          print("error: %s/: cannot checkout %s" % (p.relpath, nb),
+                file=sys.stderr)
       sys.exit(1)

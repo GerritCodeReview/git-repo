@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import sys
 from command import Command, MirrorSafeCommand
 from git_command import git
@@ -29,7 +32,7 @@ class Version(Command, MirrorSafeCommand):
     rp = self.manifest.repoProject
     rem = rp.GetRemote(rp.remote.name)
 
-    print 'repo version %s' % rp.work_git.describe(HEAD)
-    print '       (from %s)' % rem.url
-    print git.version().strip()
-    print 'Python %s' % sys.version
+    print('repo version %s' % rp.work_git.describe(HEAD))
+    print('       (from %s)' % rem.url)
+    print(git.version().strip())
+    print('Python %s' % sys.version)

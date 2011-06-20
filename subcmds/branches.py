@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import sys
 from color import Coloring
 from command import Command
@@ -97,17 +100,17 @@ is shown, then the branch appears in all projects.
     project_cnt = len(projects)
 
     for project in projects:
-      for name, b in project.GetBranches().iteritems():
+      for name, b in project.GetBranches().items():
         b.project = project
         if name not in all:
           all[name] = BranchInfo(name)
         all[name].add(b)
 
-    names = all.keys()
+    names = list(all.keys())
     names.sort()
 
     if not names:
-      print >>sys.stderr, '   (no branches)'
+      print('   (no branches)', file=sys.stderr)
       return
 
     width = 25
