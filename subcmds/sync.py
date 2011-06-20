@@ -201,7 +201,7 @@ later is required to fix a server side protocol bug.
     if os.path.exists(file_path):
       fd = open(file_path, 'r')
       try:
-        old_project_paths = fd.read().split('\n')
+        old_project_paths = fd.read().decode().split('\n')
       finally:
         fd.close()
       for path in old_project_paths:
@@ -242,8 +242,8 @@ uncommitted changes are present' % project.relpath
     new_project_paths.sort()
     fd = open(file_path, 'w')
     try:
-      fd.write('\n'.join(new_project_paths))
-      fd.write('\n')
+      fd.write('\n'.join(new_project_paths).encode())
+      fd.write(b'\n')
     finally:
       fd.close()
     return 0
@@ -287,7 +287,7 @@ uncommitted changes are present' % project.relpath
           try:
             f = open(manifest_path, 'w')
             try:
-              f.write(manifest_str)
+              f.write(manifest_str.encode())
             finally:
               f.close()
           except IOError:
@@ -437,10 +437,10 @@ warning: Cannot automatically authenticate repo."""
                           stdout = subprocess.PIPE,
                           stderr = subprocess.PIPE,
                           env = env)
-  out = proc.stdout.read()
+  out = proc.stdout.read().decode()
   proc.stdout.close()
 
-  err = proc.stderr.read()
+  err = proc.stderr.read().decode()
   proc.stderr.close()
 
   if proc.wait() != 0:

@@ -571,7 +571,7 @@ class Remote(object):
         self._review_port = info[2]
       else:
         try:
-          info = urlopen(u).read()
+          info = urlopen(u).read().decode()
           if info == 'NOT_AVAILABLE':
             raise UploadError('%s: SSH disabled' % self.review)
           if '<' in info:
@@ -696,11 +696,11 @@ class Branch(object):
     else:
       fd = open(self._config.file, 'ab')
       try:
-        fd.write('[branch "%s"]\n' % self.name)
+        fd.write(('[branch "%s"]\n' % self.name).encode())
         if self.remote:
-          fd.write('\tremote = %s\n' % self.remote.name)
+          fd.write(('\tremote = %s\n' % self.remote.name).encode())
         if self.merge:
-          fd.write('\tmerge = %s\n' % self.merge)
+          fd.write(('\tmerge = %s\n' % self.merge).encode())
       finally:
         fd.close()
 

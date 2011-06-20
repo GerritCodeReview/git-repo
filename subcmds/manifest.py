@@ -25,7 +25,7 @@ def _doc(name):
   r = os.path.dirname(r)
   fd = open(os.path.join(r, 'docs', name))
   try:
-    return fd.read()
+    return fd.read().decode()
   finally:
     fd.close()
 

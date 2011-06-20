@@ -204,8 +204,8 @@ to update the working directory files.
   def _Prompt(self, prompt, value):
     mp = self.manifest.manifestProject
 
-    sys.stdout.write('%-10s [%s]: ' % (prompt, value))
-    a = sys.stdin.readline().strip()
+    sys.stdout.write(('%-10s [%s]: ' % (prompt, value)).encode())
+    a = sys.stdin.readline().decode().strip()
     if a == '':
       return value
     return a
@@ -220,8 +220,8 @@ to update the working directory files.
 
       print ''
       print 'Your identity is: %s <%s>' % (name, email)
-      sys.stdout.write('is this correct [y/n]? ')
-      a = sys.stdin.readline().strip()
+      sys.stdout.write(b'is this correct [y/n]? ')
+      a = sys.stdin.readline().decode().strip()
       if a in ('yes', 'y', 't', 'true'):
         break
 
@@ -262,8 +262,8 @@ to update the working directory files.
       out.printer(fg='black', attr=c)(' %-6s ', c)
     out.nl()
 
-    sys.stdout.write('Enable color display in this user account (y/n)? ')
-    a = sys.stdin.readline().strip().lower()
+    sys.stdout.write(b'Enable color display in this user account (y/n)? ')
+    a = sys.stdin.readline().decode().strip().lower()
     if a in ('y', 'yes', 't', 'true', 'on'):
       gc.SetString('color.ui', 'auto')
 

@@ -77,7 +77,7 @@ least one of these before using this command."""
 
     fd, path = tempfile.mkstemp()
     try:
-      os.write(fd, data)
+      os.write(fd, data.encode())
       os.close(fd)
       fd = None
 
@@ -100,7 +100,7 @@ least one of these before using this command."""
 
       fd2 = open(path)
       try:
-        return fd2.read()
+        return fd2.read().decode()
       finally:
         fd2.close()
     finally:

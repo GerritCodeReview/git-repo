@@ -34,7 +34,7 @@ def _lwrite(path, content):
 
   fd = open(lock, 'wb')
   try:
-    fd.write(content)
+    fd.write(content.encode())
   finally:
     fd.close()
 
@@ -1038,7 +1038,7 @@ class Project(object):
       try:
         fd = open(alt, 'rb')
         try:
-          ref_dir = fd.readline()
+          ref_dir = fd.readline().decode()
           if ref_dir and ref_dir.endswith('\n'):
             ref_dir = ref_dir[:-1]
         finally:
@@ -1336,7 +1336,7 @@ class Project(object):
                      capture_stdout = True,
                      capture_stderr = True)
       try:
-        out = p.process.stdout.read()
+        out = p.process.stdout.read().decode()
         r = {}
         if out:
           out = iter(out[:-1].split('\0'))
@@ -1382,7 +1382,7 @@ class Project(object):
         path = os.path.join(self._project.worktree, '.git', HEAD)
       fd = open(path, 'rb')
       try:
-        line = fd.read()
+        line = fd.read().decode()
       finally:
         fd.close()
       if line.startswith('ref: '):

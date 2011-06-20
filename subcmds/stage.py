@@ -71,7 +71,7 @@ The '%prog' command stages files to prepare the next commit.
 
       out.prompt('project> ')
       try:
-        a = sys.stdin.readline()
+        a = sys.stdin.readline().decode()
       except KeyboardInterrupt:
         out.nl()
         break

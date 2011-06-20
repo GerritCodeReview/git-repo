@@ -144,7 +144,7 @@ class GitRefs(object):
     except IOError:
       return
     try:
-      id = fd.readline()
+      id = fd.readline().decode()
     finally:
       fd.close()
 

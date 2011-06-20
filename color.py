@@ -108,19 +108,19 @@ class Coloring(object):
     return self._on
 
   def write(self, fmt, *args):
-    self._out.write(fmt % args)
+    self._out.write((fmt % args).encode())
 
   def flush(self):
     self._out.flush()
 
   def nl(self):
-    self._out.write('\n')
+    self._out.write(b'\n')
 
   def printer(self, opt=None, fg=None, bg=None, attr=None):
     s = self
     c = self.colorer(opt, fg, bg, attr)
     def f(fmt, *args):
-      s._out.write(c(fmt, *args))
+      s._out.write(c(fmt, *args).encode())
     return f
 
   def colorer(self, opt=None, fg=None, bg=None, attr=None):
