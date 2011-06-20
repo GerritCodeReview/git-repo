@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import os
 import re
 import sys
@@ -53,10 +56,10 @@ class Editor(object):
       return e
 
     if os.getenv('TERM') == 'dumb':
-      print >>sys.stderr,\
+      print(
 """No editor specified in GIT_EDITOR, core.editor, VISUAL or EDITOR.
 Tried to fall back to vi but terminal is dumb.  Please configure at
-least one of these before using this command."""
+least one of these before using this command.""", file=sys.stderr)
       sys.exit(1)
 
     return 'vi'
@@ -91,7 +94,7 @@ least one of these before using this command."""
 
       try:
         rc = subprocess.Popen(args, shell=shell).wait()
-      except OSError, e:
+      except OSError as e:
         raise EditorError('editor failed, %s: %s %s'
           % (str(e), editor, path))
       if rc != 0:

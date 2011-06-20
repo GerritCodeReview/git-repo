@@ -90,7 +90,7 @@ class XmlManifest(Manifest):
       if os.path.exists(self._manifestFile):
         os.remove(self._manifestFile)
       os.symlink('manifests/%s' % name, self._manifestFile)
-    except OSError, e:
+    except OSError as e:
       raise ManifestParseError('cannot link manifest %s' % name)
 
   def _RemoteToXml(self, r, doc, root):
@@ -249,15 +249,11 @@ class XmlManifest(Manifest):
   def _ParseManifest(self, is_root_file):
     root = xml.dom.minidom.parse(self._manifestFile)
     if not root or not root.childNodes:
-      raise ManifestParseError, \
-            "no root node in %s" % \
-            self._manifestFile
+      raise ManifestParseError("no root node in %s" % self._manifestFile)
 
     config = root.childNodes[0]
     if config.nodeName != 'manifest':
-      raise ManifestParseError, \
-            "no <manifest> in %s" % \
-            self._manifestFile
+      raise ManifestParseError("no <manifest> in %s" % self._manifestFile)
 
     for node in config.childNodes:
       if node.nodeName == 'remove-project':
@@ -265,25 +261,21 @@ class XmlManifest(Manifest):
         try:
           del self._projects[name]
         except KeyError:
-          raise ManifestParseError, \
-                'project %s not found' % \
-                (name)
+          raise ManifestParseError('project %s not found' % name)
 
     for node in config.childNodes:
       if node.nodeName == 'remote':
         remote = self._ParseRemote(node)
         if self._remotes.get(remote.name):
-          raise ManifestParseError, \
-                'duplicate remote %s in %s' % \
-                (remote.name, self._manifestFile)
+          raise ManifestParseError('duplicate remote %s in %s' %
+                                   (remote.name, self._manifestFile))
         self._remotes[remote.name] = remote
 
     for node in config.childNodes:
       if node.nodeName == 'default':
         if self._default is not None:
-          raise ManifestParseError, \
-                'duplicate default in %s' % \
-                (self._manifestFile)
+          raise ManifestParseError('duplicate default in %s'
+                                   % self._manifestFile)
         self._default = self._ParseDefault(node)
     if self._default is None:
       self._default = _Default()
@@ -291,34 +283,31 @@ class XmlManifest(Manifest):
     for node in config.childNodes:
       if node.nodeName == 'notice':
         if self._notice is not None:
-          raise ManifestParseError, \
-                'duplicate notice in %s' % \
-                (self.manifestFile)
+          raise ManifestParseError('duplicate notice in %s' %
+                                   self.manifestFile)
         self._notice = self._ParseNotice(node)
 
     for node in config.childNodes:
       if node.nodeName == 'manifest-server':
         url = self._reqatt(node, 'url')
         if self._manifest_server is not None:
-            raise ManifestParseError, \
-                'duplicate manifest-server in %s' % \
-                (self.manifestFile)
+            raise ManifestParseError('duplicate manifest-server in %s' %
+                                     self.manifestFile)
         self._manifest_server = url
 
     for node in config.childNodes:
       if node.nodeName == 'project':
         project = self._ParseProject(node)
         if self._projects.get(project.name):
-          raise ManifestParseError, \
-                'duplicate project %s in %s' % \
-                (project.name, self._manifestFile)
+          raise ManifestParseError('duplicate project %s in %s' %
+                                   (project.name, self._manifestFile))
         self._projects[project.name] = project
 
   def _AddMetaProjectMirror(self, m):
     name = None
     m_url = m.GetRemote(m.remote.name).url
     if m_url.endswith('/.git'):
-      raise ManifestParseError, 'refusing to mirror %s' % m_url
+      raise ManifestParseError('refusing to mirror %s' % m_url)
 
     if self._default and self._default.remote:
       url = self._default.remote.fetchUrl
@@ -389,7 +378,7 @@ class XmlManifest(Manifest):
 
     # Figure out minimum indentation, skipping the first line (the same line
     # as the <notice> tag)...
-    minIndent = sys.maxint
+    minIndent = sys.maxsize
     lines = notice.splitlines()
     for line in lines[1:]:
       lstrippedLine = line.lstrip()
@@ -420,25 +409,22 @@ class XmlManifest(Manifest):
     if remote is None:
       remote = self._default.remote
     if remote is None:
-      raise ManifestParseError, \
-            "no remote for project %s within %s" % \
-            (name, self._manifestFile)
+      raise ManifestParseError("no remote for project %s within %s" %
+                               (name, self._manifestFile))
 
     revisionExpr = node.getAttribute('revision')
     if not revisionExpr:
       revisionExpr = self._default.revisionExpr
     if not revisionExpr:
-      raise ManifestParseError, \
-            "no revision for project %s within %s" % \
-            (name, self._manifestFile)
+      raise ManifestParseError("no revision for project %s within %s" %
+                               (name, self._manifestFile))
 
     path = node.getAttribute('path')
     if not path:
       path = name
     if path.startswith('/'):
-      raise ManifestParseError, \
-            "project %s path cannot be absolute in %s" % \
-            (name, self._manifestFile)
+      raise ManifestParseError("project %s path cannot be absolute in %s" %
+                               (name, self._manifestFile))
 
     if self.IsMirror:
       relpath = None
@@ -478,9 +464,8 @@ class XmlManifest(Manifest):
 
     v = self._remotes.get(name)
     if not v:
-      raise ManifestParseError, \
-            "remote %s not defined in %s" % \
-            (name, self._manifestFile)
+      raise ManifestParseError("remote %s not defined in %s" %
+                               (name, self._manifestFile))
     return v
 
   def _reqatt(self, node, attname):
@@ -489,7 +474,6 @@ class XmlManifest(Manifest):
     """
     v = node.getAttribute(attname)
     if not v:
-      raise ManifestParseError, \
-            "no %s in <%s> within %s" % \
-            (attname, node.nodeName, self._manifestFile)
+      raise ManifestParseError("no %s in <%s> within %s" %
+                               (attname, node.nodeName, self._manifestFile))
     return v

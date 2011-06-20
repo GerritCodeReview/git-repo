@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import os
 import select
 import sys
@@ -49,7 +52,7 @@ def RunPager(globalConfig):
 
     _BecomePager(pager)
   except Exception:
-    print >>sys.stderr, "fatal: cannot start pager '%s'" % pager
+    print("fatal: cannot start pager '%s'" % pager, file=sys.stderr)
     os.exit(255)
 
 def _SelectPager(globalConfig):
@@ -80,5 +83,5 @@ def _BecomePager(pager):
 
   try:
     os.execvp(pager, [pager])
-  except OSError, e:
+  except OSError as e:
     os.execv('/bin/sh', ['sh', '-c', pager])

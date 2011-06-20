@@ -13,7 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import cPickle
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+import sys
+if sys.version_info[0] == 2:
+  import urllib2
+  sys.modules['urllib.error'] = sys.modules['urllib2']
+  sys.modules['urllib.request'] = sys.modules['urllib2']
+
+import pickle
 import os
 import re
 import subprocess
@@ -23,10 +31,10 @@ try:
 except ImportError:
   import dummy_threading as _threading
 import time
-import urllib2
 
 from signal import SIGTERM
-from urllib2 import urlopen, HTTPError
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 from error import GitError, UploadError
 from trace import Trace
 
@@ -166,7 +174,7 @@ class GitConfig(object):
       elif old != value:
         self._cache[key] = list(value)
         self._do('--replace-all', name, value[0])
-        for i in xrange(1, len(value)):
+        for i in range(1, len(value)):
           self._do('--add', name, value[i])
 
     elif len(old) != 1 or old[0] != value:
@@ -250,7 +258,10 @@ class GitConfig(object):
       Trace(': unpickle %s', self.file)
       fd = open(self._pickle, 'rb')
       try:
-        return cPickle.load(fd)
+        return pickle.load(fd)
+      except ValueError:
+        os.remove(self._pickle)
+        return None
       finally:
         fd.close()
     except EOFError:
@@ -259,7 +270,7 @@ class GitConfig(object):
     except IOError:
       os.remove(self._pickle)
       return None
-    except cPickle.PickleError:
+    except pickle.PickleError:
       os.remove(self._pickle)
       return None
 
@@ -267,13 +278,13 @@ class GitConfig(object):
     try:
       fd = open(self._pickle, 'wb')
       try:
-        cPickle.dump(cache, fd, cPickle.HIGHEST_PROTOCOL)
+        pickle.dump(cache, fd, pickle.HIGHEST_PROTOCOL)
       finally:
         fd.close()
     except IOError:
       if os.path.exists(self._pickle):
         os.remove(self._pickle)
-    except cPickle.PickleError:
+    except pickle.PickleError:
       if os.path.exists(self._pickle):
         os.remove(self._pickle)
 
@@ -449,11 +460,12 @@ def _open_ssh(host, port=None):
     try:
       Trace(': %s', ' '.join(command))
       p = subprocess.Popen(command)
-    except Exception, e:
+    except Exception as e:
       _ssh_master = False
-      print >>sys.stderr, \
-        '\nwarn: cannot enable ssh control master for %s:%s\n%s' \
-        % (host,port, str(e))
+      print(file=sys.stderr)
+      print('warn: cannot enable ssh control master for %s:%s' % (host, port),
+            file=sys.stderr)
+      print(e, file=sys.stderr)
       return False
 
     _master_processes.append(p)
@@ -519,8 +531,7 @@ class Remote(object):
     self.url = self._Get('url')
     self.review = self._Get('review')
     self.projectname = self._Get('projectname')
-    self.fetch = map(lambda x: RefSpec.FromString(x),
-                     self._Get('fetch', all=True))
+    self.fetch = [RefSpec.FromString(x) for x in self._Get('fetch', all=True)]
     self._review_protocol = None
 
   def _InsteadOf(self):
@@ -583,9 +594,9 @@ class Remote(object):
           self._review_protocol = 'ssh'
           self._review_host = info.split(" ")[0]
           self._review_port = info.split(" ")[1]
-        except urllib2.URLError, e:
+        except URLError as e:
           raise UploadError('%s: %s' % (self.review, e.reason[1]))
-        except HTTPError, e:
+        except HTTPError as e:
           if e.code == 404:
             self._review_protocol = 'http-post'
             self._review_host = None
@@ -650,7 +661,7 @@ class Remote(object):
     self._Set('url', self.url)
     self._Set('review', self.review)
     self._Set('projectname', self.projectname)
-    self._Set('fetch', map(lambda x: str(x), self.fetch))
+    self._Set('fetch', [str(x) for x in self.fetch])
 
   def _Set(self, key, value):
     key = 'remote.%s.%s' % (self.name, key)

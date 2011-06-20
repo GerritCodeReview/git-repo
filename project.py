@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import errno
 import filecmp
 import os
@@ -19,7 +22,6 @@ import re
 import shutil
 import stat
 import sys
-import urllib2
 
 from color import Coloring
 from git_command import GitCommand
@@ -46,7 +48,7 @@ def _lwrite(path, content):
 
 def _error(fmt, *args):
   msg = fmt % args
-  print >>sys.stderr, 'error: %s' % msg
+  print('error: %s' % msg, file=sys.stderr)
 
 def not_rev(r):
   return '^' + r
@@ -60,7 +62,7 @@ def repo_hooks():
   if hook_list is None:
     d = os.path.abspath(os.path.dirname(__file__))
     d = os.path.join(d , 'hooks')
-    hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
+    hook_list = [os.path.join(d, x) for x in os.listdir(d)]
   return hook_list
 
 def relpath(dst, src):
@@ -349,7 +351,7 @@ class Project(object):
     heads = {}
     pubd = {}
 
-    for name, id in all.iteritems():
+    for name, id in all.items():
       if name.startswith(R_HEADS):
         name = name[len(R_HEADS):]
         b = self.GetBranch(name)
@@ -358,7 +360,7 @@ class Project(object):
         b.revision = id
         heads[name] = b
 
-    for name, id in all.iteritems():
+    for name, id in all.items():
       if name.startswith(R_PUB):
         name = name[len(R_PUB):]
         b = heads.get(name)
@@ -395,9 +397,9 @@ class Project(object):
     """Prints the status of the repository to stdout.
     """
     if not os.path.isdir(self.worktree):
-      print ''
-      print 'project %s/' % self.relpath
-      print '  missing (run "repo sync")'
+      print()
+      print('project %s/' % self.relpath)
+      print('  missing (run "repo sync")')
       return
 
     self.work_git.update_index('-q',
@@ -483,7 +485,7 @@ class Project(object):
         out.project('project %s/' % self.relpath)
         out.nl()
         has_diff = True
-      print line[:-1]
+      print(line[:-1])
     p.Wait()
 
 
@@ -513,13 +515,13 @@ class Project(object):
       all = self._allrefs
     heads = set()
     canrm = {}
-    for name, id in all.iteritems():
+    for name, id in all.items():
       if name.startswith(R_HEADS):
         heads.add(name)
       elif name.startswith(R_PUB):
         canrm[name] = id
 
-    for name, id in canrm.iteritems():
+    for name, id in canrm.items():
       n = name[len(R_PUB):]
       if R_HEADS + n not in heads:
         self.bare_git.DeleteRef(name, id)
@@ -530,14 +532,14 @@ class Project(object):
     heads = {}
     pubed = {}
 
-    for name, id in self._allrefs.iteritems():
+    for name, id in self._allrefs.items():
       if name.startswith(R_HEADS):
         heads[name[len(R_HEADS):]] = id
       elif name.startswith(R_PUB):
         pubed[name[len(R_PUB):]] = id
 
     ready = []
-    for branch, id in heads.iteritems():
+    for branch, id in heads.items():
       if branch in pubed and pubed[branch] == id:
         continue
 
@@ -622,8 +624,8 @@ class Project(object):
     is_new = not self.Exists
     if is_new:
       if not quiet:
-        print >>sys.stderr
-        print >>sys.stderr, 'Initializing project %s ...' % self.name
+        print(file=sys.stderr)
+        print('Initializing project %s ...' % self.name, file=sys.stderr)
       self._InitGitDir()
 
     self._InitRemote()
@@ -713,7 +715,7 @@ class Project(object):
         syncbuf.info(self, "discarding %d commits", len(lost))
       try:
         self._Checkout(revid, quiet=True)
-      except GitError, e:
+      except GitError as e:
         syncbuf.fail(self, e)
         return
       self._CopyFiles()
@@ -735,7 +737,7 @@ class Project(object):
                    branch.name)
       try:
         self._Checkout(revid, quiet=True)
-      except GitError, e:
+      except GitError as e:
         syncbuf.fail(self, e)
         return
       self._CopyFiles()
@@ -818,7 +820,7 @@ class Project(object):
       try:
         self._ResetHard(revid)
         self._CopyFiles()
-      except GitError, e:
+      except GitError as e:
         syncbuf.fail(self, e)
         return
     else:
@@ -841,7 +843,7 @@ class Project(object):
     cmd = ['fetch', remote.name]
     cmd.append('refs/changes/%2.2d/%d/%d' \
                % (change_id % 100, change_id, patch_id))
-    cmd.extend(map(lambda x: str(x), remote.fetch))
+    cmd.extend(map(str, remote.fetch))
     if GitCommand(self, cmd, bare=True).Wait() != 0:
       return None
     return DownloadedChange(self,
@@ -1043,7 +1045,7 @@ class Project(object):
             ref_dir = ref_dir[:-1]
         finally:
           fd.close()
-      except IOError, e:
+      except IOError as e:
         ref_dir = None
 
       if ref_dir and 'objects' == os.path.basename(ref_dir):
@@ -1055,7 +1057,7 @@ class Project(object):
         ids = set(all.values())
         tmp = set()
 
-        for r, id in GitRefs(ref_dir).all.iteritems():
+        for r, id in GitRefs(ref_dir).all.items():
           if r not in all:
             if r.startswith(R_TAGS) or remote.WritesTo(r):
               all[r] = id
@@ -1212,7 +1214,7 @@ class Project(object):
           continue
       try:
         os.symlink(relpath(stock_hook, dst), dst)
-      except OSError, e:
+      except OSError as e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
         else:
@@ -1273,7 +1275,7 @@ class Project(object):
           os.symlink(relpath(src, dst), dst)
         else:
           raise GitError('cannot overwrite a local work tree')
-      except OSError, e:
+      except OSError as e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
         else:
@@ -1342,8 +1344,8 @@ class Project(object):
           out = iter(out[:-1].split('\0'))
           while out:
             try:
-              info = out.next()
-              path = out.next()
+              info = next(out)
+              path = next(out)
             except StopIteration:
               break
 
@@ -1369,7 +1371,7 @@ class Project(object):
             info =_Info(path, *info)
             if info.status in ('R', 'C'):
               info.src_path = info.path
-              info.path = out.next()
+              info.path = next(out)
             r[info.path] = info
         return r
       finally:
@@ -1511,7 +1513,7 @@ class _Later(object):
       self.action()
       out.nl()
       return True
-    except GitError, e:
+    except GitError as e:
       out.nl()
       return False
 

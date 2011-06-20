@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import sys
 import os
 REPO_TRACE = 'REPO_TRACE'
@@ -31,4 +34,4 @@ def SetTrace():
 
 def Trace(fmt, *args):
   if IsTrace():
-    print >>sys.stderr, fmt % args
+    print(fmt % args, file=sys.stderr)

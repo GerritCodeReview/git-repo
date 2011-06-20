@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import sys
 import os
 import shutil
@@ -145,7 +148,7 @@ class SubmoduleManifest(Manifest):
       self.FromXml_Local_1(old, checkout=True)
       self.FromXml_Local_2(old)
     else:
-      raise ManifestParseError, 'cannot upgrade manifest'
+      raise ManifestParseError('cannot upgrade manifest')
 
   def FromXml_Local_1(self, old, checkout):
     os.rename(old.manifestProject.gitdir,
@@ -155,7 +158,7 @@ class SubmoduleManifest(Manifest):
     oldBranch = oldmp.CurrentBranch
     b = oldmp.GetBranch(oldBranch).merge
     if not b:
-      raise ManifestParseError, 'cannot upgrade manifest'
+      raise ManifestParseError('cannot upgrade manifest')
     if b.startswith(R_HEADS):
       b = b[len(R_HEADS):]
 
@@ -171,7 +174,7 @@ class SubmoduleManifest(Manifest):
       newmp.bare_git.remote('rename', old_remote, act_remote)
       newmp.config.ClearCache()
     newmp.remote.name = act_remote
-    print >>sys.stderr, "Assuming remote named '%s'" % act_remote
+    print("Assuming remote named '%s'" % act_remote, file=sys.stderr)
 
     if checkout:
       for p in old.projects.values():
@@ -241,7 +244,7 @@ class SubmoduleManifest(Manifest):
       self.SetMRefs(p)
     pm.end()
     for i in info:
-      print >>sys.stderr, i
+      print(i, file=sys.stderr)
 
   def _CleanOldMRefs(self, p):
     all_refs = p._allrefs
@@ -305,7 +308,7 @@ class SubmoduleManifest(Manifest):
     mp.work_git.add('.gitignore', '.gitmodules', '.review')
     pm.end()
     for i in info:
-      print >>sys.stderr, i
+      print(i, file=sys.stderr)
 
   def _Unload(self):
     self._loaded = False
@@ -317,12 +320,12 @@ class SubmoduleManifest(Manifest):
     if not self._loaded:
       f = os.path.join(self.repodir, manifest_xml.LOCAL_MANIFEST_NAME)
       if os.path.exists(f):
-        print >>sys.stderr, 'warning: ignoring %s' % f
+        print('warning: ignoring %s' % f, file=sys.stderr)
 
       m = self.manifestProject
       b = m.CurrentBranch
       if not b:
-        raise ManifestParseError, 'manifest cannot be on detached HEAD'
+        raise ManifestParseError('manifest cannot be on detached HEAD')
       b = m.GetBranch(b).merge
       if b.startswith(R_HEADS):
         b = b[len(R_HEADS):]
@@ -342,17 +345,15 @@ class SubmoduleManifest(Manifest):
     for name in self._modules.GetSubSections('submodule'):
       p = self._ParseProject(name)
       if self._projects.get(p.name):
-        raise ManifestParseError, 'duplicate project "%s"' % p.name
+        raise ManifestParseError('duplicate project "%s"' % p.name)
       if byPath.get(p.relpath):
-        raise ManifestParseError, 'duplicate path "%s"' % p.relpath
+        raise ManifestParseError('duplicate path "%s"' % p.relpath)
       self._projects[p.name] = p
       byPath[p.relpath] = p
 
     for relpath in self._allRevisionIds.keys():
       if relpath not in byPath:
-        raise ManifestParseError, \
-          'project "%s" not in .gitmodules' \
-          % relpath
+        raise ManifestParseError('project "%s" not in .gitmodules' % relpath)
 
   def _Remote(self):
     m = self.manifestProject
@@ -407,9 +408,8 @@ class SubmoduleManifest(Manifest):
 
     revId = self._GetRevisionId(path)
     if not revId:
-      raise ManifestParseError(
-        'submodule "%s" has no revision at "%s"' \
-        % (name, path))
+      raise ManifestParseError('submodule "%s" has no revision at "%s"'
+                               % (name, path))
 
     url = gm.GetString('submodule.%s.url' % name)
     if not url:
@@ -447,7 +447,7 @@ class SubmoduleManifest(Manifest):
   def _AddMetaProjectMirror(self, m):
     m_url = m.GetRemote(m.remote.name).url
     if m_url.endswith('/.git'):
-      raise ManifestParseError, 'refusing to mirror %s' % m_url
+      raise ManifestParseError('refusing to mirror %s' % m_url)
 
     name = self._GuessMetaName(m_url)
     if name.endswith('.git'):
