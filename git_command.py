@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# TODO: When python2 is no longer supported, remove the following block of code
+from __future__ import print_function
+
 import os
 import sys
 import subprocess
@@ -97,18 +100,16 @@ def git_require(min_version, fail=False):
     ver_str = git.version()
     if ver_str.startswith('git version '):
       _git_version = tuple(
-        map(lambda x: int(x),
-          ver_str[len('git version '):].strip().split('.')[0:3]
-        ))
+        map(int, ver_str[len('git version '):].strip().split('.')[0:3]))
     else:
-      print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
+      print('fatal: "%s" unsupported' % ver_str, file=sys.stderr)
       sys.exit(1)
 
   if min_version <= _git_version:
     return True
   if fail:
-    need = '.'.join(map(lambda x: str(x), min_version))
-    print >>sys.stderr, 'fatal: git %s or later required' % need
+    need = '.'.join(map(str, min_version))
+    print('fatal: git %s or later required' % need, file=sys.stderr)
     sys.exit(1)
   return False
 
@@ -208,7 +209,7 @@ class GitCommand(object):
                            stdin = stdin,
                            stdout = stdout,
                            stderr = stderr)
-    except Exception, e:
+    except Exception as e:
       raise GitError('%s: %s' % (command[1], e))
 
     if ssh_proxy:

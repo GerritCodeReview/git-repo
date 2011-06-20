@@ -22,6 +22,12 @@ if __name__ == '__main__':
     del sys.argv[-1]
 del magic
 
+# TODO: When python2 is no longer supported, do the following:
+# * s/_print/print/
+# * Delete the following block of code
+def _print(*args, **kwargs):
+  kwargs.get('file', sys.stdout).write(' '.join(args) + '\n')
+
 import optparse
 import os
 import re
@@ -66,7 +72,7 @@ class _Repo(object):
     name = None
     glob = []
 
-    for i in xrange(0, len(argv)):
+    for i in range(0, len(argv)):
       if not argv[i].startswith('-'):
         name = argv[i]
         if i > 0:
@@ -85,23 +91,20 @@ class _Repo(object):
       if name == 'help':
         name = 'version'
       else:
-        print >>sys.stderr, 'fatal: invalid usage of --version'
+        _print('fatal: invalid usage of --version', file=sys.stderr)
         sys.exit(1)
 
     try:
       cmd = self.commands[name]
     except KeyError:
-      print >>sys.stderr,\
-            "repo: '%s' is not a repo command.  See 'repo help'."\
-            % name
+      _print("repo: '%s' is not a repo command.  See 'repo help'." % name,
+            file=sys.stderr)
       sys.exit(1)
 
     cmd.repodir = self.repodir
 
     if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
-      print >>sys.stderr, \
-            "fatal: '%s' requires a working directory"\
-            % name
+      _print("fatal: '%s' requires a working directory" % name, file=sys.stderr)
       sys.exit(1)
 
     copts, cargs = cmd.OptionParser.parse_args(argv)
@@ -119,14 +122,14 @@ class _Repo(object):
 
     try:
       cmd.Execute(copts, cargs)
-    except ManifestInvalidRevisionError, e:
-      print >>sys.stderr, 'error: %s' % str(e)
+    except ManifestInvalidRevisionError as e:
+      _print('error: %s' % str(e), file=sys.stderr)
       sys.exit(1)
-    except NoSuchProjectError, e:
+    except NoSuchProjectError as e:
       if e.name:
-        print >>sys.stderr, 'error: project %s not found' % e.name
+        _print('error: project %s not found' % e.name, file=sys.stderr)
       else:
-        print >>sys.stderr, 'error: no project in current directory'
+        _print('error: no project in current directory', file=sys.stderr)
       sys.exit(1)
 
 def _MyWrapperPath():
@@ -139,45 +142,45 @@ def _CurrentWrapperVersion():
   for line in fd:
     if pat.match(line):
       fd.close()
-      exec line
+      exec(line)
       return VERSION
-  raise NameError, 'No VERSION in repo script'
+  raise NameError('No VERSION in repo script')
 
 def _CheckWrapperVersion(ver, repo_path):
   if not repo_path:
     repo_path = '~/bin/repo'
 
   if not ver:
-     print >>sys.stderr, 'no --wrapper-version argument'
+     _print('no --wrapper-version argument', file=sys.stderr)
      sys.exit(1)
 
   exp = _CurrentWrapperVersion()
-  ver = tuple(map(lambda x: int(x), ver.split('.')))
+  ver = tuple(map(int, ver.split('.')))
   if len(ver) == 1:
     ver = (0, ver[0])
 
   if exp[0] > ver[0] or ver < (0, 4):
-    exp_str = '.'.join(map(lambda x: str(x), exp))
-    print >>sys.stderr, """
+    exp_str = '.'.join(map(str, exp))
+    _print("""
 !!! A new repo command (%5s) is available.    !!!
 !!! You must upgrade before you can continue:   !!!
 
     cp %s %s
-""" % (exp_str, _MyWrapperPath(), repo_path)
+""" % (exp_str, _MyWrapperPath(), repo_path), file=sys.stderr)
     sys.exit(1)
 
   if exp > ver:
-    exp_str = '.'.join(map(lambda x: str(x), exp))
-    print >>sys.stderr, """
+    exp_str = '.'.join(map(str, exp))
+    _print("""
 ... A new repo command (%5s) is available.
 ... You should upgrade soon:
 
     cp %s %s
-""" % (exp_str, _MyWrapperPath(), repo_path)
+""" % (exp_str, _MyWrapperPath(), repo_path), file=sys.stderr)
 
 def _CheckRepoDir(dir):
   if not dir:
-     print >>sys.stderr, 'no --repo-dir argument'
+     _print('no --repo-dir argument', file=sys.stderr)
      sys.exit(1)
 
 def _PruneOptions(argv, opt):
@@ -218,16 +221,16 @@ def _Main(argv):
       close_ssh()
   except KeyboardInterrupt:
     sys.exit(1)
-  except RepoChangedException, rce:
+  except RepoChangedException as rce:
     # If repo changed, re-exec ourselves.
     #
     argv = list(sys.argv)
     argv.extend(rce.extra_args)
     try:
       os.execv(__file__, argv)
-    except OSError, e:
-      print >>sys.stderr, 'fatal: cannot restart repo after upgrade'
-      print >>sys.stderr, 'fatal: %s' % e
+    except OSError as e:
+      _print('fatal: cannot restart repo after upgrade', file=sys.stderr)
+      _print('fatal: %s' % e, file=sys.stderr)
       sys.exit(128)
 
 if __name__ == '__main__':
