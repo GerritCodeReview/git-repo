@@ -113,7 +113,7 @@ def git_require(min_version, fail=False):
   return False
 
 def _setenv(env, name, value):
-  env[name] = value.encode()
+  env[name] = value
 
 class GitCommand(object):
   def __init__(self,
