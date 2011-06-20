@@ -225,13 +225,13 @@ class GitCommand(object):
       self.stdin = None
 
     if p.stdout:
-      self.stdout = p.stdout.read()
+      self.stdout = p.stdout.read().decode()
       p.stdout.close()
     else:
       p.stdout = None
 
     if p.stderr:
-      self.stderr = p.stderr.read()
+      self.stderr = p.stderr.read().decode()
       p.stderr.close()
     else:
       p.stderr = None

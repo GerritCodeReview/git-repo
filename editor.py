@@ -77,7 +77,7 @@ least one of these before using this command."""
 
     fd, path = tempfile.mkstemp()
     try:
-      os.write(fd, data)
+      os.write(fd, data.encode())
       os.close(fd)
       fd = None
 
