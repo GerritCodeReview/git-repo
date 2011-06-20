@@ -108,6 +108,7 @@ class GitRefs(object):
       return
     try:
       for line in fd:
+        line = line.decode()
         if line[0] == '#':
           continue
         if line[0] == '^':
@@ -144,7 +145,7 @@ class GitRefs(object):
     except IOError:
       return
     try:
-      id = fd.readline()
+      id = fd.readline().decode()
     finally:
       fd.close()
 

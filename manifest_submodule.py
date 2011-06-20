@@ -260,7 +260,7 @@ class SubmoduleManifest(Manifest):
     gr = self._review
 
     fd = open(os.path.join(mp.worktree, '.gitignore'), 'ab')
-    fd.write('/.repo\n')
+    fd.write(b'/.repo\n')
     fd.close()
 
     sort_projects = list(old.projects.keys())
@@ -384,7 +384,7 @@ class SubmoduleManifest(Manifest):
       p = GitCommand(self.manifestProject,
                      ['ls-files','-z','--stage'],
                      capture_stdout = True)
-      for line in p.process.stdout.read().split('\0')[:-1]:
+      for line in p.process.stdout.read().decode().split('\0')[:-1]:
         l_info, l_path = line.split('\t', 2)
         l_mode, l_id, l_stage = l_info.split(' ', 2)
         if l_mode == GITLINK and l_stage == '0':

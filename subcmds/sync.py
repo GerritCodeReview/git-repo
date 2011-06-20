@@ -437,10 +437,10 @@ warning: Cannot automatically authenticate repo."""
                           stdout = subprocess.PIPE,
                           stderr = subprocess.PIPE,
                           env = env)
-  out = proc.stdout.read()
+  out = proc.stdout.read().decode()
   proc.stdout.close()
 
-  err = proc.stderr.read()
+  err = proc.stderr.read().decode()
   proc.stderr.close()
 
   if proc.wait() != 0:

@@ -202,7 +202,7 @@ terminal and are not redirected.
 
         empty = True
         didout = False
-        errbuf = ''
+        errbuf = b''
 
         p.stdin.close()
         s_in = [sfd(p.stdout, sys.stdout),
