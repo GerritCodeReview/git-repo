@@ -145,6 +145,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         print '         %s' % commit
 
       sys.stdout.write('to %s (y/n)? ' % remote.review)
+      sys.stdout.flush()
       answer = sys.stdin.readline().strip()
       answer = answer in ('y', 'Y', 'yes', '1', 'true', 't')
 
@@ -268,6 +269,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
             # if they want to auto upload, let's not ask because it could be automated
             if answer is None:
                 sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/n) ')
+                sys.stdout.flush()
                 a = sys.stdin.readline().strip().lower()
                 if a not in ('y', 'yes', 't', 'true', 'on'):
                     print >>sys.stderr, "skipping upload"
