@@ -133,14 +133,14 @@ def _MyWrapperPath():
   return os.path.join(os.path.dirname(__file__), 'repo')
 
 def _CurrentWrapperVersion():
-  VERSION = None
   pat = re.compile(r'^VERSION *=')
   fd = open(_MyWrapperPath())
   for line in fd:
     if pat.match(line):
       fd.close()
-      exec line
-      return VERSION
+      namespace = locals()
+      exec(line, namespace)
+      return namespace.get('VERSION')
   raise NameError, 'No VERSION in repo script'
 
 def _CheckWrapperVersion(ver, repo_path):
