@@ -563,6 +563,12 @@ class Remote(object):
         self._review_port = info[2]
       else:
         try:
+          if 'http_proxy' in os.environ:
+            proxy_url = os.environ['http_proxy']
+            proxy_support = urllib2.ProxyHandler({"http" : proxy_url, "https" : proxy_url})
+            opener = urllib2.build_opener(proxy_support)
+            urllib2.install_opener(opener)
+
           info = urlopen(u).read()
           if info == 'NOT_AVAILABLE':
             raise UploadError('%s: SSH disabled' % self.review)
