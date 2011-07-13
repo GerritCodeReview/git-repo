@@ -1369,7 +1369,7 @@ class Project(object):
       else:
         ref_dir = None
 
-    cmd = ['fetch']
+    cmd = ['fetch', '--tags']
 
     # The --depth option only affects the initial fetch; after that we'll do
     # full fetches of changes.
