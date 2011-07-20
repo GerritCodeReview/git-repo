@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABEX//8EY\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-07-20T14:26:19Z",
+      "side": 1,
+      "message": "I wonder if the name repo-manifest.default.url/server is better. Then we have the configuration file saying:\n\n  [repo-manifest \"default\"]\n    url \u003d ...\n    server \u003d ...\n\nI could see users defining other aliases in the future, like:\n\n  [repo-manifest \"android\"]\n    url \u003d git://android.git.kernel.org/platform/manifest.git\n\nAnd then repo supporting these \"alias\" names with -u:\n\n  repo init -u android\n\nWhere we simply use \"default-manifest\" as the default alias when the user doesn\u0027t supply a -u flag at all. Its not a big change relative to what you already have done, and may be a useful feature for users who often work with 2 or 3 manifests.",
+      "revId": "f33f4be710d2e95c81ad51cabeaccbefa6cbc5a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEX//8Eg\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-07-20T14:26:19Z",
+      "side": 1,
+      "message": "Anytime you modify this file, the 2nd number must be incremented, otherwise users won\u0027t get told to upgrade the script.",
+      "revId": "f33f4be710d2e95c81ad51cabeaccbefa6cbc5a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEX//8Ec\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-07-20T14:26:19Z",
+      "side": 1,
+      "message": "Please add a section to this documentation string describing the two new global variables you now honor for repo configuration.",
+      "revId": "f33f4be710d2e95c81ad51cabeaccbefa6cbc5a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
