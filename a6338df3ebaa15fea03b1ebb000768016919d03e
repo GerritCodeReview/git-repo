@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABEX//8Eo\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-07-20T14:18:43Z",
+      "side": 1,
+      "message": "Please also add this option to the \"repo\" script, so users can pass --config-name on an initial repo init of a workspace and not get an \"unsupported option\" error message.",
+      "revId": "a6338df3ebaa15fea03b1ebb000768016919d03e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
