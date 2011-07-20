@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABEX//8E0\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-07-20T14:15:40Z",
+      "side": 1,
+      "message": "We don\u0027t add copyright headers beyond the generic AOSP header.",
+      "revId": "5c95d67810c4bb8663c10e6268d16705bbca7e36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEX//8Ew\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-07-20T14:15:40Z",
+      "side": 1,
+      "message": "This note is unnecessary. The license already states what the terms of use are for the end-user.",
+      "revId": "5c95d67810c4bb8663c10e6268d16705bbca7e36",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
