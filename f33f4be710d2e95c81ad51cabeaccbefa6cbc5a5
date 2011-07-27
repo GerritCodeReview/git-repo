@@ -71,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "AAABEX//7Is\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2011-07-27T10:40:26Z",
+      "side": 1,
+      "message": "Thanks, I\u0027ll do that. I\u0027ll even put it at 13 since I\u0027ll upload a new patch set to https://review.source.android.com/23734 that puts that one to 12 (and that one can then easily be submitted first)",
+      "parentUuid": "AAABEX//8Eg\u003d",
+      "revId": "f33f4be710d2e95c81ad51cabeaccbefa6cbc5a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAABEX//8Ec\u003d",
         "filename": "subcmds/init.py",
         "patchSetId": 1
@@ -82,6 +100,24 @@
       "writtenOn": "2011-07-20T14:26:19Z",
       "side": 1,
       "message": "Please add a section to this documentation string describing the two new global variables you now honor for repo configuration.",
+      "revId": "f33f4be710d2e95c81ad51cabeaccbefa6cbc5a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEX//7Io\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2011-07-27T10:40:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAABEX//8Ec\u003d",
       "revId": "f33f4be710d2e95c81ad51cabeaccbefa6cbc5a5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
