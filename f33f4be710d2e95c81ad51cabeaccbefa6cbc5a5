@@ -37,6 +37,23 @@
     },
     {
       "key": {
+        "uuid": "AAABEX//7I0\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2011-07-27T10:37:36Z",
+      "side": 1,
+      "message": "I like this change. I would also propose to have the \u0027reference\u0027 included in this section, as they are often different when working with different manifests (yup, I\u0027m one of those that have at least 3 manifests I work with)\n\nI\u0027ll upload a proposal with these changes done (including the \u0027reference\u0027)",
+      "revId": "f33f4be710d2e95c81ad51cabeaccbefa6cbc5a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAABEX//8Eg\u003d",
         "filename": "repo",
         "patchSetId": 1
