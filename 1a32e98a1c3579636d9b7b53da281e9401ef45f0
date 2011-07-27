@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABEX//7GE\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2011-07-27T14:29:20Z",
+      "side": 1,
+      "message": "nit: s/other/others/",
+      "revId": "1a32e98a1c3579636d9b7b53da281e9401ef45f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEX//7GA\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2011-07-27T14:29:20Z",
+      "side": 1,
+      "message": "I don\u0027t think checking for \u0027://\u0027 is correct. Looking at \u0027git clone --help\u0027 in the \"GIT URLS\" section, there are a couple URL syntaxes git honors that don\u0027t include \u0027://\u0027. The most common one would be the shorthand ssh syntax \"[user@]host.xz:path/to/repo.git/\".\n\nUnfortunately I don\u0027t know what the correct check would be.",
+      "revId": "1a32e98a1c3579636d9b7b53da281e9401ef45f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
