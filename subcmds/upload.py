@@ -73,7 +73,7 @@ Configuration
 
 review.URL.autoupload:
 
-To disable the "Upload ... (y/n)?" prompt, you can set a per-project
+To disable the "Upload ... (y/N)?" prompt, you can set a per-project
 or global Git configuration option.  If review.URL.autoupload is set
 to "true" then repo will assume you always answer "y" at the prompt,
 and will not prompt you further.  If it is set to "false" then repo
@@ -171,7 +171,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       for commit in list:
         print '         %s' % commit
 
-      sys.stdout.write('to %s (y/n)? ' % remote.review)
+      sys.stdout.write('to %s (y/N)? ' % remote.review)
       answer = sys.stdin.readline().strip()
       answer = answer in ('y', 'Y', 'yes', '1', 'true', 't')
 
@@ -299,7 +299,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
             # if they want to auto upload, let's not ask because it could be automated
             if answer is None:
-                sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/n) ')
+                sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/N) ')
                 a = sys.stdin.readline().strip().lower()
                 if a not in ('y', 'yes', 't', 'true', 'on'):
                     print >>sys.stderr, "skipping upload"

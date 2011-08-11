@@ -189,7 +189,7 @@ to update the working directory files.
 
       print ''
       print 'Your identity is: %s <%s>' % (name, email)
-      sys.stdout.write('is this correct [y/n]? ')
+      sys.stdout.write('is this correct [y/N]? ')
       a = sys.stdin.readline().strip()
       if a in ('yes', 'y', 't', 'true'):
         break
@@ -231,7 +231,7 @@ to update the working directory files.
       out.printer(fg='black', attr=c)(' %-6s ', c)
     out.nl()
 
-    sys.stdout.write('Enable color display in this user account (y/n)? ')
+    sys.stdout.write('Enable color display in this user account (y/N)? ')
     a = sys.stdin.readline().strip().lower()
     if a in ('y', 'yes', 't', 'true', 'on'):
       gc.SetString('color.ui', 'auto')
