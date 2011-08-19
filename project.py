@@ -1645,6 +1645,15 @@ class Project(object):
       if self._allrefs:
         raise GitError('%s cherry-pick %s ' % (self.name, rev))
 
+  def _Revert(self, rev, quiet=False):
+    cmd = ['revert']
+    cmd.append('--no-edit')
+    cmd.append(rev)
+    cmd.append('--')
+    if GitCommand(self, cmd).Wait() != 0:
+      if self._allrefs:
+        raise GitError('%s revert %s ' % (self.name, rev))
+
   def _ResetHard(self, rev, quiet=True):
     cmd = ['reset', '--hard']
     if quiet:

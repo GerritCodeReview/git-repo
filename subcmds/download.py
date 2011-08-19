@@ -36,6 +36,9 @@ makes it available in your project's local working directory.
     p.add_option('-c','--cherry-pick',
                  dest='cherrypick', action='store_true',
                  help="cherry-pick instead of checkout")
+    p.add_option('-r','--revert',
+                 dest='revert', action='store_true',
+                 help="revert instead of checkout")
 
   def _ParseChangeIds(self, args):
     if not args:
@@ -68,7 +71,7 @@ makes it available in your project's local working directory.
           % (project.name, change_id, ps_id)
         sys.exit(1)
 
-      if not dl.commits:
+      if not opt.revert and not dl.commits:
         print >>sys.stderr, \
           '[%s] change %d/%d has already been merged' \
           % (project.name, change_id, ps_id)
@@ -82,5 +85,7 @@ makes it available in your project's local working directory.
           print >>sys.stderr, '  %s' % (c)
       if opt.cherrypick:
         project._CherryPick(dl.commit)
+      elif opt.revert:
+        project._Revert(dl.commit)
       else:
         project._Checkout(dl.commit)
