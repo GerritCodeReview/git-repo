@@ -188,6 +188,11 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       branches[project.name] = b
     script.append('')
 
+    script = [ x.encode('utf-8')
+             if issubclass(type(x), unicode)
+             else x
+             for x in script ]
+
     script = Editor.EditString("\n".join(script)).split("\n")
 
     project_re = re.compile(r'^#?\s*project\s*([^\s]+)/:$')
