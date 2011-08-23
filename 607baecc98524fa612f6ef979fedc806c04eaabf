@@ -51,6 +51,24 @@
       "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEn//5+o\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1006869
+      },
+      "writtenOn": "2011-08-23T06:53:49Z",
+      "side": 1,
+      "message": "I found it:\nscript\u003dmap(lambda x:x.encode(\u0027utf-8\u0027) if (type(x) is unicode) else x,script)\n\nHow about this one line solution?",
+      "parentUuid": "AAABEn//6Mk\u003d",
+      "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
