@@ -33,6 +33,24 @@
       "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEn//5/c\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1006869
+      },
+      "writtenOn": "2011-08-23T03:52:34Z",
+      "side": 1,
+      "message": "I tested on python 2.6.5:\n    script \u003d [s.encode(\u0027utf-8\u0027) for s in script]\nUnicodeDecodeError: \u0027ascii\u0027 codec can\u0027t decode byte 0xe6 in position 19: ordinal not in range(128)\n\nMaybe str has no encode() function, so it decode to unicode first.when decode using ascii, UnicodeDecodeError raised.\n\nI want to find a oneline solution, but this doesn\u0027t work:\nscript \u003d [s.encode(\u0027utf-8\u0027) for s in script if type(s) is unicode]\nIt filters some strings out.\n\nAny suggestions? Thanks!",
+      "parentUuid": "AAABEn//6Mk\u003d",
+      "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
