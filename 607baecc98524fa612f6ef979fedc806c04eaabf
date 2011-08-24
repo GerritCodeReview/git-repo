@@ -69,6 +69,24 @@
       "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABEn//5v4\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1006869
+      },
+      "writtenOn": "2011-08-24T07:47:35Z",
+      "side": 1,
+      "message": "I want to use this solution:\nscript \u003d [x.encode(\u0027utf-8\u0027) if issubclass(type(x), unicode) else x for x in script]\n\nit works ok on python 2.6.5.",
+      "parentUuid": "AAABEn//6Mk\u003d",
+      "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
