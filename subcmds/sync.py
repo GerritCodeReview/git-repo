@@ -131,6 +131,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-d','--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
+    p.add_option('-c','--current-branch',
+                 dest='current_branch_only', action='store_true',
+                 help='fetch only current branch from server')
     p.add_option('-q','--quiet',
                  dest='quiet', action='store_true',
                  help='be more quiet')
@@ -179,7 +182,8 @@ later is required to fix a server side protocol bug.
       # - We always make sure we unlock the lock if we locked it.
       try:
         try:
-          success = project.Sync_NetworkHalf(quiet=opt.quiet)
+          success = project.Sync_NetworkHalf(quiet=opt.quiet,
+                                             current_branch_only=opt.current_branch_only)
 
           # Lock around all the rest of the code, since printing, updating a set
           # and Progress.update() are not thread safe.
@@ -212,7 +216,8 @@ later is required to fix a server side protocol bug.
     if self.jobs == 1:
       for project in projects:
         pm.update()
-        if project.Sync_NetworkHalf(quiet=opt.quiet):
+        if project.Sync_NetworkHalf(quiet=opt.quiet,
+                                    current_branch_only=opt.current_branch_only):
           fetched.add(project.gitdir)
         else:
           print >>sys.stderr, 'error: Cannot fetch %s' % project.name
@@ -388,7 +393,8 @@ uncommitted changes are present' % project.relpath
       _PostRepoUpgrade(self.manifest)
 
     if not opt.local_only:
-      mp.Sync_NetworkHalf(quiet=opt.quiet)
+      mp.Sync_NetworkHalf(quiet=opt.quiet,
+                          current_branch_only=opt.current_branch_only)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)

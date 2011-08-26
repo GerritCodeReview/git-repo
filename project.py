@@ -36,7 +36,7 @@ except ImportError:
 
 from color import Coloring
 from git_command import GitCommand
-from git_config import GitConfig, IsId, GetSchemeFromUrl
+from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
 from error import DownloadError
 from error import GitError, HookError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
@@ -900,7 +900,7 @@ class Project(object):
 
 ## Sync ##
 
-  def Sync_NetworkHalf(self, quiet=False, is_new=None):
+  def Sync_NetworkHalf(self, quiet=False, is_new=None, current_branch_only=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -926,20 +926,9 @@ class Project(object):
     if alt_dir is None and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
       is_new = False
 
-    if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir):
+    if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
+                             current_branch_only=current_branch_only):
       return False
-
-    #Check that the requested ref was found after fetch
-    #
-    try:
-      self.GetRevisionId()
-    except ManifestInvalidRevisionError:
-      # if the ref is a tag. We can try fetching
-      # the tag manually as a last resort
-      #
-      rev = self.revisionExpr
-      if rev.startswith(R_TAGS):
-        self._RemoteFetch(None, rev[len(R_TAGS):], quiet=quiet)
 
     if self.worktree:
       self._InitMRef()
@@ -1335,10 +1324,30 @@ class Project(object):
 
 ## Direct Git Commands ##
 
-  def _RemoteFetch(self, name=None, tag=None,
+  def _RemoteFetch(self, name=None,
+                   current_branch_only=False,
                    initial=False,
                    quiet=False,
                    alt_dir=None):
+
+    is_sha1 = False
+    tag_name = None
+
+    if current_branch_only:
+      if ID_RE.match(self.revisionExpr) is not None:
+        is_sha1 = True
+      elif self.revisionExpr.startswith(R_TAGS):
+        # this is a tag and its sha1 value should never change
+        tag_name = self.revisionExpr[len(R_TAGS):]
+
+      if is_sha1 or tag_name is not None:
+        try:
+          self.GetRevisionId()
+          return True
+        except ManifestInvalidRevisionError:
+          # There is no such persistent revision. We have to fetch it.
+          pass
+
     if not name:
       name = self.remote.name
 
@@ -1401,9 +1410,19 @@ class Project(object):
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
-    if tag is not None:
+
+    if not current_branch_only or is_sha1:
+      # Fetch whole repo
+      cmd.append('--tags')
+      cmd.append((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*'))
+    elif tag_name is not None:
       cmd.append('tag')
-      cmd.append(tag)
+      cmd.append(tag_name)
+    else:
+      branch = self.revisionExpr
+      if branch.startswith(R_HEADS):
+        branch = branch[len(R_HEADS):]
+      cmd.append((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch))
 
     ok = False
     for i in range(2):
