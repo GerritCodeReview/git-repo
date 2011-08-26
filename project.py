@@ -20,12 +20,11 @@ import re
 import shutil
 import stat
 import sys
-import urllib2
 
 from color import Coloring
 from git_command import GitCommand
-from git_config import GitConfig, IsId
-from error import GitError, HookError, ImportError, UploadError
+from git_config import GitConfig, IsId, ID_RE
+from error import GitError, HookError, UploadError
 from error import ManifestInvalidRevisionError
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
@@ -884,7 +883,7 @@ class Project(object):
 
 ## Sync ##
 
-  def Sync_NetworkHalf(self, quiet=False):
+  def Sync_NetworkHalf(self, quiet=False, current_branch_only=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -896,7 +895,8 @@ class Project(object):
       self._InitGitDir()
 
     self._InitRemote()
-    if not self._RemoteFetch(initial=is_new, quiet=quiet):
+
+    if not self._RemoteFetch(initial=is_new, current_branch_only=current_branch_only, quiet=quiet):
       return False
 
     #Check that the requested ref was found after fetch
@@ -909,7 +909,7 @@ class Project(object):
       #
       rev = self.revisionExpr
       if rev.startswith(R_TAGS):
-        self._RemoteFetch(None, rev[len(R_TAGS):], quiet=quiet)
+        self._RemoteFetch(tag=rev[len(R_TAGS):], quiet=quiet)
 
     if self.worktree:
       self._InitMRef()
@@ -1306,8 +1306,26 @@ class Project(object):
 ## Direct Git Commands ##
 
   def _RemoteFetch(self, name=None, tag=None,
+                   current_branch_only=False,
                    initial=False,
                    quiet=False):
+
+    if tag is not None and current_branch_only:
+      raise ManifestInvalidRevisionError('Cannot fetch if both tag and current_branch_only specified')
+
+    isSHA1 = False
+    if tag is not None and ID_RE.match(self.revisionExpr) is not None:
+      isSHA1 = True
+
+    if isSHA1:
+      # This looks like a SHA1. Let's check if we already have this revision fetched
+      try:
+        self.GetRevisionId()
+        return True
+      except ManifestInvalidRevisionError:
+        # Ok we don't have this revision, let's fetch the whole repository
+        current_branch_only = False
+
     if not name:
       name = self.remote.name
 
@@ -1382,6 +1400,11 @@ class Project(object):
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
+    if current_branch_only:
+      branch = self.revisionExpr
+      if branch.startswith(R_HEADS):
+        branch = branch[len(R_HEADS):]
+      cmd.append(u'+refs/heads/%s:remotes/%s/%s' % (branch, name, self.revisionExpr))
     if tag is not None:
       cmd.append('tag')
       cmd.append(tag)
