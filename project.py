@@ -1016,7 +1016,7 @@ class Project(object):
 
     if not branch.LocalMerge:
       # The current branch has no tracking configuration.
-      # Jump off it to a deatched HEAD.
+      # Jump off it to a detached HEAD.
       #
       syncbuf.info(self,
                    "leaving %s; does not track upstream",
