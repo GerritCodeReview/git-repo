@@ -87,6 +87,24 @@
       "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABE3///DY\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1006214
+      },
+      "writtenOn": "2011-08-30T18:18:15Z",
+      "side": 1,
+      "message": "You\u0027re right, apologies. The code I suggested only works if the input string conforms to ASCII (in which case the UTF-8 recoding is a no-op).",
+      "parentUuid": "AAABEn//5v4\u003d",
+      "revId": "607baecc98524fa612f6ef979fedc806c04eaabf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
