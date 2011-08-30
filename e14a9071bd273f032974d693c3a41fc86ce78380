@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABE3///DM\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1006214
+      },
+      "writtenOn": "2011-08-30T18:39:09Z",
+      "side": 1,
+      "message": "Sorry for being a PITA, but please keep lines below 80 characters in length. This example is ~70 chars:\n\n    script \u003d [x.encode(\u0027utf-8\u0027)\n              if issubclass(type(x), unicode) else x for x in script]",
+      "revId": "e14a9071bd273f032974d693c3a41fc86ce78380",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
