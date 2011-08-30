@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABE3///G0\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006214
+      },
+      "writtenOn": "2011-08-30T18:15:13Z",
+      "side": 1,
+      "message": "Was this error message really on one line? Either way I think we should wrap it in the commit message to make \"git log\" output readable even on terminals that aren\u0027t insanely wide.",
+      "revId": "c70828c111ccbee2ce181ae97ee602b96c0f10ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
