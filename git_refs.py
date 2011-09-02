@@ -140,21 +140,21 @@ class GitRefs(object):
     try:
       fd = open(path, 'rb')
       mtime = os.path.getmtime(path)
-    except OSError:
+      ref = fd.readline()
+    except:
       return
-    except IOError:
-      return
-    try:
-      id = fd.readline()
     finally:
-      fd.close()
+      try:
+        fd.close()
+      except:
+        pass
 
-    if not id:
+    if not ref:
       return
-    id = id[:-1]
+    ref = ref[:-1]
 
-    if id.startswith('ref: '):
-      self._symref[name] = id[5:]
+    if ref.startswith('ref: '):
+      self._symref[name] = ref[5:]
     else:
-      self._phyref[name] = id
+      self._phyref[name] = ref
     self._mtime[name] = mtime
