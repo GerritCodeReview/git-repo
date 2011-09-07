@@ -127,6 +127,15 @@ later is required to fix a server side protocol bug.
     p.add_option('-j','--jobs',
                  dest='jobs', action='store', type='int',
                  help="number of projects to fetch simultaneously")
+    p.add_option('-r','--retry',
+                 dest='retry_count', action='store', type='int', default=0,
+                 help="number of times to retry to fetch a git if a fetch error occurs")
+    p.add_option('--retry-timeout',
+                 dest='retry_timeout', action='store', type='int', default=5,
+                 help="number of seconds to wait before an retry attempt is made")
+    p.add_option('--remove-on-error',
+                 dest='remove_on_error', action='store_true',
+                 help='remove the git if an error occurs during the network fetch')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -143,61 +152,60 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
-      """Main function of the fetch threads when jobs are > 1.
+  def _FetchProject(self, opt, project):
+    """Does the network sync of the project, possibly retrying on errors
 
-      Args:
-        opt: Program options returned from optparse.  See _Options().
-        project: Project object for the project to fetch.
-        lock: Lock for accessing objects that are shared amongst multiple
-            _FetchHelper() threads.
-        fetched: set object that we will add project.gitdir to when we're done
-            (with our lock held).
-        pm: Instance of a Project object.  We will call pm.update() (with our
-            lock held).
-        sem: We'll release() this semaphore when we exit so that another thread
-            can be started up.
-        err_event: We'll set this event in the case of an error (after printing
-            out info about the error).
-      """
-      # We'll set to true once we've locked the lock.
-      did_lock = False
+    Returns False if the rest of the sync should be aborted, else True"""
+    cnt = 0
 
-      # Encapsulate everything in a try/except/finally so that:
-      # - We always set err_event in the case of an exception.
-      # - We always make sure we call sem.release().
-      # - We always make sure we unlock the lock if we locked it.
-      try:
-        try:
-          success = project.Sync_NetworkHalf(quiet=opt.quiet)
+    while True:
+      if project.Sync_NetworkHalf(quiet=opt.quiet):
+        return True
 
-          # Lock around all the rest of the code, since printing, updating a set
-          # and Progress.update() are not thread safe.
-          lock.acquire()
-          did_lock = True
+      print >>sys.stderr, 'error: Cannot fetch %s' % project.name
 
-          if not success:
-            print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-            if opt.force_broken:
-              print >>sys.stderr, 'warn: --force-broken, continuing to sync'
-            else:
-              raise _FetchError()
+      if opt.remove_on_error:
+        print >>sys.stderr, 'warn: --remove-on-error, removing %s' % project.name
+        project.Remove()
 
-          fetched.add(project.gitdir)
-          pm.update()
-        except BaseException, e:
-          # Notify the _Fetch() function about all errors.
-          err_event.set()
+      if cnt < opt.retry_count:
+        cnt += 1
+        print >>sys.stderr, 'info: Retrying to sync %s (%d/%d retries)' % \
+            (project.name, cnt, opt.retry_count)
+        if opt.retry_timeout > 0:
+          print >>sys.stderr, 'info: Waiting %s seconds before retrying' % opt.retry_timeout
+          time.sleep(opt.retry_timeout)
+      else:
+        break
 
-          # If we got our own _FetchError, we don't want a stack trace.
-          # However, if we got something else (something in Sync_NetworkHalf?),
-          # we'd like one (so re-raise after we've set err_event).
-          if not isinstance(e, _FetchError):
-            raise
-      finally:
-        if did_lock:
-          lock.release()
-        sem.release()
+    if opt.force_broken:
+      print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+      return True
+    return False
+
+  def _FetchThread(self, opt, project, lock, fetched, pm, sem):
+    """Main function of the fetch threads when jobs are > 1.
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      project: Project object for the project to fetch.
+      lock: Lock for accessing objects that are shared amongst multiple
+          _FetchHelper() threads.
+      fetched: set object that we will add project.gitdir to when we're done
+          (with our lock held).
+      pm: Instance of a Project object.  We will call pm.update() (with our
+          lock held).
+      sem: We'll release() this semaphore when we exit so that another thread
+          can be started up.
+    """
+    success = self._FetchProject(opt, project)
+    lock.acquire()
+    fetched.add(project.gitdir)
+    pm.update()
+    lock.release()
+    sem.release()
+    if not success:
+      sys.exit(1)
 
   def _Fetch(self, projects, opt):
     fetched = set()
@@ -206,48 +214,32 @@ later is required to fix a server side protocol bug.
     if self.jobs == 1:
       for project in projects:
         pm.update()
-        if project.Sync_NetworkHalf(quiet=opt.quiet):
-          fetched.add(project.gitdir)
-        else:
-          print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-          if opt.force_broken:
-            print >>sys.stderr, 'warn: --force-broken, continuing to sync'
-          else:
-            sys.exit(1)
+        if not self._FetchProject(opt, project):
+          sys.exit(1)
+        fetched.add(project.gitdir)
     else:
       threads = set()
       lock = _threading.Lock()
       sem = _threading.Semaphore(self.jobs)
-      err_event = _threading.Event()
       for project in projects:
-        # Check for any errors before starting any new threads.
-        # ...we'll let existing threads finish, though.
-        if err_event.isSet():
-          break
-
         sem.acquire()
-        t = _threading.Thread(target = self._FetchHelper,
+        t = _threading.Thread(target = self._FetchThread,
                               args = (opt,
                                       project,
                                       lock,
                                       fetched,
                                       pm,
-                                      sem,
-                                      err_event))
+                                      sem))
         threads.add(t)
         t.start()
 
       for t in threads:
         t.join()
 
-      # If we saw an error, exit with code 1 so that other scripts can check.
-      if err_event.isSet():
-        print >>sys.stderr, '\nerror: Exited sync due to fetch errors'
-        sys.exit(1)
-
     pm.end()
     for project in projects:
-      project.bare_git.gc('--auto')
+      if os.path.exists(project.bare_git._project.gitdir):
+        project.bare_git.gc('--auto')
     return fetched
 
   def UpdateProjectList(self):
@@ -421,7 +413,7 @@ uncommitted changes are present' % project.relpath
     pm = Progress('Syncing work tree', len(all))
     for project in all:
       pm.update()
-      if project.worktree:
+      if project.worktree and os.path.exists(project.gitdir):
         project.Sync_LocalHalf(syncbuf)
     pm.end()
     print >>sys.stderr

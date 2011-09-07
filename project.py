@@ -1302,6 +1302,17 @@ class Project(object):
         kept.append(ReviewableBranch(self, branch, base))
     return kept
 
+  def _Remove(self, path):
+    try:
+      if os.path.exists(path):
+        shutil.rmtree(path)
+    except:
+        _error("Failed to remove %s", path)
+	
+  def Remove(self):
+    self.config.ClearCache()
+    self._Remove(self.worktree)
+    self._Remove(self.gitdir)
 
 ## Direct Git Commands ##
 
