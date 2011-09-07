@@ -93,6 +93,13 @@ following <command>.
 
 Unless -p is used, stdin, stdout, stderr are inherited from the
 terminal and are not redirected.
+
+If a command exits with an error, repo forall will print a warning
+on stderr and let its return code be non-zero. If --discard-warnings
+is used, the warning is discarded (which was the legacy behavior).
+
+If -e is used, the repo forall command is aborted without iterating
+through the remaining projects.
 """
 
   def _Options(self, p):
@@ -105,8 +112,14 @@ terminal and are not redirected.
                  dest='command',
                  action='callback',
                  callback=cmd)
+    p.add_option('-e', '--abort-on-errors',
+                 dest='abort_on_errors', action='store_true',
+                 help='Abort if a command exits unsuccessfully')
 
     g = p.add_option_group('Output')
+    g.add_option('--discard-warnings', default=True,
+                 dest='warn_on_errors', action='store_false',
+                 help='Do not warn if a command exits unsuccessfully')
     g.add_option('-p',
                  dest='project_header', action='store_true',
                  help='Show project headers before output')
@@ -120,6 +133,12 @@ terminal and are not redirected.
   def Execute(self, opt, args):
     if not opt.command:
       self.Usage()
+
+    # We want to print error messages when 'abort on errors' is enabled.
+    log_severity = "warning"
+    if opt.abort_on_errors:
+      log_severity = "error"
+      opt.warn_on_errors = True
 
     cmd = [opt.command[0]]
 
@@ -255,7 +274,17 @@ terminal and are not redirected.
             s.dest.flush()
 
       r = p.wait()
-      if r != 0 and r != rc:
-        rc = r
+      if r != 0:
+        if r != rc:
+          rc = r
+        if opt.warn_on_errors:
+          print("%s: %s: Command terminated with exit code %d" %
+               (log_severity, project.relpath, r), file=sys.stderr)
+        if opt.abort_on_errors:
+          print("error: %s: Aborting due to previous error" % project.relpath,
+                file=sys.stderr)
+          sys.exit(r)
     if rc != 0:
+      if opt.warn_on_errors:
+        print("Warning: At least one command exited with error.", file=sys.stderr)
       sys.exit(rc)
