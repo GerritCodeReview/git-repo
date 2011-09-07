@@ -93,6 +93,9 @@ following <command>.
 
 Unless -p is used, stdin, stdout, stderr are inherited from the
 terminal and are not redirected.
+
+If -e is used, when a command exits unsuccessfully, '%prog' will abort
+without iterating through the remaining projects.
 """
 
   def _Options(self, p):
@@ -105,6 +108,9 @@ terminal and are not redirected.
                  dest='command',
                  action='callback',
                  callback=cmd)
+    p.add_option('-e', '--abort-on-errors',
+                 dest='abort_on_errors', action='store_true',
+                 help='Abort if a command exits unsuccessfully')
 
     g = p.add_option_group('Output')
     g.add_option('-p',
@@ -255,7 +261,12 @@ terminal and are not redirected.
             s.dest.flush()
 
       r = p.wait()
-      if r != 0 and r != rc:
-        rc = r
+      if r != 0:
+        if r != rc:
+          rc = r
+        if opt.abort_on_errors:
+          print("error: %s: Aborting due to previous error" % project.relpath,
+                file=sys.stderr)
+          sys.exit(r)
     if rc != 0:
       sys.exit(rc)
