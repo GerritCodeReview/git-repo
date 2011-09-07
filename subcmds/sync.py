@@ -239,6 +239,12 @@ later is required to fix a server side protocol bug.
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
     p.add_option('--prune', dest='prune', action='store_true',
                  help='delete refs that no longer exist on the remote')
+    p.add_option('-r','--retry',
+                 dest='retry_count', action='store', type='int', default=0,
+                 help="number of times to retry to fetch a git if a fetch error occurs")
+    p.add_option('--retry-timeout',
+                 dest='retry_timeout', action='store', type='int', default=5,
+                 help="number of seconds to wait before an retry attempt is made")
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -271,9 +277,49 @@ later is required to fix a server side protocol bug.
       if not success and not opt.force_broken:
         break
 
+  def _FetchProject(self, opt, project):
+    """Does the network sync of the project, possibly retrying on errors
+
+    Returns False if the rest of the sync should be aborted, else True"""
+    cnt = 0
+
+    while True:
+
+      start = time.time()
+      if project.Sync_NetworkHalf(
+          quiet=opt.quiet,
+          current_branch_only=opt.current_branch_only,
+          force_sync=opt.force_sync,
+          clone_bundle=not opt.no_clone_bundle,
+          no_tags=opt.no_tags, archive=self.manifest.IsArchive,
+          optimized_fetch=opt.optimized_fetch,
+          prune=opt.prune):
+        self._fetch_times.Set(project, time.time() - start)
+        return true
+
+      err_event.set()
+      print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+
+      if cnt < opt.retry_count:
+        cnt += 1
+        print >>sys.stderr, 'info: Retrying to sync %s (%d/%d retries)' % \
+            (project.name, cnt, opt.retry_count)
+        if opt.retry_timeout > 0:
+          print >>sys.stderr, 'info: Waiting %s seconds before retrying' % opt.retry_timeout
+          time.sleep(opt.retry_timeout)
+      else:
+        break
+
+    if opt.force_broken:
+      print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+      return True
+    else:
+      raise _FetchError():
+    return False
+
+
   def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
     """Fetch git objects for a single project.
-
     Args:
       opt: Program options returned from optparse.  See _Options().
       project: Project object for the project to fetch.
@@ -303,30 +349,12 @@ later is required to fix a server side protocol bug.
     # - We always make sure we unlock the lock if we locked it.
     try:
       try:
-        start = time.time()
-        success = project.Sync_NetworkHalf(
-          quiet=opt.quiet,
-          current_branch_only=opt.current_branch_only,
-          force_sync=opt.force_sync,
-          clone_bundle=not opt.no_clone_bundle,
-          no_tags=opt.no_tags, archive=self.manifest.IsArchive,
-          optimized_fetch=opt.optimized_fetch,
-          prune=opt.prune)
-        self._fetch_times.Set(project, time.time() - start)
+        success = self._FetchProject(opt, project)
 
         # Lock around all the rest of the code, since printing, updating a set
         # and Progress.update() are not thread safe.
         lock.acquire()
         did_lock = True
-
-        if not success:
-          err_event.set()
-          print('error: Cannot fetch %s' % project.name, file=sys.stderr)
-          if opt.force_broken:
-            print('warn: --force-broken, continuing to sync',
-                  file=sys.stderr)
-          else:
-            raise _FetchError()
 
         fetched.add(project.gitdir)
         pm.update()
@@ -1003,4 +1031,3 @@ class PersistentTransport(xmlrpc.client.Transport):
 
   def close(self):
     pass
-
