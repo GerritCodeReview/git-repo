@@ -205,7 +205,7 @@ later is required to fix a server side protocol bug.
     lock.release()
     sem.release()
     if not success:
-      sys.exit(1)
+      raise SystemExit(1)
 
   def _Fetch(self, projects, opt):
     fetched = set()
@@ -234,7 +234,7 @@ later is required to fix a server side protocol bug.
         t.start()
 
       for t in threads:
-        t.join()
+        t.join(99999)
 
     pm.end()
     for project in projects:

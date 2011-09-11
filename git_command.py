@@ -218,26 +218,10 @@ class GitCommand(object):
     self.stdin = p.stdin
 
   def Wait(self):
-    p = self.process
-
-    if p.stdin:
-      p.stdin.close()
-      self.stdin = None
-
-    if p.stdout:
-      self.stdout = p.stdout.read()
-      p.stdout.close()
-    else:
-      p.stdout = None
-
-    if p.stderr:
-      self.stderr = p.stderr.read()
-      p.stderr.close()
-    else:
-      p.stderr = None
-
     try:
-      rc = p.wait()
+      p = self.process
+      (self.stdout, self.stderr) = p.communicate()
+      rc = p.returncode
     finally:
       _remove_ssh_client(p)
     return rc
