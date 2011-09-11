@@ -26,6 +26,7 @@ import optparse
 import os
 import re
 import sys
+import urllib2
 
 from trace import SetTrace
 from git_config import init_ssh, close_ssh
@@ -199,6 +200,12 @@ def _PruneOptions(argv, opt):
       continue
     i += 1
 
+def init_http():
+  if 'http_proxy' in os.environ:
+    url = os.environ['http_proxy']
+    proxy_support = urllib2.ProxyHandler({'http': url, 'https': url})
+    urllib2.install_opener(urllib2.build_opener(proxy_support))
+
 def _Main(argv):
   opt = optparse.OptionParser(usage="repo wrapperinfo -- ...")
   opt.add_option("--repo-dir", dest="repodir",
@@ -217,6 +224,7 @@ def _Main(argv):
   try:
     try:
       init_ssh()
+      init_http()
       repo._Run(argv)
     finally:
       close_ssh()
