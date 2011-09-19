@@ -198,6 +198,15 @@ class GitConfig(object):
     except KeyError:
       return False
 
+  def UrlInsteadOf(self, url):
+    """Resolve any url.*.insteadof references.
+    """
+    for new_url in self.GetSubSections('url'):
+      old_url = self.GetString('url.%s.insteadof' % new_url)
+      if old_url is not None and url.startswith(old_url):
+        return new_url + url[len(old_url):]
+    return url
+
   @property
   def _sections(self):
     d = self._section_dict
