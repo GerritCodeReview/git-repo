@@ -22,6 +22,7 @@ if __name__ == '__main__':
     del sys.argv[-1]
 del magic
 
+import netrc
 import optparse
 import os
 import re
@@ -253,6 +254,17 @@ class _UserAgentHandler(urllib2.BaseHandler):
 
 def init_http():
   handlers = [_UserAgentHandler()]
+
+  mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+  try:
+    n = netrc.netrc()
+    for host in n.hosts:
+      p = n.hosts[host]
+      mgr.add_password(None, 'http://%s/'  % host, p[0], p[2])
+      mgr.add_password(None, 'https://%s/' % host, p[0], p[2])
+  except netrc.NetrcParseError:
+    pass
+  handlers.append(urllib2.HTTPBasicAuthHandler(mgr))
 
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']
