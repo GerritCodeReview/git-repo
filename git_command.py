@@ -72,12 +72,29 @@ def terminate_ssh_clients():
       pass
   _ssh_clients = []
 
+_git_version = None
+
 class _GitCall(object):
   def version(self):
     p = GitCommand(None, ['--version'], capture_stdout=True)
     if p.Wait() == 0:
       return p.stdout
     return None
+
+  def version_tuple(self):
+    global _git_version
+
+    if _git_version is None:
+      ver_str = git.version()
+      if ver_str.startswith('git version '):
+        _git_version = tuple(
+          map(lambda x: int(x),
+            ver_str[len('git version '):].strip().split('.')[0:3]
+          ))
+      else:
+        print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
+        sys.exit(1)
+    return _git_version
 
   def __getattr__(self, name):
     name = name.replace('_','-')
@@ -88,23 +105,9 @@ class _GitCall(object):
     return fun
 git = _GitCall()
 
-_git_version = None
-
 def git_require(min_version, fail=False):
-  global _git_version
-
-  if _git_version is None:
-    ver_str = git.version()
-    if ver_str.startswith('git version '):
-      _git_version = tuple(
-        map(lambda x: int(x),
-          ver_str[len('git version '):].strip().split('.')[0:3]
-        ))
-    else:
-      print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
-      sys.exit(1)
-
-  if min_version <= _git_version:
+  git_version = git.version_tuple()
+  if min_version <= git_version:
     return True
   if fail:
     need = '.'.join(map(lambda x: str(x), min_version))

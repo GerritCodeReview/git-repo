@@ -29,6 +29,7 @@ import sys
 import urllib2
 
 from trace import SetTrace
+from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
@@ -134,6 +135,9 @@ class _Repo(object):
         print >>sys.stderr, 'error: no project in current directory'
       sys.exit(1)
 
+def _MyRepoPath():
+  return os.path.dirname(__file__)
+
 def _MyWrapperPath():
   return os.path.join(os.path.dirname(__file__), 'repo')
 
@@ -200,11 +204,63 @@ def _PruneOptions(argv, opt):
       continue
     i += 1
 
+_user_agent = None
+
+def _UserAgent():
+  global _user_agent
+
+  if _user_agent is None:
+    py_version = sys.version_info
+
+    os_name = sys.platform
+    if os_name == 'linux2':
+      os_name = 'Linux'
+    elif os_name == 'win32':
+      os_name = 'Win32'
+    elif os_name == 'cygwin':
+      os_name = 'Cygwin'
+    elif os_name == 'darwin':
+      os_name = 'Darwin'
+
+    p = GitCommand(
+      None, ['describe', 'HEAD'],
+      cwd = _MyRepoPath(),
+      capture_stdout = True)
+    if p.Wait() == 0:
+      repo_version = p.stdout
+      if len(repo_version) > 0 and repo_version[-1] == '\n':
+        repo_version = repo_version[0:-1]
+      if len(repo_version) > 0 and repo_version[0] == 'v':
+        repo_version = repo_version[1:]
+    else:
+      repo_version = 'unknown'
+
+    _user_agent = 'git-repo/%s (%s) git/%s Python/%d.%d.%d' % (
+      repo_version,
+      os_name,
+      '.'.join(map(lambda d: str(d), git.version_tuple())),
+      py_version[0], py_version[1], py_version[2])
+  return _user_agent
+
+class _UserAgentHandler(urllib2.BaseHandler):
+  def http_request(self, req):
+    req.add_header('User-Agent', _UserAgent())
+    return req
+
+  def https_request(self, req):
+    req.add_header('User-Agent', _UserAgent())
+    return req
+
 def init_http():
+  handlers = [_UserAgentHandler()]
+
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']
-    proxy_support = urllib2.ProxyHandler({'http': url, 'https': url})
-    urllib2.install_opener(urllib2.build_opener(proxy_support))
+    handlers.append(urllib2.ProxyHandler({'http': url, 'https': url}))
+  if 'REPO_CURL_VERBOSE' in os.environ:
+    handlers.append(urllib2.HTTPHandler(debuglevel=1))
+    handlers.append(urllib2.HTTPSHandler(debuglevel=1))
+  urllib2.install_opener(urllib2.build_opener(*handlers))
 
 def _Main(argv):
   opt = optparse.OptionParser(usage="repo wrapperinfo -- ...")
