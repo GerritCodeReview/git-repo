@@ -491,6 +491,12 @@ def close_ssh():
 URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
 URI_ALL = re.compile(r'^([a-z][a-z+]*)://([^@/]*@?[^/]*)/')
 
+def GetSchemeFromUrl(url):
+  m = URI_ALL.match(url)
+  if m:
+    return m.group(1)
+  return None
+
 def _preconnect(url):
   m = URI_ALL.match(url)
   if m:

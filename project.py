@@ -24,9 +24,11 @@ import urllib2
 
 from color import Coloring
 from git_command import GitCommand
-from git_config import GitConfig, IsId
+from git_config import GitConfig, IsId, GetSchemeFromUrl
+from error import DownloadError
 from error import GitError, HookError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
+from progress import Progress
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
@@ -884,15 +886,13 @@ class Project(object):
 
 ## Sync ##
 
-  def Sync_NetworkHalf(self, quiet=False):
+  def Sync_NetworkHalf(self, quiet=False, is_new=None):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
-    is_new = not self.Exists
+    if is_new is None:
+      is_new = not self.Exists
     if is_new:
-      if not quiet:
-        print >>sys.stderr
-        print >>sys.stderr, 'Initializing project %s ...' % self.name
       self._InitGitDir()
 
     self._InitRemote()
@@ -1312,8 +1312,15 @@ class Project(object):
       name = self.remote.name
 
     ssh_proxy = False
-    if self.GetRemote(name).PreConnectFetch():
+    remote = self.GetRemote(name)
+    if remote.PreConnectFetch():
       ssh_proxy = True
+
+    bundle_dst = os.path.join(self.gitdir, 'clone.bundle')
+    bundle_tmp = os.path.join(self.gitdir, 'clone.bundle.tmp')
+    use_bundle = False
+    if os.path.exists(bundle_dst) or os.path.exists(bundle_tmp):
+      use_bundle = True
 
     if initial:
       alt = os.path.join(self.gitdir, 'objects/info/alternates')
@@ -1329,6 +1336,8 @@ class Project(object):
         ref_dir = None
 
       if ref_dir and 'objects' == os.path.basename(ref_dir):
+        if use_bundle:
+          use_bundle = False
         ref_dir = os.path.dirname(ref_dir)
         packed_refs = os.path.join(self.gitdir, 'packed-refs')
         remote = self.GetRemote(name)
@@ -1368,6 +1377,7 @@ class Project(object):
 
       else:
         ref_dir = None
+        use_bundle = True
 
     cmd = ['fetch']
 
@@ -1376,15 +1386,37 @@ class Project(object):
     depth = self.manifest.manifestProject.config.GetString('repo.depth')
     if depth and initial:
       cmd.append('--depth=%s' % depth)
+      use_bundle = False
 
     if quiet:
       cmd.append('--quiet')
     if not self.worktree:
       cmd.append('--update-head-ok')
-    cmd.append(name)
-    if tag is not None:
-      cmd.append('tag')
-      cmd.append(tag)
+
+    if use_bundle and not os.path.exists(bundle_dst):
+      bundle_url = remote.url + '/clone.bundle'
+      bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
+      if GetSchemeFromUrl(bundle_url) in ('http', 'https'):
+        use_bundle = self._FetchBundle(
+          bundle_url,
+          bundle_tmp,
+          bundle_dst,
+          quiet=quiet)
+      else:
+        use_bundle = False
+
+    if use_bundle:
+      if not quiet:
+        cmd.append('--quiet')
+      cmd.append(bundle_dst)
+      for f in remote.fetch:
+        cmd.append(str(f))
+      cmd.append('refs/tags/*:refs/tags/*')
+    else:
+      cmd.append(name)
+      if tag is not None:
+        cmd.append('tag')
+        cmd.append(tag)
 
     ok = GitCommand(self,
                     cmd,
@@ -1399,7 +1431,98 @@ class Project(object):
           os.remove(packed_refs)
       self.bare_git.pack_refs('--all', '--prune')
 
+    if os.path.exists(bundle_dst):
+      os.remove(bundle_dst)
+    if os.path.exists(bundle_tmp):
+      os.remove(bundle_tmp)
+
     return ok
+
+  def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet=False):
+    keep = True
+    done = False
+    dest = open(tmpPath, 'a+b')
+    try:
+      dest.seek(0, os.SEEK_END)
+      pos = dest.tell()
+
+      req = urllib2.Request(srcUrl)
+      if pos > 0:
+        req.add_header('Range', 'bytes=%d-' % pos)
+
+      try:
+        r = urllib2.urlopen(req)
+      except urllib2.HTTPError, e:
+        if e.code == 404:
+          keep = False
+          return False
+        elif e.info()['content-type'] == 'text/plain':
+          try:
+            msg = e.read()
+            if len(msg) > 0 and msg[-1] == '\n':
+              msg = msg[0:-1]
+            msg = ' (%s)' % msg
+          except:
+            msg = ''
+        else:
+          try:
+            from BaseHTTPServer import BaseHTTPRequestHandler
+            res = BaseHTTPRequestHandler.responses[e.code]
+            msg = ' (%s: %s)' % (res[0], res[1])
+          except:
+            msg = ''
+        raise DownloadError('HTTP %s%s' % (e.code, msg))
+      except urllib2.URLError, e:
+        raise DownloadError('%s (%s)' % (e.reason, req.get_host()))
+
+      p = None
+      try:
+        size = r.headers['content-length']
+        unit = 1 << 10
+
+        if size and not quiet:
+          if size > 1024 * 1.3:
+            unit = 1 << 20
+            desc = 'MB'
+          else:
+            desc = 'KB'
+          p = Progress(
+            'Downloading %s' % self.relpath,
+            int(size) / unit,
+            units=desc)
+          if pos > 0:
+            p.update(pos / unit)
+
+        s = 0
+        while True:
+          d = r.read(8192)
+          if d == '':
+            done = True
+            return True
+          dest.write(d)
+          if p:
+            s += len(d)
+            if s >= unit:
+              p.update(s / unit)
+              s = s % unit
+        if p:
+          if s >= unit:
+            p.update(s / unit)
+          else:
+            p.update(1)
+      finally:
+        r.close()
+        if p:
+          p.end()
+    finally:
+      dest.close()
+
+      if os.path.exists(dstPath):
+        os.remove(dstPath)
+      if done:
+        os.rename(tmpPath, dstPath)
+      elif not keep:
+        os.remove(tmpPath)
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']

@@ -37,6 +37,7 @@ from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import PagedCommand
 from editor import Editor
+from error import DownloadError
 from error import ManifestInvalidRevisionError
 from error import NoSuchProjectError
 from error import RepoChangedException
@@ -143,6 +144,9 @@ class _Repo(object):
           else:
             print >>sys.stderr, 'real\t%dh%dm%.3fs' \
               % (hours, minutes, seconds)
+    except DownloadError, e:
+      print >>sys.stderr, 'error: %s' % str(e)
+      sys.exit(1)
     except ManifestInvalidRevisionError, e:
       print >>sys.stderr, 'error: %s' % str(e)
       sys.exit(1)
