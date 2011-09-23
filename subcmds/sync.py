@@ -28,6 +28,14 @@ try:
 except ImportError:
   import dummy_threading as _threading
 
+try:
+  import resource
+  def _rlimit_nofile():
+    return resource.getrlimit(resource.RLIMIT_NOFILE)
+except ImportError:
+  def _rlimit_nofile():
+    return (256, 256)
+
 from git_command import GIT
 from git_refs import R_HEADS
 from project import HEAD
@@ -312,6 +320,10 @@ uncommitted changes are present' % project.relpath
   def Execute(self, opt, args):
     if opt.jobs:
       self.jobs = opt.jobs
+    if self.jobs > 1:
+      soft_limit, _ = _rlimit_nofile()
+      self.jobs = min(self.jobs, (soft_limit - 5) / 3)
+
     if opt.network_only and opt.detach_head:
       print >>sys.stderr, 'error: cannot combine -n and -d'
       sys.exit(1)
