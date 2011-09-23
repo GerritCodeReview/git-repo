@@ -38,6 +38,7 @@ following DTD:
     <!ELEMENT default (EMPTY)>
     <!ATTLIST default remote   IDREF #IMPLIED>
     <!ATTLIST default revision CDATA #IMPLIED>
+    <!ATTLIST default sync-j   CDATA #IMPLIED>
 
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>

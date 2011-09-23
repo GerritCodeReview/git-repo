@@ -117,6 +117,8 @@ later is required to fix a server side protocol bug.
 """
 
   def _Options(self, p, show_smart=True):
+    self.jobs = self.manifest.default.sync_j
+
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
                  help="continue sync even if a project fails to sync")
@@ -134,7 +136,8 @@ later is required to fix a server side protocol bug.
                  help='be more quiet')
     p.add_option('-j','--jobs',
                  dest='jobs', action='store', type='int',
-                 help="number of projects to fetch simultaneously")
+                 default=self.jobs,
+                 help="projects to fetch simultaneously (default %d)" % self.jobs)
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',

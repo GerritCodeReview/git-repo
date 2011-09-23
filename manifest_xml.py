@@ -29,6 +29,7 @@ class _Default(object):
 
   revisionExpr = None
   remote = None
+  sync_j = 1
 
 class _XmlRemote(object):
   def __init__(self,
@@ -133,6 +134,9 @@ class XmlManifest(object):
     if d.revisionExpr:
       have_default = True
       e.setAttribute('revision', d.revisionExpr)
+    if d.sync_j > 1:
+      have_default = True
+      e.setAttribute('sync-j', '%d' % d.sync_j)
     if have_default:
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
@@ -401,6 +405,11 @@ class XmlManifest(object):
     d.revisionExpr = node.getAttribute('revision')
     if d.revisionExpr == '':
       d.revisionExpr = None
+    sync_j = node.getAttribute('sync-j')
+    if sync_j == '' or sync_j is None:
+      d.sync_j = 1
+    else:
+      d.sync_j = int(sync_j)
     return d
 
   def _ParseNotice(self, node):
