@@ -27,6 +27,7 @@ import optparse
 import os
 import re
 import sys
+import time
 import urllib2
 
 from trace import SetTrace
@@ -56,6 +57,9 @@ global_options.add_option('--no-pager',
 global_options.add_option('--trace',
                           dest='trace', action='store_true',
                           help='trace git command execution')
+global_options.add_option('--time',
+                          dest='time', action='store_true',
+                          help='time repo command execution')
 global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
@@ -125,7 +129,20 @@ class _Repo(object):
         RunPager(config)
 
     try:
-      cmd.Execute(copts, cargs)
+      start = time.time()
+      try:
+        cmd.Execute(copts, cargs)
+      finally:
+        elapsed = time.time() - start
+        hours, remainder = divmod(elapsed, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if gopts.time:
+          if hours == 0:
+            print >>sys.stderr, 'real\t%dm%.3fs' \
+              % (minutes, seconds)
+          else:
+            print >>sys.stderr, 'real\t%dh%dm%.3fs' \
+              % (hours, minutes, seconds)
     except ManifestInvalidRevisionError, e:
       print >>sys.stderr, 'error: %s' % str(e)
       sys.exit(1)
