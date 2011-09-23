@@ -281,6 +281,8 @@ def init_http():
       mgr.add_password(None, 'https://%s/' % host, p[0], p[2])
   except netrc.NetrcParseError:
     pass
+  except IOError:
+    pass
   handlers.append(urllib2.HTTPBasicAuthHandler(mgr))
 
   if 'http_proxy' in os.environ:
