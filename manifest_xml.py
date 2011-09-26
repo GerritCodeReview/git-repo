@@ -14,7 +14,9 @@
 # limitations under the License.
 
 import os
+import re
 import sys
+import urlparse
 import xml.dom.minidom
 
 from git_config import GitConfig, IsId
@@ -23,6 +25,9 @@ from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
+
+urlparse.uses_relative.extend(['ssh', 'git'])
+urlparse.uses_netloc.extend(['ssh', 'git'])
 
 class _Default(object):
   """Project defaults within the manifest."""
@@ -35,16 +40,22 @@ class _XmlRemote(object):
   def __init__(self,
                name,
                fetch=None,
+               manifestUrl=None,
                review=None):
     self.name = name
     self.fetchUrl = fetch
+    self.manifestUrl = manifestUrl
     self.reviewUrl = review
 
   def ToRemoteSpec(self, projectName):
-    url = self.fetchUrl
-    while url.endswith('/'):
-      url = url[:-1]
-    url += '/%s.git' % projectName
+    url = self.fetchUrl.rstrip('/') + '/' + projectName + '.git'
+    manifestUrl = self.manifestUrl.rstrip('/')
+    # urljoin will get confused if there is no scheme in the base url
+    # ie, if manifestUrl is of the form <hostname:port>
+    if manifestUrl.find(':') != manifestUrl.find('/') - 1:
+        manifestUrl = 'gopher://' + manifestUrl
+    url = urlparse.urljoin(manifestUrl, url)
+    url = re.sub(r'^gopher://', '', url)
     return RemoteSpec(self.name, url, self.reviewUrl)
 
 class XmlManifest(object):
@@ -366,7 +377,8 @@ class XmlManifest(object):
 
     if name is None:
       s = m_url.rindex('/') + 1
-      remote = _XmlRemote('origin', m_url[:s])
+      manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
+      remote = _XmlRemote('origin', m_url[:s], manifestUrl)
       name = m_url[s:]
 
     if name.endswith('.git'):
@@ -394,7 +406,8 @@ class XmlManifest(object):
     review = node.getAttribute('review')
     if review == '':
       review = None
-    return _XmlRemote(name, fetch, review)
+    manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
+    return _XmlRemote(name, fetch, manifestUrl, review)
 
   def _ParseDefault(self, node):
     """
