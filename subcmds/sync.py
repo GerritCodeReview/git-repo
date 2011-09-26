@@ -136,7 +136,6 @@ later is required to fix a server side protocol bug.
                  help='be more quiet')
     p.add_option('-j','--jobs',
                  dest='jobs', action='store', type='int',
-                 default=self.jobs,
                  help="projects to fetch simultaneously (default %d)" % self.jobs)
     if show_smart:
       p.add_option('-s', '--smart-sync',
@@ -401,6 +400,8 @@ uncommitted changes are present' % project.relpath
       if not syncbuf.Finish():
         sys.exit(1)
       self.manifest._Unload()
+      if opt.jobs is None:
+        self.jobs = self.manifest.default.sync_j
     all = self.GetProjects(args, missing_ok=True)
 
     if not opt.local_only:
