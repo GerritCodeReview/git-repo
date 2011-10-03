@@ -16,10 +16,12 @@ import traceback
 import errno
 import filecmp
 import os
+import random
 import re
 import shutil
 import stat
 import sys
+import time
 import urllib2
 
 from color import Coloring
@@ -894,9 +896,25 @@ class Project(object):
       is_new = not self.Exists
     if is_new:
       self._InitGitDir()
-
     self._InitRemote()
-    if not self._RemoteFetch(initial=is_new, quiet=quiet):
+
+    if is_new:
+      alt = os.path.join(self.gitdir, 'objects/info/alternates')
+      try:
+        fd = open(alt, 'rb')
+        try:
+          alt_dir = fd.readline().rstrip()
+        finally:
+          fd.close()
+      except IOError:
+        alt_dir = None
+    else:
+      alt_dir = None
+
+    if alt_dir is None and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
+      is_new = False
+
+    if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir):
       return False
 
     #Check that the requested ref was found after fetch
@@ -1307,7 +1325,8 @@ class Project(object):
 
   def _RemoteFetch(self, name=None, tag=None,
                    initial=False,
-                   quiet=False):
+                   quiet=False,
+                   alt_dir=None):
     if not name:
       name = self.remote.name
 
@@ -1316,29 +1335,9 @@ class Project(object):
     if remote.PreConnectFetch():
       ssh_proxy = True
 
-    bundle_dst = os.path.join(self.gitdir, 'clone.bundle')
-    bundle_tmp = os.path.join(self.gitdir, 'clone.bundle.tmp')
-    use_bundle = False
-    if os.path.exists(bundle_dst) or os.path.exists(bundle_tmp):
-      use_bundle = True
-
     if initial:
-      alt = os.path.join(self.gitdir, 'objects/info/alternates')
-      try:
-        fd = open(alt, 'rb')
-        try:
-          ref_dir = fd.readline()
-          if ref_dir and ref_dir.endswith('\n'):
-            ref_dir = ref_dir[:-1]
-        finally:
-          fd.close()
-      except IOError, e:
-        ref_dir = None
-
-      if ref_dir and 'objects' == os.path.basename(ref_dir):
-        if use_bundle:
-          use_bundle = False
-        ref_dir = os.path.dirname(ref_dir)
+      if alt_dir and 'objects' == os.path.basename(alt_dir):
+        ref_dir = os.path.dirname(alt_dir)
         packed_refs = os.path.join(self.gitdir, 'packed-refs')
         remote = self.GetRemote(name)
 
@@ -1374,10 +1373,8 @@ class Project(object):
             old_packed += line
 
         _lwrite(packed_refs, tmp_packed)
-
       else:
-        ref_dir = None
-        use_bundle = True
+        alt_dir = None
 
     cmd = ['fetch']
 
@@ -1386,59 +1383,74 @@ class Project(object):
     depth = self.manifest.manifestProject.config.GetString('repo.depth')
     if depth and initial:
       cmd.append('--depth=%s' % depth)
-      use_bundle = False
 
     if quiet:
       cmd.append('--quiet')
     if not self.worktree:
       cmd.append('--update-head-ok')
+    cmd.append(name)
+    if tag is not None:
+      cmd.append('tag')
+      cmd.append(tag)
 
-    if use_bundle and not os.path.exists(bundle_dst):
-      bundle_url = remote.url + '/clone.bundle'
-      bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
-      if GetSchemeFromUrl(bundle_url) in ('http', 'https'):
-        use_bundle = self._FetchBundle(
-          bundle_url,
-          bundle_tmp,
-          bundle_dst,
-          quiet=quiet)
-      else:
-        use_bundle = False
-
-    if use_bundle:
-      if not quiet:
-        cmd.append('--quiet')
-      cmd.append(bundle_dst)
-      for f in remote.fetch:
-        cmd.append(str(f))
-      cmd.append('refs/tags/*:refs/tags/*')
-    else:
-      cmd.append(name)
-      if tag is not None:
-        cmd.append('tag')
-        cmd.append(tag)
-
-    ok = GitCommand(self,
-                    cmd,
-                    bare = True,
-                    ssh_proxy = ssh_proxy).Wait() == 0
+    ok = False
+    for i in range(2):
+      if GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy).Wait() == 0:
+        ok = True
+        break
+      time.sleep(random.randint(30, 45))
 
     if initial:
-      if ref_dir:
+      if alt_dir:
         if old_packed != '':
           _lwrite(packed_refs, old_packed)
         else:
           os.remove(packed_refs)
       self.bare_git.pack_refs('--all', '--prune')
+    return ok
 
+  def _ApplyCloneBundle(self, initial=False, quiet=False):
+    if initial and self.manifest.manifestProject.config.GetString('repo.depth'):
+      return False
+
+    remote = self.GetRemote(self.remote.name)
+    bundle_url = remote.url + '/clone.bundle'
+    bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
+    if GetSchemeFromUrl(bundle_url) not in ('http', 'https'):
+      return False
+
+    bundle_dst = os.path.join(self.gitdir, 'clone.bundle')
+    bundle_tmp = os.path.join(self.gitdir, 'clone.bundle.tmp')
+
+    exist_dst = os.path.exists(bundle_dst)
+    exist_tmp = os.path.exists(bundle_tmp)
+
+    if not initial and not exist_dst and not exist_tmp:
+      return False
+
+    if not exist_dst:
+      exist_dst = self._FetchBundle(bundle_url, bundle_tmp, bundle_dst, quiet)
+    if not exist_dst:
+      return False
+
+    cmd = ['fetch']
+    if quiet:
+      cmd.append('--quiet')
+    if not self.worktree:
+      cmd.append('--update-head-ok')
+    cmd.append(bundle_dst)
+    for f in remote.fetch:
+      cmd.append(str(f))
+    cmd.append('refs/tags/*:refs/tags/*')
+
+    ok = GitCommand(self, cmd, bare=True).Wait() == 0
     if os.path.exists(bundle_dst):
       os.remove(bundle_dst)
     if os.path.exists(bundle_tmp):
       os.remove(bundle_tmp)
-
     return ok
 
-  def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet=False):
+  def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet):
     keep = True
     done = False
     dest = open(tmpPath, 'a+b')
