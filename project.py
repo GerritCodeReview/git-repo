@@ -1465,10 +1465,16 @@ class Project(object):
       try:
         r = urllib2.urlopen(req)
       except urllib2.HTTPError, e:
+        def _content_type():
+          try:
+            return e.info()['content-type']
+          except:
+            return None
+
         if e.code == 404:
           keep = False
           return False
-        elif e.info()['content-type'] == 'text/plain':
+        elif _content_type() == 'text/plain':
           try:
             msg = e.read()
             if len(msg) > 0 and msg[-1] == '\n':
