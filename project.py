@@ -29,6 +29,11 @@ try:
 except ImportError:
   import dummy_threading as _threading
 
+try:
+  from os import SEEK_END
+except ImportError:
+  SEEK_END = 2
+
 from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId, GetSchemeFromUrl
@@ -1462,7 +1467,7 @@ class Project(object):
     done = False
     dest = open(tmpPath, 'a+b')
     try:
-      dest.seek(0, os.SEEK_END)
+      dest.seek(0, SEEK_END)
       pos = dest.tell()
 
       _urllib_lock.acquire()

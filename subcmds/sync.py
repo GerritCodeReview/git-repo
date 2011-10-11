@@ -195,15 +195,11 @@ later is required to fix a server side protocol bug.
 
           fetched.add(project.gitdir)
           pm.update()
-        except BaseException, e:
-          # Notify the _Fetch() function about all errors.
+        except _FetchError:
           err_event.set()
-
-          # If we got our own _FetchError, we don't want a stack trace.
-          # However, if we got something else (something in Sync_NetworkHalf?),
-          # we'd like one (so re-raise after we've set err_event).
-          if not isinstance(e, _FetchError):
-            raise
+        except:
+          err_event.set()
+          raise
       finally:
         if did_lock:
           lock.release()

@@ -276,10 +276,17 @@ class _UserAgentHandler(urllib2.BaseHandler):
 class _BasicAuthHandler(urllib2.HTTPBasicAuthHandler):
   def http_error_auth_reqed(self, authreq, host, req, headers):
     try:
+      old_add_header = req.add_header
+      def _add_header(name, val):
+        val = val.replace('\n', '')
+        old_add_header(name, val)
+      req.add_header = _add_header
       return urllib2.AbstractBasicAuthHandler.http_error_auth_reqed(
         self, authreq, host, req, headers)
     except:
-      self.reset_retry_count()
+      reset = getattr(self, 'reset_retry_count', None)
+      if reset is not None:
+        reset()
       raise
 
 def init_http():
