@@ -575,6 +575,16 @@ class Remote(object):
         self._review_protocol = info[0]
         self._review_host = info[1]
         self._review_port = info[2]
+      elif 'REPO_HOST_PORT_INFO' in os.environ:
+        info = os.environ['REPO_HOST_PORT_INFO']
+        self._review_protocol = 'ssh'
+        self._review_host = info.split(" ")[0]
+        self._review_port = info.split(" ")[1]
+
+        REVIEW_CACHE[u] = (
+          self._review_protocol,
+          self._review_host,
+          self._review_port)
       else:
         try:
           info = urllib2.urlopen(u).read()
