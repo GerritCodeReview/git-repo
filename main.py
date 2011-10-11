@@ -287,6 +287,8 @@ class _BasicAuthHandler(urllib2.HTTPBasicAuthHandler):
       reset = getattr(self, 'reset_retry_count', None)
       if reset is not None:
         reset()
+      elif getattr(self, 'retried', None):
+        self.retried = 0
       raise
 
 def init_http():
