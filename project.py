@@ -24,6 +24,11 @@ import sys
 import time
 import urllib2
 
+try:
+  import threading as _threading
+except ImportError:
+  import dummy_threading as _threading
+
 from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId, GetSchemeFromUrl
@@ -33,6 +38,8 @@ from error import ManifestInvalidRevisionError
 from progress import Progress
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
+
+_urllib_lock = _threading.Lock()
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
@@ -1458,40 +1465,44 @@ class Project(object):
       dest.seek(0, os.SEEK_END)
       pos = dest.tell()
 
-      req = urllib2.Request(srcUrl)
-      if pos > 0:
-        req.add_header('Range', 'bytes=%d-' % pos)
-
+      _urllib_lock.acquire()
       try:
-        r = urllib2.urlopen(req)
-      except urllib2.HTTPError, e:
-        def _content_type():
-          try:
-            return e.info()['content-type']
-          except:
-            return None
+        req = urllib2.Request(srcUrl)
+        if pos > 0:
+          req.add_header('Range', 'bytes=%d-' % pos)
 
-        if e.code == 404:
-          keep = False
-          return False
-        elif _content_type() == 'text/plain':
-          try:
-            msg = e.read()
-            if len(msg) > 0 and msg[-1] == '\n':
-              msg = msg[0:-1]
-            msg = ' (%s)' % msg
-          except:
-            msg = ''
-        else:
-          try:
-            from BaseHTTPServer import BaseHTTPRequestHandler
-            res = BaseHTTPRequestHandler.responses[e.code]
-            msg = ' (%s: %s)' % (res[0], res[1])
-          except:
-            msg = ''
-        raise DownloadError('HTTP %s%s' % (e.code, msg))
-      except urllib2.URLError, e:
-        raise DownloadError('%s: %s ' % (req.get_host(), str(e)))
+        try:
+          r = urllib2.urlopen(req)
+        except urllib2.HTTPError, e:
+          def _content_type():
+            try:
+              return e.info()['content-type']
+            except:
+              return None
+
+          if e.code == 404:
+            keep = False
+            return False
+          elif _content_type() == 'text/plain':
+            try:
+              msg = e.read()
+              if len(msg) > 0 and msg[-1] == '\n':
+                msg = msg[0:-1]
+              msg = ' (%s)' % msg
+            except:
+              msg = ''
+          else:
+            try:
+              from BaseHTTPServer import BaseHTTPRequestHandler
+              res = BaseHTTPRequestHandler.responses[e.code]
+              msg = ' (%s: %s)' % (res[0], res[1])
+            except:
+              msg = ''
+          raise DownloadError('HTTP %s%s' % (e.code, msg))
+        except urllib2.URLError, e:
+          raise DownloadError('%s: %s ' % (req.get_host(), str(e)))
+      finally:
+        _urllib_lock.release()
 
       p = None
       try:

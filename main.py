@@ -273,6 +273,15 @@ class _UserAgentHandler(urllib2.BaseHandler):
     req.add_header('User-Agent', _UserAgent())
     return req
 
+class _BasicAuthHandler(urllib2.HTTPBasicAuthHandler):
+  def http_error_auth_reqed(self, authreq, host, req, headers):
+    try:
+      return urllib2.AbstractBasicAuthHandler.http_error_auth_reqed(
+        self, authreq, host, req, headers)
+    except:
+      self.reset_retry_count()
+      raise
+
 def init_http():
   handlers = [_UserAgentHandler()]
 
@@ -287,7 +296,7 @@ def init_http():
     pass
   except IOError:
     pass
-  handlers.append(urllib2.HTTPBasicAuthHandler(mgr))
+  handlers.append(_BasicAuthHandler(mgr))
 
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']
