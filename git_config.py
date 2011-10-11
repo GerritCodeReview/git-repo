@@ -26,7 +26,6 @@ import time
 import urllib2
 
 from signal import SIGTERM
-from urllib2 import urlopen, HTTPError
 from error import GitError, UploadError
 from trace import Trace
 
@@ -578,7 +577,7 @@ class Remote(object):
         self._review_port = info[2]
       else:
         try:
-          info = urlopen(u).read()
+          info = urllib2.urlopen(u).read()
           if info == 'NOT_AVAILABLE':
             raise UploadError('%s: SSH disabled' % self.review)
           if '<' in info:
@@ -590,15 +589,15 @@ class Remote(object):
           self._review_protocol = 'ssh'
           self._review_host = info.split(" ")[0]
           self._review_port = info.split(" ")[1]
-        except urllib2.URLError, e:
-          raise UploadError('%s: %s' % (self.review, e.reason[1]))
-        except HTTPError, e:
+        except urllib2.HTTPError, e:
           if e.code == 404:
             self._review_protocol = 'http-post'
             self._review_host = None
             self._review_port = None
           else:
-            raise UploadError('Upload over ssh unavailable')
+            raise UploadError('Upload over SSH unavailable')
+        except urllib2.URLError, e:
+          raise UploadError('%s: %s' % (self.review, str(e)))
 
         REVIEW_CACHE[u] = (
           self._review_protocol,

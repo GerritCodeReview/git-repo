@@ -1491,7 +1491,7 @@ class Project(object):
             msg = ''
         raise DownloadError('HTTP %s%s' % (e.code, msg))
       except urllib2.URLError, e:
-        raise DownloadError('%s (%s)' % (e.reason, req.get_host()))
+        raise DownloadError('%s: %s ' % (req.get_host(), str(e)))
 
       p = None
       try:
