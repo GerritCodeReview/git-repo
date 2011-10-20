@@ -59,7 +59,7 @@ class _XmlRemote(object):
     return re.sub(r'^gopher://', '', url)
 
   def ToRemoteSpec(self, projectName):
-    url = self.resolvedFetchUrl + '/' + projectName
+    url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
     return RemoteSpec(self.name, url, self.reviewUrl)
 
 class XmlManifest(object):
