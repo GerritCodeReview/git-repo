@@ -46,16 +46,20 @@ class _XmlRemote(object):
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
     self.reviewUrl = review
+    self.resolvedFetchUrl = self._resolveFetchUrl()
 
-  def ToRemoteSpec(self, projectName):
-    url = self.fetchUrl.rstrip('/') + '/' + projectName + '.git'
+  def _resolveFetchUrl(self):
+    url = self.fetchUrl.rstrip('/')
     manifestUrl = self.manifestUrl.rstrip('/')
     # urljoin will get confused if there is no scheme in the base url
     # ie, if manifestUrl is of the form <hostname:port>
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
         manifestUrl = 'gopher://' + manifestUrl
     url = urlparse.urljoin(manifestUrl, url)
-    url = re.sub(r'^gopher://', '', url)
+    return re.sub(r'^gopher://', '', url)
+
+  def ToRemoteSpec(self, projectName):
+    url = self.resolvedFetchUrl + '/' + projectName
     return RemoteSpec(self.name, url, self.reviewUrl)
 
 class XmlManifest(object):
@@ -368,7 +372,7 @@ class XmlManifest(object):
       raise ManifestParseError, 'refusing to mirror %s' % m_url
 
     if self._default and self._default.remote:
-      url = self._default.remote.fetchUrl
+      url = self._default.remote.resolvedFetchUrl
       if not url.endswith('/'):
         url += '/'
       if m_url.startswith(url):
