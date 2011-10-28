@@ -16,6 +16,41 @@
       "revId": "138dbf84b7e8529774875acd867b0f1693a3b1d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABPH////g\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1424,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-10-28T17:49:21Z",
+      "side": 1,
+      "message": "Use something like:\n\n  cmd.append((u\u0027+refs/heads/%s\u0027 % branch), +\n    remote.ToLocal(\u0027refs/heads/%s\u0027 % branch))",
+      "parentUuid": "AAABO3///9s\u003d",
+      "revId": "138dbf84b7e8529774875acd867b0f1693a3b1d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABPH////o\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-10-28T17:49:21Z",
+      "side": 1,
+      "message": "Maybe help\u003d\u0027fetch only one branch from server\u0027 ?",
+      "revId": "138dbf84b7e8529774875acd867b0f1693a3b1d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

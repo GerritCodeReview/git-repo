@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABPH////s\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-10-28T17:49:21Z",
+      "side": 0,
+      "message": "This import is still used.",
+      "revId": "ceea368e887b1c1c600400f40564eca4f8b40192",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABPH////k\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-10-28T17:49:21Z",
+      "side": 0,
+      "message": "With your change, this is now only done for current_branch_only?  That isn\u0027t right. We should still look for a tag we don\u0027t have if it was in the manifest and current_branch_only is false.",
+      "revId": "ceea368e887b1c1c600400f40564eca4f8b40192",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
