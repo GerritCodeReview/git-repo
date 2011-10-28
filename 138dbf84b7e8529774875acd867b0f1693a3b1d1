@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABO3///9s\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1424,
+      "author": {
+        "id": 1004136
+      },
+      "writtenOn": "2011-10-28T17:21:04Z",
+      "side": 1,
+      "message": "Hi, Shawn. In the private mail you said:\n\"This stuff should go through the Remote object in git_config, which understands the wildcard specifications.\" and I could not find an example how to do this.",
+      "revId": "138dbf84b7e8529774875acd867b0f1693a3b1d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
