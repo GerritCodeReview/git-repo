@@ -36,6 +36,7 @@ from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import PagedCommand
+from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
 from error import ManifestInvalidRevisionError
@@ -333,6 +334,9 @@ def _Main(argv):
 
   _CheckWrapperVersion(opt.wrapper_version, opt.wrapper_path)
   _CheckRepoDir(opt.repodir)
+
+  Version.wrapper_version = opt.wrapper_version
+  Version.wrapper_path = opt.wrapper_path
 
   repo = _Repo(opt.repodir)
   try:

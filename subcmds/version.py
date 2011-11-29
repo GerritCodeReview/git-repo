@@ -19,6 +19,9 @@ from git_command import git
 from project import HEAD
 
 class Version(Command, MirrorSafeCommand):
+  wrapper_version = None
+  wrapper_path = None
+
   common = False
   helpSummary = "Display the version of repo"
   helpUsage = """
@@ -31,5 +34,10 @@ class Version(Command, MirrorSafeCommand):
 
     print 'repo version %s' % rp.work_git.describe(HEAD)
     print '       (from %s)' % rem.url
+
+    if Version.wrapper_path is not None:
+      print 'repo launcher version %s' % Version.wrapper_version
+      print '       (from %s)' % Version.wrapper_path
+
     print git.version().strip()
     print 'Python %s' % sys.version
