@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABj3////I\u003d",
+        "filename": "git_refs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-11-29T20:33:33Z",
+      "side": 1,
+      "message": "try/except/finally in one block is too recent of a Python idiom. We try to support Python 2.4, which requires these to be in separate blocks:\n\n  try:\n    try:\n      blah\n    except:\n      return\n  finally:\n    moar blah",
+      "revId": "11d6bbe309138c8352610a45df2dca46c73e1700",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
