@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABj3///98\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1492,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-11-29T22:42:30Z",
+      "side": 1,
+      "message": "My problem with this patch is the manifest might not be using Gerrit Code Review.\n\nI would prefer to at least check to see if any other project in this manifest has remote.review defined before assuming we should register the hook for the manifest project.",
+      "revId": "65e0f35fda0559e79316c8fdbeeaed6dd51e9a4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
