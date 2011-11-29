@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABj3////0\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-11-29T19:57:27Z",
+      "side": 1,
+      "message": "This has merge conflicts with current maint.",
+      "revId": "c13ec14fa0b1c0bf46422c21cb27db0431a5765c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABj3////4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-11-29T19:57:27Z",
+      "side": 1,
+      "message": "Why are we waiting 2 hours 42 minutes? Shouldn\u0027t this wait time be configurable by the user?",
+      "revId": "c13ec14fa0b1c0bf46422c21cb27db0431a5765c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
