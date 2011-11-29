@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAABj3///+8\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1311,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-11-29T20:38:29Z",
+      "side": 1,
+      "message": "Tab here, we use only spaces in repo Python code.",
+      "revId": "bbe3e31432eebfcade553cc5888fc45de6ef8b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAABj3///+4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2011-11-29T20:38:29Z",
+      "side": 1,
+      "message": "This is dangerous if the user has local changes here and there was a transient network error for example.\n\nI would rather try to fix the root causes than add this hammer that someone will use one day to shoot themselves in the foot and delete code they care about.",
+      "revId": "bbe3e31432eebfcade553cc5888fc45de6ef8b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
