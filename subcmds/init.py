@@ -23,7 +23,6 @@ from error import ManifestParseError
 from project import SyncBuffer
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION
-from git_config import GitConfig
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
@@ -36,20 +35,6 @@ The '%prog' command is run once to install and initialize repo.
 The latest repo source code and manifest collection is downloaded
 from the server and is installed in the .repo/ directory in the
 current working directory.
-
-The optional -u argument can be used to specify a URL to the
-manifest project. It is also possible to have a git configuration
-section as below to use 'identifier' as argument to -u:
-
-  [repo-manifest "identifier"]
-    url = ...
-    server = ...
-    reference = ...
-
-Only the url is required - the others are optional.
-
-If no -u argument is specified, the 'repo-manifest' section named
-'default' will be used if present.
 
 The optional -b argument can be used to select the manifest branch
 to checkout and use.  If no branch is specified, master is assumed.
@@ -84,7 +69,7 @@ to update the working directory files.
     # Manifest
     g = p.add_option_group('Manifest options')
     g.add_option('-u', '--manifest-url',
-                 dest='manifest_url', default='default',
+                 dest='manifest_url',
                  help='manifest repository location', metavar='URL')
     g.add_option('-b', '--manifest-branch',
                  dest='manifest_branch',
@@ -123,25 +108,10 @@ to update the working directory files.
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
     is_new = not m.Exists
-    manifest_server = None
-
-    # The manifest url may point out a manifest section in the config
-    key = 'repo-manifest.%s.' % opt.manifest_url
-    if GitConfig.ForUser().GetString(key + 'url'):
-      opt.manifest_url = GitConfig.ForUser().GetString(key + 'url')
-
-      # Also copy other options to the manifest config if not specified already.
-      if not opt.reference:
-        opt.reference = GitConfig.ForUser().GetString(key + 'reference')
-      manifest_server = GitConfig.ForUser().GetString(key + 'server')
 
     if is_new:
-      if not opt.manifest_url or opt.manifest_url == 'default':
-        print >>sys.stderr, """\
-fatal: missing manifest url (-u) and no default found.
-
-  tip: The global git configuration key 'repo-manifest.default.url' can
-       be used to specify a default url."""
+      if not opt.manifest_url:
+        print >>sys.stderr, 'fatal: manifest url (-u) is required.'
         sys.exit(1)
 
       if not opt.quiet:
@@ -164,9 +134,6 @@ fatal: missing manifest url (-u) and no default found.
       r.url = opt.manifest_url
       r.ResetFetch()
       r.Save()
-
-    if manifest_server:
-      m.config.SetString('repo.manifest-server', manifest_server)
 
     if opt.reference:
       m.config.SetString('repo.reference', opt.reference)

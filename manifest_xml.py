@@ -228,11 +228,7 @@ class XmlManifest(object):
   @property
   def manifest_server(self):
     self._Load()
-
-    if self._manifest_server:
-      return self._manifest_server
-
-    return self.manifestProject.config.GetString('repo.manifest-server')
+    return self._manifest_server
 
   @property
   def IsMirror(self):
