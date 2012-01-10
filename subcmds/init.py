@@ -83,6 +83,9 @@ to update the working directory files.
     g.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
+    g.add_option('--platform',
+                 dest='platform', default='auto',
+                 help='host system [auto|all|linux|darwin]', metavar='PLATFORM')
     g.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
@@ -134,6 +137,9 @@ to update the working directory files.
       r.url = opt.manifest_url
       r.ResetFetch()
       r.Save()
+
+    m.config.SetString('manifest.platform',
+                       'all' if opt.mirror else opt.platform)
 
     if opt.reference:
       m.config.SetString('repo.reference', opt.reference)
