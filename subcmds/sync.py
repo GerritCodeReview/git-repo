@@ -266,7 +266,7 @@ later is required to fix a server side protocol bug.
 
   def UpdateProjectList(self):
     new_project_paths = []
-    for project in self.manifest.projects.values():
+    for project in self.GetProjects(None, missing_ok=True):
       if project.relpath:
         new_project_paths.append(project.relpath)
     file_name = 'project.list'
@@ -295,7 +295,8 @@ later is required to fix a server side protocol bug.
                              worktree = os.path.join(self.manifest.topdir, path),
                              relpath = path,
                              revisionExpr = 'HEAD',
-                             revisionId = None)
+                             revisionId = None,
+                             platform = None)
 
               if project.IsDirty():
                 print >>sys.stderr, 'error: Cannot remove project "%s": \
