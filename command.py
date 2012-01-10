@@ -15,9 +15,10 @@
 
 import os
 import optparse
+import platform
 import sys
 
-from error import NoSuchProjectError
+from error import InvalidProjectPlatformError, NoSuchProjectError
 
 class Command(object):
   """Base class for any command line action in repo.
@@ -56,16 +57,26 @@ class Command(object):
     """Perform the action, after option parsing is complete.
     """
     raise NotImplementedError
- 
-  def GetProjects(self, args, missing_ok=False):
+
+  def GetProjects(self, args, missing_ok=False, host_platform=None):
     """A list of projects that match the arguments.
     """
     all = self.manifest.projects
     result = []
 
+    if not host_platform:
+      mp = self.manifest.manifestProject
+      host_platform = mp.config.GetString('manifest.platform')
+    if host_platform == 'auto':
+      host_platform = platform.system().lower()
+    elif host_platform == 'all':
+      host_platform = None
+
     if not args:
       for project in all.values():
-        if missing_ok or project.Exists:
+        if ((missing_ok or project.Exists) and
+            (not host_platform or not project.platform or
+             host_platform == project.platform)):
           result.append(project)
     else:
       by_path = None
@@ -102,6 +113,9 @@ class Command(object):
           raise NoSuchProjectError(arg)
         if not missing_ok and not project.Exists:
           raise NoSuchProjectError(arg)
+        if (host_platform and project.platform and
+            host_platform != project.platform):
+          raise InvalidProjectPlatformError(arg)
 
         result.append(project)
 

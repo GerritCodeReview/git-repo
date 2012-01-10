@@ -504,7 +504,8 @@ class Project(object):
                relpath,
                revisionExpr,
                revisionId,
-               rebase = True):
+               rebase = True,
+               platform = None):
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -524,6 +525,7 @@ class Project(object):
       self.revisionId = revisionId
 
     self.rebase = rebase
+    self.platform = platform
 
     self.snapshots = {}
     self.copyfiles = []
@@ -2078,7 +2080,8 @@ class MetaProject(Project):
                      remote = RemoteSpec('origin'),
                      relpath = '.repo/%s' % name,
                      revisionExpr = 'refs/heads/master',
-                     revisionId = None)
+                     revisionId = None,
+                     platform = None)
 
   def PreSync(self):
     if self.Exists:

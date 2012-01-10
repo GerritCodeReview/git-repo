@@ -398,7 +398,8 @@ class XmlManifest(object):
                         worktree = None,
                         relpath = None,
                         revisionExpr = m.revisionExpr,
-                        revisionId = None)
+                        revisionId = None,
+                        platform = None)
       self._projects[project.name] = project
 
   def _ParseRemote(self, node):
@@ -504,6 +505,8 @@ class XmlManifest(object):
     else:
       rebase = rebase.lower() in ("yes", "true", "1")
 
+    platform = node.getAttribute('platform')
+
     if self.IsMirror:
       relpath = None
       worktree = None
@@ -520,7 +523,8 @@ class XmlManifest(object):
                       relpath = path,
                       revisionExpr = revisionExpr,
                       revisionId = None,
-                      rebase = rebase)
+                      rebase = rebase,
+                      platform = platform)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
