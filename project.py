@@ -503,7 +503,8 @@ class Project(object):
                worktree,
                relpath,
                revisionExpr,
-               revisionId):
+               revisionId,
+               platform):
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -521,6 +522,8 @@ class Project(object):
       self.revisionId = revisionExpr
     else:
       self.revisionId = revisionId
+
+    self.platform = platform
 
     self.snapshots = {}
     self.copyfiles = []
@@ -2076,7 +2079,8 @@ class MetaProject(Project):
                      remote = RemoteSpec('origin'),
                      relpath = '.repo/%s' % name,
                      revisionExpr = 'refs/heads/master',
-                     revisionId = None)
+                     revisionId = None,
+                     platform = None)
 
   def PreSync(self):
     if self.Exists:

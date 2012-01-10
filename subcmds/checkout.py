@@ -39,6 +39,7 @@ The command is equivalent to:
     nb = args[0]
     err = []
     success = []
+    host_platform
     all = self.GetProjects(args[1:])
 
     pm = Progress('Checkout %s' % nb, len(all))

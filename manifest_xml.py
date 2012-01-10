@@ -398,7 +398,8 @@ class XmlManifest(object):
                         worktree = None,
                         relpath = None,
                         revisionExpr = m.revisionExpr,
-                        revisionId = None)
+                        revisionId = None,
+                        platform = None)
       self._projects[project.name] = project
 
   def _ParseRemote(self, node):
@@ -498,6 +499,8 @@ class XmlManifest(object):
             "project %s path cannot be absolute in %s" % \
             (name, self.manifestFile)
 
+    platform = node.getAttribute('platform')
+
     if self.IsMirror:
       relpath = None
       worktree = None
@@ -513,7 +516,8 @@ class XmlManifest(object):
                       worktree = worktree,
                       relpath = path,
                       revisionExpr = revisionExpr,
-                      revisionId = None)
+                      revisionId = None,
+                      platform = platform)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':

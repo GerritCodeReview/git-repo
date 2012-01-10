@@ -292,7 +292,8 @@ later is required to fix a server side protocol bug.
                              worktree = os.path.join(self.manifest.topdir, path),
                              relpath = path,
                              revisionExpr = 'HEAD',
-                             revisionId = None)
+                             revisionId = None,
+                             platform = None)
 
               if project.IsDirty():
                 print >>sys.stderr, 'error: Cannot remove project "%s": \
