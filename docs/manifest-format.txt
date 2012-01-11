@@ -45,7 +45,8 @@ following DTD:
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
   
-    <!ELEMENT project (annotation?)>
+    <!ELEMENT project (annotation?,
+                       project*)>
     <!ATTLIST project name     CDATA #REQUIRED>
     <!ATTLIST project path     CDATA #IMPLIED>
     <!ATTLIST project remote   IDREF #IMPLIED>
@@ -146,7 +147,18 @@ Element project
 
 One or more project elements may be specified.  Each element
 describes a single Git repository to be cloned into the repo
-client workspace.
+client workspace.  If a project element is specified inside
+a parent project element, it is called a sub-project, the Git
+repository of which is cloned into the parent project's Git
+repository.
+
+Note that a sub-project's Git repository should be registered
+as a Git submodule of the parent Git repository; otherwise Git
+will complain about untracked files in the parent repository.
+In other words, you have to register a submodule twice (once
+in repo manifest and once in the parent Git repository) as
+repo does not parse .gitmodules file of the parent repository
+to collect the registered list of submodules.
 
 Attribute `name`: A unique name for this project.  The project's
 name is appended onto its remote's fetch URL to generate the actual
@@ -164,7 +176,9 @@ being used for code reviews.
 
 Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project
-should be placed.  If not supplied the project name is used.
+should be placed.  To a sub-project, path is relative to the parent
+project's Git working directory.  If not supplied, the project
+name is used.
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
