@@ -74,12 +74,41 @@ class Command(object):
     groups = [x for x in re.split('[,\s]+', groups) if x]
 
     if not args:
-      for project in all.values():
+      all_projects = all.values()
+      derived_projects = []
+      for project in all_projects:
+        if project.Registered:
+          # Do not search registered subproject for derived projects
+          # since its parent has been searched already
+          continue
+        derived_projects.extend(project.GetDerivedSubprojects())
+      all_projects.extend(derived_projects)
+      for project in all_projects:
         if ((missing_ok or project.Exists) and
             project.MatchesGroups(groups)):
           result.append(project)
     else:
       by_path = None
+
+      def search_by_path(path):
+        project = None
+        if os.path.exists(path):
+          oldpath = None
+          while path \
+            and path != oldpath \
+            and path != self.manifest.topdir:
+            try:
+              project = by_path[path]
+              break
+            except KeyError:
+              oldpath = path
+              path = os.path.dirname(path)
+        else:
+          try:
+            project = by_path[path]
+          except KeyError:
+            pass
+        return project
 
       for arg in args:
         project = all.get(arg)
@@ -92,22 +121,17 @@ class Command(object):
             for p in all.values():
               by_path[p.worktree] = p
 
-          if os.path.exists(path):
-            oldpath = None
-            while path \
-              and path != oldpath \
-              and path != self.manifest.topdir:
-              try:
-                project = by_path[path]
-                break
-              except KeyError:
-                oldpath = path
-                path = os.path.dirname(path)
-          else:
-            try:
-              project = by_path[path]
-            except KeyError:
-              pass
+          project = search_by_path(path)
+
+          # If it's not a derived project, update by_path and search again, as
+          # arg might actually point to a derived subproject.
+          if project and not project.Derived:
+            search_again = False
+            for subproject in project.GetDerivedSubprojects():
+              by_path[subproject.worktree] = subproject
+              search_again = True
+            if search_again:
+              project = search_by_path(path) or project
 
         if not project:
           raise NoSuchProjectError(arg)

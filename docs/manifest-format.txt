@@ -45,7 +45,8 @@ following DTD:
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
   
-    <!ELEMENT project (annotation?)>
+    <!ELEMENT project (annotation?,
+                       project*)>
     <!ATTLIST project name     CDATA #REQUIRED>
     <!ATTLIST project path     CDATA #IMPLIED>
     <!ATTLIST project remote   IDREF #IMPLIED>
@@ -146,7 +147,10 @@ Element project
 
 One or more project elements may be specified.  Each element
 describes a single Git repository to be cloned into the repo
-client workspace.
+client workspace.  If a project element is specified inside
+a parent project element, it is called a sub-project, the Git
+repository of which is cloned into the parent project's Git
+repository.
 
 Attribute `name`: A unique name for this project.  The project's
 name is appended onto its remote's fetch URL to generate the actual
@@ -157,7 +161,8 @@ URL to configure the Git remote with.  The URL gets formed as:
 where ${remote_fetch} is the remote's fetch attribute and
 ${project_name} is the project's name attribute.  The suffix ".git"
 is always appended as repo assumes the upstream is a forrest of
-bare Git repositories.
+bare Git repositories.  To a sub-project, its parent's name is
+prefixed to its name, separated by a '/'.
 
 The project name must match the name Gerrit knows, if Gerrit is
 being used for code reviews.
@@ -165,6 +170,8 @@ being used for code reviews.
 Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project
 should be placed.  If not supplied the project name is used.
+To a sub-project, its parent's path is prefixed to its path, i.e.,
+path is "relative" to the parent project's Git working directory.
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
@@ -182,7 +189,8 @@ whitespace or comma separated.  All projects belong to the group
 it's name:`name` and path:`path`.  E.g. for
 <project name="monkeys" path="barrel-of"/>, that project
 definition is implicitly in the following manifest groups:
-default, name:monkeys, and path:barrel-of.
+default, name:monkeys, and path:barrel-of.  To a sub-project,
+the `name` and `path` here are those having prefixes-added.
 
 Element annotation
 ------------------
