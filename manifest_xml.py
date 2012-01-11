@@ -375,11 +375,15 @@ class XmlManifest(object):
     for node in itertools.chain(*node_list):
       if node.nodeName == 'project':
         project = self._ParseProject(node)
-        if self._projects.get(project.name):
-          raise ManifestParseError(
-              'duplicate project %s in %s' %
-              (project.name, self.manifestFile))
-        self._projects[project.name] = project
+        def recursively_add_projects(project):
+          if self._projects.get(project.name):
+            raise ManifestParseError(
+                'duplicate project %s in %s' %
+                (project.name, self.manifestFile))
+          self._projects[project.name] = project
+          for subproject in project.subprojects:
+            recursively_add_projects(subproject)
+        recursively_add_projects(project)
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
@@ -529,11 +533,13 @@ class XmlManifest(object):
 
     return '\n'.join(cleanLines)
 
-  def _ParseProject(self, node):
+  def _ParseProject(self, node, parent = None):
     """
     reads a <project> element from the manifest file
     """
     name = self._reqatt(node, 'name')
+    if parent:
+      name = os.path.join(parent.name, name)
 
     remote = self._get_remote(node)
     if remote is None:
@@ -579,33 +585,54 @@ class XmlManifest(object):
     default_groups = ['default', 'name:%s' % name, 'path:%s' % path]
     groups.extend(set(default_groups).difference(groups))
 
-    if self.IsMirror:
-      relpath = None
-      worktree = None
-      gitdir = os.path.join(self.topdir, '%s.git' % name)
+    if parent is None:
+      relpath, worktree, gitdir = self.GetProjectPaths(name, path)
     else:
-      worktree = os.path.join(self.topdir, path).replace('\\', '/')
-      gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
-
+      relpath, worktree, gitdir = self.GetSubprojectPaths(parent, path)
     project = Project(manifest = self,
                       name = name,
                       remote = remote.ToRemoteSpec(name),
                       gitdir = gitdir,
                       worktree = worktree,
-                      relpath = path,
+                      relpath = relpath,
                       revisionExpr = revisionExpr,
                       revisionId = None,
                       rebase = rebase,
                       groups = groups,
-                      sync_c = sync_c)
+                      sync_c = sync_c,
+                      parent = parent)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
+      if n.nodeName == 'project':
+        project.subprojects.append(self._ParseProject(n, parent = project))
 
     return project
+
+  def GetProjectPaths(self, name, path):
+    relpath = path
+    if self.IsMirror:
+      worktree = None
+      gitdir = os.path.join(self.topdir, '%s.git' % name)
+    else:
+      worktree = os.path.join(self.topdir, path).replace('\\', '/')
+      gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
+    return relpath, worktree, gitdir
+
+  def GetSubprojectName(self, parent, submodule_path):
+    return os.path.join(parent.name, submodule_path)
+
+  def GetSubprojectPaths(self, parent, path):
+    relpath = os.path.join(parent.relpath, path)
+    gitdir = os.path.join(parent.gitdir, 'subprojects/%s.git' % path)
+    if self.IsMirror:
+      worktree = None
+    else:
+      worktree = os.path.join(parent.worktree, path).replace('\\', '/')
+    return relpath, worktree, gitdir
 
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
