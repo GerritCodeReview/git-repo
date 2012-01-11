@@ -43,7 +43,7 @@ following DTD:
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
   
-    <!ELEMENT project (EMPTY)>
+    <!ELEMENT project (project*)>
     <!ATTLIST project name     CDATA #REQUIRED>
     <!ATTLIST project path     CDATA #IMPLIED>
     <!ATTLIST project remote   IDREF #IMPLIED>
@@ -146,7 +146,10 @@ being used for code reviews.
 
 Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project
-should be placed.  If not supplied the project name is used.
+should be placed.  However, if the project element is specified
+inside another project element, the path is relative to the parent
+project's Git working directory.  If not supplied, the project
+name is used.
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
