@@ -168,6 +168,23 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+  def _GetSubprojectsRecursively(self, projects):
+    result = []
+    lookup = projects
+    visited = set()
+    while True:
+      more_result = []
+      for project in lookup:
+        if project not in visited and project.subprojects:
+          more_result.extend(project.subprojects)
+        visited.add(project)
+      if more_result:
+        result.extend(more_result)
+        lookup = more_result
+      else:
+        break
+    return result
+
   def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
       """Main function of the fetch threads when jobs are > 1.
 
@@ -428,7 +445,15 @@ uncommitted changes are present' % project.relpath
       self.manifest._Unload()
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
+    # "all" recursively includes sub-projects.  "roots" is a sub-list of "all",
+    # each project of which is a parent project but is not a subproject of
+    # another project of the "all" list.
     all = self.GetProjects(args, missing_ok=True)
+    all_subprojects = self._GetSubprojectsRecursively(all)
+    roots = [p for p in all if p.subprojects and p not in all_subprojects]
+    # Remove duplicate projects
+    all_subprojects = [p for p in all_subprojects if p not in all]
+    all.extend(all_subprojects)
 
     if not opt.local_only:
       to_fetch = []
@@ -469,6 +494,13 @@ uncommitted changes are present' % project.relpath
     print >>sys.stderr
     if not syncbuf.Finish():
       sys.exit(1)
+
+    pm = Progress('Updating submodules', len(roots))
+    for project in roots:
+      pm.update()
+      if project.worktree:
+        project._Submodule_Update(['--recursive'])
+    pm.end()
 
     # If there's a notice that's supposed to print at the end of the sync, print
     # it now...
