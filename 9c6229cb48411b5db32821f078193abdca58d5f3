@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAB9X////4\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-01-11T23:37:00Z",
+      "side": 1,
+      "message": "fyi, split uses whitespace by default",
+      "revId": "9c6229cb48411b5db32821f078193abdca58d5f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAB9X////0\u003d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-01-11T23:37:00Z",
+      "side": 1,
+      "message": "Is the project name no longer needed here?",
+      "revId": "9c6229cb48411b5db32821f078193abdca58d5f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
