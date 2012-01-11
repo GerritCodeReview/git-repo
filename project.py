@@ -22,6 +22,7 @@ import shutil
 import stat
 import subprocess
 import sys
+import tempfile
 import time
 
 from color import Coloring
@@ -484,7 +485,28 @@ class Project(object):
                rebase = True,
                groups = None,
                sync_c = False,
-               upstream = None):
+               upstream = None,
+               parent = None,
+               is_derived = False):
+    """Init a Project object.
+
+    Args:
+      manifest: The XmlManifest object.
+      name: The `name` attribute of manifest.xml's project element.
+      remote: RemoteSpec object specifying its remote's properties.
+      gitdir: Absolute path of git directory.
+      worktree: Absolute path of git working tree.
+      relpath: Relative path of git working tree to repo's top directory.
+      revisionExpr: The `revision` attribute of manifest.xml's project element.
+      revisionId: git commit id for checking out.
+      rebase: The `rebase` attribute of manifest.xml's project element.
+      groups: The `groups` attribute of manifest.xml's project element.
+      sync_c: The `sync-c` attribute of manifest.xml's project element.
+      upstream: The `upstream` attribute of manifest.xml's project element.
+      parent: The parent Project object.
+      is_derived: False if the project was explicitly defined in the manifest;
+                  True if the project is a discovered submodule.
+    """
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -507,6 +529,9 @@ class Project(object):
     self.groups = groups
     self.sync_c = sync_c
     self.upstream = upstream
+    self.parent = parent
+    self.is_derived = is_derived
+    self.subprojects = []
 
     self.snapshots = {}
     self.copyfiles = []
@@ -525,6 +550,14 @@ class Project(object):
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
     self.enabled_repo_hooks = []
+
+  @property
+  def Registered(self):
+    return self.parent and not self.is_derived
+
+  @property
+  def Derived(self):
+    return self.is_derived
 
   @property
   def Exists(self):
@@ -1368,6 +1401,151 @@ class Project(object):
           base = rev
         kept.append(ReviewableBranch(self, branch, base))
     return kept
+
+
+## Submodule Management ##
+
+  def GetRegisteredSubprojects(self):
+    result = []
+    def rec(subprojects):
+      if not subprojects:
+        return
+      result.extend(subprojects)
+      for p in subprojects:
+        rec(p.subprojects)
+    rec(self.subprojects)
+    return result
+
+  def _GetSubmodules(self):
+    # Unfortunately we cannot call `git submodule status --recursive` here
+    # because the working tree might not exist yet, and it cannot be used
+    # without a working tree in its current implementation.
+
+    def get_submodules(gitdir, rev, path):
+      # Parse .gitmodules for submodule sub_paths and sub_urls
+      sub_paths, sub_urls = parse_gitmodules(gitdir, rev)
+      if not sub_paths:
+        return []
+      # Run `git ls-tree` to read SHAs of submodule object, which happen to be
+      # revision of submodule repository
+      sub_revs = git_ls_tree(gitdir, rev, sub_paths)
+      submodules = []
+      for sub_path, sub_url in zip(sub_paths, sub_urls):
+        try:
+          sub_rev = sub_revs[sub_path]
+        except KeyError:
+          # Ignore non-exist submodules
+          continue
+        sub_gitdir = self.manifest.GetSubprojectPaths(self, sub_path)[2]
+        submodules.append((sub_rev, sub_path, sub_url))
+      return submodules
+
+    re_path = re.compile(r'submodule.(\w+).path')
+    re_url = re.compile(r'submodule.(\w+).url')
+    def parse_gitmodules(gitdir, rev):
+      cmd = ['cat-file', 'blob', '%s:.gitmodules' % rev]
+      try:
+        p = GitCommand(None, cmd, capture_stdout = True, capture_stderr = True,
+                       bare = True, gitdir = gitdir)
+      except GitError as e:
+        return [], []
+      if p.Wait() != 0:
+        return [], []
+
+      gitmodules_lines = []
+      fd, temp_gitmodules_path = tempfile.mkstemp()
+      try:
+        os.write(fd, p.stdout)
+        os.close(fd)
+        cmd = ['config', '--file', temp_gitmodules_path, '--list']
+        p = GitCommand(None, cmd, capture_stdout = True, capture_stderr = True,
+                       bare = True, gitdir = gitdir)
+        if p.Wait() != 0:
+          return [], []
+        gitmodules_lines = p.stdout.split('\n')
+      except GitError as e:
+        return [], []
+      finally:
+        os.remove(temp_gitmodules_path)
+
+      names = set()
+      paths = {}
+      urls = {}
+      for line in gitmodules_lines:
+        if not line:
+          continue
+        key, value = line.split('=')
+        m = re_path.match(key)
+        if m:
+          names.add(m.group(1))
+          paths[m.group(1)] = value
+          continue
+        m = re_url.match(key)
+        if m:
+          names.add(m.group(1))
+          urls[m.group(1)] = value
+          continue
+      names = sorted(names)
+      return [paths[name] for name in names], [urls[name] for name in names]
+
+    def git_ls_tree(gitdir, rev, paths):
+      cmd = ['ls-tree', rev, '--']
+      cmd.extend(paths)
+      try:
+        p = GitCommand(None, cmd, capture_stdout = True, capture_stderr = True,
+                       bare = True, gitdir = gitdir)
+      except GitError:
+        return []
+      if p.Wait() != 0:
+        return []
+      objects = {}
+      for line in p.stdout.split('\n'):
+        if not line.strip():
+          continue
+        object_rev, object_path = line.split()[2:4]
+        objects[object_path] = object_rev
+      return objects
+
+    try:
+      rev = self.GetRevisionId()
+    except GitError:
+      return []
+    return get_submodules(self.gitdir, rev, '')
+
+  def GetDerivedSubprojects(self):
+    result = []
+    if not self.Exists:
+      # If git repo does not exist yet, querying its submodules will
+      # mess up its states; so return here.
+      return result
+    for rev, path, url in self._GetSubmodules():
+      name = self.manifest.GetSubprojectName(self, path)
+      project = self.manifest.projects.get(name)
+      if project and project.Registered:
+        # If it has been registered, skip it because we are searching
+        # derived subprojects, but search for its derived subprojects.
+        result.extend(project.GetDerivedSubprojects())
+        continue
+      relpath, worktree, gitdir = self.manifest.GetSubprojectPaths(self, path)
+      remote = RemoteSpec(self.remote.name,
+                          url = url,
+                          review = self.remote.review)
+      subproject = Project(manifest = self.manifest,
+                           name = name,
+                           remote = remote,
+                           gitdir = gitdir,
+                           worktree = worktree,
+                           relpath = relpath,
+                           revisionExpr = self.revisionExpr,
+                           revisionId = rev,
+                           rebase = self.rebase,
+                           groups = self.groups,
+                           sync_c = self.sync_c,
+                           parent = self,
+                           is_derived = True)
+      result.append(subproject)
+      result.extend(subproject.GetDerivedSubprojects())
+    return result
 
 
 ## Direct Git Commands ##
