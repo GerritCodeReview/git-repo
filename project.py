@@ -866,31 +866,30 @@ class Project(object):
       branch.remote.projectname = self.name
       branch.remote.Save()
 
-    if branch.remote.ReviewProtocol == 'ssh':
-      if dest_branch.startswith(R_HEADS):
-        dest_branch = dest_branch[len(R_HEADS):]
+    url = branch.remote.ReviewUrl(self.UserEmail)
+    if url is None:
+      raise UploadError('review not configured')
+    cmd = ['push']
 
+    if url.startswith('ssh://'):
       rp = ['gerrit receive-pack']
       for e in people[0]:
         rp.append('--reviewer=%s' % sq(e))
       for e in people[1]:
         rp.append('--cc=%s' % sq(e))
-
-      ref_spec = '%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch)
-      if auto_topic:
-        ref_spec = ref_spec + '/' + branch.name
-
-      cmd = ['push']
       cmd.append('--receive-pack=%s' % " ".join(rp))
-      cmd.append(branch.remote.SshReviewUrl(self.UserEmail))
-      cmd.append(ref_spec)
 
-      if GitCommand(self, cmd, bare = True).Wait() != 0:
-        raise UploadError('Upload failed')
+    cmd.append(url)
 
-    else:
-        raise UploadError('Unsupported protocol %s' \
-          % branch.remote.review)
+    if dest_branch.startswith(R_HEADS):
+      dest_branch = dest_branch[len(R_HEADS):]
+    ref_spec = '%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch)
+    if auto_topic:
+      ref_spec = ref_spec + '/' + branch.name
+    cmd.append(ref_spec)
+
+    if GitCommand(self, cmd, bare = True).Wait() != 0:
+      raise UploadError('Upload failed')
 
     msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
     self.bare_git.UpdateRef(R_PUB + branch.name,

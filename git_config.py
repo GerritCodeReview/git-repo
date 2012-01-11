@@ -527,7 +527,7 @@ class Remote(object):
     self.projectname = self._Get('projectname')
     self.fetch = map(lambda x: RefSpec.FromString(x),
                      self._Get('fetch', all=True))
-    self._review_protocol = None
+    self._review_url = None
 
   def _InsteadOf(self):
     globCfg = GitConfig.ForUser()
@@ -554,9 +554,8 @@ class Remote(object):
     connectionUrl = self._InsteadOf()
     return _preconnect(connectionUrl)
 
-  @property
-  def ReviewProtocol(self):
-    if self._review_protocol is None:
+  def ReviewUrl(self, userEmail):
+    if self._review_url is None:
       if self.review is None:
         return None
 
@@ -565,67 +564,47 @@ class Remote(object):
         u = 'http://%s' % u
       if u.endswith('/Gerrit'):
         u = u[:len(u) - len('/Gerrit')]
-      if not u.endswith('/ssh_info'):
-        if not u.endswith('/'):
-          u += '/'
-        u += 'ssh_info'
+      if u.endswith('/ssh_info'):
+        u = u[:len(u) - len('/ssh_info')]
+      if not u.endswith('/'):
+         u += '/'
+      http_url = u
 
       if u in REVIEW_CACHE:
-        info = REVIEW_CACHE[u]
-        self._review_protocol = info[0]
-        self._review_host = info[1]
-        self._review_port = info[2]
+        self._review_url = REVIEW_CACHE[u]
       elif 'REPO_HOST_PORT_INFO' in os.environ:
-        info = os.environ['REPO_HOST_PORT_INFO']
-        self._review_protocol = 'ssh'
-        self._review_host = info.split(" ")[0]
-        self._review_port = info.split(" ")[1]
-
-        REVIEW_CACHE[u] = (
-          self._review_protocol,
-          self._review_host,
-          self._review_port)
+        host, port = os.environ['REPO_HOST_PORT_INFO'].split(' ')
+        self._review_url = self._SshReviewUrl(userEmail, host, port)
+        REVIEW_CACHE[u] = self._review_url
       else:
         try:
-          info = urllib2.urlopen(u).read()
-          if info == 'NOT_AVAILABLE':
-            raise UploadError('%s: SSH disabled' % self.review)
+          info_url = u + 'ssh_info'
+          info = urllib2.urlopen(info_url).read()
           if '<' in info:
             # Assume the server gave us some sort of HTML
             # response back, like maybe a login page.
             #
-            raise UploadError('%s: Cannot parse response' % u)
+            raise UploadError('%s: Cannot parse response' % info_url)
 
-          self._review_protocol = 'ssh'
-          self._review_host = info.split(" ")[0]
-          self._review_port = info.split(" ")[1]
-        except urllib2.HTTPError, e:
-          if e.code == 404:
-            self._review_protocol = 'http-post'
-            self._review_host = None
-            self._review_port = None
+          if info == 'NOT_AVAILABLE':
+            # Assume HTTP if SSH is not enabled.
+            self._review_url = http_url + 'p/'
           else:
-            raise UploadError('Upload over SSH unavailable')
+            host, port = info.split(' ')
+            self._review_url = self._SshReviewUrl(userEmail, host, port)
+        except urllib2.HTTPError, e:
+          raise UploadError('%s: %s' % (self.review, str(e)))
         except urllib2.URLError, e:
           raise UploadError('%s: %s' % (self.review, str(e)))
 
-        REVIEW_CACHE[u] = (
-          self._review_protocol,
-          self._review_host,
-          self._review_port)
-    return self._review_protocol
+        REVIEW_CACHE[u] = self._review_url
+    return self._review_url
 
-  def SshReviewUrl(self, userEmail):
-    if self.ReviewProtocol != 'ssh':
-      return None
+  def _SshReviewUrl(self, userEmail, host, port):
     username = self._config.GetString('review.%s.username' % self.review)
     if username is None:
-      username = userEmail.split("@")[0]
-    return 'ssh://%s@%s:%s/%s' % (
-      username,
-      self._review_host,
-      self._review_port,
-      self.projectname)
+      username = userEmail.split('@')[0]
+    return 'ssh://%s@%s:%s/' % (username, host, port)
 
   def ToLocal(self, rev):
     """Convert a remote revision string to something we have locally.
