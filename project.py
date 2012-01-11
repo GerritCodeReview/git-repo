@@ -539,6 +539,20 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+  def MakeSubprojectReference(self, parentProject, path):
+    worktree = None if parentProject.worktree is None else \
+               os.path.join(parentProject.worktree, path)
+    relpath = os.path.join(parentProject.relpath, path)
+    subproject = Project(self.manifest,
+                         self.name,
+                         self.remote,
+                         self.gitdir,
+                         worktree,
+                         relpath,
+                         self.revisionExpr,
+                         self.revisionId)
+    return subproject
+
   @property
   def Exists(self):
     return os.path.isdir(self.gitdir)

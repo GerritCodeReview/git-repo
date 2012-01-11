@@ -335,12 +335,19 @@ class XmlManifest(object):
 
     for node in config.childNodes:
       if node.nodeName == 'project':
-        project = self._ParseProject(node)
+        project, subprojects = self._ParseProject(node)
         if self._projects.get(project.name):
           raise ManifestParseError(
               'duplicate project %s in %s' %
               (project.name, self.manifestFile))
         self._projects[project.name] = project
+        for subproject in subprojects:
+          name = '%s/%s' % (project.name, subproject.name)
+          if self._projects.get(name):
+            raise ManifestParseError(
+                'duplicate subproject %s in %s' %
+                (name, self.manifestFile))
+          self._projects[name] = subproject
 
     for node in config.childNodes:
       if node.nodeName == 'repo-hooks':
@@ -499,7 +506,6 @@ class XmlManifest(object):
             (name, self.manifestFile)
 
     if self.IsMirror:
-      relpath = None
       worktree = None
       gitdir = os.path.join(self.topdir, '%s.git' % name)
     else:
@@ -515,11 +521,31 @@ class XmlManifest(object):
                       revisionExpr = revisionExpr,
                       revisionId = None)
 
+    subprojects = []
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
+      if n.nodeName == 'subproject':
+        subprojects.append(self._ParseSubproject(n, project))
 
-    return project
+    return project, subprojects
+
+  def _ParseSubproject(self, node, project):
+    name = self._reqatt(node, 'name')
+    path = node.getAttribute('path')
+    if not path:
+      path = name
+    if path.startswith('/'):
+      raise ManifestParseError(
+            "subproject %s path cannot be absolute in %s" %
+            (name, self.manifestFile))
+    try:
+      p = self._projects[name]
+    except KeyError:
+      raise ManifestParseError(
+            "project %s is not declared before subproject reference in %s" %
+            (name, self.manifestFile))
+    return p.MakeSubprojectReference(parentProject = project, path = path)
 
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
