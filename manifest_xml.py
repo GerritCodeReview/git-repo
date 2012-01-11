@@ -336,11 +336,16 @@ class XmlManifest(object):
     for node in config.childNodes:
       if node.nodeName == 'project':
         project = self._ParseProject(node)
-        if self._projects.get(project.name):
-          raise ManifestParseError(
-              'duplicate project %s in %s' %
-              (project.name, self.manifestFile))
-        self._projects[project.name] = project
+        def recursive_add_projects(project, tallied_name):
+          if self._projects.get(tallied_name):
+            raise ManifestParseError(
+                'duplicate project %s in %s' %
+                (tallied_name, self.manifestFile))
+          self._projects[tallied_name] = project
+          for subproject in project.subprojects:
+            name = '%s/%s' % (tallied_name, subproject.name)
+            recursive_add_projects(subproject, name)
+        recursive_add_projects(project, project.name)
 
     for node in config.childNodes:
       if node.nodeName == 'repo-hooks':
@@ -468,7 +473,7 @@ class XmlManifest(object):
 
     return '\n'.join(cleanLines)
 
-  def _ParseProject(self, node):
+  def _ParseProject(self, node, parent = None):
     """
     reads a <project> element from the manifest file
     """
@@ -498,26 +503,37 @@ class XmlManifest(object):
             "project %s path cannot be absolute in %s" % \
             (name, self.manifestFile)
 
-    if self.IsMirror:
-      relpath = None
-      worktree = None
-      gitdir = os.path.join(self.topdir, '%s.git' % name)
+    if parent is None:
+      relpath = path
+      if self.IsMirror:
+        worktree = None
+        gitdir = os.path.join(self.topdir, '%s.git' % name)
+      else:
+        worktree = os.path.join(self.topdir, path).replace('\\', '/')
+        gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
     else:
-      worktree = os.path.join(self.topdir, path).replace('\\', '/')
-      gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
+      relpath = os.path.join(parent.relpath, path)
+      if self.IsMirror:
+        worktree = None
+        gitdir = os.path.join(parent.gitdir, '%s.git' % name)
+      else:
+        worktree = os.path.join(parent.worktree, path).replace('\\', '/')
+        gitdir = os.path.join(parent.gitdir, 'projects/%s.git' % path)
 
     project = Project(manifest = self,
                       name = name,
                       remote = remote.ToRemoteSpec(name),
                       gitdir = gitdir,
                       worktree = worktree,
-                      relpath = path,
+                      relpath = relpath,
                       revisionExpr = revisionExpr,
                       revisionId = None)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
+      if n.nodeName == 'project':
+        project.subprojects.append(self._ParseProject(n, parent = project))
 
     return project
 
