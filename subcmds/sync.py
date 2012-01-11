@@ -113,6 +113,9 @@ resumeable bundle file on a content delivery network. This
 may be necessary if there are problems with the local Python
 HTTP client or proxy configuration, but the Git binary works.
 
+The --fetch-submodules option enables fetching Git submodules
+of a project from server.
+
 SSH Connections
 ---------------
 
@@ -173,6 +176,9 @@ later is required to fix a server side protocol bug.
     p.add_option('--no-clone-bundle',
                  dest='no_clone_bundle', action='store_true',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
+    p.add_option('--fetch-submodules',
+                 dest='fetch_submodules', action='store_true',
+                 help='fetch submodules from server')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -553,7 +559,9 @@ uncommitted changes are present' % project.relpath
       self.manifest._Unload()
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
-    all_projects = self.GetProjects(args, missing_ok=True)
+    all_projects = self.GetProjects(args,
+                                    missing_ok=True,
+                                    submodules_ok=opt.fetch_submodules)
 
     self._fetch_times = _FetchTimes(self.manifest)
     if not opt.local_only:
@@ -564,11 +572,32 @@ uncommitted changes are present' % project.relpath
       to_fetch.extend(all_projects)
       to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
-      self._Fetch(to_fetch, opt)
+      fetched = self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
         return
+
+      # Iteratively fetch missing and/or nested unregistered submodules
+      previously_missing_set = set()
+      while True:
+        self.manifest._Unload()
+        all_projects = self.GetProjects(args,
+                                        missing_ok=True,
+                                        submodules_ok=opt.fetch_submodules)
+        missing = []
+        for project in all_projects:
+          if project.gitdir not in fetched:
+            missing.append(project)
+        if not missing:
+          break
+        # Stop us from non-stopped fetching actually-missing repos: If set of
+        # missing repos has not been changed from last fetch, we break.
+        missing_set = set(p.name for p in missing)
+        if previously_missing_set == missing_set:
+          break
+        previously_missing_set = missing_set
+        fetched.update(self._Fetch(missing, opt))
 
     if self.manifest.IsMirror:
       # bail out now, we have no working tree
