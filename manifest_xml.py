@@ -40,6 +40,7 @@ class _Default(object):
   remote = None
   sync_j = 1
   sync_c = False
+  sync_s = False
 
 class _XmlRemote(object):
   def __init__(self,
@@ -178,6 +179,9 @@ class XmlManifest(object):
     if d.sync_c:
       have_default = True
       e.setAttribute('sync-c', 'true')
+    if d.sync_s:
+      have_default = True
+      e.setAttribute('sync-s', 'true')
     if have_default:
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
@@ -188,20 +192,25 @@ class XmlManifest(object):
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
 
-    sort_projects = list(self.projects.keys())
-    sort_projects.sort()
+    def output_projects(parent, parent_node, projects):
+      for p in projects:
+        output_project(parent, parent_node, self.projects[p])
 
-    for p in sort_projects:
-      p = self.projects[p]
-
+    def output_project(parent, parent_node, p):
       if not p.MatchesGroups(groups):
-        continue
+        return
+
+      name = p.name
+      relpath = p.relpath
+      if parent:
+        name = self._UnjoinName(parent.name, name)
+        relpath = self._UnjoinRelpath(parent.relpath, relpath)
 
       e = doc.createElement('project')
-      root.appendChild(e)
-      e.setAttribute('name', p.name)
-      if p.relpath != p.name:
-        e.setAttribute('path', p.relpath)
+      parent_node.appendChild(e)
+      e.setAttribute('name', name)
+      if relpath != name:
+        e.setAttribute('path', relpath)
       if not d.remote or p.remote.name != d.remote.name:
         e.setAttribute('remote', p.remote.name)
       if peg_rev:
@@ -238,6 +247,19 @@ class XmlManifest(object):
 
       if p.sync_c:
         e.setAttribute('sync-c', 'true')
+
+      if p.sync_s:
+        e.setAttribute('sync-s', 'true')
+
+      if p.subprojects:
+        sort_projects = [subp.name for subp in p.subprojects]
+        sort_projects.sort()
+        output_projects(p, e, sort_projects)
+
+    sort_projects = [key for key in self.projects.keys()
+                     if not self.projects[key].parent]
+    sort_projects.sort()
+    output_projects(None, root, sort_projects)
 
     if self._repo_hooks_project:
       root.appendChild(doc.createTextNode(''))
@@ -409,14 +431,19 @@ class XmlManifest(object):
               (self.manifestFile))
         self._manifest_server = url
 
+    def recursively_add_projects(project):
+      if self._projects.get(project.name):
+        raise ManifestParseError(
+            'duplicate project %s in %s' %
+            (project.name, self.manifestFile))
+      self._projects[project.name] = project
+      for subproject in project.subprojects:
+        recursively_add_projects(subproject)
+
     for node in itertools.chain(*node_list):
       if node.nodeName == 'project':
         project = self._ParseProject(node)
-        if self._projects.get(project.name):
-          raise ManifestParseError(
-              'duplicate project %s in %s' %
-              (project.name, self.manifestFile))
-        self._projects[project.name] = project
+        recursively_add_projects(project)
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
@@ -524,6 +551,12 @@ class XmlManifest(object):
       d.sync_c = False
     else:
       d.sync_c = sync_c.lower() in ("yes", "true", "1")
+
+    sync_s = node.getAttribute('sync-s')
+    if not sync_s:
+      d.sync_s = False
+    else:
+      d.sync_s = sync_s.lower() in ("yes", "true", "1")
     return d
 
   def _ParseNotice(self, node):
@@ -565,11 +598,19 @@ class XmlManifest(object):
 
     return '\n'.join(cleanLines)
 
-  def _ParseProject(self, node):
+  def _JoinName(self, parent_name, name):
+    return os.path.join(parent_name, name)
+
+  def _UnjoinName(self, parent_name, name):
+    return os.path.relpath(name, parent_name)
+
+  def _ParseProject(self, node, parent = None):
     """
     reads a <project> element from the manifest file
     """
     name = self._reqatt(node, 'name')
+    if parent:
+      name = self._JoinName(parent.name, name)
 
     remote = self._get_remote(node)
     if remote is None:
@@ -607,6 +648,12 @@ class XmlManifest(object):
     else:
       sync_c = sync_c.lower() in ("yes", "true", "1")
 
+    sync_s = node.getAttribute('sync-s')
+    if not sync_s:
+      sync_s = self._default.sync_s
+    else:
+      sync_s = sync_s.lower() in ("yes", "true", "1")
+
     upstream = node.getAttribute('upstream')
 
     groups = ''
@@ -614,36 +661,66 @@ class XmlManifest(object):
       groups = node.getAttribute('groups')
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
-    default_groups = ['all', 'name:%s' % name, 'path:%s' % path]
-    groups.extend(set(default_groups).difference(groups))
-
-    if self.IsMirror:
-      worktree = None
-      gitdir = os.path.join(self.topdir, '%s.git' % name)
+    if parent is None:
+      relpath, worktree, gitdir = self.GetProjectPaths(name, path)
     else:
-      worktree = os.path.join(self.topdir, path).replace('\\', '/')
-      gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
+      relpath, worktree, gitdir = self.GetSubprojectPaths(parent, path)
+
+    default_groups = ['all', 'name:%s' % name, 'path:%s' % relpath]
+    groups.extend(set(default_groups).difference(groups))
 
     project = Project(manifest = self,
                       name = name,
                       remote = remote.ToRemoteSpec(name),
                       gitdir = gitdir,
                       worktree = worktree,
-                      relpath = path,
+                      relpath = relpath,
                       revisionExpr = revisionExpr,
                       revisionId = None,
                       rebase = rebase,
                       groups = groups,
                       sync_c = sync_c,
-                      upstream = upstream)
+                      sync_s = sync_s,
+                      upstream = upstream,
+                      parent = parent)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
+      if n.nodeName == 'project':
+        project.subprojects.append(self._ParseProject(n, parent = project))
 
     return project
+
+  def GetProjectPaths(self, name, path):
+    relpath = path
+    if self.IsMirror:
+      worktree = None
+      gitdir = os.path.join(self.topdir, '%s.git' % name)
+    else:
+      worktree = os.path.join(self.topdir, path).replace('\\', '/')
+      gitdir = os.path.join(self.repodir, 'projects', '%s.git' % path)
+    return relpath, worktree, gitdir
+
+  def GetSubprojectName(self, parent, submodule_path):
+    return os.path.join(parent.name, submodule_path)
+
+  def _JoinRelpath(self, parent_relpath, relpath):
+    return os.path.join(parent_relpath, relpath)
+
+  def _UnjoinRelpath(self, parent_relpath, relpath):
+    return os.path.relpath(relpath, parent_relpath)
+
+  def GetSubprojectPaths(self, parent, path):
+    relpath = self._JoinRelpath(parent.relpath, path)
+    gitdir = os.path.join(parent.gitdir, 'subprojects', '%s.git' % path)
+    if self.IsMirror:
+      worktree = None
+    else:
+      worktree = os.path.join(parent.worktree, path).replace('\\', '/')
+    return relpath, worktree, gitdir
 
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')

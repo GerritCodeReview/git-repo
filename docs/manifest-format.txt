@@ -41,17 +41,20 @@ following DTD:
     <!ATTLIST default revision CDATA #IMPLIED>
     <!ATTLIST default sync-j   CDATA #IMPLIED>
     <!ATTLIST default sync-c   CDATA #IMPLIED>
+    <!ATTLIST default sync-s   CDATA #IMPLIED>
 
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
   
-    <!ELEMENT project (annotation?)>
+    <!ELEMENT project (annotation?,
+                       project*)>
     <!ATTLIST project name     CDATA #REQUIRED>
     <!ATTLIST project path     CDATA #IMPLIED>
     <!ATTLIST project remote   IDREF #IMPLIED>
     <!ATTLIST project revision CDATA #IMPLIED>
     <!ATTLIST project groups   CDATA #IMPLIED>
     <!ATTLIST project sync-c   CDATA #IMPLIED>
+    <!ATTLIST project sync-s   CDATA #IMPLIED>
 
     <!ELEMENT annotation (EMPTY)>
     <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -152,7 +155,10 @@ Element project
 
 One or more project elements may be specified.  Each element
 describes a single Git repository to be cloned into the repo
-client workspace.
+client workspace.  You may specify Git-submodules by creating a
+nested project.  Git-submodules will be automatically
+recognized and inherit their parent's attributes, but those
+may be overridden by an explicitly specified project element.
 
 Attribute `name`: A unique name for this project.  The project's
 name is appended onto its remote's fetch URL to generate the actual
@@ -163,7 +169,8 @@ URL to configure the Git remote with.  The URL gets formed as:
 where ${remote_fetch} is the remote's fetch attribute and
 ${project_name} is the project's name attribute.  The suffix ".git"
 is always appended as repo assumes the upstream is a forest of
-bare Git repositories.
+bare Git repositories.  If the project has a parent element, its
+name will be prefixed by the parent's.
 
 The project name must match the name Gerrit knows, if Gerrit is
 being used for code reviews.
@@ -171,6 +178,8 @@ being used for code reviews.
 Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project
 should be placed.  If not supplied the project name is used.
+If the project has a parent element, its path will be prefixed
+by the parent's.
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
@@ -190,6 +199,8 @@ its name:`name` and path:`path`.  E.g. for
 definition is implicitly in the following manifest groups:
 default, name:monkeys, and path:barrel-of.  If you place a project in the
 group "notdefault", it will not be automatically downloaded by repo.
+If the project has a parent element, the `name` and `path` here
+are the prefixed ones.
 
 Element annotation
 ------------------
