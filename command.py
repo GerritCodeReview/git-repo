@@ -60,7 +60,8 @@ class Command(object):
     """
     raise NotImplementedError
 
-  def GetProjects(self, args, missing_ok=False):
+  def GetProjects(self, args, missing_ok=False,
+                  subprojects_included=False, subprojects_excluded=False):
     """A list of projects that match the arguments.
     """
     all = self.manifest.projects
@@ -118,9 +119,32 @@ class Command(object):
 
         result.append(project)
 
+    if subprojects_included:
+      result.extend(self._GetSubprojectsRecursively(result))
+    elif subprojects_excluded:
+      subproject_gitdirs = set(project.gitdir for project in
+                               self._GetSubprojectsRecursively(result))
+      result = [project for project in result
+                if project.gitdir not in subproject_gitdirs]
+
     def _getpath(x):
       return x.relpath
     result.sort(key=_getpath)
+    return result
+
+  def _GetSubprojectsRecursively(self, projects):
+    result = []
+    lookup = projects
+    while True:
+      more_result = []
+      for project in lookup:
+        if project.subprojects:
+          more_result.extend(project.subprojects)
+      if more_result:
+        result.extend(more_result)
+        lookup = more_result
+      else:
+        break
     return result
 
 class InteractiveCommand(Command):

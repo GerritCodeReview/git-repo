@@ -428,7 +428,10 @@ uncommitted changes are present' % project.relpath
       self.manifest._Unload()
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
-    all = self.GetProjects(args, missing_ok=True)
+    all = self.GetProjects(args, missing_ok=True, subprojects_included=True)
+    # roots are super-projects that are not subproject of another project
+    roots = self.GetProjects(args, missing_ok=True, subprojects_excluded=True)
+    roots = [project for project in roots if project.subprojects]
 
     if not opt.local_only:
       to_fetch = []
@@ -469,6 +472,13 @@ uncommitted changes are present' % project.relpath
     print >>sys.stderr
     if not syncbuf.Finish():
       sys.exit(1)
+
+    pm = Progress('Updating submodules', len(roots))
+    for project in roots:
+      pm.update()
+      if project.worktree:
+        project._Submodule_Update(['--recursive'])
+    pm.end()
 
     # If there's a notice that's supposed to print at the end of the sync, print
     # it now...
