@@ -539,6 +539,8 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+    self.subprojects = []
+
   @property
   def Exists(self):
     return os.path.isdir(self.gitdir)
