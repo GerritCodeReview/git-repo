@@ -527,6 +527,8 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+    self.subprojects = []
+
   @property
   def Exists(self):
     return os.path.isdir(self.gitdir)
@@ -1765,6 +1767,11 @@ class Project(object):
         os.makedirs(rr_cache)
 
       self._CopyFiles()
+
+  def _Submodule_Update(self, args):
+      cmd = ['submodule', 'update'] + args
+      if GitCommand(self, cmd).Wait() != 0:
+        raise GitError("cannot update submodule")
 
   def _gitdir_path(self, path):
     return os.path.join(self.gitdir, path)
