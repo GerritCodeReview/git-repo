@@ -510,13 +510,24 @@ uncommitted changes are present' % project.relpath
         # bail out now; the rest touches the working tree
         return
 
+      # Iteratively fetch missing and/or nested subprojects
+      previously_missing_set = set()
+      while True:
         self.manifest._Unload()
         all = self.GetProjects(args, missing_ok=True)
         missing = []
         for project in all:
           if project.gitdir not in fetched:
             missing.append(project)
-        self._Fetch(missing, opt)
+        if not missing:
+          break
+        # Stop us from non-stopped fetching actually-missing repos: If set of
+        # missing repos has not been changed from last fetch, we break.
+        missing_set = set(p.name for p in missing)
+        if previously_missing_set == missing_set:
+          break
+        previously_missing_set = missing_set
+        fetched.update(self._Fetch(missing, opt))
 
     if self.manifest.IsMirror:
       # bail out now, we have no working tree
