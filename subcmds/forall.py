@@ -13,7 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import fcntl
+try:
+  import fcntl
+  fcntl_support = True
+except ImportError:
+  fcntl_support = False # Windows
+
 import re
 import os
 import select
@@ -208,9 +213,10 @@ terminal and are not redirected.
         s_in = [sfd(p.stdout, sys.stdout),
                 sfd(p.stderr, sys.stderr)]
 
-        for s in s_in:
-          flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
-          fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+        if fcntl_support:
+          for s in s_in:
+            flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
+            fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
 
         while s_in:
           in_ready, out_ready, err_ready = select.select(s_in, [], [])
