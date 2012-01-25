@@ -691,7 +691,7 @@ class Project(object):
     di = self.work_git.DiffZ('diff-index', '-M', '--cached', HEAD)
     df = self.work_git.DiffZ('diff-files')
     do = self.work_git.LsOthers()
-    if not rb and not di and not df and not do:
+    if not rb and not di and not df and not do and not self.CurrentBranch:
       return 'CLEAN'
 
     out = StatusColoring(self.config)
