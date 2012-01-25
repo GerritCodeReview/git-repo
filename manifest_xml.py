@@ -25,9 +25,11 @@ from project import Project
 from project import MetaProject
 from project import R_HEADS
 from project import HEAD
+from project import _lwrite
 from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
+MANIFEST_FILE_LINK_NAME = 'manifest.xml.link'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 R_M = 'refs/remotes/m/'
 
@@ -59,7 +61,11 @@ class XmlManifest(Manifest):
   def __init__(self, repodir):
     Manifest.__init__(self, repodir)
 
-    self._manifestFile = os.path.join(repodir, MANIFEST_FILE_NAME)
+    self._manifestFileLink = os.path.join(repodir, MANIFEST_FILE_LINK_NAME)
+    if hasattr(os, 'symlink'):
+      self._manifestFile = os.path.join(repodir, MANIFEST_FILE_NAME)
+    else:
+      self._manifestFile = self._ReadManifestLink()
     self.manifestProject = MetaProject(self, 'manifests',
       gitdir   = os.path.join(repodir, 'manifests.git'),
       worktree = os.path.join(repodir, 'manifests'))
@@ -81,17 +87,31 @@ class XmlManifest(Manifest):
     finally:
       self._manifestFile = old
 
+  def _ReadManifestLink(self):
+    try:
+      fd = open(self._manifestFileLink, 'r')
+    except IOError:
+      return ''
+    else:
+      manifestFile = os.path.join(self.repodir, fd.readline())
+      fd.close()
+      return manifestFile
+
   def Link(self, name):
     """Update the repo metadata to use a different manifest.
     """
     self.Override(name)
 
-    try:
-      if os.path.exists(self._manifestFile):
-        os.remove(self._manifestFile)
-      os.symlink('manifests/%s' % name, self._manifestFile)
-    except OSError, e:
-      raise ManifestParseError('cannot link manifest %s' % name)
+    if hasattr(os, 'symlink'):
+      try:
+        if os.path.exists(self._manifestFile):
+          os.remove(self._manifestFile)
+        os.symlink('manifests/%s' % name, self._manifestFile)
+      except OSError, e:
+        raise ManifestParseError('cannot link manifest %s' % name)
+    else:
+      _lwrite(self._manifestFileLink, 'manifests/%s' % name)
+      self._manifestFile = self._ReadManifestLink()
 
   def _RemoteToXml(self, r, doc, root):
     e = doc.createElement('remote')
