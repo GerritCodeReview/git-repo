@@ -140,6 +140,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-j','--jobs',
                  dest='jobs', action='store', type='int',
                  help="projects to fetch simultaneously (default %d)" % self.jobs)
+    p.add_option('-m', '--manifest-name',
+                 dest='manifest_name',
+                 help='temporary manifest to use for this sync', metavar='NAME.xml')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -333,6 +336,15 @@ uncommitted changes are present' % project.relpath
     if opt.network_only and opt.local_only:
       print >>sys.stderr, 'error: cannot combine -n and -l'
       sys.exit(1)
+    if opt.manifest_name and opt.smart_sync:
+      print >>sys.stderr, 'error: cannot combine -m and -s'
+      sys.exit(1)
+    if opt.manifest_name and opt.smart_tag:
+      print >>sys.stderr, 'error: cannot combine -m and -t'
+      sys.exit(1)
+
+    if opt.manifest_name:
+      self.manifest.Override(opt.manifest_name)
 
     if opt.smart_sync or opt.smart_tag:
       if not self.manifest.manifest_server:
