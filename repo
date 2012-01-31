@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 13)
+VERSION = (1, 14)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -154,7 +154,7 @@ def _Init(args):
   """Installs repo by cloning it over the network.
   """
   opt, args = init_optparse.parse_args(args)
-  if args or not opt.manifest_url:
+  if args:
     init_optparse.print_usage()
     sys.exit(1)
 
@@ -311,11 +311,12 @@ def _InitHttp():
     n = netrc.netrc()
     for host in n.hosts:
       p = n.hosts[host]
-      mgr.add_password(None, 'http://%s/'  % host, p[0], p[2])
-      mgr.add_password(None, 'https://%s/' % host, p[0], p[2])
+      mgr.add_password(p[1], 'http://%s/'  % host, p[0], p[2])
+      mgr.add_password(p[1], 'https://%s/' % host, p[0], p[2])
   except:
     pass
   handlers.append(urllib2.HTTPBasicAuthHandler(mgr))
+  handlers.append(urllib2.HTTPDigestAuthHandler(mgr))
 
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']

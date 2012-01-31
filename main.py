@@ -295,6 +295,24 @@ class _BasicAuthHandler(urllib2.HTTPBasicAuthHandler):
         self.retried = 0
       raise
 
+class _DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
+  def http_error_auth_reqed(self, auth_header, host, req, headers):
+    try:
+      old_add_header = req.add_header
+      def _add_header(name, val):
+        val = val.replace('\n', '')
+        old_add_header(name, val)
+      req.add_header = _add_header
+      return urllib2.AbstractDigestAuthHandler.http_error_auth_reqed(
+        self, auth_header, host, req, headers)
+    except:
+      reset = getattr(self, 'reset_retry_count', None)
+      if reset is not None:
+        reset()
+      elif getattr(self, 'retried', None):
+        self.retried = 0
+      raise
+
 def init_http():
   handlers = [_UserAgentHandler()]
 
@@ -303,13 +321,14 @@ def init_http():
     n = netrc.netrc()
     for host in n.hosts:
       p = n.hosts[host]
-      mgr.add_password(None, 'http://%s/'  % host, p[0], p[2])
-      mgr.add_password(None, 'https://%s/' % host, p[0], p[2])
+      mgr.add_password(p[1], 'http://%s/'  % host, p[0], p[2])
+      mgr.add_password(p[1], 'https://%s/' % host, p[0], p[2])
   except netrc.NetrcParseError:
     pass
   except IOError:
     pass
   handlers.append(_BasicAuthHandler(mgr))
+  handlers.append(_DigestAuthHandler(mgr))
 
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']
