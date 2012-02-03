@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAACmn////c\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-02-03T15:26:37Z",
+      "side": 1,
+      "message": "So when this is done we have the subproject registered twice in the _projects dict? Once by itself, and again as a subproject within its parent project?\n\nWhich I think means sync is going to clone the project twice. Or at least try to. It looks like they are using the same Git repository underneath in .repo/projects so there is only one copy of the Git data, but with two references sync will try twice to update it. If the user enables parallel sync with `sync -j256`, there is now a good chance two concurrent Git processes will both attempt to clone/fetch this single repository at the same time. This is going to fail badly, and may also cause the user to waste bunch of bandwidth copying the data to their workstation twice before the failure is detected by Git.",
+      "revId": "0d47970f81ef539ad886766042022e0d7f7404ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAACmn////k\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-02-03T15:26:37Z",
+      "side": 1,
+      "message": "If we are adding new elements to the manifest format, these need to be documented in docs/manifest-format.txt.",
+      "revId": "0d47970f81ef539ad886766042022e0d7f7404ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAACmn////g\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-02-03T15:26:37Z",
+      "side": 1,
+      "message": "I would prefer to stick with the simple style of:\n\n  if parentProject.worktree is None:\n    worktree \u003d None\n  else:\n    worktree \u003d ...",
+      "revId": "0d47970f81ef539ad886766042022e0d7f7404ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
