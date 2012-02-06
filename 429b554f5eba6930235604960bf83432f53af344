@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAACon////I\u003d",
+        "filename": "manifest_submodule.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1002560
+      },
+      "writtenOn": "2012-02-06T20:58:24Z",
+      "side": 1,
+      "message": "_lwrite(os.path.join(newmp.gitdir, HEAD),\n\n(space)",
+      "revId": "429b554f5eba6930235604960bf83432f53af344",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
