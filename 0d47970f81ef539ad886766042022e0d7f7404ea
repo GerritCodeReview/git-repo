@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAACvX////0\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-02-08T12:49:50Z",
+      "side": 1,
+      "message": "You are right. I redesign the CL that makes this problem a non-issue.",
+      "parentUuid": "AAACmn////c\u003d",
+      "revId": "0d47970f81ef539ad886766042022e0d7f7404ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAACmn////k\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "AAACvX////w\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-02-08T12:49:50Z",
+      "side": 1,
+      "message": "Redesign does not add new element anymore. But I update the documents anyway.",
+      "parentUuid": "AAACmn////k\u003d",
+      "revId": "0d47970f81ef539ad886766042022e0d7f7404ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAACmn////g\u003d",
         "filename": "project.py",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2012-02-03T15:26:37Z",
       "side": 1,
       "message": "I would prefer to stick with the simple style of:\n\n  if parentProject.worktree is None:\n    worktree \u003d None\n  else:\n    worktree \u003d ...",
+      "revId": "0d47970f81ef539ad886766042022e0d7f7404ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAACvX////s\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-02-08T12:49:50Z",
+      "side": 1,
+      "message": "Not necessary anymore.",
+      "parentUuid": "AAACmn////g\u003d",
       "revId": "0d47970f81ef539ad886766042022e0d7f7404ea",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
