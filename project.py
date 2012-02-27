@@ -911,11 +911,13 @@ class Project(object):
     else:
       return False
 
-  def PrintWorkTreeStatus(self, output_redir=None):
+  def PrintWorkTreeStatus(self, output_redir=None, short=False):
     """Prints the status of the repository to stdout.
 
     Args:
       output: If specified, redirect the output to this object.
+      short:  If True then only print the project name.  Do not print
+              the modified files, branch name, etc.
     """
     if not os.path.isdir(self.worktree):
       if output_redir is None:
@@ -940,6 +942,10 @@ class Project(object):
     if output_redir is not None:
       out.redirect(output_redir)
     out.project('project %-40s', self.relpath + '/ ')
+
+    if short:
+      out.nl()
+      return 'DIRTY'
 
     branch = self.CurrentBranch
     if branch is None:
