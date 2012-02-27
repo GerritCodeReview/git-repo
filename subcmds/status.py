@@ -89,8 +89,10 @@ the following meanings:
     p.add_option('-o', '--orphans',
                  dest='orphans', action='store_true',
                  help="include objects in working directory outside of repo projects")
+    p.add_option('-q', '--quiet', action='store_true',
+                 help="only print the name of modified projects")
 
-  def _StatusHelper(self, project, clean_counter, sem):
+  def _StatusHelper(self, project, clean_counter, sem, quiet):
     """Obtains the status for a specific project.
 
     Obtains the status for a project, redirecting the output to
@@ -104,7 +106,7 @@ the following meanings:
       output: Where to output the status.
     """
     try:
-      state = project.PrintWorkTreeStatus()
+      state = project.PrintWorkTreeStatus(quiet=quiet)
       if state == 'CLEAN':
         next(clean_counter)
     finally:
@@ -132,7 +134,7 @@ the following meanings:
 
     if opt.jobs == 1:
       for project in all_projects:
-        state = project.PrintWorkTreeStatus()
+        state = project.PrintWorkTreeStatus(quiet=opt.quiet)
         if state == 'CLEAN':
           next(counter)
     else:
@@ -142,13 +144,13 @@ the following meanings:
         sem.acquire()
 
         t = _threading.Thread(target=self._StatusHelper,
-                              args=(project, counter, sem))
+                              args=(project, counter, sem, opt.quiet))
         threads.append(t)
         t.daemon = True
         t.start()
       for t in threads:
         t.join()
-    if len(all_projects) == next(counter):
+    if not opt.quiet and len(all_projects) == next(counter):
       print('nothing to commit (working directory clean)')
 
     if opt.orphans:
