@@ -498,6 +498,12 @@ class XmlManifest(object):
             "project %s path cannot be absolute in %s" % \
             (name, self.manifestFile)
 
+    rebase = node.getAttribute('rebase')
+    if not rebase:
+      rebase = True
+    else:
+      rebase = rebase.lower() in ("yes", "true", "1")
+
     if self.IsMirror:
       relpath = None
       worktree = None
@@ -513,7 +519,8 @@ class XmlManifest(object):
                       worktree = worktree,
                       relpath = path,
                       revisionExpr = revisionExpr,
-                      revisionId = None)
+                      revisionId = None,
+                      rebase = rebase)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':

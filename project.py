@@ -503,7 +503,8 @@ class Project(object):
                worktree,
                relpath,
                revisionExpr,
-               revisionId):
+               revisionId,
+               rebase = True):
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -521,6 +522,8 @@ class Project(object):
       self.revisionId = revisionExpr
     else:
       self.revisionId = revisionId
+
+    self.rebase = rebase
 
     self.snapshots = {}
     self.copyfiles = []
@@ -1096,7 +1099,7 @@ class Project(object):
     branch.merge = self.revisionExpr
     branch.Save()
 
-    if cnt_mine > 0:
+    if cnt_mine > 0 and self.rebase:
       def _dorebase():
         self._Rebase(upstream = '%s^1' % last_mine, onto = revid)
         self._CopyFiles()
