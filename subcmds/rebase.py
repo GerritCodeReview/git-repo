@@ -52,6 +52,9 @@ branch but need to incorporate new upstream changes "underneath" them.
     p.add_option('--whitespace',
                  dest='whitespace', action='store', metavar='WS',
                  help='Pass --whitespace to git rebase')
+    p.add_option('--auto-stash',
+                 dest='auto_stash', action='store_true',
+                 help='Stash local modifications before starting')
 
   def Execute(self, opt, args):
     all = self.GetProjects(args)
@@ -103,5 +106,23 @@ branch but need to incorporate new upstream changes "underneath" them.
       print >>sys.stderr, '# %s: rebasing %s -> %s' % \
         (project.relpath, cb, upbranch.LocalMerge)
 
+      needs_stash = False
+      if opt.auto_stash:
+        stash_args = ["update-index", "--refresh", "-q"]
+
+        if GitCommand(project, stash_args).Wait() != 0:
+          needs_stash = True
+          # Dirty index, requires stash...
+          stash_args = ["stash"]
+
+          if GitCommand(project, stash_args).Wait() != 0:
+            return -1
+
       if GitCommand(project, args).Wait() != 0:
         return -1
+
+      if needs_stash:
+        stash_args.append('pop')
+        stash_args.append('--quiet')
+        if GitCommand(project, stash_args).Wait() != 0:
+          return -1
