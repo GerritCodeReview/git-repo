@@ -1529,7 +1529,7 @@ class Project(object):
 
       p = None
       try:
-        size = r.headers['content-length']
+        size = r.headers.get('content-length', 0)
         unit = 1 << 10
 
         if size and not quiet:
