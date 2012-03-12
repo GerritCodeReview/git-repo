@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAADx3///7w\u003d",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-03-12T19:28:21Z",
+      "side": 1,
+      "message": "What is the point of this line?",
+      "revId": "1f16bfa746f7a1cb8b3d786a22da75b12a16eacd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
