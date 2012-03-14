@@ -902,7 +902,11 @@ class Project(object):
 
 ## Sync ##
 
-  def Sync_NetworkHalf(self, quiet=False, is_new=None, current_branch_only=False):
+  def Sync_NetworkHalf(self,
+      quiet=False,
+      is_new=None,
+      current_branch_only=False,
+      clone_bundle=True):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -925,7 +929,9 @@ class Project(object):
     else:
       alt_dir = None
 
-    if alt_dir is None and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
+    if clone_bundle \
+    and alt_dir is None \
+    and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
       is_new = False
 
     if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,

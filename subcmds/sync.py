@@ -86,6 +86,12 @@ specify a custom tag/label.
 The -f/--force-broken option can be used to proceed with syncing
 other projects if a project sync fails.
 
+The --no-clone-bundle option disables any attempt to use
+$URL/clone.bundle to bootstrap a new Git repository from a
+resumeable bundle file on a content delivery network. This
+may be necessary if there are problems with the local Python
+HTTP client or proxy configuration, but the Git binary works.
+
 SSH Connections
 ---------------
 
@@ -143,6 +149,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
+    p.add_option('--no-clone-bundle',
+                 dest='no_clone_bundle', action='store_true',
+                 help='disable use of /clone.bundle on HTTP/HTTPS')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -185,8 +194,10 @@ later is required to fix a server side protocol bug.
       # - We always make sure we unlock the lock if we locked it.
       try:
         try:
-          success = project.Sync_NetworkHalf(quiet=opt.quiet,
-                                             current_branch_only=opt.current_branch_only)
+          success = project.Sync_NetworkHalf(
+            quiet=opt.quiet,
+            current_branch_only=opt.current_branch_only,
+            clone_bundle=not opt.no_clone_bundle)
 
           # Lock around all the rest of the code, since printing, updating a set
           # and Progress.update() are not thread safe.
