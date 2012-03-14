@@ -488,7 +488,7 @@ def close_ssh():
   _master_keys_lock = None
 
 URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
-URI_ALL = re.compile(r'^([a-z][a-z+]*)://([^@/]*@?[^/]*)/')
+URI_ALL = re.compile(r'^([a-z][a-z+-]*)://([^@/]*@?[^/]*)/')
 
 def GetSchemeFromUrl(url):
   m = URI_ALL.match(url)

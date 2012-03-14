@@ -1449,6 +1449,8 @@ class Project(object):
     remote = self.GetRemote(self.remote.name)
     bundle_url = remote.url + '/clone.bundle'
     bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
+    if GetSchemeFromUrl(bundle_url) in ('persistent-http', 'persistent-https'):
+      bundle_url = bundle_url[len('persistent-'):]
     if GetSchemeFromUrl(bundle_url) not in ('http', 'https'):
       return False
 
