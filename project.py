@@ -1102,7 +1102,9 @@ class Project(object):
                    len(local_changes) - cnt_mine)
 
     branch.remote = self.GetRemote(self.remote.name)
-    branch.merge = self.revisionExpr
+    if not ID_RE.match(self.revisionExpr):
+      # in case of manifest sync the revisionExpr might be a SHA1
+      branch.merge = self.revisionExpr
     branch.Save()
 
     if cnt_mine > 0 and self.rebase:
