@@ -1516,7 +1516,7 @@ class Project(object):
             except:
               return None
 
-          if e.code == 404:
+          if e.code in (401, 403, 404):
             keep = False
             return False
           elif _content_type() == 'text/plain':
