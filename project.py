@@ -504,7 +504,8 @@ class Project(object):
                relpath,
                revisionExpr,
                revisionId,
-               rebase = True):
+               rebase = True,
+               groups = None):
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -524,6 +525,7 @@ class Project(object):
       self.revisionId = revisionId
 
     self.rebase = rebase
+    self.groups = groups
 
     self.snapshots = {}
     self.copyfiles = []
@@ -645,6 +647,45 @@ class Project(object):
 
     return heads
 
+  def MatchesGroups(self, manifest_groups):
+    """Returns true if the manifest groups specified at init should cause
+       this project to be synced.
+       Prefixing a manifest group with "-" inverts the meaning of a group.
+       All projects are implicitly labelled with "default" unless they are
+       explicitly labelled "-default".
+       If any non-inverted manifest groups are specified, the default label
+       is ignored.
+       Specifying only inverted groups implies "default".
+    """
+    project_groups = self.groups
+    if not manifest_groups:
+      return not project_groups or not "-default" in project_groups
+
+    if not project_groups:
+      project_groups = ["default"]
+    elif not ("default" in project_groups or "-default" in project_groups):
+      project_groups.append("default")
+
+    plus_groups = [x for x in manifest_groups if not x.startswith("-")]
+    minus_groups = [x[1:] for x in manifest_groups if x.startswith("-")]
+
+    if not plus_groups:
+      plus_groups.append("default")
+
+    for group in minus_groups:
+      if group in project_groups:
+        # project was excluded by -group
+        return False
+
+    for group in plus_groups:
+      if group in project_groups:
+        # project was included by group
+        return True
+
+    # groups were specified that did not include this project
+    if plus_groups:
+      return False
+    return True
 
 ## Status Display ##
 
@@ -2088,7 +2129,8 @@ class MetaProject(Project):
                      remote = RemoteSpec('origin'),
                      relpath = '.repo/%s' % name,
                      revisionExpr = 'refs/heads/master',
-                     revisionId = None)
+                     revisionId = None,
+                     groups = None)
 
   def PreSync(self):
     if self.Exists:
