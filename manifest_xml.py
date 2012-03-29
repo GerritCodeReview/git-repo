@@ -119,6 +119,12 @@ class XmlManifest(object):
   def Save(self, fd, peg_rev=False):
     """Write the current manifest out to the given file descriptor.
     """
+    mp = self.manifestProject
+
+    groups = mp.config.GetString('manifest.groups')
+    if groups:
+      groups = re.split('[,\s]+', groups)
+
     doc = xml.dom.minidom.Document()
     root = doc.createElement('manifest')
     doc.appendChild(root)
@@ -167,6 +173,10 @@ class XmlManifest(object):
 
     for p in sort_projects:
       p = self.projects[p]
+
+      if not p.MatchesGroups(groups):
+        continue
+
       e = doc.createElement('project')
       root.appendChild(e)
       e.setAttribute('name', p.name)
@@ -189,6 +199,9 @@ class XmlManifest(object):
         ce.setAttribute('src', c.src)
         ce.setAttribute('dest', c.dest)
         e.appendChild(ce)
+
+      if p.groups:
+        e.setAttribute('groups', ','.join(p.groups))
 
     if self._repo_hooks_project:
       root.appendChild(doc.createTextNode(''))
@@ -507,6 +520,12 @@ class XmlManifest(object):
 
     platform = node.getAttribute('platform')
 
+    groups = node.getAttribute('groups')
+    if groups:
+      groups = re.split('[,\s]+', groups)
+    else:
+      groups = None
+
     if self.IsMirror:
       relpath = None
       worktree = None
@@ -524,7 +543,8 @@ class XmlManifest(object):
                       revisionExpr = revisionExpr,
                       revisionId = None,
                       rebase = rebase,
-                      platform = platform)
+                      platform = platform,
+                      groups = groups)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':

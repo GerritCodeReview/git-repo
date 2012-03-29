@@ -89,6 +89,10 @@ to update the working directory files.
     g.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
+    g.add_option('-g', '--groups',
+                 dest='groups', default="",
+                 help='restrict manifest projects to ones with a specified group',
+                 metavar='GROUP')
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -140,6 +144,8 @@ to update the working directory files.
 
     m.config.SetString('manifest.platform',
                        'all' if opt.mirror else opt.platform)
+
+    m.config.SetString('manifest.groups', opt.groups)
 
     if opt.reference:
       m.config.SetString('repo.reference', opt.reference)
