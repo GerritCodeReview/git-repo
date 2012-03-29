@@ -19,6 +19,7 @@ import platform
 import sys
 
 from error import InvalidProjectPlatformError, NoSuchProjectError
+from error import InvalidProjectGroupsError
 
 class Command(object):
   """Base class for any command line action in repo.
@@ -72,11 +73,17 @@ class Command(object):
     elif host_platform == 'all':
       host_platform = None
 
+    groups = mp.config.GetString('manifest.groups')
+    if groups:
+      groups = groups.split(',')
+      groups = [x.strip() for x in groups]
+
     if not args:
       for project in all.values():
         if ((missing_ok or project.Exists) and
             (not host_platform or not project.platform or
-             host_platform == project.platform)):
+             host_platform == project.platform) and
+            project.MatchesGroups(groups)):
           result.append(project)
     else:
       by_path = None
@@ -116,6 +123,8 @@ class Command(object):
         if (host_platform and project.platform and
             host_platform != project.platform):
           raise InvalidProjectPlatformError(arg)
+        if not project.MatchesGroups(groups):
+          raise InvalidProjectGroupsError(arg)
 
         result.append(project)
 

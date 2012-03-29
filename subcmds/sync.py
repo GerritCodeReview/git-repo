@@ -296,7 +296,8 @@ later is required to fix a server side protocol bug.
                              relpath = path,
                              revisionExpr = 'HEAD',
                              revisionId = None,
-                             platform = None)
+                             platform = None,
+                             groups = None)
 
               if project.IsDirty():
                 print >>sys.stderr, 'error: Cannot remove project "%s": \

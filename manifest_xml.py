@@ -507,6 +507,13 @@ class XmlManifest(object):
 
     platform = node.getAttribute('platform')
 
+    groups = node.getAttribute('groups')
+    if groups:
+      groups = groups.split(',')
+      groups = [x.strip() for x in groups]
+    else:
+      groups = None
+
     if self.IsMirror:
       relpath = None
       worktree = None
@@ -524,7 +531,8 @@ class XmlManifest(object):
                       revisionExpr = revisionExpr,
                       revisionId = None,
                       rebase = rebase,
-                      platform = platform)
+                      platform = platform,
+                      groups = groups)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
