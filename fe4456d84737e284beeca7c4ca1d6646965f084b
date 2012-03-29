@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAEbH////E\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-03-29T04:57:55Z",
+      "side": 1,
+      "message": "if you don\u0027t replace the list here with self.GetProjects(None, missing_ok\u003dTrue) (or make the None a default argument in GetProjects), repo init with a changed platform + repo sync will not cause the no-longer used projects to be removed.",
+      "revId": "fe4456d84737e284beeca7c4ca1d6646965f084b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
