@@ -15,9 +15,11 @@
 
 import os
 import optparse
+import re
 import sys
 
 from error import NoSuchProjectError
+from error import InvalidProjectGroupsError
 
 class Command(object):
   """Base class for any command line action in repo.
@@ -63,9 +65,16 @@ class Command(object):
     all = self.manifest.projects
     result = []
 
+    mp = self.manifest.manifestProject
+
+    groups = mp.config.GetString('manifest.groups')
+    if groups:
+      groups = re.split('[,\s]+', groups)
+
     if not args:
       for project in all.values():
-        if missing_ok or project.Exists:
+        if ((missing_ok or project.Exists) and
+            project.MatchesGroups(groups)):
           result.append(project)
     else:
       by_path = None
@@ -102,6 +111,8 @@ class Command(object):
           raise NoSuchProjectError(arg)
         if not missing_ok and not project.Exists:
           raise NoSuchProjectError(arg)
+        if not project.MatchesGroups(groups):
+          raise InvalidProjectGroupsError(arg)
 
         result.append(project)
 

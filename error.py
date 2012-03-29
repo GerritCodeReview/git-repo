@@ -77,6 +77,18 @@ class NoSuchProjectError(Exception):
       return 'in current directory'
     return self.name
 
+
+class InvalidProjectGroupsError(Exception):
+  """A specified project is not suitable for the specified groups
+  """
+  def __init__(self, name=None):
+    self.name = name
+
+  def __str__(self):
+    if self.Name is None:
+      return 'in current directory'
+    return self.name
+
 class RepoChangedException(Exception):
   """Thrown if 'repo sync' results in repo updating its internal
      repo or manifest repositories.  In this special case we must
