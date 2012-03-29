@@ -125,6 +125,10 @@ group.add_option('--reference',
 group.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
+group.add_option('-g', '--groups',
+                 dest='groups', default="",
+                 help='restrict manifest projects to ones with a specified group',
+                 metavar='GROUP')
 
 
 # Tool
