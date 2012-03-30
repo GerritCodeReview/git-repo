@@ -1396,9 +1396,11 @@ class Project(object):
 
       if is_sha1 or tag_name is not None:
         try:
-          self.GetRevisionId()
+          # if revision (sha or tag) is not present then following function
+          # throws an error.
+          self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
           return True
-        except ManifestInvalidRevisionError:
+        except GitError:
           # There is no such persistent revision. We have to fetch it.
           pass
 
