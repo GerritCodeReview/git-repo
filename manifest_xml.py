@@ -512,6 +512,10 @@ class XmlManifest(object):
       worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
 
+    userData = node.getAttribute('user-data')
+    if not userData:
+      userData = None
+
     project = Project(manifest = self,
                       name = name,
                       remote = remote.ToRemoteSpec(name),
@@ -520,7 +524,8 @@ class XmlManifest(object):
                       relpath = path,
                       revisionExpr = revisionExpr,
                       revisionId = None,
-                      rebase = rebase)
+                      rebase = rebase,
+                      userData = userData)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':

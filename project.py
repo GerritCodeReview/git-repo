@@ -504,7 +504,8 @@ class Project(object):
                relpath,
                revisionExpr,
                revisionId,
-               rebase = True):
+               rebase = True,
+               userData = None):
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -524,6 +525,11 @@ class Project(object):
       self.revisionId = revisionId
 
     self.rebase = rebase
+
+    if userData is None:
+      self.userData = ""
+    else:
+      self.userData = userData
 
     self.snapshots = {}
     self.copyfiles = []

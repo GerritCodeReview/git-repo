@@ -82,6 +82,9 @@ revision to a locally executed git command, use REPO_LREV.
 REPO_RREV is the name of the revision from the manifest, exactly
 as written in the manifest.
 
+REPO_USERDATA is any extra user-defined data.  This can be useful for
+differentiating trees based on user-specific criteria.
+
 shell positional arguments ($1, $2, .., $#) are set to any arguments
 following <command>.
 
@@ -162,6 +165,7 @@ terminal and are not redirected.
       setenv('REPO_REMOTE', project.remote.name)
       setenv('REPO_LREV', project.GetRevisionId())
       setenv('REPO_RREV', project.revisionExpr)
+      setenv('REPO_USERDATA', project.userData)
 
       if mirror:
         setenv('GIT_DIR', project.gitdir)
