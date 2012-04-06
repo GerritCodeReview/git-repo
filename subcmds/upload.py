@@ -123,6 +123,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     p.add_option('--br',
                  type='string',  action='store', dest='branch',
                  help='Branch to upload.')
+    p.add_option('--cbr', '--current-branch',
+                 dest='current_branch', action='store_true',
+                 help='Upload current git branch.')
 
     # Options relating to upload hook.  Note that verify and no-verify are NOT
     # opposites of each other, which is why they store to different locations.
@@ -351,7 +354,11 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       branch = opt.branch
 
     for project in project_list:
-      avail = project.GetUploadableBranches(branch)
+      if opt.current_branch:
+        cbr = project.CurrentBranch
+        avail = [project.GetUploadableBranch(cbr)] if cbr else None
+      else:
+        avail = project.GetUploadableBranches(branch)
       if avail:
         pending.append((project, avail))
 
