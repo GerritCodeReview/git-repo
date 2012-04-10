@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAEnn///+s\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-10T20:47:09Z",
+      "side": 1,
+      "message": "If platform is set, you need to store it here, right?",
+      "revId": "1ffa8f1c9cba455be5056dc32d3927cd200ce083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEnn///+o\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-10T20:47:09Z",
+      "side": 1,
+      "message": "We should add the platform flag to the repo script too, as it needs to know important flags that should be passed down to init.",
+      "revId": "1ffa8f1c9cba455be5056dc32d3927cd200ce083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEnn///+k\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-10T20:47:09Z",
+      "side": 1,
+      "message": "Existing mirrors won\u0027t have this set, which means existing mirrors will start to mirror only what they have on their platform. Do we tell those folks to re-run init? Or do we try to default manifest.platform to all when manifest.platform is not set by repo.mirror is set?  (See line 149 below where we set repo.mirror true in a mirror.)",
+      "revId": "1ffa8f1c9cba455be5056dc32d3927cd200ce083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
