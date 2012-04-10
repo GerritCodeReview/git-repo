@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "AAAEqH////k\u003d",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-10T23:59:18Z",
+      "side": 1,
+      "message": "I was suggesting both commas and spaces as a separator. So split on \u0027[, ]\u0027. Combined with the trim later, I think you have a nice set of rules. But strings like \"foo , bar\" are confusing input in this case aren\u0027t they? Where does split split? Is the split regex better at \u0027[, ]+\u0027?\n\nAnd uh, split() doesn\u0027t take a regex in Python does it?",
+      "parentUuid": "AAAEp3////8\u003d",
+      "revId": "860ae283f659df50a32fa5f80a1eae121d2b65c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEnn///+c\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "OK.  If a group filter is specified, should only matching projects be written, and only the mentioned groups?",
       "parentUuid": "AAAEnn///+c\u003d",
+      "revId": "860ae283f659df50a32fa5f80a1eae121d2b65c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEqH////g\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-10T23:59:18Z",
+      "side": 1,
+      "message": "Probably yes, we should filter the output manifest to be only the projects and groups that match. Does that sounds right for the output to `repo manifest -o` given your use case? IIRC that is how most build server produces their build manifests listing what went into a build.",
+      "parentUuid": "AAAEp3////4\u003d",
       "revId": "860ae283f659df50a32fa5f80a1eae121d2b65c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
