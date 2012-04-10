@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAEp3////8\u003d",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-10T21:21:29Z",
+      "side": 1,
+      "message": "are you suggesting spaces as a separator, or just ignoring whitespace?  the strip in the next line ignores whitespace.",
+      "parentUuid": "AAAEnn///+M\u003d",
+      "revId": "860ae283f659df50a32fa5f80a1eae121d2b65c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEnn///+c\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2012-04-10T20:57:41Z",
       "side": 1,
       "message": "Should groups be written back out when a manifest is saved?",
+      "revId": "860ae283f659df50a32fa5f80a1eae121d2b65c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEp3////4\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-10T21:21:29Z",
+      "side": 1,
+      "message": "OK.  If a group filter is specified, should only matching projects be written, and only the mentioned groups?",
+      "parentUuid": "AAAEnn///+c\u003d",
       "revId": "860ae283f659df50a32fa5f80a1eae121d2b65c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
