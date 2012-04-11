@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "AAAEqH////Y\u003d",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-11T00:09:51Z",
+      "side": 1,
+      "message": "I was more concerned about space than \\t\\r\\n because people would look at the XML like format of the file and think a group attribute is maybe like an HTML CSS class attribute and delimit with spaces, then get annoyed it doesn\u0027t work.\n\nspace and comma probably cover almost everyone. if you want to go nuts and support \\t\\r\\n that is also OK. :-)",
+      "parentUuid": "AAAEp3////c\u003d",
+      "revId": "860ae283f659df50a32fa5f80a1eae121d2b65c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEnn///+c\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 1
