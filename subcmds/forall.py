@@ -82,6 +82,10 @@ revision to a locally executed git command, use REPO_LREV.
 REPO_RREV is the name of the revision from the manifest, exactly
 as written in the manifest.
 
+REPO_ANNO_* is any extra annotation data.  This can be useful for
+differentiating trees based on user-specific criteria, or simply
+annotating tree details.
+
 shell positional arguments ($1, $2, .., $#) are set to any arguments
 following <command>.
 
@@ -162,6 +166,9 @@ terminal and are not redirected.
       setenv('REPO_REMOTE', project.remote.name)
       setenv('REPO_LREV', project.GetRevisionId())
       setenv('REPO_RREV', project.revisionExpr)
+      for name,value in project.annotations.iteritems():
+        envname = 'REPO_ANNO_%s' % (name)
+        setenv(envname, value)
 
       if mirror:
         setenv('GIT_DIR', project.gitdir)
