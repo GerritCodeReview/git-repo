@@ -190,6 +190,12 @@ class XmlManifest(object):
         ce.setAttribute('dest', c.dest)
         e.appendChild(ce)
 
+      for a in p.annotations:
+        ae = doc.createElement('annotation')
+        ae.setAttribute('name', a.name)
+        ae.setAttribute('value', a.value)
+        e.appendChild(ae)
+
     if self._repo_hooks_project:
       root.appendChild(doc.createTextNode(''))
       e = doc.createElement('repo-hooks')
@@ -525,6 +531,8 @@ class XmlManifest(object):
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
+      if n.nodeName == 'annotation':
+        self._ParseAnnotation(project, n)
 
     return project
 
@@ -535,6 +543,11 @@ class XmlManifest(object):
       # src is project relative;
       # dest is relative to the top of the tree
       project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
+
+  def _ParseAnnotation(self, project, node):
+    name = self._reqatt(node, 'name')
+    value = self._reqatt(node, 'value')
+    project.AddAnnotation(name, value)
 
   def _get_remote(self, node):
     name = node.getAttribute('remote')

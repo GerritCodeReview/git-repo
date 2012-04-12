@@ -213,6 +213,10 @@ class DiffColoring(Coloring):
     Coloring.__init__(self, config, 'diff')
     self.project   = self.printer('header',    attr = 'bold')
 
+class _Annotation:
+  def __init__(self, name, value):
+    self.name = name
+    self.value = value
 
 class _CopyFile:
   def __init__(self, src, dest, abssrc, absdest):
@@ -527,6 +531,7 @@ class Project(object):
 
     self.snapshots = {}
     self.copyfiles = []
+    self.annotations = []
     self.config = GitConfig.ForRepository(
                     gitdir = self.gitdir,
                     defaults =  self.manifest.globalConfig)
@@ -1130,6 +1135,9 @@ class Project(object):
     # make src an absolute path
     abssrc = os.path.join(self.worktree, src)
     self.copyfiles.append(_CopyFile(src, dest, abssrc, absdest))
+
+  def AddAnnotation(self, name, value):
+    self.annotations.append(_Annotation(name, value))
 
   def DownloadPatchSet(self, change_id, patch_id):
     """Download a single patch set of a single change to FETCH_HEAD.
