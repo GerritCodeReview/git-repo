@@ -43,7 +43,10 @@ following DTD:
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
   
-    <!ELEMENT project (EMPTY)>
+    <!ELEMENT project (forall-env?)>
+    <!ELEMENT forall-env (EMPTY)>
+    <!ATTLIST forall-env name  CDATA #REQUIRED>
+    <!ATTLIST forall-env value CDATA #REQUIRED>
     <!ATTLIST project name     CDATA #REQUIRED>
     <!ATTLIST project path     CDATA #IMPLIED>
     <!ATTLIST project remote   IDREF #IMPLIED>
@@ -157,6 +160,14 @@ to track for this project.  Names can be relative to refs/heads
 Tags and/or explicit SHA-1s should work in theory, but have not
 been extensively tested.  If not supplied the revision given by
 the default element is used.
+
+Element forall-env
+------------------
+
+Zero or more forall-env elements may be specified as children of a
+project element. Each element describes a name-value pair that will be
+exported into each project's environment during a 'forall' command,
+prefixed with REPO__.
 
 Element remove-project
 ----------------------

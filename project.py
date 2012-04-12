@@ -527,6 +527,7 @@ class Project(object):
 
     self.snapshots = {}
     self.copyfiles = []
+    self.forallenv = {}
     self.config = GitConfig.ForRepository(
                     gitdir = self.gitdir,
                     defaults =  self.manifest.globalConfig)
@@ -1130,6 +1131,9 @@ class Project(object):
     # make src an absolute path
     abssrc = os.path.join(self.worktree, src)
     self.copyfiles.append(_CopyFile(src, dest, abssrc, absdest))
+
+  def AddForallEnv(self, name, value):
+    self.forallenv[name] = value
 
   def DownloadPatchSet(self, change_id, patch_id):
     """Download a single patch set of a single change to FETCH_HEAD.

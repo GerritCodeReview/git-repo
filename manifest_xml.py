@@ -525,6 +525,8 @@ class XmlManifest(object):
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
+      if n.nodeName == 'forall-env':
+        self._ParseForallEnv(project, n)
 
     return project
 
@@ -535,6 +537,11 @@ class XmlManifest(object):
       # src is project relative;
       # dest is relative to the top of the tree
       project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
+
+  def _ParseForallEnv(self, project, node):
+    name = self._reqatt(node, 'name')
+    value = self._reqatt(node, 'value')
+    project.AddForallEnv(name, value)
 
   def _get_remote(self, node):
     name = node.getAttribute('remote')
