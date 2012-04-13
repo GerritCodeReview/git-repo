@@ -67,6 +67,23 @@
       "revId": "c3a418995080bf580a56dd837c0d5645138444be",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEs3///7w\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1010606
+      },
+      "writtenOn": "2012-04-13T18:44:47Z",
+      "side": 1,
+      "message": "Should we allow any string here? I guess environment variable names technically can contain any character except \u003d and \\0, but I don\u0027t know if variables with e.g. spaces in the name are accessible everywhere. Will a variable with \u003d in the name work as one would expect?",
+      "revId": "c3a418995080bf580a56dd837c0d5645138444be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
