@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAEsX///3g\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1010852
+      },
+      "writtenOn": "2012-04-13T20:04:53Z",
+      "side": 1,
+      "message": "Ill do this, changing project to reflect that it can contain zero or more forall-env elements.  I\u0027ll throw up a completely separate patch to document the \"copyfile\" element, which was not in that doc either.  I had ignored the doc for that reason.",
+      "parentUuid": "AAAEtH///80\u003d",
+      "revId": "c3a418995080bf580a56dd837c0d5645138444be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEtH///8o\u003d",
         "filename": "subcmds/forall.py",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "AAAEsX///3w\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1010852
+      },
+      "writtenOn": "2012-04-13T20:04:53Z",
+      "side": 1,
+      "message": "I like REPO__ more than a direct export for two reasons.  First, I can quickly tell what extra elements I\u0027ve poked into any given environment, and second I\u0027m worried about people stomping on valuable existing variables.  My next patchset will reflect the move to REPO__ and to forall-env.",
+      "parentUuid": "AAAEtH///8o\u003d",
+      "revId": "c3a418995080bf580a56dd837c0d5645138444be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEtH///8w\u003d",
         "filename": "subcmds/forall.py",
         "patchSetId": 2
@@ -47,6 +83,24 @@
       "writtenOn": "2012-04-13T16:13:38Z",
       "side": 1,
       "message": "nit: space after comma?",
+      "revId": "c3a418995080bf580a56dd837c0d5645138444be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEsX///3s\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1010852
+      },
+      "writtenOn": "2012-04-13T20:04:53Z",
+      "side": 1,
+      "message": "picked. :)",
+      "parentUuid": "AAAEtH///8w\u003d",
       "revId": "c3a418995080bf580a56dd837c0d5645138444be",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -81,6 +135,42 @@
       "writtenOn": "2012-04-13T18:44:47Z",
       "side": 1,
       "message": "Should we allow any string here? I guess environment variable names technically can contain any character except \u003d and \\0, but I don\u0027t know if variables with e.g. spaces in the name are accessible everywhere. Will a variable with \u003d in the name work as one would expect?",
+      "revId": "c3a418995080bf580a56dd837c0d5645138444be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEsX///3o\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1010852
+      },
+      "writtenOn": "2012-04-13T20:04:53Z",
+      "side": 1,
+      "message": "Done!",
+      "parentUuid": "AAAEtH///8s\u003d",
+      "revId": "c3a418995080bf580a56dd837c0d5645138444be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEsX///3k\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1010852
+      },
+      "writtenOn": "2012-04-13T20:04:53Z",
+      "side": 1,
+      "message": "Python seems to do a fairly good job scrubbing the variables.  I\u0027ve used spaces and \u0027\u003d\u0027 in my variables, and they are popping right into the environment just as they would if they were single-quoted.",
+      "parentUuid": "AAAEs3///7w\u003d",
       "revId": "c3a418995080bf580a56dd837c0d5645138444be",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
