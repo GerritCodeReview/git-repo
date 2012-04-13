@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAEsH///6U\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1010852
+      },
+      "writtenOn": "2012-04-13T22:16:40Z",
+      "side": 1,
+      "message": "I can change this.",
+      "parentUuid": "AAAEs3///7Y\u003d",
+      "revId": "66d82765489dab2f40284224e6ad6ef62059256d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEs3///7M\u003d",
         "filename": "subcmds/forall.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2012-04-13T20:48:25Z",
       "side": 1,
       "message": "Nit: Space after %?",
+      "revId": "66d82765489dab2f40284224e6ad6ef62059256d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEsH///6Q\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1010852
+      },
+      "writtenOn": "2012-04-13T22:16:40Z",
+      "side": 1,
+      "message": "Sorry, i\u0027ll clean that up",
+      "parentUuid": "AAAEs3///7M\u003d",
       "revId": "66d82765489dab2f40284224e6ad6ef62059256d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
