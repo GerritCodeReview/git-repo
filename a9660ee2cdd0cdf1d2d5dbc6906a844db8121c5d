@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAEtH///9A\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 520,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-13T16:09:15Z",
+      "side": 1,
+      "message": "Can we also update docs/manifest-format.txt?",
+      "revId": "a9660ee2cdd0cdf1d2d5dbc6906a844db8121c5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEtX///+U\u003d",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-13T16:09:15Z",
+      "side": 1,
+      "message": "We need to increment this.",
+      "revId": "a9660ee2cdd0cdf1d2d5dbc6906a844db8121c5d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
