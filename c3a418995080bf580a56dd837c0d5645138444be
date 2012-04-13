@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "AAAEs3///7U\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1010606
+      },
+      "writtenOn": "2012-04-13T20:33:59Z",
+      "side": 1,
+      "message": "Just exporting to the environment would probably open up for security holes or similar. Even if we don\u0027t allow clobbering of existing variables I\u0027m sure it would be possible to screw up.",
+      "parentUuid": "AAAEsX///3w\u003d",
+      "revId": "c3a418995080bf580a56dd837c0d5645138444be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEtH///8w\u003d",
         "filename": "subcmds/forall.py",
         "patchSetId": 2
