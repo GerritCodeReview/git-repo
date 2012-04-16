@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import platform
 import re
 import shutil
 import sys
@@ -88,9 +89,14 @@ to update the working directory files.
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
     g.add_option('-g', '--groups',
-                 dest='groups', default="",
+                 dest='groups', default='',
                  help='restrict manifest projects to ones with a specified group',
                  metavar='GROUP')
+    g.add_option('-p', '--platform',
+                 dest='platform', default='auto',
+                 help='restrict manifest projects to ones with a specified'
+                      'platform group [auto|all|none|linux|darwin|...]',
+                 metavar='PLATFORM')
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -140,7 +146,21 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
-    groups = ['default'] + re.split('[,\s]+', opt.groups)
+
+    groups = ['default']
+    all_platforms = ['linux', 'darwin']
+    platformize = lambda x: 'platform-' + x
+    if opt.platform == 'auto':
+      if (not opt.mirror and
+          not m.config.GetString('repo.mirror') == 'true'):
+        groups.append(platformize(platform.system().lower()))
+    elif opt.platform == 'all':
+      groups.extend(map(platformize, all_platfroms))
+    elif opt.platform in all_platforms:
+      groups.extend(platformize(opt.platform))
+    elif opt.platform != 'none':
+      print >>sys.stderr, 'fatal: invalid platform flag'
+      sys.exit(1)
     groups = [x for x in groups if x]
     m.config.SetString('manifest.groups', ','.join(groups))
 

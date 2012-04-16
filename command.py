@@ -15,6 +15,7 @@
 
 import os
 import optparse
+import platform
 import sys
 
 from error import NoSuchProjectError
@@ -68,7 +69,7 @@ class Command(object):
 
     groups = mp.config.GetString('manifest.groups')
     if groups == None:
-      groups = ['default']
+      groups = ['default', 'platform-' + platform.system().lower()]
       mp.config.SetString('manifest.groups', ','.join(groups))
     if groups:
       groups = groups.split(',')
