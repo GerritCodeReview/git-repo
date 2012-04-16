@@ -653,39 +653,20 @@ class Project(object):
        Prefixing a manifest group with "-" inverts the meaning of a group.
        All projects are implicitly labelled with "default" unless they are
        explicitly labelled "-default".
-       If any non-inverted manifest groups are specified, the default label
-       is ignored.
-       Specifying only inverted groups implies "default".
+
+       labels are resolved in order.  In the example case of
+       project_groups: "default,group1,group2"
+       manifest_groups: "default,-default,group2"
+       the project will be matched.
     """
-    project_groups = self.groups
-    if not manifest_groups:
-      return not project_groups or not "-default" in project_groups
+    matched = False
+    for group in manifest_groups:
+      if group.startswith('-') and group[1:] in self.groups:
+        matched = False
+      elif group in self.groups:
+        matched = True
 
-    if not project_groups:
-      project_groups = ["default"]
-    elif not ("default" in project_groups or "-default" in project_groups):
-      project_groups.append("default")
-
-    plus_groups = [x for x in manifest_groups if not x.startswith("-")]
-    minus_groups = [x[1:] for x in manifest_groups if x.startswith("-")]
-
-    if not plus_groups:
-      plus_groups.append("default")
-
-    for group in minus_groups:
-      if group in project_groups:
-        # project was excluded by -group
-        return False
-
-    for group in plus_groups:
-      if group in project_groups:
-        # project was included by group
-        return True
-
-    # groups were specified that did not include this project
-    if plus_groups:
-      return False
-    return True
+    return matched
 
 ## Status Display ##
 

@@ -160,8 +160,8 @@ been extensively tested.  If not supplied the revision given by
 the default element is used.
 
 Attribute `groups`: List of groups to which this project belongs,
-whitespace or comma separated.  All projects are part of the group
-"default" unless "-default" is specified in the list of groups.
+whitespace or comma separated.  If no group is specified in the
+manifest, the project belongs to the group "default".
 
 Element remove-project
 ----------------------
