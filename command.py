@@ -15,7 +15,6 @@
 
 import os
 import optparse
-import re
 import sys
 
 from error import NoSuchProjectError
@@ -58,7 +57,7 @@ class Command(object):
     """Perform the action, after option parsing is complete.
     """
     raise NotImplementedError
- 
+
   def GetProjects(self, args, missing_ok=False):
     """A list of projects that match the arguments.
     """
@@ -68,8 +67,11 @@ class Command(object):
     mp = self.manifest.manifestProject
 
     groups = mp.config.GetString('manifest.groups')
+    if groups == None:
+      groups = ['default']
+      mp.config.SetString('manifest.groups', ','.join(groups))
     if groups:
-      groups = re.split('[,\s]+', groups)
+      groups = groups.split(',')
 
     if not args:
       for project in all.values():
