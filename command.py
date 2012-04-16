@@ -58,7 +58,7 @@ class Command(object):
     """Perform the action, after option parsing is complete.
     """
     raise NotImplementedError
- 
+
   def GetProjects(self, args, missing_ok=False):
     """A list of projects that match the arguments.
     """
@@ -68,8 +68,9 @@ class Command(object):
     mp = self.manifest.manifestProject
 
     groups = mp.config.GetString('manifest.groups')
-    if groups:
-      groups = re.split('[,\s]+', groups)
+    if groups == None:
+      groups = 'default'
+    groups = [x for x in re.split('[,\s]+', groups) if x]
 
     if not args:
       for project in all.values():
