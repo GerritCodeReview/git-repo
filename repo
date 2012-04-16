@@ -129,6 +129,11 @@ group.add_option('-g', '--groups',
                  dest='groups', default='default',
                  help='restrict manifest projects to ones with a specified group',
                  metavar='GROUP')
+group.add_option('-p', '--platform',
+                 dest='platform', default="auto",
+                 help='restrict manifest projects to ones with a specified'
+                      'platform group [auto|all|none|linux|darwin|...]',
+                 metavar='PLATFORM')
 
 
 # Tool
