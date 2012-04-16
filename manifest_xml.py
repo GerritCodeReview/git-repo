@@ -121,9 +121,7 @@ class XmlManifest(object):
     """
     mp = self.manifestProject
 
-    groups = mp.config.GetString('manifest.groups')
-    if groups:
-      groups = re.split('[,\s]+', groups)
+    groups = mp.config.GetString('manifest.groups').split(',')
 
     doc = xml.dom.minidom.Document()
     root = doc.createElement('manifest')
@@ -517,11 +515,11 @@ class XmlManifest(object):
     else:
       rebase = rebase.lower() in ("yes", "true", "1")
 
-    groups = node.getAttribute('groups')
-    if groups:
-      groups = re.split('[,\s]+', groups)
+    if node.hasAttribute('groups'):
+      groups = node.getAttribute('groups')
+      groups = [x for x in re.split('[,\s]+', groups) if x]
     else:
-      groups = None
+      groups = ['default']
 
     if self.IsMirror:
       relpath = None

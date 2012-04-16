@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import re
 import shutil
 import sys
 
@@ -139,7 +140,9 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
-    m.config.SetString('manifest.groups', opt.groups)
+    groups = ['default'] + re.split('[,\s]+', opt.groups)
+    groups = [x for x in groups if x]
+    m.config.SetString('manifest.groups', ','.join(groups))
 
     if opt.reference:
       m.config.SetString('repo.reference', opt.reference)
