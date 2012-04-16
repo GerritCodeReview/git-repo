@@ -165,8 +165,8 @@ been extensively tested.  If not supplied the revision given by
 the default element is used.
 
 Attribute `groups`: List of groups to which this project belongs,
-whitespace or comma separated.  All projects are part of the group
-"default" unless "-default" is specified in the list of groups.
+whitespace or comma separated.  All projects belong to the group
+"default".
 
 Element annotation
 ------------------

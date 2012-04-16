@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import re
 import shutil
 import sys
 
@@ -87,7 +88,7 @@ to update the working directory files.
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
     g.add_option('-g', '--groups',
-                 dest='groups', default="",
+                 dest='groups', default='default',
                  help='restrict manifest projects to ones with a specified group',
                  metavar='GROUP')
 
@@ -139,7 +140,12 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
-    m.config.SetString('manifest.groups', opt.groups)
+    groups = re.split('[,\s]+', opt.groups)
+    groups = [x for x in groups if x]
+    groupstr = ','.join(groups)
+    if groupstr == 'default':
+      groupstr = None
+    m.config.SetString('manifest.groups', groupstr)
 
     if opt.reference:
       m.config.SetString('repo.reference', opt.reference)
