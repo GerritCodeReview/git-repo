@@ -122,8 +122,9 @@ class XmlManifest(object):
     mp = self.manifestProject
 
     groups = mp.config.GetString('manifest.groups')
-    if groups:
-      groups = re.split('[,\s]+', groups)
+    if groups is None:
+      groups = 'default'
+    groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     doc = xml.dom.minidom.Document()
     root = doc.createElement('manifest')
@@ -200,7 +201,7 @@ class XmlManifest(object):
         ce.setAttribute('dest', c.dest)
         e.appendChild(ce)
 
-      if p.groups:
+      if p.groups != ['default']:
         e.setAttribute('groups', ','.join(p.groups))
 
     if self._repo_hooks_project:
@@ -517,11 +518,12 @@ class XmlManifest(object):
     else:
       rebase = rebase.lower() in ("yes", "true", "1")
 
-    groups = node.getAttribute('groups')
-    if groups:
-      groups = re.split('[,\s]+', groups)
-    else:
-      groups = None
+    groups = ''
+    if node.hasAttribute('groups'):
+      groups = node.getAttribute('groups')
+    groups = [x for x in re.split('[,\s]+', groups) if x]
+    if 'default' not in groups:
+      groups.append('default')
 
     if self.IsMirror:
       relpath = None
