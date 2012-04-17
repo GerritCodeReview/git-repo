@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAEyn///+M\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-17T23:21:24Z",
+      "side": 1,
+      "message": "-default is unnecessary now, it starts with no projects",
+      "revId": "9629d18ab9575ce53a203e7e84191617b099ecac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEyn///+I\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-17T23:21:24Z",
+      "side": 1,
+      "message": "why set the config at all here, if we can default it at runtime?",
+      "revId": "9629d18ab9575ce53a203e7e84191617b099ecac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEyn///+E\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-17T23:21:24Z",
+      "side": 1,
+      "message": "groups is guaranteed to exist here",
+      "revId": "9629d18ab9575ce53a203e7e84191617b099ecac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEyn///+A\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-17T23:21:24Z",
+      "side": 1,
+      "message": "i left the full regexp here so that a hand-edited .gitconfig would work the same as the command line.  maybe that\u0027s not a use case we should support.  also, the regexp handles multiple sequential separators, which this does not",
+      "revId": "9629d18ab9575ce53a203e7e84191617b099ecac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEyn///98\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-17T23:21:24Z",
+      "side": 1,
+      "message": "-default doesn\u0027t exist for projects",
+      "revId": "9629d18ab9575ce53a203e7e84191617b099ecac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEyn///94\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-17T23:21:24Z",
+      "side": 1,
+      "message": "this is much simpler",
+      "revId": "9629d18ab9575ce53a203e7e84191617b099ecac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
