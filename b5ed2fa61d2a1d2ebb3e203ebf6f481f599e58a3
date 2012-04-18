@@ -19,6 +19,40 @@
     },
     {
       "key": {
+        "uuid": "AAAEyn///8c\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-18T00:40:41Z",
+      "side": 1,
+      "message": "command.py splits on , and \\s+. Why do we only split on comma here?\n\ncommand.py supports when manifest.groups returns None. Why we do remove that support here?",
+      "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEyn///8Y\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-18T00:40:41Z",
+      "side": 1,
+      "message": "by appending default here at parse time, do we then at save time insert default into the XML? If we parse again and save again do we now say:\n\n  \u003cproject name\u003d\"foo\" groups\u003d\"default default\" /\u003e\n\nThis isn\u0027t really desired.",
+      "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEyn///9I\u003d",
         "filename": "project.py",
         "patchSetId": 5
@@ -30,6 +64,23 @@
       "writtenOn": "2012-04-18T00:21:26Z",
       "side": 1,
       "message": "-default is misleading here, it already starts with an empty list of projects.",
+      "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAEyn///8U\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-18T00:40:41Z",
+      "side": 1,
+      "message": "If groups is default and manifest.groups is not defined, can we avoid setting manifest.groups?",
       "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
