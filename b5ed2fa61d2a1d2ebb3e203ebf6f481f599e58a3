@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAE1n///+8\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-04-18T15:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAEyn///80\u003d",
+      "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEyn///8c\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2012-04-18T00:40:41Z",
       "side": 1,
       "message": "command.py splits on , and \\s+. Why do we only split on comma here?\n\ncommand.py supports when manifest.groups returns None. Why we do remove that support here?",
+      "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE1n////I\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-04-18T15:22:06Z",
+      "side": 1,
+      "message": "Right, there was a reason and Colin had me put it back, but I forgot to (and only put back the import).  Fixed.",
+      "parentUuid": "AAAEyn///8c\u003d",
       "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "AAAE1n////E\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-04-18T15:22:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAEyn///9I\u003d",
+      "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAEyn///8U\u003d",
         "filename": "subcmds/init.py",
         "patchSetId": 5
@@ -81,6 +135,24 @@
       "writtenOn": "2012-04-18T00:40:41Z",
       "side": 1,
       "message": "If groups is default and manifest.groups is not defined, can we avoid setting manifest.groups?",
+      "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE1n////A\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-04-18T15:22:06Z",
+      "side": 1,
+      "message": "If that would be desirable, sure.",
+      "parentUuid": "AAAEyn///8U\u003d",
       "revId": "b5ed2fa61d2a1d2ebb3e203ebf6f481f599e58a3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
