@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAE0X///+Q\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-18T22:57:58Z",
+      "side": 1,
+      "message": "this will add \u0027default\u0027 to any manifest that has a group.  so groups\u003d\"pdk\" will become groups\u003d\"pdk,default\".  Maybe add everything except \u0027default\u0027 to the attribute?",
+      "revId": "53fe3b784ffc5c8d33e7297db583955e7d90222a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE0X///+I\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-18T22:57:58Z",
+      "side": 1,
+      "message": "this will never let you change groups back to default.  you need \"or m.config.GetString(\u0027manifest.groups\u0027)\" as well.",
+      "revId": "53fe3b784ffc5c8d33e7297db583955e7d90222a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
