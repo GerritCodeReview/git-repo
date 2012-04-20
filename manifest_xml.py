@@ -35,6 +35,7 @@ class _Default(object):
   revisionExpr = None
   remote = None
   sync_j = 1
+  sync_c = False
 
 class _XmlRemote(object):
   def __init__(self,
@@ -159,6 +160,9 @@ class XmlManifest(object):
     if d.sync_j > 1:
       have_default = True
       e.setAttribute('sync-j', '%d' % d.sync_j)
+    if d.sync_c:
+      have_default = True
+      e.setAttribute('sync-c', 'true')
     if have_default:
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
@@ -211,6 +215,9 @@ class XmlManifest(object):
           ae.setAttribute('name', a.name)
           ae.setAttribute('value', a.value)
           e.appendChild(ae)
+
+      if p.sync_c:
+        e.setAttribute('sync-c', 'true')
 
     if self._repo_hooks_project:
       root.appendChild(doc.createTextNode(''))
@@ -444,11 +451,18 @@ class XmlManifest(object):
     d.revisionExpr = node.getAttribute('revision')
     if d.revisionExpr == '':
       d.revisionExpr = None
+
     sync_j = node.getAttribute('sync-j')
     if sync_j == '' or sync_j is None:
       d.sync_j = 1
     else:
       d.sync_j = int(sync_j)
+
+    sync_c = node.getAttribute('sync-c')
+    if not sync_c:
+      d.sync_c = False
+    else:
+      d.sync_c = sync_c.lower() in ("yes", "true", "1")
     return d
 
   def _ParseNotice(self, node):
@@ -526,6 +540,12 @@ class XmlManifest(object):
     else:
       rebase = rebase.lower() in ("yes", "true", "1")
 
+    sync_c = node.getAttribute('sync-c')
+    if not sync_c:
+      sync_c = False
+    else:
+      sync_c = sync_c.lower() in ("yes", "true", "1")
+
     groups = ''
     if node.hasAttribute('groups'):
       groups = node.getAttribute('groups')
@@ -550,7 +570,8 @@ class XmlManifest(object):
                       revisionExpr = revisionExpr,
                       revisionId = None,
                       rebase = rebase,
-                      groups = groups)
+                      groups = groups,
+                      sync_c = sync_c)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':

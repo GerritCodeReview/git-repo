@@ -510,7 +510,8 @@ class Project(object):
                revisionExpr,
                revisionId,
                rebase = True,
-               groups = None):
+               groups = None,
+               sync_c = False):
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -531,6 +532,7 @@ class Project(object):
 
     self.rebase = rebase
     self.groups = groups
+    self.sync_c = sync_c
 
     self.snapshots = {}
     self.copyfiles = []
@@ -964,6 +966,7 @@ class Project(object):
     and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
       is_new = False
 
+    current_branch_only = current_branch_only or self.sync_c or self.manifest.default.sync_c
     if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                              current_branch_only=current_branch_only):
       return False
