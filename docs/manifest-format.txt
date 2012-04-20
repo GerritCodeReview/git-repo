@@ -39,6 +39,7 @@ following DTD:
     <!ATTLIST default remote   IDREF #IMPLIED>
     <!ATTLIST default revision CDATA #IMPLIED>
     <!ATTLIST default sync-j   CDATA #IMPLIED>
+    <!ATTLIST default sync-c   CDATA #IMPLIED>
 
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
@@ -49,7 +50,8 @@ following DTD:
     <!ATTLIST project remote   IDREF #IMPLIED>
     <!ATTLIST project revision CDATA #IMPLIED>
     <!ATTLIST project groups   CDATA #IMPLIED>
-  
+    <!ATTLIST project sync-c   CDATA #IMPLIED>
+
     <!ELEMENT remove-project (EMPTY)>
     <!ATTLIST remove-project name  CDATA #REQUIRED>
 
