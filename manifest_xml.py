@@ -267,6 +267,7 @@ class XmlManifest(object):
     self.branch = None
     self._manifest_server = None
     self._nodes = None
+    self._removed_remotes = {}
 
   def _Load(self):
     if not self._loaded:
@@ -312,14 +313,28 @@ class XmlManifest(object):
     self._nodes.append(config.childNodes)
 
   def _ParseManifest(self):
+    removed_remotes = {}
+
     for node in itertools.chain(*self._nodes):
       if node.nodeName == 'remote':
         remote = self._ParseRemote(node)
+        print "+%s" % remote.name
+        if remote.name in removed_remotes:
+          del self._remotes[remote.name]
+          del removed_remotes[remote.name]
         if self._remotes.get(remote.name):
           raise ManifestParseError(
               'duplicate remote %s in %s' %
               (remote.name, self.manifestFile))
         self._remotes[remote.name] = remote
+      if node.nodeName == 'remove-remote':
+        name = self._reqatt(node, 'name')
+        print "-%s" % name
+        if not name in self._remotes:
+          raise ManifestParseError(
+              'remote %s not found' %
+              (name))
+        removed_remotes[name] = self._remotes[name]
 
     for config in self._nodes:
       have_default = False
@@ -332,6 +347,14 @@ class XmlManifest(object):
           self._default = self._ParseDefault(node)
     if self._default is None:
       self._default = _Default()
+
+    if self._default.remote in removed_remotes:
+      raise ManifestParseError(
+          'default uses removed remote %s' %
+          (self._default.remote_name))
+
+    for name in removed_remotes.keys():
+      del self._remotes[name]
 
     for node in itertools.chain(*self._nodes):
       if node.nodeName == 'notice':
@@ -392,7 +415,6 @@ class XmlManifest(object):
         # the repo-hooks element too.
         if self._repo_hooks_project and (self._repo_hooks_project.name == name):
           self._repo_hooks_project = None
-
 
   def _AddMetaProjectMirror(self, m):
     name = None
