@@ -329,14 +329,26 @@ class XmlManifest(object):
     return nodes
 
   def _ParseManifest(self, node_list):
+    removed_remotes = {}
+
     for node in itertools.chain(*node_list):
       if node.nodeName == 'remote':
         remote = self._ParseRemote(node)
+        if remote.name in removed_remotes:
+          del self._remotes[remote.name]
+          del removed_remotes[remote.name]
         if self._remotes.get(remote.name):
           raise ManifestParseError(
               'duplicate remote %s in %s' %
               (remote.name, self.manifestFile))
         self._remotes[remote.name] = remote
+      if node.nodeName == 'remove-remote':
+        name = self._reqatt(node, 'name')
+        if not name in self._remotes:
+          raise ManifestParseError(
+              'remote %s not found' %
+              (name))
+        removed_remotes[name] = self._remotes[name]
 
     for config in node_list:
       have_default = False
@@ -350,6 +362,14 @@ class XmlManifest(object):
           have_default = True
     if self._default is None:
       self._default = _Default()
+
+    if self._default.remote in removed_remotes:
+      raise ManifestParseError(
+          'default uses removed remote %s' %
+          (self._default.remote_name))
+
+    for name in removed_remotes.keys():
+      del self._remotes[name]
 
     for node in itertools.chain(*node_list):
       if node.nodeName == 'notice':
