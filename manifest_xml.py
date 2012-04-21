@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import itertools
 import os
 import re
 import sys
@@ -281,16 +282,14 @@ class XmlManifest(object):
         b = b[len(R_HEADS):]
       self.branch = b
 
-      self._ParseManifest(True)
+      nodes = []
+      nodes.append(self._ParseManifestXml(self.manifestFile))
 
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
-        try:
-          real = self.manifestFile
-          self.manifestFile = local
-          self._ParseManifest(False)
-        finally:
-          self.manifestFile = real
+        nodes.append(self._ParseManifestXml(local))
+
+      self._ParseManifest(nodes)
 
       if self.IsMirror:
         self._AddMetaProjectMirror(self.repoProject)
@@ -298,7 +297,7 @@ class XmlManifest(object):
 
       self._loaded = True
 
-  def _ParseManifestObject(self, path):
+  def _ParseManifestXml(self, path):
     root = xml.dom.minidom.parse(path)
     if not root or not root.childNodes:
       raise ManifestParseError("no root node in %s" % (path,))
@@ -307,21 +306,17 @@ class XmlManifest(object):
     if config.nodeName != 'manifest':
       raise ManifestParseError("no <manifest> in %s" % (path,))
 
-    return config
-
-  def _ParseManifest(self, is_root_file):
-    config = self._ParseManifestObject(self.manifestFile)
-
+    nodes = []
     for node in config.childNodes:
         if node.nodeName == 'include':
             name = self._reqatt(node, 'name')
-            fp = os.path.join(self.manifestProject.worktree, name)
+            fp = os.path.join(os.path.dirname(path), name)
             if not os.path.isfile(fp):
                 raise ManifestParseError, \
                     "include %s doesn't exist or isn't a file" % \
                     (name,)
             try:
-                subconfig = self._ParseManifestObject(fp)
+                nodes.extend(self._ParseManifestXml(fp))
             # should isolate this to the exact exception, but that's
             # tricky.  actual parsing implementation may vary.
             except (KeyboardInterrupt, RuntimeError, SystemExit):
@@ -329,27 +324,12 @@ class XmlManifest(object):
             except Exception, e:
                 raise ManifestParseError(
                     "failed parsing included manifest %s: %s", (name, e))
+        else:
+          nodes.append(node)
+    return nodes
 
-            for sub_node in subconfig.childNodes:
-                config.appendChild(sub_node.cloneNode(True))
-
-
-    for node in config.childNodes:
-      if node.nodeName == 'remove-project':
-        name = self._reqatt(node, 'name')
-        try:
-          del self._projects[name]
-        except KeyError:
-          raise ManifestParseError(
-              'project %s not found' %
-              (name))
-
-        # If the manifest removes the hooks project, treat it as if it deleted
-        # the repo-hooks element too.
-        if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-          self._repo_hooks_project = None
-
-    for node in config.childNodes:
+  def _ParseManifest(self, node_list):
+    for node in itertools.chain(*node_list):
       if node.nodeName == 'remote':
         remote = self._ParseRemote(node)
         if self._remotes.get(remote.name):
@@ -358,7 +338,7 @@ class XmlManifest(object):
               (remote.name, self.manifestFile))
         self._remotes[remote.name] = remote
 
-    for node in config.childNodes:
+    for node in itertools.chain(*node_list):
       if node.nodeName == 'default':
         if self._default is not None:
           raise ManifestParseError(
@@ -368,7 +348,7 @@ class XmlManifest(object):
     if self._default is None:
       self._default = _Default()
 
-    for node in config.childNodes:
+    for node in itertools.chain(*node_list):
       if node.nodeName == 'notice':
         if self._notice is not None:
           raise ManifestParseError(
@@ -376,7 +356,7 @@ class XmlManifest(object):
               (self.manifestFile))
         self._notice = self._ParseNotice(node)
 
-    for node in config.childNodes:
+    for node in itertools.chain(*node_list):
       if node.nodeName == 'manifest-server':
         url = self._reqatt(node, 'url')
         if self._manifest_server is not None:
@@ -385,7 +365,7 @@ class XmlManifest(object):
                 (self.manifestFile))
         self._manifest_server = url
 
-    for node in config.childNodes:
+    for node in itertools.chain(*node_list):
       if node.nodeName == 'project':
         project = self._ParseProject(node)
         if self._projects.get(project.name):
@@ -393,8 +373,6 @@ class XmlManifest(object):
               'duplicate project %s in %s' %
               (project.name, self.manifestFile))
         self._projects[project.name] = project
-
-    for node in config.childNodes:
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
@@ -416,6 +394,20 @@ class XmlManifest(object):
 
         # Store the enabled hooks in the Project object.
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
+      if node.nodeName == 'remove-project':
+        name = self._reqatt(node, 'name')
+        try:
+          del self._projects[name]
+        except KeyError:
+          raise ManifestParseError(
+              'project %s not found' %
+              (name))
+
+        # If the manifest removes the hooks project, treat it as if it deleted
+        # the repo-hooks element too.
+        if self._repo_hooks_project and (self._repo_hooks_project.name == name):
+          self._repo_hooks_project = None
+
 
   def _AddMetaProjectMirror(self, m):
     name = None
