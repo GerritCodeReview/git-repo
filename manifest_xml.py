@@ -321,13 +321,16 @@ class XmlManifest(object):
               (remote.name, self.manifestFile))
         self._remotes[remote.name] = remote
 
-    for node in itertools.chain(*self._nodes):
-      if node.nodeName == 'default':
-        if self._default is not None:
-          raise ManifestParseError(
-              'duplicate default in %s' %
-              (self.manifestFile))
-        self._default = self._ParseDefault(node)
+    for config in self._nodes:
+      have_default = False
+      for node in config:
+        if node.nodeName == 'default':
+          if have_default:
+            raise ManifestParseError(
+                'duplicate default in %s' %
+                (self.manifestFile))
+          self._default = self._ParseDefault(node)
+          have_default = True
     if self._default is None:
       self._default = _Default()
 

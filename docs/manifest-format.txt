@@ -95,9 +95,11 @@ if not specified then `repo upload` will not function.
 Element default
 ---------------
 
-At most one default element may be specified.  Its remote and
-revision attributes are used when a project element does not
-specify its own remote or revision attribute.
+At most one default element may be specified in each manifest.
+Its remote and revision attributes are used when a project
+element does not specify its own remote or revision attribute.
+A default element in the local manifest overrides the one in
+the default manifest.
 
 Attribute `remote`: Name of a previously defined remote element.
 Project elements lacking a remote attribute of their own will use
