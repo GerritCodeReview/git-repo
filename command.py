@@ -69,7 +69,7 @@ class Command(object):
     mp = self.manifest.manifestProject
 
     groups = mp.config.GetString('manifest.groups')
-    if groups is None:
+    if not groups:
       groups = 'default,platform-' + platform.system().lower()
     groups = [x for x in re.split('[,\s]+', groups) if x]
 

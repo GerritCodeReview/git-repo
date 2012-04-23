@@ -122,7 +122,7 @@ class XmlManifest(object):
     mp = self.manifestProject
 
     groups = mp.config.GetString('manifest.groups')
-    if groups is None:
+    if not groups:
       groups = 'default'
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
