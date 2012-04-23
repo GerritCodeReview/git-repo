@@ -34,6 +34,23 @@
       "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE5H///5o\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-23T21:33:44Z",
+      "side": 1,
+      "message": "s/project/remote/ here, a lot of copy and paste... please re-read this text and make sure it applies to the remote type.",
+      "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
