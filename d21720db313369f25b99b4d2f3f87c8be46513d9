@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAE8H////E\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-23T20:14:19Z",
+      "side": 1,
+      "message": "this line causes a syntax error for me",
+      "revId": "d21720db313369f25b99b4d2f3f87c8be46513d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
