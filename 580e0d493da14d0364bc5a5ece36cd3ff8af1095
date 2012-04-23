@@ -51,6 +51,58 @@
       "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE8H///9s\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-23T21:47:42Z",
+      "side": 1,
+      "message": "oops, closed the window without saving.",
+      "parentUuid": "AAAE5H///5o\u003d",
+      "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE8H///9o\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-23T21:47:42Z",
+      "side": 1,
+      "message": "debugging statement snuck in here",
+      "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE8H///9k\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-23T21:47:42Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
