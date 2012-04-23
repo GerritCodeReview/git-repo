@@ -51,6 +51,24 @@
       "revId": "d3fb18b2ac341ff3b39fe646572fda9e93a717ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE5H///7E\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-23T19:28:04Z",
+      "side": 1,
+      "message": "I\u0027m inclined to stick with sync-c since it matches with sync-j even though its not the most descriptive name we have for it.\n\nThis is going to put extra load on the android.googlesource.com servers if we use it in a manifest that points there. But I guess that is my problem. :-)",
+      "parentUuid": "AAAE4X///7E\u003d",
+      "revId": "d3fb18b2ac341ff3b39fe646572fda9e93a717ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
