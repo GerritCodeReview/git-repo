@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAE5H///6E\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-23T21:12:41Z",
+      "side": 1,
+      "message": "As I understand this 3 patch series, the entire purpose is to make it possible to edit the remote, right? Does it make more sense to permit editing the remote during `repo manifest -o` with an option to the manifest output command, rather than having to swing in a temporary local_manifest.xml to support the rewrite?",
+      "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
