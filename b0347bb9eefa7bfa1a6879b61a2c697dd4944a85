@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAE5H///5w\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-23T21:29:44Z",
+      "side": 1,
+      "message": "This is never set true. So isn\u0027t this now dead code?",
+      "revId": "b0347bb9eefa7bfa1a6879b61a2c697dd4944a85",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
