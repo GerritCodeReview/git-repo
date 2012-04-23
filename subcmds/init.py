@@ -154,7 +154,7 @@ to update the working directory files.
           not m.config.GetString('repo.mirror') == 'true'):
         groups.append(platformize(platform.system().lower()))
     elif opt.platform == 'all':
-      groups.extend(map(platformize, all_platfroms))
+      groups.extend(map(platformize, all_platforms))
     elif opt.platform in all_platforms:
       groups.extend(platformize(opt.platform))
     elif opt.platform != 'none':
@@ -163,8 +163,7 @@ to update the working directory files.
 
     groups = [x for x in groups if x]
     groupstr = ','.join(groups)
-    if opt.platform == 'auto' and
-       groupstr == 'default,platform-' + platform.system.lower():
+    if opt.platform == 'auto' and groupstr == 'default,platform-' + platform.system().lower():
       groupstr = None
     m.config.SetString('manifest.groups', groupstr)
 
