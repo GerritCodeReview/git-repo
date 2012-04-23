@@ -16,6 +16,24 @@
       "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE8H///+U\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-23T21:15:11Z",
+      "side": 1,
+      "message": "When rewriting, we generally remove the internal remote, add a new remote (with a different name), and edit the default to point to the new remote.  There is enough information necessary for the new remote (url, review url) that I figured it would be easier to put in xml than on the command line.\n\nAlso, I generally need to inject a project when rewriting, so I\u0027m already using a local_manifest.xml.",
+      "parentUuid": "AAAE5H///6E\u003d",
+      "revId": "580e0d493da14d0364bc5a5ece36cd3ff8af1095",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
