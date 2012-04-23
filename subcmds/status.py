@@ -111,14 +111,21 @@ the following meanings:
       threads_and_output = []
       for project in all:
         sem.acquire()
-        output = StringIO.StringIO()
+
+        class BufList(StringIO.StringIO):
+          def dump(self, ostream):
+            for entry in self.buflist:
+              ostream.write(entry)
+
+        output = BufList()
+
         t = _threading.Thread(target=self._StatusHelper,
                               args=(project, counter, sem, output))
         threads_and_output.append((t, output))
         t.start()
       for (t, output) in threads_and_output:
         t.join()
-        sys.stdout.write(output.getvalue())
+        output.dump(sys.stdout)
         output.close()
     if len(all) == counter.next():
       print 'nothing to commit (working directory clean)'
