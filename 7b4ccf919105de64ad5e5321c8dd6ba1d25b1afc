@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAE8H///9c\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-04-23T22:01:38Z",
+      "side": 1,
+      "message": "oops, this is unnecessary",
+      "revId": "7b4ccf919105de64ad5e5321c8dd6ba1d25b1afc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
