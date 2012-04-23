@@ -33,6 +33,24 @@
       "revId": "d3fb18b2ac341ff3b39fe646572fda9e93a717ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE4X///7E\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1004136
+      },
+      "writtenOn": "2012-04-23T18:31:49Z",
+      "side": 1,
+      "message": "yep, this is one of the questions I had. Is \"sync-c\" name good for it, or maybe something else? Let\u0027s Shawn to make this decision.\n\nI am fine with both \"sync-c\" and \"sync-current-branch\".",
+      "parentUuid": "AAAE53///6Y\u003d",
+      "revId": "d3fb18b2ac341ff3b39fe646572fda9e93a717ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
