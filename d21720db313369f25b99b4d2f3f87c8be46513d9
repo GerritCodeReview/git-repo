@@ -16,6 +16,24 @@
       "revId": "d21720db313369f25b99b4d2f3f87c8be46513d9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAE5H///6c\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-04-23T20:15:38Z",
+      "side": 1,
+      "message": "Have I mentioned how much I hate Python?  *sigh*\n\nSince this is already merged, can you upload a fix change?",
+      "parentUuid": "AAAE8H////E\u003d",
+      "revId": "d21720db313369f25b99b4d2f3f87c8be46513d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
