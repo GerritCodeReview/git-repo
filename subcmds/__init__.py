@@ -16,6 +16,7 @@
 import os
 
 all = {}
+aliases = {}
 
 my_dir = os.path.dirname(__file__)
 for py in os.listdir(my_dir):
@@ -45,5 +46,13 @@ for py in os.listdir(my_dir):
     cmd.NAME = name
     all[name] = cmd
 
+    try:
+      cmd_aliases = getattr(cmd, 'aliases')
+      for cmd_alias in cmd_aliases:
+        aliases[cmd_alias] = cmd
+    except AttributeError:
+      pass
+
 if 'help' in all:
   all['help'].commands = all
+  all['help'].command_aliases = aliases
