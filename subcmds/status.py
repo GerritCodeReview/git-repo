@@ -26,6 +26,7 @@ import StringIO
 
 class Status(PagedCommand):
   common = True
+  aliases = ['st']
   helpSummary = "Show the working tree status"
   helpUsage = """
 %prog [<project>...]

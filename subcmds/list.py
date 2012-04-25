@@ -17,6 +17,7 @@ from command import Command, MirrorSafeCommand
 
 class List(Command, MirrorSafeCommand):
   common = True
+  aliases = ['ls']
   helpSummary = "List projects and their associated directories"
   helpUsage = """
 %prog [<project>...]

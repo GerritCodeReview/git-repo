@@ -38,18 +38,8 @@ The complete list of recognized repo commands are:
     commandNames = self.commands.keys()
     commandNames.sort()
 
-    maxlen = 0
-    for name in commandNames:
-      maxlen = max(maxlen, len(name))
-    fmt = '  %%-%ds  %%s' % maxlen
+    self._PrintCommandsSummary(commandNames)
 
-    for name in commandNames:
-      command = self.commands[name]
-      try:
-        summary = command.helpSummary.strip()
-      except AttributeError:
-        summary = ''
-      print fmt % (name, summary)
     print """
 See 'repo help <command>' for more information on a specific command.
 """
@@ -64,9 +54,26 @@ The most commonly used repo commands are:
                     if self.commands[name].common]
     commandNames.sort()
 
+    self._PrintCommandsSummary(commandNames)
+
+    print """
+See 'repo help <command>' for more information on a specific command.
+See 'repo help --all' for a complete list of recognized commands.
+"""
+
+  def _PrintCommandsSummary(self, commandNames):
+    commandsWithAliases = {}
+
     maxlen = 0
     for name in commandNames:
-      maxlen = max(maxlen, len(name))
+      command = self.commands[name]
+      try:
+        if len(command.aliases) > 0:
+          commandsWithAliases[name] = '%s (%s)' % (name, ', '.join(command.aliases))
+      except AttributeError:
+        commandsWithAliases[name] = name
+      maxlen = max(maxlen, len(commandsWithAliases[name]))
+
     fmt = '  %%-%ds  %%s' % maxlen
 
     for name in commandNames:
@@ -75,11 +82,7 @@ The most commonly used repo commands are:
         summary = command.helpSummary.strip()
       except AttributeError:
         summary = ''
-      print fmt % (name, summary)
-    print """
-See 'repo help <command>' for more information on a specific command.
-See 'repo help --all' for a complete list of recognized commands.
-"""
+      print fmt % (commandsWithAliases[name], summary)
 
   def _PrintCommandHelp(self, cmd):
     class _Out(Coloring):
@@ -162,8 +165,11 @@ See 'repo help --all' for a complete list of recognized commands.
       try:
         cmd = self.commands[name]
       except KeyError:
-        print >>sys.stderr, "repo: '%s' is not a repo command." % name
-        sys.exit(1)
+        try:
+          cmd = self.command_aliases[name]
+        except KeyError:
+          print >>sys.stderr, "repo: '%s' is not a repo command." % name
+          sys.exit(1)
 
       cmd.manifest = self.manifest
       self._PrintCommandHelp(cmd)

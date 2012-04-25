@@ -46,6 +46,7 @@ from manifest_xml import XmlManifest
 from pager import RunPager
 
 from subcmds import all as all_commands
+from subcmds import aliases as all_aliases
 
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
@@ -70,8 +71,7 @@ class _Repo(object):
   def __init__(self, repodir):
     self.repodir = repodir
     self.commands = all_commands
-    # add 'branch' as an alias for 'branches'
-    all_commands['branch'] = all_commands['branches']
+    self.command_aliases = all_aliases
 
   def _Run(self, argv):
     result = 0
@@ -103,10 +103,13 @@ class _Repo(object):
     try:
       cmd = self.commands[name]
     except KeyError:
-      print >>sys.stderr,\
-            "repo: '%s' is not a repo command.  See 'repo help'."\
-            % name
-      return 1
+      try:
+        cmd = self.command_aliases[name]
+      except KeyError:
+        print >>sys.stderr,\
+              "repo: '%s' is not a repo command.  See 'repo help'."\
+              % name
+        return 1
 
     cmd.repodir = self.repodir
     cmd.manifest = XmlManifest(cmd.repodir)

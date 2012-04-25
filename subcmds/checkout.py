@@ -19,6 +19,7 @@ from progress import Progress
 
 class Checkout(Command):
   common = True
+  aliases = ['co']
   helpSummary = "Checkout a branch for development"
   helpUsage = """
 %prog <branchname> [<project>...]
