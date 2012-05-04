@@ -1670,8 +1670,10 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s rebase %s ' % (self.name, upstream))
 
-  def _FastForward(self, head):
+  def _FastForward(self, head, ffonly=False):
     cmd = ['merge', head]
+    if ffonly:
+      cmd.append("--ff-only")
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
