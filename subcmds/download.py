@@ -39,6 +39,9 @@ makes it available in your project's local working directory.
     p.add_option('-r','--revert',
                  dest='revert', action='store_true',
                  help="revert instead of checkout")
+    p.add_option('-f','--ff-only',
+                 dest='ffonly', action='store_true',
+                 help="force fast-forward merge")
 
   def _ParseChangeIds(self, args):
     if not args:
@@ -87,5 +90,7 @@ makes it available in your project's local working directory.
 	project._CherryPick(dl.commit)
       elif opt.revert:
 	project._Revert(dl.commit)
+      elif opt.ffonly:
+	project._FastForward(dl.commit, ffonly=True)
       else:
 	project._Checkout(dl.commit)
