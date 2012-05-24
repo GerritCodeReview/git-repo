@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAFxH////0\u003d",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-05-24T16:01:24Z",
+      "side": 1,
+      "message": "repo uses space for indents",
+      "revId": "8fdd06be7ea71a3b39b4227d755c1456800fc6c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAFxX////8\u003d",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-05-24T16:01:24Z",
+      "side": 1,
+      "message": "repo uses space for indents",
+      "revId": "8fdd06be7ea71a3b39b4227d755c1456800fc6c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
