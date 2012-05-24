@@ -666,6 +666,8 @@ class Project(object):
        manifest_groups: "-group1,group2"
        the project will be matched.
     """
+    if self.groups is None:
+      return True
     matched = False
     for group in manifest_groups:
       if group.startswith('-') and group[1:] in self.groups:
