@@ -966,7 +966,15 @@ class Project(object):
     and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
       is_new = False
 
-    current_branch_only = current_branch_only or self.sync_c or self.manifest.default.sync_c
+    if not current_branch_only:
+      if self.sync_c:
+        current_branch_only = True
+      elif not self.manifest._loaded:
+        # Manifest cannot check defaults until it syncs.
+        current_branch_only = False
+      elif self.manifest.default.sync_c:
+        current_branch_only = True
+
     if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                              current_branch_only=current_branch_only):
       return False
