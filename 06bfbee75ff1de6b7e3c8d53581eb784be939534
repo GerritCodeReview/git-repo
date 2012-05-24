@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAFxX////k\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-05-24T16:11:28Z",
+      "side": 1,
+      "message": "I don\u0027t understand this change. What are you trying to accomplish? I think it is under-documented in the manifest command. Perhaps you should explain it in more detail using text inside of the helpDescription member, like subcmds/sync.py does.",
+      "revId": "06bfbee75ff1de6b7e3c8d53581eb784be939534",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAFxX////o\u003d",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-05-24T16:11:28Z",
+      "side": 1,
+      "message": "into was also at the end of the prior line",
+      "revId": "06bfbee75ff1de6b7e3c8d53581eb784be939534",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
