@@ -19,6 +19,41 @@
     },
     {
       "key": {
+        "uuid": "AAAF1H////U\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-05-25T05:53:28Z",
+      "side": 1,
+      "message": "The intent of this was basically to automate comparing two given manifests for the following core scenarios:\n\n1) You need to isolate the literal delta between two releases (lets just use the example of copyright/license analysis focused on exactly what patches have landed since the last analysis).  To do that, you need to know the commonality between the two, specifically identifying the last shared revision (which typically is the last release, although not guaranteed if the history has shifted- say rebased to a new kernel).\n\n2) You\u0027re derived from a given upstream (say aosp) and want to identify exactly what you\u0027re actually using of theirs (literally, intersection of the projects set), or to quickly pull what you\u0027ve put on *top* of an upstreams manifest.  Variation of scenario #1, but distinct in it\u0027s own since it\u0027s not strictly revision locked- it\u0027s a way to compare two manifests and find the common projects for example.  Useful for a developer dealing w/ integration.\n\nNote these scenarios can all be done manually, and were at one point; it was instead folded into repo since frankly the manifest was the quanta in use, and the workflow was simpler/saner doing thus (plus it was an esoteric but useful subcommand).\n\nThis functionality may be useful for others although it\u0027s a year past for me and frankly I\u0027m not entirely sure; for our usage at the time, an internal release subcommand we had was one of the primary consumers of this CL, and used it to do some hefty delta trickery.\n\nIt was useful on it\u0027s own, but primarily was driven and consumed from via scripts as part of a release process (or rebasing).\n\nYour call either way.",
+      "parentUuid": "AAAFxX////k\u003d",
+      "revId": "06bfbee75ff1de6b7e3c8d53581eb784be939534",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAF1H////w\u003d",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-05-25T05:53:28Z",
+      "side": 1,
+      "message": "english is a bit off here...",
+      "revId": "06bfbee75ff1de6b7e3c8d53581eb784be939534",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAFxX////o\u003d",
         "filename": "subcmds/manifest.py",
         "patchSetId": 1
