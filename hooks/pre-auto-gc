@@ -38,6 +38,11 @@ elif test -x /usr/bin/pmset && /usr/bin/pmset -g batt |
 	grep -q "Currently drawing from 'AC Power'"
 then
 	exit 0
+elif test -d /sys/bus/acpi/drivers/battery && test 0 = \
+  "$(find /sys/bus/acpi/drivers/battery/ -type l | wc -l)";
+then
+	# No battery exists.
+	exit 0
 fi
 
 echo "Auto packing deferred; not on AC"
