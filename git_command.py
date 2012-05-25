@@ -155,6 +155,9 @@ class GitCommand(object):
         gitdir = project.gitdir
 
     command = [GIT]
+    if 'http_proxy' in env and 'darwin' == sys.platform:
+      command.extend('-c')
+      command.extend('http.proxy=' + env['http_proxy'])
     if bare:
       if gitdir:
         _setenv(env, GIT_DIR, gitdir)
