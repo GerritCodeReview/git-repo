@@ -191,8 +191,8 @@ to update the working directory files.
     m.Sync_LocalHalf(syncbuf)
     syncbuf.Finish()
 
-    if is_new or m.CurrentBranch is None:
-      if not m.StartBranch('default'):
+    if is_new or m.CurrentBranch is None or opt.manifest_branch:
+      if not m.StartBranch('default', True):
         print >>sys.stderr, 'fatal: cannot create default in manifest'
         sys.exit(1)
 

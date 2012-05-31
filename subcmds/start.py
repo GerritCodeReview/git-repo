@@ -56,7 +56,7 @@ revision specified in the manifest.
     pm = Progress('Starting %s' % nb, len(all))
     for project in all:
       pm.update()
-      if not project.StartBranch(nb):
+      if not project.StartBranch(nb, False):
         err.append(project)
     pm.end()
 

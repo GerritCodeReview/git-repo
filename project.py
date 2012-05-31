@@ -1197,24 +1197,30 @@ class Project(object):
 
 ## Branch Management ##
 
-  def StartBranch(self, name):
+  def StartBranch(self, name, overwrite):
     """Create a new branch off the manifest's revision.
     """
     head = self.work_git.GetHead()
-    if head == (R_HEADS + name):
-      return True
-
     all = self.bare_ref.all
+    revid = self.GetRevisionId(all)
+    if head == (R_HEADS + name):
+      if all[head] == revid:
+        return True
+      elif not overwrite:
+        return False
+
     if (R_HEADS + name) in all:
-      return GitCommand(self,
-                        ['checkout', name, '--'],
-                        capture_stdout = True,
-                        capture_stderr = True).Wait() == 0
+      if all[R_HEADS + name] == revid:
+        return GitCommand(self,
+                          ['checkout', name, '--'],
+                          capture_stdout = True,
+                          capture_stderr = True).Wait() == 0
+      elif not overwrite:
+        return False
 
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote(self.remote.name)
     branch.merge = self.revisionExpr
-    revid = self.GetRevisionId(all)
 
     if head.startswith(R_HEADS):
       try:
@@ -1222,7 +1228,7 @@ class Project(object):
       except KeyError:
         head = None
 
-    if revid and head and revid == head:
+    if revid and head:
       ref = os.path.join(self.gitdir, R_HEADS + name)
       try:
         os.makedirs(os.path.dirname(ref))
@@ -1232,6 +1238,13 @@ class Project(object):
       _lwrite(os.path.join(self.worktree, '.git', HEAD),
               'ref: %s%s\n' % (R_HEADS, name))
       branch.Save()
+      # if we just overwrote the HEAD reference then we
+      # need to reset the working directory to keep in sync
+      if revid != head and overwrite \
+         and GitCommand(self, ['reset', '--hard', 'HEAD'],
+                        capture_stdout = True,
+                        capture_stderr = True).Wait() != 0:
+        return False
       return True
 
     if GitCommand(self,
