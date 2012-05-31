@@ -22,6 +22,7 @@ import sys
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
+from error import GitError
 from project import SyncBuffer
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION
@@ -191,9 +192,13 @@ to update the working directory files.
     m.Sync_LocalHalf(syncbuf)
     syncbuf.Finish()
 
-    if is_new or m.CurrentBranch is None:
-      if not m.StartBranch('default'):
-        print >>sys.stderr, 'fatal: cannot create default in manifest'
+    if is_new or m.CurrentBranch is None or opt.manifest_branch:
+      try:
+        if not m.StartBranch('default', True):
+          print >>sys.stderr, 'fatal: cannot create default in manifest'
+          sys.exit(1)
+      except GitError, e:
+        print >>sys.stderr, 'fatal: '+str(e)
         sys.exit(1)
 
   def _LinkManifest(self, name):
