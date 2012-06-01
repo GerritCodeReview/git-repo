@@ -16,6 +16,24 @@
       "revId": "17cbaa4e44ddb07d8c07f73c8e303efcb820506c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAGLH////A\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1247,
+      "author": {
+        "id": 1006766
+      },
+      "writtenOn": "2012-06-01T02:00:27Z",
+      "side": 1,
+      "message": "Yes, I agree. I put this here as a first step to make it work, but we need a better solution. Perhaps just an error message if the directory is dirty? Is there a standard practice? I think just failing silently and leaving the directory dirty is not a good option...",
+      "parentUuid": "AAAGLX////o\u003d",
+      "revId": "17cbaa4e44ddb07d8c07f73c8e303efcb820506c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
