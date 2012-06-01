@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAGLX////o\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1247,
+      "author": {
+        "id": 1010606
+      },
+      "writtenOn": "2012-06-01T00:45:19Z",
+      "side": 1,
+      "message": "This is a potentially destructive operation. Don\u0027t we need to guard against data loss when dirty files are made clean?",
+      "revId": "17cbaa4e44ddb07d8c07f73c8e303efcb820506c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
