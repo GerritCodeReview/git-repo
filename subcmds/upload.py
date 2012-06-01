@@ -103,6 +103,14 @@ or in the .git/config within the project.  For example:
     autoupload = true
     autocopy = johndoe@company.com,my-team-alias@company.com
 
+review.URL.uploadtopic:
+
+To add a topic branch whenever uploading a commit, you can set a
+per-project or global Git option to do so. If review.URL.uploadtopic
+is set to "true" then repo will assume you always want the equivalent
+of the -t option to the repo command. If unset or set to "false" then
+repo will make use of only the command line option.
+
 References
 ----------
 
@@ -310,6 +318,11 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                     branch.uploaded = False
                     branch.error = 'User aborted'
                     continue
+
+        # Check if topic branches should be sent to the server during upload
+        if opt.auto_topic is not True:
+           key = 'review.%s.uploadtopic' % branch.project.remote.review
+           opt.auto_topic = branch.project.config.GetBoolean(key)
 
         branch.UploadForReview(people, auto_topic=opt.auto_topic)
         branch.uploaded = True
