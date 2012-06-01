@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAGM3///74\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2012-06-01T16:39:45Z",
+      "side": 1,
+      "message": "Maybe:\n\n If unset or set to \"false\" then ...\n\nMakes the default a little clearer.",
+      "revId": "eec9f4637d3ded647b03bb0ef8c35692c9faf0b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
