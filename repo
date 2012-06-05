@@ -2,7 +2,7 @@
 
 ## repo default configuration
 ##
-REPO_URL='https://code.google.com/p/git-repo/'
+REPO_URL='https://gerrit.googlesource.com/git-repo'
 REPO_REV='stable'
 
 # Copyright (C) 2008 Google Inc.
