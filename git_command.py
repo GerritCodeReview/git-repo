@@ -147,6 +147,12 @@ class GitCommand(object):
     if ssh_proxy:
       _setenv(env, 'REPO_SSH_SOCK', ssh_sock())
       _setenv(env, 'GIT_SSH', _ssh_proxy())
+    if 'http_proxy' in env and 'darwin' == sys.platform:
+      s = 'http.proxy=' + env['http_proxy']
+      p = env.get('GIT_CONFIG_PARAMETERS')
+      if p is not None:
+        s = p + ' ' + s
+      _setenv(env, 'GIT_CONFIG_PARAMETERS', s)
 
     if project:
       if not cwd:
@@ -155,8 +161,6 @@ class GitCommand(object):
         gitdir = project.gitdir
 
     command = [GIT]
-    if 'http_proxy' in env and 'darwin' == sys.platform:
-      command.extend(['-c', 'http.proxy=' + env['http_proxy']])
     if bare:
       if gitdir:
         _setenv(env, GIT_DIR, gitdir)
