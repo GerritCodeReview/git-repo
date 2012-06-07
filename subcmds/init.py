@@ -187,6 +187,9 @@ to update the working directory files.
         shutil.rmtree(m.gitdir)
       sys.exit(1)
 
+    if opt.manifest_branch:
+      m.MetaBranchSwitch(opt.manifest_branch)
+
     syncbuf = SyncBuffer(m.config)
     m.Sync_LocalHalf(syncbuf)
     syncbuf.Finish()

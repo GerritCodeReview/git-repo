@@ -2167,6 +2167,22 @@ class MetaProject(Project):
           self.revisionExpr = base
           self.revisionId = None
 
+  def MetaBranchSwitch(self, target):
+    """ Prepare MetaProject for manifest branch switch
+    """
+
+    # detach and delete manifest branch, allowing a new
+    # branch to take over
+    syncbuf = SyncBuffer(self.config, detach_head = True)
+    self.Sync_LocalHalf(syncbuf)
+    syncbuf.Finish()
+
+    return GitCommand(self,
+                        ['branch', '-D', 'default'],
+                        capture_stdout = True,
+                        capture_stderr = True).Wait() == 0
+
+
   @property
   def LastFetch(self):
     try:
