@@ -1044,12 +1044,15 @@ class Project(object):
 
       if head == revid:
         # No changes; don't do anything further.
+        # Except if the head needs to be detached
         #
-        return
+        if not syncbuf.detach_head:
+          return
+      else:
+        lost = self._revlist(not_rev(revid), HEAD)
+        if lost:
+          syncbuf.info(self, "discarding %d commits", len(lost))
 
-      lost = self._revlist(not_rev(revid), HEAD)
-      if lost:
-        syncbuf.info(self, "discarding %d commits", len(lost))
       try:
         self._Checkout(revid, quiet=True)
       except GitError, e:
