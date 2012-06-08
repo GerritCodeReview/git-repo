@@ -283,11 +283,12 @@ class XmlManifest(object):
       self.branch = b
 
       nodes = []
-      nodes.append(self._ParseManifestXml(self.manifestFile))
+      nodes.append(self._ParseManifestXml(self.manifestFile,
+                                          self.manifestProject.worktree))
 
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
-        nodes.append(self._ParseManifestXml(local))
+        nodes.append(self._ParseManifestXml(local, self.repodir))
 
       self._ParseManifest(nodes)
 
@@ -297,7 +298,7 @@ class XmlManifest(object):
 
       self._loaded = True
 
-  def _ParseManifestXml(self, path):
+  def _ParseManifestXml(self, path, include_root):
     root = xml.dom.minidom.parse(path)
     if not root or not root.childNodes:
       raise ManifestParseError("no root node in %s" % (path,))
@@ -310,13 +311,13 @@ class XmlManifest(object):
     for node in config.childNodes:
         if node.nodeName == 'include':
             name = self._reqatt(node, 'name')
-            fp = os.path.join(os.path.dirname(path), name)
+            fp = os.path.join(include_root, name)
             if not os.path.isfile(fp):
                 raise ManifestParseError, \
                     "include %s doesn't exist or isn't a file" % \
                     (name,)
             try:
-                nodes.extend(self._ParseManifestXml(fp))
+                nodes.extend(self._ParseManifestXml(fp, include_root))
             # should isolate this to the exact exception, but that's
             # tricky.  actual parsing implementation may vary.
             except (KeyboardInterrupt, RuntimeError, SystemExit):
