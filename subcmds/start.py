@@ -15,6 +15,7 @@
 
 import sys
 from command import Command
+from git_config import IsId
 from git_command import git
 from progress import Progress
 
@@ -56,6 +57,10 @@ revision specified in the manifest.
     pm = Progress('Starting %s' % nb, len(all))
     for project in all:
       pm.update()
+      # If the current revision is a specific SHA1 then we can't push back
+      # to it so substitute the manifest default revision instead.
+      if IsId(project.revisionExpr):
+        project.revisionExpr = self.manifest.default.revisionExpr
       if not project.StartBranch(nb):
         err.append(project)
     pm.end()
