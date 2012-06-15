@@ -171,7 +171,9 @@ the default element is used.
 
 Attribute `groups`: List of groups to which this project belongs,
 whitespace or comma separated.  All projects belong to the group
-"default".
+"default", and each project automatically belogs to a group of
+it's `name` (e.g. a <project name="monkeys" />, that projects groups
+are "default" and "monkeys").
 
 Element annotation
 ------------------
