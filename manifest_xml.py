@@ -568,6 +568,8 @@ class XmlManifest(object):
     groups = [x for x in re.split('[,\s]+', groups) if x]
     if 'default' not in groups:
       groups.append('default')
+    if name not in groups:
+      groups.append(name)
 
     if self.IsMirror:
       relpath = None
