@@ -171,7 +171,11 @@ the default element is used.
 
 Attribute `groups`: List of groups to which this project belongs,
 whitespace or comma separated.  All projects belong to the group
-"default".
+"default", and each project automatically belogs to a group of
+it's name:`name` and project:`project`.  E.g. for
+<project name="monkeys" path="barrel-of"/>, that project
+definition implicitly is in the following manifest groups implicitly:
+default, name:monkeys, and path:barrel-of.
 
 Element annotation
 ------------------
