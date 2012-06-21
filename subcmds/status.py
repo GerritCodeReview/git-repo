@@ -20,9 +20,13 @@ try:
 except ImportError:
   import dummy_threading as _threading
 
+import glob
 import itertools
+import os
 import sys
 import StringIO
+
+from color import Coloring
 
 class Status(PagedCommand):
   common = True
@@ -38,6 +42,9 @@ is a difference between these three states.
 
 The -j/--jobs option can be used to run multiple status queries
 in parallel.
+
+The --orphans option can be used to show objects that are in the
+working tree, but not within a project.
 
 Status Display
 --------------
@@ -76,6 +83,9 @@ the following meanings:
     p.add_option('-j', '--jobs',
                  dest='jobs', action='store', type='int', default=2,
                  help="number of projects to check simultaneously")
+    p.add_option('--orphans',
+                 dest='orphans', action='store_true',
+                 help="include orphans (objects not within a project)")
 
   def _StatusHelper(self, project, clean_counter, sem, output):
     """Obtains the status for a specific project.
@@ -130,3 +140,44 @@ the following meanings:
         output.close()
     if len(all_projects) == counter.next():
       print('nothing to commit (working directory clean)')
+    if opt.orphans:
+      out = StatusColoring(self.manifest.globalConfig)
+      out.project('no project')
+      out.nl()
+      os.chdir(self.manifest.topdir)
+      proj_dirs = set()
+      proj_dirs_parents = set()
+      for project in self.GetProjects(None, missing_ok=True):
+        proj_dirs.add(project.relpath)
+        (head, tail) = os.path.split(project.relpath)
+        while head != "":
+          proj_dirs_parents.add(head)
+          (head, tail) = os.path.split(head)
+      proj_dirs.add('.repo')
+      _checkdirs(glob.glob('.*') + \
+          glob.glob('*'), \
+          proj_dirs, proj_dirs_parents, out)
+
+class StatusColoring(Coloring):
+  def __init__(self, config):
+    Coloring.__init__(self, config, 'status')
+    self.project   = self.printer('header',    attr = 'bold')
+    self.untracked = self.printer('untracked', fg = 'red')
+
+def _checkdirs(dirs, proj_dirs, proj_dirs_parents, out):
+  """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""
+  status_header = ' --\t'
+  for item in dirs:
+    if not os.path.isdir(item):
+      out.untracked(''.join([status_header, item]))
+      out.nl()
+      continue
+    if item in proj_dirs:
+      continue
+    if item in proj_dirs_parents:
+      _checkdirs(glob.glob('%s/.*' % item) + \
+          glob.glob('%s/*'  % item), \
+          proj_dirs, proj_dirs_parents, out)
+      continue
+    out.untracked(''.join([status_header, item, '/']))
+    out.nl()
