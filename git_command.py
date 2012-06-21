@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import re
 import sys
 import subprocess
 import tempfile
@@ -95,11 +96,10 @@ def git_require(min_version, fail=False):
 
   if _git_version is None:
     ver_str = git.version()
-    if ver_str.startswith('git version '):
-      _git_version = tuple(
-        map(lambda x: int(x),
-          ver_str[len('git version '):].strip().split('.')[0:3]
-        ))
+    match = re.match(r'git version ([0-9.]+)(-rc.*)?', ver_str)
+    if match:
+      ver_str = match.group(1)
+      _git_version = tuple(map(int, ver_str.split('.')[:3]))
     else:
       print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
       sys.exit(1)
