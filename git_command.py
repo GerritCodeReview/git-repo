@@ -89,7 +89,7 @@ class _GitCall(object):
       if ver_str.startswith('git version '):
         _git_version = tuple(
           map(lambda x: int(x),
-            ver_str[len('git version '):].strip().split('.')[0:3]
+            ver_str[len('git version '):].strip().split('-')[0].split('.')[0:3]
           ))
       else:
         print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
