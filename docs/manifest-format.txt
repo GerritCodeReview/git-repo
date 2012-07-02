@@ -32,6 +32,7 @@ following DTD:
   
     <!ELEMENT remote (EMPTY)>
     <!ATTLIST remote name         ID    #REQUIRED>
+    <!ATTLIST remote alias        CDATA #IMPLIED>
     <!ATTLIST remote fetch        CDATA #REQUIRED>
     <!ATTLIST remote review       CDATA #IMPLIED>
   
@@ -88,6 +89,12 @@ Attribute `name`: A short name unique to this manifest file.  The
 name specified here is used as the remote name in each project's
 .git/config, and is therefore automatically available to commands
 like `git fetch`, `git remote`, `git pull` and `git push`.
+
+Attribute `alias`: The alias, if specified, is used to override
+`name` to be set as the remote name in each project's .git/config.
+Its value can be duplicated while attribute `name` has to be unique
+in the manifest file. This helps each project to be able to have
+same remote name which actually points to different remote url.
 
 Attribute `fetch`: The Git URL prefix for all projects which use
 this remote.  Each project's name is appended to this prefix to

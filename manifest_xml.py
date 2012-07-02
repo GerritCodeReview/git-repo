@@ -41,12 +41,14 @@ class _Default(object):
 class _XmlRemote(object):
   def __init__(self,
                name,
+               alias=None,
                fetch=None,
                manifestUrl=None,
                review=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
+    self.remoteAlias = alias
     self.reviewUrl = review
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
@@ -62,7 +64,10 @@ class _XmlRemote(object):
 
   def ToRemoteSpec(self, projectName):
     url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
-    return RemoteSpec(self.name, url, self.reviewUrl)
+    remoteName = self.name
+    if self.remoteAlias:
+      remoteName = self.remoteAlias
+    return RemoteSpec(remoteName, url, self.reviewUrl)
 
 class XmlManifest(object):
   """manages the repo configuration file"""
@@ -451,12 +456,15 @@ class XmlManifest(object):
     reads a <remote> element from the manifest file
     """
     name = self._reqatt(node, 'name')
+    alias = node.getAttribute('alias')
+    if alias == '':
+      alias = None
     fetch = self._reqatt(node, 'fetch')
     review = node.getAttribute('review')
     if review == '':
       review = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, fetch, manifestUrl, review)
+    return _XmlRemote(name, alias, fetch, manifestUrl, review)
 
   def _ParseDefault(self, node):
     """
