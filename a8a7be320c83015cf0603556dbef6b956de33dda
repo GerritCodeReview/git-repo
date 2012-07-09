@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAHJH///uU\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1002751
+      },
+      "writtenOn": "2012-07-09T22:35:11Z",
+      "side": 1,
+      "message": "project-\u003epath",
+      "revId": "a8a7be320c83015cf0603556dbef6b956de33dda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
