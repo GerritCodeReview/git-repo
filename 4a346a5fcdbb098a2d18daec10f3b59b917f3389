@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAHJ3///yw\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-07-10T18:55:01Z",
+      "side": 1,
+      "message": "This still hasn\u0027t explained why we need to support submodules, or described the impact it has on repo when submodules exist.\n\nHow is the behavior of repo different now that we do something with a submodule?",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAHJ3///yo\u003d",
+        "filename": "command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-07-10T18:55:01Z",
+      "side": 1,
+      "message": "I think they should be included by default, but its also just weird to have a tri-state caused by two different arguments to the same function. What about making this a single argument with an enumerated set of values for it to take on?",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAHJ3///xI\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-07-10T18:55:01Z",
+      "side": 1,
+      "message": "You need to clearly state that the project element within a project must be a git submodule, and will be managed using git submodule by repo, and thus must also be registered in the .gitmodules file within the repository for git submodule to work. So really we have to register everything twice. Once in .gitmodules to make git submodule happy, and again in repo to make the manifest happy.\n\nWhy didn\u0027t you have the manifest parser parse the .gitmodules files to figure out what is contained within a repository?",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAHJ3///ys\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-07-10T18:55:01Z",
+      "side": 1,
+      "message": "This sort of change should have been described in more detail in the commit message.",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
