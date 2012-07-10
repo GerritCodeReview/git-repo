@@ -16,6 +16,24 @@
       "revId": "a8a7be320c83015cf0603556dbef6b956de33dda",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAHJX///dY\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-07-10T20:56:43Z",
+      "side": 1,
+      "message": "nard.  fixing the typo, thanks.",
+      "parentUuid": "AAAHJH///uU\u003d",
+      "revId": "a8a7be320c83015cf0603556dbef6b956de33dda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
