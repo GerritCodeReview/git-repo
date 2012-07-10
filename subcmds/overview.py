@@ -38,43 +38,4 @@ are displayed.
                  help="Consider only checked out branches")
 
   def Execute(self, opt, args):
-    all = []
-    for project in self.GetProjects(args):
-      br = [project.GetUploadableBranch(x)
-            for x in project.GetBranches().keys()]
-      br = [x for x in br if x]
-      if opt.current_branch:
-        br = [x for x in br if x.name == project.CurrentBranch]
-      all.extend(br)
-
-    if not all:
-      return
-
-    class Report(Coloring):
-      def __init__(self, config):
-        Coloring.__init__(self, config, 'status')
-        self.project = self.printer('header', attr='bold')
-
-    out = Report(all[0].project.config)
-    out.project('Projects Overview')
-    out.nl()
-
-    project = None
-
-    for branch in all:
-      if project != branch.project:
-        project = branch.project
-        out.nl()
-        out.project('project %s/' % project.relpath)
-        out.nl()
-
-      commits = branch.commits
-      date = branch.date
-      print '%s %-33s (%2d commit%s, %s)' % (
-            branch.name == project.CurrentBranch and '*' or ' ',
-            branch.name,
-            len(commits),
-            len(commits) != 1 and 's' or ' ',
-            date)
-      for commit in commits:
-        print '%-35s   - %s' % ('', commit)
+      print "Deprecated. See repo info -o"
