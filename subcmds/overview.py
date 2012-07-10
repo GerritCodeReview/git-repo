@@ -54,8 +54,11 @@ are displayed.
       def __init__(self, config):
         Coloring.__init__(self, config, 'status')
         self.project = self.printer('header', attr='bold')
+        self.text = self.printer('text')
 
     out = Report(all[0].project.config)
+    out.text("Deprecated. See repo info -o.")
+    out.nl()
     out.project('Projects Overview')
     out.nl()
 
