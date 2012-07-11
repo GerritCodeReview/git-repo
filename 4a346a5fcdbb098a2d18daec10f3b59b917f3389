@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAHNH////I\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-07-11T06:16:23Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "AAAHJ3///yw\u003d",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAHJ3///yo\u003d",
         "filename": "command.py",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2012-07-10T18:55:01Z",
       "side": 1,
       "message": "I think they should be included by default, but its also just weird to have a tri-state caused by two different arguments to the same function. What about making this a single argument with an enumerated set of values for it to take on?",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAHNH////E\u003d",
+        "filename": "command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-07-11T06:16:23Z",
+      "side": 1,
+      "message": "I rewrote this part.",
+      "parentUuid": "AAAHJ3///yo\u003d",
       "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAAHNH///+8\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-07-11T06:16:23Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "AAAHJ3///xI\u003d",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAHJ3///ys\u003d",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 6
@@ -64,6 +118,24 @@
       "writtenOn": "2012-07-10T18:55:01Z",
       "side": 1,
       "message": "This sort of change should have been described in more detail in the commit message.",
+      "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAHNH////A\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-07-11T06:16:23Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "AAAHJ3///ys\u003d",
       "revId": "4a346a5fcdbb098a2d18daec10f3b59b917f3389",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
