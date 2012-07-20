@@ -2181,7 +2181,7 @@ class MetaProject(Project):
     syncbuf.Finish()
 
     return GitCommand(self,
-                        ['branch', '-D', 'default'],
+                        ['update-ref', '-d', 'refs/heads/default'],
                         capture_stdout = True,
                         capture_stderr = True).Wait() == 0
 
