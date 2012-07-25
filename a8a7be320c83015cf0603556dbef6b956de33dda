@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAHwH///4A\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-07-25T09:50:50Z",
+      "side": 1,
+      "message": "yeah, spelling and english aren\u0027t exactly my forte (usually seems to be what I screw in up patches)..  Fixed in the patch that I\u0027m uploading.",
+      "parentUuid": "AAAHJH///fE\u003d",
+      "revId": "a8a7be320c83015cf0603556dbef6b956de33dda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAHJH///uU\u003d",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 3
@@ -65,6 +83,24 @@
       "writtenOn": "2012-07-12T17:54:28Z",
       "side": 1,
       "message": "\"implicitly\" is used twice here.",
+      "revId": "a8a7be320c83015cf0603556dbef6b956de33dda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAHwH///4E\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-07-25T09:50:50Z",
+      "side": 1,
+      "message": "sorted in the next patch.",
+      "parentUuid": "AAAHNX///8U\u003d",
       "revId": "a8a7be320c83015cf0603556dbef6b956de33dda",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
