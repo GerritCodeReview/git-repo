@@ -176,10 +176,11 @@ class ReviewableBranch(object):
       R_HEADS + self.name,
       '--')
 
-  def UploadForReview(self, people, auto_topic=False):
+  def UploadForReview(self, people, auto_topic=False, draft=False):
     self.project.UploadForReview(self.name,
                                  people,
-                                 auto_topic=auto_topic)
+                                 auto_topic=auto_topic,
+                                 draft=draft)
 
   def GetPublishedRefs(self):
     refs = {}
@@ -881,7 +882,8 @@ class Project(object):
 
   def UploadForReview(self, branch=None,
                       people=([],[]),
-                      auto_topic=False):
+                      auto_topic=False,
+                      draft=False):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -920,7 +922,13 @@ class Project(object):
 
     if dest_branch.startswith(R_HEADS):
       dest_branch = dest_branch[len(R_HEADS):]
-    ref_spec = '%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch)
+
+    upload_type = 'for'
+    if draft:
+      upload_type = 'drafts'
+
+    ref_spec = '%s:refs/%s/%s' % (R_HEADS + branch.name, upload_type,
+                                  dest_branch)
     if auto_topic:
       ref_spec = ref_spec + '/' + branch.name
     cmd.append(ref_spec)

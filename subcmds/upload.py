@@ -134,6 +134,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     p.add_option('--cbr', '--current-branch',
                  dest='current_branch', action='store_true',
                  help='Upload current git branch.')
+    p.add_option('-d', '--draft',
+                 action='store_true', dest='draft', default=False,
+                 help='If specified, upload as a draft.')
 
     # Options relating to upload hook.  Note that verify and no-verify are NOT
     # opposites of each other, which is why they store to different locations.
@@ -324,7 +327,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
            key = 'review.%s.uploadtopic' % branch.project.remote.review
            opt.auto_topic = branch.project.config.GetBoolean(key)
 
-        branch.UploadForReview(people, auto_topic=opt.auto_topic)
+        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft)
         branch.uploaded = True
       except UploadError, e:
         branch.error = e
