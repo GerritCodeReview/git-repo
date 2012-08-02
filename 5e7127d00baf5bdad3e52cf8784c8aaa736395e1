@@ -16,6 +16,24 @@
       "revId": "5e7127d00baf5bdad3e52cf8784c8aaa736395e1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAH+3///O0\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-08-02T22:42:35Z",
+      "side": 1,
+      "message": "Importing our trace module breaks?",
+      "parentUuid": "AAAH+3///PE\u003d",
+      "revId": "5e7127d00baf5bdad3e52cf8784c8aaa736395e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
