@@ -230,8 +230,10 @@ later is required to fix a server side protocol bug.
     if self.jobs == 1:
       for project in projects:
         pm.update()
-        if project.Sync_NetworkHalf(quiet=opt.quiet,
-                                    current_branch_only=opt.current_branch_only):
+        if project.Sync_NetworkHalf(
+            quiet=opt.quiet,
+            current_branch_only=opt.current_branch_only,
+            clone_bundle=not opt.no_clone_bundle):
           fetched.add(project.gitdir)
         else:
           print >>sys.stderr, 'error: Cannot fetch %s' % project.name
