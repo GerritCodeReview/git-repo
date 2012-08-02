@@ -1601,7 +1601,7 @@ class Project(object):
 
       p = None
       try:
-        size = pos + r.headers.get('content-length', 0)
+        size = pos + int(r.headers.get('content-length', 0))
         unit = 1 << 10
 
         if size and not quiet:
