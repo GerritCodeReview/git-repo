@@ -20,19 +20,9 @@ import random
 import re
 import shutil
 import stat
+import subprocess
 import sys
 import time
-import urllib2
-
-try:
-  import threading as _threading
-except ImportError:
-  import dummy_threading as _threading
-
-try:
-  from os import SEEK_END
-except ImportError:
-  SEEK_END = 2
 
 from color import Coloring
 from git_command import GitCommand
@@ -41,10 +31,9 @@ from error import DownloadError
 from error import GitError, HookError, ImportError, UploadError
 from error import ManifestInvalidRevisionError
 from progress import Progress
+from trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
-
-_urllib_lock = _threading.Lock()
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
@@ -1553,100 +1542,36 @@ class Project(object):
     return ok
 
   def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet):
-    keep = True
-    done = False
-    dest = open(tmpPath, 'a+b')
-    try:
-      dest.seek(0, SEEK_END)
-      pos = dest.tell()
+    if os.path.exists(dstPath):
+      os.remove(dstPath)
 
-      _urllib_lock.acquire()
-      try:
-        req = urllib2.Request(srcUrl)
-        if pos > 0:
-          req.add_header('Range', 'bytes=%d-' % (pos,))
-
-        try:
-          r = urllib2.urlopen(req)
-        except urllib2.HTTPError, e:
-          def _content_type():
-            try:
-              return e.info()['content-type']
-            except:
-              return None
-
-          if e.code in (401, 403, 404):
-            keep = False
-            return False
-          elif _content_type() == 'text/plain':
-            try:
-              msg = e.read()
-              if len(msg) > 0 and msg[-1] == '\n':
-                msg = msg[0:-1]
-              msg = ' (%s)' % (msg,)
-            except:
-              msg = ''
-          else:
-            try:
-              from BaseHTTPServer import BaseHTTPRequestHandler
-              res = BaseHTTPRequestHandler.responses[e.code]
-              msg = ' (%s: %s)' % (res[0], res[1])
-            except:
-              msg = ''
-          raise DownloadError('HTTP %s%s' % (e.code, msg))
-        except urllib2.URLError, e:
-          raise DownloadError('%s: %s ' % (req.get_host(), str(e)))
-      finally:
-        _urllib_lock.release()
-
-      p = None
-      try:
-        size = pos + int(r.headers.get('content-length', 0))
-        unit = 1 << 10
-
-        if size and not quiet:
-          if size > 1024 * 1.3:
-            unit = 1 << 20
-            desc = 'MB'
-          else:
-            desc = 'KB'
-          p = Progress(
-            'Downloading %s' % (self.relpath,),
-            int(size) / unit,
-            units=desc)
-          if pos > 0:
-            p.update(pos / unit)
-
-        s = 0
-        while True:
-          d = r.read(8192)
-          if d == '':
-            done = True
-            return True
-          dest.write(d)
-          if p:
-            s += len(d)
-            if s >= unit:
-              p.update(s / unit)
-              s = s % unit
-        if p:
-          if s >= unit:
-            p.update(s / unit)
-          else:
-            p.update(1)
-      finally:
-        r.close()
-        if p:
-          p.end()
-    finally:
-      dest.close()
-
-      if os.path.exists(dstPath):
-        os.remove(dstPath)
-      if done:
-        os.rename(tmpPath, dstPath)
-      elif not keep:
+    cmd = ['curl', '--output', tmpPath, '--netrc', '--location']
+    if quiet:
+      cmd += ['--silent']
+    if os.path.exists(tmpPath):
+      size = os.stat(tmpPath).st_size
+      if size >= 1024:
+        cmd += ['--continue-at', '%d' % (size,)]
+      else:
         os.remove(tmpPath)
+    if 'http_proxy' in os.environ and 'darwin' == sys.platform:
+      cmd += ['--proxy', os.environ['http_proxy']]
+    cmd += [srcUrl]
+
+    if IsTrace():
+      Trace('%s', ' '.join(cmd))
+    try:
+      proc = subprocess.Popen(cmd)
+    except OSError:
+      return False
+
+    if proc.wait() == 0:
+      os.rename(tmpPath, dstPath)
+      return True
+    else:
+      if os.path.exists(tmpPath) and os.stat(tmpPath).st_size == 0:
+        os.remove(tmpPath)
+      return False
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
