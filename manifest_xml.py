@@ -432,7 +432,7 @@ class XmlManifest(object):
     if name is None:
       s = m_url.rindex('/') + 1
       manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-      remote = _XmlRemote('origin', m_url[:s], manifestUrl)
+      remote = _XmlRemote('origin', fetch=m_url[:s], manifestUrl=manifestUrl)
       name = m_url[s:]
 
     if name.endswith('.git'):
