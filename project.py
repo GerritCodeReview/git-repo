@@ -1564,7 +1564,7 @@ class Project(object):
       try:
         req = urllib2.Request(srcUrl)
         if pos > 0:
-          req.add_header('Range', 'bytes=%d-' % pos)
+          req.add_header('Range', 'bytes=%d-' % (pos,))
 
         try:
           r = urllib2.urlopen(req)
@@ -1583,7 +1583,7 @@ class Project(object):
               msg = e.read()
               if len(msg) > 0 and msg[-1] == '\n':
                 msg = msg[0:-1]
-              msg = ' (%s)' % msg
+              msg = ' (%s)' % (msg,)
             except:
               msg = ''
           else:
@@ -1601,7 +1601,7 @@ class Project(object):
 
       p = None
       try:
-        size = r.headers.get('content-length', 0)
+        size = pos + r.headers.get('content-length', 0)
         unit = 1 << 10
 
         if size and not quiet:
@@ -1611,7 +1611,7 @@ class Project(object):
           else:
             desc = 'KB'
           p = Progress(
-            'Downloading %s' % self.relpath,
+            'Downloading %s' % (self.relpath,),
             int(size) / unit,
             units=desc)
           if pos > 0:
