@@ -500,7 +500,7 @@ uncommitted changes are present' % project.relpath
     if not opt.local_only:
       to_fetch = []
       now = time.time()
-      if (24 * 60 * 60) <= (now - rp.LastFetch):
+      if rp.Exists and (24 * 60 * 60) <= (now - rp.LastFetch):
         to_fetch.append(rp)
       to_fetch.extend(all)
 
@@ -540,6 +540,8 @@ def _PostRepoUpgrade(manifest):
       project.PostRepoUpgrade()
 
 def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
+  if not rp.Exists:
+    return
   if rp.HasChanges:
     print >>sys.stderr, 'info: A new version of repo is available'
     print >>sys.stderr, ''
