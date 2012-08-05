@@ -1691,7 +1691,15 @@ class Project(object):
           _error("%s: Not replacing %s hook", self.relpath, name)
           continue
       try:
-        os.symlink(os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
+        # Check if the Repo libraries are under .repo/ like the project's Git
+        # directory. This allow to make absolute symlinks if the Repo libraries
+        # are not locals (e.g. /usr/share/git-repo/).
+        rp_path = os.path.abspath(os.path.dirname(os.path.dirname(__file__))) + os.sep
+        if rp_path == os.path.commonprefix([rp_path, dst]):
+          src = os.path.relpath(stock_hook, os.path.dirname(dst))
+        else:
+          src = stock_hook
+        os.symlink(src, dst)
       except OSError, e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
