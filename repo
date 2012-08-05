@@ -4,6 +4,9 @@
 ##
 REPO_URL='https://gerrit.googlesource.com/git-repo'
 REPO_REV='stable'
+# Set REPO_CLONE to False to do not initially clone the REPO_URL/REPO_REV (in
+# .repo/repo) each time you type "repo init".
+REPO_CLONE=True
 
 # Copyright (C) 2008 Google Inc.
 #
@@ -28,7 +31,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 17)
+VERSION = (1, 18)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -168,18 +171,23 @@ def _Init(args):
     sys.exit(1)
 
   url = opt.repo_url
-  if not url:
-    url = REPO_URL
-    extra_args.append('--repo-url=%s' % url)
-
   branch = opt.repo_branch
-  if not branch:
-    branch = REPO_REV
-    extra_args.append('--repo-branch=%s' % branch)
+  # Clone the Repo's Git according to the global configuration or the user
+  # options.
+  do_clone = bool(REPO_CLONE or url or branch)
 
-  if branch.startswith('refs/heads/'):
+  if do_clone:
+    if not url:
+      url = REPO_URL
+      extra_args.append('--repo-url=%s' % url)
+
+    if not branch:
+      branch = REPO_REV
+      extra_args.append('--repo-branch=%s' % branch)
+
+  if branch and branch.startswith('refs/heads/'):
     branch = branch[len('refs/heads/'):]
-  if branch.startswith('refs/'):
+  if branch and branch.startswith('refs/'):
     print >>sys.stderr, "fatal: invalid branch name '%s'" % branch
     raise CloneFailure()
 
@@ -195,27 +203,28 @@ def _Init(args):
       #
       sys.exit(1)
 
-  _CheckGitVersion()
-  try:
-    if _NeedSetupGnuPG():
-      can_verify = _SetupGnuPG(opt.quiet)
-    else:
-      can_verify = True
+  if do_clone:
+    _CheckGitVersion()
+    try:
+      if _NeedSetupGnuPG():
+        can_verify = _SetupGnuPG(opt.quiet)
+      else:
+        can_verify = True
 
-    dst = os.path.abspath(os.path.join(repodir, S_repo))
-    _Clone(url, dst, opt.quiet)
+      dst = os.path.abspath(os.path.join(repodir, S_repo))
+      _Clone(url, dst, opt.quiet)
 
-    if can_verify and not opt.no_repo_verify:
-      rev = _Verify(dst, branch, opt.quiet)
-    else:
-      rev = 'refs/remotes/origin/%s^0' % branch
+      if can_verify and not opt.no_repo_verify:
+        rev = _Verify(dst, branch, opt.quiet)
+      else:
+        rev = 'refs/remotes/origin/%s^0' % branch
 
-    _Checkout(dst, branch, rev, opt.quiet)
-  except CloneFailure:
-    if opt.quiet:
-      print >>sys.stderr, \
-        'fatal: repo init failed; run without --quiet to see why'
-    raise
+      _Checkout(dst, branch, rev, opt.quiet)
+    except CloneFailure:
+      if opt.quiet:
+        print >>sys.stderr, \
+          'fatal: repo init failed; run without --quiet to see why'
+      raise
 
 
 def _CheckGitVersion():
@@ -541,17 +550,21 @@ def _FindRepo():
   """
   dir = os.getcwd()
   repo = None
+  main = None
 
   olddir = None
   while dir != '/' \
     and dir != olddir \
     and not repo:
-    repo = os.path.join(dir, repodir, REPO_MAIN)
-    if not os.path.isfile(repo):
+    repo = os.path.join(dir, repodir)
+    main = os.path.join(repo, REPO_MAIN)
+    if not os.path.isfile(main):
+      main = None
+    if not os.path.isdir(repo):
       repo = None
       olddir = dir
       dir = os.path.dirname(dir)
-  return (repo, os.path.join(dir, repodir))
+  return (main, repo)
 
 
 class _Options:
@@ -623,8 +636,10 @@ def _RunSelf(wrapper_path):
   my_dir = os.path.dirname(wrapper_path)
   my_main = os.path.join(my_dir, 'main.py')
   my_git = os.path.join(my_dir, '.git')
+  if not os.path.isdir(my_git):
+    my_git = None
 
-  if os.path.isfile(my_main) and os.path.isdir(my_git):
+  if os.path.isfile(my_main):
     for name in ['git_config.py',
                  'project.py',
                  'subcmds']:
@@ -663,7 +678,7 @@ def main(orig_args):
   wrapper_path = os.path.abspath(__file__)
   my_main, my_git = _RunSelf(wrapper_path)
 
-  if not main:
+  if not dir:
     if opt.help:
       _Usage()
     if cmd == 'help':
