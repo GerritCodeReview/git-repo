@@ -1697,7 +1697,12 @@ class Project(object):
           _error("%s: Not replacing %s hook", self.relpath, name)
           continue
       try:
-        os.symlink(relpath(stock_hook, dst), dst)
+        rp_path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+        if rp_path == os.path.commonprefix([rp_path, dst]):
+          src = relpath(stock_hook, dst)
+        else:
+          src = stock_hook
+        os.symlink(src, dst)
       except OSError, e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')

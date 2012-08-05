@@ -4,6 +4,7 @@
 ##
 REPO_URL='https://gerrit.googlesource.com/git-repo'
 REPO_REV='stable'
+REPO_INIT=True
 
 # Copyright (C) 2008 Google Inc.
 #
@@ -168,18 +169,18 @@ def _Init(args):
     sys.exit(1)
 
   url = opt.repo_url
-  if not url:
+  if REPO_INIT and not url:
     url = REPO_URL
     extra_args.append('--repo-url=%s' % url)
 
   branch = opt.repo_branch
-  if not branch:
+  if REPO_INIT and not branch:
     branch = REPO_REV
     extra_args.append('--repo-branch=%s' % branch)
 
-  if branch.startswith('refs/heads/'):
+  if branch and branch.startswith('refs/heads/'):
     branch = branch[len('refs/heads/'):]
-  if branch.startswith('refs/'):
+  if branch and branch.startswith('refs/'):
     print >>sys.stderr, "fatal: invalid branch name '%s'" % branch
     raise CloneFailure()
 
@@ -194,6 +195,9 @@ def _Init(args):
       # name. Instead exit immediately.
       #
       sys.exit(1)
+
+  if not REPO_INIT:
+    return
 
   _CheckGitVersion()
   try:
@@ -541,17 +545,21 @@ def _FindRepo():
   """
   dir = os.getcwd()
   repo = None
+  main = None
 
   olddir = None
   while dir != '/' \
     and dir != olddir \
     and not repo:
-    repo = os.path.join(dir, repodir, REPO_MAIN)
-    if not os.path.isfile(repo):
+    repo = os.path.join(dir, repodir)
+    main = os.path.join(repo, REPO_MAIN)
+    if not os.path.isfile(main):
+      main = None
+    if not os.path.isdir(repo):
       repo = None
       olddir = dir
       dir = os.path.dirname(dir)
-  return (repo, os.path.join(dir, repodir))
+  return (main, repo)
 
 
 class _Options:
@@ -623,8 +631,10 @@ def _RunSelf(wrapper_path):
   my_dir = os.path.dirname(wrapper_path)
   my_main = os.path.join(my_dir, 'main.py')
   my_git = os.path.join(my_dir, '.git')
+  if not os.path.isdir(my_git):
+    my_git = None
 
-  if os.path.isfile(my_main) and os.path.isdir(my_git):
+  if os.path.isfile(my_main):
     for name in ['git_config.py',
                  'project.py',
                  'subcmds']:
@@ -663,7 +673,7 @@ def main(orig_args):
   wrapper_path = os.path.abspath(__file__)
   my_main, my_git = _RunSelf(wrapper_path)
 
-  if not main:
+  if not dir:
     if opt.help:
       _Usage()
     if cmd == 'help':
