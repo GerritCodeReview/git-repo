@@ -145,7 +145,10 @@ later is required to fix a server side protocol bug.
 """
 
   def _Options(self, p, show_smart=True):
-    self.jobs = self.manifest.default.sync_j
+    if self.manifest.repoProject.Exists:
+        default_jobs = " (default %d)" % self.manifest.default.sync_j
+    else:
+        default_jobs = ""
 
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
@@ -167,7 +170,7 @@ later is required to fix a server side protocol bug.
                  help='be more quiet')
     p.add_option('-j', '--jobs',
                  dest='jobs', action='store', type='int',
-                 help="projects to fetch simultaneously (default %d)" % self.jobs)
+                 help="projects to fetch simultaneously%s" % default_jobs)
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
@@ -565,7 +568,7 @@ later is required to fix a server side protocol bug.
     if not opt.local_only:
       to_fetch = []
       now = time.time()
-      if _ONE_DAY_S <= (now - rp.LastFetch):
+      if rp.Exists and _ONE_DAY_S <= (now - rp.LastFetch):
         to_fetch.append(rp)
       to_fetch.extend(all_projects)
       to_fetch.sort(key=self._fetch_times.Get, reverse=True)
@@ -609,6 +612,8 @@ def _PostRepoUpgrade(manifest, quiet=False):
       project.PostRepoUpgrade()
 
 def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
+  if not rp.Exists:
+    return
   if rp.HasChanges:
     print('info: A new version of repo is available', file=sys.stderr)
     print(file=sys.stderr)

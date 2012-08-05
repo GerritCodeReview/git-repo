@@ -21,7 +21,7 @@ REPO_REV = 'stable'
 # limitations under the License.
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 19)
+VERSION = (1, 20)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1, 1)
@@ -570,18 +570,22 @@ def _FindRepo():
   """Look for a repo installation, starting at the current directory.
   """
   curdir = os.getcwd()
-  repo = None
-
+  reldir = None
+  main = None
   olddir = None
+
   while curdir != '/' \
     and curdir != olddir \
-    and not repo:
-    repo = os.path.join(curdir, repodir, REPO_MAIN)
-    if not os.path.isfile(repo):
-      repo = None
+    and reldir is None:
+    reldir = os.path.join(curdir, repodir)
+    main = os.path.join(reldir, REPO_MAIN)
+    if not os.path.isfile(main):
+      main = None
+    if not os.path.isdir(reldir):
+      reldir = None
       olddir = curdir
       curdir = os.path.dirname(curdir)
-  return (repo, os.path.join(curdir, repodir))
+  return (main, reldir)
 
 
 class _Options:
@@ -651,8 +655,10 @@ def _RunSelf(wrapper_path):
   my_dir = os.path.dirname(wrapper_path)
   my_main = os.path.join(my_dir, 'main.py')
   my_git = os.path.join(my_dir, '.git')
+  if not os.path.isdir(my_git):
+    my_git = None
 
-  if os.path.isfile(my_main) and os.path.isdir(my_git):
+  if os.path.isfile(my_main):
     for name in ['git_config.py',
                  'project.py',
                  'subcmds']:
@@ -691,7 +697,7 @@ def main(orig_args):
   wrapper_path = os.path.abspath(__file__)
   my_main, my_git = _RunSelf(wrapper_path)
 
-  if not repo_main:
+  if not rel_repo_dir:
     if opt.help:
       _Usage()
     if cmd == 'help':
