@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 17)
+VERSION = (1, 18)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -622,8 +622,10 @@ def _RunSelf(wrapper_path):
   my_dir = os.path.dirname(wrapper_path)
   my_main = os.path.join(my_dir, 'main.py')
   my_git = os.path.join(my_dir, '.git')
+  if not os.path.isdir(my_git):
+    my_git = None
 
-  if os.path.isfile(my_main) and os.path.isdir(my_git):
+  if os.path.isfile(my_main):
     for name in ['git_config.py',
                  'project.py',
                  'subcmds']:
@@ -662,7 +664,7 @@ def main(orig_args):
   wrapper_path = os.path.abspath(__file__)
   my_main, my_git = _RunSelf(wrapper_path)
 
-  if not repo_main:
+  if not repo_dir:
     if opt.help:
       _Usage()
     if cmd == 'help':
