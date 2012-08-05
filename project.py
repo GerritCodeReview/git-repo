@@ -80,21 +80,6 @@ def _ProjectHooks():
     _project_hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
   return _project_hook_list
 
-def relpath(dst, src):
-  src = os.path.dirname(src)
-  top = os.path.commonprefix([dst, src])
-  if top.endswith('/'):
-    top = top[:-1]
-  else:
-    top = os.path.dirname(top)
-
-  tmp = src
-  rel = ''
-  while top != tmp:
-    rel += '../'
-    tmp = os.path.dirname(tmp)
-  return rel + dst[len(top) + 1:]
-
 
 class DownloadedChange(object):
   _commit_cache = None
@@ -1699,7 +1684,7 @@ class Project(object):
       try:
         rp_path = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
         if rp_path == os.path.commonprefix([rp_path, dst]):
-          src = relpath(stock_hook, dst)
+          src = os.path.relpath(stock_hook, dst)
         else:
           src = stock_hook
         os.symlink(src, dst)
@@ -1763,7 +1748,7 @@ class Project(object):
           src = os.path.join(self.gitdir, name)
           dst = os.path.join(dotgit, name)
           if os.path.islink(dst) or not os.path.exists(dst):
-            os.symlink(relpath(src, dst), dst)
+            os.symlink(os.path.relpath(src, dst), dst)
           else:
             raise GitError('cannot overwrite a local work tree')
         except OSError, e:
