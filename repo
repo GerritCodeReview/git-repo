@@ -21,7 +21,7 @@ REPO_REV = 'stable'
 # limitations under the License.
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 20)
+VERSION = (1, 21)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1, 1)
@@ -196,7 +196,7 @@ class CloneFailure(Exception):
   """
 
 
-def _Init(args):
+def _Init(args, wrapper_only):
   """Installs repo by cloning it over the network.
   """
   opt, args = init_optparse.parse_args(args)
@@ -205,18 +205,21 @@ def _Init(args):
     sys.exit(1)
 
   url = opt.repo_url
-  if not url:
-    url = REPO_URL
-    extra_args.append('--repo-url=%s' % url)
-
   branch = opt.repo_branch
-  if not branch:
-    branch = REPO_REV
-    extra_args.append('--repo-branch=%s' % branch)
+  do_clone = bool(wrapper_only or url or branch)
 
-  if branch.startswith('refs/heads/'):
+  if do_clone:
+    if not url:
+      url = REPO_URL
+      extra_args.append('--repo-url=%s' % url)
+
+    if not branch:
+      branch = REPO_REV
+      extra_args.append('--repo-branch=%s' % branch)
+
+  if branch and branch.startswith('refs/heads/'):
     branch = branch[len('refs/heads/'):]
-  if branch.startswith('refs/'):
+  if branch and branch.startswith('refs/'):
     print("fatal: invalid branch name '%s'" % branch, file=sys.stderr)
     raise CloneFailure()
 
@@ -230,6 +233,9 @@ def _Init(args):
       # name. Instead exit immediately.
       #
       sys.exit(1)
+
+  if not do_clone:
+    return
 
   _CheckGitVersion()
   try:
@@ -708,7 +714,7 @@ def main(orig_args):
       if my_git:
         _SetDefaultsTo(my_git)
       try:
-        _Init(args)
+        _Init(args, (my_main is None))
       except CloneFailure:
         for root, dirs, files in os.walk(repodir, topdown=False):
           for name in files:
