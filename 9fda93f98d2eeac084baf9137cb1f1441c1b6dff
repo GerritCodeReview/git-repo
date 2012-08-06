@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAIC3///yE\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1701,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-06T17:04:04Z",
+      "side": 1,
+      "message": "* the commonprefix function makes me uneasy as [/this/is/mypath, /this/is/myotherpath] will return /this/is/my\n* A comment here would be nice.  This if statement is a little cryptic at first glance.",
+      "revId": "9fda93f98d2eeac084baf9137cb1f1441c1b6dff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIC3///yg\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-06T17:04:04Z",
+      "side": 1,
+      "message": "Can you explain what this variable means?",
+      "revId": "9fda93f98d2eeac084baf9137cb1f1441c1b6dff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIC3///x0\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-06T17:04:04Z",
+      "side": 1,
+      "message": "(1, 18)",
+      "revId": "9fda93f98d2eeac084baf9137cb1f1441c1b6dff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIC3///yY\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-06T17:04:04Z",
+      "side": 1,
+      "message": "Did you plan on adding something else here?  This doesn\u0027t seem to do anything.\n\nI\u0027m guessing you wanted to create the repo dir in ~/.repo/src or something",
+      "revId": "9fda93f98d2eeac084baf9137cb1f1441c1b6dff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIC3///x4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-06T17:04:04Z",
+      "side": 1,
+      "message": "I missed this.  Would would keep rp from existing at this point?",
+      "revId": "9fda93f98d2eeac084baf9137cb1f1441c1b6dff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
