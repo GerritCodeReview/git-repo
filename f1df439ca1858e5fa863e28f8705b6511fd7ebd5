@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAIC3///jE\u003d",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1685,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-06T21:14:17Z",
+      "side": 1,
+      "message": "It looks like you are missing the second argument to os.symlink",
+      "revId": "f1df439ca1858e5fa863e28f8705b6511fd7ebd5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
