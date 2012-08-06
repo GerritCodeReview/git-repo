@@ -211,7 +211,8 @@ class XmlManifest(object):
         ce.setAttribute('dest', c.dest)
         e.appendChild(ce)
 
-      egroups = [g for g in p.groups if g != 'default']
+      default_groups = ['default', 'name:%s' % p.name, 'path:%s' % p.relpath]
+      egroups = [g for g in p.groups if g not in default_groups]
       if egroups:
         e.setAttribute('groups', ','.join(egroups))
 
