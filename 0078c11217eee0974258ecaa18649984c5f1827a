@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAIE3///zQ\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:40:25Z",
+      "side": 1,
+      "message": "let\u0027s keep this like before and just say \"... if g not in default_groups]\"",
+      "revId": "0078c11217eee0974258ecaa18649984c5f1827a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
