@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAIE3///0w\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:21:09Z",
+      "side": 1,
+      "message": "Include in here where the common installation is.  I assumed it was in ~/.repo/repo.\n\nIf you want to install it outside of the home directory, that might be troublesome because repo really needs to be able to update itself.  If this is what your aim is, you will need to find a way to make that happen.",
+      "revId": "8f47042cb55b010b740023e438e5b04188ee04fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///1s\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:21:09Z",
+      "side": 1,
+      "message": "English is a little off here.  Perhaps this would sound better:\n\n# If True, install repo into the working directory\n# If False, install repo into the home directory to be shared by multiple workspaces\n\nI may ask you to change this again later, but that description should work for now.",
+      "revId": "8f47042cb55b010b740023e438e5b04188ee04fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///1o\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:21:09Z",
+      "side": 1,
+      "message": "I like your feature and I think it might be good to set this to False by default.\n\nWe need to clone repo either way.  Perhaps a better name for this would be INSTALL_IN_WORKSPACE.\n\nLastly, this doesn\u0027t quite fit with the other constants since this is something that the user will want to select.  Add it as an option around line 149.",
+      "revId": "8f47042cb55b010b740023e438e5b04188ee04fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///1g\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:21:09Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to add any of this do_clone logic.  I think you just need to set repodir accordingly (~/.repo/repo vs workingspace/.repo/repo)",
+      "revId": "8f47042cb55b010b740023e438e5b04188ee04fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///1Y\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:21:09Z",
+      "side": 1,
+      "message": "If I\u0027m correct in the previous comment (that the previous block shouldn\u0027t be nested), you won\u0027t need this check here and the one below.",
+      "revId": "8f47042cb55b010b740023e438e5b04188ee04fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///1M\u003d",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:21:09Z",
+      "side": 1,
+      "message": "I\u0027m not really sure what\u0027s changing in this function.  Are the changes just cosmetic?",
+      "revId": "8f47042cb55b010b740023e438e5b04188ee04fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///0o\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-07T17:21:09Z",
+      "side": 1,
+      "message": "Why does this check need to be added?",
+      "revId": "8f47042cb55b010b740023e438e5b04188ee04fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
