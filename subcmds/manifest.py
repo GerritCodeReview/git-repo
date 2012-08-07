@@ -50,6 +50,7 @@ in a Git repository for use during future 'repo init' invocations.
                  help='Save revisions as current HEAD')
     p.add_option('-o', '--output-file',
                  dest='output_file',
+                 default='-',
                  help='File to save the manifest to',
                  metavar='-|NAME.xml')
 
