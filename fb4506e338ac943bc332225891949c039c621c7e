@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAIE3///oE\u003d",
+        "filename": "docs/manifest_submodule.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-13T22:39:57Z",
+      "side": 1,
+      "message": "If this is only for the manifest, could we call this something more informative like \"manifestproject\"?",
+      "revId": "fb4506e338ac943bc332225891949c039c621c7e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///nw\u003d",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-13T22:39:57Z",
+      "side": 1,
+      "message": "line length",
+      "revId": "fb4506e338ac943bc332225891949c039c621c7e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///ns\u003d",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-13T22:39:57Z",
+      "side": 1,
+      "message": "metavar\u003d\u0027NAME\u0027",
+      "revId": "fb4506e338ac943bc332225891949c039c621c7e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIE3///ng\u003d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-08-13T22:39:57Z",
+      "side": 1,
+      "message": "might as well put this in the if if that\u0027s the only time it\u0027s used.",
+      "revId": "fb4506e338ac943bc332225891949c039c621c7e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
