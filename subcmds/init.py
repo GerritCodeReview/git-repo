@@ -89,7 +89,7 @@ to update the working directory files.
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
     g.add_option('-g', '--groups',
-                 dest='groups', default='default',
+                 dest='groups', default='all,-notdefault',
                  help='restrict manifest projects to ones with a specified group',
                  metavar='GROUP')
     g.add_option('-p', '--platform',
@@ -163,7 +163,7 @@ to update the working directory files.
 
     groups = [x for x in groups if x]
     groupstr = ','.join(groups)
-    if opt.platform == 'auto' and groupstr == 'default,platform-' + platform.system().lower():
+    if opt.platform == 'auto' and groupstr == 'all,-notdefault,platform-' + platform.system().lower():
       groupstr = None
     m.config.SetString('manifest.groups', groupstr)
 

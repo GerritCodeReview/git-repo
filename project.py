@@ -634,20 +634,21 @@ class Project(object):
     """Returns true if the manifest groups specified at init should cause
        this project to be synced.
        Prefixing a manifest group with "-" inverts the meaning of a group.
-       All projects are implicitly labelled with "default".
+       All projects are implicitly labelled with "all".
 
        labels are resolved in order.  In the example case of
-       project_groups: "default,group1,group2"
+       project_groups: "all,group1,group2"
        manifest_groups: "-group1,group2"
        the project will be matched.
     """
-    if self.groups is None:
-      return True
+    expanded_manifest_groups = manifest_groups or ['all', '-notdefault']
+    expanded_project_groups = ['all'] + (self.groups or [])
+
     matched = False
-    for group in manifest_groups:
-      if group.startswith('-') and group[1:] in self.groups:
+    for group in expanded_manifest_groups:
+      if group.startswith('-') and group[1:] in expanded_project_groups:
         matched = False
-      elif group in self.groups:
+      elif group in expanded_project_groups:
         matched = True
 
     return matched

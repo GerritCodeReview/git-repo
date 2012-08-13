@@ -130,7 +130,7 @@ class XmlManifest(object):
 
     groups = mp.config.GetString('manifest.groups')
     if not groups:
-      groups = 'default'
+      groups = 'all'
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     doc = xml.dom.minidom.Document()
@@ -211,7 +211,7 @@ class XmlManifest(object):
         ce.setAttribute('dest', c.dest)
         e.appendChild(ce)
 
-      default_groups = ['default', 'name:%s' % p.name, 'path:%s' % p.relpath]
+      default_groups = ['all', 'name:%s' % p.name, 'path:%s' % p.relpath]
       egroups = [g for g in p.groups if g not in default_groups]
       if egroups:
         e.setAttribute('groups', ','.join(egroups))
