@@ -81,7 +81,8 @@ to update the working directory files.
                  help='initial manifest file', metavar='NAME.xml')
     g.add_option('--mirror',
                  dest='mirror', action='store_true',
-                 help='mirror the forrest')
+                 help='create a replica of the remote repositories '
+                      'rather than a client working directory')
     g.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
