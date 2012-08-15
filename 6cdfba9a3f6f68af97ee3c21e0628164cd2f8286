@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAIdH////8\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-08-15T05:20:38Z",
+      "side": 1,
+      "message": "it\u0027s -\u003e its",
+      "revId": "6cdfba9a3f6f68af97ee3c21e0628164cd2f8286",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAIdH////4\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-08-15T05:20:38Z",
+      "side": 1,
+      "message": "Missing space after \"specified\"",
+      "revId": "6cdfba9a3f6f68af97ee3c21e0628164cd2f8286",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
