@@ -137,7 +137,7 @@ The target to use is defined by environment variables TARGET_PRODUCT
 and TARGET_BUILD_VARIANT. These variables are used to create a string
 of the form $TARGET_PRODUCT-$TARGET_BUILD_VARIANT, e.g. passion-userdebug.
 If one of those variables or both are not present, the program will call
-GetApprovedManifest without the target paramater and the manifest server
+GetApprovedManifest without the target parameter and the manifest server
 should choose a reasonable default target.
 
 
@@ -156,7 +156,7 @@ URL to configure the Git remote with.  The URL gets formed as:
 
 where ${remote_fetch} is the remote's fetch attribute and
 ${project_name} is the project's name attribute.  The suffix ".git"
-is always appended as repo assumes the upstream is a forrest of
+is always appended as repo assumes the upstream is a forest of
 bare Git repositories.
 
 The project name must match the name Gerrit knows, if Gerrit is
