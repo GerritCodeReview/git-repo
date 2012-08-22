@@ -27,10 +27,8 @@ import time
 from color import Coloring
 from git_command import GitCommand
 from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
-from error import DownloadError
-from error import GitError, HookError, ImportError, UploadError
+from error import GitError, HookError, UploadError
 from error import ManifestInvalidRevisionError
-from progress import Progress
 from trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
