@@ -14,7 +14,6 @@
 # limitations under the License.
 
 import sys
-from optparse import SUPPRESS_HELP
 from color import Coloring
 from command import PagedCommand
 from git_command import git_require, GitCommand

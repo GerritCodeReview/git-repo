@@ -35,7 +35,6 @@ from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from command import PagedCommand
 from subcmds.version import Version
 from editor import Editor
 from error import DownloadError

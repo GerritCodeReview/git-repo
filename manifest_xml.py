@@ -20,7 +20,7 @@ import sys
 import urlparse
 import xml.dom.minidom
 
-from git_config import GitConfig, IsId
+from git_config import GitConfig
 from project import RemoteSpec, Project, MetaProject, R_HEADS, HEAD
 from error import ManifestParseError
 

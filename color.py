@@ -17,7 +17,6 @@ import os
 import sys
 
 import pager
-from git_config import GitConfig
 
 COLORS = {None     :-1,
           'normal' :-1,
