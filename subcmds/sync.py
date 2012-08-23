@@ -408,6 +408,10 @@ uncommitted changes are present' % project.relpath
         print >>sys.stderr, 'error: cannot connect to manifest server %s' % (
             self.manifest.manifest_server)
         sys.exit(1)
+      except xmlrpclib.ProtocolError, e:
+        print >>sys.stderr, 'error: cannot connect to manifest server %s:\n%d %s' % (
+            self.manifest.manifest_server, e.errcode, e.errmsg)
+        sys.exit(1)
 
     rp = self.manifest.repoProject
     rp.PreSync()
