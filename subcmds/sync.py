@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import netrc
 from optparse import SUPPRESS_HELP
 import os
 import re
@@ -21,6 +22,7 @@ import socket
 import subprocess
 import sys
 import time
+import urlparse
 import xmlrpclib
 
 try:
@@ -82,6 +84,12 @@ The -s/--smart-sync option can be used to sync to a known good
 build as specified by the manifest-server element in the current
 manifest. The -t/--smart-tag option is similar and allows you to
 specify a custom tag/label.
+
+The -u/--username and -p/--password options can be used to
+authenticate with the manifest server.  These options may only be
+used in conjunction with -s/--smart-sync or -t/--smart-tag, and only
+if the manifest server specified in the current manifest does not
+already include authentication parameters.
 
 The -f/--force-broken option can be used to proceed with syncing
 other projects if a project sync fails.
@@ -159,6 +167,10 @@ later is required to fix a server side protocol bug.
       p.add_option('-t', '--smart-tag',
                    dest='smart_tag', action='store',
                    help='smart sync using manifest from a known tag')
+      p.add_option('-r', '--netrc',
+                   dest='netrc', action='store_true',
+                   help='authenticate to the manifest server using credentials '
+                        'from .netrc when using -s or -t')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -360,13 +372,53 @@ uncommitted changes are present' % project.relpath
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
 
+    if opt.netrc and not (opt.smart_sync or opt.smart_tag):
+      print >>sys.stderr, 'error: netrc can only be used with -s or -t'
+      sys.exit(1)
+
     if opt.smart_sync or opt.smart_tag:
       if not self.manifest.manifest_server:
         print >>sys.stderr, \
             'error: cannot smart sync: no manifest server defined in manifest'
         sys.exit(1)
       try:
-        server = xmlrpclib.Server(self.manifest.manifest_server)
+        manifest_server = self.manifest.manifest_server
+        if opt.netrc:
+          if '@' in manifest_server:
+            print >>sys.stderr, \
+                'error: manifest server defined in manifest already includes ' \
+                'authentication credentials'
+            sys.exit(1)
+          username = None
+          password = None
+          netrc_file = os.path.expanduser("~/.netrc")
+          if os.path.isfile(netrc_file):
+            try:
+              info = netrc.netrc(netrc_file)
+              parse_result = urlparse.urlparse(manifest_server)
+              if parse_result.hostname:
+                username, _account, password = \
+                  info.authenticators(parse_result.hostname)
+              else:
+                print >>sys.stderr, "Unable to parse hostname from %s" % \
+                                    manifest_server
+            except TypeError:
+              # TypeError is raised when the given hostname is not present
+              # in the .netrc file.
+              print >>sys.stderr, "No credentials found for %s in %s" % \
+                                  (parse_result.hostname, netrc_file)
+              pass
+            except netrc.NetrcParseError, e:
+              print >>sys.stderr, "Error parsing .netrc file %s: %s" % \
+                                  (netrc_file, e)
+
+          if not (username and password):
+            print>>sys.stderr, 'If the manifest server requires authentication, ' \
+                               'this may fail.'
+          else:
+            manifest_server = manifest_server.replace('://', '://%s:%s@' %
+                                                      (username, password))
+        server = xmlrpclib.Server(manifest_server)
         if opt.smart_sync:
           p = self.manifest.manifestProject
           b = p.GetBranch(p.CurrentBranch)
