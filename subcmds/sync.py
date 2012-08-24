@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import netrc
 from optparse import SUPPRESS_HELP
 import os
 import re
@@ -21,6 +22,7 @@ import socket
 import subprocess
 import sys
 import time
+import urlparse
 import xmlrpclib
 
 try:
@@ -365,8 +367,42 @@ uncommitted changes are present' % project.relpath
         print >>sys.stderr, \
             'error: cannot smart sync: no manifest server defined in manifest'
         sys.exit(1)
+
+      manifest_server = self.manifest.manifest_server
+      if not '@' in manifest_server:
+        try:
+          info = netrc.netrc()
+        except IOError:
+          print >>sys.stderr, '.netrc file does not exist or could not be opened'
+          pass
+        else:
+          username = None
+          password = None
+          try:
+            parse_result = urlparse.urlparse(manifest_server)
+            if parse_result.hostname:
+              username, _account, password = \
+                info.authenticators(parse_result.hostname)
+            else:
+              print >>sys.stderr, 'Unable to parse hostname from %s' % \
+                                  manifest_server
+          except TypeError:
+            # TypeError is raised when the given hostname is not present
+            # in the .netrc file.
+            print >>sys.stderr, 'No credentials found for %s in .netrc' % \
+                                parse_result.hostname
+          except netrc.NetrcParseError, e:
+            print >>sys.stderr, 'Error parsing .netrc file %s: %s' % e
+
+          if not (username and password):
+            print>>sys.stderr, 'If the manifest server requires authentication, ' \
+                               'sync may fail.'
+          else:
+            manifest_server = manifest_server.replace('://', '://%s:%s@' %
+                                                      (username, password))
+
       try:
-        server = xmlrpclib.Server(self.manifest.manifest_server)
+        server = xmlrpclib.Server(manifest_server)
         if opt.smart_sync:
           p = self.manifest.manifestProject
           b = p.GetBranch(p.CurrentBranch)
