@@ -83,6 +83,12 @@ build as specified by the manifest-server element in the current
 manifest. The -t/--smart-tag option is similar and allows you to
 specify a custom tag/label.
 
+The -u/--username and -p/--password options can be used to
+authenticate with the manifest server.  These options may only be
+used in conjunction with -s/--smart-sync or -t/--smart-tag, and only
+if the manifest server specified in the current manifest does not
+already include authentication parameters.
+
 The -f/--force-broken option can be used to proceed with syncing
 other projects if a project sync fails.
 
@@ -159,6 +165,14 @@ later is required to fix a server side protocol bug.
       p.add_option('-t', '--smart-tag',
                    dest='smart_tag', action='store',
                    help='smart sync using manifest from a known tag')
+      p.add_option('-u', '--username',
+                   dest='username', action='store',
+                   help='username to authenticate with the manifest server '
+                        'when using -s or -t')
+      p.add_option('-p', '--password',
+                   dest='password', action='store',
+                   help='password to authenticate with the manifest server '
+                        'when using -s or -t')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -360,13 +374,31 @@ uncommitted changes are present' % project.relpath
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
 
+    if opt.username or opt.password:
+      if not opt.smart_sync or opt.smart_tag:
+        print >>sys.stderr, 'error: username and password can only be used ' \
+                            'with -s or -t'
+        sys.exit(1)
+      if None in [opt.username, opt.password]:
+        print >>sys.stderr, 'error: both username and password must be specified'
+        sys.exit(1)
+
     if opt.smart_sync or opt.smart_tag:
       if not self.manifest.manifest_server:
         print >>sys.stderr, \
             'error: cannot smart sync: no manifest server defined in manifest'
         sys.exit(1)
       try:
-        server = xmlrpclib.Server(self.manifest.manifest_server)
+        manifest_server = self.manifest.manifest_server
+        if opt.username and opt.password:
+          if '@' in manifest_server:
+            print >>sys.stderr, \
+                'error: manifest server defined in manifest already includes ' \
+                'authentication'
+            sys.exit(1)
+          manifest_server = manifest_server.replace('://', '://%s:%s@' %
+                                                    (opt.username, opt.password))
+        server = xmlrpclib.Server(manifest_server)
         if opt.smart_sync:
           p = self.manifest.manifestProject
           b = p.GetBranch(p.CurrentBranch)
