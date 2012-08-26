@@ -309,9 +309,13 @@ class XmlManifest(object):
     if not root or not root.childNodes:
       raise ManifestParseError("no root node in %s" % (path,))
 
-    config = root.childNodes[0]
-    if config.nodeName != 'manifest':
-      raise ManifestParseError("no <manifest> in %s" % (path,))
+    config = None
+    for n in root.childNodes:
+        if n.nodeName == 'manifest':
+            config = n
+            break
+    else:
+        raise ManifestParseError("no <manifest> in %s" % (path,))
 
     nodes = []
     for node in config.childNodes:
