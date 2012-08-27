@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import netrc
 from optparse import SUPPRESS_HELP
 import os
 import re
@@ -21,6 +22,7 @@ import socket
 import subprocess
 import sys
 import time
+import urlparse
 import xmlrpclib
 
 try:
@@ -390,14 +392,37 @@ uncommitted changes are present' % project.relpath
         sys.exit(1)
       try:
         manifest_server = self.manifest.manifest_server
+        username = None
+        password = None
+
         if opt.username and opt.password:
+          username = opt.username
+          password = opt.password
+        else:
+          netrc_file = os.path.expanduser("~/.netrc")
+          if os.path.isfile(netrc_file):
+            try:
+              info = netrc.netrc(netrc_file)
+              parse_result = urlparse.urlparse(manifest_server)
+              if parse_result.hostname:
+                username, _account, password = \
+                  info.authenticators(parse_result.hostname)
+            except TypeError:
+              # TypeError is raised when the given hostname is not present
+              # in the .netrc file.
+              pass
+            except netrc.NetrcParseError, e:
+              print >>sys.stderr, "Error parsing .netrc file %s: %s" % \
+                                  (netrc_file, e)
+
+        if username and password:
           if '@' in manifest_server:
             print >>sys.stderr, \
                 'error: manifest server defined in manifest already includes ' \
                 'authentication'
             sys.exit(1)
           manifest_server = manifest_server.replace('://', '://%s:%s@' %
-                                                    (opt.username, opt.password))
+                                                    (username, password))
         server = xmlrpclib.Server(manifest_server)
         if opt.smart_sync:
           p = self.manifest.manifestProject
