@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI4H///uE\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-08-28T22:12:26Z",
+      "side": 1,
+      "message": "for config in root.childNodes:\n  if config.nodeName \u003d\u003d \u0027manifest\u0027:\n    break\nelse:\n  raise ManifestParseError(...etc...)\n\nVia this, you can skip the assignment/indirection.  Technically you don\u0027t even need `config \u003d None`, although pylint may get cranky.",
+      "revId": "c68fd84c5a1cb11d0863a8555c4e996f1a5c49e4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
