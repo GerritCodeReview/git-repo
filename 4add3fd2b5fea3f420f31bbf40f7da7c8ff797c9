@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI4H///t0\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-08-28T22:23:42Z",
+      "side": 1,
+      "message": "english seems a bit off, but I might just be cracky here.",
+      "revId": "4add3fd2b5fea3f420f31bbf40f7da7c8ff797c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI4H///t4\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-08-28T22:23:42Z",
+      "side": 1,
+      "message": "suspect it might be worthwhile centralizing the default groups, rather than having multiple sites needing modification...",
+      "revId": "4add3fd2b5fea3f420f31bbf40f7da7c8ff797c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
