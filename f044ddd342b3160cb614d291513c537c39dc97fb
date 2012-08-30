@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI6H///lE\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1555,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-08-30T19:43:06Z",
+      "side": 1,
+      "message": "suspect this should be print \u003e\u003e sys.stderr, ...",
+      "revId": "f044ddd342b3160cb614d291513c537c39dc97fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI6H///lI\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-08-30T19:43:06Z",
+      "side": 1,
+      "message": "While you\u0027re in here, a comment for the \u003e16 would be useful (either it\u0027s no longer necessary via your fix above, or it\u0027s a \"must have got some data, arbitrary more than 16 bytes\".. or it\u0027s related to git headers in some fashion)....",
+      "revId": "f044ddd342b3160cb614d291513c537c39dc97fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
