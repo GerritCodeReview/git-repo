@@ -1528,7 +1528,7 @@ class Project(object):
     if os.path.exists(dstPath):
       os.remove(dstPath)
 
-    cmd = ['curl', '--output', tmpPath, '--netrc', '--location']
+    cmd = ['curl', '--fail', '--output', tmpPath, '--netrc', '--location']
     if quiet:
       cmd += ['--silent']
     if os.path.exists(tmpPath):
@@ -1548,9 +1548,15 @@ class Project(object):
     except OSError:
       return False
 
-    ok = proc.wait() == 0
+    curlret = proc.wait()
+
+    if curlret == 22:
+      if not quiet:
+        print "Server does not provide clone.bundle; ignoring."
+      return False
+
     if os.path.exists(tmpPath):
-      if ok and os.stat(tmpPath).st_size > 16:
+      if curlret == 0 and os.stat(tmpPath).st_size > 16:
         os.rename(tmpPath, dstPath)
         return True
       else:
