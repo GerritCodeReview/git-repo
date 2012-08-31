@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI6n//8j4\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1553,
+      "author": {
+        "id": 1010987
+      },
+      "writtenOn": "2012-08-31T22:13:46Z",
+      "side": 1,
+      "message": "Done (commented). Not making it a constant for now since other curlisms above are also not constants.",
+      "parentUuid": "AAAI3X//+5A\u003d",
+      "revId": "f044ddd342b3160cb614d291513c537c39dc97fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI6H///lE\u003d",
         "filename": "project.py",
         "patchSetId": 2
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI6n//8j0\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1555,
+      "author": {
+        "id": 1010987
+      },
+      "writtenOn": "2012-08-31T22:13:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAI6H///lE\u003d",
+      "revId": "f044ddd342b3160cb614d291513c537c39dc97fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI6H///lI\u003d",
         "filename": "project.py",
         "patchSetId": 2
@@ -64,6 +100,24 @@
       "writtenOn": "2012-08-30T19:43:06Z",
       "side": 1,
       "message": "While you\u0027re in here, a comment for the \u003e16 would be useful (either it\u0027s no longer necessary via your fix above, or it\u0027s a \"must have got some data, arbitrary more than 16 bytes\".. or it\u0027s related to git headers in some fashion)....",
+      "revId": "f044ddd342b3160cb614d291513c537c39dc97fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI6n//8js\u003d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 1010987
+      },
+      "writtenOn": "2012-08-31T22:13:46Z",
+      "side": 1,
+      "message": "No clue what the magic number 16 means. Shawn would have to comment. Leaving as-is for now, but happy to modify if I get clarification on the meaning of 16.",
+      "parentUuid": "AAAI6H///lI\u003d",
       "revId": "f044ddd342b3160cb614d291513c537c39dc97fb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
