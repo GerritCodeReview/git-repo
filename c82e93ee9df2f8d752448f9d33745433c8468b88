@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI6H///dw\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-09-01T01:31:56Z",
+      "side": 1,
+      "message": "Suspect we should be watching for both ProtocolError and Fault errors..",
+      "revId": "c82e93ee9df2f8d752448f9d33745433c8468b88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
