@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI6H///dk\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-09-01T01:39:53Z",
+      "side": 1,
+      "message": "Might be worth adding \"if the manifest server requires authentication, this may fail\" or similar.",
+      "revId": "42c0b526c42aeaaffe06946e7feddf008f2a06b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
