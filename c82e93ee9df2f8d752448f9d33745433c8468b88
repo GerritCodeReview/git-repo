@@ -16,6 +16,24 @@
       "revId": "c82e93ee9df2f8d752448f9d33745433c8468b88",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI7X///+A\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-01T12:26:53Z",
+      "side": 1,
+      "message": "Yes, I\u0027ll add that.  I think IOError can also be thrown if for example the manifest server url is malformed.  I\u0027ll double check that on Monday and add if if necessary.",
+      "parentUuid": "AAAI6H///dw\u003d",
+      "revId": "c82e93ee9df2f8d752448f9d33745433c8468b88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
