@@ -122,6 +122,7 @@ the following meanings:
         t = _threading.Thread(target=self._StatusHelper,
                               args=(project, counter, sem, output))
         threads_and_output.append((t, output))
+        t.setDaemon(True)
         t.start()
       for (t, output) in threads_and_output:
         t.join()

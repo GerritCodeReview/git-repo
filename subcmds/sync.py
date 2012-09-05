@@ -261,6 +261,8 @@ later is required to fix a server side protocol bug.
                                       pm,
                                       sem,
                                       err_event))
+        # Ensure that Ctrl-C will not freeze the repo process.
+        t.setDaemon(True)
         threads.add(t)
         t.start()
 
