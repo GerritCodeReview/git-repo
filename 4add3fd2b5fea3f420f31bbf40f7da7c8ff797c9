@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI6n//7YY\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-05T17:14:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAI4H///t0\u003d",
+      "revId": "4add3fd2b5fea3f420f31bbf40f7da7c8ff797c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI4H///t4\u003d",
         "filename": "project.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2012-08-28T22:23:42Z",
       "side": 1,
       "message": "suspect it might be worthwhile centralizing the default groups, rather than having multiple sites needing modification...",
+      "revId": "4add3fd2b5fea3f420f31bbf40f7da7c8ff797c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI6n//7YU\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-05T17:14:58Z",
+      "side": 1,
+      "message": "I\u0027m not quite sure what you mean.  \"all\" is a default group as well as a couple others having to do with the path which aren\u0027t used here.  I don\u0027t see how a centralized location would help here.",
+      "parentUuid": "AAAI4H///t4\u003d",
       "revId": "4add3fd2b5fea3f420f31bbf40f7da7c8ff797c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
