@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI7H///vU\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-05T10:37:11Z",
+      "side": 1,
+      "message": "explicitely -\u003e explicitly",
+      "revId": "d2e010f6f5a16b0e2e5888488da2bf50ab30963b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI7H///vQ\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-05T10:37:11Z",
+      "side": 1,
+      "message": "make -\u003e makes",
+      "revId": "d2e010f6f5a16b0e2e5888488da2bf50ab30963b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI7H///vM\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-05T10:37:11Z",
+      "side": 1,
+      "message": "that -\u003e that this",
+      "revId": "d2e010f6f5a16b0e2e5888488da2bf50ab30963b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
