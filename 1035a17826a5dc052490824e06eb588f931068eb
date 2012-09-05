@@ -16,6 +16,24 @@
       "revId": "1035a17826a5dc052490824e06eb588f931068eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI63//6/4\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1011577
+      },
+      "writtenOn": "2012-09-05T06:20:01Z",
+      "side": 1,
+      "message": "I agree with you. or \u0027manifestNode\u0027 is also could be better than now.\nHowever I think that it could be changed by another patch for naming change (or refactoring).\nIf the project owner is also want to change the name, I\u0027ll change it and upload again. If you know him, Please ask him to direct me. For now, I just want to be merge this my first patch for \u0027repo\u0027 :-)\n\nBest Regards,\nJC",
+      "parentUuid": "AAAI7H///v8\u003d",
+      "revId": "1035a17826a5dc052490824e06eb588f931068eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
