@@ -178,6 +178,8 @@ later is required to fix a server side protocol bug.
                                       fetched,
                                       pm,
                                       sem))
+        # Ensure that Ctrl-C will not freeze the repo process.
+        t.setDaemon(True)
         threads.add(t)
         t.start()
 
