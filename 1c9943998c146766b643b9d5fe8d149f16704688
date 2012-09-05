@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI5n//+8Y\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1011600
+      },
+      "writtenOn": "2012-09-05T15:45:22Z",
+      "side": 1,
+      "message": "Sure.",
+      "parentUuid": "AAAI6X//6hY\u003d",
+      "revId": "1c9943998c146766b643b9d5fe8d149f16704688",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI6X//6hU\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2012-09-05T15:33:30Z",
       "side": 1,
       "message": "t.daemon \u003d True",
+      "revId": "1c9943998c146766b643b9d5fe8d149f16704688",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI5n//+8U\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1011600
+      },
+      "writtenOn": "2012-09-05T15:45:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAI6X//6hU\u003d",
       "revId": "1c9943998c146766b643b9d5fe8d149f16704688",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
