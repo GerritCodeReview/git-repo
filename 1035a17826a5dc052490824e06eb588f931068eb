@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI7H///v8\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-05T05:51:10Z",
+      "side": 1,
+      "message": "Wouldn\u0027t `manifest` be a better name than `config` here?",
+      "revId": "1035a17826a5dc052490824e06eb588f931068eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
