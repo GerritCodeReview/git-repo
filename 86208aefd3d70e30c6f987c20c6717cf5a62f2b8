@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI6n//6co\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-06T18:57:16Z",
+      "side": 1,
+      "message": "2 spaces per indent please",
+      "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
