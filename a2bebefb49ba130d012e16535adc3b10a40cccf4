@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI6n//6nc\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-06T17:46:57Z",
+      "side": 1,
+      "message": "We need to clone repo either way. Perhaps a better name for this would be INSTALL_IN_WORKSPACE.\n\nAlso, this doesn\u0027t quite fit with the other constants since this is something that the user will want to select. Add it as an option around line 149.",
+      "revId": "a2bebefb49ba130d012e16535adc3b10a40cccf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI6n//6nM\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-06T17:46:57Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to add any of this do_clone logic. I think you just need to set repodir accordingly (\u003cwrapper\u003e/repo vs \u003cworkingspace\u003e/.repo/repo)",
+      "revId": "a2bebefb49ba130d012e16535adc3b10a40cccf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI6n//6nE\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-06T17:46:57Z",
+      "side": 1,
+      "message": "If I\u0027m correct in the previous comment (that the previous block shouldn\u0027t be nested), you won\u0027t need this check here and the one below.",
+      "revId": "a2bebefb49ba130d012e16535adc3b10a40cccf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI6n//6nA\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 554,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-06T17:46:57Z",
+      "side": 1,
+      "message": "I\u0027m not really sure what\u0027s changing in this function. Are the changes just cosmetic?",
+      "revId": "a2bebefb49ba130d012e16535adc3b10a40cccf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI6n//6m4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-06T17:46:57Z",
+      "side": 1,
+      "message": "Why does this check need to be added?",
+      "revId": "a2bebefb49ba130d012e16535adc3b10a40cccf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
