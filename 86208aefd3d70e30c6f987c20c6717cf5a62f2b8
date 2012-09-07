@@ -34,6 +34,24 @@
       "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI9n///ng\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-07T00:53:12Z",
+      "side": 1,
+      "message": "2 spaces is by far in the majority for repo and the original intent was for indents to be 2 spaces.  Please note that repo was created 2 years before that style guide was.\n\nI may be willing to review a change that updates the indent style globally.  I\u0027d have to ask around first to see if that might break many users (eg, users who have a large set of patches they apply on top of their custom mirror of repo).",
+      "parentUuid": "AAAI7H///l8\u003d",
+      "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
