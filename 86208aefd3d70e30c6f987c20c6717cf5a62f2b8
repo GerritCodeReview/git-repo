@@ -16,6 +16,24 @@
       "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI7H///l8\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-07T00:23:34Z",
+      "side": 1,
+      "message": "This is something I\u0027ve been meaning to ask about.\n\nWhat style guide actually applies to repo?\n\nThere\u0027s a Google Python Style Guide [1] and that says indentation should be 4 spaces.\n\nIn repo it seems to vary between 2 and 4.  Sometimes there\u0027s a mix of different sizes in the same file.\n\nSee the block starting at line 319 in this module for example, which is indented at 4 spaces.\n\n[1] http://google-styleguide.googlecode.com/svn/trunk/pyguide.html",
+      "parentUuid": "AAAI6n//6co\u003d",
+      "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
