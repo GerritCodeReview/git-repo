@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI9n///do\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-07T15:25:56Z",
+      "side": 1,
+      "message": "Could this really happen given the comment below about TypeError?",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI9n///ds\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-07T15:25:56Z",
+      "side": 1,
+      "message": "We don\u0027t even know if the manifest server requires authentication at this point, right?  Also, the user hasn\u0027t specified .netrc.  Perhaps it\u0027d be best to not print anything.",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI9n///dk\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-07T15:25:56Z",
+      "side": 1,
+      "message": "too many \u0027%s\u0027s",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI9n///dY\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-07T15:25:56Z",
+      "side": 1,
+      "message": "They\u0027ll find out soon enough, right?  I don\u0027t think we need to print this.\n\nAnd if you remove this line, go ahead and keep the string replace coming up in the else clause so it will only be executed if none of the exceptions get raised.  (You could even remove the username/password\u003dNone declarations since they will always be defined at this point)",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI9n///dM\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-07T15:25:56Z",
+      "side": 1,
+      "message": "Maybe throw a 1, as an extra `replace` parameter for good measure.",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
