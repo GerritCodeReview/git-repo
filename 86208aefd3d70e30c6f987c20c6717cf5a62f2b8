@@ -52,6 +52,24 @@
       "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI7H///lg\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-07T01:06:20Z",
+      "side": 1,
+      "message": "Right, I can imagine that\u0027d cause a rebase nightmare.\n\nHow about applying the 4-space indent only to new changes?",
+      "parentUuid": "AAAI9n///ng\u003d",
+      "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
