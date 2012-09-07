@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI7H///lY\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-07T01:10:00Z",
+      "side": 1,
+      "message": "OK, so if you prefer I can do it so it will take .netrc by default, and then in a separate change later add the --user and --password options.",
+      "parentUuid": "AAAI9n///nE\u003d",
+      "revId": "b5cd63e3138b76af68dce1126c83535c7b20b868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI6n//6eQ\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
