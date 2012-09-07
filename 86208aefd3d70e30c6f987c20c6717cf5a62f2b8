@@ -70,6 +70,24 @@
       "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI9n///mA\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-07T01:09:05Z",
+      "side": 1,
+      "message": "Since 2 spaces is much more common in repo, that would make everything even more inconsistent than it is now.  I don\u0027t think that would be a good idea.",
+      "parentUuid": "AAAI7H///lg\u003d",
+      "revId": "86208aefd3d70e30c6f987c20c6717cf5a62f2b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
