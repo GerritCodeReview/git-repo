@@ -37,13 +37,11 @@ except ImportError:
     return (256, 256)
 
 from git_command import GIT
-from git_refs import R_HEADS
-from project import HEAD
+from git_refs import R_HEADS, HEAD
 from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError
-from project import R_HEADS
 from project import SyncBuffer
 from progress import Progress
 
