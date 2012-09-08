@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI73///xk\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-08T12:04:08Z",
+      "side": 1,
+      "message": "It could happen if the manifest server is not a valid URL.\n\nThe TypeError is raised by info.authenticators when there is no entry for the given host in .netrc, it\u0027s not related to this.",
+      "parentUuid": "AAAI9n///do\u003d",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI9n///ds\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2012-09-07T15:25:56Z",
       "side": 1,
       "message": "We don\u0027t even know if the manifest server requires authentication at this point, right?  Also, the user hasn\u0027t specified .netrc.  Perhaps it\u0027d be best to not print anything.",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI73///xg\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-08T12:04:08Z",
+      "side": 1,
+      "message": "OK, I\u0027ll remove this.",
+      "parentUuid": "AAAI9n///ds\u003d",
       "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI73///xc\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-08T12:04:08Z",
+      "side": 1,
+      "message": "Will fix.",
+      "parentUuid": "AAAI9n///dk\u003d",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI9n///dY\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 4
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI73///xM\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-08T12:04:08Z",
+      "side": 1,
+      "message": "I added this after Brian\u0027s comment on a previous patch set, but I can remove it if you think it\u0027s better.",
+      "parentUuid": "AAAI9n///dY\u003d",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI9n///dM\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 4
@@ -81,6 +153,24 @@
       "writtenOn": "2012-09-07T15:25:56Z",
       "side": 1,
       "message": "Maybe throw a 1, as an extra `replace` parameter for good measure.",
+      "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI73///xU\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-08T12:04:08Z",
+      "side": 1,
+      "message": "Will fix.",
+      "parentUuid": "AAAI9n///dM\u003d",
       "revId": "ae79aba27807bd153c33ef8986f97d6df5421ad0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
