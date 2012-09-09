@@ -112,7 +112,7 @@ class XmlManifest(object):
       if os.path.exists(self.manifestFile):
         os.remove(self.manifestFile)
       os.symlink('manifests/%s' % name, self.manifestFile)
-    except OSError, e:
+    except OSError as e:
       raise ManifestParseError('cannot link manifest %s' % name)
 
   def _RemoteToXml(self, r, doc, root):
@@ -330,7 +330,7 @@ class XmlManifest(object):
             # tricky.  actual parsing implementation may vary.
             except (KeyboardInterrupt, RuntimeError, SystemExit):
                 raise
-            except Exception, e:
+            except Exception as e:
                 raise ManifestParseError(
                     "failed parsing included manifest %s: %s", (name, e))
         else:

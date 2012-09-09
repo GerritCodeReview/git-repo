@@ -404,11 +404,11 @@ uncommitted changes are present' % project.relpath
         else:
           print >>sys.stderr, 'error: %s' % manifest_str
           sys.exit(1)
-      except (socket.error, IOError, xmlrpclib.Fault), e:
+      except (socket.error, IOError, xmlrpclib.Fault) as e:
         print >>sys.stderr, 'error: cannot connect to manifest server %s:\n%s' % (
             self.manifest.manifest_server, e)
         sys.exit(1)
-      except xmlrpclib.ProtocolError, e:
+      except xmlrpclib.ProtocolError as e:
         print >>sys.stderr, 'error: cannot connect to manifest server %s:\n%d %s' % (
             self.manifest.manifest_server, e.errcode, e.errmsg)
         sys.exit(1)

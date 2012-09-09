@@ -186,7 +186,7 @@ def _Init(args):
   if not os.path.isdir(repodir):
     try:
       os.mkdir(repodir)
-    except OSError, e:
+    except OSError as e:
       print >>sys.stderr, \
             'fatal: cannot make %s directory: %s' % (
             repodir, e.strerror)
@@ -222,7 +222,7 @@ def _CheckGitVersion():
   cmd = [GIT, '--version']
   try:
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-  except OSError, e:
+  except OSError as e:
     print >>sys.stderr
     print >>sys.stderr, "fatal: '%s' is not available" % GIT
     print >>sys.stderr, 'fatal: %s' % e
@@ -269,7 +269,7 @@ def _SetupGnuPG(quiet):
   if not os.path.isdir(home_dot_repo):
     try:
       os.mkdir(home_dot_repo)
-    except OSError, e:
+    except OSError as e:
       print >>sys.stderr, \
             'fatal: cannot make %s directory: %s' % (
             home_dot_repo, e.strerror)
@@ -278,7 +278,7 @@ def _SetupGnuPG(quiet):
   if not os.path.isdir(gpg_dir):
     try:
       os.mkdir(gpg_dir, 0700)
-    except OSError, e:
+    except OSError as e:
       print >>sys.stderr, \
             'fatal: cannot make %s directory: %s' % (
             gpg_dir, e.strerror)
@@ -292,7 +292,7 @@ def _SetupGnuPG(quiet):
     proc = subprocess.Popen(cmd,
                             env = env,
                             stdin = subprocess.PIPE)
-  except OSError, e:
+  except OSError as e:
     if not quiet:
       print >>sys.stderr, 'warning: gpg (GnuPG) is not available.'
       print >>sys.stderr, 'warning: Installing it is strongly encouraged.'
@@ -393,13 +393,13 @@ def _DownloadBundle(url, local, quiet):
   try:
     try:
       r = urllib2.urlopen(url)
-    except urllib2.HTTPError, e:
+    except urllib2.HTTPError as e:
       if e.code == 404:
         return False
       print >>sys.stderr, 'fatal: Cannot get %s' % url
       print >>sys.stderr, 'fatal: HTTP error %s' % e.code
       raise CloneFailure()
-    except urllib2.URLError, e:
+    except urllib2.URLError as e:
       print >>sys.stderr, 'fatal: Cannot get %s' % url
       print >>sys.stderr, 'fatal: error %s' % e.reason
       raise CloneFailure()
@@ -428,7 +428,7 @@ def _Clone(url, local, quiet):
   """
   try:
     os.mkdir(local)
-  except OSError, e:
+  except OSError as e:
     print >>sys.stderr, \
           'fatal: cannot make %s directory: %s' \
           % (local, e.strerror)
@@ -437,7 +437,7 @@ def _Clone(url, local, quiet):
   cmd = [GIT, 'init', '--quiet']
   try:
     proc = subprocess.Popen(cmd, cwd = local)
-  except OSError, e:
+  except OSError as e:
     print >>sys.stderr
     print >>sys.stderr, "fatal: '%s' is not available" % GIT
     print >>sys.stderr, 'fatal: %s' % e
@@ -700,7 +700,7 @@ def main(orig_args):
   me.extend(extra_args)
   try:
     os.execv(main, me)
-  except OSError, e:
+  except OSError as e:
     print >>sys.stderr, "fatal: unable to start %s" % main
     print >>sys.stderr, "fatal: %s" % e
     sys.exit(148)

@@ -329,7 +329,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
         branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft)
         branch.uploaded = True
-      except UploadError, e:
+      except UploadError as e:
         branch.error = e
         branch.uploaded = False
         have_errors = True
@@ -384,7 +384,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       pending_proj_names = [project.name for (project, avail) in pending]
       try:
         hook.Run(opt.allow_all_hooks, project_list=pending_proj_names)
-      except HookError, e:
+      except HookError as e:
         print >>sys.stderr, "ERROR: %s" % str(e)
         return
 

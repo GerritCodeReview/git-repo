@@ -145,13 +145,13 @@ class _Repo(object):
           else:
             print >>sys.stderr, 'real\t%dh%dm%.3fs' \
               % (hours, minutes, seconds)
-    except DownloadError, e:
+    except DownloadError as e:
       print >>sys.stderr, 'error: %s' % str(e)
       return 1
-    except ManifestInvalidRevisionError, e:
+    except ManifestInvalidRevisionError as e:
       print >>sys.stderr, 'error: %s' % str(e)
       return 1
-    except NoSuchProjectError, e:
+    except NoSuchProjectError as e:
       if e.name:
         print >>sys.stderr, 'error: project %s not found' % e.name
       else:
@@ -366,14 +366,14 @@ def _Main(argv):
       close_ssh()
   except KeyboardInterrupt:
     result = 1
-  except RepoChangedException, rce:
+  except RepoChangedException as rce:
     # If repo changed, re-exec ourselves.
     #
     argv = list(sys.argv)
     argv.extend(rce.extra_args)
     try:
       os.execv(__file__, argv)
-    except OSError, e:
+    except OSError as e:
       print >>sys.stderr, 'fatal: cannot restart repo after upgrade'
       print >>sys.stderr, 'fatal: %s' % e
       result = 128

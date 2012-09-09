@@ -207,7 +207,7 @@ to update the working directory files.
 
     try:
       self.manifest.Link(name)
-    except ManifestParseError, e:
+    except ManifestParseError as e:
       print >>sys.stderr, "fatal: manifest '%s' not available" % name
       print >>sys.stderr, 'fatal: %s' % str(e)
       sys.exit(1)
