@@ -1661,9 +1661,12 @@ class Project(object):
       self._InitHooks()
 
       m = self.manifest.manifestProject.config
-      for key in ['user.name', 'user.email']:
-        if m.Has(key, include_defaults = False):
-          self.config.SetString(key, m.GetString(key))
+      for setting in ('name', 'email'):
+        for key in ('user.%s.%s' % (self.remote.name, setting),
+                    'user.%s' % setting):
+          if m.Has(key, include_defaults = False):
+            self.config.SetString('user.%s' % setting, m.GetString(key))
+            break
 
   def _InitHooks(self):
     hooks = self._gitdir_path('hooks')

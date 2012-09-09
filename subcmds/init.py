@@ -239,25 +239,54 @@ to update the working directory files.
     print 'If you want to change this, please re-run \'repo init\' with --config-name'
     return False
 
-  def _ConfigureUser(self):
-    mp = self.manifest.manifestProject
+  def _GetIdentity(self, default_name, default_email,
+                   context='default'):
+
+    context = context.capitalize()
 
     while True:
       print ''
-      name  = self._Prompt('Your Name', mp.UserName)
-      email = self._Prompt('Your Email', mp.UserEmail)
+      name  = self._Prompt('%s Name' % context, default_name)
+      email = self._Prompt('%s Email' % context, default_email)
 
       print ''
       print 'Your identity is: %s <%s>' % (name, email)
       sys.stdout.write('is this correct [y/N]? ')
       a = sys.stdin.readline().strip()
       if a in ('yes', 'y', 't', 'true'):
-        break
+        return name, email
 
-    if name != mp.UserName:
-      mp.config.SetString('user.name', name)
-    if email != mp.UserEmail:
-      mp.config.SetString('user.email', email)
+  def _ConfigureUser(self):
+    mp = self.manifest.manifestProject
+
+    global_name, global_email = self._GetIdentity(mp.UserName, mp.UserEmail)
+
+    if global_name != mp.UserName:
+      mp.config.SetString('user.name', global_name)
+    if global_email != mp.UserEmail:
+      mp.config.SetString('user.email', global_email)
+
+    if len(self.manifest.remotes) == 1:
+      return
+
+    for remote in sorted(self.manifest.remotes):
+      set_custom = False
+      while True:
+        print ''
+        sys.stdout.write('Would you like to set a different username or '
+                         'email for remote %s [y/N]?' % remote)
+        a = sys.stdin.readline().strip()
+        if a in ('yes', 'y', 't', 'true'):
+          set_custom = True
+          break
+        elif a in ('no', 'n', 'f', 'false'):
+          break
+      if set_custom:
+        name, email = self._GetIdentity(global_name, global_email, remote)
+        if name != global_name:
+          mp.config.SetString('user.%s.name' % remote, name)
+        if email != global_email:
+          mp.config.SetString('user.%s.email' % remote, email)
 
   def _HasColorSet(self, gc):
     for n in ['ui', 'diff', 'status']:
