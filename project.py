@@ -1044,7 +1044,7 @@ class Project(object):
 
       try:
         self._Checkout(revid, quiet=True)
-      except GitError, e:
+      except GitError as e:
         syncbuf.fail(self, e)
         return
       self._CopyFiles()
@@ -1066,7 +1066,7 @@ class Project(object):
                    branch.name)
       try:
         self._Checkout(revid, quiet=True)
-      except GitError, e:
+      except GitError as e:
         syncbuf.fail(self, e)
         return
       self._CopyFiles()
@@ -1151,7 +1151,7 @@ class Project(object):
       try:
         self._ResetHard(revid)
         self._CopyFiles()
-      except GitError, e:
+      except GitError as e:
         syncbuf.fail(self, e)
         return
     else:
@@ -1723,7 +1723,7 @@ class Project(object):
           continue
       try:
         os.symlink(os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
-      except OSError, e:
+      except OSError as e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
         else:
@@ -1786,7 +1786,7 @@ class Project(object):
             os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
           else:
             raise GitError('cannot overwrite a local work tree')
-        except OSError, e:
+        except OSError as e:
           if e.errno == errno.EPERM:
             raise GitError('filesystem must support symlinks')
           else:
