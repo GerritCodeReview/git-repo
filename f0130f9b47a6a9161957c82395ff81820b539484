@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAI7H///gA\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-10T05:46:46Z",
+      "side": 1,
+      "message": "What does the upper case N mean in this prompt?\n\nIn the other prompt (lines 254-257) I assume it\u0027s upper case to signify that it\u0027s the default if the user just hits ENTER with no input.\n\nHowever in this case at line 282 there\u0027s an explicit check for \u0027no\u0027, \u0027n\u0027, \u0027f\u0027, or \u0027false\u0027, and it won\u0027t continue with a default if the user hits ENTER with no input.",
+      "revId": "f0130f9b47a6a9161957c82395ff81820b539484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI7H///gE\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-10T05:46:46Z",
+      "side": 1,
+      "message": "May be useful to add `.lower()` on the end of here depending on expected behaviour (see comment at line 277).",
+      "revId": "f0130f9b47a6a9161957c82395ff81820b539484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
