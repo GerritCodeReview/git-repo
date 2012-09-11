@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAI+n///V8\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-09-11T03:00:02Z",
+      "side": 1,
+      "message": "Hmm.  Yeah, this needs adjustment.  Unsure of what the default should be however.",
+      "parentUuid": "AAAI7H///gA\u003d",
+      "revId": "f0130f9b47a6a9161957c82395ff81820b539484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAI7H///gE\u003d",
         "filename": "subcmds/init.py",
         "patchSetId": 1
@@ -47,6 +65,24 @@
       "writtenOn": "2012-09-10T16:49:19Z",
       "side": 1,
       "message": "if you do add a lower here, please add it to L256 as well.",
+      "parentUuid": "AAAI7H///gE\u003d",
+      "revId": "f0130f9b47a6a9161957c82395ff81820b539484",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAI+n///V4\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1011107
+      },
+      "writtenOn": "2012-09-11T03:00:02Z",
+      "side": 1,
+      "message": "Right; note we should do that to the original code even if this CL gets rejected...",
       "parentUuid": "AAAI7H///gE\u003d",
       "revId": "f0130f9b47a6a9161957c82395ff81820b539484",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
