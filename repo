@@ -88,7 +88,6 @@ REPO_MAIN = S_repo + '/main.py' # main script
 import optparse
 import os
 import re
-import readline
 import subprocess
 import sys
 import urllib2

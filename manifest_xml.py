@@ -21,7 +21,8 @@ import urlparse
 import xml.dom.minidom
 
 from git_config import GitConfig
-from project import RemoteSpec, Project, MetaProject, R_HEADS, HEAD
+from git_refs import R_HEADS, HEAD
+from project import RemoteSpec, Project, MetaProject
 from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'

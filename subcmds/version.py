@@ -16,7 +16,7 @@
 import sys
 from command import Command, MirrorSafeCommand
 from git_command import git
-from project import HEAD
+from git_refs import HEAD
 
 class Version(Command, MirrorSafeCommand):
   wrapper_version = None

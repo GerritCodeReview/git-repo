@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys, re
+import re
+import sys
 from command import Command
 from git_command import GitCommand
 

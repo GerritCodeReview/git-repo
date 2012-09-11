@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sync import Sync
+from subcmds.sync import Sync
 
 class Smartsync(Sync):
   common = True
