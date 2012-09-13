@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJA3///qo\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "Wouldn\u0027t this be \"upstream\"?",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///oQ\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "This construction of all_projects needs to happen outside the if block, I think (for use when there are arguments).",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///oE\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "I don\u0027t see why this is necessary.  If you accumulate a list of all projects, derived and not, can\u0027t you just use the old search by path code?",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///oI\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "I think you need to look for derived projects here.",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///n8\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "If someone wants to specify a project by path, they will do it from the root of the repo.  It looks like you are looking at all the relative paths as well.  That shouldn\u0027t be necessary.",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///ps\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "There\u0027s no mention of submodules here.  This almost sounds like a different feature.\n\nDo you really intend for people to register non-submodule projects?  I think nesting git projects (without submodules) will confuse git.",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///oY\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "\u0027subprojects\u0027, \u0027%s.git\u0027 % path",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///qk\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "is_derived could use a comment.  Maybe add a docstring for Project.",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///qg\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "Why isn\u0027t is_derived sufficient?",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///n4\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1393,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "Can\u0027t you just call this inside .repo/projects/myproject.git?",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJA3///oo\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1474,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-13T22:07:00Z",
+      "side": 1,
+      "message": "Can we ever get a project from self.manifest.projects and it not be Registered? Do we ever add derived subprojects to self.manifest.projects?",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
