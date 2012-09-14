@@ -83,6 +83,18 @@ build as specified by the manifest-server element in the current
 manifest. The -t/--smart-tag option is similar and allows you to
 specify a custom tag/label.
 
+The -u/--manifest-server-username and -p/--manifest-server-password
+options can be used to specify a username and password to authenticate
+with the manifest server when using the -s or -t option.
+
+If -u and -p are not specified when using the -s or -t option, '%prog'
+will attempt to read authentication credentials for the manifest server
+from the user's .netrc file.
+
+'%prog' will not use authentication credentials from -u/-p or .netrc
+if the manifest server specified in the manifest file already includes
+credentials.
+
 The -f/--force-broken option can be used to proceed with syncing
 other projects if a project sync fails.
 
@@ -159,6 +171,12 @@ later is required to fix a server side protocol bug.
       p.add_option('-t', '--smart-tag',
                    dest='smart_tag', action='store',
                    help='smart sync using manifest from a known tag')
+      p.add_option('-u', '--manifest-server-username', action='store',
+                   dest='manifest_server_username',
+                   help='username to authenticate with the manifest server')
+      p.add_option('-p', '--manifest-server-password', action='store',
+                   dest='manifest_server_password',
+                   help='password to authenticate with the manifest server')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -358,6 +376,14 @@ uncommitted changes are present' % project.relpath
     if opt.manifest_name and opt.smart_tag:
       print >>sys.stderr, 'error: cannot combine -m and -t'
       sys.exit(1)
+    if opt.manifest_server_username or opt.manifest_server_password:
+      if not (opt.smart_sync or opt.smart_tag):
+        print >>sys.stderr, 'error: -u and -p may only be combined with ' \
+                            '-s or -t'
+        sys.exit(1)
+      if None in [opt.manifest_server_username, opt.manifest_server_password]:
+        print >>sys.stderr, 'error: both -u and -p must be given'
+        sys.exit(1)
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
@@ -369,29 +395,36 @@ uncommitted changes are present' % project.relpath
         sys.exit(1)
 
       manifest_server = self.manifest.manifest_server
+
       if not '@' in manifest_server:
-        try:
-          info = netrc.netrc()
-        except IOError:
-          print >>sys.stderr, '.netrc file does not exist or could not be opened'
+        username = None
+        password = None
+        if opt.manifest_server_username and opt.manifest_server_password:
+          username = opt.manifest_server_username
+          password = opt.manifest_server_password
         else:
           try:
-            parse_result = urlparse.urlparse(manifest_server)
-            if parse_result.hostname:
-              username, _account, password = \
-                info.authenticators(parse_result.hostname)
-          except TypeError:
-            # TypeError is raised when the given hostname is not present
-            # in the .netrc file.
-            print >>sys.stderr, 'No credentials found for %s in .netrc' % \
-                                parse_result.hostname
-          except netrc.NetrcParseError as e:
-            print >>sys.stderr, 'Error parsing .netrc file: %s' % e
+            info = netrc.netrc()
+          except IOError:
+            print >>sys.stderr, '.netrc file does not exist or could not be opened'
           else:
-            if (username and password):
-              manifest_server = manifest_server.replace('://', '://%s:%s@' %
-                                                        (username, password),
-                                                        1)
+            try:
+              parse_result = urlparse.urlparse(manifest_server)
+              if parse_result.hostname:
+                username, _account, password = \
+                  info.authenticators(parse_result.hostname)
+            except TypeError:
+              # TypeError is raised when the given hostname is not present
+              # in the .netrc file.
+              print >>sys.stderr, 'No credentials found for %s in .netrc' % \
+                                  parse_result.hostname
+            except netrc.NetrcParseError, e:
+              print >>sys.stderr, 'Error parsing .netrc file: %s' % e
+
+        if (username and password):
+          manifest_server = manifest_server.replace('://', '://%s:%s@' %
+                                                    (username, password),
+                                                    1)
 
       try:
         server = xmlrpclib.Server(manifest_server)
