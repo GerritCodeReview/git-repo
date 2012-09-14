@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJFn///vI\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Rewritten.",
+      "parentUuid": "AAAJA3///qo\u003d",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJA3///oQ\u003d",
         "filename": "command.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2012-09-13T22:07:00Z",
       "side": 1,
       "message": "This construction of all_projects needs to happen outside the if block, I think (for use when there are arguments).",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJFn///u0\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "I put the construction inside \"if not args\" block to optimize speed. repo would not scan all repositories for submodules until it has to:\n* When user requires all projects.\n* When args is not found in manifest.",
+      "parentUuid": "AAAJA3///oQ\u003d",
       "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJFn///uI\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Yes, but then even a simple `repo list .` would be slow because all repo commands scan through all repositories for submodules.",
+      "parentUuid": "AAAJA3///oE\u003d",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJA3///oI\u003d",
         "filename": "command.py",
         "patchSetId": 4
@@ -64,6 +118,24 @@
       "writtenOn": "2012-09-13T22:07:00Z",
       "side": 1,
       "message": "I think you need to look for derived projects here.",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJFn///uE\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Yes, and it\u0027s done below.",
+      "parentUuid": "AAAJA3///oI\u003d",
       "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJFn///to\u003d",
+        "filename": "command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Not just root of the repo. args can be absolute/relative paths (path has been transformed to an absolute one on line 117).\n\nAnd this is not looking at all the relative paths. It\u0027s looking for unregistered (derived) submodules. For example, repo_A is registered and repo_A/repo_B is not. When you run `repo list repo_A/repo_B`. It will first find repo_A because it is registered, and then it will try to look for any submodules of repo_A that is a better match than repo_A. In this case, a better match is repo_B.",
+      "parentUuid": "AAAJA3///n8\u003d",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJA3///ps\u003d",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 4
@@ -98,6 +188,24 @@
       "writtenOn": "2012-09-13T22:07:00Z",
       "side": 1,
       "message": "There\u0027s no mention of submodules here.  This almost sounds like a different feature.\n\nDo you really intend for people to register non-submodule projects?  I think nesting git projects (without submodules) will confuse git.",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJFn///s8\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Rewritten.",
+      "parentUuid": "AAAJA3///ps\u003d",
       "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJFn///qM\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Done. And above, too.",
+      "parentUuid": "AAAJA3///oY\u003d",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJA3///qk\u003d",
         "filename": "project.py",
         "patchSetId": 4
@@ -132,6 +258,24 @@
       "writtenOn": "2012-09-13T22:07:00Z",
       "side": 1,
       "message": "is_derived could use a comment.  Maybe add a docstring for Project.",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJFn///o0\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Added.",
+      "parentUuid": "AAAJA3///qk\u003d",
       "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJFn///qE\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "It is.",
+      "parentUuid": "AAAJA3///qg\u003d",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJA3///n4\u003d",
         "filename": "project.py",
         "patchSetId": 4
@@ -172,6 +334,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJFn///oE\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1393,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "`git submodule` is implemented that it cannot be used without a working tree (not sure why).",
+      "parentUuid": "AAAJA3///n4\u003d",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJA3///oo\u003d",
         "filename": "project.py",
         "patchSetId": 4
@@ -183,6 +363,24 @@
       "writtenOn": "2012-09-13T22:07:00Z",
       "side": 1,
       "message": "Can we ever get a project from self.manifest.projects and it not be Registered? Do we ever add derived subprojects to self.manifest.projects?",
+      "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJFn///nA\u003d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1474,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-09-14T20:12:37Z",
+      "side": 1,
+      "message": "Yes, we can; in which case, it is a parent project.\n\nWe don\u0027t ever add a derived subporject to self.manifest.projects.",
+      "parentUuid": "AAAJA3///oo\u003d",
       "revId": "9f9de5e45a6fcb9189a900167e1861bb7b827946",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
