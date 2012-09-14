@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJF3///R4\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 5
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-14T21:54:00Z",
+      "side": 1,
+      "message": "What about just saying:\n\nYou may specify git submodules by creating a nested project.  Submodules will be automatically recognized and inherit their parents attributes, but those may be overridden by an explicitly specified project element.\n\n(don\u0027t bother making notes about confusing git, because you\u0027ve already explained that this is specifically for submodules)\n\nI\u0027m not sure I like creating this vocabulary of \"subprojects\".  Can we try writing this without that?  eg, Instead of \"To a sub-project, its parent\u0027s name is prefixed to its name\", \"If the project has a parent element, it\u0027s name will be prefixed by the parent\u0027s\"",
+      "revId": "0bf61728d3f70b09b356db1d62cc08cec5730cae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJF3///RM\u003d",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-14T21:54:00Z",
+      "side": 1,
+      "message": "Thanks, this docstring is helpful.\n\n* False if the project was explicitly defined in the manifest.\n* True if the project is a discovered submodule\n\nI think this note should be sufficient.  The descriptions about the three states above can be removed.",
+      "revId": "0bf61728d3f70b09b356db1d62cc08cec5730cae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
