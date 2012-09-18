@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJOn///zQ\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-18T19:43:22Z",
+      "side": 1,
+      "message": "These should all be \u0027%prog\u0027, right?",
+      "revId": "c54e907c044c960c91dbe11854a8eaba02dcae0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJOn///zE\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-18T19:43:22Z",
+      "side": 1,
+      "message": "suggestion: \"will attempt to read authentication credentials for the manifest server from the user\u0027s .netrc file.\"  Seemed more straightforward.  Up to you.",
+      "revId": "c54e907c044c960c91dbe11854a8eaba02dcae0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJOn///yo\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-18T19:43:22Z",
+      "side": 1,
+      "message": "I suppose I\u0027m ok with using -u and -p, but it does seem like precious real estate.",
+      "revId": "c54e907c044c960c91dbe11854a8eaba02dcae0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
