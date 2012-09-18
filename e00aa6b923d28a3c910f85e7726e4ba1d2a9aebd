@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJOn///yM\u003d",
+        "filename": "subcmds/smartsync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-18T19:50:02Z",
+      "side": 1,
+      "message": "Curious about the reasoning behind this one.  This is one of those things where I need to go back and check to see how python 2.5 will handle it.",
+      "revId": "e00aa6b923d28a3c910f85e7726e4ba1d2a9aebd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
