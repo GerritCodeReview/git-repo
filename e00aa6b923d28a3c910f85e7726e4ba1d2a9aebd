@@ -16,6 +16,24 @@
       "revId": "e00aa6b923d28a3c910f85e7726e4ba1d2a9aebd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJQ3////k\u003d",
+        "filename": "subcmds/smartsync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-19T01:15:45Z",
+      "side": 1,
+      "message": "The Google style guide\u0027s section on imports formatting [1] says:\n\n  \"Within each grouping, imports should be sorted lexicographically, ignoring case, according to each module\u0027s full package path.\"\n\nAlso, although it seems PEP-8 isn\u0027t generally followed in repo, the section on imports [2] says:\n\n \"Relative imports for intra-package imports are highly discouraged. Always use the absolute package path for all imports.\"\n\n[1] http://google-styleguide.googlecode.com/svn/trunk/pyguide.html#Imports_formatting\n\n[2] http://www.python.org/dev/peps/pep-0008/#imports",
+      "parentUuid": "AAAJOn///yM\u003d",
+      "revId": "e00aa6b923d28a3c910f85e7726e4ba1d2a9aebd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
