@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJQ3////w\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-19T01:05:38Z",
+      "side": 1,
+      "message": "Yes, I\u0027ll fix that.",
+      "parentUuid": "AAAJOn///zQ\u003d",
+      "revId": "c54e907c044c960c91dbe11854a8eaba02dcae0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJOn///zE\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -47,6 +65,24 @@
       "writtenOn": "2012-09-18T19:43:22Z",
       "side": 1,
       "message": "I suppose I\u0027m ok with using -u and -p, but it does seem like precious real estate.",
+      "revId": "c54e907c044c960c91dbe11854a8eaba02dcae0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJQ3////s\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-19T01:05:38Z",
+      "side": 1,
+      "message": "Do you prefer to omit the abbreviations?",
+      "parentUuid": "AAAJOn///yo\u003d",
       "revId": "c54e907c044c960c91dbe11854a8eaba02dcae0a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
