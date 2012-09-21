@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAJWH///5M\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-09-21T19:38:22Z",
+      "side": 1,
+      "message": "Does this make the \"repo overview\" command obsolete?  Overview just shows the branches that have local commits (or can optionally be restricted to show only the commits in actively checked out branches).",
+      "revId": "09f73cbb25474de081cb54b093cc86eb4baa3e29",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJUH///9U\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 1
