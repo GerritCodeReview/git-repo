@@ -56,16 +56,16 @@ class GitConfig(object):
   @classmethod
   def ForUser(cls):
     if cls._ForUser is None:
-      cls._ForUser = cls(file = os.path.expanduser('~/.gitconfig'))
+      cls._ForUser = cls(configfile = os.path.expanduser('~/.gitconfig'))
     return cls._ForUser
 
   @classmethod
   def ForRepository(cls, gitdir, defaults=None):
-    return cls(file = os.path.join(gitdir, 'config'),
+    return cls(configfile = os.path.join(gitdir, 'config'),
                defaults = defaults)
 
-  def __init__(self, file, defaults=None, pickleFile=None):
-    self.file = file
+  def __init__(self, configfile, defaults=None, pickleFile=None):
+    self.file = configfile
     self.defaults = defaults
     self._cache_dict = None
     self._section_dict = None
@@ -104,20 +104,20 @@ class GitConfig(object):
       return False
     return None
 
-  def GetString(self, name, all=False):
+  def GetString(self, name, all_keys=False):
     """Get the first value for a key, or None if it is not defined.
 
        This configuration file is used first, if the key is not
-       defined or all = True then the defaults are also searched.
+       defined or all_keys = True then the defaults are also searched.
     """
     try:
       v = self._cache[_key(name)]
     except KeyError:
       if self.defaults:
-        return self.defaults.GetString(name, all = all)
+        return self.defaults.GetString(name, all_keys = all_keys)
       v = []
 
-    if not all:
+    if not all_keys:
       if v:
         return v[0]
       return None
@@ -125,7 +125,7 @@ class GitConfig(object):
     r = []
     r.extend(v)
     if self.defaults:
-      r.extend(self.defaults.GetString(name, all = True))
+      r.extend(self.defaults.GetString(name, all_keys = True))
     return r
 
   def SetString(self, name, value):
@@ -526,7 +526,7 @@ class Remote(object):
     self.review = self._Get('review')
     self.projectname = self._Get('projectname')
     self.fetch = map(lambda x: RefSpec.FromString(x),
-                     self._Get('fetch', all=True))
+                     self._Get('fetch', all_keys=True))
     self._review_url = None
 
   def _InsteadOf(self):
@@ -537,7 +537,7 @@ class Remote(object):
 
     for url in urlList:
       key = "url." + url + ".insteadOf"
-      insteadOfList = globCfg.GetString(key, all=True)
+      insteadOfList = globCfg.GetString(key, all_keys=True)
 
       for insteadOf in insteadOfList:
         if self.url.startswith(insteadOf) \
@@ -567,7 +567,7 @@ class Remote(object):
       if u.endswith('/ssh_info'):
         u = u[:len(u) - len('/ssh_info')]
       if not u.endswith('/'):
-         u += '/'
+        u += '/'
       http_url = u
 
       if u in REVIEW_CACHE:
@@ -651,9 +651,9 @@ class Remote(object):
     key = 'remote.%s.%s' % (self.name, key)
     return self._config.SetString(key, value)
 
-  def _Get(self, key, all=False):
+  def _Get(self, key, all_keys=False):
     key = 'remote.%s.%s' % (self.name, key)
-    return self._config.GetString(key, all = all)
+    return self._config.GetString(key, all_keys = all_keys)
 
 
 class Branch(object):
@@ -703,6 +703,6 @@ class Branch(object):
     key = 'branch.%s.%s' % (self.name, key)
     return self._config.SetString(key, value)
 
-  def _Get(self, key, all=False):
+  def _Get(self, key, all_keys=False):
     key = 'branch.%s.%s' % (self.name, key)
-    return self._config.GetString(key, all = all)
+    return self._config.GetString(key, all_keys = all_keys)

@@ -74,11 +74,11 @@ def _BecomePager(pager):
   # ready works around a long-standing bug in popularly
   # available versions of 'less', a better 'more'.
   #
-  a, b, c = select.select([0], [], [0])
+  _a, _b, _c = select.select([0], [], [0])
 
   os.environ['LESS'] = 'FRSX'
 
   try:
     os.execvp(pager, [pager])
-  except OSError, e:
+  except OSError:
     os.execv('/bin/sh', ['sh', '-c', pager])
