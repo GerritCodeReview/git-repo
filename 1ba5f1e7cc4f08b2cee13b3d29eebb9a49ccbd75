@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJV3///7A\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-24T01:08:52Z",
+      "side": 1,
+      "message": "complet -\u003e complete",
+      "revId": "1ba5f1e7cc4f08b2cee13b3d29eebb9a49ccbd75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJV3///7E\u003d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-24T01:08:52Z",
+      "side": 1,
+      "message": "The meaning of `miss_cmd` is not clear.",
+      "revId": "1ba5f1e7cc4f08b2cee13b3d29eebb9a49ccbd75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
