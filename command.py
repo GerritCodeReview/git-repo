@@ -63,7 +63,7 @@ class Command(object):
   def GetProjects(self, args, missing_ok=False):
     """A list of projects that match the arguments.
     """
-    all = self.manifest.projects
+    all_projects = self.manifest.projects
     result = []
 
     mp = self.manifest.manifestProject
@@ -74,7 +74,7 @@ class Command(object):
     groups = [x for x in re.split('[,\s]+', groups) if x]
 
     if not args:
-      for project in all.values():
+      for project in all_projects.values():
         if ((missing_ok or project.Exists) and
             project.MatchesGroups(groups)):
           result.append(project)
@@ -82,14 +82,14 @@ class Command(object):
       by_path = None
 
       for arg in args:
-        project = all.get(arg)
+        project = all_projects.get(arg)
 
         if not project:
           path = os.path.abspath(arg).replace('\\', '/')
 
           if not by_path:
             by_path = dict()
-            for p in all.values():
+            for p in all_projects.values():
               by_path[p.worktree] = p
 
           if os.path.exists(path):

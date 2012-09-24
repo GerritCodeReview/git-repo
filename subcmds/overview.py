@@ -38,16 +38,16 @@ are displayed.
                  help="Consider only checked out branches")
 
   def Execute(self, opt, args):
-    all = []
+    all_branches = []
     for project in self.GetProjects(args):
       br = [project.GetUploadableBranch(x)
             for x in project.GetBranches().keys()]
       br = [x for x in br if x]
       if opt.current_branch:
         br = [x for x in br if x.name == project.CurrentBranch]
-      all.extend(br)
+      all_branches.extend(br)
 
-    if not all:
+    if not all_branches:
       return
 
     class Report(Coloring):
@@ -55,13 +55,13 @@ are displayed.
         Coloring.__init__(self, config, 'status')
         self.project = self.printer('header', attr='bold')
 
-    out = Report(all[0].project.config)
+    out = Report(all_branches[0].project.config)
     out.project('Projects Overview')
     out.nl()
 
     project = None
 
-    for branch in all:
+    for branch in all_branches:
       if project != branch.project:
         project = branch.project
         out.nl()

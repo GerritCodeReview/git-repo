@@ -208,7 +208,6 @@ terminal and are not redirected.
             return self.fd.fileno()
 
         empty = True
-        didout = False
         errbuf = ''
 
         p.stdin.close()
@@ -220,7 +219,7 @@ terminal and are not redirected.
           fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
 
         while s_in:
-          in_ready, out_ready, err_ready = select.select(s_in, [], [])
+          in_ready, _out_ready, _err_ready = select.select(s_in, [], [])
           for s in in_ready:
             buf = s.fd.read(4096)
             if not buf:
@@ -229,9 +228,7 @@ terminal and are not redirected.
               continue
 
             if not opt.verbose:
-              if s.fd == p.stdout:
-                didout = True
-              else:
+              if s.fd != p.stdout:
                 errbuf += buf
                 continue
 

@@ -88,7 +88,7 @@ class _Repo(object):
       glob = argv
       name = 'help'
       argv = []
-    gopts, gargs = global_options.parse_args(glob)
+    gopts, _gargs = global_options.parse_args(glob)
 
     if gopts.trace:
       SetTrace()
@@ -182,8 +182,8 @@ def _CheckWrapperVersion(ver, repo_path):
     repo_path = '~/bin/repo'
 
   if not ver:
-     print >>sys.stderr, 'no --wrapper-version argument'
-     sys.exit(1)
+    print >>sys.stderr, 'no --wrapper-version argument'
+    sys.exit(1)
 
   exp = _CurrentWrapperVersion()
   ver = tuple(map(lambda x: int(x), ver.split('.')))
@@ -211,8 +211,8 @@ def _CheckWrapperVersion(ver, repo_path):
 
 def _CheckRepoDir(dir):
   if not dir:
-     print >>sys.stderr, 'no --repo-dir argument'
-     sys.exit(1)
+    print >>sys.stderr, 'no --repo-dir argument'
+    sys.exit(1)
 
 def _PruneOptions(argv, opt):
   i = 0

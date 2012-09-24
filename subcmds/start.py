@@ -52,10 +52,10 @@ revision specified in the manifest.
         print >>sys.stderr, "error: at least one project must be specified"
         sys.exit(1)
 
-    all = self.GetProjects(projects)
+    all_projects = self.GetProjects(projects)
 
-    pm = Progress('Starting %s' % nb, len(all))
-    for project in all:
+    pm = Progress('Starting %s' % nb, len(all_projects))
+    for project in all_projects:
       pm.update()
       # If the current revision is a specific SHA1 then we can't push back
       # to it so substitute the manifest default revision instead.

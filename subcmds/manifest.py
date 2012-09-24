@@ -35,14 +35,14 @@ in a Git repository for use during future 'repo init' invocations.
 
   @property
   def helpDescription(self):
-    help = self._helpDescription + '\n'
+    helptext = self._helpDescription + '\n'
     r = os.path.dirname(__file__)
     r = os.path.dirname(r)
     fd = open(os.path.join(r, 'docs', 'manifest-format.txt'))
     for line in fd:
-      help += line
+      helptext += line
     fd.close()
-    return help
+    return helptext
 
   def _Options(self, p):
     p.add_option('-r', '--revision-as-HEAD',
