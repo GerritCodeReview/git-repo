@@ -40,8 +40,8 @@ def _die(fmt, *args):
 
 def _SplitEmails(values):
   result = []
-  for str in values:
-    result.extend([s.strip() for s in str.split(',')])
+  for value in values:
+    result.extend([s.strip() for s in value.split(',')])
   return result
 
 class Upload(InteractiveCommand):
@@ -174,15 +174,15 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
     if answer is None:
       date = branch.date
-      list = branch.commits
+      commit_list = branch.commits
 
       print 'Upload project %s/ to remote branch %s:' % (project.relpath, project.revisionExpr)
       print '  branch %s (%2d commit%s, %s):' % (
                     name,
-                    len(list),
-                    len(list) != 1 and 's' or '',
+                    len(commit_list),
+                    len(commit_list) != 1 and 's' or '',
                     date)
-      for commit in list:
+      for commit in commit_list:
         print '         %s' % commit
 
       sys.stdout.write('to %s (y/N)? ' % remote.review)
@@ -212,17 +212,17 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       for branch in avail:
         name = branch.name
         date = branch.date
-        list = branch.commits
+        commit_list = branch.commits
 
         if b:
           script.append('#')
         script.append('#  branch %s (%2d commit%s, %s) to remote branch %s:' % (
                       name,
-                      len(list),
-                      len(list) != 1 and 's' or '',
+                      len(commit_list),
+                      len(commit_list) != 1 and 's' or '',
                       date,
                       project.revisionExpr))
-        for commit in list:
+        for commit in commit_list:
           script.append('#         %s' % commit)
         b[name] = branch
 

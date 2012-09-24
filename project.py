@@ -328,7 +328,6 @@ class RepoHook(object):
       HookError: Raised if the user doesn't approve and abort_if_user_denies
           was passed to the consturctor.
     """
-    hooks_dir = self._hooks_project.worktree
     hooks_config = self._hooks_project.config
     git_approval_key = 'repo.hooks.%s.approvedhash' % self._hook_type
 
@@ -608,25 +607,24 @@ class Project(object):
     """Get all existing local branches.
     """
     current = self.CurrentBranch
-    all = self._allrefs
+    all_refs = self._allrefs
     heads = {}
-    pubd = {}
 
-    for name, id in all.iteritems():
+    for name, ref_id in all_refs.iteritems():
       if name.startswith(R_HEADS):
         name = name[len(R_HEADS):]
         b = self.GetBranch(name)
         b.current = name == current
         b.published = None
-        b.revision = id
+        b.revision = ref_id
         heads[name] = b
 
-    for name, id in all.iteritems():
+    for name, ref_id in all_refs.iteritems():
       if name.startswith(R_PUB):
         name = name[len(R_PUB):]
         b = heads.get(name)
         if b:
-          b.published = id
+          b.published = ref_id
 
     return heads
 
@@ -785,40 +783,40 @@ class Project(object):
 
 ## Publish / Upload ##
 
-  def WasPublished(self, branch, all=None):
+  def WasPublished(self, branch, all_refs=None):
     """Was the branch published (uploaded) for code review?
        If so, returns the SHA-1 hash of the last published
        state for the branch.
     """
     key = R_PUB + branch
-    if all is None:
+    if all_refs is None:
       try:
         return self.bare_git.rev_parse(key)
       except GitError:
         return None
     else:
       try:
-        return all[key]
+        return all_refs[key]
       except KeyError:
         return None
 
-  def CleanPublishedCache(self, all=None):
+  def CleanPublishedCache(self, all_refs=None):
     """Prunes any stale published refs.
     """
-    if all is None:
-      all = self._allrefs
+    if all_refs is None:
+      all_refs = self._allrefs
     heads = set()
     canrm = {}
-    for name, id in all.iteritems():
+    for name, ref_id in all_refs.iteritems():
       if name.startswith(R_HEADS):
         heads.add(name)
       elif name.startswith(R_PUB):
-        canrm[name] = id
+        canrm[name] = ref_id
 
-    for name, id in canrm.iteritems():
+    for name, ref_id in canrm.iteritems():
       n = name[len(R_PUB):]
       if R_HEADS + n not in heads:
-        self.bare_git.DeleteRef(name, id)
+        self.bare_git.DeleteRef(name, ref_id)
 
   def GetUploadableBranches(self, selected_branch=None):
     """List any branches which can be uploaded for review.
@@ -826,15 +824,15 @@ class Project(object):
     heads = {}
     pubed = {}
 
-    for name, id in self._allrefs.iteritems():
+    for name, ref_id in self._allrefs.iteritems():
       if name.startswith(R_HEADS):
-        heads[name[len(R_HEADS):]] = id
+        heads[name[len(R_HEADS):]] = ref_id
       elif name.startswith(R_PUB):
-        pubed[name[len(R_PUB):]] = id
+        pubed[name[len(R_PUB):]] = ref_id
 
     ready = []
-    for branch, id in heads.iteritems():
-      if branch in pubed and pubed[branch] == id:
+    for branch, ref_id in heads.iteritems():
+      if branch in pubed and pubed[branch] == ref_id:
         continue
       if selected_branch and branch != selected_branch:
         continue
@@ -978,18 +976,18 @@ class Project(object):
     self._InitHooks()
 
   def _CopyFiles(self):
-    for file in self.copyfiles:
-      file._Copy()
+    for copyfile in self.copyfiles:
+      copyfile._Copy()
 
-  def GetRevisionId(self, all=None):
+  def GetRevisionId(self, all_refs=None):
     if self.revisionId:
       return self.revisionId
 
     rem = self.GetRemote(self.remote.name)
     rev = rem.ToLocal(self.revisionExpr)
 
-    if all is not None and rev in all:
-      return all[rev]
+    if all_refs is not None and rev in all_refs:
+      return all_refs[rev]
 
     try:
       return self.bare_git.rev_parse('--verify', '%s^0' % rev)
@@ -1002,16 +1000,16 @@ class Project(object):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
-    all = self.bare_ref.all
-    self.CleanPublishedCache(all)
-    revid = self.GetRevisionId(all)
+    all_refs = self.bare_ref.all
+    self.CleanPublishedCache(all_refs)
+    revid = self.GetRevisionId(all_refs)
 
     self._InitWorkTree()
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
       branch = head[len(R_HEADS):]
       try:
-        head = all[head]
+        head = all_refs[head]
       except KeyError:
         head = None
     else:
@@ -1067,7 +1065,7 @@ class Project(object):
       return
 
     upstream_gain = self._revlist(not_rev(HEAD), revid)
-    pub = self.WasPublished(branch.name, all)
+    pub = self.WasPublished(branch.name, all_refs)
     if pub:
       not_merged = self._revlist(not_rev(revid), pub)
       if not_merged:
@@ -1190,8 +1188,8 @@ class Project(object):
     if head == (R_HEADS + name):
       return True
 
-    all = self.bare_ref.all
-    if (R_HEADS + name) in all:
+    all_refs = self.bare_ref.all
+    if (R_HEADS + name) in all_refs:
       return GitCommand(self,
                         ['checkout', name, '--'],
                         capture_stdout = True,
@@ -1200,11 +1198,11 @@ class Project(object):
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote(self.remote.name)
     branch.merge = self.revisionExpr
-    revid = self.GetRevisionId(all)
+    revid = self.GetRevisionId(all_refs)
 
     if head.startswith(R_HEADS):
       try:
-        head = all[head]
+        head = all_refs[head]
       except KeyError:
         head = None
 
@@ -1245,9 +1243,9 @@ class Project(object):
       #
       return True
 
-    all = self.bare_ref.all
+    all_refs = self.bare_ref.all
     try:
-      revid = all[rev]
+      revid = all_refs[rev]
     except KeyError:
       # Branch does not exist in this project
       #
@@ -1255,7 +1253,7 @@ class Project(object):
 
     if head.startswith(R_HEADS):
       try:
-        head = all[head]
+        head = all_refs[head]
       except KeyError:
         head = None
 
@@ -1283,8 +1281,8 @@ class Project(object):
       didn't exist.
     """
     rev = R_HEADS + name
-    all = self.bare_ref.all
-    if rev not in all:
+    all_refs = self.bare_ref.all
+    if rev not in all_refs:
       # Doesn't exist
       return None
 
@@ -1293,9 +1291,9 @@ class Project(object):
       # We can't destroy the branch while we are sitting
       # on it.  Switch to a detached HEAD.
       #
-      head = all[head]
+      head = all_refs[head]
 
-      revid = self.GetRevisionId(all)
+      revid = self.GetRevisionId(all_refs)
       if head == revid:
         _lwrite(os.path.join(self.worktree, '.git', HEAD),
                 '%s\n' % revid)
@@ -1412,33 +1410,33 @@ class Project(object):
         packed_refs = os.path.join(self.gitdir, 'packed-refs')
         remote = self.GetRemote(name)
 
-        all = self.bare_ref.all
-        ids = set(all.values())
+        all_refs = self.bare_ref.all
+        ids = set(all_refs.values())
         tmp = set()
 
-        for r, id in GitRefs(ref_dir).all.iteritems():
-          if r not in all:
+        for r, ref_id in GitRefs(ref_dir).all.iteritems():
+          if r not in all_refs:
             if r.startswith(R_TAGS) or remote.WritesTo(r):
-              all[r] = id
-              ids.add(id)
+              all_refs[r] = ref_id
+              ids.add(ref_id)
               continue
 
-          if id in ids:
+          if ref_id in ids:
             continue
 
-          r = 'refs/_alt/%s' % id
-          all[r] = id
-          ids.add(id)
+          r = 'refs/_alt/%s' % ref_id
+          all_refs[r] = ref_id
+          ids.add(ref_id)
           tmp.add(r)
 
-        ref_names = list(all.keys())
+        ref_names = list(all_refs.keys())
         ref_names.sort()
 
         tmp_packed = ''
         old_packed = ''
 
         for r in ref_names:
-          line = '%s %s\n' % (all[r], r)
+          line = '%s %s\n' % (all_refs[r], r)
           tmp_packed += line
           if r not in tmp:
             old_packed += line
@@ -1477,7 +1475,7 @@ class Project(object):
       cmd.append((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch))
 
     ok = False
-    for i in range(2):
+    for _i in range(2):
       ret = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy).Wait()
       if ret == 0:
         ok = True
@@ -2034,7 +2032,7 @@ class _Later(object):
       self.action()
       out.nl()
       return True
-    except GitError, e:
+    except GitError:
       out.nl()
       return False
 
@@ -2104,7 +2102,6 @@ class MetaProject(Project):
   """A special project housed under .repo.
   """
   def __init__(self, manifest, name, gitdir, worktree):
-    repodir = manifest.repodir
     Project.__init__(self,
                      manifest = manifest,
                      name = name,
@@ -2156,12 +2153,12 @@ class MetaProject(Project):
     if not self.remote or not self.revisionExpr:
       return False
 
-    all = self.bare_ref.all
-    revid = self.GetRevisionId(all)
+    all_refs = self.bare_ref.all
+    revid = self.GetRevisionId(all_refs)
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
       try:
-        head = all[head]
+        head = all_refs[head]
       except KeyError:
         head = None
 

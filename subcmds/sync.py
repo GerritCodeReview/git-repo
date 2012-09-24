@@ -316,8 +316,7 @@ later is required to fix a server side protocol bug.
         if not path:
           continue
         if path not in new_project_paths:
-          """If the path has already been deleted, we don't need to do it
-          """
+          # If the path has already been deleted, we don't need to do it
           if os.path.exists(self.manifest.topdir + '/' + path):
               project = Project(
                              manifest = self.manifest,
@@ -495,16 +494,16 @@ uncommitted changes are present' % project.relpath
       self.manifest._Unload()
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
-    all = self.GetProjects(args, missing_ok=True)
+    all_projects = self.GetProjects(args, missing_ok=True)
 
     if not opt.local_only:
       to_fetch = []
       now = time.time()
       if (24 * 60 * 60) <= (now - rp.LastFetch):
         to_fetch.append(rp)
-      to_fetch.extend(all)
+      to_fetch.extend(all_projects)
 
-      fetched = self._Fetch(to_fetch, opt)
+      _fetched = self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
@@ -519,8 +518,8 @@ uncommitted changes are present' % project.relpath
 
     syncbuf = SyncBuffer(mp.config,
                          detach_head = opt.detach_head)
-    pm = Progress('Syncing work tree', len(all))
-    for project in all:
+    pm = Progress('Syncing work tree', len(all_projects))
+    for project in all_projects:
       pm.update()
       if project.worktree:
         project.Sync_LocalHalf(syncbuf)

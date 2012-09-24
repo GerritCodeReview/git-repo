@@ -55,14 +55,14 @@ branch but need to incorporate new upstream changes "underneath" them.
                  help='Stash local modifications before starting')
 
   def Execute(self, opt, args):
-    all = self.GetProjects(args)
-    one_project = len(all) == 1
+    all_projects = self.GetProjects(args)
+    one_project = len(all_projects) == 1
 
     if opt.interactive and not one_project:
       print >>sys.stderr, 'error: interactive rebase not supported with multiple projects'
       return -1
 
-    for project in all:
+    for project in all_projects:
       cb = project.CurrentBranch
       if not cb:
         if one_project:

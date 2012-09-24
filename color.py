@@ -38,8 +38,11 @@ ATTRS = {None     :-1,
 
 RESET = "\033[m"
 
-def is_color(s): return s in COLORS
-def is_attr(s):  return s in ATTRS
+def is_color(s):
+    return s in COLORS
+
+def is_attr(s):
+    return s in ATTRS
 
 def _Color(fg = None, bg = None, attr = None):
     fg = COLORS[fg]
@@ -80,8 +83,8 @@ def _Color(fg = None, bg = None, attr = None):
 
 
 class Coloring(object):
-  def __init__(self, config, type):
-    self._section = 'color.%s' % type
+  def __init__(self, config, section_type):
+    self._section = 'color.%s' % section_type
     self._config = config
     self._out = sys.stdout
 
@@ -126,8 +129,8 @@ class Coloring(object):
     if self._on:
       c = self._parse(opt, fg, bg, attr)
       def f(fmt, *args):
-        str = fmt % args
-        return ''.join([c, str, RESET])
+        output = fmt % args
+        return ''.join([c, output, RESET])
       return f
     else:
       def f(fmt, *args):
@@ -151,8 +154,10 @@ class Coloring(object):
     have_fg = False
     for a in v.split(' '):
       if is_color(a):
-        if have_fg: bg = a
-        else:       fg = a
+        if have_fg:
+          bg = a
+        else:
+          fg = a
       elif is_attr(a):
         attr = a
 

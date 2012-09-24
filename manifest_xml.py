@@ -113,7 +113,7 @@ class XmlManifest(object):
       if os.path.exists(self.manifestFile):
         os.remove(self.manifestFile)
       os.symlink('manifests/%s' % name, self.manifestFile)
-    except OSError, e:
+    except OSError:
       raise ManifestParseError('cannot link manifest %s' % name)
 
   def _RemoteToXml(self, r, doc, root):
@@ -589,7 +589,6 @@ class XmlManifest(object):
     groups.extend(set(default_groups).difference(groups))
 
     if self.IsMirror:
-      relpath = None
       worktree = None
       gitdir = os.path.join(self.topdir, '%s.git' % name)
     else:

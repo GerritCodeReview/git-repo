@@ -120,8 +120,8 @@ See 'repo help --all' for a complete list of recognized commands.
           m = asciidoc_hdr.match(para)
           if m:
             title = m.group(1)
-            type = m.group(2)
-            if type[0] in ('=', '-'):
+            section_type = m.group(2)
+            if section_type[0] in ('=', '-'):
               p = self.heading
             else:
               def _p(fmt, *args):
@@ -131,7 +131,7 @@ See 'repo help --all' for a complete list of recognized commands.
 
             p('%s', title)
             self.nl()
-            p('%s', ''.ljust(len(title),type[0]))
+            p('%s', ''.ljust(len(title),section_type[0]))
             self.nl()
             continue
 
