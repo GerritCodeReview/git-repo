@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAJYX///pw\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-24T22:55:01Z",
+      "side": 1,
+      "message": "This needs to be incremented",
+      "revId": "dc562e59e3ff0dcbb242fcf20a50d283d7b18187",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJV3///7M\u003d",
         "filename": "repo",
         "patchSetId": 1
@@ -13,6 +30,41 @@
       "writtenOn": "2012-09-24T01:05:18Z",
       "side": 1,
       "message": "The variable name `dir` conflicts with the name of a Python built-in function [1].\n\nIs it worth the effort to change it to another name? (Not necessarily in this commit).\n\n[1] http://docs.python.org/library/functions.html#dir",
+      "revId": "dc562e59e3ff0dcbb242fcf20a50d283d7b18187",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJYX///p4\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-24T22:55:01Z",
+      "side": 1,
+      "message": "Yea, it\u0027d be nice to avoid using `dir`.",
+      "parentUuid": "AAAJV3///7M\u003d",
+      "revId": "dc562e59e3ff0dcbb242fcf20a50d283d7b18187",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJYX///pg\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-24T22:55:01Z",
+      "side": 1,
+      "message": "Sorry, but repo needs to be able to self update.",
       "revId": "dc562e59e3ff0dcbb242fcf20a50d283d7b18187",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
