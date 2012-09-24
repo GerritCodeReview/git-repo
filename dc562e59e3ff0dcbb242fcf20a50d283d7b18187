@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJV3///7M\u003d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-09-24T01:05:18Z",
+      "side": 1,
+      "message": "The variable name `dir` conflicts with the name of a Python built-in function [1].\n\nIs it worth the effort to change it to another name? (Not necessarily in this commit).\n\n[1] http://docs.python.org/library/functions.html#dir",
+      "revId": "dc562e59e3ff0dcbb242fcf20a50d283d7b18187",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
