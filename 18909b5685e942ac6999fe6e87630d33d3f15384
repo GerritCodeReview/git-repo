@@ -34,6 +34,24 @@
       "revId": "18909b5685e942ac6999fe6e87630d33d3f15384",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJa3///2U\u003d",
+        "filename": "command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-09-25T15:53:22Z",
+      "side": 1,
+      "message": "I mean make this another method of the class instead of a nested function.",
+      "parentUuid": "AAAJYX///o8\u003d",
+      "revId": "18909b5685e942ac6999fe6e87630d33d3f15384",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
