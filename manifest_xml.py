@@ -579,7 +579,7 @@ class XmlManifest(object):
       groups = node.getAttribute('groups')
     groups = [x for x in re.split('[,\s]+', groups) if x]
 
-    default_groups = ['default', 'name:%s' % name, 'path:%s' % path]
+    default_groups = ['all', 'name:%s' % name, 'path:%s' % path]
     groups.extend(set(default_groups).difference(groups))
 
     if self.IsMirror:
