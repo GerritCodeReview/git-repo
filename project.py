@@ -209,9 +209,9 @@ class _CopyFile:
         if os.path.exists(dest):
           os.remove(dest)
         else:
-          dir = os.path.dirname(dest)
-          if not os.path.isdir(dir):
-            os.makedirs(dir)
+          dest_dir = os.path.dirname(dest)
+          if not os.path.isdir(dest_dir):
+            os.makedirs(dest_dir)
         shutil.copy(src, dest)
         # make the file read-only
         mode = os.stat(dest)[stat.ST_MODE]
