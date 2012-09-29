@@ -484,7 +484,8 @@ class Project(object):
                revisionId,
                rebase = True,
                groups = None,
-               sync_c = False):
+               sync_c = False,
+               upstream = None):
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -506,6 +507,7 @@ class Project(object):
     self.rebase = rebase
     self.groups = groups
     self.sync_c = sync_c
+    self.upstream = upstream
 
     self.snapshots = {}
     self.copyfiles = []
@@ -1373,6 +1375,16 @@ class Project(object):
     is_sha1 = False
     tag_name = None
 
+    def CheckForSha1():
+        try:
+          # if revision (sha or tag) is not present then following function
+          # throws an error.
+          self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
+          return True
+        except GitError:
+          # There is no such persistent revision. We have to fetch it.
+          return False
+
     if current_branch_only:
       if ID_RE.match(self.revisionExpr) is not None:
         is_sha1 = True
@@ -1381,14 +1393,10 @@ class Project(object):
         tag_name = self.revisionExpr[len(R_TAGS):]
 
       if is_sha1 or tag_name is not None:
-        try:
-          # if revision (sha or tag) is not present then following function
-          # throws an error.
-          self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
+        if CheckForSha1():
           return True
-        except GitError:
-          # There is no such persistent revision. We have to fetch it.
-          pass
+      if is_sha1 and not self.upstream or ID_RE.match(self.upstream):
+        current_branch_only = False
 
     if not name:
       name = self.remote.name
@@ -1453,7 +1461,7 @@ class Project(object):
       cmd.append('--update-head-ok')
     cmd.append(name)
 
-    if not current_branch_only or is_sha1:
+    if not current_branch_only:
       # Fetch whole repo
       cmd.append('--tags')
       cmd.append((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*'))
@@ -1462,6 +1470,8 @@ class Project(object):
       cmd.append(tag_name)
     else:
       branch = self.revisionExpr
+      if is_sha1:
+        branch = self.upstream
       if branch.startswith(R_HEADS):
         branch = branch[len(R_HEADS):]
       cmd.append((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch))
@@ -1480,6 +1490,14 @@ class Project(object):
         else:
           os.remove(packed_refs)
       self.bare_git.pack_refs('--all', '--prune')
+
+    if is_sha1 and current_branch_only and self.upstream:
+      # We just synced the upstream given branch; verify we
+      # got what we wanted, else trigger a second run of all
+      # refs.
+      if not CheckForSha1():
+        return self._RemoteFetch(name=name, current_branch_only=False,
+                                 initial=False, quiet=quiet, alt_dir=alt_dir)
     return ok
 
   def _ApplyCloneBundle(self, initial=False, quiet=False):
