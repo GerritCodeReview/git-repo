@@ -37,11 +37,11 @@ def ssh_sock(create=True):
   if _ssh_sock_path is None:
     if not create:
       return None
-    dir = '/tmp'
-    if not os.path.exists(dir):
-      dir = tempfile.gettempdir()
+    tmp_dir = '/tmp'
+    if not os.path.exists(tmp_dir):
+      tmp_dir = tempfile.gettempdir()
     _ssh_sock_path = os.path.join(
-      tempfile.mkdtemp('', 'ssh-', dir),
+      tempfile.mkdtemp('', 'ssh-', tmp_dir),
       'master-%r@%h:%p')
   return _ssh_sock_path
 
