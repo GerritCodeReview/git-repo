@@ -209,8 +209,8 @@ def _CheckWrapperVersion(ver, repo_path):
     cp %s %s
 """ % (exp_str, _MyWrapperPath(), repo_path)
 
-def _CheckRepoDir(dir):
-  if not dir:
+def _CheckRepoDir(repo_dir):
+  if not repo_dir:
      print >>sys.stderr, 'no --repo-dir argument'
      sys.exit(1)
 
