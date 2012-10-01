@@ -22,6 +22,7 @@ if __name__ == '__main__':
     del sys.argv[-1]
 del magic
 
+import imp
 import netrc
 import optparse
 import os
@@ -166,16 +167,15 @@ def _MyRepoPath():
 def _MyWrapperPath():
   return os.path.join(os.path.dirname(__file__), 'repo')
 
+_wrapper_module = None
+def WrapperModule():
+  global _wrapper_module
+  if not _wrapper_module:
+    _wrapper_module = imp.load_source('wrapper', _MyWrapperPath())
+  return _wrapper_module
+
 def _CurrentWrapperVersion():
-  VERSION = None
-  pat = re.compile(r'^VERSION *=')
-  fd = open(_MyWrapperPath())
-  for line in fd:
-    if pat.match(line):
-      fd.close()
-      exec line
-      return VERSION
-  raise NameError, 'No VERSION in repo script'
+  return WrapperModule().VERSION
 
 def _CheckWrapperVersion(ver, repo_path):
   if not repo_path:
