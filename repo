@@ -28,10 +28,10 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 17)
+VERSION = (1, 18)
 
 # increment this if the MAINTAINER_KEYS block is modified
-KEYRING_VERSION = (1,0)
+KEYRING_VERSION = (1,1)
 MAINTAINER_KEYS = """
 
      Repo Maintainer <repo@android.kernel.org>
@@ -74,6 +74,38 @@ HTHs37+/QLMomGEGKZMWi0dShU2J5mNRQu3Hhxl3hHDVbt5CeJBb26aQcQrFz69W
 zE3GNvmJosh6leayjtI9P2A6iEkEGBECAAkFAkj3uiACGwwACgkQFlMNXpIPXGWp
 TACbBS+Up3RpfYVfd63c1cDdlru13pQAn3NQy/SN858MkxN+zym86UBgOad2
 =CMiZ
+-----END PGP PUBLIC KEY BLOCK-----
+
+     Conley Owens <cco3@android.com>
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: GnuPG v1.4.11 (GNU/Linux)
+
+mQENBFBiLPwBCACvISTASOgFXwADw2GYRH2I2z9RvYkYoZ6ThTTNlMXbbYYKO2Wo
+a9LQDNW0TbCEekg5UKk0FD13XOdWaqUt4Gtuvq9c43GRSjMO6NXH+0BjcQ8vUtY2
+/W4CYUevwdo4nQ1+1zsOCu1XYe/CReXq0fdugv3hgmRmh3sz1soo37Q44W2frxxg
+U7Rz3Da4FjgAL0RQ8qndD+LwRHXTY7H7wYM8V/3cYFZV7pSodd75q3MAXYQLf0ZV
+QR1XATu5l1QnXrxgHvz7MmDwb1D+jX3YPKnZveaukigQ6hDHdiVcePBiGXmk8LZC
+2jQkdXeF7Su1ZYpr2nnEHLJ6vOLcCpPGb8gDABEBAAG0H0NvbmxleSBPd2VucyA8
+Y2NvM0BhbmRyb2lkLmNvbT6JATgEEwECACIFAlBiLPwCGwMGCwkIBwMCBhUIAgkK
+CwQWAgMBAh4BAheAAAoJEBkmlFUziHGkHVkH/2Hks2Cif5i2xPtv2IFZcjL42joU
+T7lO5XFqUYS9ZNHpGa/V0eiPt7rHoO16glR83NZtwlrq2cSN89i9HfOhMYV/qLu8
+fLCHcV2muw+yCB5s5bxnI5UkToiNZyBNqFkcOt/Kbj9Hpy68A1kmc6myVEaUYebq
+2Chx/f3xuEthan099t746v1K+/6SvQGDNctHuaMr9cWdxZtHjdRf31SQRc99Phe5
+w+ZGR/ebxNDKRK9mKgZT8wVFHlXerJsRqWIqtx1fsW1UgLgbpcpe2MChm6B5wTu0
+s1ltzox3l4q71FyRRPUJxXyvGkDLZWpK7EpiHSCOYq/KP3HkKeXU3xqHpcG5AQ0E
+UGIs/AEIAKzO/7lO9cB6dshmZYo8Vy/b7aGicThE+ChcDSfhvyOXVdEM2GKAjsR+
+rlBWbTFX3It301p2HwZPFEi9nEvJxVlqqBiW0bPmNMkDRR55l2vbWg35wwkg6RyE
+Bc5/TQjhXI2w8IvlimoGoUff4t3JmMOnWrnKSvL+5iuRj12p9WmanCHzw3Ee7ztf
+/aU/q+FTpr3DLerb6S8xbv86ySgnJT6o5CyL2DCWRtnYQyGVi0ZmLzEouAYiO0hs
+z0AAu28Mj+12g2WwePRz6gfM9rHtI37ylYW3oT/9M9mO9ei/Bc/1D7Dz6qNV+0vg
+uSVJxM2Bl6GalHPZLhHntFEdIA6EdoUAEQEAAYkBHwQYAQIACQUCUGIs/AIbDAAK
+CRAZJpRVM4hxpNfkB/0W/hP5WK/NETXBlWXXW7JPaWO2c5kGwD0lnj5RRmridyo1
+vbm5PdM91jOsDQYqRu6YOoYBnDnEhB2wL2bPh34HWwwrA+LwB8hlcAV2z1bdwyfl
+3R823fReKN3QcvLHzmvZPrF4Rk97M9UIyKS0RtnfTWykRgDWHIsrtQPoNwsXrWoT
+9LrM2v+1+9mp3vuXnE473/NHxmiWEQH9Ez+O/mOxQ7rSOlqGRiKq/IBZCfioJOtV
+fTQeIu/yASZnsLBqr6SJEGwYBoWcyjG++k4fyw8ocOAo4uGDYbxgN7yYfNQ0OH7o
+V6pfUgqKLWa/aK7/N1ZHnPdFLD8Xt0Dmy4BPwrKC
+=O7am
 -----END PGP PUBLIC KEY BLOCK-----
 """
 
@@ -196,8 +228,8 @@ def _Init(args):
 
   _CheckGitVersion()
   try:
-    if _NeedSetupGnuPG():
-      can_verify = _SetupGnuPG(opt.quiet)
+    if NeedSetupGnuPG():
+      can_verify = SetupGnuPG(opt.quiet)
     else:
       can_verify = True
 
@@ -246,7 +278,7 @@ def _CheckGitVersion():
     raise CloneFailure()
 
 
-def _NeedSetupGnuPG():
+def NeedSetupGnuPG():
   if not os.path.isdir(home_dot_repo):
     return True
 
@@ -264,7 +296,7 @@ def _NeedSetupGnuPG():
   return False
 
 
-def _SetupGnuPG(quiet):
+def SetupGnuPG(quiet):
   if not os.path.isdir(home_dot_repo):
     try:
       os.mkdir(home_dot_repo)
