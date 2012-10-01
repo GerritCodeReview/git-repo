@@ -40,6 +40,7 @@ except ImportError:
 
 from git_command import GIT
 from git_refs import R_HEADS, HEAD
+from main import WrapperModule
 from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
@@ -481,7 +482,7 @@ uncommitted changes are present' % project.relpath
     mp.PreSync()
 
     if opt.repo_upgraded:
-      _PostRepoUpgrade(self.manifest)
+      _PostRepoUpgrade(self.manifest, opt)
 
     if not opt.local_only:
       mp.Sync_NetworkHalf(quiet=opt.quiet,
@@ -542,7 +543,10 @@ uncommitted changes are present' % project.relpath
     if self.manifest.notice:
       print self.manifest.notice
 
-def _PostRepoUpgrade(manifest):
+def _PostRepoUpgrade(manifest, opt):
+  wrapper = WrapperModule()
+  if wrapper.NeedSetupGnuPG():
+      wrapper.SetupGnuPG(opt.quiet)
   for project in manifest.projects.values():
     if project.Exists:
       project.PostRepoUpgrade()
