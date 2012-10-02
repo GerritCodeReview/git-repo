@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJ0X///5E\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-02T23:37:05Z",
+      "side": 1,
+      "message": "This can already be done with project.GetBranches().keys(), but more importantly, project.GetBranches() returns a structure that already contains the local commits",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ0X///5M\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-02T23:37:05Z",
+      "side": 1,
+      "message": "Why not use project.Sync_NetworkHalf() for this?\n\nAlso, it would be better (and more consistent with other commands, like \"rebase\" and \"sync\") to have an option to compare *only* to the locally fetched refs, instead of always forcing a network requirement.  E.g., have the option to do --local-only (like sync does).  Or even better IMO:  remove this capability altogether, instead forcing the user to run \"repo sync --network-only\" *first*, if he wants to see the most up to date version.  Otherwise it\u0027ll use just what was fetched last.",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ0X///5I\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-02T23:37:05Z",
+      "side": 1,
+      "message": "This could be a new method in project.py similar to GetBranches(), but instead of comparing _allrefs to R_HEADS, it would use R_M (remote) to return all the *remote* branches.\n\nproject._allrefs also uses GitRefs (from git_refs.py) in order to cache the refs for the project without having to parse a command\u0027s output (it reads directly from the .git/refs directory)",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ0X///5Q\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-02T23:37:05Z",
+      "side": 1,
+      "message": "This assumes that the remote name is \"origin\", which may be the default, but is not a requirement in the manifest (our manifests use \"gerrit\" as the remote name, and therefore none of our projects use an \"origin\" remote).  This would never work in that case.\n\nGerrit uses \"refs/remotes/m/*\" to refer to all the remote branches, and git will be able to map it back to the correct ref automatically.  E.g., I can use \"git log --oneline m/master..\" and it works fine, without me having to tell this command or gerrit that my remote name is \"gerrit\", because it\u0027s already mapped that way:\n\n$ git branch -r\n  gerrit/master\n  m/master -\u003e gerrit/master",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ0X///5A\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-02T23:37:05Z",
+      "side": 1,
+      "message": "This is already available via project.GetBranches() where each item has a \"commits\" property containing this output (the local commits)",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ0X///48\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-02T23:37:05Z",
+      "side": 1,
+      "message": "This is what I would suggest should be moved to a project.GetRemoteBranches() method that compares the ref name to R_M (constant defined as \"refs/remotes/m/\" in git_refs.py), or even create a new constant to look for all refs/remotes/*/* ?",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
