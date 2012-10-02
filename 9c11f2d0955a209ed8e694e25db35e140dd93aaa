@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJxn///ko\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 651,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-02T21:07:59Z",
+      "side": 1,
+      "message": "This extra logic seems unnecessary.  Just conditionally add \u0027default\u0027 to the expanded_project_groups if \u0027notdefault\u0027 isn\u0027t in it.\n\nYou will also need to modify manifest_xml.py:~L215 to list \u0027default\u0027 in the default groups so that \"default\" doesn\u0027t get written when saving a copy of the manifest.",
+      "revId": "9c11f2d0955a209ed8e694e25db35e140dd93aaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
