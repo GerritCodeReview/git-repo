@@ -39,15 +39,6 @@ class GitError(Exception):
   def __str__(self):
     return self.command
 
-class ImportError(Exception):
-  """An import from a non-Git format cannot be performed.
-  """
-  def __init__(self, reason):
-    self.reason = reason
-
-  def __str__(self):
-    return self.reason
-
 class UploadError(Exception):
   """A bundle upload to Gerrit did not succeed.
   """
