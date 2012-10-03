@@ -504,19 +504,10 @@ uncommitted changes are present' % project.relpath
         to_fetch.append(rp)
       to_fetch.extend(all)
 
-      fetched = self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
         return
-
-        self.manifest._Unload()
-        all = self.GetProjects(args, missing_ok=True)
-        missing = []
-        for project in all:
-          if project.gitdir not in fetched:
-            missing.append(project)
-        self._Fetch(missing, opt)
 
     if self.manifest.IsMirror:
       # bail out now, we have no working tree
