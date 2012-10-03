@@ -124,7 +124,7 @@ class XmlManifest(object):
     if r.reviewUrl is not None:
       e.setAttribute('review', r.reviewUrl)
 
-  def Save(self, fd, peg_rev=False):
+  def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
     """
     mp = self.manifestProject
@@ -198,11 +198,15 @@ class XmlManifest(object):
         e.setAttribute('remote', p.remote.name)
       if peg_rev:
         if self.IsMirror:
-          e.setAttribute('revision',
-                         p.bare_git.rev_parse(p.revisionExpr + '^0'))
+          value = p.bare_git.rev_parse(p.revisionExpr + '^0')
         else:
-          e.setAttribute('revision',
-                         p.work_git.rev_parse(HEAD + '^0'))
+          value = p.work_git.rev_parse(HEAD + '^0')
+        e.setAttribute('revision', value)
+        if peg_rev_upstream and value != p.revisionExpr:
+          # Only save the origin if the origin is not a sha1, and the default
+          # isn't our value, and the if the default doesn't already have that
+          # covered.
+          e.setAttribute('upstream', p.revisionExpr)
       elif not d.revisionExpr or p.revisionExpr != d.revisionExpr:
         e.setAttribute('revision', p.revisionExpr)
 
@@ -574,6 +578,8 @@ class XmlManifest(object):
     else:
       sync_c = sync_c.lower() in ("yes", "true", "1")
 
+    upstream = node.getAttribute('upstream')
+
     groups = ''
     if node.hasAttribute('groups'):
       groups = node.getAttribute('groups')
@@ -600,7 +606,8 @@ class XmlManifest(object):
                       revisionId = None,
                       rebase = rebase,
                       groups = groups,
-                      sync_c = sync_c)
+                      sync_c = sync_c,
+                      upstream = upstream)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
