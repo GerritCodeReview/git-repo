@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJ2X//97U\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-04T22:03:54Z",
+      "side": 1,
+      "message": "repo needs to be able to update itself.",
+      "revId": "c68640652b2780c0a5e10cf6c585c8b75443a7d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
