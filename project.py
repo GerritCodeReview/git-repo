@@ -1645,16 +1645,17 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self):
+  def _InitGitDir(self, mirror_git=None):
     if not os.path.exists(self.gitdir):
       os.makedirs(self.gitdir)
       self.bare_git.init()
 
       mp = self.manifest.manifestProject
-      ref_dir = mp.config.GetString('repo.reference')
+      ref_dir = mp.config.GetString('repo.reference') or ''
 
-      if ref_dir:
-        mirror_git = os.path.join(ref_dir, self.name + '.git')
+      if ref_dir or mirror_git:
+        if not mirror_git:
+          mirror_git = os.path.join(ref_dir, self.name + '.git')
         repo_git = os.path.join(ref_dir, '.repo', 'projects',
                                 self.relpath + '.git')
 
