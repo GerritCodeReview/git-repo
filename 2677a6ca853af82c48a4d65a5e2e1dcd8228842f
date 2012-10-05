@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJz3///7w\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-05T06:14:39Z",
+      "side": 1,
+      "message": "Agreed. Fixed this. Much better and cleaner solution. Could get rid of the complete function. Thanks!",
+      "parentUuid": "AAAJ0X///5E\u003d",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ0X///5M\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2012-10-02T23:37:05Z",
       "side": 1,
       "message": "Why not use project.Sync_NetworkHalf() for this?\n\nAlso, it would be better (and more consistent with other commands, like \"rebase\" and \"sync\") to have an option to compare *only* to the locally fetched refs, instead of always forcing a network requirement.  E.g., have the option to do --local-only (like sync does).  Or even better IMO:  remove this capability altogether, instead forcing the user to run \"repo sync --network-only\" *first*, if he wants to see the most up to date version.  Otherwise it\u0027ll use just what was fetched last.",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJz3///7s\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-05T06:14:39Z",
+      "side": 1,
+      "message": "I agree with the project.Sync_NetworkHalf().\n\nThe other I am not so sure about. This is essentially what repo overview does, or now repo info -o.\n\nI would also like to keep the number of options down. Too many options is just confusing.",
+      "parentUuid": "AAAJ0X///5M\u003d",
       "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJ53///4s\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-05T06:14:39Z",
+      "side": 1,
+      "message": "Agreed.. I think the solution I\u0027ve changed it to works. Please let me know if not.",
+      "parentUuid": "AAAJ0X///5Q\u003d",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ0X///5A\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 3
@@ -87,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJz3///7Q\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-05T06:14:39Z",
+      "side": 1,
+      "message": "As far as I can tell, this is only available if you actually have a branch. If you are working in detached head you can\u0027t get a ReviewableBranch which is the one that contains the commits property.\n\nI removed the direct git command and hooked into bare_git.rev_list instead.\nIt\u0027s more or less the same I guess, but I get additional error checking and perhaps a bit more repoish.",
+      "parentUuid": "AAAJ0X///5A\u003d",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ0X///48\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 3
@@ -98,6 +170,24 @@
       "writtenOn": "2012-10-02T23:37:05Z",
       "side": 1,
       "message": "This is what I would suggest should be moved to a project.GetRemoteBranches() method that compares the ref name to R_M (constant defined as \"refs/remotes/m/\" in git_refs.py), or even create a new constant to look for all refs/remotes/*/* ?",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ53///4o\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-05T06:14:39Z",
+      "side": 1,
+      "message": "Hooked this in to bare_git.rev_list as well.",
+      "parentUuid": "AAAJ0X///48\u003d",
       "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
