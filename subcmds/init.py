@@ -317,6 +317,10 @@ to update the working directory files.
 
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
+
+    if opt.reference:
+      opt.reference = os.path.expanduser(opt.reference)
+
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
 
