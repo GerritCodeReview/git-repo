@@ -19,6 +19,7 @@ import platform
 import re
 import shutil
 import sys
+import urlparse
 
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
@@ -134,7 +135,17 @@ to update the working directory files.
       if not opt.quiet:
         print('Get %s' % GitConfig.ForUser().UrlInsteadOf(opt.manifest_url),
               file=sys.stderr)
-      m._InitGitDir()
+
+      # The manifest project object doesn't keep track of the path on the
+      # server where this git is located, so let's save that here.
+      mirrored_manifest_git = None
+      if opt.reference:
+        manifest_git_path = urlparse.urlparse(opt.manifest_url).path[1:]
+        mirrored_manifest_git = os.path.join(opt.reference, manifest_git_path)
+        if not mirrored_manifest_git.endswith(".git"):
+          mirrored_manifest_git += ".git"
+
+      m._InitGitDir(mirror_git=mirrored_manifest_git)
 
       if opt.manifest_branch:
         m.revisionExpr = opt.manifest_branch
