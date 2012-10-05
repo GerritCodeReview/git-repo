@@ -34,6 +34,24 @@
       "revId": "e3b1c45aebed329cbc9ad172b1d8e812cf208117",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ9H///4Q\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2012-10-05T17:17:28Z",
+      "side": 1,
+      "message": "Sorry, didn\u0027t see that. Thanks.",
+      "parentUuid": "AAAJ73///40\u003d",
+      "revId": "e3b1c45aebed329cbc9ad172b1d8e812cf208117",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
