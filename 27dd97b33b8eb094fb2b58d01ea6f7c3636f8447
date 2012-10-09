@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJ63//9UI\u003d",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-09T20:39:48Z",
+      "side": 1,
+      "message": "I think it\u0027s a little confusing that we have both a repodir and a repo_dir in the same method.  maybe use rel_repo_dir?",
+      "revId": "27dd97b33b8eb094fb2b58d01ea6f7c3636f8447",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
