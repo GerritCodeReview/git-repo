@@ -14,18 +14,28 @@
 # limitations under the License.
 
 from command import Command, MirrorSafeCommand
+import re
 
 class List(Command, MirrorSafeCommand):
   common = True
   helpSummary = "List projects and their associated directories"
   helpUsage = """
-%prog [<project>...]
+%prog [-f] [<project>...]
+%prog [-f] -w str1 [str2]..."
 """
   helpDescription = """
 List all projects; pass '.' to list the project for the cwd.
 
 This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
 """
+
+  def _Options(self, p, show_smart=True):
+    p.add_option('-w', '--wildcard',
+                 dest='wildcard', action='store_true',
+                 help="Filter the project list based on wildcard matching of strings")
+    p.add_option('-f', '--fullpath',
+                 dest='fullpath', action='store_true',
+                 help="Display the full work tree path instead of the relative path")
 
   def Execute(self, opt, args):
     """List all projects and the associated directories.
@@ -35,14 +45,32 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
     discoverable.
 
     Args:
-      opt: The options.  We don't take any.
       args: Positional args.  Can be a list of projects to list, or empty.
     """
-    projects = self.GetProjects(args)
+    if not opt.wildcard:
+      projects = self.GetProjects(args)
+    else:
+      projects = self.FindProjects(args)
+
+    def _getpath(x):
+      if opt.fullpath:
+        return x.worktree
+      return x.relpath
 
     lines = []
     for project in projects:
-      lines.append("%s : %s" % (project.relpath, project.name))
+      lines.append("%s : %s" % (_getpath(project), project.name))
 
     lines.sort()
     print '\n'.join(lines)
+
+  def FindProjects(self, args):
+    result = []
+    for project in self.GetProjects(''):
+      for arg in args:
+        pattern = re.compile(r'%s' % arg, re.IGNORECASE)
+        if pattern.search(project.name) or pattern.search(project.worktree):
+          result.append(project)
+          break
+    result.sort(key = lambda project: project.relpath)
+    return result
