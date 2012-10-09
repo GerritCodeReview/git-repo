@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "AAAJ9X///1s\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:24:10Z",
+      "side": 1,
+      "message": "But my point is that the user may not expect the command to touch the network.  \"repo sync\" they do expect it, because that\u0027s the entire point of the command.  If they had just done a sync, then there\u0027s no reason to do another Sync here just because.  I think the default should work only on locally fetched refs, and either a) never even do the Sync_NetworkHalf() at all, or b) make it an option to include both the sync and the \"info\" command.\n\nI lean toward option A, because nothing about the command \"info\" tells me that it should be a command that touches the network, and it\u0027ll just unnecessarily slow it down.",
+      "parentUuid": "AAAJz3///7s\u003d",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ0X///5I\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 3
@@ -153,6 +171,24 @@
       "side": 1,
       "message": "As far as I can tell, this is only available if you actually have a branch. If you are working in detached head you can\u0027t get a ReviewableBranch which is the one that contains the commits property.\n\nI removed the direct git command and hooked into bare_git.rev_list instead.\nIt\u0027s more or less the same I guess, but I get additional error checking and perhaps a bit more repoish.",
       "parentUuid": "AAAJ0X///5A\u003d",
+      "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ9X///1g\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:24:10Z",
+      "side": 1,
+      "message": "Good point re the detached HEAD state.",
+      "parentUuid": "AAAJz3///7Q\u003d",
       "revId": "2677a6ca853af82c48a4d65a5e2e1dcd8228842f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
