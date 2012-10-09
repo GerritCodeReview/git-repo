@@ -48,8 +48,8 @@ The '%prog' command stages files to prepare the next commit.
       self.Usage()
 
   def _Interactive(self, opt, args):
-    all = filter(lambda x: x.IsDirty(), self.GetProjects(args))
-    if not all:
+    all_projects = filter(lambda x: x.IsDirty(), self.GetProjects(args))
+    if not all_projects:
       print >>sys.stderr,'no projects have uncommitted modifications'
       return
 
@@ -58,8 +58,8 @@ The '%prog' command stages files to prepare the next commit.
       out.header('        %s', 'project')
       out.nl()
 
-      for i in xrange(0, len(all)):
-        p = all[i]
+      for i in xrange(0, len(all_projects)):
+        p = all_projects[i]
         out.write('%3d:    %s', i + 1, p.relpath + '/')
         out.nl()
       out.nl()
@@ -93,11 +93,11 @@ The '%prog' command stages files to prepare the next commit.
       if a_index is not None:
         if a_index == 0:
           break
-        if 0 < a_index and a_index <= len(all):
-          _AddI(all[a_index - 1])
+        if 0 < a_index and a_index <= len(all_projects):
+          _AddI(all_projects[a_index - 1])
           continue
 
-      p = filter(lambda x: x.name == a or x.relpath == a, all)
+      p = filter(lambda x: x.name == a or x.relpath == a, all_projects)
       if len(p) == 1:
         _AddI(p[0])
         continue

@@ -24,11 +24,11 @@ class Prune(PagedCommand):
 """
 
   def Execute(self, opt, args):
-    all = []
+    all_branches = []
     for project in self.GetProjects(args):
-      all.extend(project.PruneHeads())
+      all_branches.extend(project.PruneHeads())
 
-    if not all:
+    if not all_branches:
       return
 
     class Report(Coloring):
@@ -36,13 +36,13 @@ class Prune(PagedCommand):
         Coloring.__init__(self, config, 'status')
         self.project = self.printer('header', attr='bold')
 
-    out = Report(all[0].project.config)
+    out = Report(all_branches[0].project.config)
     out.project('Pending Branches')
     out.nl()
 
     project = None
 
-    for branch in all:
+    for branch in all_branches:
       if project != branch.project:
         project = branch.project
         out.nl()

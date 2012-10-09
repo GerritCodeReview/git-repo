@@ -140,12 +140,12 @@ is shown, then the branch appears in all projects.
         fmt = out.write
         paths = []
         if in_cnt < project_cnt - in_cnt: 
-          type = 'in'
+          in_type = 'in'
           for b in i.projects:
             paths.append(b.project.relpath)
         else:
           fmt = out.notinproject
-          type = 'not in'
+          in_type = 'not in'
           have = set()
           for b in i.projects:
             have.add(b.project)
@@ -153,11 +153,11 @@ is shown, then the branch appears in all projects.
             if not p in have:
               paths.append(p.relpath)
 
-        s = ' %s %s' % (type, ', '.join(paths))
+        s = ' %s %s' % (in_type, ', '.join(paths))
         if width + 7 + len(s) < 80:
           fmt(s)
         else:
-          fmt(' %s:' % type)
+          fmt(' %s:' % in_type)
           for p in paths:
             out.nl()
             fmt(width*' ' + '          %s' % p)

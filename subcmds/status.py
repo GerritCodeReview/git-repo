@@ -98,18 +98,18 @@ the following meanings:
       sem.release()
 
   def Execute(self, opt, args):
-    all = self.GetProjects(args)
+    all_projects = self.GetProjects(args)
     counter = itertools.count()
 
     if opt.jobs == 1:
-      for project in all:
+      for project in all_projects:
         state = project.PrintWorkTreeStatus()
         if state == 'CLEAN':
           counter.next()
     else:
       sem = _threading.Semaphore(opt.jobs)
       threads_and_output = []
-      for project in all:
+      for project in all_projects:
         sem.acquire()
 
         class BufList(StringIO.StringIO):
@@ -128,5 +128,5 @@ the following meanings:
         t.join()
         output.dump(sys.stdout)
         output.close()
-    if len(all) == counter.next():
+    if len(all_projects) == counter.next():
       print 'nothing to commit (working directory clean)'

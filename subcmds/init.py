@@ -213,8 +213,6 @@ to update the working directory files.
       sys.exit(1)
 
   def _Prompt(self, prompt, value):
-    mp = self.manifest.manifestProject
-
     sys.stdout.write('%-10s [%s]: ' % (prompt, value))
     a = sys.stdin.readline().strip()
     if a == '':
@@ -332,9 +330,9 @@ to update the working directory files.
     self._ConfigureDepth(opt)
 
     if self.manifest.IsMirror:
-      type = 'mirror '
+      init_type = 'mirror '
     else:
-      type = ''
+      init_type = ''
 
     print ''
-    print 'repo %sinitialized in %s' % (type, self.manifest.topdir)
+    print 'repo %sinitialized in %s' % (init_type, self.manifest.topdir)
