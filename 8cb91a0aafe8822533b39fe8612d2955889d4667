@@ -2,6 +2,108 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAJ9X///1E\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:22:14Z",
+      "side": 1,
+      "message": "Looks like the default for this will have no color at all, which makes the output very difficult to read.  How do these colors get configured?",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ9X///1U\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:22:14Z",
+      "side": 1,
+      "message": "I think this might be misleading:  you call it \"Local\" info, but as I\u0027ve argued before, you\u0027re actually doing a Sync_NetworkHalf, which is anything but local.  You then call findRemoteLocalDiff() from within that function, so it becomes misleading",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ9X///1Q\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:22:14Z",
+      "side": 1,
+      "message": "This seems un-repoish. Most other commands default to --all (meaning all projects), *unless* a project or projects are given on the command line.  Using a command like this, I would want to just type:\n\n $ repo info\n\nand get some sort of information about all projects.  It doesn\u0027t look like you have any way at all to work on all projects with one command?\n\nIt appears that you get that type of behavior if you just ignore the projects array and do this instead:\n\n projs \u003d self.GetProjects(args)\n\nBut because you specifically default to \".\" instead of all projects, I\u0027m guessing you did that for a reason.  However, I don\u0027t think I agree with the result.\n\nSo if I run the command in the repo root and run just \"repo info\", I get no information about any projects (only manifest).  But if I then change into one of the actual projects, \"repo info\" gives information about that one project.  I would not expect the output to change based on the path I\u0027m at, as long as I\u0027m still somewhere under the repo root and I didn\u0027t provide a relative path to the command.  If I had type \"repo info .\", then yes I would expect that exact behavior.\n\nI\u0027m just curious why you went against the norm compared to all the other repo commands, where the default is to work on all projects, unless a list of projects is given.  The only command I can see that doesn\u0027t follow that, is \"repo branch\", and it requires either --all, OR at least one project, and it will fail with an error if that isn\u0027t met.\n\nTo be fair though, the output of this command is very verbose and doesn\u0027t show any real separation between projects, or even between Remote vs Local commits (I don\u0027t see any color in mine)...  So displaying this for *all* projects would not only take a very long time -- due to the fact that \"-a\" is hitting the network every time, -- but it will also just be a huge jumble of text that is very hard to read.\n\nThe \"repo overview\" command gives a good separation of projects, and you can see instantly what all the local commits are:\n\n $ time repo info -a jackd/\n Manifest branch: master\n Manifest merge branch: refs/heads/master\n Project: Development/jackd\n Mount path: /home/jhansche/sandbox/jackd\n Current revision: master\n Local Branches: 1 [SITE-6]\n Local Commits: 4 (on current branch)\n 56f11576 SITE-6: commit message 4\n 735bd62c SITE-6: commit message 3\n eb50ce52 SITE-6: commit message 2\n de5a0bcd SITE-6: commit message 1\n ----------------------------\n Remote Commits: 0\n real\t0m1.277s\n\n(so that\u0027s 1.2 seconds for *each* project, if using the --all option)\n\ncompared to:\n\n $ time repo info -o jackd\n Manifest branch: master\n Manifest merge branch: refs/heads/master\n\n Projects Overview\n jackd\n * SITE-6                            ( 4 commits, Tue Oct 9 16:42:37 2012 -0400)\n                                      - de5a0bcd SITE-6: commit message 1\n                                      - eb50ce52 SITE-6: commit message 2\n                                      - 735bd62c SITE-6: commit message 3\n                                      - 56f11576 SITE-6: commit message 4\n\n real\t0m0.215s\n\nIt\u0027s much faster, and much easier to read.  It also fits in much better with the aesthetics of the rest of the repo commands (the \"overview\" output was mostly copied from the \"prune\" command).",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ9X///1k\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:22:14Z",
+      "side": 1,
+      "message": "\"m/\" should use the git_refs.R_M constant, similar to how project.py does it:\n\n from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ9X///1Y\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:22:14Z",
+      "side": 1,
+      "message": "not sure why this is needed?  Looks like the only thing this affects is setting GIT_DIR env?  But wouldn\u0027t that be desired?",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ9X///1c\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1005757
+      },
+      "writtenOn": "2012-10-09T22:22:14Z",
+      "side": 1,
+      "message": "I still think it might be worth adding a method or @property in the Project class itself, to abstract these out from the command.  Even if it\u0027s just a wrapper around rev_list() itself:\n\n localCommits \u003d project.getRevs(logTarget, HEAD)\n originCommits \u003d project.getRevs(HEAD, logTarget)",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ63//9Tw\u003d",
         "filename": "subcmds/overview.py",
         "patchSetId": 4
