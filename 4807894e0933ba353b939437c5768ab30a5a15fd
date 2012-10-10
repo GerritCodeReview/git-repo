@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAJ63//9Nw\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-10T23:08:41Z",
+      "side": 1,
+      "message": "s/use/uses/",
+      "revId": "4807894e0933ba353b939437c5768ab30a5a15fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKA3///5Y\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-10T23:08:41Z",
+      "side": 1,
+      "message": "This sounds like it does a general bootstrapping, but really it\u0027s just for one variable (since currently that is all that is used) and only when a mirror is available.  I would imagine a general bootstrapping to be equivalent to cloning manifest project to a tmp directory and then using the .gitconfig variables as desired before cloning it a second time (this time preferably from the tmp dir).\n\nAnyway, I guess I\u0027d suggest changing the body of the commit message to be more specific about the `repo.reference` config variable since the subject line of the commit message doesn\u0027t have room to explain that `referenc` is a config variable.",
+      "revId": "4807894e0933ba353b939437c5768ab30a5a15fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKA3///5g\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-10T23:08:41Z",
+      "side": 1,
+      "message": "I find this confusing since there\u0027s also opt.mirror.  Maybe we could call this something like \"mirrored_manifest_git\"?",
+      "revId": "4807894e0933ba353b939437c5768ab30a5a15fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAJ63//9M0\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-10T23:08:41Z",
+      "side": 1,
+      "message": "It\u0027s worth noting that urlparse chokes if no scheme is specified (eg http://), but it seems that `repo init` already doesn\u0027t handle that, so I think we are ok here.",
+      "revId": "4807894e0933ba353b939437c5768ab30a5a15fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKA3///5c\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-10T23:08:41Z",
+      "side": 1,
+      "message": "Why not just do\n  m._InitGitDir(reference_dir\u003dopt.reference)\n\nAnd then in _InitGitDir do:\n  ref_dir \u003d reference_dir or mp.config.GetString(\u0027repo.reference\u0027)\n\n(If you do that, it might be worth it to go ahead and rename `ref_dir` to match the parameter)\n\nIs there something I\u0027m missing that keeps it from being that simple?",
+      "revId": "4807894e0933ba353b939437c5768ab30a5a15fd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
