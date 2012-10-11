@@ -15,7 +15,7 @@
 
 import os
 
-all = {}
+all_commands = {}
 
 my_dir = os.path.dirname(__file__)
 for py in os.listdir(my_dir):
@@ -43,7 +43,7 @@ for py in os.listdir(my_dir):
 
     name = name.replace('_', '-')
     cmd.NAME = name
-    all[name] = cmd
+    all_commands[name] = cmd
 
-if 'help' in all:
-  all['help'].commands = all
+if 'help' in all_commands:
+  all_commands['help'].commands = all_commands

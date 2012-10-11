@@ -724,17 +724,25 @@ class Project(object):
     paths.sort()
 
     for p in paths:
-      try: i = di[p]
-      except KeyError: i = None
+      try:
+        i = di[p]
+      except KeyError:
+        i = None
 
-      try: f = df[p]
-      except KeyError: f = None
+      try:
+        f = df[p]
+      except KeyError:
+        f = None
 
-      if i: i_status = i.status.upper()
-      else: i_status = '-'
+      if i:
+        i_status = i.status.upper()
+      else:
+        i_status = '-'
 
-      if f: f_status = f.status.lower()
-      else: f_status = '-'
+      if f:
+        f_status = f.status.lower()
+      else:
+        f_status = '-'
 
       if i and i.src_path:
         line = ' %s%s\t%s => %s (%s%%)' % (i_status, f_status,

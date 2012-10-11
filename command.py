@@ -123,6 +123,11 @@ class Command(object):
     result.sort(key=_getpath)
     return result
 
+# pylint: disable-msg=W0223
+# Pylint warns that the `InteractiveCommand` and `PagedCommand` classes do not
+# override method `Execute` which is abstract in `Command`.  Since that method
+# is always implemented in classes derived from `InteractiveCommand` and
+# `PagedCommand`, this warning can be suppressed.
 class InteractiveCommand(Command):
   """Command which requires user interaction on the tty and
      must not run within a pager, even if the user asks to.
@@ -136,6 +141,8 @@ class PagedCommand(Command):
   """
   def WantPager(self, opt):
     return True
+
+# pylint: enable-msg=W0223
 
 class MirrorSafeCommand(object):
   """Command permits itself to run within a mirror,
