@@ -45,7 +45,7 @@ from error import RepoChangedException
 from manifest_xml import XmlManifest
 from pager import RunPager
 
-from subcmds import all as all_commands
+from subcmds import all_commands
 
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
@@ -268,7 +268,7 @@ def _UserAgent():
       py_version[0], py_version[1], py_version[2])
   return _user_agent
 
-class _UserAgentHandler(urllib2.BaseHandler):
+class _UserAgentHandler(urllib2.BaseHandler): # pylint:disable-msg=W0232
   def http_request(self, req):
     req.add_header('User-Agent', _UserAgent())
     return req
