@@ -123,14 +123,14 @@ class Command(object):
     result.sort(key=_getpath)
     return result
 
-class InteractiveCommand(Command):
+class InteractiveCommand(Command): #pylint: disable-msg=W0223
   """Command which requires user interaction on the tty and
      must not run within a pager, even if the user asks to.
   """
   def WantPager(self, opt):
     return False
 
-class PagedCommand(Command):
+class PagedCommand(Command): #pylint: disable-msg=W0223
   """Command which defaults to output in a pager, as its
      display tends to be larger than one screen full.
   """

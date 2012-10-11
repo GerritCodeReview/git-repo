@@ -42,10 +42,10 @@ It is equivalent to "git branch -D <branchname>".
     nb = args[0]
     err = []
     success = []
-    all = self.GetProjects(args[1:])
+    all_projects = self.GetProjects(args[1:])
 
-    pm = Progress('Abandon %s' % nb, len(all))
-    for project in all:
+    pm = Progress('Abandon %s' % nb, len(all_projects))
+    for project in all_projects:
       pm.update()
 
       status = project.AbandonBranch(nb)

@@ -45,7 +45,7 @@ from error import RepoChangedException
 from manifest_xml import XmlManifest
 from pager import RunPager
 
-from subcmds import all as all_commands
+from subcmds import all_commands
 
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"

@@ -39,10 +39,10 @@ The command is equivalent to:
     nb = args[0]
     err = []
     success = []
-    all = self.GetProjects(args[1:])
+    all_projects = self.GetProjects(args[1:])
 
-    pm = Progress('Checkout %s' % nb, len(all))
-    for project in all:
+    pm = Progress('Checkout %s' % nb, len(all_projects))
+    for project in all_projects:
       pm.update()
 
       status = project.CheckoutBranch(nb)
