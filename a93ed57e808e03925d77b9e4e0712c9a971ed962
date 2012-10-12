@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKKX///1o\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-12T18:22:50Z",
+      "side": 1,
+      "message": "This seems like a silly check considering that (just as in our case) an abstract class is typically extended in the same file it\u0027s defined in.\n\nI think it\u0027s a cool to pass pylint with a default configuration, but is there any way that we can avoid this without the confusing/vague comment?\n\nIs there a commonly used --my-project-isnt-all-in-one-file flag that\u0027s popular to use?  Even something simpler like `pylint: abstract class` in the docstring would be a little less confusing to stumble across when reading the code.",
+      "revId": "a93ed57e808e03925d77b9e4e0712c9a971ed962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKKX///1g\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-12T18:22:50Z",
+      "side": 1,
+      "message": "Too lazy to research this myself at the moment, so I\u0027ll just ask you.  Is this just a pylint thing or is this in PEP 8 or somewhere?  \n\nI always thought it was kind of nice that python didn\u0027t require this since it\u0027s pretty common to want the derived class constructor to act identically to the base class constructor.",
+      "revId": "a93ed57e808e03925d77b9e4e0712c9a971ed962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
