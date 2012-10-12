@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKKX///1A\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-12T18:25:21Z",
+      "side": 1,
+      "message": "* s/is typically/is not typically/\n* s/it\u0027s a cool/it\u0027d be cool/\n* s/avoid this without/avoid/\n* s/commonly used//\n\nYeesh...need to proof read a  little better next time.",
+      "parentUuid": "AAAKKX///1o\u003d",
+      "revId": "a93ed57e808e03925d77b9e4e0712c9a971ed962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKKX///1g\u003d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
