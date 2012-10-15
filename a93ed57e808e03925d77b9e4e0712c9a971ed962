@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKP3///50\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-15T16:27:00Z",
+      "side": 1,
+      "message": "Oi, that seems really silly since we obviously do override it in a further derived class.",
+      "parentUuid": "AAAKNn////w\u003d",
+      "revId": "a93ed57e808e03925d77b9e4e0712c9a971ed962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKKX///1g\u003d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
