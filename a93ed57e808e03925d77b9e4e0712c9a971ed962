@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKNn///+Y\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-16T01:13:09Z",
+      "side": 1,
+      "message": "We could globally suppress this warning, but then if someone implements a new class derived from Command, and forgets to override the method, we\u0027d want to get a warning.",
+      "parentUuid": "AAAKP3///50\u003d",
+      "revId": "a93ed57e808e03925d77b9e4e0712c9a971ed962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKKX///1g\u003d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "This is a pylint warning.  I don\u0027t think pep8 has anything about it.\n\nWhen I\u0027m back in the office on Monday I\u0027ll double check the behavior when there\u0027s no init method.",
       "parentUuid": "AAAKKX///1g\u003d",
+      "revId": "a93ed57e808e03925d77b9e4e0712c9a971ed962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKNn///+U\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-16T01:13:09Z",
+      "side": 1,
+      "message": "OK, I\u0027ve checked this.  If the derived class has no __init__ method, the base class\u0027s __init__ is still called.  We can probably globally suppress this one instead of adding explicit __init__ methods that don\u0027t do anything other than call super().",
+      "parentUuid": "AAAKNn////s\u003d",
       "revId": "a93ed57e808e03925d77b9e4e0712c9a971ed962",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
