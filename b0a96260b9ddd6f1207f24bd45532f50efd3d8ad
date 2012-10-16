@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKcn///5Y\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-16T21:00:00Z",
+      "side": 1,
+      "message": "also, you don\u0027t need the .* .* if you are going to just call re.search.",
+      "parentUuid": "AAAKYX//+yo\u003d",
+      "revId": "b0a96260b9ddd6f1207f24bd45532f50efd3d8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKYX//+yw\u003d",
         "filename": "subcmds/find.py",
         "patchSetId": 1
