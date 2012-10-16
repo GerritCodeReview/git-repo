@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKYX//+yA\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-16T20:21:04Z",
+      "side": 1,
+      "message": "Doing a grep on the source, we don\u0027t use the word \"mount\" anywhere so let\u0027s not add new vocabulary.  Just call this the working path or path in the working tree.",
+      "revId": "b0a96260b9ddd6f1207f24bd45532f50efd3d8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKYX//+yo\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-16T20:21:04Z",
+      "side": 1,
+      "message": "Should we re.escape the arg?\n\nNot that it makes a real speed difference, but I think it\u0027d be simpler to just go ahead and call re.compile here too.  Then matching the name and path will be small enough to fit on one line and one can actually boolean shortcut the other.",
+      "revId": "b0a96260b9ddd6f1207f24bd45532f50efd3d8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKYX//+yw\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-16T20:21:04Z",
+      "side": 1,
+      "message": "I\u0027m guessing that you want to break at the end of this (so you don\u0027t print wpa/kernel twice)",
+      "revId": "b0a96260b9ddd6f1207f24bd45532f50efd3d8ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
