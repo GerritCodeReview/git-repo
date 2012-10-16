@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAKCX////M\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-16T10:52:50Z",
+      "side": 1,
+      "message": "Based on Joes comment a bit further down I\u0027m changing this to -d/--diff.\nI agree that --all is hinting at it doing something else.",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ9X///1E\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 4
@@ -53,6 +70,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKY3///+I\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-16T10:52:50Z",
+      "side": 1,
+      "message": "So, yeah. I do agree with you somewhat. repo seems to be working on the complete set all the time. I\u0027ve changed it to do this, and one can use \u0027.\u0027 as argument instead.\n\nIt feels very unintuitive to me though. Maybe because I am used to the original, but I wanted to limit the amount of information displayed instead of just shoveling information out. :)\n\n\u0027repo info\u0027 -\u003e will now print the info for all projects.. however, I don\u0027t see a use for this ever.\n\n\u0027repo info .\u0027 will print information about the local project or just manifest info if not in a project folder.\n\nI am _very_ skeptical about this.",
+      "parentUuid": "AAAJ9X///1Q\u003d",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ9X///1k\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 4
@@ -64,6 +99,24 @@
       "writtenOn": "2012-10-09T22:22:14Z",
       "side": 1,
       "message": "\"m/\" should use the git_refs.R_M constant, similar to how project.py does it:\n\n from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKCX////Y\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-16T10:52:50Z",
+      "side": 1,
+      "message": "Thanks. Fixed!",
+      "parentUuid": "AAAJ9X///1k\u003d",
       "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +140,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKCX////U\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-16T10:52:50Z",
+      "side": 1,
+      "message": "I\u0027m not sure either. But I know it doesn\u0027t work without it. The _bare attribute differs between rev_list and GitCommand.",
+      "parentUuid": "AAAJ9X///1Y\u003d",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ9X///1c\u003d",
         "filename": "subcmds/info.py",
         "patchSetId": 4
@@ -104,6 +175,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKCX////Q\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-16T10:52:50Z",
+      "side": 1,
+      "message": "I\u0027m not disagreeing with you here. It might be good.",
+      "parentUuid": "AAAJ9X///1c\u003d",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAJ63//9Tw\u003d",
         "filename": "subcmds/overview.py",
         "patchSetId": 4
@@ -115,6 +204,24 @@
       "writtenOn": "2012-10-09T20:41:38Z",
       "side": 1,
       "message": "Please print to stdout\n\nThe method should work as it used to, just warn about deprecation (please add back the body).",
+      "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKCX////I\u003d",
+        "filename": "subcmds/overview.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-10-16T10:52:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAJ63//9Tw\u003d",
       "revId": "8cb91a0aafe8822533b39fe8612d2955889d4667",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
