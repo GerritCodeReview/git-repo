@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKdH///e4\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-17T16:16:33Z",
+      "side": 1,
+      "message": "I still think it makes more sense to leave off both the \u0027.*\u0027s and just do re.search, but I guess it\u0027s not important.",
+      "revId": "f65c807cb687ed26bba34957764b0a86a7d9c1f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKdH///ew\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-17T16:16:33Z",
+      "side": 1,
+      "message": "Let\u0027s say your args are \u0027a\u0027 and \u0027b\u0027, and you have a project named \u0027a/b\u0027.  This will get appended twice, will it not?\n\nI think you need to go back to how you were doing it before where you iterated through projects in the outer loop, so that you can break in the if and move on to the next project.",
+      "revId": "f65c807cb687ed26bba34957764b0a86a7d9c1f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
