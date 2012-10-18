@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKd3//+8s\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-18T16:22:53Z",
+      "side": 1,
+      "message": "I still have the same concern with this.\n\nIf we implement it in a derived class, it really shouldn\u0027t be yelling at us.  Can we turn this off or use a less cryptic way of disabling this on a per class basis?  Maybe just an extra comment clarifying what # pylint W0223 means.",
+      "revId": "fc4a54a474aabbd5aa8dc98a37cfacb7a13dca9b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
