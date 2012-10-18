@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKd3//+9Y\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-18T16:18:34Z",
+      "side": 1,
+      "message": "I\u0027d prefer that you put these on the same line (easier for other utilities to handle the output).\n\nIf you want to follow repo list\u0027s example, it does:\n  \"%s : %s\" % (project.relpath, project.name)",
+      "revId": "a5946bbbd227e5e21f9dfc18dfe260a18d2021e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKd3//+9k\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-18T16:18:34Z",
+      "side": 1,
+      "message": "Please don\u0027t use the variable name \"list\"",
+      "revId": "a5946bbbd227e5e21f9dfc18dfe260a18d2021e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKd3//+9g\u003d",
+        "filename": "subcmds/find.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-18T16:18:34Z",
+      "side": 1,
+      "message": "Please be aware that in python3 (which we do plan on supporting at some point), this will return a generator and not a list.\n\nIf you wanted to return a list, you would use list.sort instead.\n\nI\u0027m fine with you leaving it how it is.  This is mostly a public service announcement.",
+      "revId": "a5946bbbd227e5e21f9dfc18dfe260a18d2021e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
