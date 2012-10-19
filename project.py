@@ -963,7 +963,9 @@ class Project(object):
       quiet=False,
       is_new=None,
       current_branch_only=False,
-      clone_bundle=True):
+      clone_bundle=True,
+      insteadof_func=None,
+      env=None):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1001,7 +1003,8 @@ class Project(object):
         current_branch_only = True
 
     if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
-                             current_branch_only=current_branch_only):
+                             current_branch_only=current_branch_only,
+                             insteadof_func=insteadof_func, env=env):
       return False
 
     if self.worktree:
@@ -1551,7 +1554,9 @@ class Project(object):
                    current_branch_only=False,
                    initial=False,
                    quiet=False,
-                   alt_dir=None):
+                   alt_dir=None,
+                   insteadof_func=None,
+                   env=None):
 
     is_sha1 = False
     tag_name = None
@@ -1640,7 +1645,13 @@ class Project(object):
       cmd.append('--quiet')
     if not self.worktree:
       cmd.append('--update-head-ok')
-    cmd.append(name)
+
+    if not insteadof_func:
+      cmd.append(name)
+    else:
+      # Apply the custom insteadof function. Git will still apply its own
+      # insteadof rules to the final URL.
+      cmd.append(insteadof_func(remote.url))
 
     if not current_branch_only:
       # Fetch whole repo
@@ -1659,7 +1670,8 @@ class Project(object):
 
     ok = False
     for _i in range(2):
-      ret = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy).Wait()
+      ret = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy,
+                       env=env).Wait()
       if ret == 0:
         ok = True
         break
@@ -1684,7 +1696,8 @@ class Project(object):
       # refs.
       if not CheckForSha1():
         return self._RemoteFetch(name=name, current_branch_only=False,
-                                 initial=False, quiet=quiet, alt_dir=alt_dir)
+                                 initial=False, quiet=quiet, alt_dir=alt_dir,
+                                 insteadof_func=insteadof_func, env=env)
 
     return ok
 
