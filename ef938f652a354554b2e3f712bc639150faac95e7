@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKgX///4w\u003d",
+        "filename": "subcmds/list.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-19T16:56:55Z",
+      "side": 1,
+      "message": "I think we tend to import standard packages first, add a newline, then import repo-specific pacakages.",
+      "revId": "ef938f652a354554b2e3f712bc639150faac95e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKgX///4Y\u003d",
+        "filename": "subcmds/list.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-19T16:56:55Z",
+      "side": 1,
+      "message": "actually, this probably isn\u0027t the best name since wildcard has a pretty limited meaning and full regular expressions are supported.  Maybe -r --regex?",
+      "revId": "ef938f652a354554b2e3f712bc639150faac95e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

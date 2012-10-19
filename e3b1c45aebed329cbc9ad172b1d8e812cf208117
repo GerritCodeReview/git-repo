@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKgX///48\u003d",
+        "filename": "subcmds/list.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-19T16:56:55Z",
+      "side": 0,
+      "message": "Well, this is still a parameter, so you should probably leave the line.",
+      "revId": "e3b1c45aebed329cbc9ad172b1d8e812cf208117",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
