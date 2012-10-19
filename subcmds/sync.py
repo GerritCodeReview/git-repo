@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import errno
 import netrc
 from optparse import SUPPRESS_HELP
 import os
@@ -39,6 +40,7 @@ except ImportError:
     return (256, 256)
 
 from git_command import GIT
+from git_config import GetSchemeFromUrl, GitConfig
 from git_refs import R_HEADS, HEAD
 from project import Project
 from project import RemoteSpec
@@ -186,7 +188,8 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
+  def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event,
+                   proxy):
       """Main function of the fetch threads when jobs are > 1.
 
       Args:
@@ -202,6 +205,8 @@ later is required to fix a server side protocol bug.
             can be started up.
         err_event: We'll set this event in the case of an error (after printing
             out info about the error).
+        proxy: A _PersistentHttpsProxy for connecting through a
+            git-remote-persistent-https proxy if applicable.
       """
       # We'll set to true once we've locked the lock.
       did_lock = False
@@ -215,7 +220,9 @@ later is required to fix a server side protocol bug.
           success = project.Sync_NetworkHalf(
             quiet=opt.quiet,
             current_branch_only=opt.current_branch_only,
-            clone_bundle=not opt.no_clone_bundle)
+            clone_bundle=not opt.no_clone_bundle,
+            insteadof_func=proxy.InsteadOfFunc(),
+            env=proxy.GetEnviron())
 
           # Lock around all the rest of the code, since printing, updating a set
           # and Progress.update() are not thread safe.
@@ -264,28 +271,33 @@ later is required to fix a server side protocol bug.
       lock = _threading.Lock()
       sem = _threading.Semaphore(self.jobs)
       err_event = _threading.Event()
-      for project in projects:
-        # Check for any errors before starting any new threads.
-        # ...we'll let existing threads finish, though.
-        if err_event.isSet():
-          break
+      proxy = self._ConnectProxy()
+      try:
+        for project in projects:
+          # Check for any errors before starting any new threads.
+          # ...we'll let existing threads finish, though.
+          if err_event.isSet():
+            break
 
-        sem.acquire()
-        t = _threading.Thread(target = self._FetchHelper,
-                              args = (opt,
-                                      project,
-                                      lock,
-                                      fetched,
-                                      pm,
-                                      sem,
-                                      err_event))
-        # Ensure that Ctrl-C will not freeze the repo process.
-        t.daemon = True
-        threads.add(t)
-        t.start()
+          sem.acquire()
+          t = _threading.Thread(target = self._FetchHelper,
+                                args = (opt,
+                                        project,
+                                        lock,
+                                        fetched,
+                                        pm,
+                                        sem,
+                                        err_event,
+                                        proxy))
+          # Ensure that Ctrl-C will not freeze the repo process.
+          t.daemon = True
+          threads.add(t)
+          t.start()
 
-      for t in threads:
-        t.join()
+        for t in threads:
+          t.join()
+      finally:
+        proxy.Close()
 
       # If we saw an error, exit with code 1 so that other scripts can check.
       if err_event.isSet():
@@ -533,6 +545,29 @@ uncommitted changes are present' % project.relpath
     if self.manifest.notice:
       print self.manifest.notice
 
+  def _ConnectProxy(self):
+    remote_url = self.manifest.manifestProject.config.GetString(
+        'remote.origin.url')
+    real_url = GitConfig.ForUser().UrlInsteadOf(remote_url)
+    if GetSchemeFromUrl(real_url) not in (
+        'persistent-http', 'persistent-https'):
+      return _PersistentHttpsProxy(None, None)
+
+    try:
+      proc = subprocess.Popen(
+          ['git-remote-persistent-https', '--print_config', real_url],
+          stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+          stderr=subprocess.PIPE)
+    except OSError, e:
+      if e.errno == errno.ENOENT:
+        return _PersistentHttpsProxy(None, None)
+      raise
+    env = _ParseProxyConfig(proc)
+    if env is None:
+      proc.wait()
+      return _PersistentHttpsProxy(None, None)
+    return _PersistentHttpsProxy(proc, env)
+
 def _PostRepoUpgrade(manifest):
   for project in manifest.projects.values():
     if project.Exists:
@@ -602,3 +637,71 @@ warning: Cannot automatically authenticate repo."""
     print >>sys.stderr
     return False
   return True
+
+class _PersistentHttpsProxyError(Exception):
+  pass
+
+def _ParseProxyConfig(proc):
+  env = {}
+  config = []
+  try:
+    for line in proc.stdout:
+      line = line.strip()
+      fields = line.split('=', 1)
+      if len(fields) != 2:
+        proc.stdout.close()
+        raise _PersistentHttpsProxyError(
+            'invalid line from git-remote-persistent-https: %r', line)
+      key, value = fields
+      if '.' in key:
+        config.append(line.replace('\\', '\\\\').replace("'", "\\'"))
+      else:
+        env[key] = value
+  except _PersistentHttpsProxyError:
+    # Ignore bad output on stdout if the command failed.
+    if not proc.returncode:
+      raise
+
+  if proc.returncode:
+    print >>sys.stderr
+    print >>sys.stderr, proc.stderr.read()
+    print >>sys.stderr
+    return None
+  proc.stderr.close()
+
+  config.append('url.http://.insteadof=REPO-HACK://')
+  if config:
+    env['GIT_CONFIG_PARAMETERS'] = "'" + "' '".join(config) + "'"
+  return env
+
+_ALL_HTTP = re.compile('^(?:persistent-)?https?://')
+
+class _PersistentHttpsProxy(object):
+  def __init__(self, proc, env):
+    self._proc = proc
+    self._env = env
+
+  def GetEnviron(self):
+    return self._env
+
+  def InsteadOfFunc(self):
+    if not self._proc:
+      return None
+
+    config = GitConfig.ForUser()
+
+    def InsteadOf(url):
+      url = config.UrlInsteadOf(url)
+      return _ALL_HTTP.sub('REPO-HACK://', url, 1)
+
+    return InsteadOf
+
+  def Close(self):
+    proc = self._proc
+    if proc is None:
+      return
+    proc.stdin.close()
+    proc.wait()
+    if proc.returncode:
+      raise _PersistentHttpsProxyError(
+          'git-remote-persistent-https-proxy returned %d' % proc.returncode)

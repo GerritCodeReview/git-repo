@@ -129,8 +129,12 @@ class GitCommand(object):
                disable_editor = False,
                ssh_proxy = False,
                cwd = None,
-               gitdir = None):
+               gitdir = None,
+               env = None):
+    newenv = env
     env = os.environ.copy()
+    if newenv is not None:
+      env.update(newenv)
 
     for e in [REPO_TRACE,
               GIT_DIR,
