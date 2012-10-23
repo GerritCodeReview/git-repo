@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKrH///+o\u003d",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-10-23T18:44:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAKrH////k\u003d",
+      "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKrH////g\u003d",
         "filename": "project.py",
         "patchSetId": 8
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKrH///+k\u003d",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1447,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-10-23T18:44:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAKrH////g\u003d",
+      "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKrH////w\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 8
@@ -47,6 +83,24 @@
       "writtenOn": "2012-10-23T04:38:15Z",
       "side": 1,
       "message": "Why are we reparsing the manifest on every iteration vs. once at the start? Is this necessary to ensure the subprojects are correctly registered? It seems abusive to need to throw away and reparse the manifest on each cycle. I don\u0027t see anything in manifest_xml.py that requires us to unload on each iteration.",
+      "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH///+s\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-10-23T18:44:13Z",
+      "side": 1,
+      "message": "This loop is not meant for registered submodules. It is meant for unregistered submodules.\n\nrepo is only able to detect any unregistered submodules after their parent is fetched. So after repo fetches anything, it should scan (new) repositories and see if there are any new unregistered submodules.\n\nI agree the current implementation is inefficient that the whole manifest is discarded and regenerated from scratch, rather than being incrementally added new unregistered submodules by scanning only newly fetched repositories.\n\nBut this optimization could potentially loose manifest class\u0027 object encapsulation. Do you think we should go for this optimization?",
+      "parentUuid": "AAAKrH////w\u003d",
       "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
