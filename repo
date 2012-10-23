@@ -28,7 +28,7 @@ if __name__ == '__main__':
 del magic
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 17)
+VERSION = (1, 18)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1,0)
@@ -655,9 +655,37 @@ def _SetDefaultsTo(gitdir):
     sys.exit(1)
 
 
+def _ConfirmNotCurrentDir(repo_main, cmd):
+  """
+  For 'init' command, if the found repo directory is not in current
+  directory, prompt user to confirm.
+  """
+  if cmd == 'init' and repo_main is not None:
+    i, repo_root = 0, repo_main
+    while i < 3:
+      i, repo_root = i + 1, os.path.dirname(repo_root)
+    current_dir = os.getcwd()
+
+    if current_dir != repo_root:
+      print 'There is an initialized repo found in directory:'
+      print ''
+      print '  %s' % repo_root
+      print ''
+      print 'If you want to initialize repo in this directory, type "yes",'
+      print 'otherwise, type "no" to initialize repo in the current directory.'
+      sys.stdout.write('Initialize repo in %s (yes/no)? ' % repo_root)
+      answer = sys.stdin.readline().strip().lower()
+      if answer not in ('y', 'yes'):
+        repo_main = None
+        print 'Repo will be initialized in the current directory: %s' % current_dir
+  return repo_main
+
+
 def main(orig_args):
   repo_main, rel_repo_dir = _FindRepo()
   cmd, opt, args = _ParseArguments(orig_args)
+
+  repo_main = _ConfirmNotCurrentDir(repo_main, cmd)
 
   wrapper_path = os.path.abspath(__file__)
   my_main, my_git = _RunSelf(wrapper_path)
