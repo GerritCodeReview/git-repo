@@ -16,6 +16,24 @@
       "revId": "45b2af8bbd4bf28bf801ba2e605eb97bd77545e0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH///9E\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2012-10-23T23:54:43Z",
+      "side": 1,
+      "message": "On an AOSP clone:\n\n$ python -mtimeit -s \u0027import cPickle as pickle; s \u003d open(\".repo/.repopickle_fetchtimes\").read()\u0027 \u0027pickle.loads(s)\u0027\n10000 loops, best of 3: 179 usec per loop\n$ python -mtimeit -s \u0027import pickle as pickle; s \u003d open(\".repo/.repopickle_fetchtimes\").read()\u0027 \u0027pickle.loads(s)\u0027 \n1000 loops, best of 3: 1.37 msec per loop\n\nI\u0027m guessing ~1ms (say 5ms on a slower machine than my workstation) is lost in the network latency noise?",
+      "parentUuid": "AAAKrH///9Q\u003d",
+      "revId": "45b2af8bbd4bf28bf801ba2e605eb97bd77545e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
