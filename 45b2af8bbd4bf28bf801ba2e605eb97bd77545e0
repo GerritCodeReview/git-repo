@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKrH///9Q\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-23T23:46:58Z",
+      "side": 1,
+      "message": "I\u0027m going to try to start supporting python3 soon.  If it\u0027s not a problem, please use pickle here.",
+      "revId": "45b2af8bbd4bf28bf801ba2e605eb97bd77545e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
