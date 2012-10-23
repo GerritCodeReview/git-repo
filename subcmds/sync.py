@@ -510,7 +510,6 @@ uncommitted changes are present' % project.relpath
         to_fetch.append(rp)
       to_fetch.extend(all_projects)
       to_fetch.sort(key=self._fetch_times.Get, reverse=True)
-      self._fetch_times.Clear()
 
       self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
@@ -613,19 +612,24 @@ warning: Cannot automatically authenticate repo."""
   return True
 
 class _FetchTimes(object):
+  _ALPHA = 0.5
+
   def __init__(self, manifest):
     self._path = os.path.join(manifest.repodir, '.repopickle_fetchtimes')
     self._times = None
-
-  def Clear(self):
-    self._times = {}
+    self._seen = set()
 
   def Get(self, project):
     self._Load()
     return self._times.get(project.name, _ONE_DAY_S)
 
   def Set(self, project, t):
-    self._times[project.name] = t
+    self._Load()
+    name = project.name
+    old = self._times.get(name, t)
+    self._seen.add(name)
+    a = self._ALPHA
+    self._times[name] = (a*t) + ((1-a) * old)
 
   def _Load(self):
     if self._times is None:
@@ -650,6 +654,14 @@ class _FetchTimes(object):
   def Save(self):
     if self._times is None:
       return
+
+    to_delete = []
+    for name in self._times:
+      if name not in self._seen:
+        to_delete.append(name)
+    for name in to_delete:
+      del self._times[name]
+
     try:
       f = open(self._path, 'wb')
       try:
