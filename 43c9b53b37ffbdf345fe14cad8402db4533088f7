@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKrH////k\u003d",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-10-23T04:38:15Z",
+      "side": 1,
+      "message": "Instead use:\n\n  [\u0027cat-file\u0027, \u0027blob\u0027, \u0027%s:.gitmodules\u0027 % rev]",
+      "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH////g\u003d",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1447,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-10-23T04:38:15Z",
+      "side": 1,
+      "message": "Don\u0027t try to parse the git config style file on your own. This should be fed to a temporary file and then processed by:\n\n  [\u0027config\u0027, \u0027--file\u0027, tmp_path, \u0027--list\u0027]\n\nso that Git can parse the file for you correctly, rather than assuming a lot about the structure that isn\u0027t implied by the format.",
+      "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH////w\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-10-23T04:38:15Z",
+      "side": 1,
+      "message": "Why are we reparsing the manifest on every iteration vs. once at the start? Is this necessary to ensure the subprojects are correctly registered? It seems abusive to need to throw away and reparse the manifest on each cycle. I don\u0027t see anything in manifest_xml.py that requires us to unload on each iteration.",
+      "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
