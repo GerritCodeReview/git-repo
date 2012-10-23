@@ -104,6 +104,24 @@
       "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH///+M\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-10-23T19:22:27Z",
+      "side": 1,
+      "message": "OK, I see your point. It is most likely not worth muddying the code in order to save a relatively small amount of effort here.",
+      "parentUuid": "AAAKrH///+s\u003d",
+      "revId": "43c9b53b37ffbdf345fe14cad8402db4533088f7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
