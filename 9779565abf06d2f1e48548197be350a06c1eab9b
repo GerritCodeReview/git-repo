@@ -34,6 +34,24 @@
       "revId": "9779565abf06d2f1e48548197be350a06c1eab9b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH///+8\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-23T18:51:01Z",
+      "side": 0,
+      "message": "Also note that this block was deleted in:\nChange-Id: Icdc6061d00e6027df32dee9a3bad3999fe7cdcbc",
+      "parentUuid": "AAAKrH////0\u003d",
+      "revId": "9779565abf06d2f1e48548197be350a06c1eab9b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
