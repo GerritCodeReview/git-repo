@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKrH///+4\u003d",
+        "filename": "subcmds/list.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-23T16:44:10Z",
+      "side": 1,
+      "message": "Alright, I tested everything out and ran into a bug.  The worktree is an absolute path so if my client is in a directory called ~xyz/qrs, list -r x will match everything.  Maybe you should use _getpath(project) here.",
+      "revId": "2715fc9c9185117b75ba2685a3e389f5f3b4bd56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
