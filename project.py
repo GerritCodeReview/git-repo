@@ -67,27 +67,6 @@ def not_rev(r):
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
-_project_hook_list = None
-def _ProjectHooks():
-  """List the hooks present in the 'hooks' directory.
-
-  These hooks are project hooks and are copied to the '.git/hooks' directory
-  of all subprojects.
-
-  This function caches the list of hooks (based on the contents of the
-  'repo/hooks' directory) on the first call.
-
-  Returns:
-    A list of absolute paths to all of the files in the hooks directory.
-  """
-  global _project_hook_list
-  if _project_hook_list is None:
-    d = os.path.abspath(os.path.dirname(__file__))
-    d = os.path.join(d , 'hooks')
-    _project_hook_list = [os.path.join(d, x) for x in os.listdir(d)]
-  return _project_hook_list
-
-
 class DownloadedChange(object):
   _commit_cache = None
 
@@ -1903,7 +1882,7 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self, mirror_git=None):
+  def _InitGitDir(self, mirror_git=None, MirrorOverride=False):
     if not os.path.exists(self.gitdir):
       os.makedirs(self.gitdir)
       self.bare_git.init()
@@ -1936,10 +1915,37 @@ class Project(object):
       for key in ['user.name', 'user.email']:
         if m.Has(key, include_defaults = False):
           self.config.SetString(key, m.GetString(key))
-      if self.manifest.IsMirror:
+      if self.manifest.IsMirror and not MirrorOverride:
         self.config.SetString('core.bare', 'true')
       else:
         self.config.SetString('core.bare', None)
+
+  def _ProjectHooks(self, remote, repodir):
+    """List the hooks present in the 'hooks' directory.
+
+    These hooks are project hooks and are copied to the '.git/hooks' directory
+    of all subprojects.
+
+    The remote projecthooks supplement/overrule any stockhook making it possible to
+    have a combination of hooks both from the remote projecthook and
+    .repo/hooks directories.
+
+    Returns:
+      A list of absolute paths to all of the files in the hooks directory and 
+      projecthooks files, excluding the .git folder.
+    """
+    hooks = {}
+    d = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'hooks')
+    hooks = dict([(x, os.path.join(d, x)) for x in os.listdir(d)])
+    if remote is not None:
+      if remote.projecthookName is not None:
+        d = os.path.abspath('%s/projecthooks/%s/%s' % (repodir, remote.name, remote.projecthookName))
+        if os.path.isdir(d):
+          hooks.update(dict([(x, os.path.join(d, x)) for x in os.listdir(d)]))
+
+    if hooks.has_key('.git'):
+      del hooks['.git']
+    return hooks.values()
 
   def _UpdateHooks(self):
     if os.path.exists(self.gitdir):
@@ -1958,7 +1964,10 @@ class Project(object):
     hooks = self._gitdir_path('hooks')
     if not os.path.exists(hooks):
       os.makedirs(hooks)
-    for stock_hook in _ProjectHooks():
+    pr = None
+    if self is not self.manifest.manifestProject:
+      pr = self.manifest.remotes.get(self.remote.name)
+    for stock_hook in self._ProjectHooks(pr, self.manifest.repodir):
       name = os.path.basename(stock_hook)
 
       if name in ('commit-msg',) and not self.remote.review \
