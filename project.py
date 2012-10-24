@@ -62,23 +62,43 @@ def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
 _project_hook_list = None
-def _ProjectHooks():
+_last_remotename = None
+def _ProjectHooks(r, repodir):
   """List the hooks present in the 'hooks' directory.
 
   These hooks are project hooks and are copied to the '.git/hooks' directory
   of all subprojects.
 
   This function caches the list of hooks (based on the contents of the
-  'repo/hooks' directory) on the first call.
+  'repo/hooks' directory) on the first call. If there exists a projecthook
+  per remote then this is recached per every new remote projecthook.
+
+  The remote projecthooks supplement any stockhook making it possible to
+  have a combination of hooks both from the remote projecthook and
+  .repo/hooks directories.
 
   Returns:
     A list of absolute paths to all of the files in the hooks directory.
   """
   global _project_hook_list
+  global _last_remotename
+  if r is not None:
+    if _project_hook_list is not None and _last_remotename is not r.name:
+      _project_hook_list = None
   if _project_hook_list is None:
-    d = os.path.abspath(os.path.dirname(__file__))
-    d = os.path.join(d , 'hooks')
-    _project_hook_list = map(lambda x: os.path.join(d, x), os.listdir(d))
+    d = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'hooks')
+    stockhooks = dict(zip(os.listdir(d), map(lambda x: os.path.join(d, x), os.listdir(d))))
+    if r is not None and r.projecthook is not None:
+      d = os.path.abspath('%s/projecthooks/%s/%s' % (repodir, r.name, r.projecthook.name))
+      if os.path.isdir(d):
+        remotehooks = dict(zip(os.listdir(d), map(lambda x: os.path.join(d, x), os.listdir(d))))
+        _project_hook_list = dict(stockhooks.items() + remotehooks.items()).values()
+      else:
+        _project_hook_list = stockhooks.values()
+    else:
+      _project_hook_list = stockhooks.values()
+  if r is not None:
+    _last_remotename = r.name
   return _project_hook_list
 
 
@@ -1832,7 +1852,7 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self):
+  def _InitGitDir(self, MirrorOverride = False):
     if not os.path.exists(self.gitdir):
       os.makedirs(self.gitdir)
       self.bare_git.init()
@@ -1864,7 +1884,7 @@ class Project(object):
       for key in ['user.name', 'user.email']:
         if m.Has(key, include_defaults = False):
           self.config.SetString(key, m.GetString(key))
-      if self.manifest.IsMirror:
+      if self.manifest.IsMirror and not MirrorOverride:
         self.config.SetString('core.bare', 'true')
       else:
         self.config.SetString('core.bare', None)
@@ -1886,7 +1906,10 @@ class Project(object):
     hooks = self._gitdir_path('hooks')
     if not os.path.exists(hooks):
       os.makedirs(hooks)
-    for stock_hook in _ProjectHooks():
+    pr = None
+    if self is not self.manifest.manifestProject:
+      pr = self.manifest.remotes.get(self.remote.name)
+    for stock_hook in _ProjectHooks(pr, self.manifest.repodir):
       name = os.path.basename(stock_hook)
 
       if name in ('commit-msg',) and not self.remote.review \
@@ -1896,6 +1919,8 @@ class Project(object):
         #
         # Since the manifest project is one of those, but also
         # managed through gerrit, it's excluded
+        continue
+      if name in ('.git',):
         continue
 
       dst = os.path.join(hooks, name)

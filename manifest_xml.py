@@ -42,19 +42,26 @@ class _Default(object):
   sync_c = False
   sync_s = False
 
+class _ProjectHook(object):
+  """Projecthook definition."""
+  name = None
+  revision = None
+
 class _XmlRemote(object):
   def __init__(self,
                name,
                alias=None,
                fetch=None,
                manifestUrl=None,
-               review=None):
+               review=None,
+               projecthook=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
     self.remoteAlias = alias
     self.reviewUrl = review
     self.resolvedFetchUrl = self._resolveFetchUrl()
+    self.projecthook = projecthook
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -139,6 +146,11 @@ class XmlManifest(object):
     e.setAttribute('fetch', r.fetchUrl)
     if r.reviewUrl is not None:
       e.setAttribute('review', r.reviewUrl)
+    if r.projecthook is not None:
+      ph = doc.createElement('projecthook')
+      ph.setAttribute('name', r.projecthook.name)
+      ph.setAttribute('revision', r.projecthook.revision)
+      e.appendChild(ph)
 
   def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
@@ -541,7 +553,12 @@ class XmlManifest(object):
     if review == '':
       review = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, manifestUrl, review)
+    projecthook = None
+    for n in node.childNodes:
+      if n.nodeName == 'projecthook':
+        projecthook = self._ParseProjectHooks(n)
+        break
+    return _XmlRemote(name, alias, fetch, manifestUrl, review, projecthook)
 
   def _ParseDefault(self, node):
     """
@@ -776,3 +793,9 @@ class XmlManifest(object):
             "no %s in <%s> within %s" % \
             (attname, node.nodeName, self.manifestFile)
     return v
+
+  def _ParseProjectHooks(self, node):
+    ph = _ProjectHook()
+    ph.name = self._reqatt(node, 'name')
+    ph.revision = self._reqatt(node, 'revision')
+    return ph
