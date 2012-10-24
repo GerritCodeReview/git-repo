@@ -34,6 +34,24 @@
       "revId": "2715fc9c9185117b75ba2685a3e389f5f3b4bd56",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH///78\u003d",
+        "filename": "subcmds/list.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-24T17:26:36Z",
+      "side": 1,
+      "message": "Yes, correct.  I just copied the text from above in lines.append without thinking about it.",
+      "parentUuid": "AAAKr3///9M\u003d",
+      "revId": "2715fc9c9185117b75ba2685a3e389f5f3b4bd56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
