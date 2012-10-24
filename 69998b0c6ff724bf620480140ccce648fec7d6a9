@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKrH///8Y\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-24T01:14:35Z",
+      "side": 1,
+      "message": "pylint nit:  redefining built-in `all`.  this should be renamed to something like `all_projects`",
+      "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
