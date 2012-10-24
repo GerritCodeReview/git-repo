@@ -34,6 +34,24 @@
       "revId": "45b2af8bbd4bf28bf801ba2e605eb97bd77545e0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKrH///88\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-24T16:54:12Z",
+      "side": 1,
+      "message": "I\u0027d say so.  If that delay bothers you, you can leave it like it is and I\u0027ll come through later and add:\n\ntry:\n  import cPickle as pickle\nexcept ImportError:\n  import pickle",
+      "parentUuid": "AAAKrH///9E\u003d",
+      "revId": "45b2af8bbd4bf28bf801ba2e605eb97bd77545e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
