@@ -977,6 +977,8 @@ class Project(object):
       is_new = not self.Exists
     if is_new:
       self._InitGitDir()
+    else:
+      self._UpdateHooks()
     self._InitRemote()
 
     if is_new:
@@ -1867,11 +1869,21 @@ class Project(object):
           _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
                   os.path.join(ref_dir, 'objects') + '\n')
 
+      self._UpdateHooks()
+
+      m = self.manifest.manifestProject.config
+      for key in ['user.name', 'user.email']:
+        if m.Has(key, include_defaults = False):
+          self.config.SetString(key, m.GetString(key))
       if self.manifest.IsMirror:
         self.config.SetString('core.bare', 'true')
       else:
         self.config.SetString('core.bare', None)
 
+  def _UpdateHooks(self):
+    if os.path.exists(self.gitdir):
+      # Always recreate hooks since they can have been changed
+      # since the latest update.
       hooks = self._gitdir_path('hooks')
       try:
         to_rm = os.listdir(hooks)
@@ -1880,11 +1892,6 @@ class Project(object):
       for old_hook in to_rm:
         os.remove(os.path.join(hooks, old_hook))
       self._InitHooks()
-
-      m = self.manifest.manifestProject.config
-      for key in ['user.name', 'user.email']:
-        if m.Has(key, include_defaults = False):
-          self.config.SetString(key, m.GetString(key))
 
   def _InitHooks(self):
     hooks = self._gitdir_path('hooks')
