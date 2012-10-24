@@ -23,7 +23,7 @@ import sys
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
-from project import SyncBuffer
+from project import SyncBuffer, MetaProject
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION
 
@@ -338,6 +338,51 @@ to update the working directory files.
       print('   rm -r %s/.repo' % self.manifest.topdir)
       print('and try again.')
 
+  def _SyncProjectHooks(self, opt, repodir):
+    """Downloads the defined hooks supplied in the projecthooks element
+
+    """
+    # Always delete projecthooks and re-download for every new init.
+    projecthooksdir = os.path.join(repodir, 'projecthooks')
+    if os.path.exists(projecthooksdir):
+      shutil.rmtree(projecthooksdir)
+    for remotename in self.manifest.remotes:
+      r = self.manifest.remotes.get(remotename)
+      if r.projecthook is not None:
+        projecthookurl = r.resolvedFetchUrl.rstrip('/') + '/' + r.projecthook.name
+
+        ph = MetaProject(manifest = self.manifest,
+        name = r.projecthook.name,
+        gitdir   = os.path.join(projecthooksdir,'%s/%s.git' % (remotename, r.projecthook.name)),
+        worktree = os.path.join(projecthooksdir,'%s/%s' % (remotename, r.projecthook.name)))
+
+        ph.revisionExpr = r.projecthook.revision
+        is_new = not ph.Exists
+
+        if is_new:
+          if not opt.quiet:
+            print('Get projecthook %s' % GitConfig.ForUser().UrlInsteadOf(projecthookurl), file=sys.stderr)
+          ph._InitGitDir(True)
+
+        phr = ph.GetRemote(remotename)
+        phr.name = 'origin'
+        phr.url = projecthookurl
+        phr.ResetFetch()
+        phr.Save()
+
+        if not ph.Sync_NetworkHalf(quiet=opt.quiet, is_new=is_new, clone_bundle=False):
+          print('fatal: cannot obtain projecthook %s' % phr.url, file=sys.stderr)
+
+          # Better delete the git dir if we created it; otherwise next
+          # time (when user fixes problems) we won't go through the "is_new" logic.
+          if is_new:
+            shutil.rmtree(ph.gitdir)
+          sys.exit(1)
+
+        syncbuf = SyncBuffer(ph.config)
+        ph.Sync_LocalHalf(syncbuf)
+        syncbuf.Finish()
+
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
 
@@ -346,6 +391,7 @@ to update the working directory files.
 
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
+    self._SyncProjectHooks(opt, self.manifest.repodir)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       if opt.config_name or self._ShouldConfigureUser():
