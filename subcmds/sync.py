@@ -39,6 +39,11 @@ except ImportError:
   def _rlimit_nofile():
     return (256, 256)
 
+try:
+  import multiprocessing
+except ImportError:
+  multiprocessing = None
+
 from git_command import GIT
 from git_refs import R_HEADS, HEAD
 from project import Project
@@ -299,9 +304,43 @@ later is required to fix a server side protocol bug.
 
     pm.end()
     self._fetch_times.Save()
-    for project in projects:
-      project.bare_git.gc('--auto')
+
+    self._GCProjects(projects)
     return fetched
+
+  def _GCProjects(self, projects):
+    if not multiprocessing:
+      for project in projects:
+        project.bare_git.gc('--auto')
+      return
+
+    cpu_count = multiprocessing.cpu_count()
+    jobs = min(self.jobs, cpu_count)
+    config = {'pack.threads': cpu_count / jobs if cpu_count > jobs else 1}
+
+    threads = set()
+    sem = _threading.Semaphore(jobs)
+    err_event = _threading.Event()
+
+    def GC(project):
+      project.bare_git.gc('--auto', config=config)
+      sem.release()
+
+    for i, project in enumerate(projects):
+      if err_event.isSet():
+        break
+      sem.acquire()
+      t = _threading.Thread(target=GC, args=(project,))
+      t.daemon = True
+      threads.add(t)
+      t.start()
+
+    for t in threads:
+      t.join()
+
+    if err_event.isSet():
+      print >>sys.stderr, '\nerror: Exited sync due to gc errors'
+      sys.exit(1)
 
   def UpdateProjectList(self):
     new_project_paths = []
