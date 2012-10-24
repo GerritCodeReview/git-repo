@@ -1969,7 +1969,9 @@ class Project(object):
 
       Since we don't have a 'rev_parse' method defined, the __getattr__ will
       run.  We'll replace the '_' with a '-' and try to run a git command.
-      Any other arguments will be passed to the git command.
+      Any other positional arguments will be passed to the git command, and the
+      following keyword arguments are supported:
+        config: An optional dict of git config options to be passed with '-c'.
 
       Args:
         name: The name of the git command to call.  Any '_' characters will
@@ -1979,8 +1981,17 @@ class Project(object):
         A callable object that will try to call git with the named command.
       """
       name = name.replace('_', '-')
-      def runner(*args):
-        cmdv = [name]
+      def runner(*args, **kwargs):
+        cmdv = []
+        config = kwargs.pop('config', None)
+        for k in kwargs:
+          raise TypeError('%s() got an unexpected keyword argument %r'
+                          % (name, k))
+        if config is not None:
+          for k, v in config.iteritems():
+            cmdv.append('-c')
+            cmdv.append('%s=%s' % (k, v))
+        cmdv.append(name)
         cmdv.extend(args)
         p = GitCommand(self._project,
                        cmdv,
