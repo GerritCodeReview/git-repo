@@ -217,8 +217,8 @@ class GitCommand(object):
                            stdin = stdin,
                            stdout = stdout,
                            stderr = stderr)
-    except Exception as e:
-      raise GitError('%s: %s' % (command[1], e))
+    except Exception as err:
+      raise GitError('%s: %s' % (command[1], err))
 
     if ssh_proxy:
       _add_ssh_client(p)

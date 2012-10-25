@@ -51,7 +51,7 @@ Examples
 
 Look for a line that has '#define' and either 'MAX_PATH or 'PATH_MAX':
 
-  repo grep -e '#define' --and -\( -e MAX_PATH -e PATH_MAX \)
+  repo grep -e '#define' --and -\\( -e MAX_PATH -e PATH_MAX \\)
 
 Look for a line that has 'NODE' or 'Unexpected' in files that
 contain a line that matches both expressions:

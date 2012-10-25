@@ -1045,6 +1045,10 @@ class Project(object):
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
 
+    def _doff():
+      self._FastForward(revid)
+      self._CopyFiles()
+
     self._InitWorkTree()
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
@@ -1123,9 +1127,6 @@ class Project(object):
         # All published commits are merged, and thus we are a
         # strict subset.  We can fast-forward safely.
         #
-        def _doff():
-          self._FastForward(revid)
-          self._CopyFiles()
         syncbuf.later1(self, _doff)
         return
 
@@ -1188,9 +1189,6 @@ class Project(object):
         syncbuf.fail(self, e)
         return
     else:
-      def _doff():
-        self._FastForward(revid)
-        self._CopyFiles()
       syncbuf.later1(self, _doff)
 
   def AddCopyFile(self, src, dest, absdest):
@@ -2013,7 +2011,7 @@ class Project(object):
       if p.Wait() == 0:
         out = p.stdout
         if out:
-          return out[:-1].split("\0")
+          return out[:-1].split(r'\0')
       return []
 
     def DiffZ(self, name, *args):
@@ -2029,7 +2027,7 @@ class Project(object):
         out = p.process.stdout.read()
         r = {}
         if out:
-          out = iter(out[:-1].split('\0'))
+          out = iter(out[:-1].split(r'\0'))
           while out:
             try:
               info = out.next()

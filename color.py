@@ -36,7 +36,7 @@ ATTRS = {None     :-1,
          'blink'  : 5,
          'reverse': 7}
 
-RESET = "\033[m"
+RESET = r"\033[m"
 
 def is_color(s):
     return s in COLORS
@@ -51,7 +51,7 @@ def _Color(fg = None, bg = None, attr = None):
 
     if attr >= 0 or fg >= 0 or bg >= 0:
       need_sep = False
-      code = "\033["
+      code = r"\033["
 
       if attr >= 0:
         code += chr(ord('0') + attr)
