@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKzn////Q\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T05:35:02Z",
+      "side": 1,
+      "message": "What does the `_S` suffix mean?",
+      "revId": "67700e9b90a38cc3719c818bc967153e8b7b429e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
