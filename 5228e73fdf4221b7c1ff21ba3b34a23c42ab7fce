@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAKz3////g\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2012-10-25T23:05:09Z",
+      "side": 1,
+      "message": "-Doubtful. GC is only an issue because it\u0027s entirely CPU-bound, and scheduling more threads than you have cores is wasteful due to context switching overhead. The only other ones I see are sync and status, which are I/O bound (network I/O for sync, file stat I/O for status), so much less harm in scheduling way more threads than cores.\n\n-Done.",
+      "parentUuid": "AAAKzn///+k\u003d",
+      "revId": "5228e73fdf4221b7c1ff21ba3b34a23c42ab7fce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKzn////w\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "OK, I didn\u0027t notice that.  Perhaps that can be fixed in a separate commit?  One of the complaints I\u0027ve often heard about repo is that it doesn\u0027t always handle errors gracefully.",
       "parentUuid": "AAAKz3////w\u003d",
+      "revId": "5228e73fdf4221b7c1ff21ba3b34a23c42ab7fce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKz3////c\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2012-10-25T23:05:09Z",
+      "side": 1,
+      "message": "If we agree on a definition of graceful error handling I\u0027m happy to fix it :)",
+      "parentUuid": "AAAKzn///+o\u003d",
       "revId": "5228e73fdf4221b7c1ff21ba3b34a23c42ab7fce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
