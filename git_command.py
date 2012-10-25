@@ -88,7 +88,7 @@ class _GitCall(object):
       ver_str = git.version()
       if ver_str.startswith('git version '):
         _git_version = tuple(
-          map(lambda x: int(x),
+          map(int,
             ver_str[len('git version '):].strip().split('-')[0].split('.')[0:3]
           ))
       else:
@@ -110,7 +110,7 @@ def git_require(min_version, fail=False):
   if min_version <= git_version:
     return True
   if fail:
-    need = '.'.join(map(lambda x: str(x), min_version))
+    need = '.'.join(map(str, min_version))
     print >>sys.stderr, 'fatal: git %s or later required' % need
     sys.exit(1)
   return False
