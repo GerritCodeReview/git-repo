@@ -351,7 +351,7 @@ class XmlManifest(object):
             # tricky.  actual parsing implementation may vary.
             except (KeyboardInterrupt, RuntimeError, SystemExit):
                 raise
-            except Exception, e:
+            except Exception as e:
                 raise ManifestParseError(
                     "failed parsing included manifest %s: %s", (name, e))
         else:

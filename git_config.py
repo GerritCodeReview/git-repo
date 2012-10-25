@@ -449,7 +449,7 @@ def _open_ssh(host, port=None):
     try:
       Trace(': %s', ' '.join(command))
       p = subprocess.Popen(command)
-    except Exception, e:
+    except Exception as e:
       _ssh_master = False
       print >>sys.stderr, \
         '\nwarn: cannot enable ssh control master for %s:%s\n%s' \
@@ -592,9 +592,9 @@ class Remote(object):
           else:
             host, port = info.split()
             self._review_url = self._SshReviewUrl(userEmail, host, port)
-        except urllib2.HTTPError, e:
+        except urllib2.HTTPError as e:
           raise UploadError('%s: %s' % (self.review, str(e)))
-        except urllib2.URLError, e:
+        except urllib2.URLError as e:
           raise UploadError('%s: %s' % (self.review, str(e)))
 
         REVIEW_CACHE[u] = self._review_url
