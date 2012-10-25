@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAKzn///+k\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T09:44:43Z",
+      "side": 1,
+      "message": "- There are a few other places where multiple threads are used.  Would it be worth adding this limitation on those too (in another commit)?\n\n- If the cpu_count check is moved up to the top, we can avoid the overhead of threading in the case that `jobs` ends up being 1.\n\n if multiprocessing:\n   cpu_count \u003d multiprocessing.cpu_count()\n   jobs \u003d min(self.jobs, cpu_count)\n else:\n   jobs \u003d 1\n \n if jobs \u003c 2:\n   for project in projects:\n     project.bare_git.gc(\u0027--auto\u0027)\n   return\n \n ...",
+      "revId": "5228e73fdf4221b7c1ff21ba3b34a23c42ab7fce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKzn////w\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -31,6 +48,24 @@
       "side": 1,
       "message": "Yes, I was just following the pattern in _FetchHelper.",
       "parentUuid": "AAAKzn////w\u003d",
+      "revId": "5228e73fdf4221b7c1ff21ba3b34a23c42ab7fce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKzn///+o\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T09:44:43Z",
+      "side": 1,
+      "message": "OK, I didn\u0027t notice that.  Perhaps that can be fixed in a separate commit?  One of the complaints I\u0027ve often heard about repo is that it doesn\u0027t always handle errors gracefully.",
+      "parentUuid": "AAAKz3////w\u003d",
       "revId": "5228e73fdf4221b7c1ff21ba3b34a23c42ab7fce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
