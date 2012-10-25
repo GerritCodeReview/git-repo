@@ -195,12 +195,12 @@ def _CheckWrapperVersion(ver, repo_path):
     sys.exit(1)
 
   exp = _CurrentWrapperVersion()
-  ver = tuple(map(lambda x: int(x), ver.split('.')))
+  ver = tuple(int(x) for x in ver.split('.'))
   if len(ver) == 1:
     ver = (0, ver[0])
 
+  exp_str = '.'.join([str(x) for x in exp])
   if exp[0] > ver[0] or ver < (0, 4):
-    exp_str = '.'.join(map(lambda x: str(x), exp))
     print >>sys.stderr, """
 !!! A new repo command (%5s) is available.    !!!
 !!! You must upgrade before you can continue:   !!!
@@ -210,7 +210,6 @@ def _CheckWrapperVersion(ver, repo_path):
     sys.exit(1)
 
   if exp > ver:
-    exp_str = '.'.join(map(lambda x: str(x), exp))
     print >>sys.stderr, """
 ... A new repo command (%5s) is available.
 ... You should upgrade soon:
@@ -272,7 +271,7 @@ def _UserAgent():
     _user_agent = 'git-repo/%s (%s) git/%s Python/%d.%d.%d' % (
       repo_version,
       os_name,
-      '.'.join(map(lambda d: str(d), git.version_tuple())),
+      '.'.join([str(d) for d in git.version_tuple()]),
       py_version[0], py_version[1], py_version[2])
   return _user_agent
 

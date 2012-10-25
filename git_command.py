@@ -87,10 +87,8 @@ class _GitCall(object):
     if _git_version is None:
       ver_str = git.version()
       if ver_str.startswith('git version '):
-        _git_version = tuple(
-          map(lambda x: int(x),
-            ver_str[len('git version '):].strip().split('-')[0].split('.')[0:3]
-          ))
+        _git_version = tuple(int(x) for x in
+                             ver_str[len('git version '):].strip().split('-')[0].split('.')[0:3])
       else:
         print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
         sys.exit(1)
@@ -110,7 +108,7 @@ def git_require(min_version, fail=False):
   if min_version <= git_version:
     return True
   if fail:
-    need = '.'.join(map(lambda x: str(x), min_version))
+    need = '.'.join([str(x) for x in min_version])
     print >>sys.stderr, 'fatal: git %s or later required' % need
     sys.exit(1)
   return False
