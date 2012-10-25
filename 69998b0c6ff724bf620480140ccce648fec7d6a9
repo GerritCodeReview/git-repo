@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAK2n////w\u003d",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1439,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-10-25T17:57:26Z",
+      "side": 1,
+      "message": "This line is dead code that should be but was not removed in earlier version of this patch. The gitdir is computed at line 1529 below.",
+      "parentUuid": "AAAKzn////o\u003d",
+      "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKzn////k\u003d",
         "filename": "project.py",
         "patchSetId": 10
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "AAAK2n////4\u003d",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1450,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-10-25T17:57:26Z",
+      "side": 1,
+      "message": "I was not intended to use e or print e. I should remove \"as e\" from the except clause.",
+      "parentUuid": "AAAKzn////k\u003d",
+      "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKzn////g\u003d",
         "filename": "project.py",
         "patchSetId": 10
@@ -47,6 +83,24 @@
       "writtenOn": "2012-10-25T02:57:59Z",
       "side": 1,
       "message": "`e` is never used.",
+      "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAK2n////0\u003d",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-10-25T17:57:26Z",
+      "side": 1,
+      "message": "I was not intended to use e or print e. I should remove \"as e\" from the except clause.",
+      "parentUuid": "AAAKzn////g\u003d",
       "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
