@@ -27,7 +27,6 @@ import imp
 import netrc
 import optparse
 import os
-import re
 import sys
 import time
 import urllib2

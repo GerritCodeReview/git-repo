@@ -147,7 +147,7 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
-    groups = re.split('[,\s]+', opt.groups)
+    groups = re.split(r'[,\s]+', opt.groups)
     all_platforms = ['linux', 'darwin']
     platformize = lambda x: 'platform-' + x
     if opt.platform == 'auto':

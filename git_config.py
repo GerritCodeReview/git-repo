@@ -35,7 +35,7 @@ from git_command import terminate_ssh_clients
 
 R_HEADS = 'refs/heads/'
 R_TAGS  = 'refs/tags/'
-ID_RE = re.compile('^[0-9a-f]{40}$')
+ID_RE = re.compile(r'^[0-9a-f]{40}$')
 
 REVIEW_CACHE = dict()
 
@@ -288,7 +288,8 @@ class GitConfig(object):
     d = self._do('--null', '--list')
     if d is None:
       return c
-    for line in d.rstrip('\0').split('\0'):
+    for line in d.rstrip('\0').split('\0'):  # pylint: disable=W1401
+                                             # Backslash is not anomalous
       if '\n' in line:
           key, val = line.split('\n', 1)
       else:
