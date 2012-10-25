@@ -1421,7 +1421,7 @@ class Project(object):
     # because the working tree might not exist yet, and it cannot be used
     # without a working tree in its current implementation.
 
-    def get_submodules(gitdir, rev, path):
+    def get_submodules(gitdir, rev):
       # Parse .gitmodules for submodule sub_paths and sub_urls
       sub_paths, sub_urls = parse_gitmodules(gitdir, rev)
       if not sub_paths:
@@ -1436,7 +1436,6 @@ class Project(object):
         except KeyError:
           # Ignore non-exist submodules
           continue
-        sub_gitdir = self.manifest.GetSubprojectPaths(self, sub_path)[2]
         submodules.append((sub_rev, sub_path, sub_url))
       return submodules
 
@@ -1447,7 +1446,7 @@ class Project(object):
       try:
         p = GitCommand(None, cmd, capture_stdout = True, capture_stderr = True,
                        bare = True, gitdir = gitdir)
-      except GitError as e:
+      except GitError:
         return [], []
       if p.Wait() != 0:
         return [], []
@@ -1463,7 +1462,7 @@ class Project(object):
         if p.Wait() != 0:
           return [], []
         gitmodules_lines = p.stdout.split('\n')
-      except GitError as e:
+      except GitError:
         return [], []
       finally:
         os.remove(temp_gitmodules_path)
@@ -1510,7 +1509,7 @@ class Project(object):
       rev = self.GetRevisionId()
     except GitError:
       return []
-    return get_submodules(self.gitdir, rev, '')
+    return get_submodules(self.gitdir, rev)
 
   def GetDerivedSubprojects(self):
     result = []
