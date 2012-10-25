@@ -611,7 +611,7 @@ class XmlManifest(object):
     groups = ''
     if node.hasAttribute('groups'):
       groups = node.getAttribute('groups')
-    groups = [x for x in re.split('[,\s]+', groups) if x]
+    groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     if parent is None:
       relpath, worktree, gitdir = self.GetProjectPaths(name, path)

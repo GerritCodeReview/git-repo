@@ -513,9 +513,9 @@ uncommitted changes are present' % project.relpath
       previously_missing_set = set()
       while True:
         self.manifest._Unload()
-        all = self.GetProjects(args, missing_ok=True)
+        all_projects = self.GetProjects(args, missing_ok=True)
         missing = []
-        for project in all:
+        for project in all_projects:
           if project.gitdir not in fetched:
             missing.append(project)
         if not missing:

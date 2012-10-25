@@ -29,7 +29,7 @@ class Grep(PagedCommand):
   helpUsage = """
 %prog {pattern | -e pattern} [<project>...]
 """
-  helpDescription = """
+  helpDescription = r"""
 Search for the specified patterns in all project files.
 
 Boolean Options
