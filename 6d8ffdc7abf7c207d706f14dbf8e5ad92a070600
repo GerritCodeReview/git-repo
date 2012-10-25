@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAKzn////4\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T00:48:36Z",
+      "side": 1,
+      "message": "`i` is never used.  Why not just:\n\n for project in projects:\n     ...\n\n?",
+      "revId": "6d8ffdc7abf7c207d706f14dbf8e5ad92a070600",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKzn////8\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T00:48:36Z",
+      "side": 1,
+      "message": "`err_event` never gets set.",
+      "revId": "6d8ffdc7abf7c207d706f14dbf8e5ad92a070600",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
