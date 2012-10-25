@@ -2,6 +2,57 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAAKzn////o\u003d",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1439,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T02:57:59Z",
+      "side": 1,
+      "message": "`sub_gitdir` is never used.  Was it supposed to be passed into the append on the next line, instead of `sub_path`?",
+      "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKzn////k\u003d",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1450,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T02:57:59Z",
+      "side": 1,
+      "message": "`e` is never used.",
+      "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAKzn////g\u003d",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-25T02:57:59Z",
+      "side": 1,
+      "message": "`e` is never used.",
+      "revId": "69998b0c6ff724bf620480140ccce648fec7d6a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKrH///8Y\u003d",
         "filename": "subcmds/sync.py",
         "patchSetId": 10
