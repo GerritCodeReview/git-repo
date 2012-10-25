@@ -143,14 +143,14 @@ terminal and are not redirected.
           break
       else:
         cn = None
-      # pylint: disable-msg=W0631
+      # pylint: disable=W0631
       if cn and cn in _CAN_COLOR:
         class ColorCmd(Coloring):
           def __init__(self, config, cmd):
             Coloring.__init__(self, config, cmd)
         if ColorCmd(self.manifest.manifestProject.config, cn).is_on:
           cmd.insert(cmd.index(cn) + 1, '--color')
-      # pylint: enable-msg=W0631
+      # pylint: enable=W0631
 
     mirror = self.manifest.IsMirror
     out = ForallColoring(self.manifest.manifestProject.config)

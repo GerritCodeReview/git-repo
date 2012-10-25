@@ -2,6 +2,7 @@ Short Version:
 
  - Make small logical changes.
  - Provide a meaningful commit message.
+ - Check for coding errors with pylint
  - Make sure all code is under the Apache License, 2.0.
  - Publish your changes for review:
 
@@ -33,7 +34,14 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 
 
-(2) Check the license
+(2) Check for coding errors with pylint
+
+Run pylint on changed modules using the provided configuration:
+
+  pylint --rcfile=.pylintrc file.py
+
+
+(3) Check the license
 
 repo is licensed under the Apache License, 2.0.
 
@@ -49,7 +57,7 @@ your patch.  It is virtually impossible to remove a patch once it
 has been applied and pushed out.
 
 
-(3) Sending your patches.
+(4) Sending your patches.
 
 Do not email your patches to anyone.
 
