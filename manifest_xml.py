@@ -584,7 +584,7 @@ class XmlManifest(object):
     groups = ''
     if node.hasAttribute('groups'):
       groups = node.getAttribute('groups')
-    groups = [x for x in re.split('[,\s]+', groups) if x]
+    groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     default_groups = ['all', 'name:%s' % name, 'path:%s' % path]
     groups.extend(set(default_groups).difference(groups))

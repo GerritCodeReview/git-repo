@@ -297,7 +297,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     try:
       # refs/changes/XYZ/N --> XYZ
       return refs.get(last_pub).split('/')[-2]
-    except:
+    except (AttributeError, IndexError):
       return ""
 
   def _UploadAndReport(self, opt, todo, original_people):

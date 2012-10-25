@@ -132,15 +132,15 @@ class GitCommand(object):
                gitdir = None):
     env = os.environ.copy()
 
-    for e in [REPO_TRACE,
+    for key in [REPO_TRACE,
               GIT_DIR,
               'GIT_ALTERNATE_OBJECT_DIRECTORIES',
               'GIT_OBJECT_DIRECTORY',
               'GIT_WORK_TREE',
               'GIT_GRAFT_FILE',
               'GIT_INDEX_FILE']:
-      if e in env:
-        del env[e]
+      if key in env:
+        del env[key]
 
     if disable_editor:
       _setenv(env, 'GIT_EDITOR', ':')

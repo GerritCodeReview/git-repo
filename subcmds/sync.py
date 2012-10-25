@@ -696,7 +696,7 @@ class _FetchTimes(object):
       try:
         try:
           self._times = pickle.load(f)
-        except:
+        except IOError:
           try:
             os.remove(self._path)
           except OSError:

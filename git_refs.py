@@ -138,14 +138,14 @@ class GitRefs(object):
   def _ReadLoose1(self, path, name):
     try:
       fd = open(path, 'rb')
-    except:
+    except IOError:
       return
 
     try:
       try:
         mtime = os.path.getmtime(path)
         ref_id = fd.readline()
-      except:
+      except (IOError, OSError):
         return
     finally:
       fd.close()
