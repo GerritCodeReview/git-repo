@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAK6H///+8\u003d",
+        "filename": "color.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-26T00:25:22Z",
+      "side": 1,
+      "message": "Maybe this ought to be fixed in a separate change though.  I haven\u0027t checked but I would guess there are quite a few of these.\n\nI did change one instance in project.py but that was just to make it consistent with the nearby line that I also added the `r` prefix on.",
+      "parentUuid": "AAAKz3////E\u003d",
+      "revId": "14af45ab4ec0a5b68bf32017241f88fea5161f52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAKz3////A\u003d",
         "filename": "git_command.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2012-10-25T16:58:42Z",
       "side": 1,
       "message": "Wait,  what\u0027s wrong with e?  Everyone uses e for the exception variable in python.",
+      "revId": "14af45ab4ec0a5b68bf32017241f88fea5161f52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAK6H///+4\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-26T00:25:22Z",
+      "side": 1,
+      "message": "This is to fix the warning:\n\n W0623:218,24:GitCommand.__init__: Redefining name \u0027e\u0027 from outer scope (line 133) in exception handler",
+      "parentUuid": "AAAKz3////A\u003d",
       "revId": "14af45ab4ec0a5b68bf32017241f88fea5161f52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -64,6 +100,24 @@
       "writtenOn": "2012-10-25T16:58:42Z",
       "side": 1,
       "message": "Um...this doesn\u0027t look right.  I think we should just be double escaping the backslashes in this string.",
+      "revId": "14af45ab4ec0a5b68bf32017241f88fea5161f52",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAK6H///+s\u003d",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-26T00:25:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAKz3///+4\u003d",
       "revId": "14af45ab4ec0a5b68bf32017241f88fea5161f52",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
