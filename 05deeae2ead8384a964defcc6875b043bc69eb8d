@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAAK6H///+o\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2012-10-26T00:24:51Z",
+      "side": 1,
+      "message": "4 level indent? this should be 2.",
+      "revId": "05deeae2ead8384a964defcc6875b043bc69eb8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
