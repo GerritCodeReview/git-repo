@@ -16,6 +16,7 @@
 import netrc
 from optparse import SUPPRESS_HELP
 import os
+import pickle
 import re
 import shutil
 import socket
@@ -46,6 +47,8 @@ from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError
 from project import SyncBuffer
 from progress import Progress
+
+_ONE_DAY_S = 24 * 60 * 60
 
 class _FetchError(Exception):
   """Internal error thrown in _FetchHelper() when we don't want stack trace."""
@@ -212,10 +215,12 @@ later is required to fix a server side protocol bug.
       # - We always make sure we unlock the lock if we locked it.
       try:
         try:
+          start = time.time()
           success = project.Sync_NetworkHalf(
             quiet=opt.quiet,
             current_branch_only=opt.current_branch_only,
             clone_bundle=not opt.no_clone_bundle)
+          self._fetch_times.Set(project, time.time() - start)
 
           # Lock around all the rest of the code, since printing, updating a set
           # and Progress.update() are not thread safe.
@@ -293,6 +298,7 @@ later is required to fix a server side protocol bug.
         sys.exit(1)
 
     pm.end()
+    self._fetch_times.Save()
     for project in projects:
       project.bare_git.gc('--auto')
     return fetched
@@ -496,12 +502,15 @@ uncommitted changes are present' % project.relpath
         self.jobs = self.manifest.default.sync_j
     all_projects = self.GetProjects(args, missing_ok=True)
 
+    self._fetch_times = _FetchTimes(self.manifest)
     if not opt.local_only:
       to_fetch = []
       now = time.time()
-      if (24 * 60 * 60) <= (now - rp.LastFetch):
+      if _ONE_DAY_S <= (now - rp.LastFetch):
         to_fetch.append(rp)
       to_fetch.extend(all_projects)
+      to_fetch.sort(key=self._fetch_times.Get, reverse=True)
+      self._fetch_times.Clear()
 
       fetched = self._Fetch(to_fetch, opt)
       _PostRepoFetch(rp, opt.no_repo_verify)
@@ -621,3 +630,53 @@ warning: Cannot automatically authenticate repo."""
     print >>sys.stderr
     return False
   return True
+
+class _FetchTimes(object):
+  def __init__(self, manifest):
+    self._path = os.path.join(manifest.repodir, '.repopickle_fetchtimes')
+    self._times = None
+
+  def Clear(self):
+    self._times = {}
+
+  def Get(self, project):
+    self._Load()
+    return self._times.get(project.name, _ONE_DAY_S)
+
+  def Set(self, project, t):
+    self._times[project.name] = t
+
+  def _Load(self):
+    if self._times is None:
+      try:
+        f = open(self._path)
+      except IOError:
+        self._times = {}
+        return self._times
+      try:
+        try:
+          self._times = pickle.load(f)
+        except:
+          try:
+            os.remove(self._path)
+          except OSError:
+            pass
+          self._times = {}
+      finally:
+        f.close()
+    return self._times
+
+  def Save(self):
+    if self._times is None:
+      return
+    try:
+      f = open(self._path, 'wb')
+      try:
+        pickle.dump(self._times, f)
+      except (IOError, OSError, pickle.PickleError):
+        try:
+          os.remove(self._path)
+        except OSError:
+          pass
+    finally:
+      f.close()
