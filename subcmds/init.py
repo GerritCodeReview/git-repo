@@ -313,6 +313,21 @@ to update the working directory files.
       # We store the depth in the main manifest project.
       self.manifest.manifestProject.config.SetString('repo.depth', depth)
 
+  def _DisplayResult(self):
+    if self.manifest.IsMirror:
+      init_type = 'mirror '
+    else:
+      init_type = ''
+
+    print ''
+    print 'repo %shas been initialized in %s' % (init_type, self.manifest.topdir)
+
+    current_dir = os.getcwd()
+    if current_dir != self.manifest.topdir:
+      print 'If this is not the directory in which you want to initialize repo, please run:'
+      print '   rm -r %s/.repo' % self.manifest.topdir
+      print 'and try again.'
+
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
 
@@ -329,10 +344,4 @@ to update the working directory files.
 
     self._ConfigureDepth(opt)
 
-    if self.manifest.IsMirror:
-      init_type = 'mirror '
-    else:
-      init_type = ''
-
-    print ''
-    print 'repo %sinitialized in %s' % (init_type, self.manifest.topdir)
+    self._DisplayResult()
