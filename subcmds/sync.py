@@ -538,7 +538,7 @@ uncommitted changes are present' % project.relpath
     mp.PreSync()
 
     if opt.repo_upgraded:
-      _PostRepoUpgrade(self.manifest, opt)
+      _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
     if not opt.local_only:
       mp.Sync_NetworkHalf(quiet=opt.quiet,
@@ -612,10 +612,10 @@ uncommitted changes are present' % project.relpath
     if self.manifest.notice:
       print self.manifest.notice
 
-def _PostRepoUpgrade(manifest, opt):
+def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = WrapperModule()
   if wrapper.NeedSetupGnuPG():
-    wrapper.SetupGnuPG(opt.quiet)
+    wrapper.SetupGnuPG(quiet)
   for project in manifest.projects.values():
     if project.Exists:
       project.PostRepoUpgrade()
