@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAK/n///+4\u003d",
+        "filename": "color.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-27T12:51:07Z",
+      "side": 1,
+      "message": "I\u0027ll check this and fix it.",
+      "parentUuid": "AAAK6H///7o\u003d",
+      "revId": "7327faf5e91cd4509a31e82199aa5db78ee4b547",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAK6H///7g\u003d",
         "filename": "git_command.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2012-10-26T16:46:54Z",
       "side": 1,
       "message": "I\u0027d prefer it if you fixed this variable instead, but I\u0027ll let you choose.",
+      "revId": "7327faf5e91cd4509a31e82199aa5db78ee4b547",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAK/n///+8\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-27T12:51:07Z",
+      "side": 1,
+      "message": "OK, I think it\u0027d be better to change this one.",
+      "parentUuid": "AAAK6H///7g\u003d",
       "revId": "7327faf5e91cd4509a31e82199aa5db78ee4b547",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
