@@ -189,6 +189,9 @@ later is required to fix a server side protocol bug.
     p.add_option('--fetch-submodules',
                  dest='fetch_submodules', action='store_true',
                  help='fetch submodules from server')
+    p.add_option('--no-tags',
+                 dest='notags', action='store_true',
+                 help="don't fetch tags")
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -235,7 +238,8 @@ later is required to fix a server side protocol bug.
         success = project.Sync_NetworkHalf(
           quiet=opt.quiet,
           current_branch_only=opt.current_branch_only,
-          clone_bundle=not opt.no_clone_bundle)
+          clone_bundle=not opt.no_clone_bundle,
+          notags=opt.notags)
         self._fetch_times.Set(project, time.time() - start)
 
         # Lock around all the rest of the code, since printing, updating a set
@@ -273,7 +277,8 @@ later is required to fix a server side protocol bug.
         if project.Sync_NetworkHalf(
             quiet=opt.quiet,
             current_branch_only=opt.current_branch_only,
-            clone_bundle=not opt.no_clone_bundle):
+            clone_bundle=not opt.no_clone_bundle,
+            notags=opt.notags):
           fetched.add(project.gitdir)
         else:
           print('error: Cannot fetch %s' % project.name, file=sys.stderr)
@@ -558,7 +563,8 @@ later is required to fix a server side protocol bug.
 
     if not opt.local_only:
       mp.Sync_NetworkHalf(quiet=opt.quiet,
-                          current_branch_only=opt.current_branch_only)
+                          current_branch_only=opt.current_branch_only,
+                          notags=opt.notags)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
