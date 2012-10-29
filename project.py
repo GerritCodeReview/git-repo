@@ -963,7 +963,8 @@ class Project(object):
       quiet=False,
       is_new=None,
       current_branch_only=False,
-      clone_bundle=True):
+      clone_bundle=True,
+      no_tags=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1001,7 +1002,8 @@ class Project(object):
         current_branch_only = True
 
     if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
-                             current_branch_only=current_branch_only):
+                             current_branch_only=current_branch_only,
+                             no_tags=no_tags):
       return False
 
     if self.worktree:
@@ -1551,7 +1553,8 @@ class Project(object):
                    current_branch_only=False,
                    initial=False,
                    quiet=False,
-                   alt_dir=None):
+                   alt_dir=None,
+                   no_tags=False):
 
     is_sha1 = False
     tag_name = None
@@ -1644,7 +1647,10 @@ class Project(object):
 
     if not current_branch_only:
       # Fetch whole repo
-      cmd.append('--tags')
+      if no_tags:
+        cmd.append('--no-tags')
+      else:
+        cmd.append('--tags')
       cmd.append((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*'))
     elif tag_name is not None:
       cmd.append('tag')
