@@ -100,6 +100,32 @@ class Command(object):
     """
     raise NotImplementedError
 
+  def _ResetPathToProjectMap(self, projects):
+    self._by_path = dict((p.worktree, p) for p in projects)
+
+  def _UpdatePathToProjectMap(self, project):
+    self._by_path[project.worktree] = project
+
+  def _GetProjectByPath(self, path):
+    project = None
+    if os.path.exists(path):
+      oldpath = None
+      while path \
+        and path != oldpath \
+        and path != self.manifest.topdir:
+        try:
+          project = self._by_path[path]
+          break
+        except KeyError:
+          oldpath = path
+          path = os.path.dirname(path)
+    else:
+      try:
+        project = self._by_path[path]
+      except KeyError:
+        pass
+    return project
+
   def GetProjects(self, args, missing_ok=False):
     """A list of projects that match the arguments.
     """
@@ -114,40 +140,38 @@ class Command(object):
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     if not args:
-      for project in all_projects.values():
+      all_projects_list = all_projects.values()
+      derived_projects = []
+      for project in all_projects_list:
+        if project.Registered:
+          # Do not search registered subproject for derived projects
+          # since its parent has been searched already
+          continue
+        derived_projects.extend(project.GetDerivedSubprojects())
+      all_projects_list.extend(derived_projects)
+      for project in all_projects_list:
         if ((missing_ok or project.Exists) and
             project.MatchesGroups(groups)):
           result.append(project)
     else:
-      by_path = None
+      self._ResetPathToProjectMap(all_projects.values())
 
       for arg in args:
         project = all_projects.get(arg)
 
         if not project:
           path = os.path.abspath(arg).replace('\\', '/')
+          project = self._GetProjectByPath(path)
 
-          if not by_path:
-            by_path = dict()
-            for p in all_projects.values():
-              by_path[p.worktree] = p
-
-          if os.path.exists(path):
-            oldpath = None
-            while path \
-              and path != oldpath \
-              and path != self.manifest.topdir:
-              try:
-                project = by_path[path]
-                break
-              except KeyError:
-                oldpath = path
-                path = os.path.dirname(path)
-          else:
-            try:
-              project = by_path[path]
-            except KeyError:
-              pass
+          # If it's not a derived project, update path->project mapping and
+          # search again, as arg might actually point to a derived subproject.
+          if project and not project.Derived:
+            search_again = False
+            for subproject in project.GetDerivedSubprojects():
+              self._UpdatePathToProjectMap(subproject)
+              search_again = True
+            if search_again:
+              project = self._GetProjectByPath(path) or project
 
         if not project:
           raise NoSuchProjectError(arg)
