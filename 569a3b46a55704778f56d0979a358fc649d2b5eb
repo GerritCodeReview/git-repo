@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALIn////0\u003d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-30T07:44:05Z",
+      "side": 1,
+      "message": "It\u0027s not really clear to me what benefit we get from this change.\n\nWould it not be better to use the literal that\u0027s available in the `stat` module?\n\n os.mkdir(gpg_dir, stat.S_IRWXU)\n\nI find that more readable.  And these literals are already used for example in project.py.",
+      "revId": "569a3b46a55704778f56d0979a358fc649d2b5eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
