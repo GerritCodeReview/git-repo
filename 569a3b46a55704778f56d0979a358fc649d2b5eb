@@ -16,6 +16,24 @@
       "revId": "569a3b46a55704778f56d0979a358fc649d2b5eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALIn///+g\u003d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-10-30T15:50:09Z",
+      "side": 1,
+      "message": "Well, the benefit is that this works on python3, but using the stat module is a good idea.  Sarah, could you go ahead and do that for all the mkdir commands?",
+      "parentUuid": "AAALIn////0\u003d",
+      "revId": "569a3b46a55704778f56d0979a358fc649d2b5eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
