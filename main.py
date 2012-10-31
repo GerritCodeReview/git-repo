@@ -29,7 +29,16 @@ import optparse
 import os
 import sys
 import time
-import urllib2
+try:
+  import urllib2
+except ImportError:
+  # For python3
+  import urllib.request
+else:
+  # For python2
+  import imp
+  urllib = imp.new_module('urllib')
+  urllib.request = urllib2
 
 from trace import SetTrace
 from git_command import git, GitCommand
@@ -267,7 +276,7 @@ def _UserAgent():
       py_version[0], py_version[1], py_version[2])
   return _user_agent
 
-class _UserAgentHandler(urllib2.BaseHandler):
+class _UserAgentHandler(urllib.request.BaseHandler):
   def http_request(self, req):
     req.add_header('User-Agent', _UserAgent())
     return req
@@ -289,10 +298,10 @@ def _AddPasswordFromUserInput(handler, msg, req):
         return
       handler.passwd.add_password(None, url, user, password)
 
-class _BasicAuthHandler(urllib2.HTTPBasicAuthHandler):
+class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
-    return urllib2.HTTPBasicAuthHandler.http_error_401(
+    return urllib.request.HTTPBasicAuthHandler.http_error_401(
       self, req, fp, code, msg, headers)
 
   def http_error_auth_reqed(self, authreq, host, req, headers):
@@ -302,7 +311,7 @@ class _BasicAuthHandler(urllib2.HTTPBasicAuthHandler):
         val = val.replace('\n', '')
         old_add_header(name, val)
       req.add_header = _add_header
-      return urllib2.AbstractBasicAuthHandler.http_error_auth_reqed(
+      return urllib.request.AbstractBasicAuthHandler.http_error_auth_reqed(
         self, authreq, host, req, headers)
     except:
       reset = getattr(self, 'reset_retry_count', None)
@@ -312,10 +321,10 @@ class _BasicAuthHandler(urllib2.HTTPBasicAuthHandler):
         self.retried = 0
       raise
 
-class _DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
+class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
-    return urllib2.HTTPDigestAuthHandler.http_error_401(
+    return urllib.request.HTTPDigestAuthHandler.http_error_401(
       self, req, fp, code, msg, headers)
 
   def http_error_auth_reqed(self, auth_header, host, req, headers):
@@ -325,7 +334,7 @@ class _DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
         val = val.replace('\n', '')
         old_add_header(name, val)
       req.add_header = _add_header
-      return urllib2.AbstractDigestAuthHandler.http_error_auth_reqed(
+      return urllib.request.AbstractDigestAuthHandler.http_error_auth_reqed(
         self, auth_header, host, req, headers)
     except:
       reset = getattr(self, 'reset_retry_count', None)
@@ -338,7 +347,7 @@ class _DigestAuthHandler(urllib2.HTTPDigestAuthHandler):
 def init_http():
   handlers = [_UserAgentHandler()]
 
-  mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+  mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
   try:
     n = netrc.netrc()
     for host in n.hosts:
@@ -354,11 +363,11 @@ def init_http():
 
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']
-    handlers.append(urllib2.ProxyHandler({'http': url, 'https': url}))
+    handlers.append(urllib.request.ProxyHandler({'http': url, 'https': url}))
   if 'REPO_CURL_VERBOSE' in os.environ:
-    handlers.append(urllib2.HTTPHandler(debuglevel=1))
-    handlers.append(urllib2.HTTPSHandler(debuglevel=1))
-  urllib2.install_opener(urllib2.build_opener(*handlers))
+    handlers.append(urllib.request.HTTPHandler(debuglevel=1))
+    handlers.append(urllib.request.HTTPSHandler(debuglevel=1))
+  urllib.request.install_opener(urllib.request.build_opener(*handlers))
 
 def _Main(argv):
   result = 0
