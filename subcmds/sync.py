@@ -44,7 +44,7 @@ try:
 except ImportError:
   multiprocessing = None
 
-from git_command import GIT
+from git_command import GIT, git_require
 from git_refs import R_HEADS, HEAD
 from main import WrapperModule
 from project import Project
@@ -310,7 +310,8 @@ later is required to fix a server side protocol bug.
     return fetched
 
   def _GCProjects(self, projects):
-    if multiprocessing:
+    has_dash_c = git_require((1, 7, 2))
+    if multiprocessing and has_dash_c:
       cpu_count = multiprocessing.cpu_count()
     else:
       cpu_count = 1
