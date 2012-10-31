@@ -34,6 +34,24 @@
       "revId": "569a3b46a55704778f56d0979a358fc649d2b5eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALIn///+M\u003d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-10-31T00:09:50Z",
+      "side": 1,
+      "message": "But `0700` will still work in Python 2.6 and higher, won\u0027t it?",
+      "parentUuid": "AAALIn///+g\u003d",
+      "revId": "569a3b46a55704778f56d0979a358fc649d2b5eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
