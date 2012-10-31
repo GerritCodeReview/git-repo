@@ -25,7 +25,7 @@ import sys
 import time
 
 from color import Coloring
-from git_command import GitCommand
+from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
 from error import GitError, HookError, UploadError
 from error import ManifestInvalidRevisionError
@@ -1987,6 +1987,9 @@ class Project(object):
           raise TypeError('%s() got an unexpected keyword argument %r'
                           % (name, k))
         if config is not None:
+          if not git_require((1, 7, 2)):
+            raise ValueError('cannot set config on command line for %s()'
+                             % name)
           for k, v in config.iteritems():
             cmdv.append('-c')
             cmdv.append('%s=%s' % (k, v))
