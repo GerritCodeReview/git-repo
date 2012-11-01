@@ -123,7 +123,18 @@ import re
 import stat
 import subprocess
 import sys
-import urllib2
+try:
+  import urllib2
+except ImportError:
+  # For python3
+  import urllib.request
+  import urllib.error
+else:
+  # For python2
+  import imp
+  urllib = imp.new_module('urllib')
+  urllib.request = urllib2
+  urllib.error = urllib2
 
 home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
@@ -356,7 +367,7 @@ def _SetConfig(local, name, value):
 def _InitHttp():
   handlers = []
 
-  mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
+  mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
   try:
     import netrc
     n = netrc.netrc()
@@ -366,16 +377,16 @@ def _InitHttp():
       mgr.add_password(p[1], 'https://%s/' % host, p[0], p[2])
   except:
     pass
-  handlers.append(urllib2.HTTPBasicAuthHandler(mgr))
-  handlers.append(urllib2.HTTPDigestAuthHandler(mgr))
+  handlers.append(urllib.request.HTTPBasicAuthHandler(mgr))
+  handlers.append(urllib.request.HTTPDigestAuthHandler(mgr))
 
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']
-    handlers.append(urllib2.ProxyHandler({'http': url, 'https': url}))
+    handlers.append(urllib.request.ProxyHandler({'http': url, 'https': url}))
   if 'REPO_CURL_VERBOSE' in os.environ:
-    handlers.append(urllib2.HTTPHandler(debuglevel=1))
-    handlers.append(urllib2.HTTPSHandler(debuglevel=1))
-  urllib2.install_opener(urllib2.build_opener(*handlers))
+    handlers.append(urllib.request.HTTPHandler(debuglevel=1))
+    handlers.append(urllib.request.HTTPSHandler(debuglevel=1))
+  urllib.request.install_opener(urllib.request.build_opener(*handlers))
 
 def _Fetch(url, local, src, quiet):
   if not quiet:
@@ -424,14 +435,14 @@ def _DownloadBundle(url, local, quiet):
   dest = open(os.path.join(local, '.git', 'clone.bundle'), 'w+b')
   try:
     try:
-      r = urllib2.urlopen(url)
-    except urllib2.HTTPError as e:
+      r = urllib.request.urlopen(url)
+    except urllib.error.HTTPError as e:
       if e.code == 404:
         return False
       print >>sys.stderr, 'fatal: Cannot get %s' % url
       print >>sys.stderr, 'fatal: HTTP error %s' % e.code
       raise CloneFailure()
-    except urllib2.URLError as e:
+    except urllib.error.URLError as e:
       print >>sys.stderr, 'fatal: Cannot get %s' % url
       print >>sys.stderr, 'fatal: error %s' % e.reason
       raise CloneFailure()

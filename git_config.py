@@ -23,7 +23,18 @@ try:
 except ImportError:
   import dummy_threading as _threading
 import time
-import urllib2
+try:
+  import urllib2
+except ImportError:
+  # For python3
+  import urllib.request
+  import urllib.error
+else:
+  # For python2
+  import imp
+  urllib = imp.new_module('urllib')
+  urllib.request = urllib2
+  urllib.error = urllib2
 
 from signal import SIGTERM
 from error import GitError, UploadError
@@ -580,7 +591,7 @@ class Remote(object):
       else:
         try:
           info_url = u + 'ssh_info'
-          info = urllib2.urlopen(info_url).read()
+          info = urllib.request.urlopen(info_url).read()
           if '<' in info:
             # Assume the server gave us some sort of HTML
             # response back, like maybe a login page.
@@ -593,9 +604,9 @@ class Remote(object):
           else:
             host, port = info.split()
             self._review_url = self._SshReviewUrl(userEmail, host, port)
-        except urllib2.HTTPError as e:
+        except urllib.error.HTTPError as e:
           raise UploadError('%s: %s' % (self.review, str(e)))
-        except urllib2.URLError as e:
+        except urllib.error.URLError as e:
           raise UploadError('%s: %s' % (self.review, str(e)))
 
         REVIEW_CACHE[u] = self._review_url
