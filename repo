@@ -120,6 +120,7 @@ REPO_MAIN = S_repo + '/main.py' # main script
 import optparse
 import os
 import re
+import stat
 import subprocess
 import sys
 import urllib2
@@ -308,7 +309,7 @@ def SetupGnuPG(quiet):
 
   if not os.path.isdir(gpg_dir):
     try:
-      os.mkdir(gpg_dir, 0700)
+      os.mkdir(gpg_dir, stat.S_IRWXU)
     except OSError as e:
       print >>sys.stderr, \
             'fatal: cannot make %s directory: %s' % (
