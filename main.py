@@ -87,7 +87,7 @@ class _Repo(object):
     name = None
     glob = []
 
-    for i in xrange(0, len(argv)):
+    for i in range(len(argv)):
       if not argv[i].startswith('-'):
         name = argv[i]
         if i > 0:
