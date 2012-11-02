@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import itertools
 import os
 import re
@@ -306,8 +307,9 @@ class XmlManifest(object):
 
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
-        print >>sys.stderr, 'warning: %s is deprecated; put local manifests in %s instead' % \
-                            (LOCAL_MANIFEST_NAME, LOCAL_MANIFESTS_DIR_NAME)
+        print('warning: %s is deprecated; put local manifests in %s instead'
+              % (LOCAL_MANIFEST_NAME, LOCAL_MANIFESTS_DIR_NAME),
+              file=sys.stderr)
         nodes.append(self._ParseManifestXml(local, self.repodir))
 
       local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
@@ -317,7 +319,7 @@ class XmlManifest(object):
             try:
               nodes.append(self._ParseManifestXml(local_file, self.repodir))
             except ManifestParseError as e:
-              print >>sys.stderr, '%s' % str(e)
+              print('%s' % str(e), file=sys.stderr)
       except OSError:
         pass
 

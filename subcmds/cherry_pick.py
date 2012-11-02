@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import re
 import sys
 from command import Command
@@ -46,13 +47,13 @@ change id will be added.
                    capture_stdout = True,
                    capture_stderr = True)
     if p.Wait() != 0:
-      print >>sys.stderr, p.stderr
+      print(p.stderr, file=sys.stderr)
       sys.exit(1)
     sha1 = p.stdout.strip()
 
     p = GitCommand(None, ['cat-file', 'commit', sha1], capture_stdout=True)
     if p.Wait() != 0:
-      print >>sys.stderr, "error: Failed to retrieve old commit message"
+      print("error: Failed to retrieve old commit message", file=sys.stderr)
       sys.exit(1)
     old_msg = self._StripHeader(p.stdout)
 
@@ -62,8 +63,8 @@ change id will be added.
                    capture_stderr = True)
     status = p.Wait()
 
-    print >>sys.stdout, p.stdout
-    print >>sys.stderr, p.stderr
+    print(p.stdout, file=sys.stdout)
+    print(p.stderr, file=sys.stderr)
 
     if status == 0:
       # The cherry-pick was applied correctly. We just need to edit the
@@ -76,16 +77,14 @@ change id will be added.
                      capture_stderr = True)
       p.stdin.write(new_msg)
       if p.Wait() != 0:
-        print >>sys.stderr, "error: Failed to update commit message"
+        print("error: Failed to update commit message", file=sys.stderr)
         sys.exit(1)
 
     else:
-      print >>sys.stderr, """\
-NOTE: When committing (please see above) and editing the commit message,
-please remove the old Change-Id-line and add:
-"""
-      print >>sys.stderr, self._GetReference(sha1)
-      print >>sys.stderr
+      print('NOTE: When committing (please see above) and editing the commit'
+            'message, please remove the old Change-Id-line and add:')
+      print(self._GetReference(sha1), file=stderr)
+      print(file=stderr)
 
   def _IsChangeId(self, line):
     return CHANGE_ID_RE.match(line)
