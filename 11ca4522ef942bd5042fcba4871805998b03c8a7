@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALLH///9Q\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-02T23:07:16Z",
+      "side": 1,
+      "message": "fixing",
+      "revId": "11ca4522ef942bd5042fcba4871805998b03c8a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALLH///9U\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-02T23:07:16Z",
+      "side": 1,
+      "message": "overridden",
+      "revId": "11ca4522ef942bd5042fcba4871805998b03c8a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALLH///9M\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-02T23:07:16Z",
+      "side": 1,
+      "message": "our (newly added) pylint settings say you should define this outside of the loop.\n\nSee SUBMITTING_PATCHES on how to run it.",
+      "revId": "11ca4522ef942bd5042fcba4871805998b03c8a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
