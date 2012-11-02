@@ -19,6 +19,7 @@ import subprocess
 import tempfile
 from signal import SIGTERM
 from error import GitError
+from future import print
 from trace import REPO_TRACE, IsTrace, Trace
 
 GIT = 'git'
@@ -92,7 +93,7 @@ class _GitCall(object):
             ver_str[len('git version '):].strip().split('-')[0].split('.')[0:3]
           ))
       else:
-        print >>sys.stderr, 'fatal: "%s" unsupported' % ver_str
+        print('fatal: "%s" unsupported' % ver_str, file=sys.stderr)
         sys.exit(1)
     return _git_version
 
@@ -111,7 +112,7 @@ def git_require(min_version, fail=False):
     return True
   if fail:
     need = '.'.join(map(lambda x: str(x), min_version))
-    print >>sys.stderr, 'fatal: git %s or later required' % need
+    print('fatal: git %s or later required' % need, file=sys.stderr)
     sys.exit(1)
   return False
 

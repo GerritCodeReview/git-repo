@@ -16,6 +16,7 @@
 import sys
 from color import Coloring
 from command import Command
+from future import print
 
 class BranchColoring(Coloring):
   def __init__(self, config):
@@ -107,7 +108,7 @@ is shown, then the branch appears in all projects.
     names.sort()
 
     if not names:
-      print >>sys.stderr, '   (no branches)'
+      print('   (no branches)', file=sys.stderr)
       return
 
     width = 25

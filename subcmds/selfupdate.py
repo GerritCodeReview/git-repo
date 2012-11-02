@@ -17,6 +17,7 @@ from optparse import SUPPRESS_HELP
 import sys
 
 from command import Command, MirrorSafeCommand
+from future import print
 from subcmds.sync import _PostRepoUpgrade
 from subcmds.sync import _PostRepoFetch
 
@@ -52,7 +53,7 @@ need to be performed by an end-user.
 
     else:
       if not rp.Sync_NetworkHalf():
-        print >>sys.stderr, "error: can't update repo"
+        print("error: can't update repo", file=sys.stderr)
         sys.exit(1)
 
       rp.bare_git.gc('--auto')

@@ -16,6 +16,7 @@
 import re
 
 from command import Command, MirrorSafeCommand
+from future import print
 
 class List(Command, MirrorSafeCommand):
   common = True
@@ -64,7 +65,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
       lines.append("%s : %s" % (_getpath(project), project.name))
 
     lines.sort()
-    print '\n'.join(lines)
+    print('\n'.join(lines))
 
   def FindProjects(self, args):
     result = []

@@ -20,22 +20,25 @@ import sys
 from command import InteractiveCommand
 from editor import Editor
 from error import HookError, UploadError
+from future import print
 from project import RepoHook
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 
 def _ConfirmManyUploads(multiple_branches=False):
   if multiple_branches:
-    print "ATTENTION: One or more branches has an unusually high number of commits."
+    print('ATTENTION: One or more branches has an unusually high number'
+          'of commits.')
   else:
-    print "ATTENTION: You are uploading an unusually high number of commits."
-  print "YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across branches?)"
+    print('ATTENTION: You are uploading an unusually high number of commits.')
+  print('YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across'
+        'branches?)')
   answer = raw_input("If you are sure you intend to do this, type 'yes': ").strip()
   return answer == "yes"
 
 def _die(fmt, *args):
   msg = fmt % args
-  print >>sys.stderr, 'error: %s' % msg
+  print('error: %s' % msg, file=sys.stderr)
   sys.exit(1)
 
 def _SplitEmails(values):
@@ -176,14 +179,14 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       date = branch.date
       commit_list = branch.commits
 
-      print 'Upload project %s/ to remote branch %s:' % (project.relpath, project.revisionExpr)
-      print '  branch %s (%2d commit%s, %s):' % (
+      print('Upload project %s/ to remote branch %s:' % (project.relpath, project.revisionExpr))
+      print('  branch %s (%2d commit%s, %s):' % (
                     name,
                     len(commit_list),
                     len(commit_list) != 1 and 's' or '',
-                    date)
+                    date))
       for commit in commit_list:
-        print '         %s' % commit
+        print('         %s' % commit)
 
       sys.stdout.write('to %s (y/N)? ' % remote.review)
       answer = sys.stdin.readline().strip()
@@ -317,7 +320,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                 sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/N) ')
                 a = sys.stdin.readline().strip().lower()
                 if a not in ('y', 'yes', 't', 'true', 'on'):
-                    print >>sys.stderr, "skipping upload"
+                    print("skipping upload", file=sys.stderr)
                     branch.uploaded = False
                     branch.error = 'User aborted'
                     continue
@@ -334,8 +337,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         branch.uploaded = False
         have_errors = True
 
-    print >>sys.stderr, ''
-    print >>sys.stderr, '----------------------------------------------------------------------'
+    print(file=sys.stderr)
+    print('----------------------------------------------------------------------', file=sys.stderr)
 
     if have_errors:
       for branch in todo:
@@ -344,17 +347,19 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
             fmt = ' (%s)'
           else:
             fmt = '\n       (%s)'
-          print >>sys.stderr, ('[FAILED] %-15s %-15s' + fmt) % (
+          print(('[FAILED] %-15s %-15s' + fmt) % (
                  branch.project.relpath + '/', \
                  branch.name, \
-                 str(branch.error))
-      print >>sys.stderr, ''
+                 str(branch.error)),
+                 file=sys.stderr)
+      print()
 
     for branch in todo:
         if branch.uploaded:
-          print >>sys.stderr, '[OK    ] %-15s %s' % (
+          print('[OK    ] %-15s %s' % (
                  branch.project.relpath + '/',
-                 branch.name)
+                 branch.name),
+                 file=sys.stderr)
 
     if have_errors:
       sys.exit(1)
@@ -385,7 +390,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       try:
         hook.Run(opt.allow_all_hooks, project_list=pending_proj_names)
       except HookError as e:
-        print >>sys.stderr, "ERROR: %s" % str(e)
+        print("ERROR: %s" % str(e), file=sys.stderr)
         return
 
     if opt.reviewers:
@@ -395,7 +400,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     people = (reviewers,cc)
 
     if not pending:
-      print >>sys.stdout, "no branches ready for upload"
+      print("no branches ready for upload", file=sys.stderr)
     elif len(pending) == 1 and len(pending[0][1]) == 1:
       self._SingleBranch(opt, pending[0][1][0], people)
     else:

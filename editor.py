@@ -20,6 +20,7 @@ import subprocess
 import tempfile
 
 from error import EditorError
+from future import print
 
 class Editor(object):
   """Manages the user's preferred text editor."""
@@ -53,10 +54,10 @@ class Editor(object):
       return e
 
     if os.getenv('TERM') == 'dumb':
-      print >>sys.stderr,\
+      print(
 """No editor specified in GIT_EDITOR, core.editor, VISUAL or EDITOR.
 Tried to fall back to vi but terminal is dumb.  Please configure at
-least one of these before using this command."""
+least one of these before using this command.""")
       sys.exit(1)
 
     return 'vi'
@@ -67,7 +68,7 @@ least one of these before using this command."""
 
        Args:
          data        : the text to edit
-  
+
       Returns:
         new value of edited text; None if editing did not succeed
     """

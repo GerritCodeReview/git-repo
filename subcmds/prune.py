@@ -15,6 +15,7 @@
 
 from color import Coloring
 from command import PagedCommand
+from future import print
 
 class Prune(PagedCommand):
   common = True
@@ -51,9 +52,9 @@ class Prune(PagedCommand):
 
       commits = branch.commits
       date = branch.date
-      print '%s %-33s (%2d commit%s, %s)' % (
+      print('%s %-33s (%2d commit%s, %s)' % (
             branch.name == project.CurrentBranch and '*' or ' ',
             branch.name,
             len(commits),
             len(commits) != 1 and 's' or ' ',
-            date)
+            date))

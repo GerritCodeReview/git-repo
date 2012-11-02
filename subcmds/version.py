@@ -15,6 +15,7 @@
 
 import sys
 from command import Command, MirrorSafeCommand
+from future import print
 from git_command import git
 from git_refs import HEAD
 
@@ -32,12 +33,12 @@ class Version(Command, MirrorSafeCommand):
     rp = self.manifest.repoProject
     rem = rp.GetRemote(rp.remote.name)
 
-    print 'repo version %s' % rp.work_git.describe(HEAD)
-    print '       (from %s)' % rem.url
+    print('repo version %s' % rp.work_git.describe(HEAD))
+    print('       (from %s)' % rem.url)
 
     if Version.wrapper_path is not None:
-      print 'repo launcher version %s' % Version.wrapper_version
-      print '       (from %s)' % Version.wrapper_path
+      print('repo launcher version %s' % Version.wrapper_version)
+      print('       (from %s)' % Version.wrapper_path)
 
-    print git.version().strip()
-    print 'Python %s' % sys.version
+    print(git.version().strip())
+    print('Python %s' % sys.version)

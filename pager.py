@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from future import print
 import os
 import select
 import sys
@@ -49,7 +50,7 @@ def RunPager(globalConfig):
 
     _BecomePager(pager)
   except Exception:
-    print >>sys.stderr, "fatal: cannot start pager '%s'" % pager
+    print("fatal: cannot start pager '%s'" % pager, file=sys.stderr)
     sys.exit(255)
 
 def _SelectPager(globalConfig):

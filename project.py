@@ -25,6 +25,7 @@ import sys
 import time
 
 from color import Coloring
+from future import print
 from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
 from error import GitError, HookError, UploadError
@@ -50,7 +51,7 @@ def _lwrite(path, content):
 
 def _error(fmt, *args):
   msg = fmt % args
-  print >>sys.stderr, 'error: %s' % msg
+  print('error: %s' % msg, file=sys.stderr)
 
 def not_rev(r):
   return '^' + r
@@ -683,9 +684,9 @@ class Project(object):
     if not os.path.isdir(self.worktree):
       if output_redir == None:
         output_redir = sys.stdout
-      print >>output_redir, ''
-      print >>output_redir, 'project %s/' % self.relpath
-      print >>output_redir, '  missing (run "repo sync")'
+      print(file=output_redir)
+      print('project %s/' % self.relpath, file=output_redir)
+      print('  missing (run "repo sync")', file=output_redir)
       return
 
     self.work_git.update_index('-q',
@@ -785,7 +786,7 @@ class Project(object):
         out.project('project %s/' % self.relpath)
         out.nl()
         has_diff = True
-      print line[:-1]
+      print(line[:-1])
     p.Wait()
 
 
@@ -1586,7 +1587,8 @@ class Project(object):
       # returned another error with the HTTP error code being 400 or above.
       # This return code only appears if -f, --fail is used.
       if not quiet:
-        print >> sys.stderr, "Server does not provide clone.bundle; ignoring."
+        print("Server does not provide clone.bundle; ignoring.",
+              file=sys.stderr)
       return False
 
     if os.path.exists(tmpPath):

@@ -17,6 +17,7 @@ import sys
 
 from color import Coloring
 from command import InteractiveCommand
+from future import print
 from git_command import GitCommand
 
 class _ProjectList(Coloring):
@@ -50,7 +51,7 @@ The '%prog' command stages files to prepare the next commit.
   def _Interactive(self, opt, args):
     all_projects = filter(lambda x: x.IsDirty(), self.GetProjects(args))
     if not all_projects:
-      print >>sys.stderr,'no projects have uncommitted modifications'
+      print('no projects have uncommitted modifications')
       return
 
     out = _ProjectList(self.manifest.manifestProject.config)
@@ -101,7 +102,7 @@ The '%prog' command stages files to prepare the next commit.
       if len(p) == 1:
         _AddI(p[0])
         continue
-    print 'Bye.'
+    print('Bye.')
 
 def _AddI(project):
   p = GitCommand(project, ['add', '--interactive'], bare=False)

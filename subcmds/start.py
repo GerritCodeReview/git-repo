@@ -15,6 +15,7 @@
 
 import sys
 from command import Command
+from future import print
 from git_config import IsId
 from git_command import git
 from progress import Progress
@@ -41,7 +42,7 @@ revision specified in the manifest.
 
     nb = args[0]
     if not git.check_ref_format('heads/%s' % nb):
-      print >>sys.stderr, "error: '%s' is not a valid name" % nb
+      print("error: '%s' is not a valid name" % nb, file=sys.stderr)
       sys.exit(1)
 
     err = []
@@ -49,7 +50,7 @@ revision specified in the manifest.
     if not opt.all:
       projects = args[1:]
       if len(projects) < 1:
-        print >>sys.stderr, "error: at least one project must be specified"
+        print("error: at least one project must be specified", file=sys.stderr)
         sys.exit(1)
 
     all_projects = self.GetProjects(projects)
@@ -67,7 +68,6 @@ revision specified in the manifest.
 
     if err:
       for p in err:
-        print >>sys.stderr,\
-          "error: %s/: cannot start %s" \
-          % (p.relpath, nb)
+        print("error: %s/: cannot start %s" % (p.relpath, nb),
+              file=sys.stderr)
       sys.exit(1)

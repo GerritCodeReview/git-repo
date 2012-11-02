@@ -75,6 +75,10 @@ global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
 
+def _print(*args, **kwargs):
+  f = kwargs.get('file', sys.stdout)
+  f.write(' '.join(args) + '\n')
+
 class _Repo(object):
   def __init__(self, repodir):
     self.repodir = repodir
@@ -106,15 +110,14 @@ class _Repo(object):
       if name == 'help':
         name = 'version'
       else:
-        print >>sys.stderr, 'fatal: invalid usage of --version'
+        _print('fatal: invalid usage of --version', file=sys.stderr)
         return 1
 
     try:
       cmd = self.commands[name]
     except KeyError:
-      print >>sys.stderr,\
-            "repo: '%s' is not a repo command.  See 'repo help'."\
-            % name
+      _print("repo: '%s' is not a repo command.  See 'repo help'." % name,
+            file=sys.stderr)
       return 1
 
     cmd.repodir = self.repodir
@@ -122,9 +125,8 @@ class _Repo(object):
     Editor.globalConfig = cmd.manifest.globalConfig
 
     if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
-      print >>sys.stderr, \
-            "fatal: '%s' requires a working directory"\
-            % name
+      _print("fatal: '%s' requires a working directory" % name,
+            file=sys.stderr)
       return 1
 
     copts, cargs = cmd.OptionParser.parse_args(argv)
@@ -150,22 +152,21 @@ class _Repo(object):
         minutes, seconds = divmod(remainder, 60)
         if gopts.time:
           if hours == 0:
-            print >>sys.stderr, 'real\t%dm%.3fs' \
-              % (minutes, seconds)
+            _print('real\t%dm%.3fs' % (minutes, seconds), file=sys.stderr)
           else:
-            print >>sys.stderr, 'real\t%dh%dm%.3fs' \
-              % (hours, minutes, seconds)
+            _print('real\t%dh%dm%.3fs' % (hours, minutes, seconds),
+                  file=sys.stderr)
     except DownloadError as e:
-      print >>sys.stderr, 'error: %s' % str(e)
+      _print('error: %s' % str(e), file=sys.stderr)
       return 1
     except ManifestInvalidRevisionError as e:
-      print >>sys.stderr, 'error: %s' % str(e)
+      _print('error: %s' % str(e), file=sys.stderr)
       return 1
     except NoSuchProjectError as e:
       if e.name:
-        print >>sys.stderr, 'error: project %s not found' % e.name
+        _print('error: project %s not found' % e.name, file=sys.stderr)
       else:
-        print >>sys.stderr, 'error: no project in current directory'
+        _print('error: no project in current directory', file=sys.stderr)
       return 1
 
     return result
@@ -191,7 +192,7 @@ def _CheckWrapperVersion(ver, repo_path):
     repo_path = '~/bin/repo'
 
   if not ver:
-    print >>sys.stderr, 'no --wrapper-version argument'
+    _print('no --wrapper-version argument', file=sys.stderr)
     sys.exit(1)
 
   exp = _CurrentWrapperVersion()
@@ -201,26 +202,22 @@ def _CheckWrapperVersion(ver, repo_path):
 
   if exp[0] > ver[0] or ver < (0, 4):
     exp_str = '.'.join(map(lambda x: str(x), exp))
-    print >>sys.stderr, """
-!!! A new repo command (%5s) is available.    !!!
-!!! You must upgrade before you can continue:   !!!
-
-    cp %s %s
-""" % (exp_str, _MyWrapperPath(), repo_path)
+    _print('!!! A new repo command (%5s) is available.    !!!\n'
+          '!!! You must upgrade before you can continue:   !!!\n\n'
+          'cp %s %s' % (exp_str, _MyWrapperPath(), repo_path),
+          file=sys.stderr)
     sys.exit(1)
 
   if exp > ver:
     exp_str = '.'.join(map(lambda x: str(x), exp))
-    print >>sys.stderr, """
-... A new repo command (%5s) is available.
-... You should upgrade soon:
-
-    cp %s %s
-""" % (exp_str, _MyWrapperPath(), repo_path)
+    _print('... A new repo command (%5s) is available.\n'
+          '... You should upgrade soon:\n\n'
+          'cp %s %s' % (exp_str, _MyWrapperPath(), repo_path),
+          file=sys.stderr)
 
 def _CheckRepoDir(repo_dir):
   if not repo_dir:
-    print >>sys.stderr, 'no --repo-dir argument'
+    _print('no --repo-dir argument', file=sys.stderr)
     sys.exit(1)
 
 def _PruneOptions(argv, opt):
@@ -290,7 +287,7 @@ def _AddPasswordFromUserInput(handler, msg, req):
     url = req.get_full_url()
     user, password = handler.passwd.find_user_password(None, url)
     if user is None:
-      print msg
+      _print(msg)
       try:
         user = raw_input('User: ')
         password = getpass.getpass()
@@ -406,8 +403,8 @@ def _Main(argv):
     try:
       os.execv(__file__, argv)
     except OSError as e:
-      print >>sys.stderr, 'fatal: cannot restart repo after upgrade'
-      print >>sys.stderr, 'fatal: %s' % e
+      _print('fatal: cannot restart repo after upgrade', file=sys.stderr)
+      _print('fatal: %s' % e, file=sys.stderr)
       result = 128
 
   sys.exit(result)

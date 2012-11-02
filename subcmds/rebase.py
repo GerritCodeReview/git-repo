@@ -16,6 +16,7 @@
 import sys
 
 from command import Command
+from future import print
 from git_command import GitCommand
 
 class Rebase(Command):
@@ -59,14 +60,16 @@ branch but need to incorporate new upstream changes "underneath" them.
     one_project = len(all_projects) == 1
 
     if opt.interactive and not one_project:
-      print >>sys.stderr, 'error: interactive rebase not supported with multiple projects'
+      print('error: interactive rebase not supported with multiple projects',
+            file=sys.stderr)
       return -1
 
     for project in all_projects:
       cb = project.CurrentBranch
       if not cb:
         if one_project:
-          print >>sys.stderr, "error: project %s has a detatched HEAD" % project.relpath
+          print("error: project %s has a detatched HEAD" % project.relpath,
+                file=sys.stderr)
           return -1
         # ignore branches with detatched HEADs
         continue
@@ -74,7 +77,8 @@ branch but need to incorporate new upstream changes "underneath" them.
       upbranch = project.GetBranch(cb)
       if not upbranch.LocalMerge:
         if one_project:
-          print >>sys.stderr, "error: project %s does not track any remote branches" % project.relpath
+          print("error: project %s does not track any remote branches"
+                % project.relpath, file=sys.stderr)
           return -1
         # ignore branches without remotes
         continue
@@ -101,8 +105,8 @@ branch but need to incorporate new upstream changes "underneath" them.
 
       args.append(upbranch.LocalMerge)
 
-      print >>sys.stderr, '# %s: rebasing %s -> %s' % \
-        (project.relpath, cb, upbranch.LocalMerge)
+      print('# %s: rebasing %s -> %s'
+            % (project.relpath, cb, upbranch.LocalMerge), file=sys.stderr)
 
       needs_stash = False
       if opt.auto_stash:

@@ -15,6 +15,7 @@
 
 import sys
 import os
+from future import print
 REPO_TRACE = 'REPO_TRACE'
 
 try:
@@ -31,4 +32,4 @@ def SetTrace():
 
 def Trace(fmt, *args):
   if IsTrace():
-    print >>sys.stderr, fmt % args
+    print(fmt % args, file=sys.stderr)

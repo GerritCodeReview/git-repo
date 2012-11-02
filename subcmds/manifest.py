@@ -17,6 +17,7 @@ import os
 import sys
 
 from command import PagedCommand
+from future import print
 
 class Manifest(PagedCommand):
   common = False
@@ -69,7 +70,7 @@ in a Git repository for use during future 'repo init' invocations.
                        peg_rev_upstream = opt.peg_rev_upstream)
     fd.close()
     if opt.output_file != '-':
-      print >>sys.stderr, 'Saved manifest to %s' % opt.output_file
+      print('Saved manifest to %s' % opt.output_file, file=sys.stderr)
 
   def Execute(self, opt, args):
     if args:
@@ -79,6 +80,6 @@ in a Git repository for use during future 'repo init' invocations.
       self._Output(opt)
       return
 
-    print >>sys.stderr, 'error: no operation to perform'
-    print >>sys.stderr, 'error: see repo help manifest'
+    print('error: no operation to perform', file=sys.stderr)
+    print('error: see repo help manifest', file=sys.stderr)
     sys.exit(1)
