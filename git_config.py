@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import cPickle
 import os
 import re
@@ -463,9 +464,8 @@ def _open_ssh(host, port=None):
       p = subprocess.Popen(command)
     except Exception as e:
       _ssh_master = False
-      print >>sys.stderr, \
-        '\nwarn: cannot enable ssh control master for %s:%s\n%s' \
-        % (host,port, str(e))
+      print('\nwarn: cannot enable ssh control master for %s:%s\n%s'
+             % (host,port, str(e)), file=sys.stderr)
       return False
 
     _master_processes.append(p)

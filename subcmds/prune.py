@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 from color import Coloring
 from command import PagedCommand
 
@@ -51,9 +52,9 @@ class Prune(PagedCommand):
 
       commits = branch.commits
       date = branch.date
-      print '%s %-33s (%2d commit%s, %s)' % (
+      print('%s %-33s (%2d commit%s, %s)' % (
             branch.name == project.CurrentBranch and '*' or ' ',
             branch.name,
             len(commits),
             len(commits) != 1 and 's' or ' ',
-            date)
+            date))

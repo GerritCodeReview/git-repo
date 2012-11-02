@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import sys
 from color import Coloring
 from command import Command
@@ -107,7 +108,7 @@ is shown, then the branch appears in all projects.
     names.sort()
 
     if not names:
-      print >>sys.stderr, '   (no branches)'
+      print('   (no branches)', file=sys.stderr)
       return
 
     width = 25

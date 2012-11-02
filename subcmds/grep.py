@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import sys
 from color import Coloring
 from command import PagedCommand
@@ -178,8 +179,7 @@ contain a line that matches both expressions:
     have_rev = False
     if opt.revision:
       if '--cached' in cmd_argv:
-        print >>sys.stderr,\
-          'fatal: cannot combine --cached and --revision'
+        print('fatal: cannot combine --cached and --revision', file=sys.stderr)
         sys.exit(1)
       have_rev = True
       cmd_argv.extend(opt.revision)
@@ -230,13 +230,13 @@ contain a line that matches both expressions:
           out.nl()
       else:
         for line in r:
-          print line
+          print(line)
 
     if have_match:
       sys.exit(0)
     elif have_rev and bad_rev:
       for r in opt.revision:
-        print >>sys.stderr, "error: can't search revision %s" % r
+        print("error: can't search revision %s" % r, file=sys.stderr)
       sys.exit(1)
     else:
       sys.exit(1)

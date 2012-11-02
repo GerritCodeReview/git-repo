@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import os
 import platform
 import re
@@ -123,12 +124,12 @@ to update the working directory files.
 
     if is_new:
       if not opt.manifest_url:
-        print >>sys.stderr, 'fatal: manifest url (-u) is required.'
+        print('fatal: manifest url (-u) is required.', file=sys.stderr)
         sys.exit(1)
 
       if not opt.quiet:
-        print >>sys.stderr, 'Get %s' \
-          % GitConfig.ForUser().UrlInsteadOf(opt.manifest_url)
+        print('Get %s' % GitConfig.ForUser().UrlInsteadOf(opt.manifest_url),
+              file=sys.stderr)
       m._InitGitDir()
 
       if opt.manifest_branch:
@@ -159,7 +160,7 @@ to update the working directory files.
     elif opt.platform in all_platforms:
       groups.extend(platformize(opt.platform))
     elif opt.platform != 'none':
-      print >>sys.stderr, 'fatal: invalid platform flag'
+      print('fatal: invalid platform flag', file=sys.stderr)
       sys.exit(1)
 
     groups = [x for x in groups if x]
@@ -175,12 +176,13 @@ to update the working directory files.
       if is_new:
         m.config.SetString('repo.mirror', 'true')
       else:
-        print >>sys.stderr, 'fatal: --mirror not supported on existing client'
+        print('fatal: --mirror not supported on existing client',
+              file=sys.stderr)
         sys.exit(1)
 
     if not m.Sync_NetworkHalf(is_new=is_new):
       r = m.GetRemote(m.remote.name)
-      print >>sys.stderr, 'fatal: cannot obtain manifest %s' % r.url
+      print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 
       # Better delete the manifest git dir if we created it; otherwise next
       # time (when user fixes problems) we won't go through the "is_new" logic.
@@ -197,19 +199,19 @@ to update the working directory files.
 
     if is_new or m.CurrentBranch is None:
       if not m.StartBranch('default'):
-        print >>sys.stderr, 'fatal: cannot create default in manifest'
+        print('fatal: cannot create default in manifest', file=sys.stderr)
         sys.exit(1)
 
   def _LinkManifest(self, name):
     if not name:
-      print >>sys.stderr, 'fatal: manifest name (-m) is required.'
+      print('fatal: manifest name (-m) is required.', file=sys.stderr)
       sys.exit(1)
 
     try:
       self.manifest.Link(name)
     except ManifestParseError as e:
-      print >>sys.stderr, "fatal: manifest '%s' not available" % name
-      print >>sys.stderr, 'fatal: %s' % str(e)
+      print("fatal: manifest '%s' not available" % name, file=sys.stderr)
+      print('fatal: %s' % str(e), file=sys.stderr)
       sys.exit(1)
 
   def _Prompt(self, prompt, value):
@@ -231,22 +233,22 @@ to update the working directory files.
       mp.config.SetString('user.name', gc.GetString('user.name'))
       mp.config.SetString('user.email', gc.GetString('user.email'))
 
-    print ''
-    print 'Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
-                                         mp.config.GetString('user.email'))
-    print 'If you want to change this, please re-run \'repo init\' with --config-name'
+    print()
+    print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
+                                         mp.config.GetString('user.email')))
+    print('If you want to change this, please re-run \'repo init\' with --config-name')
     return False
 
   def _ConfigureUser(self):
     mp = self.manifest.manifestProject
 
     while True:
-      print ''
+      print()
       name  = self._Prompt('Your Name', mp.UserName)
       email = self._Prompt('Your Email', mp.UserEmail)
 
-      print ''
-      print 'Your identity is: %s <%s>' % (name, email)
+      print()
+      print('Your identity is: %s <%s>' % (name, email))
       sys.stdout.write('is this correct [y/N]? ')
       a = sys.stdin.readline().strip()
       if a in ('yes', 'y', 't', 'true'):
@@ -274,8 +276,8 @@ to update the working directory files.
         self._on = True
     out = _Test()
 
-    print ''
-    print "Testing colorized output (for 'repo diff', 'repo status'):"
+    print()
+    print("Testing colorized output (for 'repo diff', 'repo status'):")
 
     for c in ['black','red','green','yellow','blue','magenta','cyan']:
       out.write(' ')
@@ -319,14 +321,16 @@ to update the working directory files.
     else:
       init_type = ''
 
-    print ''
-    print 'repo %shas been initialized in %s' % (init_type, self.manifest.topdir)
+    print()
+    print('repo %shas been initialized in %s'
+          % (init_type, self.manifest.topdir))
 
     current_dir = os.getcwd()
     if current_dir != self.manifest.topdir:
-      print 'If this is not the directory in which you want to initialize repo, please run:'
-      print '   rm -r %s/.repo' % self.manifest.topdir
-      print 'and try again.'
+      print('If this is not the directory in which you want to initialize'
+            'repo, please run:')
+      print('   rm -r %s/.repo' % self.manifest.topdir)
+      print('and try again.')
 
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
