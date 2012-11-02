@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import sys
 from command import Command
 from progress import Progress
@@ -55,10 +56,9 @@ The command is equivalent to:
 
     if err:
       for p in err:
-        print >>sys.stderr,\
-          "error: %s/: cannot checkout %s" \
-          % (p.relpath, nb)
+        print("error: %s/: cannot checkout %s" % (p.relpath, nb),
+              file=sys.stderr)
       sys.exit(1)
     elif not success:
-      print >>sys.stderr, 'error: no project has branch %s' % nb
+      print('error: no project has branch %s' % nb, file=sys.stderr)
       sys.exit(1)

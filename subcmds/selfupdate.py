@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 from optparse import SUPPRESS_HELP
 import sys
 
@@ -52,7 +53,7 @@ need to be performed by an end-user.
 
     else:
       if not rp.Sync_NetworkHalf():
-        print >>sys.stderr, "error: can't update repo"
+        print("error: can't update repo", file=sys.stderr)
         sys.exit(1)
 
       rp.bare_git.gc('--auto')

@@ -129,4 +129,4 @@ the following meanings:
         output.dump(sys.stdout)
         output.close()
     if len(all_projects) == counter.next():
-      print 'nothing to commit (working directory clean)'
+      print('nothing to commit (working directory clean)')

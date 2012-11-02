@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import re
 
 from command import Command, MirrorSafeCommand
@@ -64,7 +65,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
       lines.append("%s : %s" % (_getpath(project), project.name))
 
     lines.sort()
-    print '\n'.join(lines)
+    print('\n'.join(lines))
 
   def FindProjects(self, args):
     result = []

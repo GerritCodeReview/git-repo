@@ -2,6 +2,7 @@
 
 ## repo default configuration
 ##
+from __future__ import print_function
 REPO_URL='https://gerrit.googlesource.com/git-repo'
 REPO_REV='stable'
 
@@ -215,16 +216,15 @@ def _Init(args):
   if branch.startswith('refs/heads/'):
     branch = branch[len('refs/heads/'):]
   if branch.startswith('refs/'):
-    print >>sys.stderr, "fatal: invalid branch name '%s'" % branch
+    print("fatal: invalid branch name '%s'" % branch, file=sys.stderr)
     raise CloneFailure()
 
   if not os.path.isdir(repodir):
     try:
       os.mkdir(repodir)
     except OSError as e:
-      print >>sys.stderr, \
-            'fatal: cannot make %s directory: %s' % (
-            repodir, e.strerror)
+      print('fatal: cannot make %s directory: %s'
+            % (repodir, e.strerror), file=sys.stderr)
       # Don't faise CloneFailure; that would delete the
       # name. Instead exit immediately.
       #
@@ -248,8 +248,8 @@ def _Init(args):
     _Checkout(dst, branch, rev, opt.quiet)
   except CloneFailure:
     if opt.quiet:
-      print >>sys.stderr, \
-        'fatal: repo init failed; run without --quiet to see why'
+      print('fatal: repo init failed; run without --quiet to see why',
+            file=sys.stderr)
     raise
 
 
@@ -258,12 +258,12 @@ def _CheckGitVersion():
   try:
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
   except OSError as e:
-    print >>sys.stderr
-    print >>sys.stderr, "fatal: '%s' is not available" % GIT
-    print >>sys.stderr, 'fatal: %s' % e
-    print >>sys.stderr
-    print >>sys.stderr, 'Please make sure %s is installed'\
-                        ' and in your path.' % GIT
+    print(file=sys.stderr)
+    print("fatal: '%s' is not available" % GIT, file=sys.stderr)
+    print('fatal: %s' % e, file=sys.stderr)
+    print(file=sys.stderr)
+    print('Please make sure %s is installed and in your path.' % GIT,
+          file=sys.stderr)
     raise CloneFailure()
 
   ver_str = proc.stdout.read().strip()
@@ -271,14 +271,14 @@ def _CheckGitVersion():
   proc.wait()
 
   if not ver_str.startswith('git version '):
-    print >>sys.stderr, 'error: "%s" unsupported' % ver_str
+    print('error: "%s" unsupported' % ver_str, file=sys.stderr)
     raise CloneFailure()
 
   ver_str = ver_str[len('git version '):].strip()
   ver_act = tuple(map(int, ver_str.split('.')[0:3]))
   if ver_act < MIN_GIT_VERSION:
     need = '.'.join(map(str, MIN_GIT_VERSION))
-    print >>sys.stderr, 'fatal: git %s or later required' % need
+    print('fatal: git %s or later required' % need, file=sys.stderr)
     raise CloneFailure()
 
 
@@ -305,18 +305,16 @@ def SetupGnuPG(quiet):
     try:
       os.mkdir(home_dot_repo)
     except OSError as e:
-      print >>sys.stderr, \
-            'fatal: cannot make %s directory: %s' % (
-            home_dot_repo, e.strerror)
+      print('fatal: cannot make %s directory: %s'
+            % (home_dot_repo, e.strerror), file=sys.stderr)
       sys.exit(1)
 
   if not os.path.isdir(gpg_dir):
     try:
       os.mkdir(gpg_dir, stat.S_IRWXU)
     except OSError as e:
-      print >>sys.stderr, \
-            'fatal: cannot make %s directory: %s' % (
-            gpg_dir, e.strerror)
+      print('fatal: cannot make %s directory: %s' % (gpg_dir, e.strerror),
+            file=sys.stderr)
       sys.exit(1)
 
   env = os.environ.copy()
@@ -329,16 +327,16 @@ def SetupGnuPG(quiet):
                             stdin = subprocess.PIPE)
   except OSError as e:
     if not quiet:
-      print >>sys.stderr, 'warning: gpg (GnuPG) is not available.'
-      print >>sys.stderr, 'warning: Installing it is strongly encouraged.'
-      print >>sys.stderr
+      print('warning: gpg (GnuPG) is not available.', file=sys.stderr)
+      print('warning: Installing it is strongly encouraged.', file=sys.stderr)
+      print(file=sys.stderr)
     return False
 
   proc.stdin.write(MAINTAINER_KEYS)
   proc.stdin.close()
 
   if proc.wait() != 0:
-    print >>sys.stderr, 'fatal: registering repo maintainer keys failed'
+    print('fatal: registering repo maintainer keys failed', file=sys.stderr)
     sys.exit(1)
   print
 
@@ -382,7 +380,7 @@ def _InitHttp():
 
 def _Fetch(url, local, src, quiet):
   if not quiet:
-    print >>sys.stderr, 'Get %s' % url
+    print('Get %s' % url, file=sys.stderr)
 
   cmd = [GIT, 'fetch']
   if quiet:
@@ -431,16 +429,16 @@ def _DownloadBundle(url, local, quiet):
     except urllib.error.HTTPError as e:
       if e.code == 404:
         return False
-      print >>sys.stderr, 'fatal: Cannot get %s' % url
-      print >>sys.stderr, 'fatal: HTTP error %s' % e.code
+      print('fatal: Cannot get %s' % url, file=sys.stderr)
+      print('fatal: HTTP error %s' % e.code, file=sys.stderr)
       raise CloneFailure()
     except urllib.error.URLError as e:
-      print >>sys.stderr, 'fatal: Cannot get %s' % url
-      print >>sys.stderr, 'fatal: error %s' % e.reason
+      print('fatal: Cannot get %s' % url, file=sys.stderr)
+      print('fatal: error %s' % e.reason, file=sys.stderr)
       raise CloneFailure()
     try:
       if not quiet:
-        print >>sys.stderr, 'Get %s' % url
+        print('Get %s' % url, file=sys.stderr)
       while True:
         buf = r.read(8192)
         if buf == '':
@@ -464,24 +462,23 @@ def _Clone(url, local, quiet):
   try:
     os.mkdir(local)
   except OSError as e:
-    print >>sys.stderr, \
-          'fatal: cannot make %s directory: %s' \
-          % (local, e.strerror)
+    print('fatal: cannot make %s directory: %s' % (local, e.strerror),
+          file=sys.stderr)
     raise CloneFailure()
 
   cmd = [GIT, 'init', '--quiet']
   try:
     proc = subprocess.Popen(cmd, cwd = local)
   except OSError as e:
-    print >>sys.stderr
-    print >>sys.stderr, "fatal: '%s' is not available" % GIT
-    print >>sys.stderr, 'fatal: %s' % e
-    print >>sys.stderr
-    print >>sys.stderr, 'Please make sure %s is installed'\
-                        ' and in your path.' % GIT
+    print(file=sys.stderr)
+    print("fatal: '%s' is not available" % GIT, file=sys.stderr)
+    print('fatal: %s' % e, file=sys.stderr)
+    print(file=sys.stderr)
+    print('Please make sure %s is installed and in your path.' % GIT,
+          file=sys.stderr)
     raise CloneFailure()
   if proc.wait() != 0:
-    print >>sys.stderr, 'fatal: could not create %s' % local
+    print('fatal: could not create %s' % local, file=sys.stderr)
     raise CloneFailure()
 
   _InitHttp()
@@ -509,21 +506,18 @@ def _Verify(cwd, branch, quiet):
   proc.stderr.close()
 
   if proc.wait() != 0 or not cur:
-    print >>sys.stderr
-    print >>sys.stderr,\
-      "fatal: branch '%s' has not been signed" \
-      % branch
+    print(file=sys.stderr)
+    print("fatal: branch '%s' has not been signed" % branch, file=sys.stderr)
     raise CloneFailure()
 
   m = re.compile(r'^(.*)-[0-9]{1,}-g[0-9a-f]{1,}$').match(cur)
   if m:
     cur = m.group(1)
     if not quiet:
-      print >>sys.stderr
-      print >>sys.stderr, \
-        "info: Ignoring branch '%s'; using tagged release '%s'" \
-        % (branch, cur)
-      print >>sys.stderr
+      print(file=sys.stderr)
+      print("info: Ignoring branch '%s'; using tagged release '%s'"
+            % (branch, cur), file=sys.stderr)
+      print(file=sys.stderr)
 
   env = os.environ.copy()
   env['GNUPGHOME'] = gpg_dir.encode()
@@ -541,10 +535,10 @@ def _Verify(cwd, branch, quiet):
   proc.stderr.close()
 
   if proc.wait() != 0:
-    print >>sys.stderr
-    print >>sys.stderr, out
-    print >>sys.stderr, err
-    print >>sys.stderr
+    print(file=sys.stderr)
+    print(out, file=sys.stderr)
+    print(err, file=sys.stderr)
+    print(file=sys.stderr)
     raise CloneFailure()
   return '%s^0' % cur
 
@@ -611,7 +605,7 @@ def _ParseArguments(args):
 
 
 def _Usage():
-  print >>sys.stderr,\
+  print(
 """usage: repo COMMAND [ARGS]
 
 repo is not yet installed.  Use "repo init" to install it here.
@@ -622,7 +616,7 @@ The most commonly used repo commands are:
   help      Display detailed help on a command
 
 For access to the full online help, install repo ("repo init").
-"""
+""", file=sys.stderr)
   sys.exit(1)
 
 
@@ -632,25 +626,23 @@ def _Help(args):
       init_optparse.print_help()
       sys.exit(0)
     else:
-      print >>sys.stderr,\
-      "error: '%s' is not a bootstrap command.\n"\
-      '        For access to online help, install repo ("repo init").'\
-      % args[0]
+      print("error: '%s' is not a bootstrap command.\n"
+            '        For access to online help, install repo ("repo init").'
+            % args[0], file=sys.stderr)
   else:
     _Usage()
   sys.exit(1)
 
 
 def _NotInstalled():
-  print >>sys.stderr,\
-'error: repo is not installed.  Use "repo init" to install it here.'
+  print('error: repo is not installed.  Use "repo init" to install it here.',
+        file=sys.stderr)
   sys.exit(1)
 
 
 def _NoCommands(cmd):
-  print >>sys.stderr,\
-"""error: command '%s' requires repo to be installed first.
-       Use "repo init" to install it here.""" % cmd
+  print("""error: command '%s' requires repo to be installed first.
+        Use "repo init" to install it here.""" % cmd, file=sys.stderr)
   sys.exit(1)
 
 
@@ -687,7 +679,7 @@ def _SetDefaultsTo(gitdir):
   proc.stderr.close()
 
   if proc.wait() != 0:
-    print >>sys.stderr, 'fatal: %s has no current branch' % gitdir
+    print('fatal: %s has no current branch' % gitdir, file=sys.stderr)
     sys.exit(1)
 
 
@@ -736,8 +728,8 @@ def main(orig_args):
   try:
     os.execv(repo_main, me)
   except OSError as e:
-    print >>sys.stderr, "fatal: unable to start %s" % repo_main
-    print >>sys.stderr, "fatal: %s" % e
+    print("fatal: unable to start %s" % repo_main, file=sys.stderr)
+    print("fatal: %s" % e, file=sys.stderr)
     sys.exit(148)
 
 
