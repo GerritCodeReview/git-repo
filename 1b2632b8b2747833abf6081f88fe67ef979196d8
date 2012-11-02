@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALPn///+k\u003d",
+        "filename": "editor.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-02T09:20:56Z",
+      "side": 1,
+      "message": "Why not to stderr?",
+      "revId": "1b2632b8b2747833abf6081f88fe67ef979196d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALPn///+g\u003d",
+        "filename": "main.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-02T09:20:56Z",
+      "side": 1,
+      "message": "What\u0027s the difference between using this, and print_function like in the other files?",
+      "revId": "1b2632b8b2747833abf6081f88fe67ef979196d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALPn///+w\u003d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-02T09:20:56Z",
+      "side": 1,
+      "message": "Why not to stderr?",
+      "revId": "1b2632b8b2747833abf6081f88fe67ef979196d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALPn///+s\u003d",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-02T09:20:56Z",
+      "side": 1,
+      "message": "Why is this changed from stdout to stderr?",
+      "revId": "1b2632b8b2747833abf6081f88fe67ef979196d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALPn///+o\u003d",
+        "filename": "subcmds/stage.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-02T09:20:56Z",
+      "side": 1,
+      "message": "Why not to stderr?",
+      "revId": "1b2632b8b2747833abf6081f88fe67ef979196d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
