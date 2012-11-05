@@ -50,6 +50,24 @@
       "revId": "11ca4522ef942bd5042fcba4871805998b03c8a7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALT3////o\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1010035
+      },
+      "writtenOn": "2012-11-05T21:40:57Z",
+      "side": 1,
+      "message": "Hmmm.... `pylint --rcfile\u003d.pylintrc manifest_xml.py` did not complain this on my machine. But fix it anyway.",
+      "parentUuid": "AAALLH///9M\u003d",
+      "revId": "11ca4522ef942bd5042fcba4871805998b03c8a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
