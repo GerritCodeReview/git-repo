@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALT3////E\u003d",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-06T21:50:05Z",
+      "side": 1,
+      "message": "There\u0027s nothing wrong with using map in these.  The problem is with using `lambda x: f(x)` which is just a verbose way of saying `f`\n\nFor example, this could be:\n  need \u003d \u0027.\u0027.join(map(str, min_version))",
+      "revId": "300913275e43c1389ac00284719706f87dcbedaa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
