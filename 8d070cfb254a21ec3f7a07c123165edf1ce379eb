@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALS3////Q\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-06T23:07:20Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this also cause the same problem?\n\nThese are set up inside the \u0027if show_smart\u0027 clause, just like manifest_server_username and manifest_server_password.",
+      "revId": "8d070cfb254a21ec3f7a07c123165edf1ce379eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
