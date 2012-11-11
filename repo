@@ -700,7 +700,10 @@ def main(orig_args):
   repo_main, rel_repo_dir = _FindRepo()
   cmd, opt, args = _ParseArguments(orig_args)
 
-  wrapper_path = os.path.abspath(__file__)
+  myself = __file__
+  if os.path.islink(myself):
+	  myself = os.readlink(myself)
+  wrapper_path = os.path.abspath(myself)
   my_main, my_git = _RunSelf(wrapper_path)
 
   if not rel_repo_dir:
