@@ -250,4 +250,6 @@ invocation, instructing repo to automatically download and manage
 these extra projects.
 
 Additional remotes and projects may also be added through a local
-manifest, stored in `$TOP_DIR/.repo/local_manifest.xml`.
+manifest, stored in `$TOP_DIR/.repo/local_manifest.xml`. This method
+is deprecated in favor of using multiple manifest files as mentioned
+above.
