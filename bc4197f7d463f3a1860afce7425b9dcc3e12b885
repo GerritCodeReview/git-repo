@@ -16,6 +16,24 @@
       "revId": "bc4197f7d463f3a1860afce7425b9dcc3e12b885",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALgn////4\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-12T18:36:14Z",
+      "side": 1,
+      "message": "Right, it does, but that\u0027s a PEP-8 violation - operators should be followed by a single space.\n\nPylint also warns about it but I disabled that because it causes too much noise.\n\nI\u0027ll change this to be consistent, but at some point I\u0027d like to go through and fix them all.  Haven\u0027t done it yet because it\u0027s a lot of changes for not much actual improvement.",
+      "parentUuid": "AAALfX///+8\u003d",
+      "revId": "bc4197f7d463f3a1860afce7425b9dcc3e12b885",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
