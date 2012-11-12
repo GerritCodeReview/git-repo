@@ -326,7 +326,11 @@ class XmlManifest(object):
       self._loaded = True
 
   def _ParseManifestXml(self, path, include_root):
-    root = xml.dom.minidom.parse(path)
+    try:
+      root = xml.dom.minidom.parse(path)
+    except xml.parsers.expat.ExpatError, e:
+      raise ManifestParseError("error parsing manifest %s: %s" % (path, e))
+
     if not root or not root.childNodes:
       raise ManifestParseError("no root node in %s" % (path,))
 
