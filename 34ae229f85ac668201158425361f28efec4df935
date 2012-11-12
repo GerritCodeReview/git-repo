@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALfX////E\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-12T18:21:39Z",
+      "side": 1,
+      "message": "I\u0027d prefer if this came first and the older, less-preferred local_manifest.xml documentation came second.",
+      "revId": "34ae229f85ac668201158425361f28efec4df935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALfX////I\u003d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-12T18:21:39Z",
+      "side": 1,
+      "message": "local_manifests",
+      "revId": "34ae229f85ac668201158425361f28efec4df935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALfX////Q\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-12T18:21:39Z",
+      "side": 1,
+      "message": "Don\u0027t test exists, just listdir and catch the exception (race condition where dir gets deleted just before listing)",
+      "revId": "34ae229f85ac668201158425361f28efec4df935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALfX////M\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-12T18:21:39Z",
+      "side": 1,
+      "message": "os.path.isfile will break I think since local_file does not include the full path.",
+      "revId": "34ae229f85ac668201158425361f28efec4df935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
