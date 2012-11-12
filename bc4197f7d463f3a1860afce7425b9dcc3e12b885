@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALfX///+8\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-12T18:23:10Z",
+      "side": 1,
+      "message": "I think repo style drops a space after the \u003e\u003e (look for other examples of printing to sys.stderr)",
+      "revId": "bc4197f7d463f3a1860afce7425b9dcc3e12b885",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
