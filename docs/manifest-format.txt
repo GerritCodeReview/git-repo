@@ -224,8 +224,8 @@ Attribute `name`; the manifest to include, specified relative to
 the manifest repositories root.
 
 
-Local Manifest
-==============
+Local Manifests
+===============
 
 Additional remotes and projects may be added through a local
 manifest, stored in `$TOP_DIR/.repo/local_manifest.xml`.
@@ -241,6 +241,13 @@ For example:
              name="platform/manifest" />
   </manifest>
 
-Users may add projects to the local manifest prior to a `repo sync`
+Additional remotes and projects may also be added through multiple
+local manifests stored in `$TOP_DIR/.repo/local_manifests/*.xml`.
+
+  $ ls .repo/localmanifests
+  local_manifest.xml
+  another_local_manifest.xml
+
+Users may add projects to the local manifest(s) prior to a `repo sync`
 invocation, instructing repo to automatically download and manage
 these extra projects.
