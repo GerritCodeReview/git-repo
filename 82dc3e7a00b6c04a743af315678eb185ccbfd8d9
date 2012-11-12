@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALfX///88\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-12T20:01:10Z",
+      "side": 1,
+      "message": "Ah, missed this.  Don\u0027t print messages here.  If they don\u0027t have a directory, they shouldn\u0027t see any warnings.",
+      "revId": "82dc3e7a00b6c04a743af315678eb185ccbfd8d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
