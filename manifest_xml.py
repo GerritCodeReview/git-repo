@@ -27,6 +27,7 @@ from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
+LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
 urlparse.uses_relative.extend(['ssh', 'git'])
 urlparse.uses_netloc.extend(['ssh', 'git'])
@@ -300,6 +301,12 @@ class XmlManifest(object):
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
         nodes.append(self._ParseManifestXml(local, self.repodir))
+      
+      local_dir = os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)
+      if os.path.exists(local_dir) and os.path.isdir(local_dir):
+        for local_file in os.listdir(local_dir):
+          if os.path.isfile(local_file) and local_file.endswith('.xml'):
+            nodes.append(self._ParseManifestXml(local_file, self.repodir))
 
       self._ParseManifest(nodes)
 
