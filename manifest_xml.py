@@ -27,6 +27,7 @@ from error import ManifestParseError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
+LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
 urlparse.uses_relative.extend(['ssh', 'git'])
 urlparse.uses_netloc.extend(['ssh', 'git'])
@@ -301,6 +302,17 @@ class XmlManifest(object):
       if os.path.exists(local):
         nodes.append(self._ParseManifestXml(local, self.repodir))
 
+      local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
+      try:
+        for local_file in os.listdir(local_dir):
+          if local_file.endswith('.xml'):
+            try:
+              nodes.append(self._ParseManifestXml(local_file, self.repodir))
+            except ManifestParseError as e:
+              print >>sys.stderr, '%s' % str(e)
+      except OSError:
+        pass
+
       self._ParseManifest(nodes)
 
       if self.IsMirror:
@@ -312,7 +324,7 @@ class XmlManifest(object):
   def _ParseManifestXml(self, path, include_root):
     try:
       root = xml.dom.minidom.parse(path)
-    except (OSError, xml.parsers.expat.ExpatError), e:
+    except (OSError, xml.parsers.expat.ExpatError) as e:
       raise ManifestParseError("error parsing manifest %s: %s" % (path, e))
 
     if not root or not root.childNodes:
