@@ -397,6 +397,7 @@ def _Main(argv):
     finally:
       close_ssh()
   except KeyboardInterrupt:
+    print >>sys.stderr, 'aborted by user'
     result = 1
   except ManifestParseError as mpe:
     print >>sys.stderr, 'fatal: %s' % mpe
