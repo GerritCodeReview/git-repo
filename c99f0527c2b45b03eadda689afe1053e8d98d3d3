@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALjn////0\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-13T23:01:21Z",
+      "side": 1,
+      "message": "It doesn\u0027t have to be installed there specifically.  just accessible to /usr/bin/env",
+      "revId": "c99f0527c2b45b03eadda689afe1053e8d98d3d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
