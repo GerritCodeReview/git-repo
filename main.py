@@ -28,7 +28,6 @@ except ImportError:
   import urllib.request
 else:
   # For python2
-  import imp
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
 

@@ -275,9 +275,9 @@ def _CheckGitVersion():
     raise CloneFailure()
 
   ver_str = ver_str[len('git version '):].strip()
-  ver_act = tuple(map(lambda x: int(x), ver_str.split('.')[0:3]))
+  ver_act = tuple(map(int, ver_str.split('.')[0:3]))
   if ver_act < MIN_GIT_VERSION:
-    need = '.'.join(map(lambda x: str(x), MIN_GIT_VERSION))
+    need = '.'.join(map(str, MIN_GIT_VERSION))
     print >>sys.stderr, 'fatal: git %s or later required' % need
     raise CloneFailure()
 
@@ -294,7 +294,7 @@ def NeedSetupGnuPG():
   if not kv:
     return True
 
-  kv = tuple(map(lambda x: int(x), kv.split('.')))
+  kv = tuple(map(int, kv.split('.')))
   if kv < KEYRING_VERSION:
     return True
   return False
@@ -343,7 +343,7 @@ def SetupGnuPG(quiet):
   print
 
   fd = open(os.path.join(home_dot_repo, 'keyring-version'), 'w')
-  fd.write('.'.join(map(lambda x: str(x), KEYRING_VERSION)) + '\n')
+  fd.write('.'.join(map(str, KEYRING_VERSION)) + '\n')
   fd.close()
   return True
 
@@ -725,7 +725,7 @@ def main(orig_args):
   if my_main:
     repo_main = my_main
 
-  ver_str = '.'.join(map(lambda x: str(x), VERSION))
+  ver_str = '.'.join(map(str, VERSION))
   me = [repo_main,
         '--repo-dir=%s' % rel_repo_dir,
         '--wrapper-version=%s' % ver_str,
