@@ -49,6 +49,7 @@ from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
 from error import ManifestInvalidRevisionError
+from error import ManifestParseError
 from error import NoSuchProjectError
 from error import RepoChangedException
 from manifest_xml import XmlManifest
@@ -396,6 +397,9 @@ def _Main(argv):
     finally:
       close_ssh()
   except KeyboardInterrupt:
+    result = 1
+  except ManifestParseError as mpe:
+    print >>sys.stderr, 'fatal: %s' % mpe
     result = 1
   except RepoChangedException as rce:
     # If repo changed, re-exec ourselves.
