@@ -54,6 +54,12 @@ class _XmlRemote(object):
     self.reviewUrl = review
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
+  def __eq__(self, other):
+    return self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return self.__dict__ != other.__dict__
+
   def _resolveFetchUrl(self):
     url = self.fetchUrl.rstrip('/')
     manifestUrl = self.manifestUrl.rstrip('/')
@@ -365,11 +371,14 @@ class XmlManifest(object):
     for node in itertools.chain(*node_list):
       if node.nodeName == 'remote':
         remote = self._ParseRemote(node)
-        if self._remotes.get(remote.name):
-          raise ManifestParseError(
-              'duplicate remote %s in %s' %
-              (remote.name, self.manifestFile))
-        self._remotes[remote.name] = remote
+        if remote:
+          if remote.name in self._remotes:
+            if remote != self._remotes[remote.name]:
+              raise ManifestParseError(
+                  'remote %s already exists with different attributes' %
+                  (remote.name))
+          else:
+            self._remotes[remote.name] = remote
 
     for node in itertools.chain(*node_list):
       if node.nodeName == 'default':
