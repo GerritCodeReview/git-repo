@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALen///7k\u003d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-13T09:49:41Z",
+      "side": 1,
+      "message": "Exception handling syntax was changed recently.  It should be:\n\n except OSError as e:",
+      "revId": "95fc4d3170a8e9e30037af378a741d74924d8cb6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
