@@ -168,7 +168,7 @@ class GitConfig(object):
       elif old != value:
         self._cache[key] = list(value)
         self._do('--replace-all', name, value[0])
-        for i in xrange(1, len(value)):
+        for i in range(1, len(value)):
           self._do('--add', name, value[i])
 
     elif len(old) != 1 or old[0] != value:

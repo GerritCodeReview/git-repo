@@ -58,7 +58,7 @@ The '%prog' command stages files to prepare the next commit.
       out.header('        %s', 'project')
       out.nl()
 
-      for i in xrange(0, len(all_projects)):
+      for i in range(len(all_projects)):
         p = all_projects[i]
         out.write('%3d:    %s', i + 1, p.relpath + '/')
         out.nl()

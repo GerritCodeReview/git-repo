@@ -606,7 +606,7 @@ def _ParseArguments(args):
   opt = _Options()
   arg = []
 
-  for i in xrange(0, len(args)):
+  for i in range(len(args)):
     a = args[i]
     if a == '-h' or a == '--help':
       opt.help = True
