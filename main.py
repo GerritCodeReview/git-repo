@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 #
 # Copyright (C) 2008 The Android Open Source Project
 #
@@ -14,14 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-magic='--calling-python-from-/bin/sh--'
-"""exec" python -E "$0" "$@" """#$magic"
-if __name__ == '__main__':
-  import sys
-  if sys.argv[-1] == '#%s' % magic:
-    del sys.argv[-1]
-del magic
-
 import getpass
 import imp
 import netrc
@@ -36,7 +28,6 @@ except ImportError:
   import urllib.request
 else:
   # For python2
-  import imp
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
 
