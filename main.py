@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 #
 # Copyright (C) 2008 The Android Open Source Project
 #
@@ -13,14 +13,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-magic='--calling-python-from-/bin/sh--'
-"""exec" python -E "$0" "$@" """#$magic"
-if __name__ == '__main__':
-  import sys
-  if sys.argv[-1] == '#%s' % magic:
-    del sys.argv[-1]
-del magic
 
 import getpass
 import imp
