@@ -218,10 +218,10 @@ Element include
 
 This element provides the capability of including another manifest
 file into the originating manifest.  Normal rules apply for the
-target manifest to include- it must be a usable manifest on it's own.
+target manifest to include - it must be a usable manifest on its own.
 
-Attribute `name`; the manifest to include, specified relative to
-the manifest repositories root.
+Attribute `name`: the manifest to include, specified relative to
+the manifest repository's root.
 
 
 Local Manifests
