@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALmn///+I\u003d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-14T21:24:12Z",
+      "side": 1,
+      "message": "actually I\u0027m not sure if this whole options block is even needed.",
+      "revId": "3794a78b80e8b8894a9707629fd8523547cf5cfa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
