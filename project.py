@@ -360,7 +360,7 @@ class RepoHook(object):
                  '(yes/yes-never-ask-again/NO)? ') % (
                  self._GetMustVerb(), self._script_fullpath)
       response = raw_input(prompt).lower()
-      print
+      print()
 
       # User is doing a one-time approval.
       if response in ('y', 'yes'):
