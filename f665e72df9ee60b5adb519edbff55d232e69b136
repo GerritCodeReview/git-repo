@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALmn////w\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-14T18:00:25Z",
+      "side": 1,
+      "message": "New line missing",
+      "revId": "f665e72df9ee60b5adb519edbff55d232e69b136",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALmn////4\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-14T18:00:25Z",
+      "side": 1,
+      "message": "- string is deprecated\n\n- need a blank line between standard imports and local imports",
+      "revId": "f665e72df9ee60b5adb519edbff55d232e69b136",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALmn////0\u003d",
+        "filename": "subcmds/info.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-14T18:00:25Z",
+      "side": 1,
+      "message": "Redefining built-in \"all\"",
+      "revId": "f665e72df9ee60b5adb519edbff55d232e69b136",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
