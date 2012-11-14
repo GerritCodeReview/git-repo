@@ -66,7 +66,7 @@ class _XmlRemote(object):
     # urljoin will get confused if there is no scheme in the base url
     # ie, if manifestUrl is of the form <hostname:port>
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
-        manifestUrl = 'gopher://' + manifestUrl
+      manifestUrl = 'gopher://' + manifestUrl
     url = urlparse.urljoin(manifestUrl, url)
     return re.sub(r'^gopher://', '', url)
 
@@ -347,24 +347,24 @@ class XmlManifest(object):
     nodes = []
     for node in manifest.childNodes:  # pylint:disable=W0631
                                       # We only get here if manifest is initialised
-        if node.nodeName == 'include':
-            name = self._reqatt(node, 'name')
-            fp = os.path.join(include_root, name)
-            if not os.path.isfile(fp):
-                raise ManifestParseError, \
-                    "include %s doesn't exist or isn't a file" % \
-                    (name,)
-            try:
-                nodes.extend(self._ParseManifestXml(fp, include_root))
-            # should isolate this to the exact exception, but that's
-            # tricky.  actual parsing implementation may vary.
-            except (KeyboardInterrupt, RuntimeError, SystemExit):
-                raise
-            except Exception as e:
-                raise ManifestParseError(
-                    "failed parsing included manifest %s: %s", (name, e))
-        else:
-          nodes.append(node)
+      if node.nodeName == 'include':
+        name = self._reqatt(node, 'name')
+        fp = os.path.join(include_root, name)
+        if not os.path.isfile(fp):
+          raise ManifestParseError, \
+              "include %s doesn't exist or isn't a file" % \
+              (name,)
+        try:
+          nodes.extend(self._ParseManifestXml(fp, include_root))
+        # should isolate this to the exact exception, but that's
+        # tricky.  actual parsing implementation may vary.
+        except (KeyboardInterrupt, RuntimeError, SystemExit):
+          raise
+        except Exception as e:
+          raise ManifestParseError(
+              "failed parsing included manifest %s: %s", (name, e))
+      else:
+        nodes.append(node)
     return nodes
 
   def _ParseManifest(self, node_list):
@@ -402,9 +402,9 @@ class XmlManifest(object):
       if node.nodeName == 'manifest-server':
         url = self._reqatt(node, 'url')
         if self._manifest_server is not None:
-            raise ManifestParseError(
-                'duplicate manifest-server in %s' %
-                (self.manifestFile))
+          raise ManifestParseError(
+              'duplicate manifest-server in %s' %
+              (self.manifestFile))
         self._manifest_server = url
 
     for node in itertools.chain(*node_list):

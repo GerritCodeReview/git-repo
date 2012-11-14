@@ -196,61 +196,61 @@ later is required to fix a server side protocol bug.
                  help=SUPPRESS_HELP)
 
   def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
-      """Main function of the fetch threads when jobs are > 1.
+    """Main function of the fetch threads when jobs are > 1.
 
-      Args:
-        opt: Program options returned from optparse.  See _Options().
-        project: Project object for the project to fetch.
-        lock: Lock for accessing objects that are shared amongst multiple
-            _FetchHelper() threads.
-        fetched: set object that we will add project.gitdir to when we're done
-            (with our lock held).
-        pm: Instance of a Project object.  We will call pm.update() (with our
-            lock held).
-        sem: We'll release() this semaphore when we exit so that another thread
-            can be started up.
-        err_event: We'll set this event in the case of an error (after printing
-            out info about the error).
-      """
-      # We'll set to true once we've locked the lock.
-      did_lock = False
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      project: Project object for the project to fetch.
+      lock: Lock for accessing objects that are shared amongst multiple
+          _FetchHelper() threads.
+      fetched: set object that we will add project.gitdir to when we're done
+          (with our lock held).
+      pm: Instance of a Project object.  We will call pm.update() (with our
+          lock held).
+      sem: We'll release() this semaphore when we exit so that another thread
+          can be started up.
+      err_event: We'll set this event in the case of an error (after printing
+          out info about the error).
+    """
+    # We'll set to true once we've locked the lock.
+    did_lock = False
 
-      # Encapsulate everything in a try/except/finally so that:
-      # - We always set err_event in the case of an exception.
-      # - We always make sure we call sem.release().
-      # - We always make sure we unlock the lock if we locked it.
+    # Encapsulate everything in a try/except/finally so that:
+    # - We always set err_event in the case of an exception.
+    # - We always make sure we call sem.release().
+    # - We always make sure we unlock the lock if we locked it.
+    try:
       try:
-        try:
-          start = time.time()
-          success = project.Sync_NetworkHalf(
-            quiet=opt.quiet,
-            current_branch_only=opt.current_branch_only,
-            clone_bundle=not opt.no_clone_bundle)
-          self._fetch_times.Set(project, time.time() - start)
+        start = time.time()
+        success = project.Sync_NetworkHalf(
+          quiet=opt.quiet,
+          current_branch_only=opt.current_branch_only,
+          clone_bundle=not opt.no_clone_bundle)
+        self._fetch_times.Set(project, time.time() - start)
 
-          # Lock around all the rest of the code, since printing, updating a set
-          # and Progress.update() are not thread safe.
-          lock.acquire()
-          did_lock = True
+        # Lock around all the rest of the code, since printing, updating a set
+        # and Progress.update() are not thread safe.
+        lock.acquire()
+        did_lock = True
 
-          if not success:
-            print >>sys.stderr, 'error: Cannot fetch %s' % project.name
-            if opt.force_broken:
-              print >>sys.stderr, 'warn: --force-broken, continuing to sync'
-            else:
-              raise _FetchError()
+        if not success:
+          print >>sys.stderr, 'error: Cannot fetch %s' % project.name
+          if opt.force_broken:
+            print >>sys.stderr, 'warn: --force-broken, continuing to sync'
+          else:
+            raise _FetchError()
 
-          fetched.add(project.gitdir)
-          pm.update()
-        except _FetchError:
-          err_event.set()
-        except:
-          err_event.set()
-          raise
-      finally:
-        if did_lock:
-          lock.release()
-        sem.release()
+        fetched.add(project.gitdir)
+        pm.update()
+      except _FetchError:
+        err_event.set()
+      except:
+        err_event.set()
+        raise
+    finally:
+      if did_lock:
+        lock.release()
+      sem.release()
 
   def _Fetch(self, projects, opt):
     fetched = set()
@@ -377,34 +377,34 @@ later is required to fix a server side protocol bug.
         if path not in new_project_paths:
           # If the path has already been deleted, we don't need to do it
           if os.path.exists(self.manifest.topdir + '/' + path):
-              project = Project(
-                             manifest = self.manifest,
-                             name = path,
-                             remote = RemoteSpec('origin'),
-                             gitdir = os.path.join(self.manifest.topdir,
-                                                   path, '.git'),
-                             worktree = os.path.join(self.manifest.topdir, path),
-                             relpath = path,
-                             revisionExpr = 'HEAD',
-                             revisionId = None,
-                             groups = None)
+            project = Project(
+                           manifest = self.manifest,
+                           name = path,
+                           remote = RemoteSpec('origin'),
+                           gitdir = os.path.join(self.manifest.topdir,
+                                                 path, '.git'),
+                           worktree = os.path.join(self.manifest.topdir, path),
+                           relpath = path,
+                           revisionExpr = 'HEAD',
+                           revisionId = None,
+                           groups = None)
 
-              if project.IsDirty():
-                print >>sys.stderr, 'error: Cannot remove project "%s": \
+            if project.IsDirty():
+              print >>sys.stderr, 'error: Cannot remove project "%s": \
 uncommitted changes are present' % project.relpath
-                print >>sys.stderr, '       commit changes, then run sync again'
-                return -1
-              else:
-                print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
-                shutil.rmtree(project.worktree)
-                # Try deleting parent subdirs if they are empty
-                project_dir = os.path.dirname(project.worktree)
-                while project_dir != self.manifest.topdir:
-                  try:
-                    os.rmdir(project_dir)
-                  except OSError:
-                    break
-                  project_dir = os.path.dirname(project_dir)
+              print >>sys.stderr, '       commit changes, then run sync again'
+              return -1
+            else:
+              print >>sys.stderr, 'Deleting obsolete path %s' % project.worktree
+              shutil.rmtree(project.worktree)
+              # Try deleting parent subdirs if they are empty
+              project_dir = os.path.dirname(project.worktree)
+              while project_dir != self.manifest.topdir:
+                try:
+                  os.rmdir(project_dir)
+                except OSError:
+                  break
+                project_dir = os.path.dirname(project_dir)
 
     new_project_paths.sort()
     fd = open(file_path, 'w')
