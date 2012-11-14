@@ -275,17 +275,17 @@ class _UserAgentHandler(urllib.request.BaseHandler):
     return req
 
 def _AddPasswordFromUserInput(handler, msg, req):
-    # If repo could not find auth info from netrc, try to get it from user input
-    url = req.get_full_url()
-    user, password = handler.passwd.find_user_password(None, url)
-    if user is None:
-      print(msg)
-      try:
-        user = raw_input('User: ')
-        password = getpass.getpass()
-      except KeyboardInterrupt:
-        return
-      handler.passwd.add_password(None, url, user, password)
+  # If repo could not find auth info from netrc, try to get it from user input
+  url = req.get_full_url()
+  user, password = handler.passwd.find_user_password(None, url)
+  if user is None:
+    print(msg)
+    try:
+      user = raw_input('User: ')
+      password = getpass.getpass()
+    except KeyboardInterrupt:
+      return
+    handler.passwd.add_password(None, url, user, password)
 
 class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):

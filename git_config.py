@@ -303,10 +303,10 @@ class GitConfig(object):
     for line in d.rstrip('\0').split('\0'):  # pylint: disable=W1401
                                              # Backslash is not anomalous
       if '\n' in line:
-          key, val = line.split('\n', 1)
+        key, val = line.split('\n', 1)
       else:
-          key = line
-          val = None
+        key = line
+        val = None
 
       if key in c:
         c[key].append(val)

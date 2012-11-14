@@ -312,23 +312,23 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
         # Check if there are local changes that may have been forgotten
         if branch.project.HasChanges():
-            key = 'review.%s.autoupload' % branch.project.remote.review
-            answer = branch.project.config.GetBoolean(key)
+          key = 'review.%s.autoupload' % branch.project.remote.review
+          answer = branch.project.config.GetBoolean(key)
 
-            # if they want to auto upload, let's not ask because it could be automated
-            if answer is None:
-                sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/N) ')
-                a = sys.stdin.readline().strip().lower()
-                if a not in ('y', 'yes', 't', 'true', 'on'):
-                    print("skipping upload", file=sys.stderr)
-                    branch.uploaded = False
-                    branch.error = 'User aborted'
-                    continue
+          # if they want to auto upload, let's not ask because it could be automated
+          if answer is None:
+            sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/N) ')
+            a = sys.stdin.readline().strip().lower()
+            if a not in ('y', 'yes', 't', 'true', 'on'):
+              print("skipping upload", file=sys.stderr)
+              branch.uploaded = False
+              branch.error = 'User aborted'
+              continue
 
         # Check if topic branches should be sent to the server during upload
         if opt.auto_topic is not True:
-           key = 'review.%s.uploadtopic' % branch.project.remote.review
-           opt.auto_topic = branch.project.config.GetBoolean(key)
+          key = 'review.%s.uploadtopic' % branch.project.remote.review
+          opt.auto_topic = branch.project.config.GetBoolean(key)
 
         branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft)
         branch.uploaded = True
@@ -355,11 +355,11 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       print()
 
     for branch in todo:
-        if branch.uploaded:
-          print('[OK    ] %-15s %s' % (
-                 branch.project.relpath + '/',
-                 branch.name),
-                 file=sys.stderr)
+      if branch.uploaded:
+        print('[OK    ] %-15s %s' % (
+               branch.project.relpath + '/',
+               branch.name),
+               file=sys.stderr)
 
     if have_errors:
       sys.exit(1)

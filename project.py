@@ -585,14 +585,14 @@ class Project(object):
     return self._userident_email
 
   def _LoadUserIdentity(self):
-      u = self.bare_git.var('GIT_COMMITTER_IDENT')
-      m = re.compile("^(.*) <([^>]*)> ").match(u)
-      if m:
-        self._userident_name = m.group(1)
-        self._userident_email = m.group(2)
-      else:
-        self._userident_name = ''
-        self._userident_email = ''
+    u = self.bare_git.var('GIT_COMMITTER_IDENT')
+    m = re.compile("^(.*) <([^>]*)> ").match(u)
+    if m:
+      self._userident_name = m.group(1)
+      self._userident_email = m.group(2)
+    else:
+      self._userident_name = ''
+      self._userident_email = ''
 
   def GetRemote(self, name):
     """Get the configuration for a single remote.
@@ -1381,14 +1381,14 @@ class Project(object):
     tag_name = None
 
     def CheckForSha1():
-        try:
-          # if revision (sha or tag) is not present then following function
-          # throws an error.
-          self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
-          return True
-        except GitError:
-          # There is no such persistent revision. We have to fetch it.
-          return False
+      try:
+        # if revision (sha or tag) is not present then following function
+        # throws an error.
+        self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
+        return True
+      except GitError:
+        # There is no such persistent revision. We have to fetch it.
+        return False
 
     if current_branch_only:
       if ID_RE.match(self.revisionExpr) is not None:

@@ -40,47 +40,47 @@ RESET = "\033[m"  # pylint: disable=W1401
                   # backslash is not anomalous
 
 def is_color(s):
-    return s in COLORS
+  return s in COLORS
 
 def is_attr(s):
-    return s in ATTRS
+  return s in ATTRS
 
 def _Color(fg = None, bg = None, attr = None):
-    fg = COLORS[fg]
-    bg = COLORS[bg]
-    attr = ATTRS[attr]
+  fg = COLORS[fg]
+  bg = COLORS[bg]
+  attr = ATTRS[attr]
 
-    if attr >= 0 or fg >= 0 or bg >= 0:
-      need_sep = False
-      code = "\033["  #pylint: disable=W1401
+  if attr >= 0 or fg >= 0 or bg >= 0:
+    need_sep = False
+    code = "\033["  #pylint: disable=W1401
 
-      if attr >= 0:
-        code += chr(ord('0') + attr)
-        need_sep = True
+    if attr >= 0:
+      code += chr(ord('0') + attr)
+      need_sep = True
 
-      if fg >= 0:
-        if need_sep:
-          code += ';'
-        need_sep = True
+    if fg >= 0:
+      if need_sep:
+        code += ';'
+      need_sep = True
 
-        if fg < 8:
-          code += '3%c' % (ord('0') + fg)
-        else:
-          code += '38;5;%d' % fg
+      if fg < 8:
+        code += '3%c' % (ord('0') + fg)
+      else:
+        code += '38;5;%d' % fg
 
-      if bg >= 0:
-        if need_sep:
-          code += ';'
-        need_sep = True
+    if bg >= 0:
+      if need_sep:
+        code += ';'
+      need_sep = True
 
-        if bg < 8:
-          code += '4%c' % (ord('0') + bg)
-        else:
-          code += '48;5;%d' % bg
-      code += 'm'
-    else:
-      code = ''
-    return code
+      if bg < 8:
+        code += '4%c' % (ord('0') + bg)
+      else:
+        code += '48;5;%d' % bg
+    code += 'm'
+  else:
+    code = ''
+  return code
 
 
 class Coloring(object):
