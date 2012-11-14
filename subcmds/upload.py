@@ -50,7 +50,7 @@ def _SplitEmails(values):
 class Upload(InteractiveCommand):
   common = True
   helpSummary = "Upload changes for code review"
-  helpUsage="""
+  helpUsage = """
 %prog [--re --cc] [<project>]...
 """
   helpDescription = """
@@ -397,7 +397,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       reviewers = _SplitEmails(opt.reviewers)
     if opt.cc:
       cc = _SplitEmails(opt.cc)
-    people = (reviewers,cc)
+    people = (reviewers, cc)
 
     if not pending:
       print("no branches ready for upload", file=sys.stderr)

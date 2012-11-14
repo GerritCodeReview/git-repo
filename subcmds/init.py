@@ -279,14 +279,14 @@ to update the working directory files.
     print()
     print("Testing colorized output (for 'repo diff', 'repo status'):")
 
-    for c in ['black','red','green','yellow','blue','magenta','cyan']:
+    for c in ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan']:
       out.write(' ')
       out.printer(fg=c)(' %-6s ', c)
     out.write(' ')
     out.printer(fg='white', bg='black')(' %s ' % 'white')
     out.nl()
 
-    for c in ['bold','dim','ul','reverse']:
+    for c in ['bold', 'dim', 'ul', 'reverse']:
       out.write(' ')
       out.printer(fg='black', attr=c)(' %-6s ', c)
     out.nl()

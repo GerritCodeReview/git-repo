@@ -556,7 +556,7 @@ class Project(object):
                                '--unmerged',
                                '--ignore-missing',
                                '--refresh')
-    if self.work_git.DiffZ('diff-index','-M','--cached',HEAD):
+    if self.work_git.DiffZ('diff-index', '-M', '--cached', HEAD):
       return True
     if self.work_git.DiffZ('diff-files'):
       return True
@@ -1880,7 +1880,7 @@ class Project(object):
                     self.level = self.level[1:]
 
             info = info[1:].split(' ')
-            info =_Info(path, *info)
+            info = _Info(path, *info)
             if info.status in ('R', 'C'):
               info.src_path = info.path
               info.path = out.next()

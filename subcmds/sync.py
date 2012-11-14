@@ -150,22 +150,22 @@ later is required to fix a server side protocol bug.
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
                  help="continue sync even if a project fails to sync")
-    p.add_option('-l','--local-only',
+    p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
-    p.add_option('-n','--network-only',
+    p.add_option('-n', '--network-only',
                  dest='network_only', action='store_true',
                  help="fetch only, don't update working tree")
-    p.add_option('-d','--detach',
+    p.add_option('-d', '--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
-    p.add_option('-c','--current-branch',
+    p.add_option('-c', '--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current branch from server')
-    p.add_option('-q','--quiet',
+    p.add_option('-q', '--quiet',
                  dest='quiet', action='store_true',
                  help='be more quiet')
-    p.add_option('-j','--jobs',
+    p.add_option('-j', '--jobs',
                  dest='jobs', action='store', type='int',
                  help="projects to fetch simultaneously (default %d)" % self.jobs)
     p.add_option('-m', '--manifest-name',

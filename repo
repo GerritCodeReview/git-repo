@@ -3,8 +3,8 @@
 ## repo default configuration
 ##
 from __future__ import print_function
-REPO_URL='https://gerrit.googlesource.com/git-repo'
-REPO_REV='stable'
+REPO_URL = 'https://gerrit.googlesource.com/git-repo'
+REPO_REV = 'stable'
 
 # Copyright (C) 2008 Google Inc.
 #
@@ -24,7 +24,7 @@ REPO_REV='stable'
 VERSION = (1, 19)
 
 # increment this if the MAINTAINER_KEYS block is modified
-KEYRING_VERSION = (1,1)
+KEYRING_VERSION = (1, 1)
 MAINTAINER_KEYS = """
 
      Repo Maintainer <repo@android.kernel.org>

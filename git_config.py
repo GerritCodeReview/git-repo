@@ -431,7 +431,7 @@ def _open_ssh(host, port=None):
                      '-o','ControlPath %s' % ssh_sock(),
                      host]
     if port is not None:
-      command_base[1:1] = ['-p',str(port)]
+      command_base[1:1] = ['-p', str(port)]
 
     # Since the key wasn't in _master_keys, we think that master isn't running.
     # ...but before actually starting a master, we'll double-check.  This can

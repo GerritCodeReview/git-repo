@@ -33,13 +33,13 @@ makes it available in your project's local working directory.
 """
 
   def _Options(self, p):
-    p.add_option('-c','--cherry-pick',
+    p.add_option('-c', '--cherry-pick',
                  dest='cherrypick', action='store_true',
                  help="cherry-pick instead of checkout")
-    p.add_option('-r','--revert',
+    p.add_option('-r', '--revert',
                  dest='revert', action='store_true',
                  help="revert instead of checkout")
-    p.add_option('-f','--ff-only',
+    p.add_option('-f', '--ff-only',
                  dest='ffonly', action='store_true',
                  help="force fast-forward merge")
 

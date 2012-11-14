@@ -85,7 +85,7 @@ contain a line that matches both expressions:
     g.add_option('--cached',
                  action='callback', callback=carry,
                  help='Search the index, instead of the work tree')
-    g.add_option('-r','--revision',
+    g.add_option('-r', '--revision',
                  dest='revision', action='append', metavar='TREEish',
                  help='Search TREEish, instead of the work tree')
 
@@ -97,7 +97,7 @@ contain a line that matches both expressions:
     g.add_option('-i', '--ignore-case',
                  action='callback', callback=carry,
                  help='Ignore case differences')
-    g.add_option('-a','--text',
+    g.add_option('-a', '--text',
                  action='callback', callback=carry,
                  help="Process binary files as if they were text")
     g.add_option('-I',
@@ -126,7 +126,7 @@ contain a line that matches both expressions:
     g.add_option('--and', '--or', '--not',
                  action='callback', callback=carry,
                  help='Boolean operators to combine patterns')
-    g.add_option('-(','-)',
+    g.add_option('-(', '-)',
                  action='callback', callback=carry,
                  help='Boolean operator grouping')
 
@@ -146,10 +146,10 @@ contain a line that matches both expressions:
                  action='callback', callback=carry,
                  metavar='CONTEXT', type='str',
                  help='Show CONTEXT lines after match')
-    g.add_option('-l','--name-only','--files-with-matches',
+    g.add_option('-l', '--name-only', '--files-with-matches',
                  action='callback', callback=carry,
                  help='Show only file names containing matching lines')
-    g.add_option('-L','--files-without-match',
+    g.add_option('-L', '--files-without-match',
                  action='callback', callback=carry,
                  help='Show only file names not containing matching lines')
 
@@ -158,9 +158,9 @@ contain a line that matches both expressions:
     out = GrepColoring(self.manifest.manifestProject.config)
 
     cmd_argv = ['grep']
-    if out.is_on and git_require((1,6,3)):
+    if out.is_on and git_require((1, 6, 3)):
       cmd_argv.append('--color')
-    cmd_argv.extend(getattr(opt,'cmd_argv',[]))
+    cmd_argv.extend(getattr(opt, 'cmd_argv', []))
 
     if '-e' not in cmd_argv:
       if not args:

@@ -126,7 +126,7 @@ Displays detailed usage information about a command.
 
             p('%s', title)
             self.nl()
-            p('%s', ''.ljust(len(title),section_type[0]))
+            p('%s', ''.ljust(len(title), section_type[0]))
             self.nl()
             continue
 
