@@ -154,7 +154,8 @@ group.add_option('-m', '--manifest-name',
                  help='initial manifest file', metavar='NAME.xml')
 group.add_option('--mirror',
                  dest='mirror', action='store_true',
-                 help='mirror the forrest')
+                 help='create a replica of the remote repositories '
+                      'rather than a client working directory')
 group.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
@@ -225,7 +226,7 @@ def _Init(args):
     except OSError as e:
       print('fatal: cannot make %s directory: %s'
             % (repodir, e.strerror), file=sys.stderr)
-      # Don't faise CloneFailure; that would delete the
+      # Don't raise CloneFailure; that would delete the
       # name. Instead exit immediately.
       #
       sys.exit(1)
