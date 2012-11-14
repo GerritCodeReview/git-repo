@@ -248,7 +248,7 @@ to update the working directory files.
       print ''
       print 'Your identity is: %s <%s>' % (name, email)
       sys.stdout.write('is this correct [y/N]? ')
-      a = sys.stdin.readline().strip()
+      a = sys.stdin.readline().strip().lower()
       if a in ('yes', 'y', 't', 'true'):
         break
 
