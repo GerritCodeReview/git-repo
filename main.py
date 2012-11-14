@@ -131,32 +131,31 @@ class _Repo(object):
       if use_pager:
         RunPager(config)
 
+    start = time.time()
     try:
-      start = time.time()
-      try:
-        result = cmd.Execute(copts, cargs)
-      finally:
-        elapsed = time.time() - start
-        hours, remainder = divmod(elapsed, 3600)
-        minutes, seconds = divmod(remainder, 60)
-        if gopts.time:
-          if hours == 0:
-            print('real\t%dm%.3fs' % (minutes, seconds), file=sys.stderr)
-          else:
-            print('real\t%dh%dm%.3fs' % (hours, minutes, seconds),
-                  file=sys.stderr)
+      result = cmd.Execute(copts, cargs)
     except DownloadError as e:
       print('error: %s' % str(e), file=sys.stderr)
-      return 1
+      result = 1
     except ManifestInvalidRevisionError as e:
       print('error: %s' % str(e), file=sys.stderr)
-      return 1
+      result = 1
     except NoSuchProjectError as e:
       if e.name:
         print('error: project %s not found' % e.name, file=sys.stderr)
       else:
         print('error: no project in current directory', file=sys.stderr)
-      return 1
+      result = 1
+    finally:
+      elapsed = time.time() - start
+      hours, remainder = divmod(elapsed, 3600)
+      minutes, seconds = divmod(remainder, 60)
+      if gopts.time:
+        if hours == 0:
+          print('real\t%dm%.3fs' % (minutes, seconds), file=sys.stderr)
+        else:
+          print('real\t%dh%dm%.3fs' % (hours, minutes, seconds),
+                file=sys.stderr)
 
     return result
 
