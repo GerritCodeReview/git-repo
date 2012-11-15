@@ -141,6 +141,24 @@
       "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///9w\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-15T19:29:09Z",
+      "side": 1,
+      "message": "Do you have a specific command in mind that doesn\u0027t give error output?",
+      "parentUuid": "AAALs3////8\u003d",
+      "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
