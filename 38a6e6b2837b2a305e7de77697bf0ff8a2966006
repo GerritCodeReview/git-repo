@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALnH////k\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-15T00:08:21Z",
+      "side": 1,
+      "message": "I don\u0027t know if spitting out warnings is really that helpful.  Most commands will write to stdout when they error anyway.",
+      "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
