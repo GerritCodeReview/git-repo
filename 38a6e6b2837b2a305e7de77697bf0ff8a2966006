@@ -16,6 +16,24 @@
       "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALnX////0\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2012-11-15T01:28:49Z",
+      "side": 1,
+      "message": "It is mainly setting a correct exit code (and possibly stop iterating prematurely when -e is used) that is the main point of this patch. Adding warnings is a way of making it more user-friendly for those commands that don\u0027t print an easy-to-understand error message.\n\nThe legacy behaviour, which always continues was a problem when the error message could be found hundreds of lines up (outside the scrollback buffer). Sure, repo forall would still return something !\u003d 0, but since the user couldn\u0027t see any error message on the screen, he would assume it exited successfully... Not everyone type \"echo $?\" after each command ;)",
+      "parentUuid": "AAALnH////k\u003d",
+      "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
