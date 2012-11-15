@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "AAALsX////c\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:29:40Z",
+      "side": 1,
+      "message": "Note: this links to issue 17 on the Gerrit tracker, not to the git-repo tracker [1] as I expected it to.\n\nAccording to Shawn it\u0027s not possible to configure it to go to another tracker.  Probably better to change the syntax.\n\n[1] https://code.google.com/p/git-repo/issues/detail?id\u003d17",
+      "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALnH////k\u003d",
         "filename": "subcmds/forall.py",
         "patchSetId": 2
@@ -85,6 +102,24 @@
       "side": 1,
       "message": "Please, thanks.",
       "parentUuid": "AAALsX////k\u003d",
+      "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX///+0\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:29:40Z",
+      "side": 1,
+      "message": "@Victor I\u0027ll take care of this later today; you don\u0027t need to upload a new patch internally.",
+      "parentUuid": "AAALqH///+o\u003d",
       "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
