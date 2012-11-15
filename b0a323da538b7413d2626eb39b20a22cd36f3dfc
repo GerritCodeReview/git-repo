@@ -33,6 +33,142 @@
       "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX////Y\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Copyright header is missing",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX////U\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Imports should be listed in alphabetical order.  Standard imports and local module imports should in separate blocks, separated by a blank line.",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX////Q\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Please add a docstring.",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX////M\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Don\u0027t we need to do:\n\n from __future__ import print_function\n\nat the top of the module?",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX////I\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Missing a period at the end of the last sentence.",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX////E\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Directory is changed but not restored to its original.",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX////A\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Nit: Add a space after the comma.\n\n (head, tail)",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX///+8\u003d",
+        "filename": "subcmds/orphans.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T18:26:21Z",
+      "side": 1,
+      "message": "Space after the comma.",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
