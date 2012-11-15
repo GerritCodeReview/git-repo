@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALqH////U\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-15T17:54:38Z",
+      "side": 1,
+      "message": "You could just add a comment to gerrit instead.",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH////Q\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-15T17:54:38Z",
+      "side": 1,
+      "message": "I agree, this would be better there.",
+      "revId": "b0a323da538b7413d2626eb39b20a22cd36f3dfc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
