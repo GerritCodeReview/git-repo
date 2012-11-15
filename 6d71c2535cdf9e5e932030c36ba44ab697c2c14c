@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALsX///+U\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T19:52:54Z",
+      "side": 1,
+      "message": "Missing space after comma",
+      "revId": "6d71c2535cdf9e5e932030c36ba44ab697c2c14c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX///+Y\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-15T19:52:54Z",
+      "side": 1,
+      "message": "Imports should go at the top",
+      "revId": "6d71c2535cdf9e5e932030c36ba44ab697c2c14c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
