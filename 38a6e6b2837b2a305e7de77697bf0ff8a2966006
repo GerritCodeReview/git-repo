@@ -123,6 +123,24 @@
       "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALs3////8\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2012-11-15T19:27:14Z",
+      "side": 1,
+      "message": "Conley: I\u0027m fine with only keeping -e in this patch set. It makes sense to only done one thing in one commit. But I think we still should keep the warning message on line 289 to explain to the user why we exited prematurely. Is that alright? The condition on line 288 would of course have to be removed.\n\nDavid: Thanks",
+      "parentUuid": "AAALsX///+0\u003d",
+      "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
