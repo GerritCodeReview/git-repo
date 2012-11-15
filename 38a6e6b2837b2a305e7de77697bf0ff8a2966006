@@ -34,6 +34,24 @@
       "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH////c\u003d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-15T17:48:18Z",
+      "side": 1,
+      "message": "Right, I get that the main point is to exit when -e is used, but I don\u0027t think that adding warnings is very helpful, and I\u0027d rather not add too much unnecessary functionality that users will end up relying on.",
+      "parentUuid": "AAALnX////0\u003d",
+      "revId": "38a6e6b2837b2a305e7de77697bf0ff8a2966006",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
