@@ -164,7 +164,8 @@ group.add_option('--depth', type='int', default=None,
                  help='create a shallow clone with given depth; see git clone')
 group.add_option('-g', '--groups',
                  dest='groups', default='default',
-                 help='restrict manifest projects to ones with a specified group',
+                 help='restrict manifest projects to ones with specified '
+                      'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
                  metavar='GROUP')
 group.add_option('-p', '--platform',
                  dest='platform', default="auto",

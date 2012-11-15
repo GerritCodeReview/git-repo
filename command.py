@@ -70,7 +70,7 @@ class Command(object):
 
     groups = mp.config.GetString('manifest.groups')
     if not groups:
-      groups = 'all,-notdefault,platform-' + platform.system().lower()
+      groups = 'default,platform-' + platform.system().lower()
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     if not args:

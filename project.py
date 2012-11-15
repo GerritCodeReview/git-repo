@@ -639,9 +639,14 @@ class Project(object):
        project_groups: "all,group1,group2"
        manifest_groups: "-group1,group2"
        the project will be matched.
+
+       The special manifest group "default" will match any project that
+       does not have the special project group "notdefault"
     """
-    expanded_manifest_groups = manifest_groups or ['all', '-notdefault']
+    expanded_manifest_groups = manifest_groups or ['default']
     expanded_project_groups = ['all'] + (self.groups or [])
+    if not 'notdefault' in expanded_project_groups:
+      expanded_project_groups += ['default']
 
     matched = False
     for group in expanded_manifest_groups:
