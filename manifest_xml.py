@@ -443,9 +443,8 @@ class XmlManifest(object):
         try:
           del self._projects[name]
         except KeyError:
-          raise ManifestParseError(
-              'project %s not found' %
-              (name))
+          raise ManifestParseError('remove-project element specifies non-existent '
+                                   'project: %s' % name)
 
         # If the manifest removes the hooks project, treat it as if it deleted
         # the repo-hooks element too.
