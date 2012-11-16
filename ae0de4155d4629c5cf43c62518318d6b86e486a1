@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALqH///3M\u003d",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T09:53:41Z",
+      "side": 1,
+      "message": "\"ENV_OPTIONS\" should be \"env_options\"",
+      "revId": "ae0de4155d4629c5cf43c62518318d6b86e486a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///3I\u003d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T09:53:41Z",
+      "side": 1,
+      "message": "Should put this in a separate commit?",
+      "revId": "ae0de4155d4629c5cf43c62518318d6b86e486a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
