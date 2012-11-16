@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "AAALqH///1I\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T20:04:15Z",
+      "side": 1,
+      "message": "I get that, but those kind of sanity checks should only be used when running more unpredictable code than this.  Otherwise we would have a check for parameter type at the beginning of every method.",
+      "parentUuid": "AAALsn///+8\u003d",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///2E\u003d",
         "filename": "command.py",
         "patchSetId": 3
@@ -153,6 +171,24 @@
       "side": 1,
       "message": "Yes, this is a limitation of the current implementation.  I\u0027ll look into a way to fix it; maybe it\u0027s possible to use the option\u0027s action and default values to handle this properly.",
       "parentUuid": "AAALqH///10\u003d",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///1E\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T20:04:15Z",
+      "side": 1,
+      "message": "Being set to the default value doesn\u0027t mean that it wasn\u0027t explicitly set.  You might need to check sys.argv.",
+      "parentUuid": "AAALsn///+s\u003d",
       "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
