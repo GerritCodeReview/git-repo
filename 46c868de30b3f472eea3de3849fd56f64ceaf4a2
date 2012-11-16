@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALsX///60\u003d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1901,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T02:25:11Z",
+      "side": 1,
+      "message": "Pass the path as an argument?  Also, shouldn\u0027t it be caught somewhere so repo can exit gracefully?",
+      "revId": "46c868de30b3f472eea3de3849fd56f64ceaf4a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
