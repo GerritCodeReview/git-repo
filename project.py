@@ -30,6 +30,7 @@ from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
 from error import GitError, HookError, UploadError
 from error import ManifestInvalidRevisionError
+from error import NoManifestException
 from trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
@@ -1894,7 +1895,10 @@ class Project(object):
         path = os.path.join(self._project.gitdir, HEAD)
       else:
         path = os.path.join(self._project.worktree, '.git', HEAD)
-      fd = open(path, 'rb')
+      try:
+        fd = open(path, 'rb')
+      except IOError:
+        raise NoManifestException(path)
       try:
         line = fd.read()
       finally:

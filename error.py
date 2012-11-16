@@ -21,6 +21,10 @@ class ManifestInvalidRevisionError(Exception):
   """The revision value in a project is incorrect.
   """
 
+class NoManifestException(Exception):
+  """The required manifest does not exist.
+  """
+
 class EditorError(Exception):
   """Unspecified error from the user's text editor.
   """
