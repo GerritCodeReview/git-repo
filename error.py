@@ -100,3 +100,8 @@ class HookError(Exception):
 
   The common case is that the file wasn't present when we tried to run it.
   """
+
+class RepoInternalError(Exception):
+  """ Thrown when repo encounters an internal error.
+  """
+

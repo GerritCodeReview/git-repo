@@ -37,6 +37,7 @@ from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
+from command import ENV_CONFIG_OPTION_KEY
 from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
@@ -44,6 +45,7 @@ from error import ManifestInvalidRevisionError
 from error import ManifestParseError
 from error import NoSuchProjectError
 from error import RepoChangedException
+from error import RepoInternalError
 from manifest_xml import XmlManifest
 from pager import RunPager
 
@@ -52,6 +54,10 @@ from subcmds import all_commands
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
                  )
+global_options.add_option('--env-config',
+                          dest=ENV_CONFIG_OPTION_KEY, action='store_true',
+                          help='use values from environment variables if available '
+                               'and not given on the command line')
 global_options.add_option('-p', '--paginate',
                           dest='pager', action='store_true',
                           help='display command output in the pager')
@@ -91,6 +97,7 @@ class _Repo(object):
       glob = argv
       name = 'help'
       argv = []
+
     gopts, _gargs = global_options.parse_args(glob)
 
     if gopts.trace:
@@ -119,6 +126,8 @@ class _Repo(object):
       return 1
 
     copts, cargs = cmd.OptionParser.parse_args(argv)
+    if gopts.env_config:
+      copts = cmd.EnvironmentOptions(copts)
 
     if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig
@@ -401,6 +410,8 @@ def _Main(argv):
       print('fatal: cannot restart repo after upgrade', file=sys.stderr)
       print('fatal: %s' % e, file=sys.stderr)
       result = 128
+  except RepoInternalError as rie:
+    print('fatal: internal error: %s' % rie, file=sys.stderr)
 
   sys.exit(result)
 
