@@ -42,6 +42,7 @@ from editor import Editor
 from error import DownloadError
 from error import ManifestInvalidRevisionError
 from error import ManifestParseError
+from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
 from manifest_xml import XmlManifest
@@ -139,6 +140,10 @@ class _Repo(object):
       result = 1
     except ManifestInvalidRevisionError as e:
       print('error: %s' % str(e), file=sys.stderr)
+      result = 1
+    except NoManifestException as e:
+      print('error: manifest required for this command -- please run init',
+            file=sys.stderr)
       result = 1
     except NoSuchProjectError as e:
       if e.name:
