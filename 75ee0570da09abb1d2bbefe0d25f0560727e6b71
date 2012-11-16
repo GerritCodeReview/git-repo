@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "AAALtH////s\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T17:57:39Z",
+      "side": 1,
+      "message": "Where does 50 come from?  65 is the hard coded limit in Gerrit before it warns about too long subject.",
+      "parentUuid": "AAALqH///2w\u003d",
+      "revId": "75ee0570da09abb1d2bbefe0d25f0560727e6b71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///5M\u003d",
         "filename": "main.py",
         "patchSetId": 2
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Is that useful?  The manifest is always in the hidden .repo directory and ideally the user shouldn\u0027t have to pay that too much attention.",
       "parentUuid": "AAALqH///5M\u003d",
+      "revId": "75ee0570da09abb1d2bbefe0d25f0560727e6b71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALtH////o\u003d",
+        "filename": "main.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T17:57:39Z",
+      "side": 1,
+      "message": "OK, but then does it make sense to include the path when the exception is raised in project.py?  When I added that comment there, my intention was to have it printed when the exception is handled.",
+      "parentUuid": "AAALqH///20\u003d",
       "revId": "75ee0570da09abb1d2bbefe0d25f0560727e6b71",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
