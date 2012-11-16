@@ -22,6 +22,7 @@ import sys
 from error import NoSuchProjectError
 from error import InvalidProjectGroupsError
 
+
 class Command(object):
   """Base class for any command line action in repo.
   """
@@ -32,6 +33,27 @@ class Command(object):
 
   def WantPager(self, opt):
     return False
+
+  def ReadEnvironmentOptions(self, opts):
+    """ Set options from environment variables. """
+
+    env_options = self._RegisteredEnvironmentOptions()
+
+    for env_key, opt_key in env_options.items():
+      # Get the user-set option value if any
+      opt_value = getattr(opts, opt_key)
+
+      # If the value is set, it means the user has passed it as a command
+      # line option, and we should use that.  Otherwise we can try to set it
+      # with the value from the corresponding environment variable.
+      if opt_value is not None:
+        continue
+
+      env_value = os.environ.get(env_key)
+      if env_value is not None:
+        setattr(opts, opt_key, env_value)
+
+    return opts
 
   @property
   def OptionParser(self):
@@ -48,6 +70,24 @@ class Command(object):
   def _Options(self, p):
     """Initialize the option parser.
     """
+
+  def _RegisteredEnvironmentOptions(self):
+    """Get options that can be set from environment variables.
+
+    Return a dictionary mapping environment variable name
+    to option key name that it can override.
+
+    Example: {'REPO_MY_OPTION': 'my_option'}
+
+    Will allow the option with key value 'my_option' to be set
+    from the value in the environment variable named 'REPO_MY_OPTION'.
+
+    Note: This does not work properly for options that are explicitly
+    set to None by the user, or options that are defined with a
+    default value other than None.
+
+    """
+    return {}
 
   def Usage(self):
     """Display usage and terminate.

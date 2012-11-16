@@ -120,6 +120,7 @@ class _Repo(object):
       return 1
 
     copts, cargs = cmd.OptionParser.parse_args(argv)
+    copts = cmd.ReadEnvironmentOptions(copts)
 
     if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig
