@@ -1,0 +1,191 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALqH///2A\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "When would this happen?",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///2E\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "consider using env_options.items()",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///1s\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "I\u0027d much prefer you used getattr and setattr instead of __dict__",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///14\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "When would this happen?",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///10\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "What if the value is False and explicitly passed?  I\u0027m not sure what the best way of solving this problem is, but it will need to be solved.",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///1w\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "Don\u0027t do else after you just continued",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///1k\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "I think this code block would be simpler if you wrote it as:\n  env_value \u003d os.environ.get(env_opt)\n  if env_value !\u003d None:\n    setattr(opts, key, env_value)",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///1o\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "I think it\u0027d be better if you used doublequotes like \"%s\", but I don\u0027t think you should print anything in general.  I don\u0027t know of other tools do that.",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///2I\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "Is it common to have two methods named the same except the _ in repo?  it\u0027s a little confusing.",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///1g\u003d",
+        "filename": "error.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "See my other comments on this, but in general I don\u0027t like adding this exception.  It\u0027s too generic and it seems to be thrown in impossible situations (which can sometimes be useful, but not when used as liberally as it seems to be in this change).",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///18\u003d",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-16T19:01:48Z",
+      "side": 1,
+      "message": "Why offer the option?  Don\u0027t most other tools just read the env variables without asking for permission?",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
