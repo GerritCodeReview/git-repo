@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///+8\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "This is a sanity check on the implementation of _EnvironmentOptions in the derived class.  It will help to find problems caused by programming error; it should not happen in production unless changes get submitted without being tested.",
+      "parentUuid": "AAALqH///2A\u003d",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///2E\u003d",
         "filename": "command.py",
         "patchSetId": 3
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///+o\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "Yes, direct access to the __dict__ is a bit of a hack.  I didn\u0027t think to use get/setattr.  Will change it.",
+      "parentUuid": "AAALqH///1s\u003d",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///14\u003d",
         "filename": "command.py",
         "patchSetId": 3
@@ -70,6 +106,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///+4\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "Same as line 47.  Sanity check that the dict contains references to options that are actually defined on the command.",
+      "parentUuid": "AAALqH///14\u003d",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///10\u003d",
         "filename": "command.py",
         "patchSetId": 3
@@ -81,6 +135,24 @@
       "writtenOn": "2012-11-16T19:01:48Z",
       "side": 1,
       "message": "What if the value is False and explicitly passed?  I\u0027m not sure what the best way of solving this problem is, but it will need to be solved.",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsn///+s\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "Yes, this is a limitation of the current implementation.  I\u0027ll look into a way to fix it; maybe it\u0027s possible to use the option\u0027s action and default values to handle this properly.",
+      "parentUuid": "AAALqH///10\u003d",
       "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -138,6 +210,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///+0\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "I thought it would be better to explicitly tell the user that an option is being set from the environment.  Although a user has to explicitly pass the option to enable this, it is possible that they have some environment variable set that they did not know about.",
+      "parentUuid": "AAALqH///1o\u003d",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///2I\u003d",
         "filename": "command.py",
         "patchSetId": 3
@@ -149,6 +239,24 @@
       "writtenOn": "2012-11-16T19:01:48Z",
       "side": 1,
       "message": "Is it common to have two methods named the same except the _ in repo?  it\u0027s a little confusing.",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsn///+w\u003d",
+        "filename": "command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "I\u0027ll change this to make it less confusing.",
+      "parentUuid": "AAALqH///2I\u003d",
       "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -172,6 +280,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///+k\u003d",
+        "filename": "error.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "Having this makes it a lot easier to find problems caused by misuse or bad implementation of the option overriding in the derived classes.\n\nAs I wrote on the other comments, this should only be raised during development.  It should not happen in production unless code has been submitted without testing.",
+      "parentUuid": "AAALqH///1g\u003d",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///18\u003d",
         "filename": "main.py",
         "patchSetId": 3
@@ -183,6 +309,24 @@
       "writtenOn": "2012-11-16T19:01:48Z",
       "side": 1,
       "message": "Why offer the option?  Don\u0027t most other tools just read the env variables without asking for permission?",
+      "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsn///+g\u003d",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-16T19:38:06Z",
+      "side": 1,
+      "message": "I thought we didn\u0027t want to automatically take them, but having discussed this now with Gustaf he says the same as you.\n\nI\u0027ll remove this.",
+      "parentUuid": "AAALqH///18\u003d",
       "revId": "453c0ced7850b4c03abf09a39087d99b8efc0504",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
