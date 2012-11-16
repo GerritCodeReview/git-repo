@@ -118,6 +118,10 @@ to update the working directory files.
                  dest='config_name', action="store_true", default=False,
                  help='Always prompt for name/e-mail')
 
+  def _GetEnvironmentOptions(self):
+    return {'REPO_MANIFEST_URL': 'manifest_url',
+            'REPO_MIRROR_LOCATION': 'reference'}
+
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
     is_new = not m.Exists
