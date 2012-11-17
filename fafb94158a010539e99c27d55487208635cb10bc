@@ -87,6 +87,24 @@
     },
     {
       "key": {
+        "uuid": "AAALqH///y0\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-17T03:25:04Z",
+      "side": 1,
+      "message": "line 60*",
+      "parentUuid": "AAALqH///zA\u003d",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///y8\u003d",
         "filename": "command.py",
         "patchSetId": 5
