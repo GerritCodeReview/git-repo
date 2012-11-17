@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///50\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-17T03:31:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALqH///zI\u003d",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///zM\u003d",
         "filename": "command.py",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2012-11-17T03:23:55Z",
       "side": 1,
       "message": "for env_key, opt_key in env_options.items():",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsn///5w\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-17T03:31:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALqH///zM\u003d",
       "revId": "fafb94158a010539e99c27d55487208635cb10bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///5s\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-17T03:31:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALqH///zQ\u003d",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///zE\u003d",
         "filename": "command.py",
         "patchSetId": 5
@@ -64,6 +118,24 @@
       "writtenOn": "2012-11-17T03:23:55Z",
       "side": 1,
       "message": "Let\u0027s let not wrap this in a try and just let the error get raised.",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsn///5o\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-17T03:31:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALqH///zE\u003d",
       "revId": "fafb94158a010539e99c27d55487208635cb10bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -105,6 +177,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsn///5M\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-17T03:31:55Z",
+      "side": 1,
+      "message": "- Done\n\n- Will add notes on the method below\n\n- I prefer to leave the continue here, then we don\u0027t need to fetch the environment value on every iteration of the loop.",
+      "parentUuid": "AAALqH///zA\u003d",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///y8\u003d",
         "filename": "command.py",
         "patchSetId": 5
@@ -116,6 +206,24 @@
       "writtenOn": "2012-11-17T03:23:55Z",
       "side": 1,
       "message": "Add big warning here telling people not to register anything that defaults to anything other than None.",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsn///5E\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-17T03:31:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALqH///y8\u003d",
       "revId": "fafb94158a010539e99c27d55487208635cb10bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
