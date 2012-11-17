@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALqH///zI\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-17T03:23:55Z",
+      "side": 1,
+      "message": "I still find this a little confusing.  Can we call this one ReadEnvironmentOptions and the other _RegisteredEnvironmentOptions?",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///zM\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-17T03:23:55Z",
+      "side": 1,
+      "message": "for env_key, opt_key in env_options.items():",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///zQ\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-17T03:23:55Z",
+      "side": 1,
+      "message": "tws",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///zE\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-17T03:23:55Z",
+      "side": 1,
+      "message": "Let\u0027s let not wrap this in a try and just let the error get raised.",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///zA\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-17T03:23:55Z",
+      "side": 1,
+      "message": "if value is not None:\n\nAlso add notes about this being a hack and only works with some variables.\n\nAlso, I think it\u0027d make sense at this point just to throw this condition in the next if statement on line 61.",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///y8\u003d",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2012-11-17T03:23:55Z",
+      "side": 1,
+      "message": "Add big warning here telling people not to register anything that defaults to anything other than None.",
+      "revId": "fafb94158a010539e99c27d55487208635cb10bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
