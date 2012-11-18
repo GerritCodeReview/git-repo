@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "AAALqH///xk\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-18T11:02:54Z",
+      "side": 1,
+      "message": "Question on previous patch set is not answered.  Why is changing directory necessary?",
+      "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
