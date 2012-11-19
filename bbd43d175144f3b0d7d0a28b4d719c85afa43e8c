@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsX///6A\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:56:02Z",
+      "side": 1,
+      "message": "Hopefully, new text is better.",
+      "parentUuid": "AAALsX///9Q\u003d",
+      "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALsX///9Y\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2012-11-15T21:43:00Z",
       "side": 1,
       "message": "Is it possible to add an abbreviated option \"-o\"?",
+      "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX///6U\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:56:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALsX///9Y\u003d",
       "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsX///6Y\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:56:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALsX///9U\u003d",
+      "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALsX///9g\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 4
@@ -64,6 +118,24 @@
       "writtenOn": "2012-11-15T21:43:00Z",
       "side": 1,
       "message": "Maybe this text can be improved a bit?  Something like \"Orphans (objects not within a project):\"\n\nAlso, it\u0027s displayed even if there are not any orphans.  It might be good in that case to additionally display \"None\" or something like that, if possible.",
+      "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX///6Q\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:56:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALsX///9g\u003d",
       "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsX///6M\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:56:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALsX///9o\u003d",
+      "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALsX///9k\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 4
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsX///6I\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:56:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALsX///9k\u003d",
+      "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALsX///9c\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 4
@@ -115,6 +223,24 @@
       "writtenOn": "2012-11-15T21:43:00Z",
       "side": 1,
       "message": "Nit: Too many spaces before the \u003d and after the comma.",
+      "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX///6E\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:56:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALsX///9c\u003d",
       "revId": "bbd43d175144f3b0d7d0a28b4d719c85afa43e8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
