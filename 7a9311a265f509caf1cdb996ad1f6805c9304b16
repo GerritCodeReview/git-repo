@@ -16,6 +16,24 @@
       "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALqH///vI\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-19T03:28:03Z",
+      "side": 1,
+      "message": "Since _FindOrphans is now a member of the Status class, it will have access to self.manifest.topdir value.  If it\u0027s possible to pass an absolute path into the glob function, you could use os.path.join to make the path from self.manifest.topdir",
+      "parentUuid": "AAALqH///xk\u003d",
+      "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
