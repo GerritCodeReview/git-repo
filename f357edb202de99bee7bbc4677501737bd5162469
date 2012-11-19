@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAALsX///54\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:54:02Z",
+      "side": 1,
+      "message": "Done.  Also moved StatusColoring closer to use.",
+      "parentUuid": "AAALqH///1Y\u003d",
+      "revId": "f357edb202de99bee7bbc4677501737bd5162469",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///1U\u003d",
         "filename": "subcmds/status.py",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2012-11-16T19:08:56Z",
       "side": 1,
       "message": "Why is changing directories necessary?",
+      "revId": "f357edb202de99bee7bbc4677501737bd5162469",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALsX///58\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-19T01:54:02Z",
+      "side": 1,
+      "message": "glob function used in initial call to _checkdirs and within that function need correct working directory",
+      "parentUuid": "AAALqH///1U\u003d",
       "revId": "f357edb202de99bee7bbc4677501737bd5162469",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
