@@ -104,3 +104,14 @@ class HookError(Exception):
 
   The common case is that the file wasn't present when we tried to run it.
   """
+  pass
+
+class GerritError(Exception):
+  """Unspecified internal error from Gerrit.
+  """
+  def __init__(self, command):
+    super(GerritError, self).__init__()
+    self.command = command
+
+  def __str__(self):
+    return self.command
