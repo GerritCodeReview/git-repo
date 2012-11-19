@@ -186,6 +186,13 @@ class Command(object):
     result.sort(key=_getpath)
     return result
 
+  def GetReviewUrl(self):
+    projects = self.GetProjects("")
+    p = projects[0]
+    r = p.GetRemote('origin')
+    reviewUrl = r.ReviewUrl(p.UserEmail)
+    return reviewUrl
+
 # pylint: disable=W0223
 # Pylint warns that the `InteractiveCommand` and `PagedCommand` classes do not
 # override method `Execute` which is abstract in `Command`.  Since that method

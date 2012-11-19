@@ -14,10 +14,13 @@
 # limitations under the License.
 
 from __future__ import print_function
+import json
 import re
 import sys
 
 from command import Command
+from error import NoSuchProjectError
+from gerrit_command import GerritCommand
 
 CHANGE_RE = re.compile(r'^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$')
 
@@ -25,7 +28,7 @@ class Download(Command):
   common = True
   helpSummary = "Download and checkout a change"
   helpUsage = """
-%prog {project change[/patchset]}...
+%prog {[project] change[/patchset]}...
 """
   helpDescription = """
 The '%prog' command downloads a change from the review system and
@@ -54,7 +57,7 @@ makes it available in your project's local working directory.
       m = CHANGE_RE.match(a)
       if m:
         if not project:
-          self.Usage()
+          project = None
         chg_id = int(m.group(1))
         if m.group(2):
           ps_id = int(m.group(2))
@@ -62,11 +65,30 @@ makes it available in your project's local working directory.
           ps_id = 1
         to_get.append((project, chg_id, ps_id))
       else:
-        project = self.GetProjects([a])[0]
+        try:
+          project = self.GetProjects([a])[0]
+        except NoSuchProjectError:
+          project = None
     return to_get
+
+  def _GetProject(self, change_id):
+    reviewUrl = self.GetReviewUrl()
+    gargs = ['query', '--format=JSON', 'change:%s' % change_id]
+    gc = GerritCommand(reviewUrl, gargs, capture_stdout=True)
+    gc.Wait()
+    try:
+      result = gc.stdout.split('\n')[0]
+      js = json.loads(result)
+      pname = str(js['project'])
+      return self.GetProjects([pname])[0]
+    except:
+      raise NoSuchProjectError()
 
   def Execute(self, opt, args):
     for project, change_id, ps_id in self._ParseChangeIds(args):
+      if project is None:
+        project = self._GetProject(change_id)
+
       dl = project.DownloadPatchSet(change_id, ps_id)
       if not dl:
         print('[%s] change %d/%d not found'
