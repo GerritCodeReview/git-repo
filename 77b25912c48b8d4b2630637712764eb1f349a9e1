@@ -104,6 +104,24 @@
       "revId": "77b25912c48b8d4b2630637712764eb1f349a9e1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALuH///+Y\u003d",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2012-11-20T15:23:02Z",
+      "side": 1,
+      "message": "Yeah, I came up with:\n\n js \u003d json.loads(gc.stdout.split(\u0027\\n\u0027)[0])\n return self.GetProjects([str(js[\u0027project\u0027])])[0]\n\nBut as you said, not very readable. :-/\n\nHow about just removing p and returning self.GetProjects([pname])[0] ?",
+      "parentUuid": "AAALyH////0\u003d",
+      "revId": "77b25912c48b8d4b2630637712764eb1f349a9e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
