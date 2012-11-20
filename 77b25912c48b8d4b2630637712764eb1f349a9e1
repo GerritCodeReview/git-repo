@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAALyH////8\u003d",
+        "filename": "gerrit_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-11-20T07:11:44Z",
+      "side": 1,
+      "message": "The reviewUrl will that is the input to the constructor looks something like this:\nssh://olof.johansson@reviewserver.company.net:29418/platform/abi/cpp\nHowever, to communicate over ssh to the gerrit server I need:\nolof.johansson@reviewserver.company.net and \n29418 separately.\n\nurlparse looks nice. I\u0027ll code something for it.",
+      "parentUuid": "AAALqH///t8\u003d",
+      "revId": "77b25912c48b8d4b2630637712764eb1f349a9e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///t4\u003d",
         "filename": "gerrit_command.py",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "AAALyH////4\u003d",
+        "filename": "gerrit_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-11-20T07:11:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAALqH///t4\u003d",
+      "revId": "77b25912c48b8d4b2630637712764eb1f349a9e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAALqH///t0\u003d",
         "filename": "subcmds/download.py",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2012-11-19T16:42:17Z",
       "side": 1,
       "message": "nit: I would use fewer single-use variables here (result, js, pname, and p are each used only once).\n\nI\u0027m not overly familiar with the repo code base, but from what I\u0027ve seen, the style is typically to have fewer single-use vars.",
+      "revId": "77b25912c48b8d4b2630637712764eb1f349a9e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALyH////0\u003d",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1011693
+      },
+      "writtenOn": "2012-11-20T07:11:44Z",
+      "side": 1,
+      "message": "Not sure how I would go about removing these without making every line an unreadable mess :)",
+      "parentUuid": "AAALqH///t0\u003d",
       "revId": "77b25912c48b8d4b2630637712764eb1f349a9e1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
