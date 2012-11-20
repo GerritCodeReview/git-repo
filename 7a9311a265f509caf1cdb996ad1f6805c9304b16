@@ -34,6 +34,42 @@
       "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALxH////s\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-20T16:11:27Z",
+      "side": 1,
+      "message": "Yes, it looks like glob will take absolute pathname, however I believe this will make overall logic much more complicated.  GetProjects returns values relative to the root and so does glob (once directory is changed), which I find easier to read.",
+      "parentUuid": "AAALqH///vI\u003d",
+      "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAALxH////o\u003d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1011862
+      },
+      "writtenOn": "2012-11-20T16:11:27Z",
+      "side": 1,
+      "message": "Done.  Explanation now present with original question.",
+      "parentUuid": "AAALqH///xk\u003d",
+      "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
