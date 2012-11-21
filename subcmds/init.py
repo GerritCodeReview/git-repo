@@ -180,8 +180,10 @@ to update the working directory files.
       if is_new:
         m.config.SetString('repo.mirror', 'true')
       else:
-        print('fatal: --mirror not supported on existing client',
-              file=sys.stderr)
+        print('fatal: --mirror is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
         sys.exit(1)
 
     if not m.Sync_NetworkHalf(is_new=is_new):
