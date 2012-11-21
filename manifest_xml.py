@@ -118,11 +118,11 @@ class XmlManifest(object):
     self.Override(name)
 
     try:
-      if os.path.exists(self.manifestFile):
+      if os.path.lexists(self.manifestFile):
         os.remove(self.manifestFile)
       os.symlink('manifests/%s' % name, self.manifestFile)
-    except OSError:
-      raise ManifestParseError('cannot link manifest %s' % name)
+    except OSError as e:
+      raise ManifestParseError('cannot link manifest %s: %s' % (name, str(e)))
 
   def _RemoteToXml(self, r, doc, root):
     e = doc.createElement('remote')
