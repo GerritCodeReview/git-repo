@@ -205,7 +205,9 @@ def _Init(args):
     sys.exit(1)
 
   url = opt.repo_url
-  if not url:
+  if url:
+    url = os.path.expanduser(url)
+  else:
     url = REPO_URL
     extra_args.append('--repo-url=%s' % url)
 
