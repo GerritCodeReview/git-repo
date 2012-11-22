@@ -87,6 +87,9 @@ to update the working directory files.
     g.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
+    g.add_option('--local-manifests-dir',
+                 dest='local_manifests_dir',
+                 help='location of local manifests directory', metavar='DIR')
     g.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
@@ -343,6 +346,11 @@ to update the working directory files.
 
     if opt.reference:
       opt.reference = os.path.expanduser(opt.reference)
+
+    # If the user has specified a location for the local manifests,
+    # use that.  Otherwise, use the default location.
+    if opt.local_manifests_dir is not None:
+      self.manifest.localManifestsDir = os.path.expanduser(opt.local_manifests_dir)
 
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
