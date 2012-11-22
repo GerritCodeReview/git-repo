@@ -337,7 +337,7 @@ class XmlManifest(object):
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
         print('warning: %s is deprecated; put local manifests in %s instead'
-              % (LOCAL_MANIFEST_NAME, LOCAL_MANIFESTS_DIR_NAME),
+              % (LOCAL_MANIFEST_NAME, os.path.join(self.repoDir, LOCAL_MANIFESTS_DIR_NAME)),
               file=sys.stderr)
         nodes.append(self._ParseManifestXml(local, self.repodir))
 
