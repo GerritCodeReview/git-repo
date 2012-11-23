@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "AAAL3X///+Y\u003d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011893
+      },
+      "writtenOn": "2012-11-23T10:13:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAL3X///+8\u003d",
+      "revId": "9ff29ce8c7f416397eecab7dc4c801863cc205d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "AAAL3X////E\u003d",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -48,6 +66,42 @@
       "side": 1,
       "message": "For consistency with other error messages please change to:\n\n \u0027cannot link manifest %s: %s\u0027",
       "parentUuid": "AAAL3X////E\u003d",
+      "revId": "9ff29ce8c7f416397eecab7dc4c801863cc205d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAL3X///+g\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1011893
+      },
+      "writtenOn": "2012-11-23T10:13:23Z",
+      "side": 1,
+      "message": "yes, sorry for that, porting typo. It\u0027s done in the new revision",
+      "parentUuid": "AAAL3X////E\u003d",
+      "revId": "9ff29ce8c7f416397eecab7dc4c801863cc205d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "AAAL3X///+c\u003d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1011893
+      },
+      "writtenOn": "2012-11-23T10:13:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "AAAL3X///+4\u003d",
       "revId": "9ff29ce8c7f416397eecab7dc4c801863cc205d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
