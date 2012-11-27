@@ -70,6 +70,23 @@
       "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "L9I5u28I",
+        "filename": "subcmds/status.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-11-27T03:18:02Z",
+      "side": 1,
+      "message": "Is there anything between line 163 and here that can cause the method to fail?  If so it would be better to enclose it all in a `try` block and then put `os.chdir(orig_path)` in the `finally` block.",
+      "revId": "7a9311a265f509caf1cdb996ad1f6805c9304b16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
