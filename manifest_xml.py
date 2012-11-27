@@ -607,6 +607,18 @@ class XmlManifest(object):
     else:
       sync_c = sync_c.lower() in ("yes", "true", "1")
 
+    clone_depth = node.getAttribute('clone-depth')
+    if clone_depth:
+      try:
+        if int(clone_depth) <= 0:
+          raise ManifestParseError, \
+                "clone-depth must be positive integer in %s" % \
+                self.manifestFile
+      except ValueError:
+        raise ManifestParseError, \
+              "invalid clone-depth %s in %s" % \
+              (clone_depth, self.manifestFile)
+
     upstream = node.getAttribute('upstream')
 
     groups = ''
@@ -635,6 +647,7 @@ class XmlManifest(object):
                       rebase = rebase,
                       groups = groups,
                       sync_c = sync_c,
+                      clone_depth = clone_depth,
                       upstream = upstream)
 
     for n in node.childNodes:

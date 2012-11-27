@@ -486,6 +486,7 @@ class Project(object):
                rebase = True,
                groups = None,
                sync_c = False,
+               clone_depth = "",
                upstream = None):
     self.manifest = manifest
     self.name = name
@@ -508,6 +509,7 @@ class Project(object):
     self.rebase = rebase
     self.groups = groups
     self.sync_c = sync_c
+    self.clone_depth = clone_depth
     self.upstream = upstream
 
     self.snapshots = {}
@@ -1458,6 +1460,8 @@ class Project(object):
     # The --depth option only affects the initial fetch; after that we'll do
     # full fetches of changes.
     depth = self.manifest.manifestProject.config.GetString('repo.depth')
+    if self.clone_depth:
+      depth = self.clone_depth
     if depth and initial:
       cmd.append('--depth=%s' % depth)
 
@@ -1514,7 +1518,7 @@ class Project(object):
     return ok
 
   def _ApplyCloneBundle(self, initial=False, quiet=False):
-    if initial and self.manifest.manifestProject.config.GetString('repo.depth'):
+    if initial and (self.manifest.manifestProject.config.GetString('repo.depth') or self.clone_depth):
       return False
 
     remote = self.GetRemote(self.remote.name)
