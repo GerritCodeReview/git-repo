@@ -46,13 +46,14 @@ following DTD:
     <!ATTLIST url              CDATA #REQUIRED>
   
     <!ELEMENT project (annotation?)>
-    <!ATTLIST project name     CDATA #REQUIRED>
-    <!ATTLIST project path     CDATA #IMPLIED>
-    <!ATTLIST project remote   IDREF #IMPLIED>
-    <!ATTLIST project revision CDATA #IMPLIED>
-    <!ATTLIST project groups   CDATA #IMPLIED>
-    <!ATTLIST project sync-c   CDATA #IMPLIED>
-    <!ATTLIST project upstream CDATA #IMPLIED>
+    <!ATTLIST project name        CDATA #REQUIRED>
+    <!ATTLIST project path        CDATA #IMPLIED>
+    <!ATTLIST project remote      IDREF #IMPLIED>
+    <!ATTLIST project revision    CDATA #IMPLIED>
+    <!ATTLIST project groups      CDATA #IMPLIED>
+    <!ATTLIST project sync-c      CDATA #IMPLIED>
+    <!ATTLIST project upstream    CDATA #IMPLIED>
+    <!ATTLIST project clone-depth CDATA #IMPLIED>
 
     <!ELEMENT annotation (EMPTY)>
     <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -206,6 +207,10 @@ whole ref space.
 Attribute `upstream`: Name of the Git branch in which a sha1
 can be found.  Used when syncing a revision locked manifest in
 -c mode to avoid having to sync the entire ref space.
+
+Attribute `clone-depth`: Set the depth to use when fetching this
+project.  If specified, this value will override any value given
+to repo init with the --depth option on the command line.
 
 Element annotation
 ------------------
