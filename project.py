@@ -488,6 +488,7 @@ class Project(object):
                groups = None,
                sync_c = False,
                sync_s = False,
+               clone_depth = "",
                upstream = None,
                parent = None,
                is_derived = False):
@@ -533,6 +534,7 @@ class Project(object):
     self.groups = groups
     self.sync_c = sync_c
     self.sync_s = sync_s
+    self.clone_depth = clone_depth
     self.upstream = upstream
     self.parent = parent
     self.is_derived = is_derived
@@ -1633,6 +1635,8 @@ class Project(object):
     # The --depth option only affects the initial fetch; after that we'll do
     # full fetches of changes.
     depth = self.manifest.manifestProject.config.GetString('repo.depth')
+    if self.clone_depth:
+      depth = self.clone_depth
     if depth and initial:
       cmd.append('--depth=%s' % depth)
 
@@ -1689,7 +1693,7 @@ class Project(object):
     return ok
 
   def _ApplyCloneBundle(self, initial=False, quiet=False):
-    if initial and self.manifest.manifestProject.config.GetString('repo.depth'):
+    if initial and (self.manifest.manifestProject.config.GetString('repo.depth') or self.clone_depth):
       return False
 
     remote = self.GetRemote(self.remote.name)
