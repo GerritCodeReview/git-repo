@@ -52,6 +52,7 @@ following DTD:
     <!ATTLIST project revision CDATA #IMPLIED>
     <!ATTLIST project groups   CDATA #IMPLIED>
     <!ATTLIST project sync-c   CDATA #IMPLIED>
+    <!ATTLIST project upstream CDATA #IMPLIED>
 
     <!ELEMENT annotation (EMPTY)>
     <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -118,6 +119,13 @@ this remote.
 Attribute `revision`: Name of a Git branch (e.g. `master` or
 `refs/heads/master`).  Project elements lacking their own
 revision attribute will use this revision.
+
+Attribute `sync_j`: Number of parallel jobs to use when synching.
+
+Attribute `sync_c`: Set to true to only sync the given Git
+branch (specified in the `revision` attribute) rather than the
+whole ref space.  Project elements lacking a sync_c element of
+their own will use this value.
 
 
 Element manifest-server
@@ -190,6 +198,14 @@ its name:`name` and path:`path`.  E.g. for
 definition is implicitly in the following manifest groups:
 default, name:monkeys, and path:barrel-of.  If you place a project in the
 group "notdefault", it will not be automatically downloaded by repo.
+
+Attribute `sync_c`: Set to true to only sync the given Git
+branch (specified in the `revision` attribute) rather than the
+whole ref space.
+
+Attribute `upstream`: Name of the Git branch in which a sha1
+can be found.  Used when syncing a revision locked manifest in
+-c mode to avoid having to sync the entire ref space.
 
 Element annotation
 ------------------
