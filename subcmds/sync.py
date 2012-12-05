@@ -51,7 +51,7 @@ from main import WrapperModule
 from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
-from error import RepoChangedException, GitError
+from error import RepoChangedException, GitError, ManifestParseError
 from project import SyncBuffer
 from progress import Progress
 
@@ -148,7 +148,10 @@ later is required to fix a server side protocol bug.
 """
 
   def _Options(self, p, show_smart=True):
-    self.jobs = self.manifest.default.sync_j
+    try:
+      self.jobs = self.manifest.default.sync_j
+    except ManifestParseError:
+      self.jobs = 1
 
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
