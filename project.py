@@ -1643,8 +1643,12 @@ class Project(object):
     cmd.append(name)
 
     if not current_branch_only:
-      # Fetch whole repo
-      cmd.append('--tags')
+      # If using depth then we should not get all the tags since they may be outside of the depth.
+      if not depth:
+        # Fetch whole repo
+        cmd.append('--tags')
+      else:
+        cmd.append('--no-tags')
       cmd.append((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*'))
     elif tag_name is not None:
       cmd.append('tag')
