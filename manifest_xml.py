@@ -139,9 +139,8 @@ class XmlManifest(object):
     mp = self.manifestProject
 
     groups = mp.config.GetString('manifest.groups')
-    if not groups:
-      groups = 'all'
-    groups = [x for x in re.split(r'[,\s]+', groups) if x]
+    if groups:
+      groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     doc = xml.dom.minidom.Document()
     root = doc.createElement('manifest')
