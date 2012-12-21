@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "NKfmmFxI",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2012-12-21T00:40:10Z",
+      "side": 1,
+      "message": "Is this the correct author email address?",
+      "revId": "6efa4a55c1cc8cb4fa1e8fc1fcb5d212da8ac7ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
