@@ -16,6 +16,24 @@
       "revId": "6efa4a55c1cc8cb4fa1e8fc1fcb5d212da8ac7ec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "NKfn4V7g",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1010987
+      },
+      "writtenOn": "2012-12-21T18:14:00Z",
+      "side": 1,
+      "message": "yes, it is fine",
+      "parentUuid": "NKfmmFxI",
+      "revId": "6efa4a55c1cc8cb4fa1e8fc1fcb5d212da8ac7ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
