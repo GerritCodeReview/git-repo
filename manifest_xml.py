@@ -82,8 +82,6 @@ class _XmlRemote(object):
   def ToRemoteSpec(self, projectName):
     url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
     remoteName = self.name
-    if self.remoteAlias:
-      remoteName = self.remoteAlias
     return RemoteSpec(remoteName, url, self.reviewUrl)
 
 class XmlManifest(object):
