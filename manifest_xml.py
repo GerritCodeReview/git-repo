@@ -65,12 +65,19 @@ class _XmlRemote(object):
   def _resolveFetchUrl(self):
     url = self.fetchUrl.rstrip('/')
     manifestUrl = self.manifestUrl.rstrip('/')
+    p = manifestUrl.startswith('persistent-http')
+    if p:
+      manifestUrl = manifestUrl[len('persistent-'):]
+
     # urljoin will get confused if there is no scheme in the base url
     # ie, if manifestUrl is of the form <hostname:port>
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
       manifestUrl = 'gopher://' + manifestUrl
     url = urlparse.urljoin(manifestUrl, url)
-    return re.sub(r'^gopher://', '', url)
+    url = re.sub(r'^gopher://', '', url)
+    if p:
+      url = 'persistent-' + url
+    return url
 
   def ToRemoteSpec(self, projectName):
     url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
