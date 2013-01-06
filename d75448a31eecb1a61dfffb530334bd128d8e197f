@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "N1O77-wQ",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-01-06T02:29:55Z",
+      "side": 1,
+      "message": "Can you add a bit more detail in the commit message?  I.e. What error this fixes?",
+      "revId": "d75448a31eecb1a61dfffb530334bd128d8e197f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "N1I72ux4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-01-06T02:29:55Z",
+      "side": 0,
+      "message": "This was working when I tested it on my local env.",
+      "revId": "a9f11b3cb281270084526a490dc61625b51b8192",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
