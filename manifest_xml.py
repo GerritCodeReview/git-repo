@@ -345,6 +345,7 @@ class XmlManifest(object):
       try:
         for local_file in sorted(os.listdir(local_dir)):
           if local_file.endswith('.xml'):
+            local_file = os.path.join(local_dir, local_file)
             try:
               nodes.append(self._ParseManifestXml(local_file, self.repodir))
             except ManifestParseError as e:
