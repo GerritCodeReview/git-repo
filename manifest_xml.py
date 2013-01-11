@@ -352,7 +352,13 @@ class XmlManifest(object):
       except OSError:
         pass
 
-      self._ParseManifest(nodes)
+      try:
+        self._ParseManifest(nodes)
+      except ManifestParseError as e:
+        # There was a problem parsing, unload ourselves in case they catch
+        # this error and try again later, we will show the correct error
+        self._Unload()
+        raise e
 
       if self.IsMirror:
         self._AddMetaProjectMirror(self.repoProject)
