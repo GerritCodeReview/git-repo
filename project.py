@@ -1746,6 +1746,9 @@ class Project(object):
         os.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
+    cookiefile = GitConfig.ForUser().GetString('http.cookiefile')
+    if cookiefile:
+      cmd += ['--cookie', cookiefile]
     cmd += [srcUrl]
 
     if IsTrace():
