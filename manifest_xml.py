@@ -711,7 +711,7 @@ class XmlManifest(object):
     relpath = path
     if self.IsMirror:
       worktree = None
-      gitdir = os.path.join(self.topdir, '%s.git' % name)
+      gitdir = os.path.join(self.topdir, '%s.git' % path)
     else:
       worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects', '%s.git' % path)
