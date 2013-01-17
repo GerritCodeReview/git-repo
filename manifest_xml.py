@@ -596,9 +596,12 @@ class XmlManifest(object):
       worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
 
+    fetch = name
+    if node.hasAttribute('fetch'):
+      fetch = node.getAttribute('fetch')
     project = Project(manifest = self,
                       name = name,
-                      remote = remote.ToRemoteSpec(name),
+                      remote = remote.ToRemoteSpec(fetch),
                       gitdir = gitdir,
                       worktree = worktree,
                       relpath = path,

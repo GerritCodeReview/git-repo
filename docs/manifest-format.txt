@@ -47,6 +47,7 @@ following DTD:
   
     <!ELEMENT project (annotation?)>
     <!ATTLIST project name     CDATA #REQUIRED>
+    <!ATTLIST project fetch    CDATA #IMPLIED>
     <!ATTLIST project path     CDATA #IMPLIED>
     <!ATTLIST project remote   IDREF #IMPLIED>
     <!ATTLIST project revision CDATA #IMPLIED>
@@ -154,19 +155,23 @@ One or more project elements may be specified.  Each element
 describes a single Git repository to be cloned into the repo
 client workspace.
 
-Attribute `name`: A unique name for this project.  The project's
-name is appended onto its remote's fetch URL to generate the actual
-URL to configure the Git remote with.  The URL gets formed as:
+Attribute `name`: A unique name for this project.  The project
+name must match the name Gerrit knows, if Gerrit is being used
+for code review.
 
-  ${remote_fetch}/${project_name}.git
+Attribute `fetch`: An optional override of the URL fragment
+to use for fetching this project; if not specified, it defaults
+to the projects name.
+
+Specifically, a projects fetch URL is appended onto the remotes
+fetch fragment, resulting in the full URL to fetch from.  Literally:
+
+  ${remote_fetch}/${project_fetch}.git
 
 where ${remote_fetch} is the remote's fetch attribute and
-${project_name} is the project's name attribute.  The suffix ".git"
+${project_fetch} is the project's fetch attribute.  The suffix ".git"
 is always appended as repo assumes the upstream is a forest of
 bare Git repositories.
-
-The project name must match the name Gerrit knows, if Gerrit is
-being used for code reviews.
 
 Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project
