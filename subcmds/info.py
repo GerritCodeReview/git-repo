@@ -111,7 +111,7 @@ class Info(PagedCommand):
     if not self.opt.local:
       project.Sync_NetworkHalf(quiet=True, current_branch_only=True)
 
-    logTarget = R_M + self.manifest.default.revisionExpr
+    logTarget = R_M + self.manifest.manifestProject.config.GetBranch("default").merge
 
     bareTmp = project.bare_git._bare
     project.bare_git._bare = False
