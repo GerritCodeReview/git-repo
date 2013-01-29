@@ -333,7 +333,7 @@ to update the working directory files.
 
     current_dir = os.getcwd()
     if current_dir != self.manifest.topdir:
-      print('If this is not the directory in which you want to initialize'
+      print('If this is not the directory in which you want to initialize '
             'repo, please run:')
       print('   rm -r %s/.repo' % self.manifest.topdir)
       print('and try again.')
