@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "O8REszJs",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-01-29T01:07:57Z",
+      "side": 1,
+      "message": "Is this change important enough to increment the version?",
+      "revId": "6497056d12df4722f45cf9d3df2a194eaabb9f5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
