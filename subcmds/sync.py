@@ -177,6 +177,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
+    p.add_option('--local-manifests-dir',
+                 dest='local_manifests_dir',
+                 help='location of local manifests directory', metavar='DIR')
     p.add_option('--no-clone-bundle',
                  dest='no_clone_bundle', action='store_true',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
@@ -455,6 +458,11 @@ later is required to fix a server side protocol bug.
       if None in [opt.manifest_server_username, opt.manifest_server_password]:
         print('error: both -u and -p must be given', file=sys.stderr)
         sys.exit(1)
+
+    # If the user has specified a location for the local manifests,
+    # use that.  Otherwise, use the default location.
+    if opt.local_manifests_dir is not None:
+      self.manifest.localManifestsDir = os.path.expanduser(opt.local_manifests_dir)
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
