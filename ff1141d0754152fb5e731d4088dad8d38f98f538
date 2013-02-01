@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "PJnweeWs",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-02-01T17:20:18Z",
+      "side": 1,
+      "message": "I don\u0027t think we know it\u0027s local at this point, so I ran \n\nos.path.expanduser(\u0027http://somesite.com/~cco3/repo.git\u0027)\n\nto make sure it wouldn\u0027t goof up that URL.  It doesn\u0027t.",
+      "revId": "ff1141d0754152fb5e731d4088dad8d38f98f538",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
