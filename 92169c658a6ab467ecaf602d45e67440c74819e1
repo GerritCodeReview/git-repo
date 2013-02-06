@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "PjJZQbAU",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-06T14:38:15Z",
+      "side": 1,
+      "message": "s/it\u0027s/its",
+      "revId": "92169c658a6ab467ecaf602d45e67440c74819e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "PjLZLaFo",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-06T14:38:15Z",
+      "side": 1,
+      "message": "s/projects/project\u0027s",
+      "revId": "92169c658a6ab467ecaf602d45e67440c74819e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
