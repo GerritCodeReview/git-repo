@@ -83,8 +83,8 @@ change id will be added.
     else:
       print('NOTE: When committing (please see above) and editing the commit'
             'message, please remove the old Change-Id-line and add:')
-      print(self._GetReference(sha1), file=stderr)
-      print(file=stderr)
+      print(self._GetReference(sha1), file=sys.stderr)
+      print(file=sys.stderr)
 
   def _IsChangeId(self, line):
     return CHANGE_ID_RE.match(line)
