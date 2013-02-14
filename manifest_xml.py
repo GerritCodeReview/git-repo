@@ -94,6 +94,7 @@ class XmlManifest(object):
     self.topdir = os.path.dirname(self.repodir)
     self.manifestFile = os.path.join(self.repodir, MANIFEST_FILE_NAME)
     self.globalConfig = GitConfig.ForUser()
+    self.localManifestWarning = False
 
     self.repoProject = MetaProject(self, 'repo',
       gitdir   = os.path.join(repodir, 'repo/.git'),
@@ -335,9 +336,11 @@ class XmlManifest(object):
 
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
-        print('warning: %s is deprecated; put local manifests in `%s` instead'
-              % (LOCAL_MANIFEST_NAME, os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
-              file=sys.stderr)
+        if not self.localManifestWarning:
+          self.localManifestWarning = True
+          print('warning: %s is deprecated; put local manifests in `%s` instead'
+                % (LOCAL_MANIFEST_NAME, os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
+                file=sys.stderr)
         nodes.append(self._ParseManifestXml(local, self.repodir))
 
       local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
