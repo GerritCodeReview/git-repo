@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "P8VEOVD8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4eESJl0",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "P4QEY6nk",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2013-02-14T01:06:26Z",
       "side": 1,
       "message": "s/setup/set up",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P8XELWC4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4QEY6nk",
       "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "P8ZEYvH8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4SEt7pc",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "P4UEq8oA",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2013-02-14T01:06:26Z",
       "side": 1,
       "message": "s/supercede/supersede",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P8bEdwG4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4UEq8oA",
       "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "P8dESRF0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4cFGAlQ",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "P4aEYHn8",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 1
@@ -98,6 +188,24 @@
       "writtenOn": "2013-02-14T01:06:26Z",
       "side": 1,
       "message": "trailing whitespace",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P8fEXSEo",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4aEYHn8",
       "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "P8REtrJc",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4cEdIm4",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "P4aFB-j4",
         "filename": "subcmds/init.py",
         "patchSetId": 1
@@ -138,6 +264,23 @@
     },
     {
       "key": {
+        "uuid": "P8TEqsIA",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "self.repodir does not exist. Not in this class and not in InteractiveCommand, MirrorSafeCommand or Command. \n\nXmlManifest has a self.repodir so repodir should probably be used instead of self.repodir. \n\nI will ask the author.",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "P4WEn9rc",
         "filename": "subcmds/init.py",
         "patchSetId": 1
@@ -149,6 +292,24 @@
       "writtenOn": "2013-02-14T01:06:26Z",
       "side": 1,
       "message": "Since cecd1d864fc3cf02cf50d367111e0d0e173c5dc6 we should use the print() statement:\n\n print(\u0027message.\u0027, file\u003dsys.stderr)",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P8VEnNLc",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1012027
+      },
+      "writtenOn": "2013-02-14T13:06:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "P4WEn9rc",
       "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
