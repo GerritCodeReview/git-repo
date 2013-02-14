@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "P4eESJl0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "s/seperating/separating",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4QEY6nk",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "s/setup/set up",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4SEt7pc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "s/is/are",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4UEq8oA",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "s/supercede/supersede",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4cFGAlQ",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "s/stockhook/stock hook",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4aEYHn8",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "trailing whitespace",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4cEdIm4",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "\"(supplemented)\" is not necessary here.",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4aFB-j4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "The argument `repodir` is not used in the method.  At line 346 `self.repodir` is used.",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "P4WEn9rc",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-14T01:06:26Z",
+      "side": 1,
+      "message": "Since cecd1d864fc3cf02cf50d367111e0d0e173c5dc6 we should use the print() statement:\n\n print(\u0027message.\u0027, file\u003dsys.stderr)",
+      "revId": "d74103cd7b0c001754f1f0de5512a81c31dbeb03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
