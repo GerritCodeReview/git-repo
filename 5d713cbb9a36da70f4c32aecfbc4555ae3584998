@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "P7tSQfFc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-02-15T17:25:28Z",
+      "side": 1,
+      "message": "It might be good to add here that this is for when we run:\n`repo init --reference` to initialize repo from a local mirror.  You can get all those details out of the commit message, but it wasn\u0027t really clear to me until I read the code.",
+      "revId": "5d713cbb9a36da70f4c32aecfbc4555ae3584998",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
