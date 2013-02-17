@@ -679,6 +679,15 @@ class XmlManifest(object):
     else:
       relpath, worktree, gitdir = self.GetSubprojectPaths(parent, path)
 
+    if self.IsMirror:
+      force_path = node.getAttribute('force-path')
+      if not force_path:
+        force_path = False
+      else:
+        force_path = force_path.lower() in ("yes", "true", "1")
+      if force_path:
+        gitdir = os.path.join(self.topdir, '%s.git' % path)
+
     default_groups = ['all', 'name:%s' % name, 'path:%s' % relpath]
     groups.extend(set(default_groups).difference(groups))
 
