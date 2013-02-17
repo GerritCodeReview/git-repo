@@ -84,6 +84,10 @@ to update the working directory files.
                  dest='mirror', action='store_true',
                  help='create a replica of the remote repositories '
                       'rather than a client working directory')
+    g.add_option('--force-path',
+                 dest='force_path', action='store_true',
+                 help="force the 'path' attr's value as the local mirror directory "
+                      "if specified for each manifest project")
     g.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
@@ -179,6 +183,8 @@ to update the working directory files.
     if opt.mirror:
       if is_new:
         m.config.SetString('repo.mirror', 'true')
+        if opt.force_path:
+          m.config.SetString('repo.forcepath', 'true')
       else:
         print('fatal: --mirror is only supported when initializing a new '
               'workspace.', file=sys.stderr)

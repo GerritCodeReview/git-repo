@@ -311,6 +311,10 @@ class XmlManifest(object):
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
+  @property
+  def ForcePath(self):
+    return self.manifestProject.config.GetBoolean('repo.forcepath')
+
   def _Unload(self):
     self._loaded = False
     self._projects = {}
@@ -678,6 +682,9 @@ class XmlManifest(object):
       relpath, worktree, gitdir = self.GetProjectPaths(name, path)
     else:
       relpath, worktree, gitdir = self.GetSubprojectPaths(parent, path)
+
+    if self.IsMirror and self.ForcePath:
+      gitdir = os.path.join(self.topdir, '%s.git' % path)
 
     default_groups = ['all', 'name:%s' % name, 'path:%s' % relpath]
     groups.extend(set(default_groups).difference(groups))
