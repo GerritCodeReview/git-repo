@@ -156,6 +156,10 @@ group.add_option('--mirror',
                  dest='mirror', action='store_true',
                  help='create a replica of the remote repositories '
                       'rather than a client working directory')
+group.add_option('--force-path',
+                 dest='force_path', action='store_true',
+                 help="force the 'path' attr's value as the local mirror directory "
+                      "if specified for each manifest project")
 group.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
