@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "P7tSiPJs",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-18T02:19:39Z",
+      "side": 1,
+      "message": "Simpler:\n\n if node.hasAttribute(\u0027force_path\u0027):\n   if node.getAttribute(\u0027force-path\u0027).lower() in (\"yes\", \"true\", \"1\"):\n     gitdir \u003d os.path.join(self.topdir, \u0027%s.git\u0027 % path)",
+      "revId": "1a73322ea05dc2925b1e3d0bc885d989f6238c05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
