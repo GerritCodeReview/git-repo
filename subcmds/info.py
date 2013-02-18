@@ -48,7 +48,7 @@ class Info(PagedCommand):
     self.headtext = self.out.printer('headtext', fg = 'yellow')
     self.redtext = self.out.printer('redtext', fg = 'red')
     self.sha = self.out.printer("sha", fg = 'yellow')
-    self.text = self.out.printer('text')
+    self.text = self.out.nofmt_printer('text')
     self.dimtext = self.out.printer('dimtext', attr = 'dim')
 
     self.opt = opt
