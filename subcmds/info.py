@@ -138,7 +138,7 @@ class Info(PagedCommand):
     for c in localCommits:
       split = c.split()
       self.sha(split[0] + " ")
-      self.text(" ".join(split[1:]))
+      self.text("%s", " ".join(split[1:]))
       self.out.nl()
 
     self.printSeparator()
@@ -150,7 +150,7 @@ class Info(PagedCommand):
     for c in originCommits:
       split = c.split()
       self.sha(split[0] + " ")
-      self.text(" ".join(split[1:]))
+      self.text("%s", " ".join(split[1:]))
       self.out.nl()
 
   def printCommitOverview(self, args):
@@ -191,5 +191,5 @@ class Info(PagedCommand):
         split = commit.split()
         self.text('{0:38}{1} '.format('','-'))
         self.sha(split[0] + " ")
-        self.text(" ".join(split[1:]))
+        self.text("%s", " ".join(split[1:]))
         self.out.nl()
