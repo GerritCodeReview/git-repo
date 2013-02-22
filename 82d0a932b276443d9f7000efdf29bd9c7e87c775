@@ -16,6 +16,24 @@
       "revId": "82d0a932b276443d9f7000efdf29bd9c7e87c775",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "QO0dkDvo",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1012272
+      },
+      "writtenOn": "2013-02-22T17:22:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "QO4cMRko",
+      "revId": "82d0a932b276443d9f7000efdf29bd9c7e87c775",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
