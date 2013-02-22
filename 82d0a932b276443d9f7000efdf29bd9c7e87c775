@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "QO4cMRko",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-02-22T07:34:32Z",
+      "side": 1,
+      "message": "A bit nit-picky but perhaps this should be \"no_tags\" instead of \"notags\", to be consistent with the rest of the options\u0027 naming.",
+      "revId": "82d0a932b276443d9f7000efdf29bd9c7e87c775",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
