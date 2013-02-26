@@ -126,6 +126,13 @@ class Coloring(object):
       s._out.write(c(fmt, *args))
     return f
 
+  def nofmt_printer(self, opt=None, fg=None, bg=None, attr=None):
+    s = self
+    c = self.nofmt_colorer(opt, fg, bg, attr)
+    def f(fmt):
+      s._out.write(c(fmt))
+    return f
+
   def colorer(self, opt=None, fg=None, bg=None, attr=None):
     if self._on:
       c = self._parse(opt, fg, bg, attr)
@@ -136,6 +143,17 @@ class Coloring(object):
     else:
       def f(fmt, *args):
         return fmt % args
+      return f
+
+  def nofmt_colorer(self, opt=None, fg=None, bg=None, attr=None):
+    if self._on:
+      c = self._parse(opt, fg, bg, attr)
+      def f(fmt):
+        return ''.join([c, fmt, RESET])
+      return f
+    else:
+      def f(fmt):
+        return fmt
       return f
 
   def _parse(self, opt, fg, bg, attr):
