@@ -946,6 +946,11 @@ class Project(object):
                                   dest_branch)
     if auto_topic:
       ref_spec = ref_spec + '/' + branch.name
+    if not url.startswith('ssh://'):
+      rp = ['r=%s' % p for p in people[0]] + \
+           ['cc=%s' % p for p in people[1]]
+      if rp:
+        ref_spec = ref_spec + '%' + ','.join(rp)
     cmd.append(ref_spec)
 
     if GitCommand(self, cmd, bare = True).Wait() != 0:
