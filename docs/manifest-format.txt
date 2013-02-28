@@ -56,6 +56,7 @@ following DTD:
     <!ATTLIST project sync-c   CDATA #IMPLIED>
     <!ATTLIST project sync-s   CDATA #IMPLIED>
     <!ATTLIST project upstream CDATA #IMPLIED>
+    <!ATTLIST project force-path CDATA #IMPLIED>
 
     <!ELEMENT annotation (EMPTY)>
     <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -221,6 +222,12 @@ Attribute `sync_s`: Set to true to also sync sub-projects.
 Attribute `upstream`: Name of the Git branch in which a sha1
 can be found.  Used when syncing a revision locked manifest in
 -c mode to avoid having to sync the entire ref space.
+
+Attribute `force-path`: Set to true to force this project to create the
+local mirror repository according to its `path` attribute (if supplied)
+rather than the `name` attribute.  This attribute only applies to the
+local mirrors syncing, it will be ignored when syncing the projects in a
+client working directory.
 
 Element annotation
 ------------------
