@@ -690,6 +690,10 @@ class XmlManifest(object):
     default_groups = ['all', 'name:%s' % name, 'path:%s' % relpath]
     groups.extend(set(default_groups).difference(groups))
 
+    if self.IsMirror and node.hasAttribute('force-path'):
+      if node.getAttribute('force-path').lower() in ("yes", "true", "1"):
+        gitdir = os.path.join(self.topdir, '%s.git' % path)
+
     project = Project(manifest = self,
                       name = name,
                       remote = remote.ToRemoteSpec(name),

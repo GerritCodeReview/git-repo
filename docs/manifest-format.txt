@@ -57,6 +57,7 @@ following DTD:
     <!ATTLIST project sync-s   CDATA #IMPLIED>
     <!ATTLIST project upstream CDATA #IMPLIED>
     <!ATTLIST project clone-depth CDATA #IMPLIED>
+    <!ATTLIST project force-path CDATA #IMPLIED>
 
     <!ELEMENT annotation (EMPTY)>
     <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -226,6 +227,12 @@ can be found.  Used when syncing a revision locked manifest in
 Attribute `clone-depth`: Set the depth to use when fetching this
 project.  If specified, this value will override any value given
 to repo init with the --depth option on the command line.
+
+Attribute `force-path`: Set to true to force this project to create the
+local mirror repository according to its `path` attribute (if supplied)
+rather than the `name` attribute.  This attribute only applies to the
+local mirrors syncing, it will be ignored when syncing the projects in a
+client working directory.
 
 Element annotation
 ------------------
