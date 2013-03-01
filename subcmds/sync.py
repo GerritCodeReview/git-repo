@@ -24,8 +24,24 @@ import socket
 import subprocess
 import sys
 import time
-import urlparse
-import xmlrpclib
+try:
+  # For python3
+  import urllib.parse
+except ImportError:
+  # For python2
+  import imp
+  import urlparse
+  urllib = imp.new_module('urllib')
+  urllib.parse = urlparse
+try:
+  # For python3
+  import xmlrpc.client
+except ImportError:
+  # For python2
+  import imp
+  import xmlrpclib
+  xmlrpc = imp.new_module('xmlrpc')
+  xmlrpc.client = xmlrpclib
 
 try:
   import threading as _threading
@@ -498,7 +514,7 @@ later is required to fix a server side protocol bug.
                   file=sys.stderr)
           else:
             try:
-              parse_result = urlparse.urlparse(manifest_server)
+              parse_result = urllib.parse(manifest_server)
               if parse_result.hostname:
                 username, _account, password = \
                   info.authenticators(parse_result.hostname)
@@ -516,7 +532,7 @@ later is required to fix a server side protocol bug.
                                                     1)
 
       try:
-        server = xmlrpclib.Server(manifest_server)
+        server = xmlrpc.client.Server(manifest_server)
         if opt.smart_sync:
           p = self.manifest.manifestProject
           b = p.GetBranch(p.CurrentBranch)
@@ -525,8 +541,7 @@ later is required to fix a server side protocol bug.
             branch = branch[len(R_HEADS):]
 
           env = os.environ.copy()
-          if (env.has_key('TARGET_PRODUCT') and
-              env.has_key('TARGET_BUILD_VARIANT')):
+          if 'TARGET_PRODUCT' in env and 'TARGET_BUILD_VARIANT' in env:
             target = '%s-%s' % (env['TARGET_PRODUCT'],
                                 env['TARGET_BUILD_VARIANT'])
             [success, manifest_str] = server.GetApprovedManifest(branch, target)
@@ -554,11 +569,11 @@ later is required to fix a server side protocol bug.
         else:
           print('error: %s' % manifest_str, file=sys.stderr)
           sys.exit(1)
-      except (socket.error, IOError, xmlrpclib.Fault) as e:
+      except (socket.error, IOError, xmlrpc.client.Fault) as e:
         print('error: cannot connect to manifest server %s:\n%s'
               % (self.manifest.manifest_server, e), file=sys.stderr)
         sys.exit(1)
-      except xmlrpclib.ProtocolError as e:
+      except xmlrpc.client.ProtocolError as e:
         print('error: cannot connect to manifest server %s:\n%d %s'
               % (self.manifest.manifest_server, e.errcode, e.errmsg),
               file=sys.stderr)
