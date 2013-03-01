@@ -34,7 +34,7 @@ Displays detailed usage information about a command.
   def _PrintAllCommands(self):
     print('usage: repo COMMAND [ARGS]')
     print('The complete list of recognized repo commands are:')
-    commandNames = self.commands.keys()
+    commandNames = list(self.commands.keys())
     commandNames.sort()
 
     maxlen = 0
@@ -56,7 +56,7 @@ Displays detailed usage information about a command.
     print('usage: repo COMMAND [ARGS]')
     print('The most commonly used repo commands are:')
     commandNames = [name
-                    for name in self.commands.keys()
+                    for name in list(self.commands.keys())
                     if self.commands[name].common]
     commandNames.sort()
 
