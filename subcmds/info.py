@@ -98,7 +98,7 @@ class Info(PagedCommand):
       self.headtext(p.revisionExpr)
       self.out.nl()
 
-      localBranches = p.GetBranches().keys()
+      localBranches = list(p.GetBranches().keys())
       self.heading("Local Branches: ")
       self.redtext(str(len(localBranches)))
       if len(localBranches) > 0:
@@ -163,7 +163,7 @@ class Info(PagedCommand):
     all_branches = []
     for project in self.GetProjects(args):
       br = [project.GetUploadableBranch(x)
-            for x in project.GetBranches().keys()]
+            for x in list(project.GetBranches().keys())]
       br = [x for x in br if x]
       if self.opt.current_branch:
         br = [x for x in br if x.name == project.CurrentBranch]

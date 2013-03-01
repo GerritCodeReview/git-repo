@@ -24,8 +24,16 @@ import socket
 import subprocess
 import sys
 import time
-import urlparse
-import xmlrpclib
+try:
+  import urlparse
+except ImportError:
+  # For python3
+  import urlib.parse as urlparse
+try:
+  import xmlrpclib
+except ImportError:
+  # For python3
+  import xmlrpc.client as xmlrpclib
 
 try:
   import threading as _threading
@@ -520,8 +528,8 @@ later is required to fix a server side protocol bug.
             branch = branch[len(R_HEADS):]
 
           env = os.environ.copy()
-          if (env.has_key('TARGET_PRODUCT') and
-              env.has_key('TARGET_BUILD_VARIANT')):
+          if ('TARGET_PRODUCT' in env and
+              'TARGET_BUILD_VARIANT' in env):
             target = '%s-%s' % (env['TARGET_PRODUCT'],
                                 env['TARGET_BUILD_VARIANT'])
             [success, manifest_str] = server.GetApprovedManifest(branch, target)
@@ -649,7 +657,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = WrapperModule()
   if wrapper.NeedSetupGnuPG():
     wrapper.SetupGnuPG(quiet)
-  for project in manifest.projects.values():
+  for project in list(manifest.projects.values()):
     if project.Exists:
       project.PostRepoUpgrade()
 
