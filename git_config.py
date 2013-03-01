@@ -14,7 +14,11 @@
 # limitations under the License.
 
 from __future__ import print_function
-import cPickle
+try:
+  import cPickle
+except ImportError:
+  # For python3
+  import pickle as Cpickle
 import os
 import re
 import subprocess

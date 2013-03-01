@@ -18,7 +18,11 @@ import itertools
 import os
 import re
 import sys
-import urlparse
+try:
+  import urlparse
+except ImportError:
+  # For python3
+  import urllib.parse as urlparse
 import xml.dom.minidom
 
 from git_config import GitConfig
