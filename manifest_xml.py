@@ -18,7 +18,11 @@ import itertools
 import os
 import re
 import sys
-import urlparse
+try:
+  import urlparse
+except ImportError:
+  # For python3
+  import urllib.parse as urlparse
 import xml.dom.minidom
 
 from git_config import GitConfig
@@ -164,8 +168,7 @@ class XmlManifest(object):
       notice_element.appendChild(doc.createTextNode(indented_notice))
 
     d = self.default
-    sort_remotes = list(self.remotes.keys())
-    sort_remotes.sort()
+    sort_remotes = sorted(self.remotes.keys())
 
     for r in sort_remotes:
       self._RemoteToXml(self.remotes[r], doc, root)
@@ -259,11 +262,10 @@ class XmlManifest(object):
         e.setAttribute('sync-s', 'true')
 
       if p.subprojects:
-        sort_projects = [subp.name for subp in p.subprojects]
-        sort_projects.sort()
+        sort_projects = sorted([subp.name for subp in p.subprojects])
         output_projects(p, e, sort_projects)
 
-    sort_projects = [key for key in self.projects.keys()
+    sort_projects = [key for key in list(self.projects.keys())
                      if not self.projects[key].parent]
     sort_projects.sort()
     output_projects(None, root, sort_projects)
@@ -590,7 +592,7 @@ class XmlManifest(object):
 
     # Figure out minimum indentation, skipping the first line (the same line
     # as the <notice> tag)...
-    minIndent = sys.maxint
+    minIndent = sys.maxsize
     lines = notice.splitlines()
     for line in lines[1:]:
       lstrippedLine = line.lstrip()
