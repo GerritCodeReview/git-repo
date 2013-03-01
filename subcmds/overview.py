@@ -42,7 +42,7 @@ are displayed.
     all_branches = []
     for project in self.GetProjects(args):
       br = [project.GetUploadableBranch(x)
-            for x in project.GetBranches().keys()]
+            for x in project.GetBranches()]
       br = [x for x in br if x]
       if opt.current_branch:
         br = [x for x in br if x.name == project.CurrentBranch]
