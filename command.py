@@ -140,7 +140,7 @@ class Command(object):
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     if not args:
-      all_projects_list = all_projects.values()
+      all_projects_list = list(all_projects.values())
       derived_projects = {}
       for project in all_projects_list:
         if submodules_ok or project.sync_s:

@@ -18,7 +18,15 @@ import itertools
 import os
 import re
 import sys
-import urlparse
+try:
+  # For python3
+  import urllib.parse
+except ImportError:
+  # For python2
+  import imp
+  import urlparse
+  urllib = imp.new_module('urllib')
+  urllib.parse = urlparse
 import xml.dom.minidom
 
 from git_config import GitConfig
@@ -30,8 +38,8 @@ MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
-urlparse.uses_relative.extend(['ssh', 'git'])
-urlparse.uses_netloc.extend(['ssh', 'git'])
+urllib.parse.uses_relative.extend(['ssh', 'git'])
+urllib.parse.uses_netloc.extend(['ssh', 'git'])
 
 class _Default(object):
   """Project defaults within the manifest."""
@@ -73,7 +81,7 @@ class _XmlRemote(object):
     # ie, if manifestUrl is of the form <hostname:port>
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
       manifestUrl = 'gopher://' + manifestUrl
-    url = urlparse.urljoin(manifestUrl, url)
+    url = urllib.parse.urljoin(manifestUrl, url)
     url = re.sub(r'^gopher://', '', url)
     if p:
       url = 'persistent-' + url
@@ -162,10 +170,8 @@ class XmlManifest(object):
       notice_element.appendChild(doc.createTextNode(indented_notice))
 
     d = self.default
-    sort_remotes = list(self.remotes.keys())
-    sort_remotes.sort()
 
-    for r in sort_remotes:
+    for r in sorted(self.remotes):
       self._RemoteToXml(self.remotes[r], doc, root)
     if self.remotes:
       root.appendChild(doc.createTextNode(''))
@@ -257,12 +263,11 @@ class XmlManifest(object):
         e.setAttribute('sync-s', 'true')
 
       if p.subprojects:
-        sort_projects = [subp.name for subp in p.subprojects]
-        sort_projects.sort()
+        sort_projects = list(sorted([subp.name for subp in p.subprojects]))
         output_projects(p, e, sort_projects)
 
-    sort_projects = [key for key in self.projects.keys()
-                     if not self.projects[key].parent]
+    sort_projects = list(sorted([key for key, value in self.projects.items()
+                     if not value.parent]))
     sort_projects.sort()
     output_projects(None, root, sort_projects)
 
@@ -588,7 +593,7 @@ class XmlManifest(object):
 
     # Figure out minimum indentation, skipping the first line (the same line
     # as the <notice> tag)...
-    minIndent = sys.maxint
+    minIndent = sys.maxsize
     lines = notice.splitlines()
     for line in lines[1:]:
       lstrippedLine = line.lstrip()
