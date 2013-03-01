@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "Qe6ctCpw",
+        "filename": "git_config.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-03-01T16:56:05Z",
+      "side": 1,
+      "message": "I\u0027m a fan of just importing pickle (it exists in both py2 and py3)",
+      "revId": "ddd0e82428e4c53fd2e3258f0e1132b510074176",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
