@@ -14,7 +14,11 @@
 # limitations under the License.
 
 from __future__ import print_function
-import cPickle
+try:
+  import cPickle
+except ImportError:
+  # For python3
+  import pickle as cPickle
 import os
 import re
 import subprocess
@@ -223,7 +227,7 @@ class GitConfig(object):
     d = self._section_dict
     if d is None:
       d = {}
-      for name in self._cache.keys():
+      for name in list(self._cache.keys()):
         p = name.split('.')
         if 2 == len(p):
           section = p[0]

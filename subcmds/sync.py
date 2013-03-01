@@ -24,8 +24,16 @@ import socket
 import subprocess
 import sys
 import time
-import urlparse
-import xmlrpclib
+try:
+  import urlparse
+except ImportError:
+  # For python3
+  import urlib.parse as urlparse
+try:
+  import xmlrpclib
+except ImportError:
+  # For python3
+  import xmlrpc.client
 
 try:
   import threading as _threading
@@ -642,7 +650,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = WrapperModule()
   if wrapper.NeedSetupGnuPG():
     wrapper.SetupGnuPG(quiet)
-  for project in manifest.projects.values():
+  for project in list(manifest.projects.values()):
     if project.Exists:
       project.PostRepoUpgrade()
 
