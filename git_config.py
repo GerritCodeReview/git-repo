@@ -14,7 +14,8 @@
 # limitations under the License.
 
 from __future__ import print_function
-import cPickle
+
+import pickle
 import os
 import re
 import subprocess
@@ -223,7 +224,7 @@ class GitConfig(object):
     d = self._section_dict
     if d is None:
       d = {}
-      for name in self._cache.keys():
+      for name in list(self._cache.keys()):
         p = name.split('.')
         if 2 == len(p):
           section = p[0]
@@ -262,7 +263,7 @@ class GitConfig(object):
       Trace(': unpickle %s', self.file)
       fd = open(self._pickle, 'rb')
       try:
-        return cPickle.load(fd)
+        return pickle.load(fd)
       finally:
         fd.close()
     except EOFError:
@@ -271,7 +272,7 @@ class GitConfig(object):
     except IOError:
       os.remove(self._pickle)
       return None
-    except cPickle.PickleError:
+    except pickle.PickleError:
       os.remove(self._pickle)
       return None
 
@@ -279,13 +280,13 @@ class GitConfig(object):
     try:
       fd = open(self._pickle, 'wb')
       try:
-        cPickle.dump(cache, fd, cPickle.HIGHEST_PROTOCOL)
+        pickle.dump(cache, fd, pickle.HIGHEST_PROTOCOL)
       finally:
         fd.close()
     except IOError:
       if os.path.exists(self._pickle):
         os.remove(self._pickle)
-    except cPickle.PickleError:
+    except pickle.PickleError:
       if os.path.exists(self._pickle):
         os.remove(self._pickle)
 
@@ -537,8 +538,8 @@ class Remote(object):
     self.url = self._Get('url')
     self.review = self._Get('review')
     self.projectname = self._Get('projectname')
-    self.fetch = map(RefSpec.FromString,
-                     self._Get('fetch', all_keys=True))
+    self.fetch = list(map(RefSpec.FromString,
+                     self._Get('fetch', all_keys=True)))
     self._review_url = None
 
   def _InsteadOf(self):
@@ -657,7 +658,7 @@ class Remote(object):
     self._Set('url', self.url)
     self._Set('review', self.review)
     self._Set('projectname', self.projectname)
-    self._Set('fetch', map(str, self.fetch))
+    self._Set('fetch', list(map(str, self.fetch)))
 
   def _Set(self, key, value):
     key = 'remote.%s.%s' % (self.name, key)
