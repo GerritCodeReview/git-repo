@@ -18,7 +18,15 @@ import itertools
 import os
 import re
 import sys
-import urlparse
+try:
+  # For python3
+  import urllib.parse
+except ImportError:
+  # For python2
+  import imp
+  import urlparse
+  urllib = imp.new_module('urllib')
+  urllib.parse = urlparse
 import xml.dom.minidom
 
 from git_config import GitConfig
@@ -30,8 +38,8 @@ MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
-urlparse.uses_relative.extend(['ssh', 'git'])
-urlparse.uses_netloc.extend(['ssh', 'git'])
+urllib.parse.uses_relative.extend(['ssh', 'git'])
+urllib.parse.uses_netloc.extend(['ssh', 'git'])
 
 class _Default(object):
   """Project defaults within the manifest."""
@@ -73,7 +81,7 @@ class _XmlRemote(object):
     # ie, if manifestUrl is of the form <hostname:port>
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
       manifestUrl = 'gopher://' + manifestUrl
-    url = urlparse.urljoin(manifestUrl, url)
+    url = urllib.parse.urljoin(manifestUrl, url)
     url = re.sub(r'^gopher://', '', url)
     if p:
       url = 'persistent-' + url
@@ -162,10 +170,8 @@ class XmlManifest(object):
       notice_element.appendChild(doc.createTextNode(indented_notice))
 
     d = self.default
-    sort_remotes = list(self.remotes.keys())
-    sort_remotes.sort()
 
-    for r in sort_remotes:
+    for r in sorted(self.remotes):
       self._RemoteToXml(self.remotes[r], doc, root)
     if self.remotes:
       root.appendChild(doc.createTextNode(''))
@@ -257,12 +263,11 @@ class XmlManifest(object):
         e.setAttribute('sync-s', 'true')
 
       if p.subprojects:
-        sort_projects = [subp.name for subp in p.subprojects]
-        sort_projects.sort()
+        sort_projects = list(sorted([subp.name for subp in p.subprojects]))
         output_projects(p, e, sort_projects)
 
-    sort_projects = [key for key in self.projects.keys()
-                     if not self.projects[key].parent]
+    sort_projects = list(sorted([key for key, value in self.projects.items()
+                     if not value.parent]))
     sort_projects.sort()
     output_projects(None, root, sort_projects)
 
@@ -386,9 +391,8 @@ class XmlManifest(object):
         name = self._reqatt(node, 'name')
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
-          raise ManifestParseError, \
-              "include %s doesn't exist or isn't a file" % \
-              (name,)
+          raise ManifestParseError("include %s doesn't exist or isn't a file"
+              % (name,))
         try:
           nodes.extend(self._ParseManifestXml(fp, include_root))
         # should isolate this to the exact exception, but that's
@@ -494,7 +498,7 @@ class XmlManifest(object):
     name = None
     m_url = m.GetRemote(m.remote.name).url
     if m_url.endswith('/.git'):
-      raise ManifestParseError, 'refusing to mirror %s' % m_url
+      raise ManifestParseError('refusing to mirror %s' % m_url)
 
     if self._default and self._default.remote:
       url = self._default.remote.resolvedFetchUrl
@@ -588,7 +592,7 @@ class XmlManifest(object):
 
     # Figure out minimum indentation, skipping the first line (the same line
     # as the <notice> tag)...
-    minIndent = sys.maxint
+    minIndent = sys.maxsize
     lines = notice.splitlines()
     for line in lines[1:]:
       lstrippedLine = line.lstrip()
@@ -627,25 +631,22 @@ class XmlManifest(object):
     if remote is None:
       remote = self._default.remote
     if remote is None:
-      raise ManifestParseError, \
-            "no remote for project %s within %s" % \
-            (name, self.manifestFile)
+      raise ManifestParseError("no remote for project %s within %s" %
+            (name, self.manifestFile))
 
     revisionExpr = node.getAttribute('revision')
     if not revisionExpr:
       revisionExpr = self._default.revisionExpr
     if not revisionExpr:
-      raise ManifestParseError, \
-            "no revision for project %s within %s" % \
-            (name, self.manifestFile)
+      raise ManifestParseError("no revision for project %s within %s" %
+            (name, self.manifestFile))
 
     path = node.getAttribute('path')
     if not path:
       path = name
     if path.startswith('/'):
-      raise ManifestParseError, \
-            "project %s path cannot be absolute in %s" % \
-            (name, self.manifestFile)
+      raise ManifestParseError("project %s path cannot be absolute in %s" %
+            (name, self.manifestFile))
 
     rebase = node.getAttribute('rebase')
     if not rebase:
@@ -764,7 +765,8 @@ class XmlManifest(object):
     except ManifestParseError:
       keep = "true"
     if keep != "true" and keep != "false":
-      raise ManifestParseError, "optional \"keep\" attribute must be \"true\" or \"false\""
+      raise ManifestParseError('optional "keep" attribute must be '
+            '"true" or "false"')
     project.AddAnnotation(name, value, keep)
 
   def _get_remote(self, node):
@@ -774,9 +776,8 @@ class XmlManifest(object):
 
     v = self._remotes.get(name)
     if not v:
-      raise ManifestParseError, \
-            "remote %s not defined in %s" % \
-            (name, self.manifestFile)
+      raise ManifestParseError("remote %s not defined in %s" %
+            (name, self.manifestFile))
     return v
 
   def _reqatt(self, node, attname):
@@ -785,7 +786,6 @@ class XmlManifest(object):
     """
     v = node.getAttribute(attname)
     if not v:
-      raise ManifestParseError, \
-            "no %s in <%s> within %s" % \
-            (attname, node.nodeName, self.manifestFile)
+      raise ManifestParseError("no %s in <%s> within %s" %
+            (attname, node.nodeName, self.manifestFile))
     return v
