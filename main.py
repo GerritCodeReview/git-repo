@@ -286,7 +286,7 @@ def _AddPasswordFromUserInput(handler, msg, req):
   if user is None:
     print(msg)
     try:
-      user = raw_input('User: ')
+      user = eval(input('User: '))
       password = getpass.getpass()
     except KeyboardInterrupt:
       return

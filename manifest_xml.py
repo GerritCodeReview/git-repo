@@ -18,7 +18,11 @@ import itertools
 import os
 import re
 import sys
-import urlparse
+try:
+  import urlparse
+except ImportError:
+  # For python3
+  import urllib.parse as urlparse
 import xml.dom.minidom
 
 from git_config import GitConfig
@@ -262,7 +266,7 @@ class XmlManifest(object):
         sort_projects.sort()
         output_projects(p, e, sort_projects)
 
-    sort_projects = [key for key in self.projects.keys()
+    sort_projects = [key for key in list(self.projects.keys())
                      if not self.projects[key].parent]
     sort_projects.sort()
     output_projects(None, root, sort_projects)
