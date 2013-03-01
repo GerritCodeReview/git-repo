@@ -24,7 +24,11 @@ import glob
 import itertools
 import os
 import sys
-import StringIO
+try:
+  import StringIO
+except ImportError:
+  # For python3
+  import io as StringIO
 
 from color import Coloring
 
