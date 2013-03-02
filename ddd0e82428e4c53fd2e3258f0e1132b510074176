@@ -16,6 +16,24 @@
       "revId": "ddd0e82428e4c53fd2e3258f0e1132b510074176",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "QstDu-EI",
+        "filename": "git_config.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-03-02T13:50:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "Qe6ctCpw",
+      "revId": "ddd0e82428e4c53fd2e3258f0e1132b510074176",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
