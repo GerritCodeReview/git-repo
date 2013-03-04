@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "QsvAaIHw",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-04T05:01:38Z",
+      "side": 1,
+      "message": "Does this work?  xmlrpclib is explicitly referenced in a few places later.",
+      "revId": "925e768ca88185d40d08ad723367f29649e8fae0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "QspAPFDk",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-04T05:01:38Z",
+      "side": 1,
+      "message": "Here.",
+      "revId": "925e768ca88185d40d08ad723367f29649e8fae0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "QsrAUmE0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-04T05:01:38Z",
+      "side": 1,
+      "message": "Here.",
+      "revId": "925e768ca88185d40d08ad723367f29649e8fae0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "QslAqDI0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-04T05:01:38Z",
+      "side": 1,
+      "message": "And here.",
+      "revId": "925e768ca88185d40d08ad723367f29649e8fae0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
