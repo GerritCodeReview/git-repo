@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "QtkwDXxs",
+        "filename": "subcmds/__init__.py",
+        "patchSetId": 13
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-03-04T15:42:03Z",
+      "side": 1,
+      "message": "This is what\u0027s preventing it from running with python3.\ntype(name) is \u003ctype \u0027str\u0027\u003e in python2, but \u003cclass \u0027str\u0027\u003e in python3, which makes getattr() raise an AttributeError",
+      "revId": "0d373eef16f2865aef3f18662ee91e2e1adfd0df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
