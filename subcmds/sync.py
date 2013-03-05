@@ -406,7 +406,7 @@ later is required to fix a server side protocol bug.
                            groups = None)
 
             if project.IsDirty():
-              print('error: Cannot remove project "%s": uncommitted changes'
+              print('error: Cannot remove project "%s": uncommitted changes '
                     'are present' % project.relpath, file=sys.stderr)
               print('       commit changes, then run sync again',
                     file=sys.stderr)
@@ -466,7 +466,7 @@ later is required to fix a server side protocol bug.
 
     if opt.smart_sync or opt.smart_tag:
       if not self.manifest.manifest_server:
-        print('error: cannot smart sync: no manifest server defined in'
+        print('error: cannot smart sync: no manifest server defined in '
               'manifest', file=sys.stderr)
         sys.exit(1)
 

@@ -27,11 +27,11 @@ UNUSUAL_COMMIT_THRESHOLD = 5
 
 def _ConfirmManyUploads(multiple_branches=False):
   if multiple_branches:
-    print('ATTENTION: One or more branches has an unusually high number'
+    print('ATTENTION: One or more branches has an unusually high number '
           'of commits.')
   else:
     print('ATTENTION: You are uploading an unusually high number of commits.')
-  print('YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across'
+  print('YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across '
         'branches?)')
   answer = raw_input("If you are sure you intend to do this, type 'yes': ").strip()
   return answer == "yes"
