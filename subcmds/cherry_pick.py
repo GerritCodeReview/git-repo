@@ -81,7 +81,7 @@ change id will be added.
         sys.exit(1)
 
     else:
-      print('NOTE: When committing (please see above) and editing the commit'
+      print('NOTE: When committing (please see above) and editing the commit '
             'message, please remove the old Change-Id-line and add:')
       print(self._GetReference(sha1), file=sys.stderr)
       print(file=sys.stderr)

@@ -49,7 +49,7 @@ Displays detailed usage information about a command.
       except AttributeError:
         summary = ''
       print(fmt % (name, summary))
-    print("See 'repo help <command>' for more information on a"
+    print("See 'repo help <command>' for more information on a "
           'specific command.')
 
   def _PrintCommonCommands(self):

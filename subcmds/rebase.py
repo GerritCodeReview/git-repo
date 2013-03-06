@@ -68,7 +68,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       cb = project.CurrentBranch
       if not cb:
         if one_project:
-          print("error: project %s has a detatched HEAD" % project.relpath,
+          print("error: project %s has a detached HEAD" % project.relpath,
                 file=sys.stderr)
           return -1
         # ignore branches with detatched HEADs
