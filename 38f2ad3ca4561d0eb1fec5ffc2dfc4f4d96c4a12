@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "Q.ggDxxs",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-06T02:15:43Z",
+      "side": 1,
+      "message": "s/info/init",
+      "revId": "38f2ad3ca4561d0eb1fec5ffc2dfc4f4d96c4a12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Q.uj9k-Y",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-06T02:15:43Z",
+      "side": 1,
+      "message": "This causes an exception if the workspace was initialised without specifying any groups:\n\n $ repo info\n Manifest branch: master\n Manifest merge branch: master\n Manifest groups: Traceback (most recent call last):\n   File \"/home/work/temp/test-repo-sync/.repo/repo/main.py\", line 414, in \u003cmodule\u003e\n     _Main(sys.argv[1:])\n   File \"/home/work/temp/test-repo-sync/.repo/repo/main.py\", line 390, in _Main\n     result \u003d repo._Run(argv) or 0\n   File \"/home/work/temp/test-repo-sync/.repo/repo/main.py\", line 138, in _Run\n     result \u003d cmd.Execute(copts, cargs)\n   File \"/home/work/temp/test-repo-sync/.repo/repo/subcmds/info.py\", line 67, in Execute\n     self.headtext(manifestGroups)\n   File \"/home/work/temp/test-repo-sync/.repo/repo/color.py\", line 126, in f\n     s._out.write(c(fmt, *args))\n   File \"/home/work/temp/test-repo-sync/.repo/repo/color.py\", line 140, in f\n     output \u003d fmt % args\n TypeError: unsupported operand type(s) for %: \u0027NoneType\u0027 and \u0027tuple\u0027",
+      "revId": "38f2ad3ca4561d0eb1fec5ffc2dfc4f4d96c4a12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
