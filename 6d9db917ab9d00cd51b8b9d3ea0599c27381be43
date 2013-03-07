@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "RL5MknL4",
+        "filename": ".gitignore",
+        "patchSetId": 3
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-03-07T17:43:23Z",
+      "side": 1,
+      "message": "this file only occurs once, so it should be prefixed with \"/\", sorry I didn\u0027t catch that before.",
+      "revId": "6d9db917ab9d00cd51b8b9d3ea0599c27381be43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
