@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "RFkzz-yw",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-07T01:24:25Z",
+      "side": 1,
+      "message": "This sentence is a bit ambiguous.  The user passes --groups to the repo init command; this reads as though the user is passing it to repo info.",
+      "revId": "44f30bbed40ff08fc182c82b6ed9e6fee6763e39",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "RFmzuu0Q",
+        "filename": "subcmds/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-03-07T01:24:25Z",
+      "side": 1,
+      "message": "I wonder if it would be better to have the manifest set this default value.  If the defaults change later, then it won\u0027t need to be changed in more than one place.",
+      "revId": "44f30bbed40ff08fc182c82b6ed9e6fee6763e39",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
