@@ -372,6 +372,13 @@ later is required to fix a server side protocol bug.
       print('\nerror: Exited sync due to gc errors', file=sys.stderr)
       sys.exit(1)
 
+  def _ReloadManifest(self, manifest_name=None):
+    if manifest_name:
+      # Override calls _Unload already
+      self.manifest.Override(manifest_name)
+    else:
+      self.manifest._Unload()
+
   def UpdateProjectList(self):
     new_project_paths = []
     for project in self.GetProjects(None, missing_ok=True):
@@ -571,7 +578,7 @@ later is required to fix a server side protocol bug.
       mp.Sync_LocalHalf(syncbuf)
       if not syncbuf.Finish():
         sys.exit(1)
-      self.manifest._Unload()
+      self._ReloadManifest(opt.manifest_name)
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
     all_projects = self.GetProjects(args,
@@ -596,7 +603,7 @@ later is required to fix a server side protocol bug.
       # Iteratively fetch missing and/or nested unregistered submodules
       previously_missing_set = set()
       while True:
-        self.manifest._Unload()
+        self._ReloadManifest(opt.manifest_name)
         all_projects = self.GetProjects(args,
                                         missing_ok=True,
                                         submodules_ok=opt.fetch_submodules)
