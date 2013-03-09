@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "RVE5kU-g",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-03-09T00:07:39Z",
+      "side": 1,
+      "message": "would it make more sense to just pass this parameter to _Reload instead of making it a member of the class (especially since you aren\u0027t declaring this in the init)?  I would just make Reload always take a manifest_name parameter that defaults to None.  opt.manifest_name is None when no flag is passed by the user, so you can just pass it directly when calling _Reload.\n\nThat\u0027s my only comment.  Other than that it looks fine.",
+      "revId": "3eed519af70d4a804b85953b0f5b89ae9b27b390",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
