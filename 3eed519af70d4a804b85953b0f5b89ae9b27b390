@@ -16,6 +16,24 @@
       "revId": "3eed519af70d4a804b85953b0f5b89ae9b27b390",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "RVG6Ur4c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1012342
+      },
+      "writtenOn": "2013-03-09T00:20:34Z",
+      "side": 1,
+      "message": "Good idea. I hadn\u0027t noticed that opt was in scope everywhere I was calling _ReloadManifest. Done.",
+      "parentUuid": "RVE5kU-g",
+      "revId": "3eed519af70d4a804b85953b0f5b89ae9b27b390",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
