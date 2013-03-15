@@ -42,9 +42,13 @@ class Forall(Command, MirrorSafeCommand):
   helpSummary = "Run a shell command in each project"
   helpUsage = """
 %prog [<project>...] -c <command> [<arg>...]
+%prog -r str1 [str2] ... -c <command> [<arg>...]"
 """
   helpDescription = """
 Executes the same shell command in each project.
+
+The -r option allows running the command only on projects matching
+regex or wildcard expression.
 
 Output Formatting
 -----------------
@@ -103,6 +107,9 @@ without iterating through the remaining projects.
       setattr(parser.values, option.dest, list(parser.rargs))
       while parser.rargs:
         del parser.rargs[0]
+    p.add_option('-r', '--regex',
+                 dest='regex', action='store_true',
+                 help="Execute the command only on projects matching regex or wildcard expression")
     p.add_option('-c', '--command',
                  help='Command (and arguments) to execute',
                  dest='command',
@@ -166,7 +173,12 @@ without iterating through the remaining projects.
     rc = 0
     first = True
 
-    for project in self.GetProjects(args):
+    if not opt.regex:
+      projects = self.GetProjects(args)
+    else:
+      projects = self.FindProjects(args)
+
+    for project in projects:
       env = os.environ.copy()
       def setenv(name, val):
         if val is None:

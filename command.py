@@ -186,6 +186,17 @@ class Command(object):
     result.sort(key=_getpath)
     return result
 
+  def FindProjects(self, args):
+    result = []
+    for project in self.GetProjects(''):
+      for arg in args:
+        pattern = re.compile(r'%s' % arg, re.IGNORECASE)
+        if pattern.search(project.name) or pattern.search(project.relpath):
+          result.append(project)
+          break
+    result.sort(key=lambda project: project.relpath)
+    return result
+
 # pylint: disable=W0223
 # Pylint warns that the `InteractiveCommand` and `PagedCommand` classes do not
 # override method `Execute` which is abstract in `Command`.  Since that method
