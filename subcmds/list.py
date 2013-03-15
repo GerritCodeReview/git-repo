@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from __future__ import print_function
-import re
 
 from command import Command, MirrorSafeCommand
 
@@ -66,14 +65,3 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
 
     lines.sort()
     print('\n'.join(lines))
-
-  def FindProjects(self, args):
-    result = []
-    for project in self.GetProjects(''):
-      for arg in args:
-        pattern = re.compile(r'%s' % arg, re.IGNORECASE)
-        if pattern.search(project.name) or pattern.search(project.relpath):
-          result.append(project)
-          break
-    result.sort(key=lambda project: project.relpath)
-    return result
