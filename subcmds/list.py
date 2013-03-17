@@ -38,6 +38,12 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
     p.add_option('-f', '--fullpath',
                  dest='fullpath', action='store_true',
                  help="Display the full work tree path instead of the relative path")
+    p.add_option('-n', '--name-only',
+                 dest='name', action='store_true',
+                 help="Display only the name of the repository")
+    p.add_option('-p', '--path-only',
+                 dest='path', action='store_true',
+                 help="Display only the path of the repository")
 
   def Execute(self, opt, args):
     """List all projects and the associated directories.
@@ -62,7 +68,12 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
 
     lines = []
     for project in projects:
-      lines.append("%s : %s" % (_getpath(project), project.name))
+      if opt.name and not opt.path:
+        lines.append("%s" % ( project.name))
+      elif opt.path and not opt.name:
+        lines.append("%s" % (_getpath(project)))
+      else:
+        lines.append("%s : %s" % (_getpath(project), project.name))
 
     lines.sort()
     print('\n'.join(lines))
