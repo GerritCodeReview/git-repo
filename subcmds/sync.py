@@ -545,7 +545,8 @@ later is required to fix a server side protocol bug.
             print('error: cannot write manifest to %s' % manifest_path,
                   file=sys.stderr)
             sys.exit(1)
-          self.manifest.Override(manifest_name)
+          opt.manifest_name = manifest_name
+          self._ReloadManifest(opt.manifest_name)
         else:
           print('error: %s' % manifest_str, file=sys.stderr)
           sys.exit(1)
