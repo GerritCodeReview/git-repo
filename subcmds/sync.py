@@ -526,6 +526,7 @@ later is required to fix a server side protocol bug.
                                                     (username, password),
                                                     1)
 
+      manifest_name = opt.manifest_name
       try:
         server = xmlrpc.client.Server(manifest_server)
         if opt.smart_sync:
@@ -560,7 +561,7 @@ later is required to fix a server side protocol bug.
             print('error: cannot write manifest to %s' % manifest_path,
                   file=sys.stderr)
             sys.exit(1)
-          self.manifest.Override(manifest_name)
+          self._ReloadManifest(manifest_name)
         else:
           print('error: %s' % manifest_str, file=sys.stderr)
           sys.exit(1)
@@ -593,7 +594,7 @@ later is required to fix a server side protocol bug.
       mp.Sync_LocalHalf(syncbuf)
       if not syncbuf.Finish():
         sys.exit(1)
-      self._ReloadManifest(opt.manifest_name)
+      self._ReloadManifest(manifest_name)
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
     all_projects = self.GetProjects(args,
@@ -618,7 +619,7 @@ later is required to fix a server side protocol bug.
       # Iteratively fetch missing and/or nested unregistered submodules
       previously_missing_set = set()
       while True:
-        self._ReloadManifest(opt.manifest_name)
+        self._ReloadManifest(manifest_name)
         all_projects = self.GetProjects(args,
                                         missing_ok=True,
                                         submodules_ok=opt.fetch_submodules)
