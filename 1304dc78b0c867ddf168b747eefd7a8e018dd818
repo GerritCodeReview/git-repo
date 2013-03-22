@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "SgALtKkg",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-03-22T15:05:49Z",
+      "side": 1,
+      "message": "Why is it necessary to change the option?  Generally, modifying any members of opt should be avoided.",
+      "revId": "1304dc78b0c867ddf168b747eefd7a8e018dd818",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
