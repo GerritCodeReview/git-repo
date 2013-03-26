@@ -16,6 +16,41 @@
       "revId": "1304dc78b0c867ddf168b747eefd7a8e018dd818",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "SmckYcYQ",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2013-03-26T09:52:17Z",
+      "side": 1,
+      "message": "It\u0027s needed because it will be used ... (scroll down)",
+      "parentUuid": "SgALtKkg",
+      "revId": "1304dc78b0c867ddf168b747eefd7a8e018dd818",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Sqdns804",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 606,
+      "author": {
+        "id": 1003152
+      },
+      "writtenOn": "2013-03-26T09:52:17Z",
+      "side": 1,
+      "message": "... here. This will reload the manifest, and if someone used \"repo sync -t VERSION\" then that action will be undone by this line, which reloads \"default.xml\" (or whatever they specified with repo init -m foo.xml\".",
+      "revId": "1304dc78b0c867ddf168b747eefd7a8e018dd818",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
