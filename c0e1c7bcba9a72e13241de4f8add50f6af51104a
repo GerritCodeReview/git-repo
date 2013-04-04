@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "S8JIkPI0",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-04T23:19:39Z",
+      "side": 1,
+      "message": "\u003e I\u0027m not 100% convinced the flag should always override the xml attribute\n\nThe XML attribute overrides the flag (given to init).\n\nIf you have a project that specifies depth 1 in the XML, and then init with depth 3, all projects will be cloned with depth 3 except the one that specifies 1.",
+      "parentUuid": "S8JLBnHo",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "S8FLZ9G8",
         "filename": "manifest_xml.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2013-04-04T16:37:32Z",
       "side": 1,
       "message": "I think it makes more sense to actually convert clone_depth here and pass it in to Project as an int.\n\nAlso, then you can just say \"if clone_depth \u003c 1: raise ValueError\" and you only have to raise the ManifestParseError once in the except clause (no reason the message can\u0027t be the same for both invalid types of values).  Just a suggestion.",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "S7fUcmCU",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-04T23:19:39Z",
+      "side": 1,
+      "message": "Even if it\u0027s actually converted, we still need two raises. \n\n try:\n   clone_depth \u003d int(clone_depth)\n   if clone_depth \u003c\u003d 0:\n     raise ManifestParseError(...)\n except ValueError:\n   raise ManifestParseError(...)",
+      "parentUuid": "S8FLZ9G8",
       "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "S7RUS9A4",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-04T23:19:39Z",
+      "side": 1,
+      "message": "Yes, I\u0027ll change that.",
+      "parentUuid": "S7ZX2BMk",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "S8HLW.EA",
         "filename": "project.py",
         "patchSetId": 4
@@ -64,6 +118,24 @@
       "writtenOn": "2013-04-04T16:37:32Z",
       "side": 1,
       "message": "Personally, I would just resolve the actual clone_depth here.\n\nself.clone_depth \u003d clone_depth or self.manifest.manifestProject.config.GetString(\u0027repo.depth\u0027)\n\nThen, of course, you would need to change some of the code that uses that value below.",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "S8LIpQGY",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-04T23:19:39Z",
+      "side": 1,
+      "message": "I\u0027ll check this.",
+      "parentUuid": "S8HLW.EA",
       "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
