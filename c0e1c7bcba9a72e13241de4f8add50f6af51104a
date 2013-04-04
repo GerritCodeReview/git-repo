@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "S8JLBnHo",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-04T16:37:32Z",
+      "side": 1,
+      "message": "I\u0027m not 100% convinced the flag should always override the xml attribute...if you have a project that marks itself as depth 1, but then you specify depth 3, chances are you just want every project except that one to be cloned at depth 3.\n\nAnyway, I can\u0027t think of any better way of doing it, so I\u0027m fine with it.",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "S8FLZ9G8",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-04T16:37:32Z",
+      "side": 1,
+      "message": "I think it makes more sense to actually convert clone_depth here and pass it in to Project as an int.\n\nAlso, then you can just say \"if clone_depth \u003c 1: raise ValueError\" and you only have to raise the ManifestParseError once in the except clause (no reason the message can\u0027t be the same for both invalid types of values).  Just a suggestion.",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "S7ZX2BMk",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-04T16:37:32Z",
+      "side": 1,
+      "message": "Doesn\u0027t None make more sense here?",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "S8HLW.EA",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-04T16:37:32Z",
+      "side": 1,
+      "message": "Personally, I would just resolve the actual clone_depth here.\n\nself.clone_depth \u003d clone_depth or self.manifest.manifestProject.config.GetString(\u0027repo.depth\u0027)\n\nThen, of course, you would need to change some of the code that uses that value below.",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
