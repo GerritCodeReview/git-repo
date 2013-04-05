@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "S8PJK6DE",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-05T16:15:04Z",
+      "side": 1,
+      "message": "I\u0027d prefer changing those uses of opt.manifest_name to just use manifest_name.",
+      "parentUuid": "SmckYcYQ",
+      "revId": "1304dc78b0c867ddf168b747eefd7a8e018dd818",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "Sqdns804",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
