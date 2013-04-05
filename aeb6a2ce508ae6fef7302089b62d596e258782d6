@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "S8FJDtCI",
+        "filename": "subcmds/list.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-05T06:08:31Z",
+      "side": 1,
+      "message": "The user can pass both --fullpath and --name-only, but since only the name is then displayed, fullpath has no effect.\n\nDo we need to prevent both options being used at the same time?",
+      "revId": "aeb6a2ce508ae6fef7302089b62d596e258782d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
