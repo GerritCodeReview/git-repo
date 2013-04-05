@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "S8NJF5CI",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 4
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-05T16:12:38Z",
+      "side": 1,
+      "message": "Ah, I read this wrong.  OK.",
+      "parentUuid": "S8JIkPI0",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "S8FLZ9G8",
         "filename": "manifest_xml.py",
         "patchSetId": 4
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Even if it\u0027s actually converted, we still need two raises. \n\n try:\n   clone_depth \u003d int(clone_depth)\n   if clone_depth \u003c\u003d 0:\n     raise ManifestParseError(...)\n except ValueError:\n   raise ManifestParseError(...)",
       "parentUuid": "S8FLZ9G8",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "S7VXfDCU",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-05T16:12:38Z",
+      "side": 1,
+      "message": "It does, but my suggestion was that the first raise be a ValueError\n\n try:\n   clone_depth \u003d int(clone_depth)\n   if clone_depth \u003c\u003d 0:\n     raise ValueError\n except ValueError:\n   raise ManifestParseError(...)\n\nregardless, my main comment was that it makes more sense that Project accept an int as opposed to a string.",
+      "parentUuid": "S7fUcmCU",
       "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
