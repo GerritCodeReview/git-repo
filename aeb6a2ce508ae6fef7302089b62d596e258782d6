@@ -16,6 +16,24 @@
       "revId": "aeb6a2ce508ae6fef7302089b62d596e258782d6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "S7RXVlAU",
+        "filename": "subcmds/list.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-05T08:19:36Z",
+      "side": 1,
+      "message": "We could add a check to Execute(), like sync.py, and show an error, like below.\n\nif opt.name-only and opt.fullpath:\n    print(\u0027error: cannot combine -n and -f\u0027, file\u003dsys.stderr)\n    sys.exit(1)",
+      "parentUuid": "S8FJDtCI",
+      "revId": "aeb6a2ce508ae6fef7302089b62d596e258782d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
