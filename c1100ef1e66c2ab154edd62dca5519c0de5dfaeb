@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TDVUaTHo",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-08T08:26:37Z",
+      "side": 1,
+      "message": "The new option should be added in `helpUsage` and `helpDescription`.",
+      "revId": "c1100ef1e66c2ab154edd62dca5519c0de5dfaeb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TDXUVSEo",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-08T08:26:37Z",
+      "side": 1,
+      "message": "This help text is copy and pasted from list.py\n\nIt would be better to say something like \"Execute the command only on projects matching regex or wildcard expression\"",
+      "revId": "c1100ef1e66c2ab154edd62dca5519c0de5dfaeb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TC1caTHo",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-08T08:26:37Z",
+      "side": 1,
+      "message": "Nit: Unnecessary extra blank line",
+      "revId": "c1100ef1e66c2ab154edd62dca5519c0de5dfaeb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

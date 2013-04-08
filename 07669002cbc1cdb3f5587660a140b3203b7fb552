@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TDTUP0Dw",
+        "filename": "subcmds/list.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-08T08:26:37Z",
+      "side": 0,
+      "message": "This line has a merge conflict with the changes made in If7d78eb2651f0b1b2fe555dc286bd2bdcad0d56d",
+      "revId": "07669002cbc1cdb3f5587660a140b3203b7fb552",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
