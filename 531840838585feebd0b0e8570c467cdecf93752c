@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TEtDK3JY",
+        "filename": "command.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-09T15:38:33Z",
+      "side": 1,
+      "message": "this isn\u0027t needed...it is iterable either way",
+      "revId": "531840838585feebd0b0e8570c467cdecf93752c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TFox7J4M",
+        "filename": "command.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-09T15:38:33Z",
+      "side": 1,
+      "message": "this isn\u0027t needed, it\u0027s iterable either way.",
+      "revId": "531840838585feebd0b0e8570c467cdecf93752c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TFmzaO2w",
+        "filename": "command.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-09T15:38:33Z",
+      "side": 1,
+      "message": "same here.",
+      "revId": "531840838585feebd0b0e8570c467cdecf93752c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TFkzff1o",
+        "filename": "git_config.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-09T15:38:33Z",
+      "side": 1,
+      "message": "not needed here, it\u0027s iterable either way",
+      "revId": "531840838585feebd0b0e8570c467cdecf93752c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
