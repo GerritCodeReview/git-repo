@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TFqzXAz0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-09T16:09:43Z",
+      "side": 1,
+      "message": "There\u0027s really no need to pass ValueError any parameters since it will be caught in the immediate context.",
+      "revId": "ca9f0e0b22fa3bd6025d4c2b8be3b8f29b29fe63",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TElDILJo",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 677,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-09T16:09:43Z",
+      "side": 1,
+      "message": "this comma thing is invalid python3 syntax.  just use ManifestParseError()",
+      "revId": "ca9f0e0b22fa3bd6025d4c2b8be3b8f29b29fe63",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
