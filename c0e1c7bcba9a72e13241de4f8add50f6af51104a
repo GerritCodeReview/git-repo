@@ -247,6 +247,24 @@
       "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TFozURzk",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-09T16:09:25Z",
+      "side": 1,
+      "message": "Ah, I see it gets loaded elsewhere in this class...that\u0027s kind of odd since the manifest has already been loaded before creating the project.",
+      "parentUuid": "TDZUGpCk",
+      "revId": "c0e1c7bcba9a72e13241de4f8add50f6af51104a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
