@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "TMfGs6IA",
+        "filename": "git_config.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMvA04Lc",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMpBB1Bw",
         "filename": "git_config.py",
         "patchSetId": 16
@@ -30,6 +48,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "need one more indent on this line.",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMdGvZHM",
+        "filename": "git_config.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMpBB1Bw",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "TMvCCoPc",
+        "filename": "main.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMXFSOOw",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMtC2fBc",
         "filename": "manifest_xml.py",
         "patchSetId": 16
@@ -64,6 +118,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "It makes more sense to use python3 syntax than python2 syntax.  In other words, do:\n\ntry:\n  # For python3\n  import urllib.parse\nexcept ImportError:\n  # For python2\n  import imp\n  import urlparse\n  urllib \u003d imp.new_module(\u0027urllib\u0027)\n  urllib.parse \u003d urlparse",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMZG53L0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "I wanted these changes to be as less intrusive as possible, but since python3 is the future, let\u0027s do it this way.",
+      "parentUuid": "TMtC2fBc",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "TMpCPlB4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMvCzgCQ",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMRFHLC0",
         "filename": "manifest_xml.py",
         "patchSetId": 16
@@ -98,6 +188,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "I\u0027m not sure if this requires a list or simply an iterable...it\u0027s best to pass it a list.  Go ahead and leave this code as it was or you can do it this way:\n\nsort_projects \u003d list(sorted(subp.name for subp in p.subprojects))",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMrCMGCo",
+        "filename": "manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMRFHLC0",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "TMlB7bDo",
+        "filename": "manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMpCw9Bk",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMrCt.MI",
         "filename": "manifest_xml.py",
         "patchSetId": 16
@@ -132,6 +258,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "maxsize isn\u0027t exactly the same thing as maxint in python2, but I don\u0027t think it really matters here.\n\nPersonally, I like to just use float(\u0027inf\u0027) for this kind of thing, but you don\u0027t need to change anything here.",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMnCA8Os",
+        "filename": "manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 593,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Hmm, with python 2.7.4:\n\n  \u003e\u003e\u003e import sys\n  \u003e\u003e\u003e print(sys.maxint)\n  9223372036854775807\n  \u003e\u003e\u003e print(sys.maxsize)\n  9223372036854775807\n\nAnd python3 doesn\u0027t have maxint, while maxsize returns the same value.",
+      "parentUuid": "TMrCt.MI",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "TMhB15EQ",
+        "filename": "project.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMlAkzIw",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMnAp0GE",
         "filename": "project.py",
         "patchSetId": 16
@@ -166,6 +328,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "use this directly in the for loop please.",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMjB6aDQ",
+        "filename": "project.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMnAp0GE",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "TSFr7Vf8",
+        "filename": "project.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 1627,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMTFMsEw",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMdFgxLY",
         "filename": "subcmds/__init__.py",
         "patchSetId": 16
@@ -200,6 +398,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "no whitespace here",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMbG2YMs",
+        "filename": "subcmds/__init__.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMdFgxLY",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -223,6 +439,24 @@
     },
     {
       "key": {
+        "uuid": "TMtBufHg",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMhAuRGs",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMfFdyPU",
         "filename": "subcmds/help.py",
         "patchSetId": 16
@@ -234,6 +468,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "commandNames \u003d list(sorted(self.commands))",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMVHFtDM",
+        "filename": "subcmds/help.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMfFdyPU",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -257,6 +509,24 @@
     },
     {
       "key": {
+        "uuid": "TMXHKOEU",
+        "filename": "subcmds/help.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMZFaPPs",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMbFXQNQ",
         "filename": "subcmds/info.py",
         "patchSetId": 16
@@ -268,6 +538,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "no need for this here.  No need for keys() either\n\nbr \u003d [project.GetUploadableBranch(x) for x in project.GetBranches()]",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMRG-LJ4",
+        "filename": "subcmds/info.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMbFXQNQ",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -291,6 +579,24 @@
     },
     {
       "key": {
+        "uuid": "TMdHYxBc",
+        "filename": "subcmds/init.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMVH2FM0",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMjAzSNI",
         "filename": "subcmds/overview.py",
         "patchSetId": 16
@@ -302,6 +608,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "no need for list or keys here.",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMfHVyN4",
+        "filename": "subcmds/overview.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMjAzSNI",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -325,6 +649,24 @@
     },
     {
       "key": {
+        "uuid": "TMZHSPPQ",
+        "filename": "subcmds/status.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMXH7GLI",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMREAjME",
         "filename": "subcmds/sync.py",
         "patchSetId": 16
@@ -336,6 +678,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "Same comments as before about using python3 names instead of python2 names.",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMvBrgGU",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMREAjME",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -359,6 +719,24 @@
     },
     {
       "key": {
+        "uuid": "TMVHuFLY",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "74 characters is what it takes now.",
+      "parentUuid": "TMtA3XLo",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMTEFkNI",
         "filename": "subcmds/upload.py",
         "patchSetId": 16
@@ -370,6 +748,24 @@
       "writtenOn": "2013-04-10T17:28:47Z",
       "side": 1,
       "message": "same comments as before about input.",
+      "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMbHPQE0",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T03:42:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMTEFkNI",
       "revId": "6527169e8cb226a078fd95e9c831654ebe128a68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
