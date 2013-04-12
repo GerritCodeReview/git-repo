@@ -171,6 +171,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-q', '--quiet',
                  dest='quiet', action='store_true',
                  help='be more quiet')
+    p.add_option('-v', '--verbose',
+                 dest='verbose', action='store_true',
+                 help='be more verbose')
     p.add_option('-j', '--jobs',
                  dest='jobs', action='store', type='int',
                  help="projects to fetch simultaneously (default %d)" % self.jobs)
@@ -228,6 +231,9 @@ later is required to fix a server side protocol bug.
     # We'll set to true once we've locked the lock.
     did_lock = False
 
+    if opt.verbose:
+      print('Fetching project %s' % project.name, file=sys.stderr)
+
     # Encapsulate everything in a try/except/finally so that:
     # - We always set err_event in the case of an exception.
     # - We always make sure we call sem.release().
@@ -274,6 +280,8 @@ later is required to fix a server side protocol bug.
     if self.jobs == 1:
       for project in projects:
         pm.update()
+        if opt.verbose:
+          print('Fetching project %s' % project.name, file=sys.stderr)
         if project.Sync_NetworkHalf(
             quiet=opt.quiet,
             current_branch_only=opt.current_branch_only,
@@ -467,6 +475,9 @@ later is required to fix a server side protocol bug.
       if None in [opt.manifest_server_username, opt.manifest_server_password]:
         print('error: both -u and -p must be given', file=sys.stderr)
         sys.exit(1)
+    if opt.quiet and opt.verbose:
+      print('error: cannot combine -q and -v', file=sys.stderr)
+      sys.exit(1)
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
@@ -595,7 +606,7 @@ later is required to fix a server side protocol bug.
       to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
       fetched = self._Fetch(to_fetch, opt)
-      _PostRepoFetch(rp, opt.no_repo_verify)
+      _PostRepoFetch(rp, opt.no_repo_verify, opt.verbose)
       if opt.network_only:
         # bail out now; the rest touches the working tree
         return
