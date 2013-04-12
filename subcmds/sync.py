@@ -228,6 +228,9 @@ later is required to fix a server side protocol bug.
     # We'll set to true once we've locked the lock.
     did_lock = False
 
+    if not opt.quiet:
+      print('Fetching project %s' % project.name)
+
     # Encapsulate everything in a try/except/finally so that:
     # - We always set err_event in the case of an exception.
     # - We always make sure we call sem.release().
@@ -274,6 +277,8 @@ later is required to fix a server side protocol bug.
     if self.jobs == 1:
       for project in projects:
         pm.update()
+        if not opt.quiet:
+          print('Fetching project %s' % project.name)
         if project.Sync_NetworkHalf(
             quiet=opt.quiet,
             current_branch_only=opt.current_branch_only,
