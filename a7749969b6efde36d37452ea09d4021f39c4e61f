@@ -16,6 +16,41 @@
       "revId": "a7749969b6efde36d37452ea09d4021f39c4e61f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMtCvXHM",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T13:09:58Z",
+      "side": 1,
+      "message": "If we\u0027re going to change this to stdout, then might as well change that in _PostRepoFetch() too.",
+      "parentUuid": "TMTH9kGM",
+      "revId": "a7749969b6efde36d37452ea09d4021f39c4e61f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMfHeKPk",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-12T13:09:58Z",
+      "side": 1,
+      "message": "I think the \"info\" messages could go to stdout instead of stderr",
+      "revId": "a7749969b6efde36d37452ea09d4021f39c4e61f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
