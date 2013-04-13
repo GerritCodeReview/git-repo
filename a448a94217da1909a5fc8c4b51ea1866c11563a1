@@ -16,6 +16,24 @@
       "revId": "a448a94217da1909a5fc8c4b51ea1866c11563a1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TMXEceOU",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-13T03:00:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TMbHooKE",
+      "revId": "a448a94217da1909a5fc8c4b51ea1866c11563a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
