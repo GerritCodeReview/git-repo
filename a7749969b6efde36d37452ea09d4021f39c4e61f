@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "TWArxmyE",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-15T00:44:53Z",
+      "side": 1,
+      "message": "It\u0027s only adding one line to the output; I don\u0027t see it being a problem to have it the default behaviour.\n\nMaybe put it inside \"if not opt.quiet\" ?",
+      "parentUuid": "TMrC2WMs",
+      "revId": "a7749969b6efde36d37452ea09d4021f39c4e61f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TMTH9kGM",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
