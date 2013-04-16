@@ -284,6 +284,15 @@ def _CheckGitVersion():
     raise CloneFailure()
 
 
+def _CheckPythonVersion():
+  ver = sys.version_info
+  if ver[0] != 2:
+    print('error: Python %s is not fully supported by repo yet' % ver[0],
+          file=sys.stderr)
+  if ver[0] == 2 and ver[1] < 5:
+    print('error: Python version %s.%s unsupported' % (ver[0], ver[1]) ,
+          file=sys.stderr)
+
 def NeedSetupGnuPG():
   if not os.path.isdir(home_dot_repo):
     return True
@@ -686,6 +695,8 @@ def _SetDefaultsTo(gitdir):
 
 
 def main(orig_args):
+  _CheckPythonVersion()
+
   repo_main, rel_repo_dir = _FindRepo()
   cmd, opt, args = _ParseArguments(orig_args)
 
