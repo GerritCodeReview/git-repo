@@ -108,6 +108,7 @@ repodir = '.repo'               # name of repo's private directory
 S_repo = 'repo'                 # special repo repository
 S_manifests = 'manifests'       # special manifest repository
 REPO_MAIN = S_repo + '/main.py' # main script
+MIN_PYTHON_VERSION = (2, 6)     # minimum supported python version
 
 
 import optparse
@@ -128,6 +129,19 @@ else:
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
   urllib.error = urllib2
+
+# Python version check
+ver = sys.version_info
+if ver[0] == 3:
+  print('error: Python 3 support is not fully implemented in repo yet.\n'
+        'Please use Python 2.6 - 2.7 instead.',
+        file=sys.stderr)
+  sys.exit(1)
+if (ver[0], ver[1]) < MIN_PYTHON_VERSION:
+  print('error: Python version %s unsupported.\n'
+        'Please use Python 2.6 - 2.7 instead.'
+        % sys.version.split(' ')[0], file=sys.stderr)
+  sys.exit(1)
 
 home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
