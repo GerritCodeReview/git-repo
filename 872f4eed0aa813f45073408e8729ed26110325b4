@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TYCIVbks",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-16T16:05:08Z",
+      "side": 1,
+      "message": "I think this would be better if you made exact checks (specifically test for \u003d\u003d3 here).  Write an else that handles anything unexpected.",
+      "revId": "872f4eed0aa813f45073408e8729ed26110325b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Ta1cPjDo",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-16T16:05:08Z",
+      "side": 1,
+      "message": "I don\u0027t even think python 2.5 works anymore...you need python 2.6 these days.  Store this as a constant with the other version constants.\n\nMIN_PYTHON_VERSION \u003d (2, 6)",
+      "revId": "872f4eed0aa813f45073408e8729ed26110325b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TazcaGHo",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 698,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-16T16:05:08Z",
+      "side": 1,
+      "message": "I think this should go outside the main function at the top of the file...other things are evaluated before the main function gets run, so this should be the first thing.  Also, it probably doesn\u0027t even need it\u0027s own function.  Just write it bare at the top level indentation.",
+      "revId": "872f4eed0aa813f45073408e8729ed26110325b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
