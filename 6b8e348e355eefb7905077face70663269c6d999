@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "Ta-cG4Ck",
+        "filename": "manifest_xml.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-16T15:49:35Z",
+      "side": 1,
+      "message": "you should just use single quotes here.  Also, use the following syntax to deal with writing a string literal on two lines:\n\n  ManifestParseError(\u0027optional \"keep\" blah blah\u0027\n                     \u0027blah blah more\u0027)",
+      "revId": "6b8e348e355eefb7905077face70663269c6d999",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TYAIHiic",
+        "filename": "project.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 2106,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-16T15:49:35Z",
+      "side": 1,
+      "message": "Can you explain how this is supposed to work?  Won\u0027t line in python 2 be a string and then become unicode when you do line.decode()?",
+      "revId": "6b8e348e355eefb7905077face70663269c6d999",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
