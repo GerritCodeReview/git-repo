@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "TjvTrGDM",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-17T08:05:45Z",
+      "side": 1,
+      "message": "Hard coded it.",
+      "parentUuid": "TgQEVKko",
+      "revId": "db9285907870032412e5eb7ab5ef00a26ef6c837",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TgcEOIj4",
         "filename": "repo",
         "patchSetId": 2
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "TgGImNso",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-17T08:05:45Z",
+      "side": 1,
+      "message": "This isn\u0027t needed anymore now.",
+      "parentUuid": "TgcEOIj4",
+      "revId": "db9285907870032412e5eb7ab5ef00a26ef6c837",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TgeEZJoY",
         "filename": "repo",
         "patchSetId": 2
@@ -47,6 +83,24 @@
       "writtenOn": "2013-04-17T05:12:43Z",
       "side": 1,
       "message": "Style nit: space should be after the comma, not before.",
+      "revId": "db9285907870032412e5eb7ab5ef00a26ef6c837",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Tj-PrMDM",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-17T08:05:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "TgeEZJoY",
       "revId": "db9285907870032412e5eb7ab5ef00a26ef6c837",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
