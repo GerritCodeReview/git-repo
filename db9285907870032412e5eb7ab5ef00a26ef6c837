@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TgQEVKko",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-17T05:12:43Z",
+      "side": 1,
+      "message": "ver[0] is an integer, so use `%d` instead of `%s`\n\nIs it even necessary to pass it in as a formatted parameter?  We already know it\u0027s 3, so we might as well just hard-code it into the string.",
+      "revId": "db9285907870032412e5eb7ab5ef00a26ef6c837",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TgcEOIj4",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-17T05:12:43Z",
+      "side": 1,
+      "message": "PEP-8 Style nit: line break should be after the operator (`%`)\n\n(although I think this violation occurs in several places already)",
+      "revId": "db9285907870032412e5eb7ab5ef00a26ef6c837",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TgeEZJoY",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-17T05:12:43Z",
+      "side": 1,
+      "message": "Style nit: space should be after the comma, not before.",
+      "revId": "db9285907870032412e5eb7ab5ef00a26ef6c837",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
