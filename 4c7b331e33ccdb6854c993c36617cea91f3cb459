@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TkpATtGQ",
+        "filename": "manifest_xml.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-18T15:52:46Z",
+      "side": 1,
+      "message": "you left the space, but I see now I forgot to make a comment on that.",
+      "revId": "4c7b331e33ccdb6854c993c36617cea91f3cb459",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
