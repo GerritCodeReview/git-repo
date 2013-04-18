@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "TgYEAGhI",
+        "filename": "manifest_xml.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-18T13:47:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "Ta-cG4Ck",
+      "revId": "6b8e348e355eefb7905077face70663269c6d999",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "TYAIHiic",
         "filename": "project.py",
         "patchSetId": 19
@@ -30,6 +48,24 @@
       "writtenOn": "2013-04-16T15:49:35Z",
       "side": 1,
       "message": "Can you explain how this is supposed to work?  Won\u0027t line in python 2 be a string and then become unicode when you do line.decode()?",
+      "revId": "6b8e348e355eefb7905077face70663269c6d999",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TgaH6-vk",
+        "filename": "project.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 2106,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-18T13:47:07Z",
+      "side": 1,
+      "message": "Yes, it will, which works as it is in python2.\nThis is needed in python3 where it isn\u0027t a string but \u0027bytes\u0027 by default, so decode() will convert it to a string.",
+      "parentUuid": "TYAIHiic",
       "revId": "6b8e348e355eefb7905077face70663269c6d999",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
