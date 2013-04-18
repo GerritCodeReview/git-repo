@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "TmenrNTM",
+        "filename": "manifest_xml.py",
+        "patchSetId": 21
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-04-18T16:11:33Z",
+      "side": 1,
+      "message": "Removed the space between ( and \u0027 , and added a space before the ending \u0027 so that it gets printed as a proper sentence.",
+      "revId": "217ea7d2747e3098009afe0b389fc4b45f55ea5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
