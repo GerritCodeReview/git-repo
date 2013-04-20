@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "Tu8cU-lA",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-20T12:18:02Z",
+      "side": 1,
+      "message": "s/exexute/execute\n\ns/number/Number",
+      "revId": "4fb803dbcdd261a5fbc72d5aea1b7f4c31d74634",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "TukgAHxE",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-20T12:18:02Z",
+      "side": 1,
+      "message": "If self.jobs is 1 we don\u0027t need the overhead of multi threading.",
+      "revId": "4fb803dbcdd261a5fbc72d5aea1b7f4c31d74634",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Tuqj6.-k",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-20T12:18:02Z",
+      "side": 1,
+      "message": "Style nit: put the closing parentheses on the previous line.",
+      "revId": "4fb803dbcdd261a5fbc72d5aea1b7f4c31d74634",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Tu.cZAoY",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-20T12:18:02Z",
+      "side": 1,
+      "message": "Should consider opt.abort_on_errors\n\nSee line 267 on the old version.",
+      "revId": "4fb803dbcdd261a5fbc72d5aea1b7f4c31d74634",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
