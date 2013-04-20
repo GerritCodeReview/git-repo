@@ -21,6 +21,11 @@ import select
 import sys
 import subprocess
 
+try:
+  import threading as _threading
+except ImportError:
+  import dummy_threading as _threading
+
 from color import Coloring
 from command import Command, MirrorSafeCommand
 
@@ -38,6 +43,8 @@ class ForallColoring(Coloring):
 
 
 class Forall(Command, MirrorSafeCommand):
+  stop = False
+  jobs = 1
   common = False
   helpSummary = "Run a shell command in each project"
   helpUsage = """
@@ -119,11 +126,16 @@ without iterating through the remaining projects.
     g.add_option('-v', '--verbose',
                  dest='verbose', action='store_true',
                  help='Show command error messages')
+    g.add_option('-j','--jobs',
+                 dest='jobs', action='store', type='int',
+                 help="number of commands to exexute simultaneously")
 
   def WantPager(self, opt):
     return opt.project_header
 
   def Execute(self, opt, args):
+    if opt.jobs:
+      self.jobs = opt.jobs
     if not opt.command:
       self.Usage()
 
@@ -166,7 +178,38 @@ without iterating through the remaining projects.
     rc = 0
     first = True
 
+    threads = set()
+    sem = _threading.Semaphore(self.jobs)
+
     for project in self.GetProjects(args):
+      sem.acquire()
+      if self.stop:
+        break;
+      t = _threading.Thread(target = self.SubExecuteWrapper,
+                            args = (sem,
+                                    project,
+                                    mirror,
+                                    opt,
+                                    cmd,
+                                    shell,
+                                    first
+                                    ))
+      t.daemon = True
+      first = False
+      threads.add(t)
+      t.start()
+
+    for t in threads:
+      t.join()
+
+
+  def SubExecuteWrapper(self, sem, project, mirror, opt, cmd, shell, first):
+      if (self.SubExecute(project, mirror, opt, cmd, shell, first) != 0):
+        self.stop = True;
+      sem.release()
+
+  def SubExecute(self, project, mirror, opt, cmd, shell, first):
+
       env = os.environ.copy()
       def setenv(name, val):
         if val is None:
@@ -191,7 +234,7 @@ without iterating through the remaining projects.
         if (opt.project_header and opt.verbose) \
         or not opt.project_header:
           print('skipping %s/' % project.relpath, file=sys.stderr)
-        continue
+        return 0;
 
       if opt.project_header:
         stdin = subprocess.PIPE
@@ -261,12 +304,4 @@ without iterating through the remaining projects.
             s.dest.flush()
 
       r = p.wait()
-      if r != 0:
-        if r != rc:
-          rc = r
-        if opt.abort_on_errors:
-          print("error: %s: Aborting due to previous error" % project.relpath,
-                file=sys.stderr)
-          sys.exit(r)
-    if rc != 0:
-      sys.exit(rc)
+      return r;
