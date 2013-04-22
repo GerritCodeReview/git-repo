@@ -1,0 +1,8 @@
+In order to run this test, you need to install cram [https://bitheap.org/cram/]
+$ sudo pip install cram
+
+then just run 'cram cram.t'
+it won't output anything useful, except either that nothing failed,
+or it will hang forever, since repo never exits when something is wrong
+and cram doesnt print the output before it exits
+
