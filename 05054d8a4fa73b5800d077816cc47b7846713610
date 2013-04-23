@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "T2AomO8g",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-23T10:07:06Z",
+      "side": 1,
+      "message": "Unnecessary blank line.",
+      "revId": "05054d8a4fa73b5800d077816cc47b7846713610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "T2YlCOVM",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 303,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-23T10:07:06Z",
+      "side": 1,
+      "message": "Does this still work as expected when running with multiple threads?",
+      "revId": "05054d8a4fa73b5800d077816cc47b7846713610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
