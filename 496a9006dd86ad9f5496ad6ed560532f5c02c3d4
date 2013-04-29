@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "UJjz6Mfs",
+        "filename": "tests/cram.t",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-29T17:34:27Z",
+      "side": 1,
+      "message": "* Please move this information to the README\n* Add sudo apt-get install python-pip\n* Need to add \"sudo\" to the pip install command.",
+      "revId": "496a9006dd86ad9f5496ad6ed560532f5c02c3d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UPsT.vu0",
+        "filename": "tests/cram.t",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-04-29T17:34:27Z",
+      "side": 1,
+      "message": "I don\u0027t understand this.  Can you only test the stable branch and not just the current tree?\n\nAlso, this looks like a golden test that will fail on small things like using a newer version of git etc....is that correct?  If so, that could be a problem.",
+      "revId": "496a9006dd86ad9f5496ad6ed560532f5c02c3d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
