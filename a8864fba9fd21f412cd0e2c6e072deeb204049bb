@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "UJnwXWVg",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-04-30T02:11:26Z",
+      "side": 1,
+      "message": "This could be optimised to compile the list of regexes first, and then interate over that list instead of compiling them again for each project.\n\nI\u0027m not sure how much of an optimisation would be, though.  The documentation [1] says:\n\n  The compiled versions of the most recent patterns passed to \n  re.match(), re.search() or re.compile() are cached, so programs \n  that use only a few regular expressions at a time needn’t worry \n  about compiling regular expressions.\n\n[1] http://docs.python.org/2/library/re.html#module-contents",
+      "revId": "a8864fba9fd21f412cd0e2c6e072deeb204049bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
