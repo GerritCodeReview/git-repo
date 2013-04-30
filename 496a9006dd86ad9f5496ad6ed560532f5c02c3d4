@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "UOycR2mA",
+        "filename": "tests/cram.t",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1012154
+      },
+      "writtenOn": "2013-04-30T10:31:50Z",
+      "side": 1,
+      "message": "Not everyone uses ubuntu? These are the upstream instructions.",
+      "parentUuid": "UJjz6Mfs",
+      "revId": "496a9006dd86ad9f5496ad6ed560532f5c02c3d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "UPsT.vu0",
         "filename": "tests/cram.t",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2013-04-29T17:34:27Z",
       "side": 1,
       "message": "I don\u0027t understand this.  Can you only test the stable branch and not just the current tree?\n\nAlso, this looks like a golden test that will fail on small things like using a newer version of git etc....is that correct?  If so, that could be a problem.",
+      "revId": "496a9006dd86ad9f5496ad6ed560532f5c02c3d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UO8clXrc",
+        "filename": "tests/cram.t",
+        "patchSetId": 2
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1012154
+      },
+      "writtenOn": "2013-04-30T10:31:50Z",
+      "side": 1,
+      "message": "yes. repo behaves differently if your current head is not signed, so you cannot test that. If i did the test for the development head, it would outright be rejected as it fails for stable.",
+      "parentUuid": "UPsT.vu0",
       "revId": "496a9006dd86ad9f5496ad6ed560532f5c02c3d4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
