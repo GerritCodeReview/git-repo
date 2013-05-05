@@ -49,7 +49,7 @@ The '%prog' command stages files to prepare the next commit.
       self.Usage()
 
   def _Interactive(self, opt, args):
-    all_projects = filter(lambda x: x.IsDirty(), self.GetProjects(args))
+    all_projects = [p for p in self.GetProjects(args) if p.IsDirty()]
     if not all_projects:
       print('no projects have uncommitted modifications', file=sys.stderr)
       return
@@ -98,9 +98,9 @@ The '%prog' command stages files to prepare the next commit.
           _AddI(all_projects[a_index - 1])
           continue
 
-      p = filter(lambda x: x.name == a or x.relpath == a, all_projects)
-      if len(p) == 1:
-        _AddI(p[0])
+      projects = [p for p in all_projects if a in [p.name, p.relpath]]
+      if len(projects) == 1:
+        _AddI(projects[0])
         continue
     print('Bye.')
 
