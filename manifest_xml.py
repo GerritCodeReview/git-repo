@@ -555,6 +555,12 @@ class XmlManifest(object):
     if d.revisionExpr == '':
       d.revisionExpr = None
 
+    dest_branch = node.getAttribute('dest-branch')
+    if dest_branch == '' or dest_branch is None:
+      d.destBranchExpr = None
+    else:
+      d.destBranchExpr = dest_branch
+
     sync_j = node.getAttribute('sync-j')
     if sync_j == '' or sync_j is None:
       d.sync_j = 1
@@ -676,6 +682,10 @@ class XmlManifest(object):
         raise ManifestParseError('invalid clone-depth %s in %s' %
                                  (clone_depth, self.manifestFile))
 
+    dest_branch = node.getAttribute('dest-branch')
+    if dest_branch is None or dest_branch == '':
+      dest_branch = self._default.destBranchExpr
+
     upstream = node.getAttribute('upstream')
 
     groups = ''
@@ -709,7 +719,8 @@ class XmlManifest(object):
                       sync_s = sync_s,
                       clone_depth = clone_depth,
                       upstream = upstream,
-                      parent = parent)
+                      parent = parent,
+                      dest_branch = dest_branch)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
