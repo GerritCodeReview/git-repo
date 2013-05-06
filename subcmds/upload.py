@@ -146,6 +146,10 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     p.add_option('-d', '--draft',
                  action='store_true', dest='draft', default=False,
                  help='If specified, upload as a draft.')
+    p.add_option('-D', '--destination', '--dest',
+                 type='string', action='store', dest='dest_branch',
+                 metavar='BRANCH',
+                 help='Submit for review on this target branch.')
 
     # Options relating to upload hook.  Note that verify and no-verify are NOT
     # opposites of each other, which is why they store to different locations.
@@ -185,7 +189,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       date = branch.date
       commit_list = branch.commits
 
-      print('Upload project %s/ to remote branch %s:' % (project.relpath, project.revisionExpr))
+      destination = project.dest_branch or project.revisionExpr
+      print('Upload project %s/ to remote branch %s:' % (project.relpath, destination))
       print('  branch %s (%2d commit%s, %s):' % (
                     name,
                     len(commit_list),
@@ -336,7 +341,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
           key = 'review.%s.uploadtopic' % branch.project.remote.review
           opt.auto_topic = branch.project.config.GetBoolean(key)
 
-        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft)
+        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=opt.dest_branch)
         branch.uploaded = True
       except UploadError as e:
         branch.error = e

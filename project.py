@@ -157,11 +157,12 @@ class ReviewableBranch(object):
       R_HEADS + self.name,
       '--')
 
-  def UploadForReview(self, people, auto_topic=False, draft=False):
+  def UploadForReview(self, people, auto_topic=False, draft=False, dest_branch=None):
     self.project.UploadForReview(self.name,
                                  people,
                                  auto_topic=auto_topic,
-                                 draft=draft)
+                                 draft=draft,
+                                 dest_branch=dest_branch)
 
   def GetPublishedRefs(self):
     refs = {}
@@ -497,7 +498,8 @@ class Project(object):
                clone_depth = None,
                upstream = None,
                parent = None,
-               is_derived = False):
+               is_derived = False,
+               dest_branch = None):
     """Init a Project object.
 
     Args:
@@ -517,6 +519,7 @@ class Project(object):
       parent: The parent Project object.
       is_derived: False if the project was explicitly defined in the manifest;
                   True if the project is a discovered submodule.
+      dest_branch: The branch to which to push changes for review by default.
     """
     self.manifest = manifest
     self.name = name
@@ -559,6 +562,7 @@ class Project(object):
       self.work_git = None
     self.bare_git = self._GitGetByExec(self, bare=True)
     self.bare_ref = GitRefs(gitdir)
+    self.dest_branch = dest_branch
 
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
@@ -908,7 +912,8 @@ class Project(object):
   def UploadForReview(self, branch=None,
                       people=([],[]),
                       auto_topic=False,
-                      draft=False):
+                      draft=False,
+                      dest_branch=None):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -922,7 +927,10 @@ class Project(object):
     if not branch.remote.review:
       raise GitError('remote %s has no review url' % branch.remote.name)
 
-    dest_branch = branch.merge
+    if dest_branch is None:
+      dest_branch = self.dest_branch
+    if dest_branch is None:
+      dest_branch = branch.merge
     if not dest_branch.startswith(R_HEADS):
       dest_branch = R_HEADS + dest_branch
 
