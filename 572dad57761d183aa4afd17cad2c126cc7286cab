@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "UaxfrVDA",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1012614
+      },
+      "writtenOn": "2013-05-07T21:48:27Z",
+      "side": 1,
+      "message": "Agreed.",
+      "parentUuid": "UXmT16gk",
+      "revId": "572dad57761d183aa4afd17cad2c126cc7286cab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "UZV31.wg",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "UZjzwMRo",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1012614
+      },
+      "writtenOn": "2013-05-07T21:48:27Z",
+      "side": 1,
+      "message": "Agreed again. Will change.",
+      "parentUuid": "UZV31.wg",
+      "revId": "572dad57761d183aa4afd17cad2c126cc7286cab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "UPiROsvE",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2013-05-07T17:28:31Z",
       "side": 1,
       "message": "A quick way of writing this whole block is:\n\nd.destBranchExpr \u003d node.getAttribute(\u0027dest-branch\u0027) or None",
+      "revId": "572dad57761d183aa4afd17cad2c126cc7286cab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UZlz1-Qg",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 558,
+      "author": {
+        "id": 1012614
+      },
+      "writtenOn": "2013-05-07T21:48:27Z",
+      "side": 1,
+      "message": "Yes, that is more concise (and idiomatic Python).",
+      "parentUuid": "UPiROsvE",
       "revId": "572dad57761d183aa4afd17cad2c126cc7286cab",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
