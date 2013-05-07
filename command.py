@@ -188,9 +188,9 @@ class Command(object):
 
   def FindProjects(self, args):
     result = []
+    patterns = [re.compile(r'%s' % a, re.IGNORECASE) for a in args]
     for project in self.GetProjects(''):
-      for arg in args:
-        pattern = re.compile(r'%s' % arg, re.IGNORECASE)
+      for pattern in patterns:
         if pattern.search(project.name) or pattern.search(project.relpath):
           result.append(project)
           break
