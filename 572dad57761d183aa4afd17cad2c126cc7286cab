@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "UXmT16gk",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-07T09:12:03Z",
+      "side": 1,
+      "message": "It would be good to explicitly mention that if not set, the branch specified by `default` will be used.",
+      "revId": "572dad57761d183aa4afd17cad2c126cc7286cab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UZV31.wg",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-07T09:12:03Z",
+      "side": 1,
+      "message": "`revision` will be used if there is no `dest-branch` specified on the project or in `default`.",
+      "revId": "572dad57761d183aa4afd17cad2c126cc7286cab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
