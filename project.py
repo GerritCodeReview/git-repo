@@ -1661,7 +1661,9 @@ class Project(object):
 
     if not current_branch_only:
       # Fetch whole repo
-      if no_tags:
+      # If using depth then we should not get all the tags since they may
+      # be outside of the depth.
+      if no_tags or depth:
         cmd.append('--no-tags')
       else:
         cmd.append('--tags')
