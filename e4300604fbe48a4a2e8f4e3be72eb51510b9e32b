@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "UeyfwOho",
+        "filename": "subcmds/stage.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-08T05:39:33Z",
+      "side": 1,
+      "message": "s/is/Is",
+      "revId": "e4300604fbe48a4a2e8f4e3be72eb51510b9e32b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
