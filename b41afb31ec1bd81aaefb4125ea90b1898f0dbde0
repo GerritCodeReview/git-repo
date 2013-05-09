@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "UgmCgct0",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-09T08:50:00Z",
+      "side": 1,
+      "message": "Use a list comprehension instead of map/lambda.",
+      "revId": "b41afb31ec1bd81aaefb4125ea90b1898f0dbde0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Ug5.dE7A",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-09T08:50:00Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "b41afb31ec1bd81aaefb4125ea90b1898f0dbde0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UgkCtbtM",
+        "filename": "subcmds/init.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-09T08:50:00Z",
+      "side": 1,
+      "message": "This line is too long.",
+      "revId": "b41afb31ec1bd81aaefb4125ea90b1898f0dbde0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
