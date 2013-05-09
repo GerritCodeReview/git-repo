@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "UgkDbLnA",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-09T10:32:23Z",
+      "side": 1,
+      "message": "I think you have to do `os.path.join` here.",
+      "revId": "b8a278e6f69d6c3038067a55fc3bf4785984413f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
