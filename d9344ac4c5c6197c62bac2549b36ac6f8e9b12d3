@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "Ugz-bp3E",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1005102
+      },
+      "writtenOn": "2013-05-09T10:25:31Z",
+      "side": 1,
+      "message": "Argh! Tab indentation when you do space *arrgh*",
+      "revId": "d9344ac4c5c6197c62bac2549b36ac6f8e9b12d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
