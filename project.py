@@ -36,11 +36,6 @@ from trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
-try:
-  input = raw_input
-except NameError:
-  pass
-
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
@@ -366,7 +361,7 @@ class RepoHook(object):
                  'Do you want to allow this script to run '
                  '(yes/yes-never-ask-again/NO)? ') % (
                  self._GetMustVerb(), self._script_fullpath)
-      response = input(prompt).lower()
+      response = raw_input(prompt).lower()
       print()
 
       # User is doing a one-time approval.
