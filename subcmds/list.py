@@ -31,7 +31,7 @@ List all projects; pass '.' to list the project for the cwd.
 This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
 """
 
-  def _Options(self, p, show_smart=True):
+  def _Options(self, p):
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
                  help="Filter the project list based on regex or wildcard matching of strings")
