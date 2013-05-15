@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "UvMbqwis",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "Would it make more sense to just store the hooks directly in the manifest repository?",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Uusjqzys",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "hrm, I think it would be better if it were always in the body as opposed to listed as an attr.",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UqJpvTcE",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "You should explain what happens when there is a naming conflict.  Which wins, the stock hook or the supplemented hook?",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UqBqtfdQ",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "You can\u0027t have these be attributes of the class itself, they need to be of the object.  Otherwise, this could screw up when you have multiple ProjectHooks defined.  (define the attributes in the __init__ method).",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UqNp1xZQ",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "This doesn\u0027t get called very often, right?  I think it\u0027d be nice to forget caching the _project_hook_list and simplifying things by getting rid of these globals.  I think it makes even more since now given that it\u0027s not even a firm cache after this change.\n\nAlso, now that this is specific to the manifest and the remote, it might make sense to just make this function a method of Project.\n\nCould you change r to remote?",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Up1uKI10",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "consider making this a single if instead of a nested if\n\n(However, this whole block will be removed if you decide to get rid of the caching)",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UqDqqwb0",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "I\u0027d feel more comfortable if you did !\u003d for comparing _last_remotename and r.name.",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Uuujvkzg",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "isn\u0027t repodir calculated here?  If I\u0027m right about that, you should stick to using the variable repodir or just calculating it from __file__.",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UpzuBVzs",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "Use path.join here.",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UqPp6CYQ",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "This won\u0027t work in python3, use update instead or list(stockhooks.values()) + list(remotehooks.values())",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Up3uH31E",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "you have this listed out twice, why not just have a single line at the end where you combine the stockhooks and the remotehooks, and start the remote hooks off as empty.",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "UpxuEm0o",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1877,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "no space around equals",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Uu8fqvis",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1932,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "Why does this test need to be made?  If it\u0027s to keep the hooks from running on the manifest project, can you give me an example where a reasonable hook would be harmful to the manifest project?",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Uu.fvwjg",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1945,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-15T19:56:44Z",
+      "side": 1,
+      "message": "Instead of testing for it here, you should exclude it in the _ProjectHooks function.",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
