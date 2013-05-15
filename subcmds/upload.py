@@ -24,9 +24,11 @@ from error import HookError, UploadError
 from project import RepoHook
 
 try:
-  input = raw_input
+  # For python2
+  _input = raw_input
 except NameError:
-  pass
+  # For python3
+  _input = input
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 
@@ -38,7 +40,7 @@ def _ConfirmManyUploads(multiple_branches=False):
     print('ATTENTION: You are uploading an unusually high number of commits.')
   print('YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across '
         'branches?)')
-  answer = input("If you are sure you intend to do this, type 'yes': ").strip()
+  answer = _input("If you are sure you intend to do this, type 'yes': ").strip()
   return answer == "yes"
 
 def _die(fmt, *args):
