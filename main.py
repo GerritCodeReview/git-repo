@@ -50,11 +50,6 @@ from pager import RunPager
 
 from subcmds import all_commands
 
-try:
-  input = raw_input
-except NameError:
-  pass
-
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
                  )
@@ -291,7 +286,7 @@ def _AddPasswordFromUserInput(handler, msg, req):
   if user is None:
     print(msg)
     try:
-      user = input('User: ')
+      user = raw_input('User: ')
       password = getpass.getpass()
     except KeyboardInterrupt:
       return
