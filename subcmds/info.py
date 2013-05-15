@@ -27,7 +27,7 @@ class Info(PagedCommand):
   helpSummary = "Get info on the manifest branch, current branch or unmerged branches"
   helpUsage = "%prog [-dl] [-o [-b]] [<project>...]"
 
-  def _Options(self, p, show_smart=True):
+  def _Options(self, p):
     p.add_option('-d', '--diff',
                  dest='all', action='store_true',
                  help="show full info and commit diff including remote branches")
