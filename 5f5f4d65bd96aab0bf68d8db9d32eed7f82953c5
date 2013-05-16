@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "UxZ09Y84",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1005102
+      },
+      "writtenOn": "2013-05-16T20:22:29Z",
+      "side": 1,
+      "message": "Since this is based on my original design... \n\nOur problem internally is that there are way too many branches and trees... While adding them to all branches is doable it will get painful if you need to update them....\n\nIn our use case we will have three different hook implementations, one of which is the original repo which is overruled.\n\nThere is also a issue of access, we don\u0027t want just about anyone to have access to push to the hooks due to the severe security implications ;)",
+      "parentUuid": "UvMbqwis",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "Uusjqzys",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 7
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "UxnwgWaQ",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1005102
+      },
+      "writtenOn": "2013-05-16T20:22:29Z",
+      "side": 1,
+      "message": "? It\u0027s a element in the remote section? or am i missing something?",
+      "parentUuid": "Uusjqzys",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "UqJpvTcE",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 7
@@ -47,6 +83,24 @@
       "writtenOn": "2013-05-15T19:56:44Z",
       "side": 1,
       "message": "You should explain what happens when there is a naming conflict.  Which wins, the stock hook or the supplemented hook?",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "Uxf1Cp1M",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 7
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1005102
+      },
+      "writtenOn": "2013-05-16T20:22:29Z",
+      "side": 1,
+      "message": "It overrules the stock ones, will try to get started on this as soon as i\u0027m back at work (i\u0027m home sick)",
+      "parentUuid": "UqJpvTcE",
       "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
