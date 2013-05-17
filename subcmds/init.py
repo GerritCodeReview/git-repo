@@ -19,11 +19,11 @@ import platform
 import re
 import shutil
 import sys
-try:
-  # For python3
+
+from pyversion import is_python3
+if is_python3():
   import urllib.parse
-except ImportError:
-  # For python2
+else:
   import imp
   import urlparse
   urllib = imp.new_module('urllib')

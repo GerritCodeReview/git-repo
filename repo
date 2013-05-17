@@ -117,15 +117,13 @@ import re
 import stat
 import subprocess
 import sys
-try:
-  import urllib2
-except ImportError:
-  # For python3
+
+if sys.version_info[0] == 3:
   import urllib.request
   import urllib.error
 else:
-  # For python2
   import imp
+  import urllib2
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
   urllib.error = urllib2
