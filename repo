@@ -117,31 +117,35 @@ import re
 import stat
 import subprocess
 import sys
-try:
-  import urllib2
-except ImportError:
-  # For python3
+
+def is_python3():
+  return sys.version_info[0] == 3
+
+def check_python_version(min_version):
+  ver = sys.version_info
+  if ver[0] == 3:
+    print('error: Python 3 support is not fully implemented in repo yet.\n'
+          'Please use Python 2.6 - 2.7 instead.',
+          file=sys.stderr)
+    sys.exit(1)
+  if (ver[0], ver[1]) < min_version:
+    print('error: Python version %s unsupported.\n'
+          'Please use Python 2.6 - 2.7 instead.'
+          % sys.version.split(' ')[0], file=sys.stderr)
+    sys.exit(1)
+
+if is_python3():
   import urllib.request
   import urllib.error
 else:
-  # For python2
   import imp
+  import urllib2
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
   urllib.error = urllib2
 
 # Python version check
-ver = sys.version_info
-if ver[0] == 3:
-  print('error: Python 3 support is not fully implemented in repo yet.\n'
-        'Please use Python 2.6 - 2.7 instead.',
-        file=sys.stderr)
-  sys.exit(1)
-if (ver[0], ver[1]) < MIN_PYTHON_VERSION:
-  print('error: Python version %s unsupported.\n'
-        'Please use Python 2.6 - 2.7 instead.'
-        % sys.version.split(' ')[0], file=sys.stderr)
-  sys.exit(1)
+check_python_version(MIN_PYTHON_VERSION)
 
 home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')

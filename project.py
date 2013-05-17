@@ -36,10 +36,11 @@ from trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
-try:
+from pyversion import is_python3
+if not is_python3():
+  # pylint:disable=W0622
   input = raw_input
-except NameError:
-  pass
+  # pylint:enable=W0622
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
