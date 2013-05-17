@@ -25,14 +25,13 @@ try:
 except ImportError:
   import dummy_threading as _threading
 import time
-try:
-  import urllib2
-except ImportError:
-  # For python3
+
+from repo import is_python3
+if is_python3():
   import urllib.request
   import urllib.error
 else:
-  # For python2
+  import urllib2
   import imp
   urllib = imp.new_module('urllib')
   urllib.request = urllib2

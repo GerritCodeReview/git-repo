@@ -23,10 +23,11 @@ from editor import Editor
 from error import HookError, UploadError
 from project import RepoHook
 
-try:
+from repo import is_python3
+if not is_python3():
+  # pylint:disable=W0622
   input = raw_input
-except NameError:
-  pass
+  # pylint:enable=W0622
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 

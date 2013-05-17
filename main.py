@@ -22,13 +22,12 @@ import optparse
 import os
 import sys
 import time
-try:
-  import urllib2
-except ImportError:
-  # For python3
+
+from repo import is_python3
+if is_python3():
   import urllib.request
 else:
-  # For python2
+  import urllib2
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
 
@@ -50,10 +49,10 @@ from pager import RunPager
 
 from subcmds import all_commands
 
-try:
+if not is_python3():
+  # pylint:disable=W0622
   input = raw_input
-except NameError:
-  pass
+  # pylint:enable=W0622
 
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
