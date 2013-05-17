@@ -24,22 +24,17 @@ import socket
 import subprocess
 import sys
 import time
-try:
-  # For python3
+
+from pyversion import is_python3
+if is_python3():
   import urllib.parse
-except ImportError:
-  # For python2
+  import xmlrpc.client
+else:
   import imp
   import urlparse
+  import xmlrpclib
   urllib = imp.new_module('urllib')
   urllib.parse = urlparse
-try:
-  # For python3
-  import xmlrpc.client
-except ImportError:
-  # For python2
-  import imp
-  import xmlrpclib
   xmlrpc = imp.new_module('xmlrpc')
   xmlrpc.client = xmlrpclib
 

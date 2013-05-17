@@ -21,12 +21,13 @@ except ImportError:
   import dummy_threading as _threading
 
 import glob
-try:
-  # For python2
-  import StringIO as io
-except ImportError:
-  # For python3
+
+from pyversion import is_python3
+if is_python3():
   import io
+else:
+  import StringIO as io
+
 import itertools
 import os
 import sys

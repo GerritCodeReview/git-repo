@@ -18,16 +18,16 @@ import itertools
 import os
 import re
 import sys
-try:
-  # For python3
+import xml.dom.minidom
+
+from pyversion import is_python3
+if is_python3():
   import urllib.parse
-except ImportError:
-  # For python2
+else:
   import imp
   import urlparse
   urllib = imp.new_module('urllib')
   urllib.parse = urlparse
-import xml.dom.minidom
 
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
