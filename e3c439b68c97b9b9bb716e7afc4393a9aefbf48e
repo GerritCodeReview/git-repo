@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "Uy7ciCHk",
+        "filename": "pyversion.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-05-21T07:11:48Z",
+      "side": 1,
+      "message": "Is this line needed?",
+      "revId": "e3c439b68c97b9b9bb716e7afc4393a9aefbf48e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
