@@ -40,6 +40,10 @@ else:
 from signal import SIGTERM
 from error import GitError, UploadError
 from trace import Trace
+if is_python():
+  from http.client import HTTPException
+else:
+  from httplib import HTTPException
 
 from git_command import GitCommand
 from git_command import ssh_sock
@@ -608,6 +612,8 @@ class Remote(object):
           raise UploadError('%s: %s' % (self.review, str(e)))
         except urllib.error.URLError as e:
           raise UploadError('%s: %s' % (self.review, str(e)))
+        except HTTPException as e:
+          raise UploadError('%s: %s' % (self.review, e.__class__.__name__))
 
         REVIEW_CACHE[u] = self._review_url
     return self._review_url + self.projectname
