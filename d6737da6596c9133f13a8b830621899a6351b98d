@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9df70d47_1d475366",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-05-24T14:39:32Z",
+      "side": 1,
+      "message": "This comes from http.client in python3",
+      "revId": "d6737da6596c9133f13a8b830621899a6351b98d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
