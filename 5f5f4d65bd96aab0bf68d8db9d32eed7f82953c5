@@ -124,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "3d8381c6_6213366e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-05-27T06:21:54Z",
+      "side": 1,
+      "message": "I\u0027ll take a look on how this can be better handled.",
+      "parentUuid": "UqBqtfdQ",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "UqNp1xZQ",
         "filename": "project.py",
         "patchSetId": 7
@@ -135,6 +153,24 @@
       "writtenOn": "2013-05-15T19:56:44Z",
       "side": 1,
       "message": "This doesn\u0027t get called very often, right?  I think it\u0027d be nice to forget caching the _project_hook_list and simplifying things by getting rid of these globals.  I think it makes even more since now given that it\u0027s not even a firm cache after this change.\n\nAlso, now that this is specific to the manifest and the remote, it might make sense to just make this function a method of Project.\n\nCould you change r to remote?",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5d483578_83041e25",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-05-27T06:21:54Z",
+      "side": 1,
+      "message": "By moving it into the project class the code would be more understandable, a few less globals and the impact on the user should be negligible. I\u0027ll go for this approach..",
+      "parentUuid": "UqNp1xZQ",
       "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -277,6 +313,24 @@
     },
     {
       "key": {
+        "uuid": "5d483578_a3071a29",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1932,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-05-27T06:21:54Z",
+      "side": 1,
+      "message": "This was mostly done to keep the content of the manifest git clean. However I can see a more practical approach to having the hooks be implemented here as well. This especially since they are quite often used for submitting changes done to the manifest. I\u0027ll remove the test.",
+      "parentUuid": "Uu8fqvis",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "Uu.fvwjg",
         "filename": "project.py",
         "patchSetId": 7
@@ -288,6 +342,24 @@
       "writtenOn": "2013-05-15T19:56:44Z",
       "side": 1,
       "message": "Instead of testing for it here, you should exclude it in the _ProjectHooks function.",
+      "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3d8381c6_c2048226",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1945,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-05-27T06:21:54Z",
+      "side": 1,
+      "message": "I agree, I will move it.",
+      "parentUuid": "Uu.fvwjg",
       "revId": "5f5f4d65bd96aab0bf68d8db9d32eed7f82953c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
