@@ -224,6 +224,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
       b = {}
       for branch in avail:
+        if branch is None:
+          continue
         name = branch.name
         date = branch.date
         commit_list = branch.commits
