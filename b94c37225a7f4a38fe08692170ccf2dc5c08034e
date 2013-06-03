@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdd3f145_96750c94",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-03T23:48:16Z",
+      "side": 1,
+      "message": "Please remove your debugging output \u003dP",
+      "revId": "b94c37225a7f4a38fe08692170ccf2dc5c08034e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
