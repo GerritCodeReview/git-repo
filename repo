@@ -680,6 +680,7 @@ def _SetDefaultsTo(gitdir):
   global REPO_REV
 
   REPO_URL = gitdir
+  print('REPO_URL: ' + REPO_URL)
   proc = subprocess.Popen([GIT,
                            '--git-dir=%s' % gitdir,
                            'symbolic-ref',
@@ -699,6 +700,7 @@ def _SetDefaultsTo(gitdir):
 
 def main(orig_args):
   repo_main, rel_repo_dir = _FindRepo()
+  print('repo_main %s' % repo_main)
   cmd, opt, args = _ParseArguments(orig_args)
 
   wrapper_path = os.path.abspath(__file__)
@@ -725,6 +727,7 @@ def main(orig_args):
         os.rmdir(repodir)
         sys.exit(1)
       repo_main, rel_repo_dir = _FindRepo()
+      print('repo_main after init' + repo_main)
     else:
       _NoCommands(cmd)
 
