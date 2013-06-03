@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bdd3f145_d67b8486",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1835,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2013-06-03T23:39:03Z",
+      "side": 1,
+      "message": "git-remote-persistent-https -print_config by design really doesn\u0027t exit until stdin is closed. But it turns out p.wait() closes stdin. So this is a non-issue, removed.",
+      "parentUuid": "9dd0ed3c_35acf0d6",
+      "revId": "81ec56af2f0a0482fee4b65a8b017f8339aa5a32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bdd3f145_569f74a3",
         "filename": "project.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2013-06-03T23:26:30Z",
       "side": 1,
       "message": "or just `for line in p.stdout` since it doesn\u0027t look like you need i (and this will trigger our linter).",
+      "revId": "81ec56af2f0a0482fee4b65a8b017f8339aa5a32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bdd3f145_16a9fcc6",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1837,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2013-06-03T23:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdd3f145_569f74a3",
       "revId": "81ec56af2f0a0482fee4b65a8b017f8339aa5a32",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "bdd3f145_f67680a0",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1842,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2013-06-03T23:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9dd0ed3c_15a9f4c6",
+      "revId": "81ec56af2f0a0482fee4b65a8b017f8339aa5a32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bdd3f145_36acf8d6",
         "filename": "project.py",
         "patchSetId": 1
@@ -64,6 +118,24 @@
       "writtenOn": "2013-06-03T23:26:30Z",
       "side": 1,
       "message": "unless I\u0027m mistaken, this won\u0027t print out the first line",
+      "revId": "81ec56af2f0a0482fee4b65a8b017f8339aa5a32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9dd0ed3c_b57000a4",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1847,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2013-06-03T23:39:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdd3f145_36acf8d6",
       "revId": "81ec56af2f0a0482fee4b65a8b017f8339aa5a32",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
