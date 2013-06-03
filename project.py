@@ -1804,13 +1804,24 @@ class Project(object):
       return False
 
     if os.path.exists(tmpPath):
-      if curlret == 0 and os.stat(tmpPath).st_size > 16:
+      if curlret == 0 and self._IsValidBundle(tmpPath):
         os.rename(tmpPath, dstPath)
         return True
       else:
         os.remove(tmpPath)
         return False
     else:
+      return False
+
+  def _IsValidBundle(self, path):
+    try:
+      with open(path) as f:
+        if f.read(16) == '# v2 git bundle\n':
+          return True
+        else:
+          print("Invalid clone.bundle file; ignoring.", file=sys.stderr)
+          return False
+    except OSError:
       return False
 
   def _Checkout(self, rev, quiet=False):
