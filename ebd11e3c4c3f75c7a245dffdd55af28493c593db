@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9dd0ed3c_153334fc",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-06-03T04:35:23Z",
+      "side": 1,
+      "message": "Why is auto_topic now always set to True?",
+      "revId": "ebd11e3c4c3f75c7a245dffdd55af28493c593db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
