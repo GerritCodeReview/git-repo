@@ -1728,9 +1728,8 @@ class Project(object):
     remote = self.GetRemote(self.remote.name)
     bundle_url = remote.url + '/clone.bundle'
     bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
-    if GetSchemeFromUrl(bundle_url) in ('persistent-http', 'persistent-https'):
-      bundle_url = bundle_url[len('persistent-'):]
-    if GetSchemeFromUrl(bundle_url) not in ('http', 'https'):
+    if GetSchemeFromUrl(bundle_url) not in (
+        'http', 'https', 'persistent-http', 'persistent-https'):
       return False
 
     bundle_dst = os.path.join(self.gitdir, 'clone.bundle')
@@ -1779,9 +1778,11 @@ class Project(object):
         os.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
-    cookiefile = GitConfig.ForUser().GetString('http.cookiefile')
+    cookiefile = self._GetBundleCookieFile(srcUrl)
     if cookiefile:
       cmd += ['--cookie', cookiefile]
+    if srcUrl.startswith('persistent-'):
+      srcUrl = srcUrl[len('persistent-'):]
     cmd += [srcUrl]
 
     if IsTrace():
@@ -1823,6 +1824,30 @@ class Project(object):
           return False
     except OSError:
       return False
+
+  def _GetBundleCookieFile(self, url):
+    if url.startswith('persistent-'):
+      try:
+        p = subprocess.Popen(
+            ['git-remote-persistent-https', '-print_config', url],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        prefix = 'http.cookiefile='
+        for line in p.stdout:
+          line = line.strip()
+          if line.startswith(prefix):
+            return line[len(prefix):]
+        if p.wait():
+          line = iter(p.stderr).next()
+          if ' -print_config' in line:
+            pass  # Persistent proxy doesn't support -print_config.
+          else:
+            print(line + p.stderr.read(), file=sys.stderr)
+      except OSError as e:
+        if e.errno == errno.ENOENT:
+          pass  # No persistent proxy.
+        raise
+    return GitConfig.ForUser().GetString('http.cookiefile')
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
