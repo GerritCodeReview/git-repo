@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdd3f145_96eaacf6",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-06-04T00:38:53Z",
+      "side": 1,
+      "message": "`project_header_path` will be initialised twice if mirror is true.\n\nHow about this instead?\n\n if mirror:\n   project_header_path \u003d project.name\n else:\n   project_header_path \u003d project.relpath",
+      "revId": "07ceeb86acf53b5ecb89245563ec24eb5cde9ea4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
