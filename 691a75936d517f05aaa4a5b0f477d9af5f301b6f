@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdd3f145_76d0304d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-06-04T00:40:07Z",
+      "side": 1,
+      "message": "Might be worth wrapping this line.",
+      "revId": "691a75936d517f05aaa4a5b0f477d9af5f301b6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
