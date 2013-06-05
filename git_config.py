@@ -596,14 +596,11 @@ class Remote(object):
         try:
           info_url = u + 'ssh_info'
           info = urllib.request.urlopen(info_url).read()
-          if '<' in info:
-            # Assume the server gave us some sort of HTML
-            # response back, like maybe a login page.
+          if info == 'NOT_AVAILABLE' or '<' in info:
+            # If `info` contains '<', we assume the server gave us some sort
+            # of HTML response back, like maybe a login page.
             #
-            raise UploadError('%s: Cannot parse response' % info_url)
-
-          if info == 'NOT_AVAILABLE':
-            # Assume HTTP if SSH is not enabled.
+            # Assume HTTP if SSH is not enabled or ssh_info doesn't look right.
             self._review_url = http_url + 'p/'
           else:
             host, port = info.split()
