@@ -260,7 +260,12 @@ without iterating through the remaining projects.
                 first = False
               else:
                 out.nl()
-              out.project('project %s/', project.relpath)
+
+              if mirror:
+                project_header_path = project.name
+              else:
+                project_header_path = project.relpath
+              out.project('project %s/', project_header_path)
               out.nl()
               out.flush()
               if errbuf:
