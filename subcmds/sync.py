@@ -517,7 +517,7 @@ later is required to fix a server side protocol bug.
               # TypeError is raised when the given hostname is not present
               # in the .netrc file.
               print('No credentials found for %s in .netrc'
-                    % parse_result.hostname, file=sys.stderr)
+                    % manifest_server, file=sys.stderr)
             except netrc.NetrcParseError as e:
               print('Error parsing .netrc file: %s' % e, file=sys.stderr)
 
