@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdd8516c_ce3c03d1",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 603,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-06-06T09:34:21Z",
+      "side": 1,
+      "message": "Nit:  Missing period at the end of the sentence.",
+      "revId": "f6546b895f887a81896809fb333adbe5a78e0ab3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
