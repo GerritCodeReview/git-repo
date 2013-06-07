@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdd3f145_7688301a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-07T14:45:37Z",
+      "side": 1,
+      "message": "I haven\u0027t run into the issue myself, but this doesn\u0027t sound like an accurate diagnosis.  If there\u0027s a problem with parse result, then the if block we have on L513 should get skipped.  If not, then I would expect the error should be happening there and we would need to catch the unboundlocalerror.\n\nBasically, parse_result does not come from the .netrc, so something else is going on here then what you are describing.",
+      "revId": "f9a521a28b6a88deba4bf5d250b6deb587f8f97c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
