@@ -232,12 +232,13 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
         if b:
           script.append('#')
+        destination = opt.dest_branch or project.dest_branch or project.revisionExpr
         script.append('#  branch %s (%2d commit%s, %s) to remote branch %s:' % (
                       name,
                       len(commit_list),
                       len(commit_list) != 1 and 's' or '',
                       date,
-                      project.revisionExpr))
+                      destination))
         for commit in commit_list:
           script.append('#         %s' % commit)
         b[name] = branch
@@ -343,7 +344,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
           key = 'review.%s.uploadtopic' % branch.project.remote.review
           opt.auto_topic = branch.project.config.GetBoolean(key)
 
-        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=opt.dest_branch)
+        destination = opt.dest_branch or branch.project.dest_branch or branch.project.revisionExpr
+        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=destination)
         branch.uploaded = True
       except UploadError as e:
         branch.error = e
