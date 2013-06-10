@@ -16,6 +16,24 @@
       "revId": "189e3501e78ea789f9054101867da949b3cc6973",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5df835d2_c365f6f2",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1243,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-06-10T15:53:57Z",
+      "side": 1,
+      "message": "Sorry. but I don\u0027t know what this is used for, and I don\u0027t see why do we want to do that when only fetching a change from gerrit.\n\nThis also has a bug, since it\u0027ll fetch refs/heads/*, regardless of what \"sync-c\" is set in the manifest.",
+      "parentUuid": "9dfe2dbb_45522a1e",
+      "revId": "189e3501e78ea789f9054101867da949b3cc6973",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
