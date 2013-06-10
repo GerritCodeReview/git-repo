@@ -1228,12 +1228,16 @@ class Project(object):
   def AddAnnotation(self, name, value, keep):
     self.annotations.append(_Annotation(name, value, keep))
 
-  def DownloadPatchSet(self, change_id, patch_id):
+  def DownloadPatchSet(self, change_id, patch_id, fetch_from_review=False):
     """Download a single patch set of a single change to FETCH_HEAD.
     """
     remote = self.GetRemote(self.remote.name)
+    if fetch_from_review:
+      fetch = remote.ReviewUrl(self.UserEmail)
+    else:
+      fetch = remote.name
 
-    cmd = ['fetch', remote.name]
+    cmd = ['fetch', fetch]
     cmd.append('refs/changes/%2.2d/%d/%d' \
                % (change_id % 100, change_id, patch_id))
     if GitCommand(self, cmd, bare=True).Wait() != 0:
