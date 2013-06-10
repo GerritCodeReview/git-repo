@@ -34,7 +34,7 @@ else:
   import urlparse
   import xmlrpclib
   urllib = imp.new_module('urllib')
-  urllib.parse = urlparse
+  urllib.parse = urlparse.urlparse
   xmlrpc = imp.new_module('xmlrpc')
   xmlrpc.client = xmlrpclib
 
