@@ -42,6 +42,10 @@ makes it available in your project's local working directory.
     p.add_option('-f', '--ff-only',
                  dest='ffonly', action='store_true',
                  help="force fast-forward merge")
+    p.add_option('-r', '--fetch-from-review',
+                 dest='fetch_from_review', action='store_true',
+                 help="Fetch changes from the Gerrit instead of the \
+                       default remote for the project")
 
   def _ParseChangeIds(self, args):
     if not args:
@@ -67,7 +71,11 @@ makes it available in your project's local working directory.
 
   def Execute(self, opt, args):
     for project, change_id, ps_id in self._ParseChangeIds(args):
-      dl = project.DownloadPatchSet(change_id, ps_id)
+      print(opt.fetch_from_review)
+      if opt.fetch_from_review:
+        dl = project.DownloadPatchSet(change_id, ps_id, fetch_from_review=True)
+      else:
+        dl = project.DownloadPatchSet(change_id, ps_id, fetch_from_review=False)
       if not dl:
         print('[%s] change %d/%d not found'
               % (project.name, change_id, ps_id),
