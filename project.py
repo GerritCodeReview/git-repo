@@ -1232,11 +1232,15 @@ class Project(object):
     """Download a single patch set of a single change to FETCH_HEAD.
     """
     remote = self.GetRemote(self.remote.name)
+    url = remote.ReviewUrl(self.UserEmail)
+    if url is None:
+        url = remote.name
 
-    cmd = ['fetch', remote.name]
+    cmd = ['fetch', url]
     cmd.append('refs/changes/%2.2d/%d/%d' \
                % (change_id % 100, change_id, patch_id))
-    cmd.extend(list(map(str, remote.fetch)))
+    if url == remote.name:
+        cmd.extend(list(map(str, remote.fetch)))
     if GitCommand(self, cmd, bare=True).Wait() != 0:
       return None
     return DownloadedChange(self,
