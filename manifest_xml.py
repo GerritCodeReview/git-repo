@@ -27,7 +27,7 @@ else:
   import imp
   import urlparse
   urllib = imp.new_module('urllib')
-  urllib.parse = urlparse.urlparse
+  urllib.parse = urlparse
 
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD

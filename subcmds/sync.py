@@ -34,7 +34,7 @@ else:
   import urlparse
   import xmlrpclib
   urllib = imp.new_module('urllib')
-  urllib.parse = urlparse.urlparse
+  urllib.parse = urlparse
   xmlrpc = imp.new_module('xmlrpc')
   xmlrpc.client = xmlrpclib
 
@@ -509,7 +509,7 @@ later is required to fix a server side protocol bug.
                   file=sys.stderr)
           else:
             try:
-              parse_result = urllib.parse(manifest_server)
+              parse_result = urllib.parse.urlparse(manifest_server)
               if parse_result.hostname:
                 username, _account, password = \
                   info.authenticators(parse_result.hostname)
