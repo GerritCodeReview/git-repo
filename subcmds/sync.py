@@ -487,6 +487,8 @@ later is required to fix a server side protocol bug.
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
 
+    manifest_name = opt.manifest_name
+
     if opt.smart_sync or opt.smart_tag:
       if not self.manifest.manifest_server:
         print('error: cannot smart sync: no manifest server defined in '
@@ -526,7 +528,6 @@ later is required to fix a server side protocol bug.
                                                     (username, password),
                                                     1)
 
-      manifest_name = opt.manifest_name
       try:
         server = xmlrpc.client.Server(manifest_server)
         if opt.smart_sync:
