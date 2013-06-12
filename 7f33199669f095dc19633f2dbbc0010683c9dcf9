@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1db23d5c_7107f8d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T17:20:38Z",
+      "side": 1,
+      "message": "* limit line lengths to 72 characters please\n* Isn\u0027t replication pretty quick?  By the time you fail the first time and try again, won\u0027t it be replicated?  Or is there an issue other than speed that you are addressing here?",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1db23d5c_510474cb",
+        "filename": "subcmds/download.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T17:20:38Z",
+      "side": 1,
+      "message": "I\u0027d prefer you ended the line with quotes and then began the next with quotes, python will append them.",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_72409819",
+        "filename": "subcmds/download.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T17:20:38Z",
+      "side": 1,
+      "message": "why not just say:\n  dl \u003d project.DownloadPatchSet(change_id, ps_id, opt.fetch_from_review)",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

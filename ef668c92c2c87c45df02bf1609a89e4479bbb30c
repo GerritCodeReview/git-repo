@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3dad41fd_12330cce",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T17:20:38Z",
+      "side": 0,
+      "message": "Was this line not important?",
+      "revId": "ef668c92c2c87c45df02bf1609a89e4479bbb30c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
