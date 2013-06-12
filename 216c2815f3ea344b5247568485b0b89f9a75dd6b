@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1db23d5c_b1efa0e9",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "I\u0027m missing something here.  Why can\u0027t these be bare in a mirror?",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1db23d5c_115cacfd",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1919,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "Can\u0027t you just use self.manifest.repodir and remove this parameter?",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1db23d5c_7159b80d",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1920,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "it\u0027s not just this directory anymore",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1db23d5c_315f30f6",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1930,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "tws",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_72b37824",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1935,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "[] not needed here",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_12b66c14",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1936,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "Is there any reason this needs to be two nested ifs? ie, you could just do:\n\nif remote and remote.projecthookName:\n      ...",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_92c9bca3",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1938,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "it probably doesn\u0027t make a difference, but I\u0027d prefer the usage of os.path.join here since our code pretty consistently uses that.",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_f2be48ed",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1940,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "neither dict( nor [ is necessary here:\n  ie: hooks.update((x, os.path.join(d, x)) for x in os.listdir(d))",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_d2c3447f",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1944,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "If you are expecting to return a list, and not just an iterator, this needs to be return list(hooks.values()) for python3",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_32b9f004",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1966,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "Does the variable name stock_hook still make sense here since you seem to be distinguishing between stock hooks and remote-specific hooks and this variable includes both?",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1db23d5c_515634df",
+        "filename": "subcmds/init.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 363,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "just used self.manifest.repodir instead of accepting this parameter",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3dad41fd_52b0f415",
+        "filename": "subcmds/init.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-12T16:07:44Z",
+      "side": 1,
+      "message": "Sorry, could you explain this?  Why would you want to do that?",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
