@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "7d9899f5_bc176157",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-06-13T15:05:42Z",
+      "side": 1,
+      "message": "Ah, ok, I see that that\u0027s an option now.  Is there a reason someone would setup their gerrit to not replicate the changes but then also point repo at that replication?  When this problem happens, shouldn\u0027t the gerrit admin just setup fuller replication and the user can temporarily copy and paste the fetch/cherry-pick commands from gerrit?",
+      "parentUuid": "7d9899f5_5c081d38",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1db23d5c_510474cb",
         "filename": "subcmds/download.py",
         "patchSetId": 5
