@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "5d9595bb_bb176757",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-06-13T15:43:42Z",
+      "side": 1,
+      "message": "Agreed, and with repo defaulting to fetching patch set 1 if only the change number specified doesn\u0027t help.",
+      "parentUuid": "7d9899f5_bc176157",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1db23d5c_510474cb",
         "filename": "subcmds/download.py",
         "patchSetId": 5
