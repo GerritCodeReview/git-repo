@@ -16,6 +16,24 @@
       "revId": "ef668c92c2c87c45df02bf1609a89e4479bbb30c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7d9899f5_1cfe95ec",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-06-13T02:19:42Z",
+      "side": 0,
+      "message": "It used to fetch everything from `remote.name`, even if sync-c was true.\nWithout this, only the change is fetched, which would be the expected behavior, right?\nAlso, if this needs to kept, then we should probably add some checking rather then doing it by default.",
+      "parentUuid": "3dad41fd_12330cce",
+      "revId": "ef668c92c2c87c45df02bf1609a89e4479bbb30c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

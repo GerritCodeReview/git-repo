@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7d9899f5_5c081d38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-06-13T02:19:42Z",
+      "side": 1,
+      "message": "* Done\n* There\u0027s another issue I\u0027m trying to address, all Gerrit changes may not be replicated to the remote (an example would be if you only have a public mirror for fetching the repositories, to which only \u0027refs/heads/*\u0027 and \u0027refs/tags*\u0027 are replicated, then this option would be helpful.",
+      "parentUuid": "1db23d5c_7107f8d1",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1db23d5c_510474cb",
         "filename": "subcmds/download.py",
         "patchSetId": 5
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "5d9595bb_fbf80f03",
+        "filename": "subcmds/download.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-06-13T02:19:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1db23d5c_510474cb",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3dad41fd_72409819",
         "filename": "subcmds/download.py",
         "patchSetId": 5
@@ -47,6 +83,24 @@
       "writtenOn": "2013-06-12T17:20:38Z",
       "side": 1,
       "message": "why not just say:\n  dl \u003d project.DownloadPatchSet(change_id, ps_id, opt.fetch_from_review)",
+      "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7d9899f5_3cfb51fd",
+        "filename": "subcmds/download.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-06-13T02:19:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3dad41fd_72409819",
       "revId": "7f33199669f095dc19633f2dbbc0010683c9dcf9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
