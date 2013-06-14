@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea911d0e_df553b03",
+        "filename": "tests/cram.t",
+        "patchSetId": 3
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-06-14T07:07:40Z",
+      "side": 1,
+      "message": "This is a problem, since there may be more than one branch locally, and passing a branch to \"--repo-branch\" to the init command still fetches all the branches.",
+      "revId": "d2ee01ab6ec2e0b0a5d8d16d0ea4107847f77efa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
