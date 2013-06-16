@@ -252,7 +252,11 @@ def _Init(args):
       can_verify = True
 
     dst = os.path.abspath(os.path.join(repodir, S_repo))
-    _Clone(url, dst, opt.quiet)
+    if opt.repo_branch:
+      _branch = branch
+    else:
+      _branch = None
+    _Clone(url, dst, opt.quiet, _branch)
 
     if can_verify and not opt.no_repo_verify:
       rev = _Verify(dst, branch, opt.quiet)
@@ -392,7 +396,7 @@ def _InitHttp():
     handlers.append(urllib.request.HTTPSHandler(debuglevel=1))
   urllib.request.install_opener(urllib.request.build_opener(*handlers))
 
-def _Fetch(url, local, src, quiet):
+def _Fetch(url, local, src, quiet, branch):
   if not quiet:
     print('Get %s' % url, file=sys.stderr)
 
@@ -402,8 +406,10 @@ def _Fetch(url, local, src, quiet):
     err = subprocess.PIPE
   else:
     err = None
+  if branch is None:
+    branch = '*'
   cmd.append(src)
-  cmd.append('+refs/heads/*:refs/remotes/origin/*')
+  cmd.append('+refs/heads/%s:refs/remotes/origin/%s' % (branch, branch))
   cmd.append('refs/tags/*:refs/tags/*')
 
   proc = subprocess.Popen(cmd, cwd = local, stderr = err)
@@ -466,11 +472,11 @@ def _DownloadBundle(url, local, quiet):
 def _ImportBundle(local):
   path = os.path.join(local, '.git', 'clone.bundle')
   try:
-    _Fetch(local, local, path, True)
+    _Fetch(local, local, path, True, None)
   finally:
     os.remove(path)
 
-def _Clone(url, local, quiet):
+def _Clone(url, local, quiet, branch):
   """Clones a git repository to a new subdirectory of repodir
   """
   try:
@@ -502,7 +508,7 @@ def _Clone(url, local, quiet):
   if _DownloadBundle(url, local, quiet):
     _ImportBundle(local)
   else:
-    _Fetch(url, local, 'origin', quiet)
+    _Fetch(url, local, 'origin', quiet, branch)
 
 
 def _Verify(cwd, branch, quiet):
