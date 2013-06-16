@@ -208,7 +208,7 @@ to update the working directory files.
               'in another location.', file=sys.stderr)
         sys.exit(1)
 
-    if not m.Sync_NetworkHalf(is_new=is_new):
+    if not m.Sync_NetworkHalf(is_new=is_new, current_branch_only=True):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 
