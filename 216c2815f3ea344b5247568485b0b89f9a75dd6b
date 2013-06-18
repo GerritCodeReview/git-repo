@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2a5df55f_39e94f39",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-06-18T07:47:26Z",
+      "side": 1,
+      "message": "Of course they can, however from a design perspective it was seen  that when you are generating a mirror/bare you would not want to have them since they are not actually part of the git you are mirroring. \n\nWould you prefer this behaviour to be different?",
+      "parentUuid": "1db23d5c_b1efa0e9",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1db23d5c_115cacfd",
         "filename": "project.py",
         "patchSetId": 8
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "aaaac550_c5fc7af5",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1919,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-06-18T07:47:26Z",
+      "side": 1,
+      "message": "true, I\u0027ll clean it up.",
+      "parentUuid": "1db23d5c_115cacfd",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1db23d5c_7159b80d",
         "filename": "project.py",
         "patchSetId": 8
@@ -47,6 +83,24 @@
       "writtenOn": "2013-06-12T16:07:44Z",
       "side": 1,
       "message": "it\u0027s not just this directory anymore",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a52f150_18ee0541",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1920,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-06-18T07:47:26Z",
+      "side": 1,
+      "message": "true, I will clean up the description a little.",
+      "parentUuid": "1db23d5c_7159b80d",
       "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -98,6 +152,24 @@
       "writtenOn": "2013-06-12T16:07:44Z",
       "side": 1,
       "message": "Is there any reason this needs to be two nested ifs? ie, you could just do:\n\nif remote and remote.projecthookName:\n      ...",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a52f150_38e94939",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1936,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-06-18T07:47:26Z",
+      "side": 1,
+      "message": "No reason other than my personal liking. I\u0027ll move it to a single line. :)",
+      "parentUuid": "3dad41fd_12b66c14",
       "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -172,6 +244,24 @@
     },
     {
       "key": {
+        "uuid": "0a52f150_78f3c124",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1966,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-06-18T07:47:26Z",
+      "side": 1,
+      "message": "Since the last rewrite this has lost some meaning. I\u0027ll revamp it as \"hook\".",
+      "parentUuid": "3dad41fd_32b9f004",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1db23d5c_515634df",
         "filename": "subcmds/init.py",
         "patchSetId": 8
@@ -200,6 +290,24 @@
       "writtenOn": "2013-06-12T16:07:44Z",
       "side": 1,
       "message": "Sorry, could you explain this?  Why would you want to do that?",
+      "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2a5df55f_19ee0b41",
+        "filename": "subcmds/init.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1012722
+      },
+      "writtenOn": "2013-06-18T07:47:26Z",
+      "side": 1,
+      "message": "When using the projecthooks functionality the idea is to be able to aid/force different git hooks to the developers environment. As a way of discouraging local changes as well as ensuring that the projecthooks are the latest according to the current manifest version (repo init) this approach was selected. Neat  with no risk for git conflicts or similar.",
+      "parentUuid": "3dad41fd_52b0f415",
       "revId": "216c2815f3ea344b5247568485b0b89f9a75dd6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
