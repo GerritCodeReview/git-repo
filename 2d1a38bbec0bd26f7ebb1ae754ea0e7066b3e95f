@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ae52df2_1b629bec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-06-19T06:56:35Z",
+      "side": 1,
+      "message": "Should this read \"if the option ...\"?",
+      "revId": "2d1a38bbec0bd26f7ebb1ae754ea0e7066b3e95f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
