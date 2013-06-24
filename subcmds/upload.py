@@ -189,7 +189,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       date = branch.date
       commit_list = branch.commits
 
-      destination = project.dest_branch or project.revisionExpr
+      destination = opt.dest_branch or project.dest_branch or project.revisionExpr
       print('Upload project %s/ to remote branch %s:' % (project.relpath, destination))
       print('  branch %s (%2d commit%s, %s):' % (
                     name,
