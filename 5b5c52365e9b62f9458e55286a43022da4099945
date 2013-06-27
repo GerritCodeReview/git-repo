@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa8ba5a1_5d565bdd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-06-27T10:17:24Z",
+      "side": 1,
+      "message": "Can you add a bit more detail here, like which conditions fail before adding this patch?",
+      "revId": "5b5c52365e9b62f9458e55286a43022da4099945",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
