@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "672f288d_eb24d1be",
+        "filename": "tests/cram.t",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-07-01T21:54:01Z",
+      "side": 1,
+      "message": "Is this the same thing as CRAMTMP?  can we use that to make it more obvious it\u0027s a tmp directory?",
+      "revId": "4ef6644de35a3de37364adac42d60f538b806a48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "87325cef_8c1b277b",
+        "filename": "tests/cram.t",
+        "patchSetId": 5
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-07-01T21:54:01Z",
+      "side": 1,
+      "message": "I have several other comments I\u0027d like to make, but I don\u0027t want to drown you in them at this point.  The biggest thing I want to point out at the moment (that I also mentioned last time) is that doing tests like this is really brittle...we aren\u0027t trying to test git, we are trying to test repo so it shouldn\u0027t matter if the git output changes from underneath us and the particulars of the repo output shouldn\u0027t matter so much either.\n\nIf you can write it in a way that won\u0027t break on small changes this would be a very good test to have and this tool looks nice and simple for the task.\n\nAlso, right now I get the following error output (mostly looks due to me having multiple branches):\n-   * [new branch]      cram       -\u003e origin/cram\n-  Get */server/manifest (glob)\n-  From */server/manifest (glob)\n+   * [new branch]      key        -\u003e origin/key\n+   * [new branch]      master     -\u003e origin/master\n+   * [new branch]      stable     -\u003e origin/stable\n+   * [new branch]      x          -\u003e origin/x\n+  Get /tmp/cramtests-6nW2c0/cram.t/server/manifest\n+  From /tmp/cramtests-6nW2c0/cram.t/server/manifest",
+      "revId": "4ef6644de35a3de37364adac42d60f538b806a48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
