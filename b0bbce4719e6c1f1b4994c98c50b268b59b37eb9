@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "87325cef_cc212fad",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-07-01T21:14:20Z",
+      "side": 1,
+      "message": "Why is this being added here?",
+      "revId": "b0bbce4719e6c1f1b4994c98c50b268b59b37eb9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
