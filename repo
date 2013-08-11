@@ -130,11 +130,6 @@ else:
 
 # Python version check
 ver = sys.version_info
-if ver[0] == 3:
-  print('error: Python 3 support is not fully implemented in repo yet.\n'
-        'Please use Python 2.6 - 2.7 instead.',
-        file=sys.stderr)
-  sys.exit(1)
 if (ver[0], ver[1]) < MIN_PYTHON_VERSION:
   print('error: Python version %s unsupported.\n'
         'Please use Python 2.6 - 2.7 instead.'
