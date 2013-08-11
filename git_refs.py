@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
 import os
+import sys
 from trace import Trace
 
 HEAD    = 'HEAD'
@@ -108,7 +110,8 @@ class GitRefs(object):
       return
     try:
       for line in fd:
-        line = str(line)
+        if not isinstance(line, str):
+          line = line.decode('utf-8')
         if line[0] == '#':
           continue
         if line[0] == '^':
@@ -116,6 +119,7 @@ class GitRefs(object):
 
         line = line[:-1]
         p = line.split(' ')
+        print("%s" % p, file=sys.stderr)
         ref_id = p[0]
         name = p[1]
 

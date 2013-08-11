@@ -135,6 +135,9 @@ if (ver[0], ver[1]) < MIN_PYTHON_VERSION:
         'Please use Python 2.6 - 2.7 instead.'
         % sys.version.split(' ')[0], file=sys.stderr)
   sys.exit(1)
+elif ver[0] >= 3:
+  # For Python 3 and above, this must be a byte array
+  MAINTAINER_KEYS = bytes(MAINTAINER_KEYS, 'utf-8')
 
 home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
@@ -202,6 +205,18 @@ group.add_option('--config-name',
 class CloneFailure(Exception):
   """Indicate the remote clone of repo itself failed.
   """
+
+
+def _byte_array_to_str(s):
+  """ Convert an array of bytes to a string.
+
+  If `s` is a string, just return it as-is, otherwise assume it's an
+  array of bytes and return its content decoded to a utf-8 string.
+
+  """
+  if isinstance(s, str):
+    return s
+  return s.decode('utf-8')
 
 
 def _Init(args):
@@ -275,7 +290,7 @@ def _CheckGitVersion():
           file=sys.stderr)
     raise CloneFailure()
 
-  ver_str = proc.stdout.read().strip()
+  ver_str = _byte_array_to_str(proc.stdout.read().strip())
   proc.stdout.close()
   proc.wait()
 
@@ -299,7 +314,7 @@ def NeedSetupGnuPG():
   if not os.path.exists(kv):
     return True
 
-  kv = open(kv).read()
+  kv = _byte_array_to_str(open(kv).read())
   if not kv:
     return True
 
@@ -418,6 +433,7 @@ def _DownloadBundle(url, local, quiet):
     cwd = local,
     stdout = subprocess.PIPE)
   for line in proc.stdout:
+    line = _byte_array_to_str(line)
     m = re.compile(r'^url\.(.*)\.insteadof (.*)$').match(line)
     if m:
       new_url = m.group(1)
@@ -508,7 +524,7 @@ def _Verify(cwd, branch, quiet):
                           stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE,
                           cwd = cwd)
-  cur = proc.stdout.read().strip()
+  cur = _byte_array_to_str(proc.stdout.read().strip())
   proc.stdout.close()
 
   proc.stderr.read()
@@ -681,7 +697,7 @@ def _SetDefaultsTo(gitdir):
                            'HEAD'],
                           stdout = subprocess.PIPE,
                           stderr = subprocess.PIPE)
-  REPO_REV = proc.stdout.read().strip()
+  REPO_REV = _byte_array_to_str(proc.stdout.read().strip())
   proc.stdout.close()
 
   proc.stderr.read()
