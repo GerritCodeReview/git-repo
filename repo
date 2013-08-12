@@ -856,6 +856,9 @@ def main(orig_args):
     else:
       _NoCommands(cmd)
 
+  if cmd == 'sync' and NeedSetupGnuPG():
+    SetupGnuPG(False)
+
   if my_main:
     repo_main = my_main
 
