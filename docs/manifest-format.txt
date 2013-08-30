@@ -75,6 +75,9 @@ following DTD:
 
     <!ELEMENT include      (EMPTY)>
     <!ATTLIST include name CDATA #REQUIRED>
+
+    <!ELEMENT supplemental-metadata (EMPTY)>
+    <!ATTLIST supplemental-metadata path CDATA #REQUIRED>
   ]>
 
 A description of the elements and their attributes follows.
@@ -278,6 +281,17 @@ target manifest to include - it must be a usable manifest on its own.
 Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
 
+Element supplemental-metadata
+-----------------------------
+
+This element provides the capability of augmenting the metadata of a
+project (groups and annotations) with those from a second manifest. Most
+frequently this will be used when per-project metadata is stored in
+a separate manifest from manifests where project name->path mappings
+are stored.
+
+Attribute 'path': the manifest to pull supplemental data from, specified
+relative to the manifest repository's root.
 
 Local Manifests
 ===============

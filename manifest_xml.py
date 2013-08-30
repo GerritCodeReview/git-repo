@@ -493,6 +493,28 @@ class XmlManifest(object):
         if self._repo_hooks_project and (self._repo_hooks_project.name == name):
           self._repo_hooks_project = None
 
+    for node in itertools.chain(*node_list):
+      if node.nodeName == 'supplemental-metadata':
+          self._ParseSupplementalMetadata(node)
+
+  def _ParseSupplementalMetadata(self, node):
+    if not node.hasAttribute('path'):
+      raise ManifestParseError(
+        'supplemental-metadata tag must contain a path attribute')
+
+    supp_manifest = XmlManifest(self.repodir)
+    supp_manifest.Override(node.getAttribute('path'))
+
+    supp_projects = {}
+    for path,project in supp_manifest.projects.iteritems():
+      supp_projects[project.name] = project
+
+    for path,project in self._projects.iteritems():
+      if project.name in supp_projects:
+        supp_project = supp_projects[project.name]
+        project.groups = list(set(project.groups) | set(supp_project.groups))
+        for ann in supp_project.annotations:
+          project.AddAnnotation(ann.name, ann.value, ann.keep)
 
   def _AddMetaProjectMirror(self, m):
     name = None
