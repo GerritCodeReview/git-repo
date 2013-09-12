@@ -619,7 +619,7 @@ class Remote(object):
   def ToLocal(self, rev):
     """Convert a remote revision string to something we have locally.
     """
-    if IsId(rev):
+    if self.name == '.' or IsId(rev):
       return rev
 
     if not rev.startswith('refs/'):
