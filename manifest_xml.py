@@ -45,6 +45,7 @@ class _Default(object):
   """Project defaults within the manifest."""
 
   revisionExpr = None
+  destBranchExpr = None
   remote = None
   sync_j = 1
   sync_c = False
