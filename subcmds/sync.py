@@ -496,6 +496,8 @@ later is required to fix a server side protocol bug.
         sys.exit(1)
 
       manifest_server = self.manifest.manifest_server
+      if not opt.quiet:
+        print('Using manifest server %s' % manifest_server)
 
       if not '@' in manifest_server:
         username = None
