@@ -566,7 +566,8 @@ later is required to fix a server side protocol bug.
             sys.exit(1)
           self._ReloadManifest(manifest_name)
         else:
-          print('error: %s' % manifest_str, file=sys.stderr)
+          print('error: manifest server RPC call failed: %s' %
+                manifest_str, file=sys.stderr)
           sys.exit(1)
       except (socket.error, IOError, xmlrpc.client.Fault) as e:
         print('error: cannot connect to manifest server %s:\n%s'
