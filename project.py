@@ -1831,17 +1831,22 @@ class Project(object):
             ['git-remote-persistent-https', '-print_config', url],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
+        p.stdin.close()  # Tell subprocess it's ok to close.
         prefix = 'http.cookiefile='
+        cookiefile = None
         for line in p.stdout:
           line = line.strip()
           if line.startswith(prefix):
-            return line[len(prefix):]
+            cookiefile = line[len(prefix):]
+            break
         if p.wait():
           line = iter(p.stderr).next()
           if ' -print_config' in line:
             pass  # Persistent proxy doesn't support -print_config.
           else:
             print(line + p.stderr.read(), file=sys.stderr)
+        if cookiefile:
+          return cookiefile
       except OSError as e:
         if e.errno == errno.ENOENT:
           pass  # No persistent proxy.
