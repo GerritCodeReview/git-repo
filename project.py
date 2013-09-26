@@ -2274,7 +2274,7 @@ class Project(object):
                          p.stderr))
         r = p.stdout
         try:
-          r = r.decode()
+          r = r.decode('utf-8')
         except AttributeError:
           pass
         if r.endswith('\n') and r.index('\n') == len(r) - 1:
