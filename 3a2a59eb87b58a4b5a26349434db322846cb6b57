@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4968356_ec2a8b82",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-09-26T02:21:00Z",
+      "side": 1,
+      "message": "Does this change require the version to be incremented?",
+      "revId": "3a2a59eb87b58a4b5a26349434db322846cb6b57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
