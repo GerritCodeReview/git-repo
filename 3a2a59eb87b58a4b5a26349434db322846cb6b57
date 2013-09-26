@@ -16,6 +16,24 @@
       "revId": "3a2a59eb87b58a4b5a26349434db322846cb6b57",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c4a7f7cf_1d44734a",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1013527
+      },
+      "writtenOn": "2013-09-26T09:56:09Z",
+      "side": 1,
+      "message": "Is this just for the script changes or for the tool changes.\n\nThe tool is not ready yet to report it fully operational. In particular, the fcntl import in forall.py makes it impossible to run the tool in Windows, which is the primary target OS of this change for me.\n\nfcntl is used in repo only for non-blocking reads from stderr/stdout of executed process. But I don\u0027t know when I get enough time to work on an alternative solution using threads + Queue.",
+      "parentUuid": "a4968356_ec2a8b82",
+      "revId": "3a2a59eb87b58a4b5a26349434db322846cb6b57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
