@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84f89fd3_a339dae7",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-09-27T00:33:29Z",
+      "side": 1,
+      "message": "Inconsistent indentation.  Everywhere else in repo we use 2 spaces.",
+      "revId": "df2d463ef8dcf2050717531895b3298bc35102a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
