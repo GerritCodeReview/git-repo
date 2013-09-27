@@ -52,6 +52,24 @@
       "revId": "3a2a59eb87b58a4b5a26349434db322846cb6b57",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "844dff11_1b481b37",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-09-27T17:38:03Z",
+      "side": 1,
+      "message": "Anatoly is correct.  The version bump is just for when we want people to be notified of an update in the script, not for incomplete features like this.",
+      "parentUuid": "84f89fd3_632402bb",
+      "revId": "3a2a59eb87b58a4b5a26349434db322846cb6b57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
