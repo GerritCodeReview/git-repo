@@ -34,6 +34,24 @@
       "revId": "3a2a59eb87b58a4b5a26349434db322846cb6b57",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "84f89fd3_632402bb",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-09-27T00:36:37Z",
+      "side": 1,
+      "message": "The question was actually directed at Conley, but I forgot to add him as reviewer first...",
+      "parentUuid": "c4a7f7cf_1d44734a",
+      "revId": "3a2a59eb87b58a4b5a26349434db322846cb6b57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
