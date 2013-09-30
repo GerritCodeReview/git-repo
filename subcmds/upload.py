@@ -21,6 +21,7 @@ import sys
 from command import InteractiveCommand
 from editor import Editor
 from error import HookError, UploadError
+from git_command import GitCommand
 from project import RepoHook
 
 from pyversion import is_python3
@@ -345,6 +346,19 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
           opt.auto_topic = branch.project.config.GetBoolean(key)
 
         destination = opt.dest_branch or branch.project.dest_branch
+
+        # Make sure our local branch is not setup to track a different remote branch
+        merge_branch = self._GetMergeBranch(branch.project)
+        full_dest = 'refs/heads/%s' % destination
+        if not opt.dest_branch and merge_branch and merge_branch != full_dest:
+            print('merge branch %s does not match destination branch %s'
+                  % (merge_branch, full_dest))
+            print('skipping upload.')
+            print('Please use `--destination %s` if this is intentional'
+                  % destination)
+            branch.uploaded = False
+            continue
+
         branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=destination)
         branch.uploaded = True
       except UploadError as e:
@@ -378,6 +392,21 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
     if have_errors:
       sys.exit(1)
+
+  def _GetMergeBranch(self, project):
+    p = GitCommand(project,
+                   ['rev-parse', '--abbrev-ref', 'HEAD'],
+                   capture_stdout = True,
+                   capture_stderr = True)
+    p.Wait()
+    local_branch = p.stdout.strip()
+    p = GitCommand(project,
+                   ['config', '--get', 'branch.%s.merge' % local_branch],
+                   capture_stdout = True,
+                   capture_stderr = True)
+    p.Wait()
+    merge_branch = p.stdout.strip()
+    return merge_branch
 
   def Execute(self, opt, args):
     project_list = self.GetProjects(args)
