@@ -456,6 +456,70 @@ later is required to fix a server side protocol bug.
       fd.close()
     return 0
 
+  def _GetUsernamePassword(self, manifest_server,
+                           manifest_server_username=None,
+                           manifest_server_password=None):
+    # Try flags first
+    if manifest_server_username and manifest_server_password:
+      return manifest_server_username, manifest_server_password
+
+    try:
+      info = netrc.netrc()
+    except IOError:
+      print('.netrc file does not exist or could not be opened',
+            file=sys.stderr)
+    else:
+      try:
+        parse_result = urlparse.urlparse(manifest_server)
+        if parse_result.hostname:
+          username, _account, password = \
+            info.authenticators(parse_result.hostname)
+          return username, password
+      except TypeError:
+        # TypeError is raised when the given hostname is not present
+        # in the .netrc file.
+        print('No credentials found for %s in .netrc'
+              % parse_result.hostname, file=sys.stderr)
+      except netrc.NetrcParseError as e:
+        print('Error parsing .netrc file: %s' % e, file=sys.stderr)
+
+    # Fallback to git credentials
+    credential_request = "url=%s" % manifest_server
+    cmd = [GIT, 'credential', 'fill']
+    proc = subprocess.Popen(cmd,
+                            stdin = subprocess.PIPE,
+                            stdout = subprocess.PIPE,
+                            stderr = subprocess.PIPE,
+                            env = env)
+    proc.stdin.write(credential_request)
+    proc.stdin.close()
+
+    out = proc.stdout.read()
+    proc.stdout.close()
+
+    err = proc.stderr.read()
+    proc.stderr.close()
+
+    if proc.wait() != 0:
+      print(file=sys.stderr)
+      print(out, file=sys.stderr)
+      print(err, file=sys.stderr)
+      print(file=sys.stderr)
+      return None, None
+
+    password = None
+    username = None
+    for line in out.split():
+      k, v = line.split('=', 1)
+      if k == 'password':
+        password = v
+      elif k == 'username':
+        username = v
+
+    if username and password:
+      return username, password
+    return None, None
+
   def Execute(self, opt, args):
     if opt.jobs:
       self.jobs = opt.jobs
@@ -500,30 +564,10 @@ later is required to fix a server side protocol bug.
         print('Using manifest server %s' % manifest_server)
 
       if not '@' in manifest_server:
-        username = None
-        password = None
-        if opt.manifest_server_username and opt.manifest_server_password:
-          username = opt.manifest_server_username
-          password = opt.manifest_server_password
-        else:
-          try:
-            info = netrc.netrc()
-          except IOError:
-            print('.netrc file does not exist or could not be opened',
-                  file=sys.stderr)
-          else:
-            try:
-              parse_result = urllib.parse.urlparse(manifest_server)
-              if parse_result.hostname:
-                username, _account, password = \
-                  info.authenticators(parse_result.hostname)
-            except TypeError:
-              # TypeError is raised when the given hostname is not present
-              # in the .netrc file.
-              print('No credentials found for %s in .netrc'
-                    % parse_result.hostname, file=sys.stderr)
-            except netrc.NetrcParseError as e:
-              print('Error parsing .netrc file: %s' % e, file=sys.stderr)
+        username, password = self._GetUsernamePassword(
+            opt.manifest_server_username,
+            opt.manifest_server_password,
+            manifest_server)
 
         if (username and password):
           manifest_server = manifest_server.replace('://', '://%s:%s@' %
