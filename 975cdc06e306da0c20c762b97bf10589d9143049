@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c1d52934_4d4b7961",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-08T10:15:12Z",
+      "side": 1,
+      "message": "Which git version is required for the `credential` command to work?\n\nIn the repo wrapper MIN_GIT_VERSION is specified as 1.7.2.\n\nI have 1.7.11.3 and the `credential` command is not there.",
+      "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
