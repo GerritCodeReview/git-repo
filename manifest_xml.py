@@ -91,6 +91,8 @@ class _XmlRemote(object):
   def ToRemoteSpec(self, projectName):
     url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
     remoteName = self.name
+    if self.remoteAlias:
+        remoteName = self.remoteAlias
     return RemoteSpec(remoteName, url, self.reviewUrl)
 
 class XmlManifest(object):
@@ -145,6 +147,8 @@ class XmlManifest(object):
     root.appendChild(e)
     e.setAttribute('name', r.name)
     e.setAttribute('fetch', r.fetchUrl)
+    if r.remoteAlias is not None:
+      e.setAttribute('alias', r.remoteAlias)
     if r.reviewUrl is not None:
       e.setAttribute('review', r.reviewUrl)
 
@@ -223,7 +227,8 @@ class XmlManifest(object):
       e.setAttribute('name', name)
       if relpath != name:
         e.setAttribute('path', relpath)
-      if not d.remote or p.remote.name != d.remote.name:
+      remoteName = d.remote.remoteAlias or d.remote.name
+      if not d.remote or p.remote.name != remoteName:
         e.setAttribute('remote', p.remote.name)
       if peg_rev:
         if self.IsMirror:
