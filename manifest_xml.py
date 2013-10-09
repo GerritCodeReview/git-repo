@@ -50,6 +50,12 @@ class _Default(object):
   sync_j = 1
   sync_c = False
   sync_s = False
+  
+  def __eq__(self, other):
+    return self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return self.__dict__ != other.__dict__
 
 class _XmlRemote(object):
   def __init__(self,
@@ -422,11 +428,15 @@ class XmlManifest(object):
 
     for node in itertools.chain(*node_list):
       if node.nodeName == 'default':
-        if self._default is not None:
-          raise ManifestParseError(
-              'duplicate default in %s' %
-              (self.manifestFile))
-        self._default = self._ParseDefault(node)
+        default = self._ParseDefault(node)
+        if default:
+          if self._default is not None:
+            if default != self._default:
+              raise ManifestParseError(
+                  'duplicate default in %s' %
+                  (self.manifestFile))
+          else:
+            self._default = default
     if self._default is None:
       self._default = _Default()
 
