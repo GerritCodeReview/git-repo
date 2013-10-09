@@ -344,7 +344,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
           key = 'review.%s.uploadtopic' % branch.project.remote.review
           opt.auto_topic = branch.project.config.GetBoolean(key)
 
-        destination = opt.dest_branch or branch.project.dest_branch or branch.project.revisionExpr
+        destination = opt.dest_branch or branch.project.dest_branch
         branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=destination)
         branch.uploaded = True
       except UploadError as e:
