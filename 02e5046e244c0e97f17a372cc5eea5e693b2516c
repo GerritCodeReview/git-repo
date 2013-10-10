@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "215e05fe_d83c2dd7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-10-10T16:02:28Z",
+      "side": 1,
+      "message": "There\u0027s a lot of \u0027default\u0027s running around here.  Could you call this new_default?",
+      "revId": "02e5046e244c0e97f17a372cc5eea5e693b2516c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "215e05fe_f841f149",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-10-10T16:02:28Z",
+      "side": 1,
+      "message": "just chain these with \u0027and\u0027s...the triple nesting is confusing\n\nAlso, ParseDefault can\u0027t return None as far as I\u0027m aware, so this first if isn\u0027t needed.\n\n  if self._default is not None and default !\u003d self._default:",
+      "revId": "02e5046e244c0e97f17a372cc5eea5e693b2516c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
