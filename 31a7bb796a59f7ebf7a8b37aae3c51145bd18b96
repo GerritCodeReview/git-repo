@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0163c1c4_d7ea3c23",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-10T01:30:53Z",
+      "side": 1,
+      "message": "s/default/defaults",
+      "revId": "31a7bb796a59f7ebf7a8b37aae3c51145bd18b96",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0163c1c4_b7e5c854",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-10T01:30:53Z",
+      "side": 1,
+      "message": "Nit: trailing whitespace",
+      "revId": "31a7bb796a59f7ebf7a8b37aae3c51145bd18b96",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
