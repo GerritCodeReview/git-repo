@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "215e05fe_189945c7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 764,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-10T21:25:18Z",
+      "side": 1,
+      "message": "I\u0027m looking to share git objects between multiple working trees.\n\nIf you use the same backing git repo for multiple working trees, this actually works really nicely because (a) they only have to be updated once; and (b) it nicely shares branches and SHA1s between the two dirs, so you can easily cherry-pick across.\n\nIn order to handle backwards compatibility, I leave existing projects alone, so that they don\u0027t we don\u0027t leave existing data behind. New projects go under the new location below.\n\nAn alternative solution would be to use git --reference, but this is less optimal -- you can waste space by fetching the same data into multiple locations, and you aren\u0027t able to easily cherry-pick changes from one working tree to the other.",
+      "revId": "bdfb8cfcaf4a61adf9cd670584bc64f88a21f59c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
