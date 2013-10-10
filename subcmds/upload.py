@@ -382,8 +382,10 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       hook = RepoHook('pre-upload', self.manifest.repo_hooks_project,
                       self.manifest.topdir, abort_if_user_denies=True)
       pending_proj_names = [project.name for (project, avail) in pending]
+      pending_worktrees = [project.worktree for (project, avail) in pending]
       try:
-        hook.Run(opt.allow_all_hooks, project_list=pending_proj_names)
+        hook.Run(opt.allow_all_hooks, project_list=pending_proj_names,
+                 worktree_list=pending_worktrees)
       except HookError as e:
         print >>sys.stderr, "ERROR: %s" % str(e)
         return
