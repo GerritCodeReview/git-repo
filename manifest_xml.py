@@ -210,7 +210,8 @@ class XmlManifest(object):
 
     def output_projects(parent, parent_node, projects):
       for p in projects:
-        output_project(parent, parent_node, self.projects[p])
+        for subproject in self._projects[p]:
+          output_project(parent, parent_node, subproject)
 
     def output_project(parent, parent_node, p):
       if not p.MatchesGroups(groups):
@@ -269,12 +270,11 @@ class XmlManifest(object):
         e.setAttribute('sync-s', 'true')
 
       if p.subprojects:
-        sort_projects = list(sorted([subp.name for subp in p.subprojects]))
+        sort_projects = list(sorted(set(subp.name for subp in p.subprojects)))
         output_projects(p, e, sort_projects)
 
-    sort_projects = list(sorted([key for key, value in self.projects.items()
-                     if not value.parent]))
-    sort_projects.sort()
+    sort_projects = list(sorted(set(p.name for p in self._paths.values()
+                     if not p.parent)))
     output_projects(None, root, sort_projects)
 
     if self._repo_hooks_project:
@@ -288,9 +288,14 @@ class XmlManifest(object):
     doc.writexml(fd, '', '  ', '\n', 'UTF-8')
 
   @property
+  def paths(self):
+    self._Load()
+    return self._paths
+
+  @property
   def projects(self):
     self._Load()
-    return self._projects
+    return self._paths.values()
 
   @property
   def remotes(self):
@@ -324,6 +329,7 @@ class XmlManifest(object):
   def _Unload(self):
     self._loaded = False
     self._projects = {}
+    self._paths = {}
     self._remotes = {}
     self._default = None
     self._repo_hooks_project = None
@@ -453,11 +459,17 @@ class XmlManifest(object):
         self._manifest_server = url
 
     def recursively_add_projects(project):
-      if self._projects.get(project.name):
+      projects = self._projects.setdefault(project.name, [])
+      if project.relpath is None:
         raise ManifestParseError(
-            'duplicate project %s in %s' %
+            'missing path for %s in %s' %
             (project.name, self.manifestFile))
-      self._projects[project.name] = project
+      if project.relpath in self._paths:
+        raise ManifestParseError(
+            'duplicate path %s in %s' %
+            (project.relpath, self.manifestFile))
+      self._paths[project.relpath] = project
+      projects.append(project)
       for subproject in project.subprojects:
         recursively_add_projects(subproject)
 
@@ -478,11 +490,17 @@ class XmlManifest(object):
 
         # Store a reference to the Project.
         try:
-          self._repo_hooks_project = self._projects[repo_hooks_project]
+          repo_hooks_projects = self._projects[repo_hooks_project]
         except KeyError:
           raise ManifestParseError(
               'project %s not found for repo-hooks' %
               (repo_hooks_project))
+
+        if len(repo_hooks_projects) != 1:
+          raise ManifestParseError(
+              'internal error parsing repo-hooks in %s' %
+              (self.manifestFile))
+        self._repo_hooks_project = repo_hooks_projects[0]
 
         # Store the enabled hooks in the Project object.
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
@@ -534,7 +552,7 @@ class XmlManifest(object):
                         relpath = None,
                         revisionExpr = m.revisionExpr,
                         revisionId = None)
-      self._projects[project.name] = project
+      self._projects[project.name] = [project]
 
   def _ParseRemote(self, node):
     """
@@ -739,8 +757,11 @@ class XmlManifest(object):
       gitdir = os.path.join(self.topdir, '%s.git' % name)
     else:
       worktree = os.path.join(self.topdir, path).replace('\\', '/')
-      gitdir = os.path.join(self.repodir, 'projects', '%s.git' % path)
+      gitdir = os.path.join(self.repodir, 'projects', '%s.git' % name)
     return relpath, worktree, gitdir
+
+  def GetProjectsWithName(self, name):
+    return self._projects.get(name, [])
 
   def GetSubprojectName(self, parent, submodule_path):
     return os.path.join(parent.name, submodule_path)

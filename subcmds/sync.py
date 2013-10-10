@@ -283,10 +283,11 @@ later is required to fix a server side protocol bug.
 
   def _Fetch(self, projects, opt):
     fetched = set()
-    pm = Progress('Fetching projects', len(projects))
+    project_gitdirs = dict((project.gitdir, project) for project in projects)
+    pm = Progress('Fetching projects', len(project_gitdirs))
 
     if self.jobs == 1:
-      for project in projects:
+      for project in project_gitdirs.values():
         pm.update()
         if not opt.quiet:
           print('Fetching project %s' % project.name)
@@ -307,7 +308,7 @@ later is required to fix a server side protocol bug.
       lock = _threading.Lock()
       sem = _threading.Semaphore(self.jobs)
       err_event = _threading.Event()
-      for project in projects:
+      for project in project_gitdirs.values():
         # Check for any errors before starting any new threads.
         # ...we'll let existing threads finish, though.
         if err_event.isSet():

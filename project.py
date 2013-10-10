@@ -1543,12 +1543,13 @@ class Project(object):
       # mess up its states; so return here.
       return result
     for rev, path, url in self._GetSubmodules():
-      name = self.manifest.GetSubprojectName(self, path)
-      project = self.manifest.projects.get(name)
+      relpath, worktree, gitdir = self.manifest.GetSubprojectPaths(self, path)
+      project = self.manifest.paths.get(relpath)
       if project:
         result.extend(project.GetDerivedSubprojects())
         continue
-      relpath, worktree, gitdir = self.manifest.GetSubprojectPaths(self, path)
+
+      name = self.manifest.GetSubprojectName(self, relpath)
       remote = RemoteSpec(self.remote.name,
                           url = url,
                           review = self.remote.review)
