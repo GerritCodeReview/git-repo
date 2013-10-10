@@ -129,7 +129,7 @@ class Command(object):
   def GetProjects(self, args, missing_ok=False, submodules_ok=False):
     """A list of projects that match the arguments.
     """
-    all_projects = self.manifest.projects
+    all_projects_list = self.manifest.projects
     result = []
 
     mp = self.manifest.manifestProject
@@ -140,7 +140,6 @@ class Command(object):
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     if not args:
-      all_projects_list = list(all_projects.values())
       derived_projects = {}
       for project in all_projects_list:
         if submodules_ok or project.sync_s:
@@ -152,12 +151,12 @@ class Command(object):
             project.MatchesGroups(groups)):
           result.append(project)
     else:
-      self._ResetPathToProjectMap(all_projects.values())
+      self._ResetPathToProjectMap(all_projects_list)
 
       for arg in args:
-        project = all_projects.get(arg)
+        projects = self.manifest.GetProjectsWithName(arg)
 
-        if not project:
+        if not projects:
           path = os.path.abspath(arg).replace('\\', '/')
           project = self._GetProjectByPath(path)
 
@@ -172,14 +171,19 @@ class Command(object):
             if search_again:
               project = self._GetProjectByPath(path) or project
 
-        if not project:
-          raise NoSuchProjectError(arg)
-        if not missing_ok and not project.Exists:
-          raise NoSuchProjectError(arg)
-        if not project.MatchesGroups(groups):
-          raise InvalidProjectGroupsError(arg)
+          if project:
+            projects = [project]
 
-        result.append(project)
+        if not projects:
+          raise NoSuchProjectError(arg)
+
+        for project in projects:
+          if not missing_ok and not project.Exists:
+            raise NoSuchProjectError(arg)
+          if not project.MatchesGroups(groups):
+            raise InvalidProjectGroupsError(arg)
+
+        result.extend(projects)
 
     def _getpath(x):
       return x.relpath
