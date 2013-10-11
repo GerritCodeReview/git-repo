@@ -304,61 +304,47 @@ later is required to fix a server side protocol bug.
 
   def _Fetch(self, projects, opt):
     fetched = set()
+    lock = _threading.Lock()
     pm = Progress('Fetching projects', len(projects))
 
-    if self.jobs == 1:
-      for project in projects:
-        pm.update()
-        if not opt.quiet:
-          print('Fetching project %s' % project.name)
-        if project.Sync_NetworkHalf(
-            quiet=opt.quiet,
-            current_branch_only=opt.current_branch_only,
-            clone_bundle=not opt.no_clone_bundle,
-            no_tags=opt.no_tags):
-          fetched.add(project.gitdir)
-        else:
-          print('error: Cannot fetch %s' % project.name, file=sys.stderr)
-          if opt.force_broken:
-            print('warn: --force-broken, continuing to sync', file=sys.stderr)
-          else:
-            sys.exit(1)
-    else:
-      objdir_project_map = dict()
-      for project in projects:
-        objdir_project_map.setdefault(project.objdir, []).append(project)
+    objdir_project_map = dict()
+    for project in projects:
+      objdir_project_map.setdefault(project.objdir, []).append(project)
 
-      threads = set()
-      lock = _threading.Lock()
-      sem = _threading.Semaphore(self.jobs)
-      err_event = _threading.Event()
-      for project_list in objdir_project_map.values():
-        # Check for any errors before starting any new threads.
-        # ...we'll let existing threads finish, though.
-        if err_event.isSet():
-          break
+    threads = set()
+    sem = _threading.Semaphore(self.jobs)
+    err_event = _threading.Event()
+    for project_list in objdir_project_map.values():
+      # Check for any errors before running any more tasks.
+      # ...we'll let existing threads finish, though.
+      if err_event.isSet() and not opt.force_broken:
+        break
 
-        sem.acquire()
+      sem.acquire()
+      kwargs = dict(opt=opt,
+                    projects=project_list,
+                    lock=lock,
+                    fetched=fetched,
+                    pm=pm,
+                    sem=sem,
+                    err_event=err_event)
+      if self.jobs > 1:
         t = _threading.Thread(target = self._FetchProjectList,
-                              args = (opt,
-                                      project_list,
-                                      lock,
-                                      fetched,
-                                      pm,
-                                      sem,
-                                      err_event))
+                              kwargs = kwargs)
         # Ensure that Ctrl-C will not freeze the repo process.
         t.daemon = True
         threads.add(t)
         t.start()
+      else:
+        self._FetchProjectList(**kwargs)
 
-      for t in threads:
-        t.join()
+    for t in threads:
+      t.join()
 
-      # If we saw an error, exit with code 1 so that other scripts can check.
-      if err_event.isSet():
-        print('\nerror: Exited sync due to fetch errors', file=sys.stderr)
-        sys.exit(1)
+    # If we saw an error, exit with code 1 so that other scripts can check.
+    if err_event.isSet():
+      print('\nerror: Exited sync due to fetch errors', file=sys.stderr)
+      sys.exit(1)
 
     pm.end()
     self._fetch_times.Save()
