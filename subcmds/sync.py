@@ -68,10 +68,6 @@ from progress import Progress
 
 _ONE_DAY_S = 24 * 60 * 60
 
-class _FetchError(Exception):
-  """Internal error thrown in _FetchHelper() when we don't want stack trace."""
-  pass
-
 class Sync(Command, MirrorSafeCommand):
   jobs = 1
   common = True
@@ -219,86 +215,79 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _FetchProjectList(self, opt, projects, *args):
-    """Main function of the fetch threads when jobs are > 1.
+  def _FetchProjectList(self, projects, opt, sem, err_event, **kwargs):
+    """Fetch git objects for a given list of projects.
 
-    Delegates most of the work to _FetchHelper.
+    Delegates most of the work to _FetchSingleProject.
 
     Args:
-      opt: Program options returned from optparse.  See _Options().
       projects: Projects to fetch.
-      *args: Remaining arguments to pass to _FetchHelper. See the
-          _FetchHelper docstring for details.
-    """
-    for project in projects:
-      success = self._FetchHelper(opt, project, *args)
-      if not success and not opt.force_broken:
-        break
-
-  def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
-    """Fetch git objects for a single project.
-
-    Args:
       opt: Program options returned from optparse.  See _Options().
-      project: Project object for the project to fetch.
-      lock: Lock for accessing objects that are shared amongst multiple
-          _FetchHelper() threads.
-      fetched: set object that we will add project.gitdir to when we're done
-          (with our lock held).
-      pm: Instance of a Project object.  We will call pm.update() (with our
-          lock held).
       sem: We'll release() this semaphore when we exit so that another thread
           can be started up.
       err_event: We'll set this event in the case of an error (after printing
           out info about the error).
+      **kwargs: Remaining keyword arguments (excluding the project) to pass to
+          _FetchSingleProject. See its docstring for details.
+    """
+    # Encapsulate everything in a try/except/finally so that:
+    # - We always set err_event in the case of an exception.
+    # - We always make sure we call sem.release().
+    try:
+      for project in projects:
+        if not self._FetchSingleProject(project=project, opt=opt, **kwargs):
+          err_event.set()
+          if not opt.force_broken:
+            break
+    except:
+      err_event.set()
+      raise
+    finally:
+      sem.release()
+
+  def _FetchSingleProject(self, project, opt, lock, fetched, pm):
+    """Fetch git objects for a single project.
+
+    Args:
+      project: Project object for the project to fetch.
+      opt: Program options returned from optparse.  See _Options().
+      lock: Lock for accessing objects that are shared amongst multiple
+          threads.
+      fetched: set object that we will add project.gitdir to when we're done
+          (with our lock held).
+      pm: Instance of a Project object.  We will call pm.update() (with our
+          lock held).
 
     Returns:
       Whether the fetch was successful.
     """
-    # We'll set to true once we've locked the lock.
-    did_lock = False
-
     if not opt.quiet:
       print('Fetching project %s' % project.name)
 
-    # Encapsulate everything in a try/except/finally so that:
-    # - We always set err_event in the case of an exception.
-    # - We always make sure we call sem.release().
-    # - We always make sure we unlock the lock if we locked it.
-    try:
-      try:
-        start = time.time()
-        success = project.Sync_NetworkHalf(
-          quiet=opt.quiet,
-          current_branch_only=opt.current_branch_only,
-          clone_bundle=not opt.no_clone_bundle,
-          no_tags=opt.no_tags)
-        self._fetch_times.Set(project, time.time() - start)
+    start = time.time()
+    success = project.Sync_NetworkHalf(
+      quiet=opt.quiet,
+      current_branch_only=opt.current_branch_only,
+      clone_bundle=not opt.no_clone_bundle,
+      no_tags=opt.no_tags)
+    run_time = time.time() - start
 
-        # Lock around all the rest of the code, since printing, updating a set
-        # and Progress.update() are not thread safe.
-        lock.acquire()
-        did_lock = True
+    # Lock around all the rest of the code, since printing, updating a set
+    # and Progress.update() are not thread safe.
+    with lock:
+      # Save off the runtime to help optimize our fetches on the next sync.
+      self._fetch_times.Set(project, run_time)
 
-        if not success:
-          print('error: Cannot fetch %s' % project.name, file=sys.stderr)
-          if opt.force_broken:
-            print('warn: --force-broken, continuing to sync',
-                  file=sys.stderr)
-          else:
-            raise _FetchError()
+      if not success:
+        print('error: Cannot fetch %s' % project.name, file=sys.stderr)
+        if not opt.force_broken:
+          return False
+        print('warn: --force-broken, continuing to sync',
+              file=sys.stderr)
 
-        fetched.add(project.gitdir)
-        pm.update()
-      except _FetchError:
-        err_event.set()
-      except:
-        err_event.set()
-        raise
-    finally:
-      if did_lock:
-        lock.release()
-      sem.release()
+      # Mark the project as fetched.
+      fetched.add(project.gitdir)
+      pm.update()
 
     return success
 
@@ -321,13 +310,13 @@ later is required to fix a server side protocol bug.
         break
 
       sem.acquire()
-      kwargs = dict(opt=opt,
-                    projects=project_list,
+      kwargs = dict(projects=project_list,
+                    opt=opt,
+                    sem=sem,
+                    err_event=err_event,
                     lock=lock,
                     fetched=fetched,
-                    pm=pm,
-                    sem=sem,
-                    err_event=err_event)
+                    pm=pm)
       if self.jobs > 1:
         t = _threading.Thread(target = self._FetchProjectList,
                               kwargs = kwargs)
