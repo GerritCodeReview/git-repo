@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dec4282a_ee94ff8f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-10-15T17:25:30Z",
+      "side": 1,
+      "message": "See my comments in Ic886f3c3c00f3d8fc73a65366328fed3c44dc3be\n\nI think we may be able to toss this method altogether or at least unify the concurrency logic all in one place.",
+      "revId": "78769850185edd0235a48afeb8c7159ecfbea07c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
