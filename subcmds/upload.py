@@ -351,13 +351,13 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         merge_branch = self._GetMergeBranch(branch.project)
         full_dest = 'refs/heads/%s' % destination
         if not opt.dest_branch and merge_branch and merge_branch != full_dest:
-            print('merge branch %s does not match destination branch %s'
-                  % (merge_branch, full_dest))
-            print('skipping upload.')
-            print('Please use `--destination %s` if this is intentional'
-                  % destination)
-            branch.uploaded = False
-            continue
+          print('merge branch %s does not match destination branch %s'
+                % (merge_branch, full_dest))
+          print('skipping upload.')
+          print('Please use `--destination %s` if this is intentional'
+                % destination)
+          branch.uploaded = False
+          continue
 
         branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=destination)
         branch.uploaded = True

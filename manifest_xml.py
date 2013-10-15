@@ -98,7 +98,7 @@ class _XmlRemote(object):
     url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
     remoteName = self.name
     if self.remoteAlias:
-        remoteName = self.remoteAlias
+      remoteName = self.remoteAlias
     return RemoteSpec(remoteName, url, self.reviewUrl)
 
 class XmlManifest(object):
@@ -437,9 +437,8 @@ class XmlManifest(object):
         if self._default is None:
           self._default = new_default
         elif new_default != self._default:
-            raise ManifestParseError(
-                'duplicate default in %s' %
-                (self.manifestFile))
+          raise ManifestParseError('duplicate default in %s' %
+                                   (self.manifestFile))
 
     if self._default is None:
       self._default = _Default()
