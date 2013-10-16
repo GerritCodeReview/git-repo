@@ -235,7 +235,7 @@ class XmlManifest(object):
         e.setAttribute('path', relpath)
       remoteName = None
       if d.remote:
-          remoteName = d.remote.remoteAlias or d.remote.name
+        remoteName = d.remote.remoteAlias or d.remote.name
       if not d.remote or p.remote.name != remoteName:
         e.setAttribute('remote', p.remote.name)
       if peg_rev:
