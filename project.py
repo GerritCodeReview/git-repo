@@ -23,6 +23,7 @@ import shutil
 import stat
 import subprocess
 import sys
+import tarfile
 import tempfile
 import time
 
@@ -982,15 +983,66 @@ class Project(object):
 
 ## Sync ##
 
+  def _ExtractArchive(self, tarpath, path=None):
+    """Extract the given tar on its current location
+
+    Args:
+        - tarpath: The path to the actual tar file
+
+    """
+    try:
+      with tarfile.open(tarpath, 'r') as tar:
+        tar.extractall(path=path)
+        return True
+    except (IOError, tarfile.TarError) as e:
+      print("error: Cannot extract archive %s. "
+            "%s" % (tarpath, str(e)), file=sys.stderr)
+    return False
+
   def Sync_NetworkHalf(self,
       quiet=False,
       is_new=None,
       current_branch_only=False,
       clone_bundle=True,
-      no_tags=False):
+      no_tags=False,
+      archive=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
+    if archive and not isinstance(self, MetaProject):
+      if self.remote.url.startswith(('http://', 'https://')):
+        print("error: %s: Cannot fetch archives from http/https "
+              "remotes." % self.name, file=sys.stderr)
+        return False
+
+      name = self.relpath.replace('\\', '/')
+      name = name.replace('/', '_')
+      tarpath = '%s.tar' % name
+      topdir = self.manifest.topdir
+      cmd = ['archive', '-v', '-o', tarpath]
+      cmd.append('--remote=%s' % self.remote.url)
+      cmd.append('--prefix=%s/' % self.relpath)
+      cmd.append(self.revisionExpr)
+
+      command = GitCommand(self, cmd, cwd=topdir,
+                           capture_stdout=True,
+                           capture_stderr=True)
+
+      # From now on, we only need absolute tarpath
+      tarpath = os.path.join(topdir, tarpath)
+
+      if command.Wait() != 0:
+        return False
+
+      if not self._ExtractArchive(tarpath, path=topdir):
+        return False
+      try:
+        os.remove(tarpath)
+      except OSError:
+        print("warn: Cannot remove archive %s." % tarpath, file=sys.stderr)
+      self._CopyFiles()
+      return True
+
     if is_new is None:
       is_new = not self.Exists
     if is_new:

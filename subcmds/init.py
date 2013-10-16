@@ -99,6 +99,10 @@ to update the working directory files.
     g.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
+    g.add_option('--archive',
+                 dest='archive', action='store_true',
+                 help='checkout an archive instead of a git repository for '
+                      'each project. See git archive.')
     g.add_option('-g', '--groups',
                  dest='groups', default='default',
                  help='restrict manifest projects to ones with specified '
@@ -197,6 +201,16 @@ to update the working directory files.
 
     if opt.reference:
       m.config.SetString('repo.reference', opt.reference)
+
+    if opt.archive:
+      if is_new:
+        m.config.SetString('repo.archive', 'true')
+      else:
+        print('fatal: --archive is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
+        sys.exit(1)
 
     if opt.mirror:
       if is_new:
@@ -365,6 +379,13 @@ to update the working directory files.
 
     if opt.reference:
       opt.reference = os.path.expanduser(opt.reference)
+
+    # Check this here, else manifest will be tagged "not new" and init won't be
+    # possible anymore without removing the .repo/manifests directory.
+    if opt.archive and opt.mirror:
+      print('fatal: --mirror and --archive cannot be used together.',
+            file=sys.stderr)
+      sys.exit(1)
 
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
