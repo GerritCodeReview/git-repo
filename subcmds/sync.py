@@ -253,7 +253,7 @@ later is required to fix a server side protocol bug.
           quiet=opt.quiet,
           current_branch_only=opt.current_branch_only,
           clone_bundle=not opt.no_clone_bundle,
-          no_tags=opt.no_tags)
+          no_tags=opt.no_tags, archive=self.manifest.IsArchive)
         self._fetch_times.Set(project, time.time() - start)
 
         # Lock around all the rest of the code, since printing, updating a set
@@ -294,7 +294,8 @@ later is required to fix a server side protocol bug.
             quiet=opt.quiet,
             current_branch_only=opt.current_branch_only,
             clone_bundle=not opt.no_clone_bundle,
-            no_tags=opt.no_tags):
+            no_tags=opt.no_tags,
+            archive=self.manifest.IsArchive):
           fetched.add(project.gitdir)
         else:
           print('error: Cannot fetch %s' % project.name, file=sys.stderr)
@@ -338,7 +339,9 @@ later is required to fix a server side protocol bug.
     pm.end()
     self._fetch_times.Save()
 
-    self._GCProjects(projects)
+    if not self.manifest.IsArchive:
+      self._GCProjects(projects)
+
     return fetched
 
   def _GCProjects(self, projects):
@@ -641,7 +644,7 @@ later is required to fix a server side protocol bug.
         previously_missing_set = missing_set
         fetched.update(self._Fetch(missing, opt))
 
-    if self.manifest.IsMirror:
+    if self.manifest.IsMirror or self.manifest.IsArchive:
       # bail out now, we have no working tree
       return
 
