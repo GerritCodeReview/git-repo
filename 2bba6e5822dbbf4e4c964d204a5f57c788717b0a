@@ -141,6 +141,24 @@
     },
     {
       "key": {
+        "uuid": "7ecb3c3d_4be2e5be",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2013-10-17T15:53:31Z",
+      "side": 1,
+      "message": "Out of curiosity, do you have some kind of rule concerning new versions of repo? (Like when are they made/needed?)",
+      "parentUuid": "bec1341b_2d43edc3",
+      "revId": "2bba6e5822dbbf4e4c964d204a5f57c788717b0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bec1341b_8dc6a136",
         "filename": "subcmds/init.py",
         "patchSetId": 1
