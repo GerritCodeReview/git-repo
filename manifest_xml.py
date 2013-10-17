@@ -50,6 +50,7 @@ class _Default(object):
   sync_j = 1
   sync_c = False
   sync_s = False
+  archive = False
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -64,13 +65,15 @@ class _XmlRemote(object):
                fetch=None,
                manifestUrl=None,
                review=None,
-               revision=None):
+               revision=None,
+               archive=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
     self.remoteAlias = alias
     self.reviewUrl = review
     self.revision = revision
+    self.archive = archive
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
   def __eq__(self, other):
@@ -167,6 +170,8 @@ class XmlManifest(object):
       e.setAttribute('review', r.reviewUrl)
     if r.revision is not None:
       e.setAttribute('revision', r.revision)
+    if r.archive is not None:
+      e.setAttribute('archive', 'true' if r.archive else 'false')
 
   def _ParseGroups(self, groups):
     return [x for x in re.split(r'[,\s]+', groups) if x]
@@ -217,6 +222,10 @@ class XmlManifest(object):
     if d.sync_s:
       have_default = True
       e.setAttribute('sync-s', 'true')
+    if d.archive:
+      have_default = True
+      e.setAttribute('archive', 'true')
+
     if have_default:
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
@@ -256,6 +265,12 @@ class XmlManifest(object):
       if peg_rev:
         if self.IsMirror:
           value = p.bare_git.rev_parse(p.revisionExpr + '^0')
+        elif self.IsArchive or p.archive:
+          value = p.GetArchiveId()
+          if not value:
+            raise ManifestInvalidRevisionError('could not find revisionId for '
+                  'archive project %(name)s. Try running "repo sync '
+                  '%(name)s"' % {'name': p.name})
         else:
           value = p.work_git.rev_parse(HEAD + '^0')
         e.setAttribute('revision', value)
@@ -300,6 +315,12 @@ class XmlManifest(object):
 
       if p.sync_s:
         e.setAttribute('sync-s', 'true')
+
+      if p._archive is not None:
+        remoteArchive = self.remotes[remoteName].archive
+        referenceVal = remoteArchive if remoteArchive is not None else d.archive
+        if p._archive != referenceVal:
+          e.setAttribute('archive', 'true' if p._archive else 'false')
 
       if p.subprojects:
         subprojects = set(subp.name for subp in p.subprojects)
@@ -628,8 +649,14 @@ class XmlManifest(object):
     revision = node.getAttribute('revision')
     if revision == '':
       revision = None
+    archive = node.getAttribute('archive')
+    if not archive:
+      archive = None
+    else:
+      archive = archive.lower() in ('yes', 'true', '1')
+
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision)
+    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision, archive)
 
   def _ParseDefault(self, node):
     """
@@ -660,6 +687,12 @@ class XmlManifest(object):
       d.sync_s = False
     else:
       d.sync_s = sync_s.lower() in ("yes", "true", "1")
+
+    archive = node.getAttribute('archive')
+    if not archive:
+      d.archive = False
+    else:
+      d.archive = archive.lower() in ('yes', 'true', '1')
     return d
 
   def _ParseNotice(self, node):
@@ -754,6 +787,12 @@ class XmlManifest(object):
     else:
       sync_s = sync_s.lower() in ("yes", "true", "1")
 
+    archive = node.getAttribute('archive')
+    if not archive:
+      archive = remote.archive
+    else:
+      archive = archive.lower() in ('yes', 'true', '1')
+
     clone_depth = node.getAttribute('clone-depth')
     if clone_depth:
       try:
@@ -799,6 +838,7 @@ class XmlManifest(object):
                       groups = groups,
                       sync_c = sync_c,
                       sync_s = sync_s,
+                      archive = archive,
                       clone_depth = clone_depth,
                       upstream = upstream,
                       parent = parent,
