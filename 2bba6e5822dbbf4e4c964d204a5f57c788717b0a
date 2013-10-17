@@ -53,6 +53,24 @@
     },
     {
       "key": {
+        "uuid": "7ecb3c3d_6b8c8133",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1036,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2013-10-17T09:39:04Z",
+      "side": 1,
+      "message": "Done, in _ExtractArchive to handle different error messages for different exceptions.",
+      "parentUuid": "dec4282a_0e05cb96",
+      "revId": "2bba6e5822dbbf4e4c964d204a5f57c788717b0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dec4282a_6e100fd6",
         "filename": "project.py",
         "patchSetId": 1
@@ -81,6 +99,24 @@
       "writtenOn": "2013-10-17T01:15:41Z",
       "side": 1,
       "message": "Missing space after \"for\"",
+      "revId": "2bba6e5822dbbf4e4c964d204a5f57c788717b0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ebaf89c_2a22ff6a",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2013-10-17T09:39:04Z",
+      "side": 1,
+      "message": "Done.\nDoes adding a new option in repo implies a new version number?",
+      "parentUuid": "dec4282a_cefee34a",
       "revId": "2bba6e5822dbbf4e4c964d204a5f57c788717b0a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
