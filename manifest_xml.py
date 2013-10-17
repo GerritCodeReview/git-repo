@@ -50,6 +50,7 @@ class _Default(object):
   sync_j = 1
   sync_c = False
   sync_s = False
+  archive = False
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -204,6 +205,10 @@ class XmlManifest(object):
     if d.sync_s:
       have_default = True
       e.setAttribute('sync-s', 'true')
+    if d.archive:
+      have_default = True
+      e.setAttribute('archive', 'true')
+
     if have_default:
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
@@ -273,6 +278,9 @@ class XmlManifest(object):
 
       if p.sync_s:
         e.setAttribute('sync-s', 'true')
+
+      if p._archive is not None and p._archive != d.archive:
+        e.setAttribute('archive', 'true' if p._archive else 'false')
 
       if p.subprojects:
         sort_projects = list(sorted([subp.name for subp in p.subprojects]))
@@ -592,6 +600,12 @@ class XmlManifest(object):
       d.sync_s = False
     else:
       d.sync_s = sync_s.lower() in ("yes", "true", "1")
+
+    archive = node.getAttribute('archive')
+    if not archive:
+      d.archive = False
+    else:
+      d.archive = archive.lower() in ('yes', 'true', '1')
     return d
 
   def _ParseNotice(self, node):
@@ -686,6 +700,12 @@ class XmlManifest(object):
     else:
       sync_s = sync_s.lower() in ("yes", "true", "1")
 
+    archive = node.getAttribute('archive')
+    if not archive:
+      archive = None
+    else:
+      archive = archive.lower() in ('yes', 'true', '1')
+
     clone_depth = node.getAttribute('clone-depth')
     if clone_depth:
       try:
@@ -729,6 +749,7 @@ class XmlManifest(object):
                       groups = groups,
                       sync_c = sync_c,
                       sync_s = sync_s,
+                      archive = archive,
                       clone_depth = clone_depth,
                       upstream = upstream,
                       parent = parent,

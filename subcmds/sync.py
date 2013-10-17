@@ -354,6 +354,8 @@ later is required to fix a server side protocol bug.
 
     if jobs < 2:
       for project in projects:
+        if project.archive:
+          continue
         project.bare_git.gc('--auto')
       return
 
@@ -378,6 +380,8 @@ later is required to fix a server side protocol bug.
     for project in projects:
       if err_event.isSet():
         break
+      if project.archive:
+        continue
       sem.acquire()
       t = _threading.Thread(target=GC, args=(project,))
       t.daemon = True
@@ -656,7 +660,7 @@ later is required to fix a server side protocol bug.
     pm = Progress('Syncing work tree', len(all_projects))
     for project in all_projects:
       pm.update()
-      if project.worktree:
+      if project.worktree and not project.archive:
         project.Sync_LocalHalf(syncbuf)
     pm.end()
     print(file=sys.stderr)
