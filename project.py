@@ -524,6 +524,7 @@ class Project(object):
                groups = None,
                sync_c = False,
                sync_s = False,
+               archive = None,
                clone_depth = None,
                upstream = None,
                parent = None,
@@ -545,6 +546,7 @@ class Project(object):
       groups: The `groups` attribute of manifest.xml's project element.
       sync_c: The `sync-c` attribute of manifest.xml's project element.
       sync_s: The `sync-s` attribute of manifest.xml's project element.
+      archive: The `archive` attribute of manifest.xml's project element.
       upstream: The `upstream` attribute of manifest.xml's project element.
       parent: The parent Project object.
       is_derived: False if the project was explicitly defined in the manifest;
@@ -563,6 +565,8 @@ class Project(object):
     self.relpath = relpath
     self.revisionExpr = revisionExpr
 
+    self.flatrelpath = self.relpath.replace('\\', '/').replace('/', '_')
+
     if   revisionId is None \
      and revisionExpr \
      and IsId(revisionExpr):
@@ -574,6 +578,7 @@ class Project(object):
     self.groups = groups
     self.sync_c = sync_c
     self.sync_s = sync_s
+    self._archive = archive
     self.clone_depth = clone_depth
     self.upstream = upstream
     self.parent = parent
@@ -600,6 +605,14 @@ class Project(object):
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
     self.enabled_repo_hooks = []
+
+  @property
+  def archive(self):
+    if self.manifest._loaded and self.manifest.IsMirror:
+      # In case of mirror repo, project won't be considered archive
+      return False
+
+    return self._archive
 
   @property
   def Derived(self):
@@ -1012,8 +1025,34 @@ class Project(object):
                             R_HEADS + branch.name,
                             message = msg)
 
-
 ## Sync ##
+
+  def _SaveArchiveId(self, revid):
+    projectsdir = os.path.join(self.manifest.repodir, 'projects')
+    if not os.path.exists(projectsdir):
+      os.makedirs(projectsdir)
+    revisionFile = os.path.join(projectsdir, self.flatrelpath)
+    try:
+      with open(revisionFile, 'w') as archHead:
+        archHead.write('ref: '+revid)
+    except IOError as e:
+      print('warn: %s: Could not save archive version ID: '
+            '%s' % (self.name, str(e)), file=sys.stderr)
+
+  def GetArchiveId(self):
+    revisionFile = os.path.join(self.manifest.repodir, 'projects', self.flatrelpath)
+    try:
+      with open(revisionFile, 'r') as archHead:
+        line = archHead.readline() # only care about the first line
+    except IOError:
+      # The file probably doesn't exist yet, no need to print anything
+      pass
+    else:
+      if line.startswith('ref: '):
+        line = line[5:].strip()
+        if IsId(line):
+          return line
+    return None
 
   def _ExtractArchive(self, tarpath, path=None):
     """Extract the given tar on its current location
@@ -1041,16 +1080,36 @@ class Project(object):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
+    archive = archive or self.archive
+
     if archive and not isinstance(self, MetaProject):
       if self.remote.url.startswith(('http://', 'https://')):
         print("error: %s: Cannot fetch archives from http/https "
               "remotes." % self.name, file=sys.stderr)
         return False
 
-      name = self.relpath.replace('\\', '/')
-      name = name.replace('/', '_')
-      tarpath = '%s.tar' % name
+      # If project was previously checked out as normal project, remove git
+      # directories
+      gitWorktree = os.path.join(self.worktree, '.git')
+      if os.path.exists(gitWorktree):
+        shutil.rmtree(gitWorktree)
+      if os.path.exists(self.gitdir):
+        shutil.rmtree(self.gitdir)
+
+      tarpath = '%s.tar' % self.flatrelpath
       topdir = self.manifest.topdir
+      try:
+        revid = self.GetRemoteRevisionId()
+        # Get remote revision id because we have no git working tree
+      except GitError as e:
+        print("warn: Could not retrieve project's revisionId on remote: "
+              "%s" % str(e))
+        revid = None
+
+      if revid is not None and self.GetArchiveId() == revid:
+        # Stops here because current revision archive has already been
+        # downloaded.
+        return True
 
       try:
         self._FetchArchive(tarpath, cwd=topdir)
@@ -1068,6 +1127,8 @@ class Project(object):
       except OSError as e:
         print("warn: Cannot remove archive %s: "
               "%s" % (tarpath, str(e)), file=sys.stderr)
+      if revid is not None:
+        self._SaveArchiveId(revid)
       self._CopyAndLinkFiles()
       return True
 
@@ -1148,6 +1209,37 @@ class Project(object):
       raise ManifestInvalidRevisionError(
         'revision %s in %s not found' % (self.revisionExpr,
                                          self.name))
+
+  def GetRemoteRevisionId(self):
+    """Get a revisionID corresponding to revisionExpr on the remote.
+
+    May be usefull especially when no git directory is present for a project.
+
+    """
+    if IsId(self.revisionExpr):
+      return self.revisionExpr
+
+    cmd = ['ls-remote', self.remote.url]
+    rev = self.revisionExpr
+    if self.revisionExpr.startswith(R_TAGS):
+      cmd.append('-t')
+    else:
+      if not rev.startswith(R_HEADS):
+        rev = ''.join([R_HEADS, self.revisionExpr])
+      cmd.append('-h')
+    cmd.append(rev)
+
+    command = GitCommand(None, cmd, capture_stdout=True)
+    if command.Wait() != 0:
+      raise GitError('%s %s: %s' % (self.name, cmd[0], command.stderr))
+    if not command.stdout:
+      return None
+
+    for line in command.stdout.split('\n'):
+      result = re.match(r"^(?P<shaone>[0-9a-f]{40})\s+%s$" % rev, line)
+      if result:
+        return result.group('shaone')
+    return None
 
   def GetRevisionId(self, all_refs=None):
     if self.revisionId:
@@ -1675,6 +1767,7 @@ class Project(object):
                            groups = self.groups,
                            sync_c = self.sync_c,
                            sync_s = self.sync_s,
+                           archive = self._archive,
                            parent = self,
                            is_derived = True)
       result.append(subproject)
