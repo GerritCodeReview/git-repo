@@ -43,6 +43,7 @@ following DTD:
     <!ATTLIST default sync-j      CDATA #IMPLIED>
     <!ATTLIST default sync-c      CDATA #IMPLIED>
     <!ATTLIST default sync-s      CDATA #IMPLIED>
+    <!ATTLIST default archive     CDATA #IMPLIED>
 
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
@@ -57,6 +58,7 @@ following DTD:
     <!ATTLIST project groups      CDATA #IMPLIED>
     <!ATTLIST project sync-c      CDATA #IMPLIED>
     <!ATTLIST project sync-s      CDATA #IMPLIED>
+    <!ATTLIST project archive     CDATA #IMPLIED>
     <!ATTLIST project upstream CDATA #IMPLIED>
     <!ATTLIST project clone-depth CDATA #IMPLIED>
     <!ATTLIST project force-path CDATA #IMPLIED>
@@ -141,6 +143,9 @@ their own will use this value.
 
 Attribute `sync_s`: Set to true to also sync sub-projects.
 
+Attribute `archive`: Set to true to sync only a git archive rather
+than a git tree. Project elements lacking an archive attribute on
+their own will use this value.
 
 Element manifest-server
 -----------------------
@@ -245,6 +250,10 @@ local mirror repository according to its `path` attribute (if supplied)
 rather than the `name` attribute.  This attribute only applies to the
 local mirrors syncing, it will be ignored when syncing the projects in a
 client working directory.
+
+Attribute `archive`: Set to true to only sync an archive of the
+given revision, rather than a git tree. Git and repo commands will
+no longer be available on the project.
 
 Element annotation
 ------------------
