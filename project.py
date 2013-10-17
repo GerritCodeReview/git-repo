@@ -497,6 +497,7 @@ class Project(object):
                groups = None,
                sync_c = False,
                sync_s = False,
+               archive = None,
                clone_depth = None,
                upstream = None,
                parent = None,
@@ -518,6 +519,7 @@ class Project(object):
       groups: The `groups` attribute of manifest.xml's project element.
       sync_c: The `sync-c` attribute of manifest.xml's project element.
       sync_s: The `sync-s` attribute of manifest.xml's project element.
+      archive: The `archive` attribute of manifest.xml's project element.
       upstream: The `upstream` attribute of manifest.xml's project element.
       parent: The parent Project object.
       is_derived: False if the project was explicitly defined in the manifest;
@@ -547,6 +549,7 @@ class Project(object):
     self.groups = groups
     self.sync_c = sync_c
     self.sync_s = sync_s
+    self._archive = archive
     self.clone_depth = clone_depth
     self.upstream = upstream
     self.parent = parent
@@ -572,6 +575,21 @@ class Project(object):
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
     self.enabled_repo_hooks = []
+
+  @property
+  def archive(self):
+    if self.manifest._loaded and self.manifest.IsMirror:
+      # In case of mirror repo, project won't be considered archive
+      return False
+
+    if self._archive is not None:
+      return self._archive
+
+    if self.manifest._loaded:
+      # Manifest cannot check defaults until it syncs.
+      return self.manifest.default.archive
+
+    return False
 
   @property
   def Derived(self):
@@ -984,7 +1002,6 @@ class Project(object):
                             R_HEADS + branch.name,
                             message = msg)
 
-
 ## Sync ##
 
   def _ExtractArchive(self, tarpath, path=None):
@@ -1013,11 +1030,22 @@ class Project(object):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
+    if not archive:
+      archive = self.archive
+
     if archive and not isinstance(self, MetaProject):
       if self.remote.url.startswith(('http://', 'https://')):
         print("error: %s: Cannot fetch archives from http/https "
               "remotes." % self.name, file=sys.stderr)
         return False
+
+      # If project was previously checked out as normal project, remove git
+      # directories
+      gitWorktree = os.path.join(self.worktree, '.git')
+      if os.path.exists(gitWorktree):
+        shutil.rmtree(gitWorktree)
+      if os.path.exists(self.gitdir):
+        shutil.rmtree(self.gitdir)
 
       name = self.relpath.replace('\\', '/')
       name = name.replace('/', '_')
@@ -1619,6 +1647,7 @@ class Project(object):
                            groups = self.groups,
                            sync_c = self.sync_c,
                            sync_s = self.sync_s,
+                           archive = self._archive,
                            parent = self,
                            is_derived = True)
       result.append(subproject)
