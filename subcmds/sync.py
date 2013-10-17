@@ -357,7 +357,8 @@ later is required to fix a server side protocol bug.
   def _GCProjects(self, projects):
     gitdirs = {}
     for project in projects:
-      gitdirs[project.gitdir] = project.bare_git
+      if not project.archive:
+        gitdirs[project.gitdir] = project.bare_git
 
     has_dash_c = git_require((1, 7, 2))
     if multiprocessing and has_dash_c:
@@ -671,7 +672,7 @@ later is required to fix a server side protocol bug.
     pm = Progress('Syncing work tree', len(all_projects))
     for project in all_projects:
       pm.update()
-      if project.worktree:
+      if project.worktree and not project.archive:
         project.Sync_LocalHalf(syncbuf)
     pm.end()
     print(file=sys.stderr)
