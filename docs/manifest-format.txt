@@ -43,6 +43,7 @@ following DTD:
     <!ATTLIST default sync-j      CDATA #IMPLIED>
     <!ATTLIST default sync-c      CDATA #IMPLIED>
     <!ATTLIST default sync-s      CDATA #IMPLIED>
+    <!ATTLIST default archive     CDATA #IMPLIED>
 
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
@@ -57,6 +58,7 @@ following DTD:
     <!ATTLIST project groups      CDATA #IMPLIED>
     <!ATTLIST project sync-c      CDATA #IMPLIED>
     <!ATTLIST project sync-s      CDATA #IMPLIED>
+    <!ATTLIST project archive     CDATA #IMPLIED>
     <!ATTLIST project upstream CDATA #IMPLIED>
     <!ATTLIST project clone-depth CDATA #IMPLIED>
     <!ATTLIST project force-path CDATA #IMPLIED>
