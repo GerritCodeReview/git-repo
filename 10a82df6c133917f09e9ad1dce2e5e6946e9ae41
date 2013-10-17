@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bec1341b_0d3e313d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 998,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-17T14:21:56Z",
+      "side": 1,
+      "message": "Is \"file not found\" the only condition that can cause IOError?\n\nAlso, it would be useful for the user if the actual error message is printed.",
+      "revId": "10a82df6c133917f09e9ad1dce2e5e6946e9ae41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
