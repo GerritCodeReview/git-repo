@@ -123,6 +123,24 @@
     },
     {
       "key": {
+        "uuid": "bec1341b_2d43edc3",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-17T14:21:35Z",
+      "side": 1,
+      "message": "Adding a new option does not mean we must make a new version.\n\nHowever the new option will not be available to normal users until a new version tag is added.  So effectively, yes, a new version will be needed.\n\n(power users can get it by explicitly using the master branch and disabling the self-verify functionality)",
+      "parentUuid": "5ebaf89c_2a22ff6a",
+      "revId": "2bba6e5822dbbf4e4c964d204a5f57c788717b0a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bec1341b_8dc6a136",
         "filename": "subcmds/init.py",
         "patchSetId": 1
