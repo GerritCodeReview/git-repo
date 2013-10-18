@@ -195,8 +195,24 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+  def _FetchProjectList(self, opt, projects, *args):
+    """Main function of the fetch threads when jobs are > 1.
+
+    Delegates most of the work to _FetchHelper.
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      projects: Projects to fetch.
+      *args: Remaining arguments to pass to _FetchHelper. See the
+          _FetchHelper docstring for details.
+    """
+    for project in projects:
+      success = self._FetchHelper(opt, project, *args)
+      if not success and not opt.force_broken:
+        break
+
   def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
-      """Main function of the fetch threads when jobs are > 1.
+      """Fetch git objects for a single project.
 
       Args:
         opt: Program options returned from optparse.  See _Options().
@@ -211,6 +227,9 @@ later is required to fix a server side protocol bug.
             can be started up.
         err_event: We'll set this event in the case of an error (after printing
             out info about the error).
+
+      Returns:
+        Whether the fetch was successful.
       """
       # We'll set to true once we've locked the lock.
       did_lock = False
@@ -252,6 +271,8 @@ later is required to fix a server side protocol bug.
           lock.release()
         sem.release()
 
+      return success
+
   def _Fetch(self, projects, opt):
     fetched = set()
     pm = Progress('Fetching projects', len(projects))
@@ -271,20 +292,24 @@ later is required to fix a server side protocol bug.
           else:
             sys.exit(1)
     else:
+      objdir_project_map = dict()
+      for project in projects:
+        objdir_project_map.setdefault(project.objdir, []).append(project)
+
       threads = set()
       lock = _threading.Lock()
       sem = _threading.Semaphore(self.jobs)
       err_event = _threading.Event()
-      for project in projects:
+      for project_list in objdir_project_map.values():
         # Check for any errors before starting any new threads.
         # ...we'll let existing threads finish, though.
         if err_event.isSet():
           break
 
         sem.acquire()
-        t = _threading.Thread(target = self._FetchHelper,
+        t = _threading.Thread(target = self._FetchProjectList,
                               args = (opt,
-                                      project,
+                                      project_list,
                                       lock,
                                       fetched,
                                       pm,
@@ -376,12 +401,13 @@ later is required to fix a server side protocol bug.
         if path not in new_project_paths:
           # If the path has already been deleted, we don't need to do it
           if os.path.exists(self.manifest.topdir + '/' + path):
+              gitdir = os.path.join(self.manifest.topdir, path, '.git')
               project = Project(
                              manifest = self.manifest,
                              name = path,
                              remote = RemoteSpec('origin'),
-                             gitdir = os.path.join(self.manifest.topdir,
-                                                   path, '.git'),
+                             gitdir = gitdir,
+                             objdir = gitdir,
                              worktree = os.path.join(self.manifest.topdir, path),
                              relpath = path,
                              revisionExpr = 'HEAD',
@@ -597,7 +623,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = WrapperModule()
   if wrapper.NeedSetupGnuPG():
     wrapper.SetupGnuPG(quiet)
-  for project in manifest.projects.values():
+  for project in manifest.projects:
     if project.Exists:
       project.PostRepoUpgrade()
 

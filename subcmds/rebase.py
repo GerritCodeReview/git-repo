@@ -60,6 +60,8 @@ branch but need to incorporate new upstream changes "underneath" them.
 
     if opt.interactive and not one_project:
       print >>sys.stderr, 'error: interactive rebase not supported with multiple projects'
+      if len(args) == 1:
+        print >>sys.stderr, 'note: project %s is mapped to more than one path' % (args[0],)
       return -1
 
     for project in all_projects:

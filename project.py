@@ -477,6 +477,7 @@ class Project(object):
                name,
                remote,
                gitdir,
+               objdir,
                worktree,
                relpath,
                revisionExpr,
@@ -489,6 +490,7 @@ class Project(object):
     self.name = name
     self.remote = remote
     self.gitdir = gitdir.replace('\\', '/')
+    self.objdir = objdir.replace('\\', '/')
     if worktree:
       self.worktree = worktree.replace('\\', '/')
     else:
@@ -1008,11 +1010,11 @@ class Project(object):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
+    self._InitWorkTree()
     all_refs = self.bare_ref.all
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
 
-    self._InitWorkTree()
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
       branch = head[len(R_HEADS):]
@@ -1653,8 +1655,19 @@ class Project(object):
 
   def _InitGitDir(self):
     if not os.path.exists(self.gitdir):
-      os.makedirs(self.gitdir)
-      self.bare_git.init()
+
+      # Initialize the bare repository, which contains all of the objects.
+      if not os.path.exists(self.objdir):
+        os.makedirs(self.objdir)
+        cmd = ['init', '-q', '--bare', self.objdir]
+        if GitCommand(None, cmd).Wait() != 0:
+          raise GitError('cannot initialize a repository at %s' % self.objdir)
+
+      # If we have a separate directory to hold refs, initialize it as well.
+      if self.objdir != self.gitdir:
+        os.makedirs(self.gitdir)
+        self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
+                              copy_all=True)
 
       mp = self.manifest.manifestProject
       ref_dir = mp.config.GetString('repo.reference')
@@ -1697,7 +1710,7 @@ class Project(object):
           self.config.SetString(key, m.GetString(key))
 
   def _InitHooks(self):
-    hooks = self._gitdir_path('hooks')
+    hooks = os.path.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
     for stock_hook in _ProjectHooks():
@@ -1764,33 +1777,62 @@ class Project(object):
         msg = 'manifest set to %s' % self.revisionExpr
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
+  def _ReferenceGitDir(self, gitdir, dotgit, share_refs, copy_all):
+    """Update |dotgit| to reference |gitdir|, using symlinks where possible.
+
+    Args:
+      gitdir: The bare git repository. Must already be initialized.
+      dotgit: The repository you would like to initialize.
+      share_refs: If true, |dotgit| will store its refs under |gitdir|.
+          Only one work tree can store refs under a given |gitdir|.
+      copy_all: If true, copy all remaining files from |gitdir| -> |dotgit|.
+          This saves you the effort of initializing |dotgit| yourself.
+    """
+    # These objects can be shared between several working trees.
+    symlink_files = ['description', 'info']
+    symlink_dirs = ['hooks', 'objects', 'rr-cache', 'svn']
+    if share_refs:
+      # These objects can only be used by a single working tree.
+      symlink_files += ['config', 'packed-refs']
+      symlink_dirs += ['logs', 'refs']
+    to_symlink = symlink_files + symlink_dirs
+
+    to_copy = []
+    if copy_all:
+      to_copy = os.listdir(gitdir)
+
+    for name in set(to_copy).union(to_symlink):
+      try:
+        src = os.path.realpath(os.path.join(gitdir, name))
+        dst = os.path.realpath(os.path.join(dotgit, name))
+
+        if os.path.lexists(dst) and not os.path.islink(dst):
+          raise GitError('cannot overwrite a local work tree')
+
+        # If the source dir doesn't exist, create an empty dir.
+        if name in symlink_dirs and not os.path.lexists(src):
+          os.makedirs(src)
+
+        if name in to_symlink:
+          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
+        elif copy_all and not os.path.islink(dst):
+          if os.path.isdir(src):
+            shutil.copytree(src, dst)
+          elif os.path.isfile(src):
+            shutil.copy(src, dst)
+      except OSError as e:
+        if e.errno == errno.EPERM:
+          raise GitError('filesystem must support symlinks')
+        else:
+          raise
+
   def _InitWorkTree(self):
     dotgit = os.path.join(self.worktree, '.git')
     if not os.path.exists(dotgit):
       os.makedirs(dotgit)
-
-      for name in ['config',
-                   'description',
-                   'hooks',
-                   'info',
-                   'logs',
-                   'objects',
-                   'packed-refs',
-                   'refs',
-                   'rr-cache',
-                   'svn']:
-        try:
-          src = os.path.join(self.gitdir, name)
-          dst = os.path.join(dotgit, name)
-          if os.path.islink(dst) or not os.path.exists(dst):
-            os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
-          else:
-            raise GitError('cannot overwrite a local work tree')
-        except OSError as e:
-          if e.errno == errno.EPERM:
-            raise GitError('filesystem must support symlinks')
-          else:
-            raise
+      if self.gitdir != dotgit:
+        self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
+                              copy_all=False)
 
       _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
 
@@ -1799,10 +1841,6 @@ class Project(object):
       cmd.append(HEAD)
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError("cannot initialize work tree")
-
-      rr_cache = os.path.join(self.gitdir, 'rr-cache')
-      if not os.path.exists(rr_cache):
-        os.makedirs(rr_cache)
 
       self._CopyFiles()
 
@@ -2125,6 +2163,7 @@ class MetaProject(Project):
                      manifest = manifest,
                      name = name,
                      gitdir = gitdir,
+                     objdir = gitdir,
                      worktree = worktree,
                      remote = RemoteSpec('origin'),
                      relpath = '.repo/%s' % name,

@@ -180,11 +180,7 @@ class XmlManifest(object):
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
 
-    sort_projects = list(self.projects.keys())
-    sort_projects.sort()
-
-    for p in sort_projects:
-      p = self.projects[p]
+    for p in sorted(self.projects, key=lambda x: x.name):
 
       if not p.MatchesGroups(groups):
         continue
@@ -242,9 +238,14 @@ class XmlManifest(object):
     doc.writexml(fd, '', '  ', '\n', 'UTF-8')
 
   @property
+  def paths(self):
+    self._Load()
+    return self._paths
+
+  @property
   def projects(self):
     self._Load()
-    return self._projects
+    return self._paths.values()
 
   @property
   def remotes(self):
@@ -278,6 +279,7 @@ class XmlManifest(object):
   def _Unload(self):
     self._loaded = False
     self._projects = {}
+    self._paths = {}
     self._remotes = {}
     self._default = None
     self._repo_hooks_project = None
@@ -383,29 +385,28 @@ class XmlManifest(object):
     for node in itertools.chain(*node_list):
       if node.nodeName == 'project':
         project = self._ParseProject(node)
-        if self._projects.get(project.name):
-          raise ManifestParseError(
-              'duplicate project %s in %s' %
-              (project.name, self.manifestFile))
-        self._projects[project.name] = project
+        self._projects.setdefault(project.name, []).append(project)
+        self._paths[project.relpath] = project
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
         enabled_repo_hooks = self._reqatt(node, 'enabled-list').split()
 
-        # Only one project can be the hooks project
-        if self._repo_hooks_project is not None:
-          raise ManifestParseError(
-              'duplicate repo-hooks in %s' %
-              (self.manifestFile))
-
         # Store a reference to the Project.
         try:
-          self._repo_hooks_project = self._projects[repo_hooks_project]
+          repo_hooks_projects = self._projects[repo_hooks_project]
         except KeyError:
           raise ManifestParseError(
               'project %s not found for repo-hooks' %
               (repo_hooks_project))
+
+        # Only one project can be the hooks project.
+        if self._repo_hooks_project is not None or len(repo_hooks_projects) > 1:
+          raise ManifestParseError(
+              'duplicate repo-hooks in %s' %
+              (self.manifestFile))
+
+        self._repo_hooks_project = repo_hooks_projects[0]
 
         # Store the enabled hooks in the Project object.
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
@@ -454,11 +455,12 @@ class XmlManifest(object):
                         name = name,
                         remote = remote.ToRemoteSpec(name),
                         gitdir = gitdir,
+                        objdir = gitdir,
                         worktree = None,
                         relpath = None,
                         revisionExpr = m.revisionExpr,
                         revisionId = None)
-      self._projects[project.name] = project
+      self._projects[project.name] = [project]
 
   def _ParseRemote(self, node):
     """
@@ -592,14 +594,17 @@ class XmlManifest(object):
     if self.IsMirror:
       worktree = None
       gitdir = os.path.join(self.topdir, '%s.git' % name)
+      objdir = gitdir
     else:
       worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects/%s.git' % path)
+      objdir = os.path.join(self.repodir, 'project-objects/%s.git' % name)
 
     project = Project(manifest = self,
                       name = name,
                       remote = remote.ToRemoteSpec(name),
                       gitdir = gitdir,
+                      objdir = objdir,
                       worktree = worktree,
                       relpath = path,
                       revisionExpr = revisionExpr,
@@ -616,6 +621,9 @@ class XmlManifest(object):
         self._ParseAnnotation(project, n)
 
     return project
+
+  def GetProjectsWithName(self, name):
+    return self._projects.get(name, [])
 
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
