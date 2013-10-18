@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3e2b84c4_a91cdd7e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-18T21:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be16948d_85f0e20e",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be16948d_a5f35e1a",
         "filename": "manifest_xml.py",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2013-10-18T00:23:33Z",
       "side": 1,
       "message": "Are you sure there are no other consumers of this property that might get screwed up with this change?",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3e2b84c4_4908c13c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-18T21:37:19Z",
+      "side": 1,
+      "message": "git grep says that I\u0027ve updated everything",
+      "parentUuid": "be16948d_a5f35e1a",
       "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1e07a053_100ee44b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-18T21:37:19Z",
+      "side": 1,
+      "message": "There\u0027s already a check for that above, see the \"duplicate repo-hooks\" message.",
+      "parentUuid": "be16948d_45ef0a32",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed5e0ff_80ef1631",
         "filename": "project.py",
         "patchSetId": 3
@@ -64,6 +118,24 @@
       "writtenOn": "2013-10-18T00:23:33Z",
       "side": 1,
       "message": "I\u0027m concerned about the mismatch here between self.worktree and self.objdir, and what the implications are for all the _GitGetByExec methods.  For example, GetHead/SetHead and UpdateRef affect self.worktree, regardless of what gitdir you pass to the _GitGetByExec constructor.\n\nProbably the best thing is to modify _GitGetByExec to not take a project in the constructor, but rather to pass in explicitly all the necessary paths (invoke-from, gitdir, etc.)",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3e2b84c4_495a812c",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-18T21:37:19Z",
+      "side": 1,
+      "message": "Once everything is symlinked, if you run git commands from the worktree, they will automatically do the right thing in the gitdir and the objdir, so there is no need to change where we run commands here.\n\nSimilarly, if you run commands in the gitdir, it will automatically do the right thing in the objdir, so, again, there\u0027s no need to change.\n\nSince there\u0027s no need to use the objdir at all except for the initial set up, I\u0027ve removed this attribute and just used git.init for the initial initialization of the objdir.",
+      "parentUuid": "1ed5e0ff_80ef1631",
       "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "3e2b84c4_8919198f",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1818,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-18T21:37:19Z",
+      "side": 1,
+      "message": "No need. See the checking above for \u0027cannot overwrite a local work tree\u0027",
+      "parentUuid": "be16948d_e5fd56e5",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be16948d_c5fadaea",
         "filename": "project.py",
         "patchSetId": 3
@@ -104,6 +194,24 @@
     },
     {
       "key": {
+        "uuid": "3e2b84c4_e916d55c",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-18T21:37:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be16948d_c5fadaea",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be16948d_25092e44",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -115,6 +223,24 @@
       "writtenOn": "2013-10-18T00:23:33Z",
       "side": 1,
       "message": "What does this refactoring accomplish?  IIUC, project.bare_git is unique among projects that share a remote repo and objdir.  So, you\u0027re still just running \u0027git gc\u0027 in all of the distinct project gitdirs.\n\nAlso, this doesn\u0027t gc the objdirs; is that intentional?",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3e2b84c4_c913116b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2013-10-18T21:37:19Z",
+      "side": 1,
+      "message": "You\u0027re right -- this change doesn\u0027t accomplish anything, so I\u0027ll remove it.\n\nWe don\u0027t need to gc the objdirs because gc\u0027ing the gitdirs will do the same thing.",
+      "parentUuid": "be16948d_25092e44",
       "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
