@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "be16948d_85f0e20e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T00:23:33Z",
+      "side": 1,
+      "message": "sorted(self.projects, key\u003dlambda x: x.name)",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be16948d_a5f35e1a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T00:23:33Z",
+      "side": 1,
+      "message": "Are you sure there are no other consumers of this property that might get screwed up with this change?",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be16948d_45ef0a32",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T00:23:33Z",
+      "side": 1,
+      "message": "How about a more informative error message, e.g., \u0027must specify exactly one repo-hooks project\u0027.",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ed5e0ff_80ef1631",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T00:23:33Z",
+      "side": 1,
+      "message": "I\u0027m concerned about the mismatch here between self.worktree and self.objdir, and what the implications are for all the _GitGetByExec methods.  For example, GetHead/SetHead and UpdateRef affect self.worktree, regardless of what gitdir you pass to the _GitGetByExec constructor.\n\nProbably the best thing is to modify _GitGetByExec to not take a project in the constructor, but rather to pass in explicitly all the necessary paths (invoke-from, gitdir, etc.)",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be16948d_e5fd56e5",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1818,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T00:23:33Z",
+      "side": 1,
+      "message": "Error-checking for trying to overwrite a file with a dir, and vice versa?",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be16948d_c5fadaea",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T00:23:33Z",
+      "side": 1,
+      "message": "Check for self.gitdir !\u003d dotgit",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be16948d_25092e44",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T00:23:33Z",
+      "side": 1,
+      "message": "What does this refactoring accomplish?  IIUC, project.bare_git is unique among projects that share a remote repo and objdir.  So, you\u0027re still just running \u0027git gc\u0027 in all of the distinct project gitdirs.\n\nAlso, this doesn\u0027t gc the objdirs; is that intentional?",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
