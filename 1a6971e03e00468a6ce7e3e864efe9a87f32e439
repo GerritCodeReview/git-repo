@@ -107,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "3e2b84c4_a964ddbd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 411,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2013-10-18T21:45:52Z",
+      "side": 1,
+      "message": "That\u0027s a different error condition, isn\u0027t it?  It catches this:\n\n \u003cproject name\u003d\"foo\" ... /\u003e\n \u003cproject name\u003d\"bar\" ... /\u003e\n \u003crepo-hooks in-project\u003d\"foo\" ... /\u003e\n \u003crepo-hooks in-project\u003d\"bar\" ... /\u003e\n\nBut what about this:\n\n \u003cproject name\u003d\"foo\" path\u003d\"foo-branch1\" ... /\u003e\n \u003cproject name\u003d\"foo\" path\u003d\"foo-branch2\" ... /\u003e\n \u003crepo-hooks in-project\u003d\"foo\" ... /\u003e\n\nThat will generate the unhelpful \u0027internal error parsing repo-hooks\u0027 message.",
+      "parentUuid": "1e07a053_100ee44b",
+      "revId": "1a6971e03e00468a6ce7e3e864efe9a87f32e439",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed5e0ff_80ef1631",
         "filename": "project.py",
         "patchSetId": 3
