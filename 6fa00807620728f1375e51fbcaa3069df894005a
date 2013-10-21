@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dec7c862_765ad02c",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-21T07:12:14Z",
+      "side": 1,
+      "message": "Add a description of the `archive` attribute here too.",
+      "revId": "6fa00807620728f1375e51fbcaa3069df894005a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dec7c862_964e8c6f",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-21T07:12:14Z",
+      "side": 1,
+      "message": "And here.",
+      "revId": "6fa00807620728f1375e51fbcaa3069df894005a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dec7c862_b64b885e",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-21T07:12:14Z",
+      "side": 1,
+      "message": "Trailing whitespace.",
+      "revId": "6fa00807620728f1375e51fbcaa3069df894005a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bec4d461_7593a8a8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1031,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-10-21T07:12:14Z",
+      "side": 1,
+      "message": "Whitespace.",
+      "revId": "6fa00807620728f1375e51fbcaa3069df894005a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
