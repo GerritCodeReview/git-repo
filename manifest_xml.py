@@ -32,7 +32,7 @@ else:
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 from project import RemoteSpec, Project, MetaProject
-from error import ManifestParseError
+from error import ManifestParseError, ManifestInvalidRevisionError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
@@ -247,6 +247,12 @@ class XmlManifest(object):
       if peg_rev:
         if self.IsMirror:
           value = p.bare_git.rev_parse(p.revisionExpr + '^0')
+        elif self.IsArchive or p.archive:
+          value = p.GetArchiveId()
+          if not value:
+            raise ManifestInvalidRevisionError('could not find revisionId for '
+                  'archive project %(name)s. Try running "repo sync '
+                  '%(name)s"' % {'name': p.name})
         else:
           value = p.work_git.rev_parse(HEAD + '^0')
         e.setAttribute('revision', value)

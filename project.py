@@ -43,6 +43,8 @@ if not is_python3():
   input = raw_input
   # pylint:enable=W0622
 
+LS_REMOTE_RESULT_RE = r"^(?P<shaone>[0-9a-f]{40})\s+%s$"
+
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
@@ -538,6 +540,9 @@ class Project(object):
     self.relpath = relpath
     self.revisionExpr = revisionExpr
 
+    self.flatrelpath = self.relpath.replace('\\', '/')
+    self.flatrelpath = self.flatrelpath.replace('/', '_')
+
     if   revisionId is None \
      and revisionExpr \
      and IsId(revisionExpr):
@@ -1004,6 +1009,33 @@ class Project(object):
 
 ## Sync ##
 
+  def _SaveArchiveId(self, revid):
+    projectsdir = os.path.join(self.manifest.repodir, 'projects')
+    if not os.path.exists(projectsdir):
+      os.makedirs(projectsdir)
+    revisionFile = os.path.join(projectsdir, self.flatrelpath)
+    try:
+      with open(revisionFile, 'w') as archHead:
+        archHead.write('ref: '+revid)
+    except IOError as e:
+      print('warn: %s: Could not save archive version ID: '
+            '%s' % (self.name, str(e)), file=sys.stderr)
+
+  def GetArchiveId(self):
+    revisionFile = os.path.join(self.manifest.repodir, 'projects', self.flatrelpath)
+    try:
+      with open(revisionFile, 'r') as archHead:
+        line = archHead.readline() # only care about the first line
+        if line.startswith('ref: '):
+          line = line[5:]
+          line.strip()
+          if IsId(line):
+            return line
+    except IOError:
+      # The file probably doesn't exist yet, no need to print anything
+      pass
+    return None
+
   def _ExtractArchive(self, tarpath, path=None):
     """Extract the given tar on its current location
 
@@ -1047,10 +1079,20 @@ class Project(object):
       if os.path.exists(self.gitdir):
         shutil.rmtree(self.gitdir)
 
-      name = self.relpath.replace('\\', '/')
-      name = name.replace('/', '_')
-      tarpath = '%s.tar' % name
+      tarpath = '%s.tar' % self.flatrelpath
       topdir = self.manifest.topdir
+      try:
+        revid = self.GetRemoteRevisionId()
+        # Get remote revision id because we have no git working tree
+      except GitError as e:
+        print("warn: Could not retrieve project's revisionId on remote: "
+              "%s" % str(e))
+        revid = None
+
+      if revid is not None and self.GetArchiveId() == revid:
+        # Stops here because current revision archive has already been
+        # downloaded.
+        return True
 
       try:
         self._FetchArchive(tarpath, cwd=topdir)
@@ -1068,6 +1110,8 @@ class Project(object):
       except OSError as e:
         print("warn: Cannot remove archive %s: "
               "%s" % (tarpath, str(e)), file=sys.stderr)
+      if revid is not None:
+        self._SaveArchiveId(revid)
       self._CopyFiles()
       return True
 
@@ -1127,6 +1171,40 @@ class Project(object):
   def _CopyFiles(self):
     for copyfile in self.copyfiles:
       copyfile._Copy()
+
+  def GetRemoteRevisionId(self):
+    """Get a revisionID corresponding to revisionExpr on the remote.
+
+    May be usefull especially when no git directory is present for a project.
+
+    """
+    if IsId(self.revisionExpr):
+      return self.revisionExpr
+
+    cmd = ['ls-remote', self.remote.url]
+    rev = self.revisionExpr
+    if self.revisionExpr.startswith(R_TAGS):
+      cmd.extend('-t')
+    else:
+      if not rev.startswith(R_HEADS):
+        rev = ''.join([R_HEADS, self.revisionExpr])
+      cmd.append('-h')
+    cmd.append(self.revisionExpr)
+
+    command = GitCommand(None, cmd, capture_stdout=True)
+    if command.Wait() != 0:
+      raise GitError('%s %s: %s' % (self.name, cmd[0], command.stderr))
+    if not command.stdout:
+      return None
+
+    for line in command.stdout.split('\n'):
+      result = re.match(LS_REMOTE_RESULT_RE % rev, line)
+      if result:
+        break
+    if not result:
+      return None
+
+    return result.group('shaone')
 
   def GetRevisionId(self, all_refs=None):
     if self.revisionId:
