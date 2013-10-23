@@ -552,6 +552,7 @@ class Project(object):
     self.snapshots = {}
     self.copyfiles = []
     self.annotations = []
+    self.comments = []
     self.config = GitConfig.ForRepository(
                     gitdir = self.gitdir,
                     defaults =  self.manifest.globalConfig)
@@ -1218,6 +1219,9 @@ class Project(object):
         return
     else:
       syncbuf.later1(self, _doff)
+
+  def AddComment(self, comment):
+    self.comments.append(comment)
 
   def AddCopyFile(self, src, dest, absdest):
     # dest should already be an absolute path, but src is project relative
