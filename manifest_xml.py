@@ -280,6 +280,10 @@ class XmlManifest(object):
         sort_projects = list(sorted([subp.name for subp in p.subprojects]))
         output_projects(p, e, sort_projects)
 
+      for c in p.comments:
+        cc = doc.createComment(c)
+        e.appendChild(cc)
+
     sort_projects = list(sorted([key for key, value in self.projects.items()
                      if not value.parent]))
     sort_projects.sort()
@@ -743,6 +747,8 @@ class XmlManifest(object):
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
         project.subprojects.append(self._ParseProject(n, parent = project))
+      if n.nodeType == n.COMMENT_NODE:
+        project.AddComment(n.nodeValue)
 
     return project
 
