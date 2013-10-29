@@ -2035,9 +2035,14 @@ class Project(object):
         else:
           ref_dir = None
 
-        if ref_dir:
-          _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
-                  os.path.join(ref_dir, 'objects') + '\n')
+      if not ref_dir and self.remote.url:
+        remote_git = GitConfig.ForUser().UrlInsteadOf(self.remote.url)
+        if os.path.exists(remote_git):
+          ref_dir = remote_git
+
+      if ref_dir:
+        _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
+                os.path.join(ref_dir, 'objects') + '\n')
 
       self._UpdateHooks()
 
