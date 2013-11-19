@@ -761,7 +761,7 @@ class _FetchTimes(object):
   def _Load(self):
     if self._times is None:
       try:
-        f = open(self._path)
+        f = open(self._path, 'rb')
       except IOError:
         self._times = {}
         return self._times
