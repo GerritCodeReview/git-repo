@@ -86,7 +86,7 @@ class _GitCall(object):
     global _git_version
 
     if _git_version is None:
-      ver_str = git.version()
+      ver_str = git.version().decode('utf-8')
       if ver_str.startswith('git version '):
         _git_version = tuple(
           map(int,
