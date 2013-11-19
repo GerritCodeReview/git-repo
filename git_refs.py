@@ -100,7 +100,7 @@ class GitRefs(object):
   def _ReadPackedRefs(self):
     path = os.path.join(self._gitdir, 'packed-refs')
     try:
-      fd = open(path, 'rb')
+      fd = open(path, 'r')
       mtime = os.path.getmtime(path)
     except IOError:
       return
