@@ -1840,11 +1840,11 @@ class Project(object):
             cookiefile = line[len(prefix):]
             break
         if p.wait():
-          line = iter(p.stderr).next()
-          if ' -print_config' in line:
+          err_msg = p.stderr.read()
+          if ' -print_config' in err_msg:
             pass  # Persistent proxy doesn't support -print_config.
           else:
-            print(line + p.stderr.read(), file=sys.stderr)
+            print(err_msg, file=sys.stderr)
         if cookiefile:
           return cookiefile
       except OSError as e:
