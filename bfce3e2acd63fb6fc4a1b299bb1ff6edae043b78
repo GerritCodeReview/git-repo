@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "7edb3dad_a92c5db3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-11-21T10:47:01Z",
+      "side": 1,
+      "message": "It would be nice to expand this a bit.  Explain that it is now possible to use python3, but a warning will be emitted, and some functionality is known to not work.  Also if possible it would be good to detail a bit more about the known issues.",
+      "revId": "bfce3e2acd63fb6fc4a1b299bb1ff6edae043b78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7edb3dad_49116168",
         "filename": "repo",
         "patchSetId": 1
