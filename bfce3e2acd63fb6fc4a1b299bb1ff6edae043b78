@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7edb3dad_49116168",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-11-21T10:45:22Z",
+      "side": 1,
+      "message": "Why is the word \"use\" removed?",
+      "range": {
+        "startLine": 142,
+        "startChar": 17,
+        "endLine": 142,
+        "endChar": 23
+      },
+      "revId": "bfce3e2acd63fb6fc4a1b299bb1ff6edae043b78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
