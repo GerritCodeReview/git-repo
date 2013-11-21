@@ -139,7 +139,7 @@ is shown, then the branch appears in all projects.
       if in_cnt < project_cnt:
         fmt = out.write
         paths = []
-        if in_cnt < project_cnt - in_cnt: 
+        if in_cnt < project_cnt - in_cnt:
           in_type = 'in'
           for b in i.projects:
             paths.append(b.project.relpath)

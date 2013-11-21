@@ -27,15 +27,15 @@ following DTD:
                         remove-project*,
                         project*,
                         repo-hooks?)>
-  
+
     <!ELEMENT notice (#PCDATA)>
-  
+
     <!ELEMENT remote (EMPTY)>
     <!ATTLIST remote name         ID    #REQUIRED>
     <!ATTLIST remote alias        CDATA #IMPLIED>
     <!ATTLIST remote fetch        CDATA #REQUIRED>
     <!ATTLIST remote review       CDATA #IMPLIED>
-  
+
     <!ELEMENT default (EMPTY)>
     <!ATTLIST default remote      IDREF #IMPLIED>
     <!ATTLIST default revision    CDATA #IMPLIED>
@@ -46,7 +46,7 @@ following DTD:
 
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
-  
+
     <!ELEMENT project (annotation?,
                        project*)>
     <!ATTLIST project name        CDATA #REQUIRED>
@@ -65,7 +65,7 @@ following DTD:
     <!ATTLIST annotation name  CDATA #REQUIRED>
     <!ATTLIST annotation value CDATA #REQUIRED>
     <!ATTLIST annotation keep  CDATA "true">
-  
+
     <!ELEMENT remove-project (EMPTY)>
     <!ATTLIST remove-project name  CDATA #REQUIRED>
 
