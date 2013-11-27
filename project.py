@@ -1955,7 +1955,7 @@ class Project(object):
       self._InitHooks()
 
   def _InitHooks(self):
-    hooks = self._gitdir_path('hooks')
+    hooks = os.path.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
     for stock_hook in _ProjectHooks():
