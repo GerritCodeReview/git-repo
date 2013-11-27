@@ -82,7 +82,7 @@ def _ProjectHooks():
   """
   global _project_hook_list
   if _project_hook_list is None:
-    d = os.path.abspath(os.path.dirname(__file__))
+    d = os.path.realpath(os.path.abspath(os.path.dirname(__file__)))
     d = os.path.join(d , 'hooks')
     _project_hook_list = [os.path.join(d, x) for x in os.listdir(d)]
   return _project_hook_list
@@ -1955,7 +1955,7 @@ class Project(object):
       self._InitHooks()
 
   def _InitHooks(self):
-    hooks = self._gitdir_path('hooks')
+    hooks = os.path.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
     for stock_hook in _ProjectHooks():
