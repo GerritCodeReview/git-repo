@@ -89,6 +89,11 @@ to "true" then repo will assume you always answer "y" at the prompt,
 and will not prompt you further.  If it is set to "false" then repo
 will assume you always answer "n", and will abort.
 
+review.URL.autoreviewer:
+
+To automatically append a user or mailing list to reviews, you can set
+a per-project or global Git option to do so.
+
 review.URL.autocopy:
 
 To automatically copy a user or mailing list to all uploaded reviews,
@@ -293,14 +298,20 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
     self._UploadAndReport(opt, todo, people)
 
-  def _AppendAutoCcList(self, branch, people):
+  def _AppendAutoList(self, branch, people):
     """
+    Appends the list of reviewers in the git project's config.
     Appends the list of users in the CC list in the git project's config if a
     non-empty reviewer list was found.
     """
-
     name = branch.name
     project = branch.project
+
+    key = 'review.%s.autoreviewer' % project.GetBranch(name).remote.review
+    raw_list = project.config.GetString(key)
+    if not raw_list is None:
+      people[0].extend([entry.strip() for entry in raw_list.split(',')])
+
     key = 'review.%s.autocopy' % project.GetBranch(name).remote.review
     raw_list = project.config.GetString(key)
     if not raw_list is None and len(people[0]) > 0:
@@ -323,7 +334,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     for branch in todo:
       try:
         people = copy.deepcopy(original_people)
-        self._AppendAutoCcList(branch, people)
+        self._AppendAutoList(branch, people)
 
         # Check if there are local changes that may have been forgotten
         if branch.project.HasChanges():
