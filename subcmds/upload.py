@@ -422,7 +422,16 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     for project in project_list:
       if opt.current_branch:
         cbr = project.CurrentBranch
-        avail = [project.GetUploadableBranch(cbr)] if cbr else None
+        up_branch = project.GetUploadableBranch(cbr)
+        if up_branch:
+          avail = [up_branch]
+        else:
+          avail = None
+          print("ERROR: Current branch (%s) not uploadable. "
+                "You may be able to type "
+                "'git branch --set-upstream-branch m/master' to fix "
+                "your branch." % str(cbr),
+                file=sys.stderr)
       else:
         avail = project.GetUploadableBranches(branch)
       if avail:
