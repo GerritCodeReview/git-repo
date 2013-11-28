@@ -898,7 +898,7 @@ class Project(object):
         ready.append(rb)
     return ready
 
-  def GetUploadableBranch(self, branch_name):
+  def GetUploadableBranch(self, branch_name, bomb_on_not_uploadable=False):
     """Get a single uploadable branch, or None.
     """
     branch = self.GetBranch(branch_name)
@@ -907,6 +907,8 @@ class Project(object):
       rb = ReviewableBranch(self, branch, base)
       if rb.commits:
         return rb
+    if bomb_on_not_uploadable:
+        raise Exception("Branch (%s) not uploadable." % branch_name)
     return None
 
   def UploadForReview(self, branch=None,

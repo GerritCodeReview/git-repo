@@ -422,7 +422,10 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     for project in project_list:
       if opt.current_branch:
         cbr = project.CurrentBranch
-        avail = [project.GetUploadableBranch(cbr)] if cbr else None
+        if cbr:
+          avail = [project.GetUploadableBranch(cbr, bomb_on_not_uploadable=True)]
+        else:
+          avail = None
       else:
         avail = project.GetUploadableBranches(branch)
       if avail:
