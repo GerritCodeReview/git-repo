@@ -1,5 +1,5 @@
 #!/bin/sh
-# From Gerrit Code Review 2.5.2
+# From Gerrit Code Review 2.6
 #
 # Part of Gerrit Code Review (http://code.google.com/p/gerrit/)
 #
@@ -154,7 +154,7 @@ add_ChangeId() {
 		if (unprinted) {
 			print "Change-Id: I'"$id"'"
 		}
-	}' "$MSG" > $T && mv $T "$MSG" || rm -f $T
+	}' "$MSG" > "$T" && mv "$T" "$MSG" || rm -f "$T"
 }
 _gen_ChangeIdInput() {
 	echo "tree `git write-tree`"
