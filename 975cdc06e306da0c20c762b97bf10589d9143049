@@ -16,6 +16,24 @@
       "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "231a8eb4_667b2e0b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-02T23:48:37Z",
+      "side": 1,
+      "message": "It definitely is on 1.8.3. I don\u0027t know where it was introduced.",
+      "parentUuid": "c1d52934_4d4b7961",
+      "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
