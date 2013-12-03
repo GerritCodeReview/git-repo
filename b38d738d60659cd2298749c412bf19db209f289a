@@ -16,6 +16,24 @@
       "revId": "b38d738d60659cd2298749c412bf19db209f289a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e3c15653_347f7091",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1958,
+      "author": {
+        "id": 1014503
+      },
+      "writtenOn": "2013-12-03T17:03:37Z",
+      "side": 1,
+      "message": "Because abspath doesn\u0027t resolve symlinks, realpath does.\n\nHere\u0027s an example: I have one SSD mounted on $HOME/android and another on $HOME/.android (note the \u0027.\u0027). I have a $HOME/android/master tree, and $HOME/android/master/.repo is a symlink to $HOME/.android/master.\n\nIn _InitHooks, self._gitdir_path(\u0027hooks\u0027) returns \u0027$HOME/android/master/.repo/projects/frameworks/native.git/hooks\u0027. abspath doesn\u0027t modify this, since it\u0027s already absolute and normalized. realpath resolves the symlink so it becomes \u0027$HOME/.android/master/projects/frameworks/native.git/hooks\u0027.\n\nThe hooks returned by _ProjectHooks are all \"real\" paths, since __file__ doesn\u0027t contain symlinks (observed behavior, I don\u0027t know that this is specified).\n\nSo without the realpath call, _InitHooks ends up trying to symlink \u0027$HOME/android/master/.repo/projects/foo.git/hooks/commit-msg\u0027 to \u0027../../../../../../../.android/master/repo/hooks/commit-msg\u0027. That\u0027s correct if you start traversal from $HOME/android/master/.repo/projects/foo.git/hooks. But apparently the kernel resolves symlinks first before traversing the relative path, so it starts from $HOME/.android/master/projects/foo.git/hooks, and the symlink is broken.\n\nBy making sure that both arguments to relpath are absolute paths with no symlinks, the relative path stays within the .repo subtree, so you can move the .repo directory around freely without the symlinks breaking.",
+      "parentUuid": "c3cb723b_cb1a5588",
+      "revId": "b38d738d60659cd2298749c412bf19db209f289a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
