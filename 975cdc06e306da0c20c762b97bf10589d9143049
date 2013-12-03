@@ -70,6 +70,24 @@
       "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e3c15653_d442bc54",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-12-03T15:12:55Z",
+      "side": 1,
+      "message": "OK, then we need to bump the minimum version.",
+      "parentUuid": "c3be12c6_b3455860",
+      "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
