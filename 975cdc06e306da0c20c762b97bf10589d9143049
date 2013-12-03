@@ -34,6 +34,24 @@
       "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e3c15653_54e86c23",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-12-03T01:37:18Z",
+      "side": 1,
+      "message": "It works with 1.8.1.2 on another of my boxes.",
+      "parentUuid": "231a8eb4_667b2e0b",
+      "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
