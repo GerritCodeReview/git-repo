@@ -52,6 +52,24 @@
       "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c3be12c6_b3455860",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2013-12-03T12:09:53Z",
+      "side": 1,
+      "message": "It was introduced in git.git commit e30b2feb1b50c2d14d32dc3e6e41f7b20a677ff2 [0]\n\nv1.7.12 is the first version to have it according to git(hub).\n\n[0]: https://github.com/git/git/commit/e30b2feb1b50c2d14d32dc3e6e41f7b20a677ff2",
+      "parentUuid": "e3c15653_54e86c23",
+      "revId": "975cdc06e306da0c20c762b97bf10589d9143049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
