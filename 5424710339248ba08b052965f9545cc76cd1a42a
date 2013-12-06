@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3083eda_fae74953",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-06T22:08:59Z",
+      "side": 1,
+      "message": "2 space indents to conform to the rest of the file.",
+      "revId": "5424710339248ba08b052965f9545cc76cd1a42a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
