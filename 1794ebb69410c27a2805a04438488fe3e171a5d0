@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03c74ad6_65fc46e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-09T22:19:02Z",
+      "side": 1,
+      "message": "Please add a little more detail here.",
+      "revId": "1794ebb69410c27a2805a04438488fe3e171a5d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "03c74ad6_05ef522a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 426,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-09T22:19:02Z",
+      "side": 1,
+      "message": "I think it\u0027d be simpler if you didn\u0027t add any optional args and just said\n\nif avail \u003d\u003d None:\n   # print error to sys.stderr\n   return\n\n(within this new if structure of course so we know it\u0027s the GetUploadableBranch method returning None)",
+      "range": {
+        "startLine": 426,
+        "startChar": 27,
+        "endLine": 426,
+        "endChar": 46
+      },
+      "revId": "1794ebb69410c27a2805a04438488fe3e171a5d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
