@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03c74ad6_850b423d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-09T22:23:23Z",
+      "side": 1,
+      "message": "Please add a little more detail here.",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e3c316c9_24f25216",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-09T22:23:23Z",
+      "side": 1,
+      "message": "I\u0027m thinking you don\u0027t need this line and you can just return after printing the error.",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "03c74ad6_a5063e35",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-09T22:23:23Z",
+      "side": 1,
+      "message": "Maybe your error should say something about there being no matching upstream branch.\n\nAlso, I don\u0027t think your second line is lined up correctly.\n\nAdditionally, please stick with the 2 spaces per indentation for consistency.",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
