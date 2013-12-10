@@ -50,6 +50,24 @@
       "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "03c74ad6_c5f25ac6",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-10T22:42:02Z",
+      "side": 1,
+      "message": "I only know about the upstream branch issue as I experimented to make it work. There could presumably be other types of errors. Unfortunately, which error it is is not apparent from the information available right here.\n\nI think the code would need to be reworked a good deal to be able to pass that information back from the GetUploadableBranches and GetUploadableBranch methods on the project object.",
+      "parentUuid": "03c74ad6_a5063e35",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
