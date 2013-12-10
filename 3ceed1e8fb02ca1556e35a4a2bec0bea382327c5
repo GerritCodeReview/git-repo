@@ -68,6 +68,24 @@
       "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "238feeae_5efc95e5",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-10T23:14:23Z",
+      "side": 1,
+      "message": "Then just add a second line saying:\n\"Perhaps there matching {cbr} branch to push to?\"\n\nYou don\u0027t need to add more plumbing to get more info.",
+      "parentUuid": "03c74ad6_c5f25ac6",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
