@@ -47,7 +47,7 @@ following DTD:
     <!ELEMENT manifest-server (EMPTY)>
     <!ATTLIST url              CDATA #REQUIRED>
 
-    <!ELEMENT project (annotation?,
+    <!ELEMENT project (annotation*,
                        project*)>
     <!ATTLIST project name        CDATA #REQUIRED>
     <!ATTLIST project path        CDATA #IMPLIED>
