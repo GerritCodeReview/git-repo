@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "238feeae_9edd3d86",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-11T23:33:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03c74ad6_850b423d",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e3c316c9_24f25216",
         "filename": "subcmds/upload.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2013-12-09T22:23:23Z",
       "side": 1,
       "message": "I\u0027m thinking you don\u0027t need this line and you can just return after printing the error.",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "438a229e_ffec7f38",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-11T23:33:49Z",
+      "side": 1,
+      "message": "I\u0027d rather set the avail to None, which is what was done before, so that the logic near the bottom of the method (starting at line 453) executes like it did before. This ensures you get the \"no branches ready for upload message\".",
+      "parentUuid": "e3c316c9_24f25216",
       "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -82,6 +118,24 @@
       "writtenOn": "2013-12-10T23:14:23Z",
       "side": 1,
       "message": "Then just add a second line saying:\n\"Perhaps there matching {cbr} branch to push to?\"\n\nYou don\u0027t need to add more plumbing to get more info.",
+      "parentUuid": "03c74ad6_c5f25ac6",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "238feeae_3eefc92a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-11T23:33:49Z",
+      "side": 1,
+      "message": "I should have asked a question. Do you want me to just assume that the branch tracking is the problem? I don\u0027t think that\u0027d be that great.",
       "parentUuid": "03c74ad6_c5f25ac6",
       "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
