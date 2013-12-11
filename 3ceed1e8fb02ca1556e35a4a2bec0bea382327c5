@@ -140,6 +140,24 @@
       "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2880abc3_56dd9481",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-11T23:38:38Z",
+      "side": 1,
+      "message": "No, I was just suggesting you suggest it to the user as a possible issue in the output, but I\u0027m fine with leaving it.",
+      "parentUuid": "238feeae_3eefc92a",
+      "revId": "3ceed1e8fb02ca1556e35a4a2bec0bea382327c5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
