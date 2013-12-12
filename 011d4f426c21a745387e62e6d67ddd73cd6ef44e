@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88343708_412ff2a9",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2013-12-12T15:13:52Z",
+      "side": 1,
+      "message": "This might cause more confusion than help for users of manifests where none of the projects use the master branch.",
+      "range": {
+        "startLine": 431,
+        "startChar": 16,
+        "endLine": 433,
+        "endChar": 30
+      },
+      "revId": "011d4f426c21a745387e62e6d67ddd73cd6ef44e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
