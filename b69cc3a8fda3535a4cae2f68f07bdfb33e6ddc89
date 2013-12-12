@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "88343708_61ecb63a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-12T06:47:50Z",
+      "side": 1,
+      "message": "I don\u0027t know if I understand what you want me to do here.\n\nI was trying to keep the same logic as before, which is that \"no branches ready for upload\" would be printed (in addition to my new error message) if avail is None. If I return after the error message, that wouldn\u0027t happen.",
+      "parentUuid": "68662314_d8f0ed0b",
+      "revId": "b69cc3a8fda3535a4cae2f68f07bdfb33e6ddc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "08c2071e_0de71158",
         "filename": "subcmds/upload.py",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2013-12-12T00:23:56Z",
       "side": 1,
       "message": "stick with single quotes to match the surrounding context.",
+      "revId": "b69cc3a8fda3535a4cae2f68f07bdfb33e6ddc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88343708_81e73a56",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-12T06:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08c2071e_0de71158",
       "revId": "b69cc3a8fda3535a4cae2f68f07bdfb33e6ddc89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
