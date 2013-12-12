@@ -46,6 +46,30 @@
       "revId": "011d4f426c21a745387e62e6d67ddd73cd6ef44e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "286c2b14_b6f0c80a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-12T23:52:14Z",
+      "side": 1,
+      "message": "er is it?  Can you test this one?",
+      "parentUuid": "c849cfa5_5b3ec3d9",
+      "range": {
+        "startLine": 431,
+        "startChar": 16,
+        "endLine": 433,
+        "endChar": 30
+      },
+      "revId": "011d4f426c21a745387e62e6d67ddd73cd6ef44e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
