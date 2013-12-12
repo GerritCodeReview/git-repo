@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "48579f41_17e25447",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-12T23:44:48Z",
+      "side": 1,
+      "message": "I think the logic is correct.\n\nThe backtrace happened below on line 458. The original code had avail \u003d\u003d [None] if cbr was set but not uploadable. The \"if avail:\" on line 437 below would then be true and [None] would be appended to pending, making [[None]] in the case of pushing the current branch. As a result of that, the \"if pending\" check on 440 would be successful and run the repo hooks regardless of whether the current branch was pushable or not. Then, on line 456, \"if not pending\" would be false, falling to the elif on line 458. The len(pending) \u003d\u003d 1 would be true for [[None}]. Then pending[0][1][0] would be expanded. However, pending[0] is None, not an array, so the second index lookup (the \"[1]\") would fail.\n\nIn the code in the lastest patchset, the avail is properly set to None (instead of [None]), so the test \"if avail:\" on line 437 fails, thus not appending to the pending array. The hooks will not be run, and line 456\u0027s \"if not pending\" will be true and thus run the print on line 457 (\"no branches ready for upload\").",
+      "parentUuid": "88343708_8139faf2",
+      "revId": "b69cc3a8fda3535a4cae2f68f07bdfb33e6ddc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "08c2071e_0de71158",
         "filename": "subcmds/upload.py",
         "patchSetId": 3
