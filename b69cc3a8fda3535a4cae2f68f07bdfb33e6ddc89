@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68662314_d8f0ed0b",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 429,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-12T00:23:56Z",
+      "side": 1,
+      "message": "This should be moved down after this if/else because you should return after printing the error.",
+      "revId": "b69cc3a8fda3535a4cae2f68f07bdfb33e6ddc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08c2071e_0de71158",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2013-12-12T00:23:56Z",
+      "side": 1,
+      "message": "stick with single quotes to match the surrounding context.",
+      "revId": "b69cc3a8fda3535a4cae2f68f07bdfb33e6ddc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
