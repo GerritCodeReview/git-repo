@@ -70,6 +70,30 @@
       "revId": "011d4f426c21a745387e62e6d67ddd73cd6ef44e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "48bf9fde_170fb447",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1014507
+      },
+      "writtenOn": "2013-12-14T00:49:19Z",
+      "side": 1,
+      "message": "m/master does appear to be a constant name. I looked over some other repo checkouts we have that use other branches as their revision.",
+      "parentUuid": "286c2b14_b6f0c80a",
+      "range": {
+        "startLine": 431,
+        "startChar": 16,
+        "endLine": 433,
+        "endChar": 30
+      },
+      "revId": "011d4f426c21a745387e62e6d67ddd73cd6ef44e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
