@@ -329,6 +329,10 @@ class XmlManifest(object):
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
+  @property
+  def IsArchive(self):
+    return self.manifestProject.config.GetBoolean('repo.archive')
+
   def _Unload(self):
     self._loaded = False
     self._projects = {}
