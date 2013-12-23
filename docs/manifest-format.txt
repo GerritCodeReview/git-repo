@@ -94,6 +94,7 @@ following DTD:
 
     <!ELEMENT include EMPTY>
     <!ATTLIST include name CDATA #REQUIRED>
+    <!ATTLIST include dir_name CDATA #IMPLIED>
   ]>
 
 A description of the elements and their attributes follows.
@@ -341,6 +342,8 @@ target manifest to include - it must be a usable manifest on its own.
 Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
 
+Attribute `dir_name`: a directory name to prefix included projects with.
+It will be added to the project's path.
 
 Local Manifests
 ===============

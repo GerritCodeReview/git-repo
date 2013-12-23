@@ -14,7 +14,6 @@
 # limitations under the License.
 
 from __future__ import print_function
-import itertools
 import os
 import re
 import sys
@@ -420,8 +419,11 @@ class XmlManifest(object):
       self.branch = b
 
       nodes = []
-      nodes.append(self._ParseManifestXml(self.manifestFile,
-                                          self.manifestProject.worktree))
+      dirNames = {}
+      n, d = self._ParseManifestXml(self.manifestFile,
+                                    self.manifestProject.worktree)
+      nodes.extend(n)
+      dirNames.update(d)
 
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
@@ -430,19 +432,23 @@ class XmlManifest(object):
           print('warning: %s is deprecated; put local manifests in `%s` instead'
                 % (LOCAL_MANIFEST_NAME, os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
                 file=sys.stderr)
-        nodes.append(self._ParseManifestXml(local, self.repodir))
+        n, d = self._ParseManifestXml(local, self.repodir)
+        nodes.extend(n)
+        dirNames.update(d)
 
       local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
       try:
         for local_file in sorted(os.listdir(local_dir)):
           if local_file.endswith('.xml'):
             local = os.path.join(local_dir, local_file)
-            nodes.append(self._ParseManifestXml(local, self.repodir))
+            n, d = self._ParseManifestXml(local, self.repodir)
+            nodes.extend(n)
+            dirNames.update(d)
       except OSError:
         pass
 
       try:
-        self._ParseManifest(nodes)
+        self._ParseManifest(nodes, dirNames)
       except ManifestParseError as e:
         # There was a problem parsing, unload ourselves in case they catch
         # this error and try again later, we will show the correct error
@@ -455,7 +461,7 @@ class XmlManifest(object):
 
       self._loaded = True
 
-  def _ParseManifestXml(self, path, include_root):
+  def _ParseManifestXml(self, path, include_root, dirName=''):
     try:
       root = xml.dom.minidom.parse(path)
     except (OSError, xml.parsers.expat.ExpatError) as e:
@@ -471,16 +477,23 @@ class XmlManifest(object):
       raise ManifestParseError("no <manifest> in %s" % (path,))
 
     nodes = []
+    dirNames = {}
     for node in manifest.childNodes:  # pylint:disable=W0631
                                       # We only get here if manifest is initialised
       if node.nodeName == 'include':
         name = self._reqatt(node, 'name')
+        dir_name = node.getAttribute('dir_name')
+        if not dir_name:  # In case dir_name is None
+          dir_name = ''
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
           raise ManifestParseError("include %s doesn't exist or isn't a file"
               % (name,))
         try:
-          nodes.extend(self._ParseManifestXml(fp, include_root))
+          n, d = self._ParseManifestXml(fp, include_root,
+                                        dirName=os.path.join(dirName, dir_name))
+          nodes.extend(n)
+          dirNames.update(d)
         # should isolate this to the exact exception, but that's
         # tricky.  actual parsing implementation may vary.
         except (KeyboardInterrupt, RuntimeError, SystemExit):
@@ -490,10 +503,11 @@ class XmlManifest(object):
               "failed parsing included manifest %s: %s", (name, e))
       else:
         nodes.append(node)
-    return nodes
+        dirNames[node] = dirName
+    return nodes, dirNames
 
-  def _ParseManifest(self, node_list):
-    for node in itertools.chain(*node_list):
+  def _ParseManifest(self, node_list, dirNames):
+    for node in node_list:
       if node.nodeName == 'remote':
         remote = self._ParseRemote(node)
         if remote:
@@ -505,7 +519,7 @@ class XmlManifest(object):
           else:
             self._remotes[remote.name] = remote
 
-    for node in itertools.chain(*node_list):
+    for node in node_list:
       if node.nodeName == 'default':
         new_default = self._ParseDefault(node)
         if self._default is None:
@@ -517,7 +531,7 @@ class XmlManifest(object):
     if self._default is None:
       self._default = _Default()
 
-    for node in itertools.chain(*node_list):
+    for node in node_list:
       if node.nodeName == 'notice':
         if self._notice is not None:
           raise ManifestParseError(
@@ -525,7 +539,7 @@ class XmlManifest(object):
               (self.manifestFile))
         self._notice = self._ParseNotice(node)
 
-    for node in itertools.chain(*node_list):
+    for node in node_list:
       if node.nodeName == 'manifest-server':
         url = self._reqatt(node, 'url')
         if self._manifest_server is not None:
@@ -549,9 +563,9 @@ class XmlManifest(object):
       for subproject in project.subprojects:
         recursively_add_projects(subproject)
 
-    for node in itertools.chain(*node_list):
+    for node in node_list:
       if node.nodeName == 'project':
-        project = self._ParseProject(node)
+        project = self._ParseProject(node, subdir=dirNames[node])
         recursively_add_projects(project)
       if node.nodeName == 'extend-project':
         name = self._reqatt(node, 'name')
@@ -749,7 +763,8 @@ class XmlManifest(object):
   def _UnjoinName(self, parent_name, name):
     return os.path.relpath(name, parent_name)
 
-  def _ParseProject(self, node, parent = None, **extra_proj_attrs):
+  def _ParseProject(self, node, parent = None, subdir = None,
+                    **extra_proj_attrs):
     """
     reads a <project> element from the manifest file
     """
@@ -774,6 +789,8 @@ class XmlManifest(object):
     path = node.getAttribute('path')
     if not path:
       path = name
+    if subdir:
+      path = os.path.join(subdir, path)
     if path.startswith('/'):
       raise ManifestParseError("project %s path cannot be absolute in %s" %
             (name, self.manifestFile))
@@ -849,13 +866,14 @@ class XmlManifest(object):
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
-        self._ParseCopyFile(project, n)
+        self._ParseCopyFile(project, n, subdir=subdir)
       if n.nodeName == 'linkfile':
-        self._ParseLinkFile(project, n)
+        self._ParseLinkFile(project, n, subdir=subdir)
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
-        project.subprojects.append(self._ParseProject(n, parent = project))
+        project.subprojects.append(self._ParseProject(n, parent = project,
+                                                      subdir = subdir))
 
     return project
 
@@ -893,17 +911,21 @@ class XmlManifest(object):
       worktree = os.path.join(parent.worktree, path).replace('\\', '/')
     return relpath, worktree, gitdir, objdir
 
-  def _ParseCopyFile(self, project, node):
+  def _ParseCopyFile(self, project, node, subdir=None):
     src = self._reqatt(node, 'src')
     dest = self._reqatt(node, 'dest')
+    if subdir:
+      dest = os.path.join(subdir, dest)
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree
       project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
 
-  def _ParseLinkFile(self, project, node):
+  def _ParseLinkFile(self, project, node, subdir=None):
     src = self._reqatt(node, 'src')
     dest = self._reqatt(node, 'dest')
+    if subdir:
+      dest = os.path.join(subdir, dest)
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree
@@ -989,10 +1011,11 @@ class GitcManifest(XmlManifest):
                                         gitc_client_name)
     self.manifestFile = os.path.join(self.gitc_client_dir, '.manifest')
 
-  def _ParseProject(self, node, parent = None):
+  def _ParseProject(self, node, parent = None, subdir = None):
     """Override _ParseProject and add support for GITC specific attributes."""
     return super(GitcManifest, self)._ParseProject(
-        node, parent=parent, old_revision=node.getAttribute('old-revision'))
+        node, parent=parent, subdir=subdir,
+        old_revision=node.getAttribute('old-revision'))
 
   def _output_manifest_project_extras(self, p, e):
     """Output GITC Specific Project attributes"""
