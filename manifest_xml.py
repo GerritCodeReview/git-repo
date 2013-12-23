@@ -351,9 +351,16 @@ class XmlManifest(object):
         b = b[len(R_HEADS):]
       self.branch = b
 
-      nodes = []
-      nodes.append(self._ParseManifestXml(self.manifestFile,
-                                          self.manifestProject.worktree))
+      def extendNodes(nodes, additionalNodes):
+        for key in additionalNodes:
+          if key in nodes:
+            nodes[key].extend(additionalNodes[key])
+          else:
+            nodes[key] = additionalNodes[key]
+
+      nodes = {}
+      extendNodes(nodes, self._ParseManifestXml(self.manifestFile,
+                                                self.manifestProject.worktree))
 
       local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
       if os.path.exists(local):
@@ -362,14 +369,14 @@ class XmlManifest(object):
           print('warning: %s is deprecated; put local manifests in `%s` instead'
                 % (LOCAL_MANIFEST_NAME, os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
                 file=sys.stderr)
-        nodes.append(self._ParseManifestXml(local, self.repodir))
+        extendNodes(nodes, self._ParseManifestXml(local, self.repodir))
 
       local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
       try:
         for local_file in sorted(os.listdir(local_dir)):
           if local_file.endswith('.xml'):
             local = os.path.join(local_dir, local_file)
-            nodes.append(self._ParseManifestXml(local, self.repodir))
+            extendNodes(nodes, self._ParseManifestXml(local, self.repodir))
       except OSError:
         pass
 
@@ -402,17 +409,28 @@ class XmlManifest(object):
     else:
       raise ManifestParseError("no <manifest> in %s" % (path,))
 
-    nodes = []
+    nodes = {'':[]}
     for node in manifest.childNodes:  # pylint:disable=W0631
                                       # We only get here if manifest is initialised
       if node.nodeName == 'include':
         name = self._reqatt(node, 'name')
+        dirName = node.getAttribute('dir_name')
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
           raise ManifestParseError("include %s doesn't exist or isn't a file"
               % (name,))
         try:
-          nodes.extend(self._ParseManifestXml(fp, include_root))
+          includedNodes = self._ParseManifestXml(fp, include_root)
+
+          for key in includedNodes:
+            if dirName:
+              newKey = os.path.join(dirName, key)
+            else:
+              newKey = key
+            if newKey in nodes:
+              nodes[newKey].extend(includedNodes[key])
+            else:
+              nodes[newKey] = includedNodes[key]
         # should isolate this to the exact exception, but that's
         # tricky.  actual parsing implementation may vary.
         except (KeyboardInterrupt, RuntimeError, SystemExit):
@@ -421,97 +439,100 @@ class XmlManifest(object):
           raise ManifestParseError(
               "failed parsing included manifest %s: %s", (name, e))
       else:
-        nodes.append(node)
+        nodes[''].append(node)
     return nodes
 
-  def _ParseManifest(self, node_list):
-    for node in itertools.chain(*node_list):
-      if node.nodeName == 'remote':
-        remote = self._ParseRemote(node)
-        if remote:
-          if remote.name in self._remotes:
-            if remote != self._remotes[remote.name]:
-              raise ManifestParseError(
-                  'remote %s already exists with different attributes' %
-                  (remote.name))
-          else:
-            self._remotes[remote.name] = remote
+  def _ParseManifest(self, nodelist):
+    for nodeKey in nodelist:
+      node_list = nodelist[nodeKey]
 
-    for node in itertools.chain(*node_list):
-      if node.nodeName == 'default':
-        new_default = self._ParseDefault(node)
-        if self._default is None:
-          self._default = new_default
-        elif new_default != self._default:
-          raise ManifestParseError('duplicate default in %s' %
-                                   (self.manifestFile))
+      for node in itertools.chain(node_list):
+        if node.nodeName == 'remote':
+          remote = self._ParseRemote(node)
+          if remote:
+            if remote.name in self._remotes:
+              if remote != self._remotes[remote.name]:
+                raise ManifestParseError(
+                    'remote %s already exists with different attributes' %
+                    (remote.name))
+            else:
+              self._remotes[remote.name] = remote
 
-    if self._default is None:
-      self._default = _Default()
+      for node in itertools.chain(node_list):
+        if node.nodeName == 'default':
+          new_default = self._ParseDefault(node)
+          if self._default is None:
+            self._default = new_default
+          elif new_default != self._default:
+            raise ManifestParseError('duplicate default in %s' %
+                                     (self.manifestFile))
 
-    for node in itertools.chain(*node_list):
-      if node.nodeName == 'notice':
-        if self._notice is not None:
+      if self._default is None:
+        self._default = _Default()
+
+      for node in itertools.chain(node_list):
+        if node.nodeName == 'notice':
+          if self._notice is not None:
+            raise ManifestParseError(
+                'duplicate notice in %s' %
+                (self.manifestFile))
+          self._notice = self._ParseNotice(node)
+
+      for node in itertools.chain(node_list):
+        if node.nodeName == 'manifest-server':
+          url = self._reqatt(node, 'url')
+          if self._manifest_server is not None:
+            raise ManifestParseError(
+                'duplicate manifest-server in %s' %
+                (self.manifestFile))
+          self._manifest_server = url
+
+      def recursively_add_projects(project):
+        if self._projects.get(project.name):
           raise ManifestParseError(
-              'duplicate notice in %s' %
-              (self.manifestFile))
-        self._notice = self._ParseNotice(node)
+              'duplicate project %s in %s' %
+              (project.name, self.manifestFile))
+        self._projects[project.name] = project
+        for subproject in project.subprojects:
+          recursively_add_projects(subproject)
 
-    for node in itertools.chain(*node_list):
-      if node.nodeName == 'manifest-server':
-        url = self._reqatt(node, 'url')
-        if self._manifest_server is not None:
-          raise ManifestParseError(
-              'duplicate manifest-server in %s' %
-              (self.manifestFile))
-        self._manifest_server = url
+      for node in itertools.chain(node_list):
+        if node.nodeName == 'project':
+          project = self._ParseProject(node, subdir = nodeKey)
+          recursively_add_projects(project)
+        if node.nodeName == 'repo-hooks':
+          # Get the name of the project and the (space-separated) list of enabled.
+          repo_hooks_project = self._reqatt(node, 'in-project')
+          enabled_repo_hooks = self._reqatt(node, 'enabled-list').split()
 
-    def recursively_add_projects(project):
-      if self._projects.get(project.name):
-        raise ManifestParseError(
-            'duplicate project %s in %s' %
-            (project.name, self.manifestFile))
-      self._projects[project.name] = project
-      for subproject in project.subprojects:
-        recursively_add_projects(subproject)
+          # Only one project can be the hooks project
+          if self._repo_hooks_project is not None:
+            raise ManifestParseError(
+                'duplicate repo-hooks in %s' %
+                (self.manifestFile))
 
-    for node in itertools.chain(*node_list):
-      if node.nodeName == 'project':
-        project = self._ParseProject(node)
-        recursively_add_projects(project)
-      if node.nodeName == 'repo-hooks':
-        # Get the name of the project and the (space-separated) list of enabled.
-        repo_hooks_project = self._reqatt(node, 'in-project')
-        enabled_repo_hooks = self._reqatt(node, 'enabled-list').split()
+          # Store a reference to the Project.
+          try:
+            self._repo_hooks_project = self._projects[repo_hooks_project]
+          except KeyError:
+            raise ManifestParseError(
+                'project %s not found for repo-hooks' %
+                (repo_hooks_project))
 
-        # Only one project can be the hooks project
-        if self._repo_hooks_project is not None:
-          raise ManifestParseError(
-              'duplicate repo-hooks in %s' %
-              (self.manifestFile))
+          # Store the enabled hooks in the Project object.
+          self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
+        if node.nodeName == 'remove-project':
+          name = self._reqatt(node, 'name')
+          try:
+            del self._projects[name]
+          except KeyError:
+            raise ManifestParseError('remove-project element specifies non-existent '
+                                     'project: %s' % name)
 
-        # Store a reference to the Project.
-        try:
-          self._repo_hooks_project = self._projects[repo_hooks_project]
-        except KeyError:
-          raise ManifestParseError(
-              'project %s not found for repo-hooks' %
-              (repo_hooks_project))
-
-        # Store the enabled hooks in the Project object.
-        self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
-      if node.nodeName == 'remove-project':
-        name = self._reqatt(node, 'name')
-        try:
-          del self._projects[name]
-        except KeyError:
-          raise ManifestParseError('remove-project element specifies non-existent '
-                                   'project: %s' % name)
-
-        # If the manifest removes the hooks project, treat it as if it deleted
-        # the repo-hooks element too.
-        if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-          self._repo_hooks_project = None
+          # If the manifest removes the hooks project, treat it as if it deleted
+          # the repo-hooks element too.
+          if self._repo_hooks_project and (self._repo_hooks_project.name == name):
+            self._repo_hooks_project = None
 
 
   def _AddMetaProjectMirror(self, m):
@@ -641,7 +662,7 @@ class XmlManifest(object):
   def _UnjoinName(self, parent_name, name):
     return os.path.relpath(name, parent_name)
 
-  def _ParseProject(self, node, parent = None):
+  def _ParseProject(self, node, parent = None, subdir = None):
     """
     reads a <project> element from the manifest file
     """
@@ -666,6 +687,8 @@ class XmlManifest(object):
     path = node.getAttribute('path')
     if not path:
       path = name
+    if subdir:
+      path = os.path.join(subdir, path)
     if path.startswith('/'):
       raise ManifestParseError("project %s path cannot be absolute in %s" %
             (name, self.manifestFile))
@@ -738,11 +761,12 @@ class XmlManifest(object):
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
-        self._ParseCopyFile(project, n)
+        self._ParseCopyFile(project, n, subdir = subdir)
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
-        project.subprojects.append(self._ParseProject(n, parent = project))
+        project.subprojects.append(self._ParseProject(n, parent = project,
+                                                      subdir = subdir))
 
     return project
 
@@ -774,9 +798,13 @@ class XmlManifest(object):
       worktree = os.path.join(parent.worktree, path).replace('\\', '/')
     return relpath, worktree, gitdir
 
-  def _ParseCopyFile(self, project, node):
+  def _ParseCopyFile(self, project, node, subdir = None):
     src = self._reqatt(node, 'src')
     dest = self._reqatt(node, 'dest')
+
+    if subdir:
+      dest = os.path.join(subdir, dest)
+
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree
