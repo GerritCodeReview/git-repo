@@ -110,6 +110,7 @@ REPO_MAIN = S_repo + '/main.py' # main script
 MIN_PYTHON_VERSION = (2, 6)     # minimum supported python version
 
 
+import errno
 import optparse
 import os
 import re
@@ -243,10 +244,10 @@ def _Init(args):
     _print("fatal: invalid branch name '%s'" % branch, file=sys.stderr)
     raise CloneFailure()
 
-  if not os.path.isdir(repodir):
-    try:
-      os.mkdir(repodir)
-    except OSError as e:
+  try:
+    os.mkdir(repodir)
+  except OSError as e:
+    if e.errno != errno.EEXIST:
       _print('fatal: cannot make %s directory: %s'
              % (repodir, e.strerror), file=sys.stderr)
       # Don't raise CloneFailure; that would delete the
@@ -325,18 +326,18 @@ def NeedSetupGnuPG():
 
 
 def SetupGnuPG(quiet):
-  if not os.path.isdir(home_dot_repo):
-    try:
-      os.mkdir(home_dot_repo)
-    except OSError as e:
+  try:
+    os.mkdir(home_dot_repo)
+  except OSError as e:
+    if e.errno != errno.EEXIST:
       _print('fatal: cannot make %s directory: %s'
              % (home_dot_repo, e.strerror), file=sys.stderr)
       sys.exit(1)
 
-  if not os.path.isdir(gpg_dir):
-    try:
-      os.mkdir(gpg_dir, stat.S_IRWXU)
-    except OSError as e:
+  try:
+    os.mkdir(gpg_dir, stat.S_IRWXU)
+  except OSError as e:
+    if e.errno != errno.EEXIST:
       _print('fatal: cannot make %s directory: %s' % (gpg_dir, e.strerror),
              file=sys.stderr)
       sys.exit(1)
