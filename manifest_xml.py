@@ -32,7 +32,7 @@ else:
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 from project import RemoteSpec, Project, MetaProject
-from error import ManifestParseError
+from error import ManifestParseError, ManifestInvalidRevisionError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
@@ -845,3 +845,40 @@ class XmlManifest(object):
       raise ManifestParseError("no %s in <%s> within %s" %
             (attname, node.nodeName, self.manifestFile))
     return v
+
+  def projectsDiff(self, manifest):
+    """return the projects differences between two manifests.
+
+    The diff will be from self to given manifest.
+
+    """
+    fromProjects = self.paths
+    toProjects = manifest.paths
+
+    fromKeys = fromProjects.keys()
+    fromKeys.sort()
+    toKeys = toProjects.keys()
+    toKeys.sort()
+
+    diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
+
+    for proj in fromKeys:
+      if not proj in toKeys:
+        diff['removed'].append(fromProjects[proj])
+      else:
+        fromProj = fromProjects[proj]
+        toProj = toProjects[proj]
+        try:
+          fromRevId = fromProj.GetCommitRevisionId()
+          toRevId = toProj.GetCommitRevisionId()
+        except ManifestInvalidRevisionError:
+          diff['unreachable'].append((fromProj, toProj))
+        else:
+          if fromRevId != toRevId:
+            diff['changed'].append((fromProj, toProj))
+        toKeys.remove(proj)
+
+    for proj in toKeys:
+      diff['added'].append(toProjects[proj])
+
+    return diff
