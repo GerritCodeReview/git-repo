@@ -1096,6 +1096,23 @@ class Project(object):
     for copyfile in self.copyfiles:
       copyfile._Copy()
 
+  def GetCommitRevisionId(self):
+    """Get revisionId of a commit.
+
+    Use this method instead of GetRevisionId to get the id of the commit rather
+    than the id of the current git object (for exemple, a tag)
+
+    """
+    if self.revisionId:
+      return self.revisionId
+
+    try:
+      return self.bare_git.rev_list(self.revisionExpr, '-1')
+    except GitError:
+      raise ManifestInvalidRevisionError(
+        'revision %s in %s not found' % (self.revisionExpr,
+                                         self.name))
+
   def GetRevisionId(self, all_refs=None):
     if self.revisionId:
       return self.revisionId
@@ -2137,6 +2154,35 @@ class Project(object):
   @property
   def _allrefs(self):
     return self.bare_ref.all
+
+  def _getLogs(self, rev1, rev2, oneline=False, color=True):
+    """Get logs between two revisions of this project."""
+    comp = '..'
+    if rev1:
+      revs = [rev1]
+      if rev2:
+        revs.extend([comp, rev2])
+      cmd = ['log', ''.join(revs)]
+      out = DiffColoring(self.config)
+      if out.is_on and color:
+        cmd.append('--color')
+      if oneline:
+        cmd.append('--oneline')
+
+      log = GitCommand(self, cmd, capture_stdout=True, capture_stderr=True)
+      if log.Wait() == 0:
+        return log.stdout
+    return None
+
+  def getAddedAndRemovedLogs(self, toProject, oneline=False, color=True):
+    """Get the list of logs from this revision to given revisionId"""
+    logs = {}
+    selfId = self.GetRevisionId(self._allrefs)
+    toId = toProject.GetRevisionId(toProject._allrefs)
+
+    logs['added'] = self._getLogs(selfId, toId, oneline=oneline, color=color)
+    logs['removed'] = self._getLogs(toId, selfId, oneline=oneline, color=color)
+    return logs
 
   class _GitGetByExec(object):
     def __init__(self, project, bare):
