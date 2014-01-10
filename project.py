@@ -488,6 +488,7 @@ class Project(object):
                name,
                remote,
                gitdir,
+               objdir,
                worktree,
                relpath,
                revisionExpr,
@@ -508,6 +509,7 @@ class Project(object):
       name: The `name` attribute of manifest.xml's project element.
       remote: RemoteSpec object specifying its remote's properties.
       gitdir: Absolute path of git directory.
+      objdir: Absolute path of directory to store git objects.
       worktree: Absolute path of git working tree.
       relpath: Relative path of git working tree to repo's top directory.
       revisionExpr: The `revision` attribute of manifest.xml's project element.
@@ -526,6 +528,7 @@ class Project(object):
     self.name = name
     self.remote = remote
     self.gitdir = gitdir.replace('\\', '/')
+    self.objdir = objdir.replace('\\', '/')
     if worktree:
       self.worktree = worktree.replace('\\', '/')
     else:
@@ -558,11 +561,12 @@ class Project(object):
                     defaults =  self.manifest.globalConfig)
 
     if self.worktree:
-      self.work_git = self._GitGetByExec(self, bare=False)
+      self.work_git = self._GitGetByExec(self, bare=False, gitdir=gitdir)
     else:
       self.work_git = None
-    self.bare_git = self._GitGetByExec(self, bare=True)
+    self.bare_git = self._GitGetByExec(self, bare=True, gitdir=gitdir)
     self.bare_ref = GitRefs(gitdir)
+    self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=objdir)
     self.dest_branch = dest_branch
 
     # This will be filled in if a project is later identified to be the
@@ -1117,6 +1121,7 @@ class Project(object):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
+    self._InitWorkTree()
     all_refs = self.bare_ref.all
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
@@ -1125,7 +1130,6 @@ class Project(object):
       self._FastForward(revid)
       self._CopyFiles()
 
-    self._InitWorkTree()
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
       branch = head[len(R_HEADS):]
@@ -1592,11 +1596,13 @@ class Project(object):
       return result
     for rev, path, url in self._GetSubmodules():
       name = self.manifest.GetSubprojectName(self, path)
-      project = self.manifest.projects.get(name)
+      relpath, worktree, gitdir, objdir = \
+          self.manifest.GetSubprojectPaths(self, name, path)
+      project = self.manifest.paths.get(relpath)
       if project:
         result.extend(project.GetDerivedSubprojects())
         continue
-      relpath, worktree, gitdir = self.manifest.GetSubprojectPaths(self, path)
+
       remote = RemoteSpec(self.remote.name,
                           url = url,
                           review = self.remote.review)
@@ -1604,6 +1610,7 @@ class Project(object):
                            name = name,
                            remote = remote,
                            gitdir = gitdir,
+                           objdir = objdir,
                            worktree = worktree,
                            relpath = relpath,
                            revisionExpr = self.revisionExpr,
@@ -1966,8 +1973,17 @@ class Project(object):
 
   def _InitGitDir(self, mirror_git=None):
     if not os.path.exists(self.gitdir):
-      os.makedirs(self.gitdir)
-      self.bare_git.init()
+
+      # Initialize the bare repository, which contains all of the objects.
+      if not os.path.exists(self.objdir):
+        os.makedirs(self.objdir)
+        self.bare_objdir.init()
+
+      # If we have a separate directory to hold refs, initialize it as well.
+      if self.objdir != self.gitdir:
+        os.makedirs(self.gitdir)
+        self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
+                              copy_all=True)
 
       mp = self.manifest.manifestProject
       ref_dir = mp.config.GetString('repo.reference') or ''
@@ -2083,33 +2099,61 @@ class Project(object):
         msg = 'manifest set to %s' % self.revisionExpr
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
+  def _ReferenceGitDir(self, gitdir, dotgit, share_refs, copy_all):
+    """Update |dotgit| to reference |gitdir|, using symlinks where possible.
+
+    Args:
+      gitdir: The bare git repository. Must already be initialized.
+      dotgit: The repository you would like to initialize.
+      share_refs: If true, |dotgit| will store its refs under |gitdir|.
+          Only one work tree can store refs under a given |gitdir|.
+      copy_all: If true, copy all remaining files from |gitdir| -> |dotgit|.
+          This saves you the effort of initializing |dotgit| yourself.
+    """
+    # These objects can be shared between several working trees.
+    symlink_files = ['description', 'info']
+    symlink_dirs = ['hooks', 'objects', 'rr-cache', 'svn']
+    if share_refs:
+      # These objects can only be used by a single working tree.
+      symlink_files += ['config', 'packed-refs']
+      symlink_dirs += ['logs', 'refs']
+    to_symlink = symlink_files + symlink_dirs
+
+    to_copy = []
+    if copy_all:
+      to_copy = os.listdir(gitdir)
+
+    for name in set(to_copy).union(to_symlink):
+      try:
+        src = os.path.realpath(os.path.join(gitdir, name))
+        dst = os.path.realpath(os.path.join(dotgit, name))
+
+        if os.path.lexists(dst) and not os.path.islink(dst):
+          raise GitError('cannot overwrite a local work tree')
+
+        # If the source dir doesn't exist, create an empty dir.
+        if name in symlink_dirs and not os.path.lexists(src):
+          os.makedirs(src)
+
+        if name in to_symlink:
+          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
+        elif copy_all and not os.path.islink(dst):
+          if os.path.isdir(src):
+            shutil.copytree(src, dst)
+          elif os.path.isfile(src):
+            shutil.copy(src, dst)
+      except OSError as e:
+        if e.errno == errno.EPERM:
+          raise GitError('filesystem must support symlinks')
+        else:
+          raise
+
   def _InitWorkTree(self):
     dotgit = os.path.join(self.worktree, '.git')
     if not os.path.exists(dotgit):
       os.makedirs(dotgit)
-
-      for name in ['config',
-                   'description',
-                   'hooks',
-                   'info',
-                   'logs',
-                   'objects',
-                   'packed-refs',
-                   'refs',
-                   'rr-cache',
-                   'svn']:
-        try:
-          src = os.path.join(self.gitdir, name)
-          dst = os.path.join(dotgit, name)
-          if os.path.islink(dst) or not os.path.exists(dst):
-            os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
-          else:
-            raise GitError('cannot overwrite a local work tree')
-        except OSError as e:
-          if e.errno == errno.EPERM:
-            raise GitError('filesystem must support symlinks')
-          else:
-            raise
+      self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
+                            copy_all=False)
 
       _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
 
@@ -2119,14 +2163,10 @@ class Project(object):
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError("cannot initialize work tree")
 
-      rr_cache = os.path.join(self.gitdir, 'rr-cache')
-      if not os.path.exists(rr_cache):
-        os.makedirs(rr_cache)
-
       self._CopyFiles()
 
   def _gitdir_path(self, path):
-    return os.path.join(self.gitdir, path)
+    return os.path.realpath(os.path.join(self.gitdir, path))
 
   def _revlist(self, *args, **kw):
     a = []
@@ -2139,9 +2179,10 @@ class Project(object):
     return self.bare_ref.all
 
   class _GitGetByExec(object):
-    def __init__(self, project, bare):
+    def __init__(self, project, bare, gitdir):
       self._project = project
       self._bare = bare
+      self._gitdir = gitdir
 
     def LsOthers(self):
       p = GitCommand(self._project,
@@ -2150,6 +2191,7 @@ class Project(object):
                       '--others',
                       '--exclude-standard'],
                      bare = False,
+                     gitdir=self._gitdir,
                      capture_stdout = True,
                      capture_stderr = True)
       if p.Wait() == 0:
@@ -2165,6 +2207,7 @@ class Project(object):
       cmd.extend(args)
       p = GitCommand(self._project,
                      cmd,
+                     gitdir=self._gitdir,
                      bare = False,
                      capture_stdout = True,
                      capture_stderr = True)
@@ -2274,6 +2317,7 @@ class Project(object):
       p = GitCommand(self._project,
                      cmdv,
                      bare = self._bare,
+                     gitdir=self._gitdir,
                      capture_stdout = True,
                      capture_stderr = True)
       r = []
@@ -2326,6 +2370,7 @@ class Project(object):
         p = GitCommand(self._project,
                        cmdv,
                        bare = self._bare,
+                       gitdir=self._gitdir,
                        capture_stdout = True,
                        capture_stderr = True)
         if p.Wait() != 0:
@@ -2459,6 +2504,7 @@ class MetaProject(Project):
                      manifest = manifest,
                      name = name,
                      gitdir = gitdir,
+                     objdir = gitdir,
                      worktree = worktree,
                      remote = RemoteSpec('origin'),
                      relpath = '.repo/%s' % name,

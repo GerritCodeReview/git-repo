@@ -215,8 +215,9 @@ class XmlManifest(object):
       root.appendChild(doc.createTextNode(''))
 
     def output_projects(parent, parent_node, projects):
-      for p in projects:
-        output_project(parent, parent_node, self.projects[p])
+      for project_name in projects:
+        for project in self._projects[project_name]:
+          output_project(parent, parent_node, project)
 
     def output_project(parent, parent_node, p):
       if not p.MatchesGroups(groups):
@@ -277,13 +278,11 @@ class XmlManifest(object):
         e.setAttribute('sync-s', 'true')
 
       if p.subprojects:
-        sort_projects = list(sorted([subp.name for subp in p.subprojects]))
-        output_projects(p, e, sort_projects)
+        subprojects = set(subp.name for subp in p.subprojects)
+        output_projects(p, e, list(sorted(subprojects)))
 
-    sort_projects = list(sorted([key for key, value in self.projects.items()
-                     if not value.parent]))
-    sort_projects.sort()
-    output_projects(None, root, sort_projects)
+    projects = set(p.name for p in self._paths.values() if not p.parent)
+    output_projects(None, root, list(sorted(projects)))
 
     if self._repo_hooks_project:
       root.appendChild(doc.createTextNode(''))
@@ -296,9 +295,14 @@ class XmlManifest(object):
     doc.writexml(fd, '', '  ', '\n', 'UTF-8')
 
   @property
+  def paths(self):
+    self._Load()
+    return self._paths
+
+  @property
   def projects(self):
     self._Load()
-    return self._projects
+    return self._paths.values()
 
   @property
   def remotes(self):
@@ -336,6 +340,7 @@ class XmlManifest(object):
   def _Unload(self):
     self._loaded = False
     self._projects = {}
+    self._paths = {}
     self._remotes = {}
     self._default = None
     self._repo_hooks_project = None
@@ -467,11 +472,17 @@ class XmlManifest(object):
         self._manifest_server = url
 
     def recursively_add_projects(project):
-      if self._projects.get(project.name):
+      projects = self._projects.setdefault(project.name, [])
+      if project.relpath is None:
         raise ManifestParseError(
-            'duplicate project %s in %s' %
+            'missing path for %s in %s' %
             (project.name, self.manifestFile))
-      self._projects[project.name] = project
+      if project.relpath in self._paths:
+        raise ManifestParseError(
+            'duplicate path %s in %s' %
+            (project.relpath, self.manifestFile))
+      self._paths[project.relpath] = project
+      projects.append(project)
       for subproject in project.subprojects:
         recursively_add_projects(subproject)
 
@@ -492,11 +503,17 @@ class XmlManifest(object):
 
         # Store a reference to the Project.
         try:
-          self._repo_hooks_project = self._projects[repo_hooks_project]
+          repo_hooks_projects = self._projects[repo_hooks_project]
         except KeyError:
           raise ManifestParseError(
               'project %s not found for repo-hooks' %
               (repo_hooks_project))
+
+        if len(repo_hooks_projects) != 1:
+          raise ManifestParseError(
+              'internal error parsing repo-hooks in %s' %
+              (self.manifestFile))
+        self._repo_hooks_project = repo_hooks_projects[0]
 
         # Store the enabled hooks in the Project object.
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
@@ -544,11 +561,12 @@ class XmlManifest(object):
                         name = name,
                         remote = remote.ToRemoteSpec(name),
                         gitdir = gitdir,
+                        objdir = gitdir,
                         worktree = None,
                         relpath = None,
                         revisionExpr = m.revisionExpr,
                         revisionId = None)
-      self._projects[project.name] = project
+      self._projects[project.name] = [project]
 
   def _ParseRemote(self, node):
     """
@@ -708,9 +726,10 @@ class XmlManifest(object):
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     if parent is None:
-      relpath, worktree, gitdir = self.GetProjectPaths(name, path)
+      relpath, worktree, gitdir, objdir = self.GetProjectPaths(name, path)
     else:
-      relpath, worktree, gitdir = self.GetSubprojectPaths(parent, path)
+      relpath, worktree, gitdir, objdir = \
+          self.GetSubprojectPaths(parent, name, path)
 
     default_groups = ['all', 'name:%s' % name, 'path:%s' % relpath]
     groups.extend(set(default_groups).difference(groups))
@@ -723,6 +742,7 @@ class XmlManifest(object):
                       name = name,
                       remote = remote.ToRemoteSpec(name),
                       gitdir = gitdir,
+                      objdir = objdir,
                       worktree = worktree,
                       relpath = relpath,
                       revisionExpr = revisionExpr,
@@ -751,10 +771,15 @@ class XmlManifest(object):
     if self.IsMirror:
       worktree = None
       gitdir = os.path.join(self.topdir, '%s.git' % name)
+      objdir = gitdir
     else:
       worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects', '%s.git' % path)
-    return relpath, worktree, gitdir
+      objdir = os.path.join(self.repodir, 'project-objects', '%s.git' % name)
+    return relpath, worktree, gitdir, objdir
+
+  def GetProjectsWithName(self, name):
+    return self._projects.get(name, [])
 
   def GetSubprojectName(self, parent, submodule_path):
     return os.path.join(parent.name, submodule_path)
@@ -765,14 +790,15 @@ class XmlManifest(object):
   def _UnjoinRelpath(self, parent_relpath, relpath):
     return os.path.relpath(relpath, parent_relpath)
 
-  def GetSubprojectPaths(self, parent, path):
+  def GetSubprojectPaths(self, parent, name, path):
     relpath = self._JoinRelpath(parent.relpath, path)
     gitdir = os.path.join(parent.gitdir, 'subprojects', '%s.git' % path)
+    objdir = os.path.join(parent.gitdir, 'subproject-objects', '%s.git' % name)
     if self.IsMirror:
       worktree = None
     else:
       worktree = os.path.join(parent.worktree, path).replace('\\', '/')
-    return relpath, worktree, gitdir
+    return relpath, worktree, gitdir, objdir
 
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
