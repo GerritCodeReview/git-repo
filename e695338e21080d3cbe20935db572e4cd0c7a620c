@@ -22,6 +22,30 @@
       "revId": "e695338e21080d3cbe20935db572e4cd0c7a620c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2d027d8d_a6d32645",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-01-10T19:50:10Z",
+      "side": 0,
+      "message": "It is still printed. See _FetchHelper above.",
+      "parentUuid": "2d027d8d_8655ca11",
+      "range": {
+        "startLine": 322,
+        "startChar": 10,
+        "endLine": 324,
+        "endChar": 78
+      },
+      "revId": "e695338e21080d3cbe20935db572e4cd0c7a620c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
