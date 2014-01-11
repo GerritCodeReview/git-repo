@@ -22,6 +22,30 @@
       "revId": "db70cfa97945bca418d0b5c0e81f8b345bab8a87",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0dff79b9_c5ce1a9f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-11T12:45:20Z",
+      "side": 1,
+      "message": "Ah, I missed that.  Thanks.",
+      "parentUuid": "2d027d8d_86d82a60",
+      "range": {
+        "startLine": 286,
+        "startChar": 19,
+        "endLine": 286,
+        "endChar": 59
+      },
+      "revId": "db70cfa97945bca418d0b5c0e81f8b345bab8a87",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
