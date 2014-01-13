@@ -283,6 +283,10 @@ class XmlManifest(object):
         subprojects = set(subp.name for subp in p.subprojects)
         output_projects(p, e, list(sorted(subprojects)))
 
+      for c in p.comments:
+        cc = doc.createComment(c)
+        e.appendChild(cc)
+
     projects = set(p.name for p in self._paths.values() if not p.parent)
     output_projects(None, root, list(sorted(projects)))
 
@@ -769,6 +773,8 @@ class XmlManifest(object):
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
         project.subprojects.append(self._ParseProject(n, parent = project))
+      if n.nodeType == n.COMMENT_NODE:
+        project.AddComment(n.nodeValue)
 
     return project
 
