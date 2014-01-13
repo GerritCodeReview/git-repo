@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d027d8d_062f9a72",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1107,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-13T13:32:21Z",
+      "side": 1,
+      "message": "example",
+      "range": {
+        "startLine": 1107,
+        "startChar": 47,
+        "endLine": 1107,
+        "endChar": 54
+      },
+      "revId": "24d3c17cf19504f8abef9c89727f3d533ec10e23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2d027d8d_e63c7eab",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-13T13:32:21Z",
+      "side": 1,
+      "message": "example",
+      "range": {
+        "startLine": 28,
+        "startChar": 43,
+        "endLine": 28,
+        "endChar": 50
+      },
+      "revId": "24d3c17cf19504f8abef9c89727f3d533ec10e23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2d027d8d_c6418229",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-13T13:32:21Z",
+      "side": 1,
+      "message": "Add a blank line after this sentence.",
+      "revId": "24d3c17cf19504f8abef9c89727f3d533ec10e23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
