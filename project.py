@@ -1078,6 +1078,13 @@ class Project(object):
       elif self.manifest.default.sync_c:
         current_branch_only = True
 
+    is_sha1 = False
+    if ID_RE.match(self.revisionExpr) is not None:
+      is_sha1 = True
+    if is_sha1 and self._CheckForSha1():
+      # Don't need to fetch since we already have this revision
+      return True
+
     if not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                              current_branch_only=current_branch_only,
                              no_tags=no_tags):
@@ -1627,6 +1634,15 @@ class Project(object):
 
 
 ## Direct Git Commands ##
+  def _CheckForSha1(self):
+    try:
+      # if revision (sha or tag) is not present then following function
+      # throws an error.
+      self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
+      return True
+    except GitError:
+      # There is no such persistent revision. We have to fetch it.
+      return False
 
   def _FetchArchive(self, tarpath, cwd=None):
     cmd = ['archive', '-v', '-o', tarpath]
@@ -1651,16 +1667,6 @@ class Project(object):
     is_sha1 = False
     tag_name = None
 
-    def CheckForSha1():
-      try:
-        # if revision (sha or tag) is not present then following function
-        # throws an error.
-        self.bare_git.rev_parse('--verify', '%s^0' % self.revisionExpr)
-        return True
-      except GitError:
-        # There is no such persistent revision. We have to fetch it.
-        return False
-
     if self.clone_depth:
       depth = self.clone_depth
     else:
@@ -1676,7 +1682,7 @@ class Project(object):
         tag_name = self.revisionExpr[len(R_TAGS):]
 
       if is_sha1 or tag_name is not None:
-        if CheckForSha1():
+        if self._CheckForSha1():
           return True
       if is_sha1 and (not self.upstream or ID_RE.match(self.upstream)):
         current_branch_only = False
@@ -1785,7 +1791,7 @@ class Project(object):
       # We just synced the upstream given branch; verify we
       # got what we wanted, else trigger a second run of all
       # refs.
-      if not CheckForSha1():
+      if not self._CheckForSha1():
         return self._RemoteFetch(name=name, current_branch_only=False,
                                  initial=False, quiet=quiet, alt_dir=alt_dir)
 
