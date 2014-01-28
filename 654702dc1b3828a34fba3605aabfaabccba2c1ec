@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52b3d2f9_1750b426",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-28T06:34:22Z",
+      "side": 1,
+      "message": "This does not work as expected.  The remote (for example \u0027origin/\u0027 is not prefixed on the branch name and thus all the projects end up under the \u0027unreachable\u0027 section.\n\nIf we change these to use `GetRevisionId()` instead, it works fine.",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 868,
+        "endChar": 48
+      },
+      "revId": "654702dc1b3828a34fba3605aabfaabccba2c1ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52b3d2f9_3755b817",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-28T06:34:22Z",
+      "side": 1,
+      "message": "Given the comment in project.py this method is probably unnecessary.",
+      "range": {
+        "startLine": 1103,
+        "startChar": 0,
+        "endLine": 1118,
+        "endChar": 52
+      },
+      "revId": "654702dc1b3828a34fba3605aabfaabccba2c1ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52b3d2f9_574a2c76",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-28T06:34:22Z",
+      "side": 1,
+      "message": "It should be mentioned that it assumes that the xml files are in the .repo/manifests folder.\n\nBut it would actually be better if the user could specify the location of the manifests.",
+      "range": {
+        "startLine": 38,
+        "startChar": 64,
+        "endLine": 39,
+        "endChar": 9
+      },
+      "revId": "654702dc1b3828a34fba3605aabfaabccba2c1ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72ae1695_b8129971",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-28T06:34:22Z",
+      "side": 1,
+      "message": "starts",
+      "range": {
+        "startLine": 58,
+        "startChar": 68,
+        "endLine": 58,
+        "endChar": 73
+      },
+      "revId": "654702dc1b3828a34fba3605aabfaabccba2c1ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
