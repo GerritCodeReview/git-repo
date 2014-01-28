@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52b3d2f9_d70f1c48",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-28T04:42:20Z",
+      "side": 1,
+      "message": "Use backticks here instead of regular single quote marks.",
+      "range": {
+        "startLine": 293,
+        "startChar": 10,
+        "endLine": 293,
+        "endChar": 11
+      },
+      "revId": "9bad99f2bc070939f8ec82f63eae889aa9d80ec6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
