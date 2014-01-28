@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "12c5da5c_3555b017",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-01-28T10:50:12Z",
+      "side": 1,
+      "message": "GetRevisionId() works fine except for (annotated) tags. If two tags are on the same commit, GetRevisionId() will return the tags sha1 which will then be different. In that case projects may appear under the \u0027changed\u0027 section when there are no changes.\n\nI\u0027m fixing GetCommitRevisionId() to use GetRevisionId() when not on a tag.",
+      "parentUuid": "52b3d2f9_1750b426",
+      "range": {
+        "startLine": 867,
+        "startChar": 0,
+        "endLine": 868,
+        "endChar": 48
+      },
+      "revId": "654702dc1b3828a34fba3605aabfaabccba2c1ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52b3d2f9_3755b817",
         "filename": "project.py",
         "patchSetId": 4
@@ -59,6 +83,30 @@
       "writtenOn": "2014-01-28T06:34:22Z",
       "side": 1,
       "message": "It should be mentioned that it assumes that the xml files are in the .repo/manifests folder.\n\nBut it would actually be better if the user could specify the location of the manifests.",
+      "range": {
+        "startLine": 38,
+        "startChar": 64,
+        "endLine": 39,
+        "endChar": 9
+      },
+      "revId": "654702dc1b3828a34fba3605aabfaabccba2c1ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2c12653_9443e45d",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-01-28T10:50:12Z",
+      "side": 1,
+      "message": "In fact, user can already specify the location of the manifests. The manifests args can be either an absolute or a relative path.\nIf relative, then it will indeed start from .repo/manifests forder. This is the default behavior (also used in repo init -m for example). I can make it start from top directory, but then all commands won\u0027t behave the same.\n\nI\u0027m completing the description for now.",
+      "parentUuid": "52b3d2f9_574a2c76",
       "range": {
         "startLine": 38,
         "startChar": 64,
