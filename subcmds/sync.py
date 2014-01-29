@@ -702,7 +702,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = WrapperModule()
   if wrapper.NeedSetupGnuPG():
     wrapper.SetupGnuPG(quiet)
-  for project in manifest.projects.values():
+  for project in manifest.projects:
     if project.Exists:
       project.PostRepoUpgrade()
 
