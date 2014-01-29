@@ -1593,6 +1593,13 @@ class Project(object):
         # There is no such persistent revision. We have to fetch it.
         return False
 
+    if self.clone_depth:
+      depth = self.clone_depth
+    else:
+      depth = self.manifest.manifestProject.config.GetString('repo.depth')
+    if depth:
+      current_branch_only = True
+
     if current_branch_only:
       if ID_RE.match(self.revisionExpr) is not None:
         is_sha1 = True
@@ -1656,10 +1663,6 @@ class Project(object):
 
     # The --depth option only affects the initial fetch; after that we'll do
     # full fetches of changes.
-    if self.clone_depth:
-      depth = self.clone_depth
-    else:
-      depth = self.manifest.manifestProject.config.GetString('repo.depth')
     if depth and initial:
       cmd.append('--depth=%s' % depth)
 
