@@ -88,7 +88,7 @@ class _GitCall(object):
     if _git_version is None:
       ver_str = git.version().decode('utf-8')
       if ver_str.startswith('git version '):
-        num_ver_str = ver_str[len('git version '):].strip()
+        num_ver_str = ver_str[len('git version '):].strip().split('-')[0]
         to_tuple = []
         for num_str in num_ver_str.split('.')[:3]:
           if num_str.isdigit():
