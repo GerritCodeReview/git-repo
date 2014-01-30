@@ -88,10 +88,14 @@ class _GitCall(object):
     if _git_version is None:
       ver_str = git.version().decode('utf-8')
       if ver_str.startswith('git version '):
-        _git_version = tuple(
-          map(int,
-            ver_str[len('git version '):].strip().split('-')[0].split('.')[0:3]
-          ))
+        num_ver_str = ver_str[len('git version '):].strip()
+        to_tuple = []
+        for num_str in num_ver_str.split('.')[:3]
+          if num_str.isdigit():
+            to_tuple.append(int(num_str))
+          else:
+            to_tuple.append(0)
+        _git_version = tuple(to_tuple)
       else:
         print('fatal: "%s" unsupported' % ver_str, file=sys.stderr)
         sys.exit(1)
