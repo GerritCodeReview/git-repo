@@ -576,7 +576,7 @@ class Remote(object):
         return None
 
       u = self.review
-      if not u.startswith('http:') and not u.startswith('https:'):
+      if not u.startswith('http:') and not u.startswith('https:') and not u.startswith('sso:'):
         u = 'http://%s' % u
       if u.endswith('/Gerrit'):
         u = u[:len(u) - len('/Gerrit')]
@@ -591,6 +591,9 @@ class Remote(object):
       elif 'REPO_HOST_PORT_INFO' in os.environ:
         host, port = os.environ['REPO_HOST_PORT_INFO'].split()
         self._review_url = self._SshReviewUrl(userEmail, host, port)
+        REVIEW_CACHE[u] = self._review_url
+      elif u.startswith('sso:'):
+        self._review_url = u  # Assume it's right
         REVIEW_CACHE[u] = self._review_url
       else:
         try:
