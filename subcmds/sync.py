@@ -58,13 +58,13 @@ except ImportError:
 
 from git_command import GIT, git_require
 from git_refs import R_HEADS, HEAD
-from main import WrapperModule
 from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError, ManifestParseError
 from project import SyncBuffer
 from progress import Progress
+from wrapper import Wrapper
 
 _ONE_DAY_S = 24 * 60 * 60
 
@@ -699,7 +699,7 @@ later is required to fix a server side protocol bug.
       print(self.manifest.notice)
 
 def _PostRepoUpgrade(manifest, quiet=False):
-  wrapper = WrapperModule()
+  wrapper = Wrapper()
   if wrapper.NeedSetupGnuPG():
     wrapper.SetupGnuPG(quiet)
   for project in manifest.projects:
