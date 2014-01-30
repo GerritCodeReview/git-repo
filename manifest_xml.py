@@ -519,11 +519,14 @@ class XmlManifest(object):
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
       if node.nodeName == 'remove-project':
         name = self._reqatt(node, 'name')
-        try:
-          del self._projects[name]
-        except KeyError:
+
+        if name not in self._projects:
           raise ManifestParseError('remove-project element specifies non-existent '
                                    'project: %s' % name)
+
+        for p in self._projects[name]:
+          del self._paths[p.relpath]
+        del self._projects[name]
 
         # If the manifest removes the hooks project, treat it as if it deleted
         # the repo-hooks element too.
