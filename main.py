@@ -46,6 +46,7 @@ from error import NoSuchProjectError
 from error import RepoChangedException
 from manifest_xml import XmlManifest
 from pager import RunPager
+from wrapper import WrapperPath, Wrapper
 
 from subcmds import all_commands
 
@@ -169,21 +170,10 @@ class _Repo(object):
 
     return result
 
+
 def _MyRepoPath():
   return os.path.dirname(__file__)
 
-def _MyWrapperPath():
-  return os.path.join(os.path.dirname(__file__), 'repo')
-
-_wrapper_module = None
-def WrapperModule():
-  global _wrapper_module
-  if not _wrapper_module:
-    _wrapper_module = imp.load_source('wrapper', _MyWrapperPath())
-  return _wrapper_module
-
-def _CurrentWrapperVersion():
-  return WrapperModule().VERSION
 
 def _CheckWrapperVersion(ver, repo_path):
   if not repo_path:
@@ -193,7 +183,7 @@ def _CheckWrapperVersion(ver, repo_path):
     print('no --wrapper-version argument', file=sys.stderr)
     sys.exit(1)
 
-  exp = _CurrentWrapperVersion()
+  exp = Wrapper().VERSION
   ver = tuple(map(int, ver.split('.')))
   if len(ver) == 1:
     ver = (0, ver[0])
@@ -205,7 +195,7 @@ def _CheckWrapperVersion(ver, repo_path):
 !!! You must upgrade before you can continue:   !!!
 
     cp %s %s
-""" % (exp_str, _MyWrapperPath(), repo_path), file=sys.stderr)
+""" % (exp_str, WrapperPath(), repo_path), file=sys.stderr)
     sys.exit(1)
 
   if exp > ver:
@@ -214,7 +204,7 @@ def _CheckWrapperVersion(ver, repo_path):
 ... You should upgrade soon:
 
     cp %s %s
-""" % (exp_str, _MyWrapperPath(), repo_path), file=sys.stderr)
+""" % (exp_str, WrapperPath(), repo_path), file=sys.stderr)
 
 def _CheckRepoDir(repo_dir):
   if not repo_dir:
