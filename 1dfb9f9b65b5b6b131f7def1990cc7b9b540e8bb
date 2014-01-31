@@ -46,6 +46,54 @@
       "revId": "1dfb9f9b65b5b6b131f7def1990cc7b9b540e8bb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "72eff6ff_f001e022",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 1015192
+      },
+      "writtenOn": "2014-01-31T15:54:17Z",
+      "side": 1,
+      "message": "Done, thx",
+      "parentUuid": "f2cda6a7_34a2b0bd",
+      "range": {
+        "startLine": 579,
+        "startChar": 45,
+        "endLine": 579,
+        "endChar": 55
+      },
+      "revId": "1dfb9f9b65b5b6b131f7def1990cc7b9b540e8bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "52f4b2d0_6fef5128",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 1015192
+      },
+      "writtenOn": "2014-01-31T15:54:17Z",
+      "side": 1,
+      "message": "Done, thx",
+      "parentUuid": "72eff6ff_30f9a8f3",
+      "range": {
+        "startLine": 579,
+        "startChar": 45,
+        "endLine": 579,
+        "endChar": 55
+      },
+      "revId": "1dfb9f9b65b5b6b131f7def1990cc7b9b540e8bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
