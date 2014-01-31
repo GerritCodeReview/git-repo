@@ -22,6 +22,30 @@
       "revId": "1dfb9f9b65b5b6b131f7def1990cc7b9b540e8bb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f2cda6a7_34a2b0bd",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-01-31T03:47:31Z",
+      "side": 1,
+      "message": "This line should be shortened as Conley suggested, or wrapped so it does not exceed 80 characters.",
+      "parentUuid": "72eff6ff_30f9a8f3",
+      "range": {
+        "startLine": 579,
+        "startChar": 45,
+        "endLine": 579,
+        "endChar": 55
+      },
+      "revId": "1dfb9f9b65b5b6b131f7def1990cc7b9b540e8bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
