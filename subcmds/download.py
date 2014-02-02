@@ -18,6 +18,7 @@ import re
 import sys
 
 from command import Command
+from error import GitError
 
 CHANGE_RE = re.compile(r'^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$')
 
@@ -87,7 +88,12 @@ makes it available in your project's local working directory.
         for c in dl.commits:
           print('  %s' % (c), file=sys.stderr)
       if opt.cherrypick:
-        project._CherryPick(dl.commit)
+        try:
+          project._CherryPick(dl.commit)
+        except GitError:
+          print('[%s] Could not complete the cherry-pick of %s' \
+		    % (project.name, dl.commit), file=sys.stderr)
+
       elif opt.revert:
         project._Revert(dl.commit)
       elif opt.ffonly:
