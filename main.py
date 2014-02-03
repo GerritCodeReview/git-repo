@@ -31,6 +31,8 @@ else:
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
 
+import kerberos
+
 from trace import SetTrace
 from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
@@ -332,6 +334,86 @@ class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
         self.retried = 0
       raise
 
+class _KerberosAuthHandler(urllib.request.BaseHandler):
+  def __init__(self):
+    self.retried = 0
+    self.context = None
+    self.handler_order = urllib.request.BaseHandler.handler_order - 50
+
+  def http_error_401(self, req, fp, code, msg, headers):
+    host = req.get_host()
+    retry = self.http_error_auth_reqed('www-authenticate', host, req, headers)
+    return retry
+
+  def http_error_auth_reqed(self, auth_header, host, req, headers):
+    try:
+      spn = "HTTP@%s" % host
+      authdata = self._negotiate_get_authdata(auth_header, headers)
+
+      if self.retried > 3:
+        raise urllib.request.HTTPError(req.get_full_url(), 401,
+          "Negotiate auth failed", headers, None)
+      else:
+        self.retried += 1
+
+      neghdr = self._negotiate_get_svctk(spn, authdata)
+      if neghdr is None:
+        return None
+
+      req.add_unredirected_header('Authorization', neghdr)
+      response = self.parent.open(req)
+
+      srvauth = self._negotiate_get_authdata(auth_header, response.info())
+      if self._validate_response(srvauth):
+        return response
+    except kerberos.GSSError:
+      return None
+    except:
+      self.reset_retry_count()
+      raise
+    finally:
+      self._clean_context()
+
+  def reset_retry_count(self):
+    self.retried = 0
+
+  def _negotiate_get_authdata(self, auth_header, headers):
+    authhdr = headers.get(auth_header, None)
+    if authhdr is not None:
+      for mech_tuple in authhdr.split(","):
+        mech, __, authdata = mech_tuple.strip().partition(" ")
+        if mech.lower() == "negotiate":
+          return authdata.strip()
+    return None
+
+  def _negotiate_get_svctk(self, spn, authdata):
+    if authdata is None:
+      return None
+
+    result, self.context = kerberos.authGSSClientInit(spn)
+    if result < kerberos.AUTH_GSS_COMPLETE:
+      return None
+
+    result = kerberos.authGSSClientStep(self.context, authdata)
+    if result < kerberos.AUTH_GSS_CONTINUE:
+      return None
+
+    response = kerberos.authGSSClientResponse(self.context)
+    return "Negotiate %s" % response
+
+  def _validate_response(self, authdata):
+    if authdata is None:
+      return None
+    result = kerberos.authGSSClientStep(self.context, authdata)
+    if result == kerberos.AUTH_GSS_COMPLETE:
+      return True
+    return None
+
+  def _clean_context(self):
+    if self.context is not None:
+      kerberos.authGSSClientClean(self.context)
+      self.context = None
+
 def init_http():
   handlers = [_UserAgentHandler()]
 
@@ -348,6 +430,7 @@ def init_http():
     pass
   handlers.append(_BasicAuthHandler(mgr))
   handlers.append(_DigestAuthHandler(mgr))
+  handlers.append(_KerberosAuthHandler())
 
   if 'http_proxy' in os.environ:
     url = os.environ['http_proxy']
