@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b2e5ee1d_f2f8c866",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011917
+      },
+      "writtenOn": "2014-02-03T06:30:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2cda6a7_f48438fb",
+      "range": {
+        "startLine": 9,
+        "startChar": 41,
+        "endLine": 9,
+        "endChar": 42
+      },
+      "revId": "3204150d9f770df3b42316e595534903a32c2360",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f2cda6a7_14a9f46f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2014-02-03T01:21:59Z",
       "side": 1,
       "message": "Traceback",
+      "range": {
+        "startLine": 10,
+        "startChar": 29,
+        "endLine": 10,
+        "endChar": 39
+      },
+      "revId": "3204150d9f770df3b42316e595534903a32c2360",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b2e5ee1d_d2fdc454",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011917
+      },
+      "writtenOn": "2014-02-03T06:30:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2cda6a7_14a9f46f",
       "range": {
         "startLine": 10,
         "startChar": 29,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "d2ca6290_73e600cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1011917
+      },
+      "writtenOn": "2014-02-03T06:30:30Z",
+      "side": 1,
+      "message": "Doh",
+      "parentUuid": "12d15a3f_b5b480b6",
+      "range": {
+        "startLine": 33,
+        "startChar": 48,
+        "endLine": 33,
+        "endChar": 52
+      },
+      "revId": "3204150d9f770df3b42316e595534903a32c2360",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f2cda6a7_d4893c13",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -94,6 +166,30 @@
     },
     {
       "key": {
+        "uuid": "d2ca6290_93d07ce6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011917
+      },
+      "writtenOn": "2014-02-03T06:30:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2cda6a7_d4893c13",
+      "range": {
+        "startLine": 36,
+        "startChar": 26,
+        "endLine": 36,
+        "endChar": 36
+      },
+      "revId": "3204150d9f770df3b42316e595534903a32c2360",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "12d15a3f_d5affc60",
         "filename": "subcmds/download.py",
         "patchSetId": 1
@@ -105,6 +201,30 @@
       "writtenOn": "2014-02-03T01:21:59Z",
       "side": 1,
       "message": "Indent with spaces, not tabs.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 2
+      },
+      "revId": "3204150d9f770df3b42316e595534903a32c2360",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b2e5ee1d_12dd8cf9",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1011917
+      },
+      "writtenOn": "2014-02-03T06:30:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12d15a3f_d5affc60",
       "range": {
         "startLine": 95,
         "startChar": 0,
