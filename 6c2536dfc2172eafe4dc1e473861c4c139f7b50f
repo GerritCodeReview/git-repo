@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12d15a3f_75e6e8cb",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-02-04T00:54:08Z",
+      "side": 1,
+      "message": "This requires the python-kerberos library to be installed.\n\nIn cases where it is not installed (which may be a large percentages of cases) it will case an ImportError.\n\nIt would be better to wrap this in a try..except block and then only add the handler at line 433 if the import did not fail.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 15
+      },
+      "revId": "6c2536dfc2172eafe4dc1e473861c4c139f7b50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
