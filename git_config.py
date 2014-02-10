@@ -604,7 +604,7 @@ class Remote(object):
             # of HTML response back, like maybe a login page.
             #
             # Assume HTTP if SSH is not enabled or ssh_info doesn't look right.
-            self._review_url = http_url + 'p/'
+            self._review_url = http_url
           else:
             host, port = info.split()
             self._review_url = self._SshReviewUrl(userEmail, host, port)
