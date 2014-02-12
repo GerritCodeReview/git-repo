@@ -1748,6 +1748,7 @@ class Project(object):
         cmd.append('--no-tags')
       else:
         cmd.append('--tags')
+
       cmd.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
     elif tag_name is not None:
       cmd.append('tag')
@@ -1774,6 +1775,11 @@ class Project(object):
       time.sleep(random.randint(30, 45))
 
     if initial:
+      # Ensure that some refs exist.  Otherwise, we probably aren't looking
+      # at a real git repository and may have a bad url.
+      if not self.bare_ref.all:
+          ok = False
+
       if alt_dir:
         if old_packed != '':
           _lwrite(packed_refs, old_packed)
