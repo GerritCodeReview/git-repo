@@ -568,10 +568,11 @@ class XmlManifest(object):
                         gitdir = gitdir,
                         objdir = gitdir,
                         worktree = None,
-                        relpath = None,
+                        relpath = name if name else None,
                         revisionExpr = m.revisionExpr,
                         revisionId = None)
       self._projects[project.name] = [project]
+      self._paths[project.relpath] = project
 
   def _ParseRemote(self, node):
     """
