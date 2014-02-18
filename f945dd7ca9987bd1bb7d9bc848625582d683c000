@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf5479b3_43456661",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-02-18T19:27:35Z",
+      "side": 1,
+      "message": "typically: relpath \u003d name or None\n\nhow is this correct?  relpath is not always the name.",
+      "revId": "f945dd7ca9987bd1bb7d9bc848625582d683c000",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
