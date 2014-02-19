@@ -16,6 +16,24 @@
       "revId": "f945dd7ca9987bd1bb7d9bc848625582d683c000",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4feec935_3feec72a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 1015383
+      },
+      "writtenOn": "2014-02-19T02:27:41Z",
+      "side": 1,
+      "message": "I\u0027ll re-upload this commit after replacing the line with typical way.\n\nAnd about whether this is correct or not, function of this is _AddMetaProjectMirror. This function is used only for git-repo itself and manifest repository. So I think this is correct.",
+      "parentUuid": "cf5479b3_43456661",
+      "revId": "f945dd7ca9987bd1bb7d9bc848625582d683c000",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
