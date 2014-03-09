@@ -2261,8 +2261,8 @@ class Project(object):
         path = os.path.join(self._project.worktree, '.git', HEAD)
       try:
         fd = open(path, 'rb')
-      except IOError:
-        raise NoManifestException(path)
+      except IOError as e:
+        raise NoManifestException(path, e)
       try:
         line = fd.read()
       finally:

@@ -22,6 +22,7 @@ import optparse
 import os
 import sys
 import time
+import traceback
 
 from pyversion import is_python3
 if is_python3():
@@ -148,8 +149,10 @@ class _Repo(object):
       print('error: %s' % str(e), file=sys.stderr)
       result = 1
     except NoManifestException as e:
-      print('error: manifest required for this command -- please run init',
+      print('error: at "' + ' '.join(argv)
+        + '"\nerror: manifest required for this command -- please run init',
             file=sys.stderr)
+      traceback.print_exc(file=sys.stderr)
       result = 1
     except NoSuchProjectError as e:
       if e.name:
