@@ -124,8 +124,15 @@ class _Repo(object):
             file=sys.stderr)
       return 1
 
-    copts, cargs = cmd.OptionParser.parse_args(argv)
-    copts = cmd.ReadEnvironmentOptions(copts)
+    try:
+      copts, cargs = cmd.OptionParser.parse_args(argv)
+      copts = cmd.ReadEnvironmentOptions(copts)
+    except NoManifestException as e:
+      print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
+        file=sys.stderr)
+      print('error: manifest missing or unreadable -- please run init',
+            file=sys.stderr)
+      return 1
 
     if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig
@@ -141,15 +148,13 @@ class _Repo(object):
     start = time.time()
     try:
       result = cmd.Execute(copts, cargs)
-    except DownloadError as e:
-      print('error: %s' % str(e), file=sys.stderr)
-      result = 1
-    except ManifestInvalidRevisionError as e:
-      print('error: %s' % str(e), file=sys.stderr)
-      result = 1
-    except NoManifestException as e:
-      print('error: manifest required for this command -- please run init',
-            file=sys.stderr)
+    except (DownloadError, ManifestInvalidRevisionError,
+        NoManifestException) as e:
+      print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
+        file=sys.stderr)
+      if isinstance(e, NoManifestException):
+        print('error: manifest missing or unreadable -- please run init',
+              file=sys.stderr)
       result = 1
     except NoSuchProjectError as e:
       if e.name:
