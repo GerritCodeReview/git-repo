@@ -64,7 +64,8 @@ class _XmlRemote(object):
                fetch=None,
                manifestUrl=None,
                review=None,
-               revision=None):
+               projecthookName=None,
+               projecthookRevision=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
@@ -72,6 +73,8 @@ class _XmlRemote(object):
     self.reviewUrl = review
     self.revision = revision
     self.resolvedFetchUrl = self._resolveFetchUrl()
+    self.projecthookName = projecthookName
+    self.projecthookRevision = projecthookRevision
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -163,6 +166,11 @@ class XmlManifest(object):
       e.setAttribute('review', r.reviewUrl)
     if r.revision is not None:
       e.setAttribute('revision', r.revision)
+    if r.projecthookName is not None:
+      ph = doc.createElement('projecthook')
+      ph.setAttribute('name', r.projecthookName)
+      ph.setAttribute('revision', r.projecthookRevision)
+      e.appendChild(ph)
 
   def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
@@ -244,8 +252,7 @@ class XmlManifest(object):
       if d.remote:
         remoteName = d.remote.remoteAlias or d.remote.name
       if not d.remote or p.remote.name != remoteName:
-        remoteName = p.remote.name
-        e.setAttribute('remote', remoteName)
+        e.setAttribute('remote', p.remote.name)
       if peg_rev:
         if self.IsMirror:
           value = p.bare_git.rev_parse(p.revisionExpr + '^0')
@@ -257,10 +264,8 @@ class XmlManifest(object):
           # isn't our value, and the if the default doesn't already have that
           # covered.
           e.setAttribute('upstream', p.revisionExpr)
-      else:
-        revision = self.remotes[remoteName].revision or d.revisionExpr
-        if not revision or revision != p.revisionExpr:
-          e.setAttribute('revision', p.revisionExpr)
+      elif not d.revisionExpr or p.revisionExpr != d.revisionExpr:
+        e.setAttribute('revision', p.revisionExpr)
 
       for c in p.copyfiles:
         ce = doc.createElement('copyfile')
@@ -317,7 +322,7 @@ class XmlManifest(object):
   @property
   def projects(self):
     self._Load()
-    return list(self._paths.values())
+    return self._paths.values()
 
   @property
   def remotes(self):
@@ -603,7 +608,13 @@ class XmlManifest(object):
     if revision == '':
       revision = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision)
+    projecthookName = None
+    projecthookRevision = None
+    for n in node.childNodes:
+      if n.nodeName == 'projecthook':
+        projecthookName, projecthookRevision = self._ParseProjectHooks(n)
+        break
+    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision, projecthookName, projecthookRevision)
 
   def _ParseDefault(self, node):
     """
@@ -696,7 +707,7 @@ class XmlManifest(object):
       raise ManifestParseError("no remote for project %s within %s" %
             (name, self.manifestFile))
 
-    revisionExpr = node.getAttribute('revision') or remote.revision
+    revisionExpr = node.getAttribute('revision')
     if not revisionExpr:
       revisionExpr = self._default.revisionExpr
     if not revisionExpr:
@@ -882,8 +893,10 @@ class XmlManifest(object):
     fromProjects = self.paths
     toProjects = manifest.paths
 
-    fromKeys = sorted(fromProjects.keys())
-    toKeys = sorted(toProjects.keys())
+    fromKeys = fromProjects.keys()
+    fromKeys.sort()
+    toKeys = toProjects.keys()
+    toKeys.sort()
 
     diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
 
@@ -907,3 +920,8 @@ class XmlManifest(object):
       diff['added'].append(toProjects[proj])
 
     return diff
+
+  def _ParseProjectHooks(self, node):
+    name = self._reqatt(node, 'name')
+    revision = self._reqatt(node, 'revision')
+    return name, revision

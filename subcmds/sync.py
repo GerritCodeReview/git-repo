@@ -60,11 +60,13 @@ from git_command import GIT, git_require
 from git_refs import R_HEADS, HEAD
 from project import Project
 from project import RemoteSpec
+from project import MetaProject
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError, ManifestParseError
 from project import SyncBuffer
 from progress import Progress
 from wrapper import Wrapper
+from git_config import GitConfig
 
 _ONE_DAY_S = 24 * 60 * 60
 
@@ -611,6 +613,9 @@ later is required to fix a server side protocol bug.
                           current_branch_only=opt.current_branch_only,
                           no_tags=opt.no_tags)
 
+    #Always sync the project hooks before syncing the projects
+    self._SyncProjectHooks(opt)
+
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
       mp.Sync_LocalHalf(syncbuf)
@@ -682,6 +687,56 @@ later is required to fix a server side protocol bug.
     # it now...
     if self.manifest.notice:
       print(self.manifest.notice)
+
+  def _SyncProjectHooks(self, opt):
+    """Downloads the defined hooks supplied in the projecthooks element
+
+    """
+    # Always delete projecthooks and re-download for every new init.
+    projecthooksdir = os.path.join(self.manifest.repodir, 'projecthooks')
+
+    if os.path.exists(projecthooksdir):
+      shutil.rmtree(projecthooksdir)
+
+    for remotename in self.manifest.remotes:
+
+      r = self.manifest.remotes.get(remotename)
+
+      if r.projecthookName is not None and r.projecthookRevision is not None:
+        projecthookurl = r.resolvedFetchUrl.rstrip('/') + '/' + r.projecthookName
+
+        ph = MetaProject(manifest = self.manifest,
+        name = r.projecthookName,
+        gitdir   = os.path.join(projecthooksdir,'%s/%s.git' % (remotename, r.projecthookName)),
+        worktree = os.path.join(projecthooksdir,'%s/%s' % (remotename, r.projecthookName)))
+
+        ph.revisionExpr = r.projecthookRevision
+        is_new = not ph.Exists
+
+        if is_new:
+          if not opt.quiet:
+            print('Get projecthook %s' % \
+              GitConfig.ForUser().UrlInsteadOf(projecthookurl), file=sys.stderr)
+          ph._InitGitDir(MirrorOverride=True)
+
+        phr = ph.GetRemote(remotename)
+        phr.name = 'origin'
+        phr.url = projecthookurl
+        phr.ResetFetch()
+        phr.Save()
+
+        if not ph.Sync_NetworkHalf(quiet=opt.quiet, is_new=is_new, clone_bundle=False):
+          print('fatal: cannot obtain projecthook %s' % phr.url, file=sys.stderr)
+
+          # Better delete the git dir if we created it; otherwise next
+          # time (when user fixes problems) we won't go through the "is_new" logic.
+          if is_new:
+            shutil.rmtree(ph.gitdir)
+          sys.exit(1)
+
+        syncbuf = SyncBuffer(ph.config)
+        ph.Sync_LocalHalf(syncbuf)
+        syncbuf.Finish()
 
 def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = Wrapper()
