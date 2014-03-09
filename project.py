@@ -68,27 +68,6 @@ def not_rev(r):
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
-_project_hook_list = None
-def _ProjectHooks():
-  """List the hooks present in the 'hooks' directory.
-
-  These hooks are project hooks and are copied to the '.git/hooks' directory
-  of all subprojects.
-
-  This function caches the list of hooks (based on the contents of the
-  'repo/hooks' directory) on the first call.
-
-  Returns:
-    A list of absolute paths to all of the files in the hooks directory.
-  """
-  global _project_hook_list
-  if _project_hook_list is None:
-    d = os.path.realpath(os.path.abspath(os.path.dirname(__file__)))
-    d = os.path.join(d , 'hooks')
-    _project_hook_list = [os.path.join(d, x) for x in os.listdir(d)]
-  return _project_hook_list
-
-
 class DownloadedChange(object):
   _commit_cache = None
 
@@ -2003,7 +1982,7 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self, mirror_git=None):
+  def _InitGitDir(self, mirror_git=None, MirrorOverride=False):
     if not os.path.exists(self.gitdir):
 
       # Initialize the bare repository, which contains all of the objects.
@@ -2050,6 +2029,36 @@ class Project(object):
       else:
         self.config.SetString('core.bare', None)
 
+  def _ProjectHooks(self, remote):
+    """List the hooks present in the 'hooks' directory of the repo git and any
+    hooks found via the projecthooks on the current remote.
+
+    These hooks are project hooks and are copied to the '.git/hooks' directory
+    of all subprojects.
+
+    The remote projecthooks supplement/overrule any stockhook making it possible to
+    have a combination of hooks both from the remote projecthook and
+    .repo/hooks directories.
+
+    Returns:
+      A list of absolute paths to all of the files in the hooks directory and
+      projecthooks files, excluding the .git folder.
+    """
+    hooks = {}
+    d = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'hooks')
+    hooks = dict((x, os.path.join(d, x)) for x in os.listdir(d))
+    if remote and remote.projecthookName:
+      d = os.path.abspath(os.path.join(self.manifest.repodir,
+                                       'projecthooks',
+                                       remote.name,
+                                       remote.projecthookName))
+      if os.path.isdir(d):
+        hooks.update((x, os.path.join(d, x)) for x in os.listdir(d))
+
+    if hooks.has_key('.git'):
+      del hooks['.git']
+    return list(hooks.values())
+
   def _UpdateHooks(self):
     if os.path.exists(self.gitdir):
       # Always recreate hooks since they can have been changed
@@ -2067,8 +2076,11 @@ class Project(object):
     hooks = os.path.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
-    for stock_hook in _ProjectHooks():
-      name = os.path.basename(stock_hook)
+    pr = None
+    if self is not self.manifest.manifestProject:
+      pr = self.manifest.remotes.get(self.remote.name)
+    for hook in self._ProjectHooks(pr):
+      name = os.path.basename(hook)
 
       if name in ('commit-msg',) and not self.remote.review \
             and not self is self.manifest.manifestProject:
@@ -2083,13 +2095,13 @@ class Project(object):
       if os.path.islink(dst):
         continue
       if os.path.exists(dst):
-        if filecmp.cmp(stock_hook, dst, shallow=False):
+        if filecmp.cmp(hook, dst, shallow=False):
           os.remove(dst)
         else:
           _error("%s: Not replacing %s hook", self.relpath, name)
           continue
       try:
-        os.symlink(os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
+        os.symlink(os.path.relpath(hook, os.path.dirname(dst)), dst)
       except OSError as e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
