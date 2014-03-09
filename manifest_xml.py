@@ -63,13 +63,17 @@ class _XmlRemote(object):
                alias=None,
                fetch=None,
                manifestUrl=None,
-               review=None):
+               review=None,
+               projecthookName=None,
+               projecthookRevision=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
     self.remoteAlias = alias
     self.reviewUrl = review
     self.resolvedFetchUrl = self._resolveFetchUrl()
+    self.projecthookName = projecthookName
+    self.projecthookRevision = projecthookRevision
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -159,6 +163,11 @@ class XmlManifest(object):
       e.setAttribute('alias', r.remoteAlias)
     if r.reviewUrl is not None:
       e.setAttribute('review', r.reviewUrl)
+    if r.projecthookName is not None:
+      ph = doc.createElement('projecthook')
+      ph.setAttribute('name', r.projecthookName)
+      ph.setAttribute('revision', r.projecthookRevision)
+      e.appendChild(ph)
 
   def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
@@ -593,7 +602,13 @@ class XmlManifest(object):
     if review == '':
       review = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, manifestUrl, review)
+    projecthookName = None
+    projecthookRevision = None
+    for n in node.childNodes:
+      if n.nodeName == 'projecthook':
+        projecthookName, projecthookRevision = self._ParseProjectHooks(n)
+        break
+    return _XmlRemote(name, alias, fetch, manifestUrl, review, projecthookName, projecthookRevision)
 
   def _ParseDefault(self, node):
     """
@@ -897,3 +912,8 @@ class XmlManifest(object):
       diff['added'].append(toProjects[proj])
 
     return diff
+
+  def _ParseProjectHooks(self, node):
+    name = self._reqatt(node, 'name')
+    revision = self._reqatt(node, 'revision')
+    return name, revision
