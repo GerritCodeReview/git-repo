@@ -94,6 +94,30 @@
       "revId": "77b3ff84d841d5e7194529230ed0acc8f58a9cc5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7c07cd52_705e502b",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-03-10T22:50:57Z",
+      "side": 1,
+      "message": "Mitchel, why wouldn\u0027t this work?\n\n    # If using depth then we should not get all the tags since they may\n    # be outside of the depth.\n    if no_tags or depth:\n      cmd.append(\u0027--no-tags\u0027)\n    else:\n      cmd.append(\u0027--tags\u0027)\n\n    if not current_branch_only:\n      # Fetch whole repo\n      cmd.append(str((u\u0027+refs/heads/*:\u0027) + remote.ToLocal(\u0027refs/heads/*\u0027)))\n    elif tag_name is not None:\n      cmd.append(\u0027tag\u0027)\n      cmd.append(tag_name)\n    else:\n      branch \u003d self.revisionExpr\n      if is_sha1:\n        branch \u003d self.upstream\n      if branch.startswith(R_HEADS):\n        branch \u003d branch[len(R_HEADS):]\n      cmd.append(str((u\u0027+refs/heads/%s:\u0027 % branch) + remote.ToLocal(\u0027refs/heads/%s\u0027 % branch)))",
+      "parentUuid": "5c0cc977_2f7d8993",
+      "range": {
+        "startLine": 1780,
+        "startChar": 6,
+        "endLine": 1780,
+        "endChar": 17
+      },
+      "revId": "77b3ff84d841d5e7194529230ed0acc8f58a9cc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
