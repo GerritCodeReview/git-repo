@@ -1682,6 +1682,8 @@ class Project(object):
       cmd.append('tag')
       cmd.append(tag_name)
     else:
+      if no_tags:
+        cmd.append('--no-tags')
       branch = self.revisionExpr
       if is_sha1:
         branch = self.upstream
