@@ -1763,15 +1763,14 @@ class Project(object):
       cmd.append('--update-head-ok')
     cmd.append(name)
 
+    # If using depth then we should not get all the tags since they may
+    # be outside of the depth.
+    if no_tags or depth:
+      cmd.append('--no-tags')
+    else:
+      cmd.append('--tags')
     if not current_branch_only:
       # Fetch whole repo
-      # If using depth then we should not get all the tags since they may
-      # be outside of the depth.
-      if no_tags or depth:
-        cmd.append('--no-tags')
-      else:
-        cmd.append('--tags')
-
       cmd.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
     elif tag_name is not None:
       cmd.append('tag')
