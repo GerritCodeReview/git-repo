@@ -46,6 +46,30 @@
       "revId": "77b3ff84d841d5e7194529230ed0acc8f58a9cc5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c0cc977_2f7d8993",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1012272
+      },
+      "writtenOn": "2014-03-10T22:46:56Z",
+      "side": 1,
+      "message": "yeah but then I believe would need something like:\n\n    if not (no_tags or depth):\n        cmd.pop(\u0027--no-tags\u0027)\n        cmd.append(\u0027--tags\u0027)\n\nIs there any reason we can\u0027t just remove the `--tags\u0027?",
+      "parentUuid": "7c07cd52_f09a40a0",
+      "range": {
+        "startLine": 1780,
+        "startChar": 6,
+        "endLine": 1780,
+        "endChar": 17
+      },
+      "revId": "77b3ff84d841d5e7194529230ed0acc8f58a9cc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
