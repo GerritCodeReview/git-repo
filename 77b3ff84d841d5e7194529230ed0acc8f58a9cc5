@@ -118,6 +118,30 @@
       "revId": "77b3ff84d841d5e7194529230ed0acc8f58a9cc5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c0cc977_4f8c4d72",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-03-10T22:54:54Z",
+      "side": 1,
+      "message": "So currently if you give -c or if fetching one tag_name, we respect tagopt. Otherwise it looks at no_tags and depth to figure out what to do.\n\nIf we want to always respect tagopt I think that\u0027s a different change where we need to actually check the config for each repo and see if it\u0027s been set. If instead we\u0027re just looking to make --no-tags work consistently, I think my code above will do the trick.",
+      "parentUuid": "7c07cd52_705e502b",
+      "range": {
+        "startLine": 1780,
+        "startChar": 6,
+        "endLine": 1780,
+        "endChar": 17
+      },
+      "revId": "77b3ff84d841d5e7194529230ed0acc8f58a9cc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
