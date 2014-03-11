@@ -46,6 +46,30 @@
       "revId": "8a6b3f7a4fef65f6f276e5d6c8adf15d072f1ad5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7c07cd52_f0cc00a9",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-03-11T05:22:34Z",
+      "side": 1,
+      "message": "I see the point about it being easy to add custom handling, but is that really likely to be needed here?\n\nIf we look at the history of this block of code we\u0027ll most likely find that it\u0027s only been modified to tweak the print statements, with the same tweak having to be added on several lines.\n\nI\u0027m fine with it either way though.  The only reason I\u0027ve only put +1 instead of +2 is that I haven\u0027t tested it yet.",
+      "parentUuid": "1cdc112f_9d130376",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 16
+      },
+      "revId": "8a6b3f7a4fef65f6f276e5d6c8adf15d072f1ad5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
