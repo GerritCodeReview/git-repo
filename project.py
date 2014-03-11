@@ -1801,7 +1801,7 @@ class Project(object):
       # Ensure that some refs exist.  Otherwise, we probably aren't looking
       # at a real git repository and may have a bad url.
       if not self.bare_ref.all:
-          ok = False
+        ok = False
 
       if alt_dir:
         if old_packed != '':
