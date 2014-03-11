@@ -22,6 +22,30 @@
       "revId": "5b48596a98310a824630cde4d2792f4b0c4e12d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c0cc977_6f5e712b",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1771,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-03-11T02:57:56Z",
+      "side": 1,
+      "message": "Conley has +2\u0027d the change, so I guess he doesn\u0027t mind.\n\nI. however, would prefer to have a new line here :)",
+      "parentUuid": "5c0cc977_af905982",
+      "range": {
+        "startLine": 1771,
+        "startChar": 4,
+        "endLine": 1771,
+        "endChar": 26
+      },
+      "revId": "5b48596a98310a824630cde4d2792f4b0c4e12d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
