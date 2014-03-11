@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c07cd52_90bf74de",
+        "filename": "main.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-03-11T02:50:39Z",
+      "side": 1,
+      "message": "If this isn\u0027t used it would be better to remove it.",
+      "range": {
+        "startLine": 151,
+        "startChar": 30,
+        "endLine": 151,
+        "endChar": 35
+      },
+      "revId": "8d49be4ea36e7cbab41817d0e2636579d67a822a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
