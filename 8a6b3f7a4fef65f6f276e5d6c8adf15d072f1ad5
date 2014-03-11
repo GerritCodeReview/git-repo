@@ -70,6 +70,30 @@
       "revId": "8a6b3f7a4fef65f6f276e5d6c8adf15d072f1ad5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1cdc112f_bd10bf69",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2014-03-11T05:25:35Z",
+      "side": 1,
+      "message": "I\u0027ve verified it locally but I don\u0027t know if that\u0027s sufficient here.",
+      "parentUuid": "7c07cd52_f0cc00a9",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 16
+      },
+      "revId": "8a6b3f7a4fef65f6f276e5d6c8adf15d072f1ad5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
