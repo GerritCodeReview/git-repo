@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1cdc112f_fdf3270d",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2014-03-11T02:34:05Z",
+      "side": 1,
+      "message": "It\u0027s included in the stacktrace.",
+      "parentUuid": "7c07cd52_901bf485",
+      "range": {
+        "startLine": 151,
+        "startChar": 30,
+        "endLine": 151,
+        "endChar": 35
+      },
+      "revId": "12c13c46b0d5185f9b9f24f2d851992b5ccc427c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c0cc977_af1e9975",
         "filename": "project.py",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2014-03-10T00:40:34Z",
       "side": 1,
       "message": "Use the following syntax, for consistency with the rest of the code base:\n\n except IOError as e:",
+      "range": {
+        "startLine": 2264,
+        "startChar": 6,
+        "endLine": 2264,
+        "endChar": 23
+      },
+      "revId": "12c13c46b0d5185f9b9f24f2d851992b5ccc427c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3cdf1525_def66500",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2264,
+      "author": {
+        "id": 1003403
+      },
+      "writtenOn": "2014-03-11T02:34:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c0cc977_af1e9975",
       "range": {
         "startLine": 2264,
         "startChar": 6,
