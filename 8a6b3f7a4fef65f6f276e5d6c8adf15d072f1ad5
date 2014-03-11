@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c0cc977_af77b9a5",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-03-11T05:11:46Z",
+      "side": 1,
+      "message": "(optional) these could be combined into a single block to reduce code duplication.\n\n except (DownloadError, ManifestInvalidRevisionError,\n     NoManifestException) as e:\n   print(\u0027error: in [...]\u0027)\n   result \u003d 1\n   if isinstance(e, NoManifestException):\n     print(\u0027error: manifest missing [...]\u0027)",
+      "range": {
+        "startLine": 157,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 16
+      },
+      "revId": "8a6b3f7a4fef65f6f276e5d6c8adf15d072f1ad5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
