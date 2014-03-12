@@ -746,7 +746,8 @@ def main(orig_args):
             os.remove(os.path.join(root, name))
           for name in dirs:
             os.rmdir(os.path.join(root, name))
-        os.rmdir(repodir)
+        if os.path.isdir(repodir):
+          os.rmdir(repodir)
         sys.exit(1)
       repo_main, rel_repo_dir = _FindRepo()
     else:
