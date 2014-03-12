@@ -114,6 +114,7 @@ import errno
 import optparse
 import os
 import re
+import shutil
 import stat
 import subprocess
 import sys
@@ -741,12 +742,7 @@ def main(orig_args):
       try:
         _Init(args)
       except CloneFailure:
-        for root, dirs, files in os.walk(repodir, topdown=False):
-          for name in files:
-            os.remove(os.path.join(root, name))
-          for name in dirs:
-            os.rmdir(os.path.join(root, name))
-        os.rmdir(repodir)
+        shutil.rmtree(repodir, ignore_errors=True)
         sys.exit(1)
       repo_main, rel_repo_dir = _FindRepo()
     else:
