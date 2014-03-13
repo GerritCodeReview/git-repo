@@ -1782,6 +1782,8 @@ class Project(object):
         branch = self.upstream
       if branch.startswith(R_HEADS):
         branch = branch[len(R_HEADS):]
+      if no_tags:
+        cmd.append('--no-tags')
       cmd.append(str((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch)))
 
     ok = False
