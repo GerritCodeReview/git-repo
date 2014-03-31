@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "998813e4_6101f623",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-03-31T19:17:45Z",
+      "side": 1,
+      "message": "You could be explicit and say \"Add the REPO_I and REPO_COUNT environment variables...\".",
+      "range": {
+        "startLine": 10,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "3e2a7e917d5131de43881d521b8a2647ddbb3b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "998813e4_81067a3b",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-03-31T19:17:45Z",
+      "side": 1,
+      "message": "Space after ,",
+      "range": {
+        "startLine": 189,
+        "startChar": 11,
+        "endLine": 189,
+        "endChar": 12
+      },
+      "revId": "3e2a7e917d5131de43881d521b8a2647ddbb3b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
