@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "998813e4_e1142661",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1012272
+      },
+      "writtenOn": "2014-03-31T20:10:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "998813e4_6101f623",
+      "range": {
+        "startLine": 10,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "3e2a7e917d5131de43881d521b8a2647ddbb3b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "998813e4_81067a3b",
         "filename": "subcmds/forall.py",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2014-03-31T19:17:45Z",
       "side": 1,
       "message": "Space after ,",
+      "range": {
+        "startLine": 189,
+        "startChar": 11,
+        "endLine": 189,
+        "endChar": 12
+      },
+      "revId": "3e2a7e917d5131de43881d521b8a2647ddbb3b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "998813e4_4100721d",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1012272
+      },
+      "writtenOn": "2014-03-31T20:10:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "998813e4_81067a3b",
       "range": {
         "startLine": 189,
         "startChar": 11,
