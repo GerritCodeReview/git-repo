@@ -87,6 +87,12 @@ revision to a locally executed git command, use REPO_LREV.
 REPO_RREV is the name of the revision from the manifest, exactly
 as written in the manifest.
 
+REPO_COUNT is the total number of projects being iterated.
+
+REPO_I is the current (1-based) iteration count. Can be used in
+conjunction with REPO_COUNT to add a simple progress indicator to your
+command.
+
 REPO__* are any extra environment variables, specified by the
 "annotation" element under any project element.  This can be useful
 for differentiating trees based on user-specific criteria, or simply
@@ -178,7 +184,9 @@ without iterating through the remaining projects.
     else:
       projects = self.FindProjects(args)
 
-    for project in projects:
+    os.environ['REPO_COUNT'] = str(len(projects))
+
+    for (cnt, project) in enumerate(projects):
       env = os.environ.copy()
       def setenv(name, val):
         if val is None:
@@ -190,6 +198,7 @@ without iterating through the remaining projects.
       setenv('REPO_REMOTE', project.remote.name)
       setenv('REPO_LREV', project.GetRevisionId())
       setenv('REPO_RREV', project.revisionExpr)
+      setenv('REPO_I', str(cnt + 1))
       for a in project.annotations:
         setenv("REPO__%s" % (a.name), a.value)
 
