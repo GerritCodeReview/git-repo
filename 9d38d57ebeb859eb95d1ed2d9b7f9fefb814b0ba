@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "998813e4_a127fec6",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1870,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2014-04-01T21:03:00Z",
+      "side": 1,
+      "message": "I\u0027m not necessarily the style arbiter here but I would probably write:\n\n cmd \u003d [\n     \u0027curl\u0027,\n     \u0027--fail\u0027,\n     \u0027--output\u0027, tmpPath,\n     \u0027--netrc\u0027,\n     \u0027--location\u0027,\n     \u0027--proto-redir\u0027, \u0027+file\u0027,\n ]",
+      "revId": "9d38d57ebeb859eb95d1ed2d9b7f9fefb814b0ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
