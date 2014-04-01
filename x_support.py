@@ -52,3 +52,6 @@ def x_supports(x, opt, check_method=_check_help):
     x_support[opt] = check_method(x, opt)
     _x_supports[x] = x_support
   return x_support.get(opt, False)
+
+# helper method specific to curl
+curl_supports = lambda opt: x_supports('curl', opt)

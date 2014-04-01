@@ -35,6 +35,7 @@ from error import GitError, HookError, UploadError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
 from trace import IsTrace, Trace
+from x_support import curl_supports
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
@@ -1976,6 +1977,8 @@ class Project(object):
         os.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
+    if curl_supports('--proto-redir'):
+      cmd += ['--proto-redir', '+file']
     with self._GetBundleCookieFile(srcUrl, quiet) as cookiefile:
       if cookiefile:
         cmd += ['--cookie', cookiefile, '--cookie-jar', cookiefile]
