@@ -1867,6 +1867,7 @@ class Project(object):
       os.remove(dstPath)
 
     cmd = ['curl', '--fail', '--output', tmpPath, '--netrc', '--location']
+    cmd += ['--proto-redir', '+file']
     if quiet:
       cmd += ['--silent']
     if os.path.exists(tmpPath):
