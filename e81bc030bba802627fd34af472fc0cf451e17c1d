@@ -22,6 +22,30 @@
       "revId": "e81bc030bba802627fd34af472fc0cf451e17c1d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "998813e4_816afac1",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1012272
+      },
+      "writtenOn": "2014-04-02T18:40:04Z",
+      "side": 1,
+      "message": "Because we don\u0027t need anything that it provides (checking that the value is not None and encoding it) so there\u0027s not much point pulling it out of the loop below. Actually, we would have to leave it in the loop below as well since it uses the `env\u0027 outer variable.",
+      "parentUuid": "b98317c4_82819a3d",
+      "range": {
+        "startLine": 187,
+        "startChar": 4,
+        "endLine": 187,
+        "endChar": 28
+      },
+      "revId": "e81bc030bba802627fd34af472fc0cf451e17c1d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
