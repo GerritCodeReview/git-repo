@@ -15,6 +15,7 @@
 
 from __future__ import print_function
 import fcntl
+import multiprocessing
 import re
 import os
 import select
@@ -31,6 +32,7 @@ _CAN_COLOR = [
   'log',
 ]
 
+
 class ForallColoring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, 'forall')
@@ -38,6 +40,8 @@ class ForallColoring(Coloring):
 
 
 class Forall(Command, MirrorSafeCommand):
+  stop = False
+  jobs = 1
   common = False
   helpSummary = "Run a shell command in each project"
   helpUsage = """
@@ -132,11 +136,41 @@ without iterating through the remaining projects.
     g.add_option('-v', '--verbose',
                  dest='verbose', action='store_true',
                  help='Show command error messages')
+    g.add_option('-j', '--jobs',
+                 dest='jobs', action='store', type='int', default=1,
+                 help='number of commands to execute simultaneously')
 
   def WantPager(self, opt):
-    return opt.project_header
+    return opt.project_header and opt.jobs == 1
+
+  def SerialiseProject(self, project):
+    """ Serialise a project._GitGetByExec instance.
+
+    project._GitGetByExec is not pickle-able. Instead of trying to pass it
+    around between processes, make a dict ourselves containing only the
+    attributes that we need.
+
+    """
+    annotations = {}
+    for a in project.annotations:
+      annotations[a.name] = a.value
+    return {
+      'name': project.name,
+      'relpath': project.relpath,
+      'remote_name': project.remote.name,
+      'lrev': project.GetRevisionId(),
+      'rrev': project.revisionExpr,
+      'annotations': annotations,
+      'gitdir': project.gitdir,
+      'worktree': project.worktree,
+    }
 
   def Execute(self, opt, args):
+    if opt.jobs > 0:
+      self.jobs = opt.jobs
+    else:
+      self.jobs = multiprocessing.cpu_count()
+
     if not opt.command:
       self.Usage()
 
@@ -186,113 +220,156 @@ without iterating through the remaining projects.
 
     os.environ['REPO_COUNT'] = str(len(projects))
 
-    for (cnt, project) in enumerate(projects):
-      env = os.environ.copy()
-      def setenv(name, val):
-        if val is None:
-          val = ''
-        env[name] = val.encode()
-
-      setenv('REPO_PROJECT', project.name)
-      setenv('REPO_PATH', project.relpath)
-      setenv('REPO_REMOTE', project.remote.name)
-      setenv('REPO_LREV', project.GetRevisionId())
-      setenv('REPO_RREV', project.revisionExpr)
-      setenv('REPO_I', str(cnt + 1))
-      for a in project.annotations:
-        setenv("REPO__%s" % (a.name), a.value)
-
-      if mirror:
-        setenv('GIT_DIR', project.gitdir)
-        cwd = project.gitdir
-      else:
-        cwd = project.worktree
-
-      if not os.path.exists(cwd):
-        if (opt.project_header and opt.verbose) \
-        or not opt.project_header:
-          print('skipping %s/' % project.relpath, file=sys.stderr)
-        continue
-
-      if opt.project_header:
-        stdin = subprocess.PIPE
-        stdout = subprocess.PIPE
-        stderr = subprocess.PIPE
-      else:
-        stdin = None
-        stdout = None
-        stderr = None
-
-      p = subprocess.Popen(cmd,
-                           cwd = cwd,
-                           shell = shell,
-                           env = env,
-                           stdin = stdin,
-                           stdout = stdout,
-                           stderr = stderr)
-
-      if opt.project_header:
-        class sfd(object):
-          def __init__(self, fd, dest):
-            self.fd = fd
-            self.dest = dest
-          def fileno(self):
-            return self.fd.fileno()
-
-        empty = True
-        errbuf = ''
-
-        p.stdin.close()
-        s_in = [sfd(p.stdout, sys.stdout),
-                sfd(p.stderr, sys.stderr)]
-
-        for s in s_in:
-          flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
-          fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
-
-        while s_in:
-          in_ready, _out_ready, _err_ready = select.select(s_in, [], [])
-          for s in in_ready:
-            buf = s.fd.read(4096)
-            if not buf:
-              s.fd.close()
-              s_in.remove(s)
-              continue
-
-            if not opt.verbose:
-              if s.fd != p.stdout:
-                errbuf += buf
-                continue
-
-            if empty:
-              if first:
-                first = False
-              else:
-                out.nl()
-
-              if mirror:
-                project_header_path = project.name
-              else:
-                project_header_path = project.relpath
-              out.project('project %s/', project_header_path)
-              out.nl()
-              out.flush()
-              if errbuf:
-                sys.stderr.write(errbuf)
-                sys.stderr.flush()
-                errbuf = ''
-              empty = False
-
-            s.dest.write(buf)
-            s.dest.flush()
-
-      r = p.wait()
-      if r != 0:
-        if r != rc:
-          rc = r
-        if opt.abort_on_errors:
-          print("error: %s: Aborting due to previous error" % project.relpath,
+    if self.jobs == 1:
+      for (cnt, project) in enumerate(projects):
+        if DoWork(self.SerialiseProject(project), mirror, opt, cmd, shell, cnt,
+                  first, out):
+          if opt.abort_on_errors:
+            print('error: %s: Aborting due to previous error' % project.relpath,
                 file=sys.stderr)
-          sys.exit(r)
-    if rc != 0:
-      sys.exit(rc)
+            break
+        if first:
+          first = False
+    else:
+      pool = multiprocessing.Pool(self.jobs)
+      args = [[self.SerialiseProject(p), mirror, opt, cmd, shell, cnt]
+              for (cnt, p) in enumerate(projects)]
+      try:
+        results = pool.map(DoWorkWrapper, args)
+        pool.close()
+      except KeyboardInterrupt:
+        print ('Interrupted - terminating the pool')
+        pool.terminate()
+      except Exception as e:
+        print ('Got exception %r, terminating the pool' % (e,))
+        pool.terminate()
+      finally:
+        pool.join()
+      for rc in results:
+        if rc != 0:
+          sys.exit(rc)
+
+
+class WorkerKeyboardInterrupt(Exception):
+  """ Keyboard interrupt exception for worker processes. """
+  pass
+
+
+def DoWorkWrapper(args):
+  """ A wrapper around the DoWork() method.
+
+  multiprocessing.Pool.map can only handle one argument for methods. Take
+  in the arguments as a single tuple and pass it to DoWork as the arguments.
+
+  Catch the KeyboardInterrupt exceptions here and re-raise them as a different,
+  ``Exception``-based exception to stop it flooding the console with stacktraces
+  and making the parent hang indefinitely.
+
+  """
+  try:
+    return DoWork(*args)
+  except KeyboardInterrupt:
+    print ('Worker interrupted')
+    raise WorkerKeyboardInterrupt()
+
+
+def DoWork(project, mirror, opt, cmd, shell, cnt, first=False, out=None):
+  env = os.environ.copy()
+  def setenv(name, val):
+    if val is None:
+      val = ''
+    env[name] = val.encode()
+
+  setenv('REPO_PROJECT', project['name'])
+  setenv('REPO_PATH', project['relpath'])
+  setenv('REPO_REMOTE', project['remote_name'])
+  setenv('REPO_LREV', project['lrev'])
+  setenv('REPO_RREV', project['rrev'])
+  setenv('REPO_I', str(cnt + 1))
+  for name in project['annotations']:
+    setenv("REPO__%s" % (name), project['annotations'][name])
+
+  if mirror:
+    setenv('GIT_DIR', project['gitdir'])
+    cwd = project['gitdir']
+  else:
+    cwd = project['worktree']
+
+  if not os.path.exists(cwd):
+    if (opt.project_header and opt.verbose) \
+    or not opt.project_header:
+      print('skipping %s/' % project['relpath'], file=sys.stderr)
+    return
+
+  if opt.project_header:
+    stdin = subprocess.PIPE
+    stdout = subprocess.PIPE
+    stderr = subprocess.PIPE
+  else:
+    stdin = None
+    stdout = None
+    stderr = None
+
+  p = subprocess.Popen(cmd,
+                       cwd = cwd,
+                       shell = shell,
+                       env = env,
+                       stdin = stdin,
+                       stdout = stdout,
+                       stderr = stderr)
+
+  if opt.project_header and opt.jobs == 1:
+    class sfd(object):
+      def __init__(self, fd, dest):
+        self.fd = fd
+        self.dest = dest
+      def fileno(self):
+        return self.fd.fileno()
+
+    empty = True
+    errbuf = ''
+
+    p.stdin.close()
+    s_in = [sfd(p.stdout, sys.stdout),
+            sfd(p.stderr, sys.stderr)]
+
+    for s in s_in:
+      flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
+      fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+
+    while s_in:
+      in_ready, _out_ready, _err_ready = select.select(s_in, [], [])
+      for s in in_ready:
+        buf = s.fd.read(4096)
+        if not buf:
+          s.fd.close()
+          s_in.remove(s)
+          continue
+
+        if not opt.verbose:
+          if s.fd != p.stdout:
+            errbuf += buf
+            continue
+
+        if empty and out:
+          if not first:
+            out.nl()
+
+          if mirror:
+            project_header_path = project['name']
+          else:
+            project_header_path = project['relpath']
+          out.project('project %s/', project_header_path)
+          out.nl()
+          out.flush()
+          if errbuf:
+            sys.stderr.write(errbuf)
+            sys.stderr.flush()
+            errbuf = ''
+          empty = False
+
+        s.dest.write(buf)
+        s.dest.flush()
+
+  r = p.wait()
+  return r
