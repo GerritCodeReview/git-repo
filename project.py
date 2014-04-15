@@ -1683,11 +1683,17 @@ class Project(object):
 
     is_sha1 = False
     tag_name = None
+    depth = None
 
-    if self.clone_depth:
-      depth = self.clone_depth
-    else:
-      depth = self.manifest.manifestProject.config.GetString('repo.depth')
+    # The depth should not be used when fetching to a mirror because
+    # it will result in a shallow repository that cannot be cloned or
+    # fetched from.
+    if not self.manifest.IsMirror:
+      if self.clone_depth:
+        depth = self.clone_depth
+      else:
+        depth = self.manifest.manifestProject.config.GetString('repo.depth')
+
     if depth:
       current_branch_only = True
 
