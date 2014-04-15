@@ -1684,7 +1684,9 @@ class Project(object):
     is_sha1 = False
     tag_name = None
 
-    if self.clone_depth:
+    if self.manifest.IsMirror:
+      depth = None
+    elif self.clone_depth:
       depth = self.clone_depth
     else:
       depth = self.manifest.manifestProject.config.GetString('repo.depth')
