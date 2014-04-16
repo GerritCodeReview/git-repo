@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d96e0bb0_13eccc32",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1688,
+      "author": {
+        "id": 1011557
+      },
+      "writtenOn": "2014-04-16T01:46:41Z",
+      "side": 1,
+      "message": "Why not just initialize `depth \u003d None` at line 1686?",
+      "revId": "539bd994db3bee780c2a6bdd1420d38e97d53109",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
