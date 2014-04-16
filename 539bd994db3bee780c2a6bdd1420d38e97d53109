@@ -16,6 +16,24 @@
       "revId": "539bd994db3bee780c2a6bdd1420d38e97d53109",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b949574f_12eccc32",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1688,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-04-16T01:58:55Z",
+      "side": 1,
+      "message": "Because it will then get overwritten in lines 1687-1690 (in the original code).\n\nIt needs to be None when using a mirror.\n\nI\u0027ll rework this to be a bit clearer.",
+      "parentUuid": "d96e0bb0_13eccc32",
+      "revId": "539bd994db3bee780c2a6bdd1420d38e97d53109",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
