@@ -231,6 +231,30 @@ class _CopyFile:
       except IOError:
         _error('Cannot copy file %s to %s', src, dest)
 
+class _LinkFile:
+  def __init__(self, src, dest, abssrc, absdest):
+    self.src = src
+    self.dest = dest
+    self.abs_src = abssrc
+    self.abs_dest = absdest
+
+  def _Link(self):
+    src = self.abs_src
+    dest = self.abs_dest
+    # link file if it does not exist or is out of date
+    if not os.path.islink(dest) or os.readlink(dest) != src:
+      try:
+        # remove existing file first, since it might be read-only
+        if os.path.exists(dest):
+          os.remove(dest)
+        else:
+          dest_dir = os.path.dirname(dest)
+          if not os.path.isdir(dest_dir):
+            os.makedirs(dest_dir)
+        os.symlink(src, dest)
+      except IOError:
+        _error('Cannot link file %s to %s', src, dest)
+
 class RemoteSpec(object):
   def __init__(self,
                name,
@@ -555,6 +579,7 @@ class Project(object):
 
     self.snapshots = {}
     self.copyfiles = []
+    self.linkfiles = []
     self.annotations = []
     self.config = GitConfig.ForRepository(
                     gitdir = self.gitdir,
@@ -1040,7 +1065,7 @@ class Project(object):
       except OSError as e:
         print("warn: Cannot remove archive %s: "
               "%s" % (tarpath, str(e)), file=sys.stderr)
-      self._CopyFiles()
+      self._CopyAndLinkFiles()
       return True
 
     if is_new is None:
@@ -1103,9 +1128,11 @@ class Project(object):
   def PostRepoUpgrade(self):
     self._InitHooks()
 
-  def _CopyFiles(self):
+  def _CopyAndLinkFiles(self):
     for copyfile in self.copyfiles:
       copyfile._Copy()
+    for linkfile in self.linkfiles:
+      linkfile._Link()
 
   def GetCommitRevisionId(self):
     """Get revisionId of a commit.
@@ -1152,7 +1179,7 @@ class Project(object):
 
     def _doff():
       self._FastForward(revid)
-      self._CopyFiles()
+      self._CopyAndLinkFiles()
 
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
@@ -1188,7 +1215,7 @@ class Project(object):
       except GitError as e:
         syncbuf.fail(self, e)
         return
-      self._CopyFiles()
+      self._CopyAndLinkFiles()
       return
 
     if head == revid:
@@ -1210,7 +1237,7 @@ class Project(object):
       except GitError as e:
         syncbuf.fail(self, e)
         return
-      self._CopyFiles()
+      self._CopyAndLinkFiles()
       return
 
     upstream_gain = self._revlist(not_rev(HEAD), revid)
@@ -1283,12 +1310,12 @@ class Project(object):
     if cnt_mine > 0 and self.rebase:
       def _dorebase():
         self._Rebase(upstream = '%s^1' % last_mine, onto = revid)
-        self._CopyFiles()
+        self._CopyAndLinkFiles()
       syncbuf.later2(self, _dorebase)
     elif local_changes:
       try:
         self._ResetHard(revid)
-        self._CopyFiles()
+        self._CopyAndLinkFiles()
       except GitError as e:
         syncbuf.fail(self, e)
         return
@@ -1300,6 +1327,12 @@ class Project(object):
     # make src an absolute path
     abssrc = os.path.join(self.worktree, src)
     self.copyfiles.append(_CopyFile(src, dest, abssrc, absdest))
+
+  def AddLinkFile(self, src, dest, absdest):
+    # dest should already be an absolute path, but src is project relative
+    # make src an absolute path
+    abssrc = os.path.join(self.worktree, src)
+    self.linkfiles.append(_LinkFile(src, dest, abssrc, absdest))
 
   def AddAnnotation(self, name, value, keep):
     self.annotations.append(_Annotation(name, value, keep))
@@ -2195,7 +2228,7 @@ class Project(object):
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError("cannot initialize work tree")
 
-      self._CopyFiles()
+      self._CopyAndLinkFiles()
 
   def _gitdir_path(self, path):
     return os.path.realpath(os.path.join(self.gitdir, path))
