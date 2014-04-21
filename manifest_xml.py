@@ -261,6 +261,12 @@ class XmlManifest(object):
         ce.setAttribute('dest', c.dest)
         e.appendChild(ce)
 
+      for l in p.linkfiles:
+        le = doc.createElement('linkfile')
+        le.setAttribute('src', l.src)
+        le.setAttribute('dest', l.dest)
+        e.appendChild(ce)
+
       default_groups = ['all', 'name:%s' % p.name, 'path:%s' % p.relpath]
       egroups = [g for g in p.groups if g not in default_groups]
       if egroups:
@@ -765,6 +771,8 @@ class XmlManifest(object):
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
         self._ParseCopyFile(project, n)
+      if n.nodeName == 'linkfile':
+        self._ParseLinkFile(project, n)
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
@@ -813,6 +821,14 @@ class XmlManifest(object):
       # src is project relative;
       # dest is relative to the top of the tree
       project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
+
+  def _ParseLinkFile(self, project, node):
+    src = self._reqatt(node, 'src')
+    dest = self._reqatt(node, 'dest')
+    if not self.IsMirror:
+      # src is project relative;
+      # dest is relative to the top of the tree
+      project.AddLinkFile(src, dest, os.path.join(self.topdir, dest))
 
   def _ParseAnnotation(self, project, node):
     name = self._reqatt(node, 'name')
