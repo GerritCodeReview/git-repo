@@ -2,6 +2,40 @@
   "comments": [
     {
       "key": {
+        "uuid": "85ba679a_4ad7335d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2014-04-21T23:07:37Z",
+      "side": 1,
+      "message": "IIRC the XML elements are documented in docs/manifest-format.txt. Fortunately copyfile is not documented as we discourage its use, so linkfile can also be undocumented? :-)",
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "65bf338d_49d7415d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2014-04-21T23:07:37Z",
+      "side": 1,
+      "message": "This isn\u0027t typical, is it leftover debugging?",
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05c59723_0ee14b37",
         "filename": "project.py",
         "patchSetId": 2
@@ -18,6 +52,53 @@
         "startChar": 32,
         "endLine": 246,
         "endChar": 34
+      },
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "85ba679a_6adc7780",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2014-04-21T23:07:37Z",
+      "side": 1,
+      "message": "not islink(dest) should be able to replace the not exists(dest) test in the first part of the conditional",
+      "parentUuid": "05c59723_0ee14b37",
+      "range": {
+        "startLine": 246,
+        "startChar": 32,
+        "endLine": 246,
+        "endChar": 34
+      },
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "65bf338d_69dc8580",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2014-04-21T23:07:37Z",
+      "side": 1,
+      "message": "os.readlink(dest) !\u003d self.src ?",
+      "range": {
+        "startLine": 246,
+        "startChar": 35,
+        "endLine": 246,
+        "endChar": 68
       },
       "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
