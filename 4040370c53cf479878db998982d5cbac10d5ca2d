@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a5cbeb3b_2bfd19d6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 1000678
+      },
+      "writtenOn": "2014-04-22T15:29:04Z",
+      "side": 1,
+      "message": "If copyfile isn\u0027t documented we probably shouldn\u0027t document linkfile :)",
+      "parentUuid": "85ba679a_4ad7335d",
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "65bf338d_49d7415d",
         "filename": "project.py",
         "patchSetId": 2
@@ -106,6 +124,30 @@
     },
     {
       "key": {
+        "uuid": "c5ce1f4b_0cf877e5",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000678
+      },
+      "writtenOn": "2014-04-22T15:29:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85ba679a_6adc7780",
+      "range": {
+        "startLine": 246,
+        "startChar": 32,
+        "endLine": 246,
+        "endChar": 34
+      },
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05c59723_4ed7535d",
         "filename": "project.py",
         "patchSetId": 2
@@ -117,6 +159,30 @@
       "writtenOn": "2014-04-21T22:28:00Z",
       "side": 1,
       "message": "Debug output...",
+      "range": {
+        "startLine": 1133,
+        "startChar": 4,
+        "endLine": 1133,
+        "endChar": 39
+      },
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5cbeb3b_cb11f574",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 1000678
+      },
+      "writtenOn": "2014-04-22T15:29:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05c59723_4ed7535d",
       "range": {
         "startLine": 1133,
         "startChar": 4,
@@ -152,6 +218,30 @@
     },
     {
       "key": {
+        "uuid": "c5ce1f4b_2cfd33d6",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1137,
+      "author": {
+        "id": 1000678
+      },
+      "writtenOn": "2014-04-22T15:29:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5c1631a_4dd7595d",
+      "range": {
+        "startLine": 1137,
+        "startChar": 6,
+        "endLine": 1137,
+        "endChar": 19
+      },
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "05c59723_6edc8f80",
         "filename": "project.py",
         "patchSetId": 2
@@ -163,6 +253,30 @@
       "writtenOn": "2014-04-21T22:28:00Z",
       "side": 1,
       "message": "Debug output...",
+      "range": {
+        "startLine": 1338,
+        "startChar": 4,
+        "endLine": 1338,
+        "endChar": 53
+      },
+      "revId": "4040370c53cf479878db998982d5cbac10d5ca2d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5ce1f4b_cc110f75",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1338,
+      "author": {
+        "id": 1000678
+      },
+      "writtenOn": "2014-04-22T15:29:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05c59723_6edc8f80",
       "range": {
         "startLine": 1338,
         "startChar": 4,
