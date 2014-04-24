@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "05df5724_fe1fa174",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-04-24T21:26:25Z",
+      "side": 1,
+      "message": "So 0 autocomputes the number of threads?  We should add that in the -j help.  Also, I don\u0027t think this matches up with the -j behavior we have in sync, so maybe it\u0027d be best to leave out the auto feature for now.",
+      "revId": "3f46fc09e65e28a8c2ef6b352b50dd114100df80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e589633b_2ddc8d7f",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-04-24T21:26:25Z",
+      "side": 1,
+      "message": "Personally, I\u0027d prefer to not special case -j\u003d1.  Can we not guarantee ordering using the multiprocessing pool?",
+      "revId": "3f46fc09e65e28a8c2ef6b352b50dd114100df80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
