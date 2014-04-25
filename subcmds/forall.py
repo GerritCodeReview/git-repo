@@ -124,6 +124,9 @@ without iterating through the remaining projects.
     p.add_option('-e', '--abort-on-errors',
                  dest='abort_on_errors', action='store_true',
                  help='Abort if a command exits unsuccessfully')
+    p.add_option('-x', '--executor',
+                 dest='executor', action='store', default=None,
+                 help='Set the path of the executor for the command')
 
     g = p.add_option_group('Output')
     g.add_option('-p',
@@ -186,6 +189,14 @@ without iterating through the remaining projects.
 
     os.environ['REPO_COUNT'] = str(len(projects))
 
+    exe = None
+    if opt.executor:
+      exe = opt.executor
+      if subprocess.call(['which', exe], stdout=open(os.devnull, 'wb')):
+        if opt.verbose:
+          print('warning: %s: unkown executable' % exe, file=sys.stderr)
+        exe = None
+
     for (cnt, project) in enumerate(projects):
       env = os.environ.copy()
       def setenv(name, val):
@@ -227,6 +238,7 @@ without iterating through the remaining projects.
                            cwd = cwd,
                            shell = shell,
                            env = env,
+                           executable = exe,
                            stdin = stdin,
                            stdout = stdout,
                            stderr = stderr)
