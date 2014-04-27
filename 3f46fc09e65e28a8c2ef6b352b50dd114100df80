@@ -33,6 +33,24 @@
       "revId": "3f46fc09e65e28a8c2ef6b352b50dd114100df80",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "656f3377_49eb4118",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1016007
+      },
+      "writtenOn": "2014-04-27T14:52:01Z",
+      "side": 1,
+      "message": "Implementing the behaviour of abort_on_errors will be a bit more complicated than just calling Pool.map(). I kept the -j\u003d1 behave the same as before. I could change it to use apply_async which allows us to parse callback.",
+      "parentUuid": "e589633b_2ddc8d7f",
+      "revId": "3f46fc09e65e28a8c2ef6b352b50dd114100df80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
