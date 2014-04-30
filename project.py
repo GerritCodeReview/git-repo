@@ -2186,7 +2186,7 @@ class Project(object):
     symlink_dirs = ['hooks', 'objects', 'rr-cache', 'svn']
     if share_refs:
       # These objects can only be used by a single working tree.
-      symlink_files += ['config', 'packed-refs']
+      symlink_files += ['config', 'packed-refs', 'shallow']
       symlink_dirs += ['logs', 'refs']
     to_symlink = symlink_files + symlink_dirs
 
