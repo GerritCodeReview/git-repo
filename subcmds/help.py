@@ -55,7 +55,7 @@ Displays detailed usage information about a command.
     print('usage: repo COMMAND [ARGS]')
     print('The most commonly used repo commands are:')
     commandNames = list(sorted([name
-                    for name, command in self.commands.items()
+                    for name, command in list(self.commands.items())
                     if command.common]))
 
     maxlen = 0
