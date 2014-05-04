@@ -289,7 +289,7 @@ class XmlManifest(object):
         subprojects = set(subp.name for subp in p.subprojects)
         output_projects(p, e, list(sorted(subprojects)))
 
-    projects = set(p.name for p in self._paths.values() if not p.parent)
+    projects = set(p.name for p in list(self._paths.values()) if not p.parent)
     output_projects(None, root, list(sorted(projects)))
 
     if self._repo_hooks_project:
@@ -310,7 +310,7 @@ class XmlManifest(object):
   @property
   def projects(self):
     self._Load()
-    return self._paths.values()
+    return list(self._paths.values())
 
   @property
   def remotes(self):
@@ -872,9 +872,9 @@ class XmlManifest(object):
     fromProjects = self.paths
     toProjects = manifest.paths
 
-    fromKeys = fromProjects.keys()
+    fromKeys = list(fromProjects.keys())
     fromKeys.sort()
-    toKeys = toProjects.keys()
+    toKeys = list(toProjects.keys())
     toKeys.sort()
 
     diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
