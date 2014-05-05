@@ -310,7 +310,7 @@ class XmlManifest(object):
   @property
   def projects(self):
     self._Load()
-    return self._paths.values()
+    return list(self._paths.values())
 
   @property
   def remotes(self):
