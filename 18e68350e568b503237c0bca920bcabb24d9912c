@@ -16,6 +16,29 @@
       "revId": "18e68350e568b503237c0bca920bcabb24d9912c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0aae8465_06ca9a80",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-05T23:03:24Z",
+      "side": 1,
+      "message": "affects this",
+      "range": {
+        "startLine": 259,
+        "startChar": 43,
+        "endLine": 259,
+        "endChar": 44
+      },
+      "revId": "18e68350e568b503237c0bca920bcabb24d9912c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
