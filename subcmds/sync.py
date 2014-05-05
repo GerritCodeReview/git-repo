@@ -810,7 +810,7 @@ class _FetchTimes(object):
     try:
       f = open(self._path, 'wb')
       try:
-        pickle.dump(self._times, f)
+        pickle.dump(self._times, f, protocol=2)
       except (IOError, OSError, pickle.PickleError):
         try:
           os.remove(self._path)

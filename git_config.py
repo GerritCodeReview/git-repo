@@ -283,7 +283,7 @@ class GitConfig(object):
     try:
       fd = open(self._pickle, 'wb')
       try:
-        pickle.dump(cache, fd, pickle.HIGHEST_PROTOCOL)
+        pickle.dump(cache, fd, protocol=2)
       finally:
         fd.close()
     except IOError:
