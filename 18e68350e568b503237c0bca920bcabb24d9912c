@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ab4fcaf_c8856f48",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-05T22:55:02Z",
+      "side": 1,
+      "message": "What does this affect?",
+      "revId": "18e68350e568b503237c0bca920bcabb24d9912c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
