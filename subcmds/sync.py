@@ -314,7 +314,7 @@ later is required to fix a server side protocol bug.
     threads = set()
     sem = _threading.Semaphore(self.jobs)
     err_event = _threading.Event()
-    for project_list in objdir_project_map.values():
+    for project_list in list(objdir_project_map.values()):
       # Check for any errors before running any more tasks.
       # ...we'll let existing threads finish, though.
       if err_event.isSet() and not opt.force_broken:
@@ -367,7 +367,7 @@ later is required to fix a server side protocol bug.
     jobs = min(self.jobs, cpu_count)
 
     if jobs < 2:
-      for bare_git in gitdirs.values():
+      for bare_git in list(gitdirs.values()):
         bare_git.gc('--auto')
       return
 
@@ -389,7 +389,7 @@ later is required to fix a server side protocol bug.
       finally:
         sem.release()
 
-    for bare_git in gitdirs.values():
+    for bare_git in list(gitdirs.values()):
       if err_event.isSet():
         break
       sem.acquire()

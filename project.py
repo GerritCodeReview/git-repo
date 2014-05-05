@@ -686,7 +686,7 @@ class Project(object):
     all_refs = self._allrefs
     heads = {}
 
-    for name, ref_id in all_refs.items():
+    for name, ref_id in list(all_refs.items()):
       if name.startswith(R_HEADS):
         name = name[len(R_HEADS):]
         b = self.GetBranch(name)
@@ -695,7 +695,7 @@ class Project(object):
         b.revision = ref_id
         heads[name] = b
 
-    for name, ref_id in all_refs.items():
+    for name, ref_id in list(all_refs.items()):
       if name.startswith(R_PUB):
         name = name[len(R_PUB):]
         b = heads.get(name)
@@ -797,8 +797,8 @@ class Project(object):
       out.nl()
 
     paths = list()
-    paths.extend(di.keys())
-    paths.extend(df.keys())
+    paths.extend(list(di.keys()))
+    paths.extend(list(df.keys()))
     paths.extend(do)
 
     for p in sorted(set(paths)):
@@ -893,13 +893,13 @@ class Project(object):
       all_refs = self._allrefs
     heads = set()
     canrm = {}
-    for name, ref_id in all_refs.items():
+    for name, ref_id in list(all_refs.items()):
       if name.startswith(R_HEADS):
         heads.add(name)
       elif name.startswith(R_PUB):
         canrm[name] = ref_id
 
-    for name, ref_id in canrm.items():
+    for name, ref_id in list(canrm.items()):
       n = name[len(R_PUB):]
       if R_HEADS + n not in heads:
         self.bare_git.DeleteRef(name, ref_id)
@@ -910,14 +910,14 @@ class Project(object):
     heads = {}
     pubed = {}
 
-    for name, ref_id in self._allrefs.items():
+    for name, ref_id in list(self._allrefs.items()):
       if name.startswith(R_HEADS):
         heads[name[len(R_HEADS):]] = ref_id
       elif name.startswith(R_PUB):
         pubed[name[len(R_PUB):]] = ref_id
 
     ready = []
-    for branch, ref_id in heads.items():
+    for branch, ref_id in list(heads.items()):
       if branch in pubed and pubed[branch] == ref_id:
         continue
       if selected_branch and branch != selected_branch:
@@ -1481,7 +1481,7 @@ class Project(object):
     cb = self.CurrentBranch
     kill = []
     left = self._allrefs
-    for name in left.keys():
+    for name in list(left.keys()):
       if name.startswith(R_HEADS):
         name = name[len(R_HEADS):]
         if cb is None or name != cb:
@@ -1756,7 +1756,7 @@ class Project(object):
         ids = set(all_refs.values())
         tmp = set()
 
-        for r, ref_id in GitRefs(ref_dir).all.items():
+        for r, ref_id in list(GitRefs(ref_dir).all.items()):
           if r not in all_refs:
             if r.startswith(R_TAGS) or remote.WritesTo(r):
               all_refs[r] = ref_id
@@ -2465,7 +2465,7 @@ class Project(object):
           if not git_require((1, 7, 2)):
             raise ValueError('cannot set config on command line for %s()'
                              % name)
-          for k, v in config.items():
+          for k, v in list(config.items()):
             cmdv.append('-c')
             cmdv.append('%s=%s' % (k, v))
         cmdv.append(name)
