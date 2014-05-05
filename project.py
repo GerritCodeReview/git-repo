@@ -438,7 +438,11 @@ class RepoHook(object):
       # and  convert to a HookError w/ just the failing traceback.
       context = {}
       try:
-        execfile(self._script_fullpath, context)
+        if is_python3():
+          exec(compile(open(self._script_fullpath).read(),
+                       self._script_fullpath, 'exec'), context)
+        else:
+          execfile(self._script_fullpath, context)
       except Exception:
         raise HookError('%s\nFailed to import %s hook; see traceback above.' % (
                         traceback.format_exc(), self._hook_type))
