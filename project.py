@@ -2321,8 +2321,8 @@ class Project(object):
           out = iter(out[:-1].split('\0'))  # pylint: disable=W1401
           while out:
             try:
-              info = out.next()
-              path = out.next()
+              info = next(out)
+              path = next(out)
             except StopIteration:
               break
 
@@ -2348,7 +2348,7 @@ class Project(object):
             info = _Info(path, *info)
             if info.status in ('R', 'C'):
               info.src_path = info.path
-              info.path = out.next()
+              info.path = next(out)
             r[info.path] = info
         return r
       finally:
