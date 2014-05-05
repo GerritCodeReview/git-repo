@@ -310,7 +310,7 @@ class XmlManifest(object):
   @property
   def projects(self):
     self._Load()
-    return self._paths.values()
+    return list(self._paths.values())
 
   @property
   def remotes(self):
@@ -872,9 +872,9 @@ class XmlManifest(object):
     fromProjects = self.paths
     toProjects = manifest.paths
 
-    fromKeys = fromProjects.keys()
+    fromKeys = list(fromProjects.keys())
     fromKeys.sort()
-    toKeys = toProjects.keys()
+    toKeys = list(toProjects.keys())
     toKeys.sort()
 
     diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
