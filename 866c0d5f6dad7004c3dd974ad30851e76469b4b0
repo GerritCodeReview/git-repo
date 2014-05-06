@@ -51,6 +51,24 @@
       "revId": "866c0d5f6dad7004c3dd974ad30851e76469b4b0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0aae8465_86bd2af4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-06T00:22:52Z",
+      "side": 1,
+      "message": "I think sorted(dict_keys) will work, which removes the need for converting it to a list. Will test when I\u0027m able to.\n\nIf it works, then another commit could be made if you want me to, and focus this commit on the projects function.",
+      "parentUuid": "6ad620dd_b1bae0f7",
+      "revId": "866c0d5f6dad7004c3dd974ad30851e76469b4b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
