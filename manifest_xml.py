@@ -63,12 +63,14 @@ class _XmlRemote(object):
                alias=None,
                fetch=None,
                manifestUrl=None,
-               review=None):
+               review=None,
+               revision=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
     self.remoteAlias = alias
     self.reviewUrl = review
+    self.revision = revision
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
   def __eq__(self, other):
@@ -159,6 +161,8 @@ class XmlManifest(object):
       e.setAttribute('alias', r.remoteAlias)
     if r.reviewUrl is not None:
       e.setAttribute('review', r.reviewUrl)
+    if r.revision is not None:
+      e.setAttribute('revision', r.revision)
 
   def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
@@ -240,7 +244,8 @@ class XmlManifest(object):
       if d.remote:
         remoteName = d.remote.remoteAlias or d.remote.name
       if not d.remote or p.remote.name != remoteName:
-        e.setAttribute('remote', p.remote.name)
+        remoteName = p.remote.name
+        e.setAttribute('remote', remoteName)
       if peg_rev:
         if self.IsMirror:
           value = p.bare_git.rev_parse(p.revisionExpr + '^0')
@@ -252,8 +257,10 @@ class XmlManifest(object):
           # isn't our value, and the if the default doesn't already have that
           # covered.
           e.setAttribute('upstream', p.revisionExpr)
-      elif not d.revisionExpr or p.revisionExpr != d.revisionExpr:
-        e.setAttribute('revision', p.revisionExpr)
+      else:
+        revision = self.remotes[remoteName].revision or d.revisionExpr
+        if not revision or revision != p.revisionExpr:
+          e.setAttribute('revision', p.revisionExpr)
 
       for c in p.copyfiles:
         ce = doc.createElement('copyfile')
@@ -592,8 +599,11 @@ class XmlManifest(object):
     review = node.getAttribute('review')
     if review == '':
       review = None
+    revision = node.getAttribute('revision')
+    if revision == '':
+      revision = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, manifestUrl, review)
+    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision)
 
   def _ParseDefault(self, node):
     """
@@ -686,7 +696,7 @@ class XmlManifest(object):
       raise ManifestParseError("no remote for project %s within %s" %
             (name, self.manifestFile))
 
-    revisionExpr = node.getAttribute('revision')
+    revisionExpr = node.getAttribute('revision') or remote.revision
     if not revisionExpr:
       revisionExpr = self._default.revisionExpr
     if not revisionExpr:
