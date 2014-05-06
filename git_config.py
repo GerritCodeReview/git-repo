@@ -15,8 +15,8 @@
 
 from __future__ import print_function
 
+import json
 import os
-import pickle
 import re
 import subprocess
 import sys
@@ -80,7 +80,7 @@ class GitConfig(object):
     return cls(configfile = os.path.join(gitdir, 'config'),
                defaults = defaults)
 
-  def __init__(self, configfile, defaults=None, pickleFile=None):
+  def __init__(self, configfile, defaults=None, jsonFile=None):
     self.file = configfile
     self.defaults = defaults
     self._cache_dict = None
@@ -88,12 +88,11 @@ class GitConfig(object):
     self._remotes = {}
     self._branches = {}
 
-    if pickleFile is None:
-      self._pickle = os.path.join(
+    self._json = jsonFile
+    if self._json is None:
+      self._json = os.path.join(
         os.path.dirname(self.file),
-        '.repopickle_' + os.path.basename(self.file))
-    else:
-      self._pickle = pickleFile
+        '.repo_' + os.path.basename(self.file) + '.json')
 
   def Has(self, name, include_defaults = True):
     """Return true if this configuration file has the key.
@@ -248,50 +247,41 @@ class GitConfig(object):
     return self._cache_dict
 
   def _Read(self):
-    d = self._ReadPickle()
+    d = self._ReadJson()
     if d is None:
       d = self._ReadGit()
-      self._SavePickle(d)
+      self._SaveJson(d)
     return d
 
-  def _ReadPickle(self):
+  def _ReadJson(self):
     try:
-      if os.path.getmtime(self._pickle) \
+      if os.path.getmtime(self._json) \
       <= os.path.getmtime(self.file):
-        os.remove(self._pickle)
+        os.remove(self._json)
         return None
     except OSError:
       return None
     try:
-      Trace(': unpickle %s', self.file)
-      fd = open(self._pickle, 'rb')
+      Trace(': loading %s', self.file)
+      fd = open(self._json)
       try:
-        return pickle.load(fd)
+        return json.load(fd)
       finally:
         fd.close()
-    except EOFError:
-      os.remove(self._pickle)
-      return None
-    except IOError:
-      os.remove(self._pickle)
-      return None
-    except pickle.PickleError:
-      os.remove(self._pickle)
+    except (IOError, ValueError):
+      os.remove(self._json)
       return None
 
-  def _SavePickle(self, cache):
+  def _SaveJson(self, cache):
     try:
-      fd = open(self._pickle, 'wb')
+      fd = open(self._json, 'w')
       try:
-        pickle.dump(cache, fd, pickle.HIGHEST_PROTOCOL)
+        json.dump(cache, fd, indent=2)
       finally:
         fd.close()
-    except IOError:
-      if os.path.exists(self._pickle):
-        os.remove(self._pickle)
-    except pickle.PickleError:
-      if os.path.exists(self._pickle):
-        os.remove(self._pickle)
+    except (IOError, TypeError):
+      if os.path.exists(self.json):
+        os.remove(self._json)
 
   def _ReadGit(self):
     """
