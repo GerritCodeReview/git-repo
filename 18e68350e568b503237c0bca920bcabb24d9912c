@@ -39,6 +39,30 @@
       "revId": "18e68350e568b503237c0bca920bcabb24d9912c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ad620dd_71c55871",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-06T00:00:01Z",
+      "side": 1,
+      "message": "I think it might make more sense here to just always call x.encode(\u0027utf-8\u0027) regardless if x is unicode...when would that mess anything up?\n\nHere is the change:\n605a9a487bba6e25fb48d4e3076c89b7f686517a\nI46447f489a4b9760a5899c7ba9d764b688594e46",
+      "parentUuid": "0aae8465_06ca9a80",
+      "range": {
+        "startLine": 259,
+        "startChar": 43,
+        "endLine": 259,
+        "endChar": 44
+      },
+      "revId": "18e68350e568b503237c0bca920bcabb24d9912c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
