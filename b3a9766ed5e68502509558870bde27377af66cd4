@@ -34,6 +34,24 @@
       "revId": "b3a9766ed5e68502509558870bde27377af66cd4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4ab4fcaf_686003de",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2320,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-06T00:04:24Z",
+      "side": 1,
+      "message": "I think it should be just one big loop.\n\nfor info in out[:-1].split(\u0027\\0\u0027):\n    omode, nmode, oid, nid, state \u003d info[:1].split()\n    # Other modifications to the variables currently being\n    # done in the class.\n    if info.status in (\u0027R\u0027, \u0027C\u0027):\n       # ...\nreturn r",
+      "parentUuid": "0aae8465_26cf9691",
+      "revId": "b3a9766ed5e68502509558870bde27377af66cd4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
