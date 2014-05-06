@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ad620dd_d108c4f7",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-06T18:19:18Z",
+      "side": 1,
+      "message": "Is this necessary though?  Would anything bad happen if we encode to utf-8?  Also, it looks like this exists to make sure that we aren\u0027t using utf-16 or something else, in which case we would definitely want to keep this even in python3.",
+      "revId": "2d67f6bd4f0ba004709971cc120ab845bc13f6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
