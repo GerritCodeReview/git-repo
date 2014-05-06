@@ -14,10 +14,10 @@
 # limitations under the License.
 
 from __future__ import print_function
+import json
 import netrc
 from optparse import SUPPRESS_HELP
 import os
-import pickle
 import re
 import shutil
 import socket
@@ -760,7 +760,7 @@ class _FetchTimes(object):
   _ALPHA = 0.5
 
   def __init__(self, manifest):
-    self._path = os.path.join(manifest.repodir, '.repopickle_fetchtimes')
+    self._path = os.path.join(manifest.repodir, '.repo_fetchtimes.json')
     self._times = None
     self._seen = set()
 
@@ -779,22 +779,19 @@ class _FetchTimes(object):
   def _Load(self):
     if self._times is None:
       try:
-        f = open(self._path, 'rb')
+        f = open(self._path)
       except IOError:
         self._times = {}
-        return self._times
+        return
       try:
+        self._times = json.load(f)
+      except (IOError, ValueError):
         try:
-          self._times = pickle.load(f)
-        except IOError:
-          try:
-            os.remove(self._path)
-          except OSError:
-            pass
-          self._times = {}
-      finally:
-        f.close()
-    return self._times
+          os.remove(self._path)
+        except OSError:
+          pass
+        self._times = {}
+      f.close()
 
   def Save(self):
     if self._times is None:
@@ -807,14 +804,12 @@ class _FetchTimes(object):
     for name in to_delete:
       del self._times[name]
 
+    f = open(self._path, 'w')
     try:
-      f = open(self._path, 'wb')
+      json.dump(self._times, f, indent=2)
+    except (IOError, TypeError):
       try:
-        pickle.dump(self._times, f)
-      except (IOError, OSError, pickle.PickleError):
-        try:
-          os.remove(self._path)
-        except OSError:
-          pass
-    finally:
-      f.close()
+        os.remove(self._path)
+      except OSError:
+        pass
+    f.close()
