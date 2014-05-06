@@ -872,10 +872,8 @@ class XmlManifest(object):
     fromProjects = self.paths
     toProjects = manifest.paths
 
-    fromKeys = fromProjects.keys()
-    fromKeys.sort()
-    toKeys = toProjects.keys()
-    toKeys.sort()
+    fromKeys = sorted(fromProjects.keys())
+    toKeys = sorted(toProjects.keys())
 
     diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
 
