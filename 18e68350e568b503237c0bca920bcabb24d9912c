@@ -63,6 +63,24 @@
       "revId": "18e68350e568b503237c0bca920bcabb24d9912c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0aae8465_c69c828e",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-06T08:14:07Z",
+      "side": 1,
+      "message": "I\u0027ve been reading up on this. It seems x should always be unicode if you\u0027re using python3, however with python 2, it should only be unicode if it\u0027s actually needed.\n\nas utf-8 is the standard for python3, I don\u0027t think encoding needs to actually happen. \n\nI will block this routine from happening if running if using python3",
+      "parentUuid": "6ad620dd_71c55871",
+      "revId": "18e68350e568b503237c0bca920bcabb24d9912c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
