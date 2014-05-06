@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4ab4fcaf_88e9b7cd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 797,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-06T20:47:16Z",
+      "side": 0,
+      "message": "Isn\u0027t this line needed?",
+      "revId": "666d534636d262cbfd971509dd0f0be0cddb2e11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
