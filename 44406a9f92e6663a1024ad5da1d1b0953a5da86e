@@ -68,6 +68,24 @@
       "revId": "44406a9f92e6663a1024ad5da1d1b0953a5da86e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "caa70c89_2470f25c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 604,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-07T08:23:07Z",
+      "side": 1,
+      "message": "no stripping happens.\n\nShouldn\u0027t stripping be done for the other attributes then?",
+      "parentUuid": "6ad620dd_f1e4e8b7",
+      "revId": "44406a9f92e6663a1024ad5da1d1b0953a5da86e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
