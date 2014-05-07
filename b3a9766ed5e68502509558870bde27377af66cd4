@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "4ab4fcaf_888537f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-05-07T04:19:47Z",
+      "side": 1,
+      "message": "nit: wrap this line at around 70 chars.",
+      "revId": "b3a9766ed5e68502509558870bde27377af66cd4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4ab4fcaf_a837dbf9",
         "filename": "project.py",
         "patchSetId": 3
