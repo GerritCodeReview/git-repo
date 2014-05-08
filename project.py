@@ -259,10 +259,12 @@ class RemoteSpec(object):
   def __init__(self,
                name,
                url = None,
-               review = None):
+               review = None,
+               revision = None):
     self.name = name
     self.url = url
     self.review = review
+    self.revision = revision
 
 class RepoHook(object):
   """A RepoHook contains information about a script to run as a hook.
@@ -1658,7 +1660,8 @@ class Project(object):
 
       remote = RemoteSpec(self.remote.name,
                           url = url,
-                          review = self.remote.review)
+                          review = self.remote.review,
+                          revision = self.remote.revision)
       subproject = Project(manifest = self.manifest,
                            name = name,
                            remote = remote,

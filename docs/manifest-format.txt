@@ -35,6 +35,7 @@ following DTD:
     <!ATTLIST remote alias        CDATA #IMPLIED>
     <!ATTLIST remote fetch        CDATA #REQUIRED>
     <!ATTLIST remote review       CDATA #IMPLIED>
+    <!ATTLIST remote revision     CDATA #IMPLIED>
 
     <!ELEMENT default (EMPTY)>
     <!ATTLIST default remote      IDREF #IMPLIED>
@@ -111,6 +112,10 @@ form the actual URL used to clone the project.
 Attribute `review`: Hostname of the Gerrit server where reviews
 are uploaded to by `repo upload`.  This attribute is optional;
 if not specified then `repo upload` will not function.
+
+Attribute `revision`: Name of a Git branch (e.g. `master` or
+`refs/heads/master`). Remotes with their own revision will override
+the default revision.
 
 Element default
 ---------------
@@ -208,7 +213,8 @@ to track for this project.  Names can be relative to refs/heads
 (e.g. just "master") or absolute (e.g. "refs/heads/master").
 Tags and/or explicit SHA-1s should work in theory, but have not
 been extensively tested.  If not supplied the revision given by
-the default element is used.
+the remote element is used if applicable, else the default
+element is used.
 
 Attribute `dest-branch`: Name of a Git branch (e.g. `master`).
 When using `repo upload`, changes will be submitted for code
