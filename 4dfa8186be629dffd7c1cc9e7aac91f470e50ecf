@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "0aae8465_262a3604",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-08T09:25:32Z",
+      "side": 1,
+      "message": "include_root \u003d os.path.join(include_root, dirName)\n\notherwise the file is looked for in the root dir",
+      "revId": "4dfa8186be629dffd7c1cc9e7aac91f470e50ecf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "caa70c89_845f669e",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -13,6 +30,24 @@
       "writtenOn": "2014-05-08T07:03:04Z",
       "side": 1,
       "message": "I\u0027m confused as to why this is needed, as this is supposed to be relative to the source tree, not manifest",
+      "revId": "4dfa8186be629dffd7c1cc9e7aac91f470e50ecf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "caa70c89_242a3204",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 847,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-08T09:25:32Z",
+      "side": 1,
+      "message": "sorry I misunderstood the commit message. I get it now",
+      "parentUuid": "caa70c89_845f669e",
       "revId": "4dfa8186be629dffd7c1cc9e7aac91f470e50ecf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
