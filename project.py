@@ -1706,6 +1706,7 @@ class Project(object):
     if command.Wait() != 0:
       raise GitError('git archive %s: %s' % (self.name, command.stderr))
 
+
   def _RemoteFetch(self, name=None,
                    current_branch_only=False,
                    initial=False,
@@ -1808,19 +1809,30 @@ class Project(object):
     else:
       cmd.append('--tags')
 
+    spec = []
     if not current_branch_only:
       # Fetch whole repo
-      cmd.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
+      spec.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
     elif tag_name is not None:
-      cmd.append('tag')
-      cmd.append(tag_name)
+      spec.append('tag')
+      spec.append(tag_name)
     else:
       branch = self.revisionExpr
       if is_sha1:
         branch = self.upstream
       if branch.startswith(R_HEADS):
         branch = branch[len(R_HEADS):]
-      cmd.append(str((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch)))
+      spec.append(str((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch)))
+    cmd.extend(spec)
+
+    shallowfetch = self.config.GetString('repo.shallowfetch')
+    if shallowfetch and shallowfetch != ' '.join(spec):
+      GitCommand(self, ['fetch', '--unshallow', name] + shallowfetch.split(),
+                 bare=True, ssh_proxy=ssh_proxy).Wait()
+    if depth:
+        self.config.SetString('repo.shallowfetch', ' '.join(spec))
+    else:
+        self.config.SetString('repo.shallowfetch', None)
 
     ok = False
     for _i in range(2):
@@ -2204,6 +2216,14 @@ class Project(object):
         # If the source dir doesn't exist, create an empty dir.
         if name in symlink_dirs and not os.path.lexists(src):
           os.makedirs(src)
+
+        # If the source file doesn't exist, ensure the destination
+        # file doesn't either.
+        if name in symlink_files and not os.path.lexists(src):
+          try:
+            os.remove(dst)
+          except OSError:
+            pass
 
         if name in to_symlink:
           os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
