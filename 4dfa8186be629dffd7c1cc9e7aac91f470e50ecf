@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4a8b1c70_f0c46077",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-05-12T09:06:22Z",
+      "side": 1,
+      "message": "Actually no, include_root is the path where the manifests will be checked for (.repo/manifest or .repo for local manifest). dir_name\u0027s purpose is not to look for manifests in a specific directory, but to checkout projects from the included manifest in the specified directory.",
+      "parentUuid": "0aae8465_262a3604",
+      "revId": "4dfa8186be629dffd7c1cc9e7aac91f470e50ecf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "caa70c89_845f669e",
         "filename": "manifest_xml.py",
         "patchSetId": 5
