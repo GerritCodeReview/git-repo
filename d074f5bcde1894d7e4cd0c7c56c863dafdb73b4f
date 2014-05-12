@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "ea713054_0d2231c2",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-12T21:36:46Z",
+      "side": 1,
+      "message": "I\u0027d prefer SerializeProject\n\nAlso, I think this should be _SerializeProject",
+      "range": {
+        "startLine": 144,
+        "startChar": 6,
+        "endLine": 144,
+        "endChar": 22
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ea713054_2d1fed76",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-12T21:36:46Z",
+      "side": 1,
+      "message": "You could also do:\ndict((a.name, a.value) for a in project.annotations)\n\nIf you wanted.",
+      "range": {
+        "startLine": 161,
+        "startChar": 21,
+        "endLine": 161,
+        "endChar": 32
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ea713054_cd4c2988",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-12T21:36:46Z",
+      "side": 1,
+      "message": "parens not needed here",
+      "range": {
+        "startLine": 214,
+        "startChar": 8,
+        "endLine": 214,
+        "endChar": 16
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2a90a898_cf717dbe",
         "filename": "subcmds/forall.py",
         "patchSetId": 7
@@ -19,6 +88,52 @@
     },
     {
       "key": {
+        "uuid": "ea713054_ed51e520",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-12T21:36:46Z",
+      "side": 1,
+      "message": "Have you verified that we are guaranteed these will be run in the order they are called if jobs\u003d1?",
+      "range": {
+        "startLine": 220,
+        "startChar": 6,
+        "endLine": 220,
+        "endChar": 48
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ea713054_8d462164",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-12T21:36:46Z",
+      "side": 1,
+      "message": "Bug here.  A successful execution after an error will cause rc to be 0 when it should be non-zero.\n\nYou can replace this if statement with: rc \u003d rc or r",
+      "range": {
+        "startLine": 228,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 16
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2a90a898_4fb4ad10",
         "filename": "subcmds/forall.py",
         "patchSetId": 7
@@ -30,6 +145,29 @@
       "writtenOn": "2014-05-12T10:01:50Z",
       "side": 1,
       "message": "If an exception happens, rc is 0",
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ea713054_4d41194a",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-12T21:36:46Z",
+      "side": 1,
+      "message": "Do we ever catch this anywhere?  Also, could you explain when this keyboard interrupt would be hit vs the one on line 232?  When someone does a keyboard interrupt on one worker, wouldn\u0027t we want the whole pool to terminate?",
+      "range": {
+        "startLine": 262,
+        "startChar": 4,
+        "endLine": 262,
+        "endChar": 35
+      },
       "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
