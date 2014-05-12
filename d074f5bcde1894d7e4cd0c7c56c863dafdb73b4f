@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2a90a898_cf717dbe",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-12T07:06:16Z",
+      "side": 1,
+      "message": "Setting up a pool is already slow, so as much work needs to be removed from this part\n\nUse 1 loop\nresults \u003d []\nfor (cnt, p) in enumerate(projects):\n  results.append(pool.apply_async(DoWorkWrapper, args\u003d[......])\n\nAlso serialise and compare cnt from within the worker",
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
