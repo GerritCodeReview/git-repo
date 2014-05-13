@@ -88,6 +88,24 @@
     },
     {
       "key": {
+        "uuid": "ea713054_cda8a9b0",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2014-05-13T06:32:14Z",
+      "side": 1,
+      "message": "I will try to put the two forloops into one.\n\nHowever, I can\u0027t do the serialization in the worker thread because that would defeat the objective of the dict-ification - the reason for making ``projects`` into dicts is to be able to pass it to the worker processes without the multiprocessing trying to pickle the project._GitGetByExec class instances.",
+      "parentUuid": "2a90a898_cf717dbe",
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea713054_ed51e520",
         "filename": "subcmds/forall.py",
         "patchSetId": 7
