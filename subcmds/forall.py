@@ -132,6 +132,9 @@ without iterating through the remaining projects.
     g.add_option('-v', '--verbose',
                  dest='verbose', action='store_true',
                  help='Show command error messages')
+    g.add_option('-s', '--progress',
+                 dest='progress', action='store_true',
+                 help='Show progress indicator during iteration')
 
   def WantPager(self, opt):
     return opt.project_header
@@ -201,6 +204,9 @@ without iterating through the remaining projects.
       setenv('REPO_I', str(cnt + 1))
       for a in project.annotations:
         setenv("REPO__%s" % (a.name), a.value)
+
+      if opt.progress:
+        print('%(REPO_I)s/%(REPO_COUNT)s' % env)
 
       if mirror:
         setenv('GIT_DIR', project.gitdir)
