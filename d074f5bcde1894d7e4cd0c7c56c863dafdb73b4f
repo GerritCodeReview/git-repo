@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0a26849c_86708a62",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2014-05-18T15:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea713054_0d2231c2",
+      "range": {
+        "startLine": 144,
+        "startChar": 6,
+        "endLine": 144,
+        "endChar": 22
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea713054_2d1fed76",
         "filename": "subcmds/forall.py",
         "patchSetId": 7
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "0a26849c_a6758651",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2014-05-18T15:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea713054_2d1fed76",
+      "range": {
+        "startLine": 161,
+        "startChar": 21,
+        "endLine": 161,
+        "endChar": 32
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea713054_cd4c2988",
         "filename": "subcmds/forall.py",
         "patchSetId": 7
@@ -59,6 +107,30 @@
       "writtenOn": "2014-05-12T21:36:46Z",
       "side": 1,
       "message": "parens not needed here",
+      "range": {
+        "startLine": 214,
+        "startChar": 8,
+        "endLine": 214,
+        "endChar": 16
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a26849c_c66a826c",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2014-05-18T15:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea713054_cd4c2988",
       "range": {
         "startLine": 214,
         "startChar": 8,
@@ -152,6 +224,30 @@
     },
     {
       "key": {
+        "uuid": "2a3188d1_67c1d20f",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2014-05-18T15:34:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea713054_8d462164",
+      "range": {
+        "startLine": 228,
+        "startChar": 8,
+        "endLine": 229,
+        "endChar": 16
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2a90a898_4fb4ad10",
         "filename": "subcmds/forall.py",
         "patchSetId": 7
@@ -180,6 +276,30 @@
       "writtenOn": "2014-05-12T21:36:46Z",
       "side": 1,
       "message": "Do we ever catch this anywhere?  Also, could you explain when this keyboard interrupt would be hit vs the one on line 232?  When someone does a keyboard interrupt on one worker, wouldn\u0027t we want the whole pool to terminate?",
+      "range": {
+        "startLine": 262,
+        "startChar": 4,
+        "endLine": 262,
+        "endChar": 35
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a26849c_e66f7e79",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2014-05-18T15:34:34Z",
+      "side": 1,
+      "message": "This is caught on line 235 as a subclass of Exception.",
+      "parentUuid": "ea713054_4d41194a",
       "range": {
         "startLine": 262,
         "startChar": 4,
