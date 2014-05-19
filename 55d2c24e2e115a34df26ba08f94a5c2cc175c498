@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca1f0c44_0465769a",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-19T07:04:14Z",
+      "side": 1,
+      "message": "cnt \u003d\u003d 0 isn\u0027t needed here. It\u0027s used in 1 place in the worker, so do the comparison there.",
+      "revId": "55d2c24e2e115a34df26ba08f94a5c2cc175c498",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca1f0c44_e46f7a79",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-19T07:04:14Z",
+      "side": 1,
+      "message": "rc \u003d rc or errno.EINTR\n\nOr use \u0027as e; e.errno\u0027",
+      "revId": "55d2c24e2e115a34df26ba08f94a5c2cc175c498",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff23b49a_76fc30db",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-19T07:04:14Z",
+      "side": 1,
+      "message": "\u0027rc \u003d rc or e.errno\u0027 please",
+      "revId": "55d2c24e2e115a34df26ba08f94a5c2cc175c498",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca1f0c44_24627293",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-05-19T07:04:14Z",
+      "side": 1,
+      "message": "cnt\u003d\u003d0",
+      "revId": "55d2c24e2e115a34df26ba08f94a5c2cc175c498",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
