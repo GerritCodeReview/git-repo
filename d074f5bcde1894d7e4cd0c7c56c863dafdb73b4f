@@ -201,6 +201,30 @@
     },
     {
       "key": {
+        "uuid": "0a26849c_465f72c6",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-19T17:15:25Z",
+      "side": 1,
+      "message": "Did you verify that this is the case?",
+      "parentUuid": "ea713054_ed51e520",
+      "range": {
+        "startLine": 220,
+        "startChar": 6,
+        "endLine": 220,
+        "endChar": 48
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ea713054_8d462164",
         "filename": "subcmds/forall.py",
         "patchSetId": 7
@@ -300,6 +324,30 @@
       "side": 1,
       "message": "This is caught on line 235 as a subclass of Exception.",
       "parentUuid": "ea713054_4d41194a",
+      "range": {
+        "startLine": 262,
+        "startChar": 4,
+        "endLine": 262,
+        "endChar": 35
+      },
+      "revId": "d074f5bcde1894d7e4cd0c7c56c863dafdb73b4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2a3188d1_e7cdc23f",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-05-19T17:15:25Z",
+      "side": 1,
+      "message": "I\u0027d still like an explanation of when this keyboard interrupt would be hit vs the one on line 232.  That isn\u0027t obvious to me.",
+      "parentUuid": "0a26849c_e66f7e79",
       "range": {
         "startLine": 262,
         "startChar": 4,
