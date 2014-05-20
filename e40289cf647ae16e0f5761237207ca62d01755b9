@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2a3188d1_27ffda14",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2014-05-20T09:11:17Z",
+      "side": 1,
+      "message": "Superfluous",
+      "range": {
+        "startLine": 211,
+        "startChar": 4,
+        "endLine": 211,
+        "endChar": 16
+      },
+      "revId": "e40289cf647ae16e0f5761237207ca62d01755b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
