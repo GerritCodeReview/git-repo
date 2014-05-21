@@ -1071,12 +1071,9 @@ class Project(object):
       self._CopyAndLinkFiles()
       return True
 
+    self._InitGitDir()
     if is_new is None:
       is_new = not self.Exists
-    if is_new:
-      self._InitGitDir()
-    else:
-      self._UpdateHooks()
     self._InitRemote()
 
     if is_new:
@@ -2087,6 +2084,12 @@ class Project(object):
         self.config.SetString('core.bare', 'true')
       else:
         self.config.SetString('core.bare', None)
+    else:
+      # Make sure that we're still pointing at the right objdir.
+      if self.objdir != self.gitdir:
+        self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
+                              copy_all=False)
+      self._UpdateHooks()
 
   def _UpdateHooks(self):
     if os.path.exists(self.gitdir):
@@ -2169,6 +2172,35 @@ class Project(object):
         msg = 'manifest set to %s' % self.revisionExpr
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
+  def _ReferenceOldObjStore(self, old_objstore, new_objstore):
+    """Make sure that objects aren't lost when switching object dirs.
+
+    When the object dir is switched for a given gitdir, copy over the old
+    objects. This ensures that needed objects for the worktree and the reflog
+    are still available.
+    """
+    old_objstore = os.path.realpath(old_objstore)
+    new_objstore = os.path.realpath(new_objstore)
+
+    # Check if we have a reference already.
+    if old_objstore == new_objstore:
+      return
+    info_dir = os.path.join(new_objstore, 'info')
+    alternates = os.path.join(info_dir, 'alternates')
+    contents = []
+    if os.path.exists(alternates):
+      with open(alternates) as f:
+        contents = f.read().strip('\n').split('\n')
+
+    if old_objstore not in contents:
+      # Looks like we're switching the working tree to a new backing
+      # store. Keep a read-only reference to the old backing store as
+      # well.
+      contents.append(old_objstore)
+      if not os.path.exists(os.path.dirname(alternates)):
+        os.makedirs(os.path.dirname(alternates))
+      _lwrite(alternates, '%s\n' % ('\n'.join(contents),))
+
   def _ReferenceGitDir(self, gitdir, dotgit, share_refs, copy_all):
     """Update |dotgit| to reference |gitdir|, using symlinks where possible.
 
@@ -2195,11 +2227,16 @@ class Project(object):
 
     for name in set(to_copy).union(to_symlink):
       try:
-        src = os.path.realpath(os.path.join(gitdir, name))
-        dst = os.path.realpath(os.path.join(dotgit, name))
+        src = os.path.join(os.path.realpath(gitdir), name)
+        dst = os.path.join(os.path.realpath(dotgit), name)
 
-        if os.path.lexists(dst) and not os.path.islink(dst):
-          raise GitError('cannot overwrite a local work tree')
+        if os.path.lexists(dst):
+          if os.path.islink(dst):
+            if name == 'objects':
+              self._ReferenceOldObjStore(dst, src)
+            os.remove(dst)
+          else:
+            raise GitError('cannot overwrite a local work tree')
 
         # If the source dir doesn't exist, create an empty dir.
         if name in symlink_dirs and not os.path.lexists(src):
@@ -2234,6 +2271,10 @@ class Project(object):
         raise GitError("cannot initialize work tree")
 
       self._CopyAndLinkFiles()
+    else:
+      # Make sure that we're still pointing at the right gitdir.
+      self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
+                            copy_all=False)
 
   def _gitdir_path(self, path):
     return os.path.realpath(os.path.join(self.gitdir, path))
