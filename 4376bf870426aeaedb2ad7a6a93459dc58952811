@@ -22,6 +22,75 @@
       "revId": "4376bf870426aeaedb2ad7a6a93459dc58952811",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f5de831_8738a6e8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2193,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2014-05-22T17:55:46Z",
+      "side": 1,
+      "message": "contents \u003d f.read().splitlines()",
+      "range": {
+        "startLine": 2193,
+        "startChar": 21,
+        "endLine": 2193,
+        "endChar": 25
+      },
+      "revId": "4376bf870426aeaedb2ad7a6a93459dc58952811",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "df4ef081_e51ab686",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2200,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2014-05-22T17:55:46Z",
+      "side": 1,
+      "message": "if not os.path.exists(info_dir):\n  os.makedirs(info_dir)",
+      "range": {
+        "startLine": 2200,
+        "startChar": 21,
+        "endLine": 2200,
+        "endChar": 27
+      },
+      "revId": "4376bf870426aeaedb2ad7a6a93459dc58952811",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f5de831_677132b9",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2237,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2014-05-22T17:55:46Z",
+      "side": 1,
+      "message": "Is this always the right thing to do?\n\nAnd should you also:\n\nos.makedirs(dst)\n\n?",
+      "range": {
+        "startLine": 2237,
+        "startChar": 15,
+        "endLine": 2237,
+        "endChar": 21
+      },
+      "revId": "4376bf870426aeaedb2ad7a6a93459dc58952811",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
