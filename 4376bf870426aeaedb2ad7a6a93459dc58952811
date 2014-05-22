@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f5de831_0736f607",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-05-22T03:46:54Z",
+      "side": 1,
+      "message": "Was this introduced with https://gerrit-review.googlesource.com/#/c/50715/ ?\n\nBefore that, I\u0027m pretty sure the problem more often was that you ended up with _too many_ objects for that directory. i.e. a tag that only existed in the previous repository was still accessible. Does this change re-introduce that behavior?",
+      "range": {
+        "startLine": 10,
+        "startChar": 31,
+        "endLine": 10,
+        "endChar": 71
+      },
+      "revId": "4376bf870426aeaedb2ad7a6a93459dc58952811",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
