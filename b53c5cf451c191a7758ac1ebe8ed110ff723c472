@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3f20ecdd_08da4782",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-05-27T22:03:07Z",
+      "side": 1,
+      "message": "Is this sufficient? What if it\u0027s an indirect child?",
+      "range": {
+        "startLine": 613,
+        "startChar": 18,
+        "endLine": 613,
+        "endChar": 28
+      },
+      "revId": "b53c5cf451c191a7758ac1ebe8ed110ff723c472",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f2be0c2_09da4982",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 896,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-05-27T22:03:07Z",
+      "side": 1,
+      "message": "Why this change?",
+      "range": {
+        "startLine": 896,
+        "startChar": 15,
+        "endLine": 896,
+        "endChar": 27
+      },
+      "revId": "b53c5cf451c191a7758ac1ebe8ed110ff723c472",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f20ecdd_28d58b52",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-05-27T22:03:07Z",
+      "side": 1,
+      "message": "Is this method needed? Might be easier just calling reqatt directly on the two parameters.",
+      "range": {
+        "startLine": 924,
+        "startChar": 6,
+        "endLine": 924,
+        "endChar": 24
+      },
+      "revId": "b53c5cf451c191a7758ac1ebe8ed110ff723c472",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f2be0c2_49e44149",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 2096,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-05-27T22:03:07Z",
+      "side": 1,
+      "message": "has_key is deprecated. We typically do:\n \n  if \u0027.git\u0027 in hooks:\n    del hooks[\u0027.git\u0027]\n\n... or, even simpler:\n\n  hooks.pop(\u0027.git\u0027, None)",
+      "range": {
+        "startLine": 2096,
+        "startChar": 13,
+        "endLine": 2096,
+        "endChar": 28
+      },
+      "revId": "b53c5cf451c191a7758ac1ebe8ed110ff723c472",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5f2be0c2_a9e85d1d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-05-27T22:03:07Z",
+      "side": 1,
+      "message": "\"# Always\" instead of \"#Always\"",
+      "range": {
+        "startLine": 616,
+        "startChar": 4,
+        "endLine": 616,
+        "endChar": 6
+      },
+      "revId": "b53c5cf451c191a7758ac1ebe8ed110ff723c472",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f20ecdd_68df8372",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-05-27T22:03:07Z",
+      "side": 1,
+      "message": "Why?",
+      "range": {
+        "startLine": 695,
+        "startChar": 6,
+        "endLine": 695,
+        "endChar": 67
+      },
+      "revId": "b53c5cf451c191a7758ac1ebe8ed110ff723c472",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
