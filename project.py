@@ -1075,9 +1075,9 @@ class Project(object):
       is_new = not self.Exists
     if is_new:
       self._InitGitDir()
+      self._InitRemote()
     else:
       self._UpdateHooks()
-    self._InitRemote()
 
     if is_new:
       alt = os.path.join(self.gitdir, 'objects/info/alternates')
