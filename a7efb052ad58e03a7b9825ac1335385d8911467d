@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f07a8cc_97d9c490",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2104,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2014-06-09T23:37:36Z",
+      "side": 1,
+      "message": "nit: get rid of \u0027else\u0027 clause, this code is unconditional:\n\n  if not os.path.exists(self.gitdir):\n    ...\n  if self.objdir !\u003d self.gitdir:\n    self._ReferenceGitDir(...)\n  self._UpdateHooks()\n\n(You may need to rationalize the copy_all parameter).",
+      "range": {
+        "startLine": 2104,
+        "startChar": 4,
+        "endLine": 2104,
+        "endChar": 8
+      },
+      "revId": "a7efb052ad58e03a7b9825ac1335385d8911467d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f07a8cc_b7d4c856",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2277,
+      "author": {
+        "id": 1012098
+      },
+      "writtenOn": "2014-06-09T23:37:36Z",
+      "side": 1,
+      "message": "nit: get rid of else clause, call self._ReferenceGitDir() unconditionally.",
+      "range": {
+        "startLine": 2277,
+        "startChar": 4,
+        "endLine": 2277,
+        "endChar": 8
+      },
+      "revId": "a7efb052ad58e03a7b9825ac1335385d8911467d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
