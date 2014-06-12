@@ -170,11 +170,7 @@ class XmlManifest(object):
   def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
     """
-    mp = self.manifestProject
-
-    groups = mp.config.GetString('manifest.groups')
-    if groups:
-      groups = self._ParseGroups(groups)
+    groups = self.groups
 
     doc = xml.dom.minidom.Document()
     root = doc.createElement('manifest')
@@ -299,7 +295,7 @@ class XmlManifest(object):
         subprojects = set(subp.name for subp in p.subprojects)
         output_projects(p, e, list(sorted(subprojects)))
 
-    projects = set(p.name for p in self._paths.values() if not p.parent)
+    projects = set(p.name for pl in self._paths.values() for p in pl if not p.parent)
     output_projects(None, root, list(sorted(projects)))
 
     if self._repo_hooks_project:
@@ -312,6 +308,23 @@ class XmlManifest(object):
 
     doc.writexml(fd, '', '  ', '\n', 'UTF-8')
 
+  def project_at_path(self, path):
+    """Get the one and only project at the specified path.
+
+    Raises an exception if more than one project exists at the given path."""
+    self._Load()
+    return self._project_at_path(path)
+
+  def _project_at_path(self, path):
+    groups = self._groups
+    projects = [p for p in self._paths[path] if p.MatchesGroups(groups)]
+    if not projects:
+      return None
+    if len(projects) > 1:
+      raise ManifestParseError("Multiple projects at path %s: %s"
+                               % (path, " ".join(p.name for p in projects)))
+    return projects
+
   @property
   def paths(self):
     self._Load()
@@ -320,7 +333,7 @@ class XmlManifest(object):
   @property
   def projects(self):
     self._Load()
-    return list(self._paths.values())
+    return [p for pl in self._paths.values() for p in pl]
 
   @property
   def remotes(self):
@@ -348,6 +361,11 @@ class XmlManifest(object):
     return self._manifest_server
 
   @property
+  def groups(self):
+    self._Load()
+    return self._groups
+
+  @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
@@ -365,6 +383,7 @@ class XmlManifest(object):
     self._notice = None
     self.branch = None
     self._manifest_server = None
+    self._groups = None
 
   def _Load(self):
     if not self._loaded:
@@ -373,6 +392,8 @@ class XmlManifest(object):
       if b is not None and b.startswith(R_HEADS):
         b = b[len(R_HEADS):]
       self.branch = b
+
+      self._groups = self._ParseGroups(self.manifestProject.config.GetString('manifest.groups') or '')
 
       nodes = []
       nodes.append(self._ParseManifestXml(self.manifestFile,
@@ -495,11 +516,7 @@ class XmlManifest(object):
         raise ManifestParseError(
             'missing path for %s in %s' %
             (project.name, self.manifestFile))
-      if project.relpath in self._paths:
-        raise ManifestParseError(
-            'duplicate path %s in %s' %
-            (project.relpath, self.manifestFile))
-      self._paths[project.relpath] = project
+      self._paths.setdefault(project.relpath, []).append(project)
       projects.append(project)
       for subproject in project.subprojects:
         recursively_add_projects(subproject)
@@ -560,7 +577,7 @@ class XmlManifest(object):
                                    'project: %s' % name)
 
         for p in self._projects[name]:
-          del self._paths[p.relpath]
+          self._paths[p.relpath].remove(p)
         del self._projects[name]
 
         # If the manifest removes the hooks project, treat it as if it deleted
@@ -568,6 +585,9 @@ class XmlManifest(object):
         if self._repo_hooks_project and (self._repo_hooks_project.name == name):
           self._repo_hooks_project = None
 
+    # Ensure that each path has at most one project, taking groups into account
+    for path in self._paths:
+      self._project_at_path(path)
 
   def _AddMetaProjectMirror(self, m):
     name = None

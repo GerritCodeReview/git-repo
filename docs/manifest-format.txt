@@ -209,7 +209,9 @@ Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project
 should be placed.  If not supplied the project name is used.
 If the project has a parent element, its path will be prefixed
-by the parent's.
+by the parent's.  Multiple projects can exist at the same path, as
+long as at most one of them matches the groups specified when invoking
+repo.
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.

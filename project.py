@@ -1653,7 +1653,7 @@ class Project(object):
       name = self.manifest.GetSubprojectName(self, path)
       relpath, worktree, gitdir, objdir = \
           self.manifest.GetSubprojectPaths(self, name, path)
-      project = self.manifest.paths.get(relpath)
+      project = self.manifest.project_at_path(relpath)
       if project:
         result.extend(project.GetDerivedSubprojects())
         continue
