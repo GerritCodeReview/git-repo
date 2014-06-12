@@ -164,6 +164,9 @@ class XmlManifest(object):
     if r.revision is not None:
       e.setAttribute('revision', r.revision)
 
+  def _ParseGroups(self, groups):
+    return [x for x in re.split(r'[,\s]+', groups) if x]
+
   def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
     """
@@ -171,7 +174,7 @@ class XmlManifest(object):
 
     groups = mp.config.GetString('manifest.groups')
     if groups:
-      groups = [x for x in re.split(r'[,\s]+', groups) if x]
+      groups = self._ParseGroups(groups)
 
     doc = xml.dom.minidom.Document()
     root = doc.createElement('manifest')
@@ -505,6 +508,23 @@ class XmlManifest(object):
       if node.nodeName == 'project':
         project = self._ParseProject(node)
         recursively_add_projects(project)
+      if node.nodeName == 'extend-project':
+        name = self._reqatt(node, 'name')
+
+        if name not in self._projects:
+          raise ManifestParseError('extend-project element specifies non-existent '
+                                   'project: %s' % name)
+
+        path = node.getAttribute('path')
+        groups = node.getAttribute('groups')
+        if groups:
+          groups = self._ParseGroups(groups)
+
+        for p in self._projects[name]:
+          if path and p.relpath != path:
+            continue
+          if groups:
+            p.groups.extend(groups)
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
@@ -745,7 +765,7 @@ class XmlManifest(object):
     groups = ''
     if node.hasAttribute('groups'):
       groups = node.getAttribute('groups')
-    groups = [x for x in re.split(r'[,\s]+', groups) if x]
+    groups = self._ParseGroups(groups)
 
     if parent is None:
       relpath, worktree, gitdir, objdir = self.GetProjectPaths(name, path)
