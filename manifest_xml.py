@@ -533,21 +533,36 @@ class XmlManifest(object):
         # Store the enabled hooks in the Project object.
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
       if node.nodeName == 'remove-project':
-        name = self._reqatt(node, 'name')
+        name = node.getAttribute('name')
+        path = node.getAttribute('path')
 
-        if name not in self._projects:
-          raise ManifestParseError('remove-project element specifies non-existent '
-                                   'project: %s' % name)
+        if not name and not path:
+          raise ManifestParseError("no %s or %s in <%s> within %s" %
+            ('name', 'path', node.nodeName, self.manifestFile))
 
-        for p in self._projects[name]:
-          del self._paths[p.relpath]
-        del self._projects[name]
+        def deleteProject(name):
+          for p in self._projects[name]:
+            del self._paths[p.relpath]
+          del self._projects[name]
 
-        # If the manifest removes the hooks project, treat it as if it deleted
-        # the repo-hooks element too.
-        if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-          self._repo_hooks_project = None
+          # If the manifest removes the hooks project, treat it as if it deleted
+          # the repo-hooks element too.
+          if self._repo_hooks_project and (self._repo_hooks_project.name == name):
+            self._repo_hooks_project = None
 
+        if name:
+          if name not in self._projects:
+            raise ManifestParseError('remove-project element specifies non-existent '
+                                     'project: %s' % name)
+          deleteProject(name)
+        else:
+          if path not in self._paths:
+            raise ManifestParseError('remove-project element specifies non-existent '
+                                     'project with path: %s' % path)
+          p = self._paths.pop(path)
+          self._projects[p.name].remove(p)
+          if not self._projects[p.name]:
+            deleteProject(p.name)
 
   def _AddMetaProjectMirror(self, m):
     name = None
