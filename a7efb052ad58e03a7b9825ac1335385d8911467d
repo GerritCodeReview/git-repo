@@ -25,6 +25,23 @@
     },
     {
       "key": {
+        "uuid": "84834dc4_a20a9e3c",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2109,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-06-18T22:22:49Z",
+      "side": 1,
+      "message": "Do we really always want to run UpdateHooks?  shouldn\u0027t this be under the previous if so that it\u0027s only run after _ReferenceGitDir?",
+      "revId": "a7efb052ad58e03a7b9825ac1335385d8911467d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1f07a8cc_b7d4c856",
         "filename": "project.py",
         "patchSetId": 2
