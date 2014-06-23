@@ -61,7 +61,10 @@ revision specified in the manifest.
       # If the current revision is a specific SHA1 then we can't push back
       # to it so substitute the manifest default revision instead.
       if IsId(project.revisionExpr):
-        project.revisionExpr = self.manifest.default.revisionExpr
+         if project.dest_branch:
+            project.revisionExpr = project.dest_branch
+         else:
+            project.revisionExpr = self.manifest.default.revisionExpr
       if not project.StartBranch(nb):
         err.append(project)
     pm.end()
