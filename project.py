@@ -1227,9 +1227,14 @@ class Project(object):
         if not syncbuf.detach_head:
           return
       else:
-        lost = self._revlist(not_rev(revid), HEAD)
-        if lost:
-          syncbuf.info(self, "discarding %d commits", len(lost))
+        try:
+          lost = self._revlist(not_rev(revid), HEAD)
+        except error.GitError:
+          syncbuf.info(self, "commit to be discarded (%s) no longer exists",
+                       len(lost))
+        else:
+          if lost:
+            syncbuf.info(self, "discarding %d commits", len(lost))
 
       try:
         self._Checkout(revid, quiet=True)
