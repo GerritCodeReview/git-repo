@@ -254,6 +254,8 @@ class XmlManifest(object):
           e.setAttribute('upstream', p.revisionExpr)
       elif not d.revisionExpr or p.revisionExpr != d.revisionExpr:
         e.setAttribute('revision', p.revisionExpr)
+        if p.upstream and p.upstream != p.revisionExpr:
+            e.setAttribute('upstream', p.upstream)
 
       for c in p.copyfiles:
         ce = doc.createElement('copyfile')
@@ -706,13 +708,13 @@ class XmlManifest(object):
     else:
       rebase = rebase.lower() in ("yes", "true", "1")
 
-    sync_c = node.getAttribute('sync-c')
+    sync_c = node.getAttribute('sync_c')
     if not sync_c:
       sync_c = False
     else:
       sync_c = sync_c.lower() in ("yes", "true", "1")
 
-    sync_s = node.getAttribute('sync-s')
+    sync_s = node.getAttribute('sync_s')
     if not sync_s:
       sync_s = self._default.sync_s
     else:
