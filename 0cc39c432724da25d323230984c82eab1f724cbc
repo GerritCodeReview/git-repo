@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f989143b_6df935e5",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-16T06:41:39Z",
+      "side": 1,
+      "message": "Indentation in git-repo is with 2 spaces, not 4.",
+      "range": {
+        "startLine": 258,
+        "startChar": 8,
+        "endLine": 258,
+        "endChar": 12
+      },
+      "revId": "0cc39c432724da25d323230984c82eab1f724cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9999f885_f2042835",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-16T06:41:39Z",
+      "side": 1,
+      "message": "Why is this changed?  The attribute name is \u0027sync-c\u0027 - see at line 205.",
+      "range": {
+        "startLine": 711,
+        "startChar": 32,
+        "endLine": 711,
+        "endChar": 38
+      },
+      "revId": "0cc39c432724da25d323230984c82eab1f724cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f989143b_8d0d815d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-16T06:41:39Z",
+      "side": 1,
+      "message": "And here.",
+      "range": {
+        "startLine": 717,
+        "startChar": 32,
+        "endLine": 717,
+        "endChar": 38
+      },
+      "revId": "0cc39c432724da25d323230984c82eab1f724cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
