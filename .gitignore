@@ -1,3 +1,4 @@
 *.pyc
 .repopickle_*
 /repoc
+/hooks/commit-msg
