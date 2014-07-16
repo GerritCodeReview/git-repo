@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9999f885_72475864",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-16T14:33:58Z",
+      "side": 1,
+      "message": "_FetchCommitMsgHook",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 19
+      },
+      "revId": "e55ee37093a42e86253e175c822eeea0764964f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f989143b_0d48b175",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-16T14:33:58Z",
+      "side": 1,
+      "message": "latest",
+      "range": {
+        "startLine": 77,
+        "startChar": 17,
+        "endLine": 77,
+        "endChar": 22
+      },
+      "revId": "e55ee37093a42e86253e175c822eeea0764964f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9999f885_52425455",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-16T14:33:58Z",
+      "side": 1,
+      "message": "If possible, it would be better to fetch from the review url specified in the manifest.",
+      "range": {
+        "startLine": 96,
+        "startChar": 9,
+        "endLine": 96,
+        "endChar": 70
+      },
+      "revId": "e55ee37093a42e86253e175c822eeea0764964f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f989143b_2d4d6d86",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-16T14:33:58Z",
+      "side": 1,
+      "message": "These calls can raise exceptions.",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 104,
+        "endChar": 19
+      },
+      "revId": "e55ee37093a42e86253e175c822eeea0764964f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
