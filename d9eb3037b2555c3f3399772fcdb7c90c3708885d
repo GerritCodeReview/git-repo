@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1976e812_065eda25",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-07-16T12:02:37Z",
+      "side": 1,
+      "message": "I know this was done to prettify the script, so I could add in #pylint:disable\u003dC0326 if you want me to",
+      "revId": "d9eb3037b2555c3f3399772fcdb7c90c3708885d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
