@@ -34,6 +34,24 @@
       "revId": "d9eb3037b2555c3f3399772fcdb7c90c3708885d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1976e812_66414e1e",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-07-16T16:59:40Z",
+      "side": 1,
+      "message": "Would it be better to gradually start removing the suppressions?\n\non another note, when\u0027s the next stable release due?",
+      "parentUuid": "9999f885_b238e0e8",
+      "revId": "d9eb3037b2555c3f3399772fcdb7c90c3708885d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
