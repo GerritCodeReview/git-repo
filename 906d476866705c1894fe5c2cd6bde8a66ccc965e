@@ -22,6 +22,30 @@
       "revId": "906d476866705c1894fe5c2cd6bde8a66ccc965e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9999f885_324dd086",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1013497
+      },
+      "writtenOn": "2014-07-16T09:32:59Z",
+      "side": 1,
+      "message": "The user who created issue164 was using \u0027sync_c\u0027 instead of \u0027sync-c\u0027 in the manifest.xml so that attribute was not being transferred to the new xml created by the command \u0027repo manifest -o -\u0027. Using \u0027sync-c\u0027 works fine.",
+      "parentUuid": "9999f885_f21b488c",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 56
+      },
+      "revId": "906d476866705c1894fe5c2cd6bde8a66ccc965e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
