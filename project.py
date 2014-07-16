@@ -42,6 +42,9 @@ if not is_python3():
   # pylint:disable=W0622
   input = raw_input
   # pylint:enable=W0622
+  from urllib2 import urlopen
+else:
+  from urllib.request import urlopen
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
@@ -69,6 +72,42 @@ def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
 _project_hook_list = None
+
+def _FetchCommitmsg():
+  """Fetches the lates commit-msg hook from the main gerrit source.
+
+  This function removes the backup commit-msg script from the hook list
+  then fetches the latest commit-msg hook.
+
+  If an issue occurs fetching the latest hook, the backup commit-msg hook
+  is copied with a modified mtime.
+
+  The new hook is then added to the hook list if needed.
+  """
+  global _project_hook_list
+  d = os.path.realpath(os.path.abspath(os.path.dirname(__file__)))
+  d = os.path.join(d , 'hooks')
+  old_hook = os.path.join(d, 'commit-msg_backup')
+  new_hook = os.path.join(d, 'commit-msg')
+  if old_hook in _project_hook_list:
+    _project_hook_list.remove(old_hook)
+  if not os.path.isfile(new_hook) or \
+         time.time() - os.path.getmtime(new_hook) > 3600*12:
+    url = "https://gerrit-review.googlesource.com/tools/hooks/commit-msg"
+    if os.path.isfile(new_hook):
+      os.remove(new_hook)
+    try:
+      response = urlopen(url)
+    except:
+      shutil.copyfile(old_hook, new_hook)
+      os.utime(new_hook, (1, 1))  # try again in an hour
+    else:
+      data = response.read().decode('utf-8')  # decode for python3 support
+      with open(new_hook, 'w') as f:
+        f.write(data)
+  if not new_hook in _project_hook_list:
+    _project_hook_list.append(new_hook)
+
 def _ProjectHooks():
   """List the hooks present in the 'hooks' directory.
 
@@ -86,6 +125,7 @@ def _ProjectHooks():
     d = os.path.realpath(os.path.abspath(os.path.dirname(__file__)))
     d = os.path.join(d , 'hooks')
     _project_hook_list = [os.path.join(d, x) for x in os.listdir(d)]
+  _FetchCommitmsg()
   return _project_hook_list
 
 
