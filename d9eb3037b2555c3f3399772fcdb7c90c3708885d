@@ -52,6 +52,24 @@
       "revId": "d9eb3037b2555c3f3399772fcdb7c90c3708885d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9933b87e_e2d26670",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-07-17T01:06:10Z",
+      "side": 1,
+      "message": "\u003e Would it be better to gradually start removing the suppressions?\n\u003e \n\nI also considered doing that.  However IIRC most of the suppressions are for trivial style issues that don\u0027t impact the behaviour, while the stuff that I have fixed previously was more related to issues that could potentially cause unwanted behaviour.\n\nWhile from an OCD point of view it would be nice to clean it all up, I didn\u0027t have time to do it and didn\u0027t think Conley would have time to review it.\n\nAlso IIRC Conley mentioned before that introducing big deltas could cause problems for some teams that are running forks of git-repo.  Not sure if that is still the case though.\n\nIf you want to do it, go ahead, although I would suggest not doing anything too big.  Also I will be going on vacation soon and won\u0027t have time to review anything until the end of next month.\n\n\u003e on another note, when\u0027s the next stable release due?\n\u003e \n\nThere isn\u0027t a fixed schedule.  It\u0027s usually when a critical fix is merged, or just when someone bugs Conley enough to do it :)",
+      "parentUuid": "1976e812_66414e1e",
+      "revId": "d9eb3037b2555c3f3399772fcdb7c90c3708885d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
