@@ -46,7 +46,7 @@ if not is_python3():
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
-  fd = open(lock, 'wb')
+  fd = open(lock, 'w')
   try:
     fd.write(content)
   finally:

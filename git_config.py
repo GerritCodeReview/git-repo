@@ -697,7 +697,7 @@ class Branch(object):
       self._Set('merge', self.merge)
 
     else:
-      fd = open(self._config.file, 'ab')
+      fd = open(self._config.file, 'a')
       try:
         fd.write('[branch "%s"]\n' % self.name)
         if self.remote:
