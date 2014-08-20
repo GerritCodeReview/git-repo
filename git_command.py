@@ -80,7 +80,7 @@ class _GitCall(object):
   def version(self):
     p = GitCommand(None, ['--version'], capture_stdout=True)
     if p.Wait() == 0:
-      return p.stdout
+      return p.stdout.decode('utf-8')
     return None
 
   def version_tuple(self):
