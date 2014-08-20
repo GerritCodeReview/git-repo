@@ -80,13 +80,13 @@ class _GitCall(object):
   def version(self):
     p = GitCommand(None, ['--version'], capture_stdout=True)
     if p.Wait() == 0:
-      return p.stdout
+      return p.stdout.decode('utf-8')
     return None
 
   def version_tuple(self):
     global _git_version
     if _git_version is None:
-      ver_str = git.version().decode('utf-8')
+      ver_str = git.version()
       _git_version = Wrapper().ParseGitVersion(ver_str)
       if _git_version is None:
         print('fatal: "%s" unsupported' % ver_str, file=sys.stderr)
