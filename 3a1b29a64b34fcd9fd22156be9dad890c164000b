@@ -22,6 +22,30 @@
       "revId": "3a1b29a64b34fcd9fd22156be9dad890c164000b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b3f7bd98_abe4c944",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2014-08-22T01:02:06Z",
+      "side": 1,
+      "message": "The unused `target` parameter was removed.\n\nhttps://gerrit-review.googlesource.com/#/c/58615/2/project.py@2651",
+      "parentUuid": "735d455f_59f7e3ef",
+      "range": {
+        "startLine": 236,
+        "startChar": 8,
+        "endLine": 236,
+        "endChar": 24
+      },
+      "revId": "3a1b29a64b34fcd9fd22156be9dad890c164000b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
