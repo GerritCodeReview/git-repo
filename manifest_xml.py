@@ -261,6 +261,8 @@ class XmlManifest(object):
         revision = self.remotes[remoteName].revision or d.revisionExpr
         if not revision or revision != p.revisionExpr:
           e.setAttribute('revision', p.revisionExpr)
+        if p.upstream and p.upstream != p.revisionExpr:
+          e.setAttribute('upstream', p.upstream)
 
       for c in p.copyfiles:
         ce = doc.createElement('copyfile')
