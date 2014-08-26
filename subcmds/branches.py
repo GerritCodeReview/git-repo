@@ -47,6 +47,10 @@ class BranchInfo(object):
     return self.current > 0
 
   @property
+  def IsSplitCurrent(self):
+    return self.current != 0 and self.current != len(self.projects)
+
+  @property
   def IsPublished(self):
     return self.published > 0
 
@@ -139,10 +143,14 @@ is shown, then the branch appears in all projects.
       if in_cnt < project_cnt:
         fmt = out.write
         paths = []
-        if in_cnt < project_cnt - in_cnt:
+        non_cur_paths = []
+        if i.IsSplitCurrent or (in_cnt < project_cnt - in_cnt):
           in_type = 'in'
           for b in i.projects:
-            paths.append(b.project.relpath)
+            if not i.IsSplitCurrent or b.current:
+              paths.append(b.project.relpath)
+            else:
+              non_cur_paths.append(b.project.relpath)
         else:
           fmt = out.notinproject
           in_type = 'not in'
@@ -154,11 +162,17 @@ is shown, then the branch appears in all projects.
               paths.append(p.relpath)
 
         s = ' %s %s' % (in_type, ', '.join(paths))
-        if width + 7 + len(s) < 80:
+        if not i.IsSplitCurrent and (width + 7 + len(s) < 80):
+          fmt = out.current if i.IsCurrent else fmt
           fmt(s)
         else:
           fmt(' %s:' % in_type)
+          fmt = out.current if i.IsCurrent else out.write
           for p in paths:
+            out.nl()
+            fmt(width*' ' + '          %s' % p)
+          fmt = out.write
+          for p in non_cur_paths:
             out.nl()
             fmt(width*' ' + '          %s' % p)
       else:
