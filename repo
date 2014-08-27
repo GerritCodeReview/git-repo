@@ -618,6 +618,24 @@ def _FindRepo():
   return (repo, os.path.join(curdir, repodir))
 
 
+def _DeleteRepo():
+  """Delete .repo/repo, starting at the current directory till the root of repo installation.
+  """
+  curdir = os.getcwd()
+  deleterepo = None # special repo repository to be deleted
+
+  olddir = None
+  while curdir != '/' \
+    and curdir != olddir \
+    and not deleterepo:
+    deleterepo = os.path.join(curdir, repodir, S_repo)
+    if os.path.isdir(deleterepo):
+      shutil.rmtree(deleterepo, ignore_errors=True)
+    deleterepo = None
+    olddir = curdir
+    curdir = os.path.dirname(curdir)
+
+
 class _Options:
   help = False
 
@@ -738,7 +756,7 @@ def main(orig_args):
       try:
         _Init(args)
       except CloneFailure:
-        shutil.rmtree(repodir, ignore_errors=True)
+        _DeleteRepo()
         sys.exit(1)
       repo_main, rel_repo_dir = _FindRepo()
     else:
