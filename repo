@@ -738,7 +738,7 @@ def main(orig_args):
       try:
         _Init(args)
       except CloneFailure:
-        shutil.rmtree(repodir, ignore_errors=True)
+        shutil.rmtree(os.path.join(repodir, S_repo), ignore_errors=True)
         sys.exit(1)
       repo_main, rel_repo_dir = _FindRepo()
     else:
