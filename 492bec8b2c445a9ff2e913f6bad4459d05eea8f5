@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f33935b5_6d90d587",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 630,
+      "author": {
+        "id": 1013497
+      },
+      "writtenOn": "2014-09-03T08:33:26Z",
+      "side": 1,
+      "message": "The deleterepo is made to None after each iteration for recursively deleting any .repo/repo directory and it actually is used as a exit criteria in the loop. \n\nHowever, now the _DeleteRepo() is not needed. So removing the method.",
+      "parentUuid": "d346f141_0c3e77d3",
+      "revId": "492bec8b2c445a9ff2e913f6bad4459d05eea8f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d346f141_2c3b33e4",
         "filename": "repo",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2014-09-03T00:28:47Z",
       "side": 1,
       "message": "I did some more digging and I was mistaken. It is not a bug that repo init looks in the current directory for .repo if the parent directory\u0027s .repo has no main.py.\n\nSo in that case, all we need here is:\n\n  shutil.rmtree(os.path.join(repodir, S_repo), ignore_errors\u003dTrue)",
+      "range": {
+        "startLine": 759,
+        "startChar": 8,
+        "endLine": 759,
+        "endChar": 19
+      },
+      "revId": "492bec8b2c445a9ff2e913f6bad4459d05eea8f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f33935b5_8d5b4133",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1013497
+      },
+      "writtenOn": "2014-09-03T08:33:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d346f141_2c3b33e4",
       "range": {
         "startLine": 759,
         "startChar": 8,
