@@ -51,6 +51,10 @@ class BranchInfo(object):
     return self.current != 0 and self.current != len(self.projects)
 
   @property
+  def IsCurrentEqual(self):
+    return self.current != 0 and self.current == len(self.projects)
+
+  @property
   def IsPublished(self):
     return self.published > 0
 
@@ -123,7 +127,10 @@ is shown, then the branch appears in all projects.
       i = all_branches[name]
       in_cnt = len(i.projects)
 
-      if i.IsCurrent:
+      if i.IsCurrentEqual:
+        current = '='
+        hdr = out.current
+      elif i.IsCurrent:
         current = '*'
         hdr = out.current
       else:
