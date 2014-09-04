@@ -528,7 +528,8 @@ class Project(object):
                upstream = None,
                parent = None,
                is_derived = False,
-               dest_branch = None):
+               dest_branch = None,
+               optimized_fetch = False):
     """Init a Project object.
 
     Args:
@@ -550,6 +551,8 @@ class Project(object):
       is_derived: False if the project was explicitly defined in the manifest;
                   True if the project is a discovered submodule.
       dest_branch: The branch to which to push changes for review by default.
+      optimized_fetch: If True, when a project is set to a sha1 revision, only
+                       fetch from the remote if the sha1 is not present locally.
     """
     self.manifest = manifest
     self.name = name
@@ -578,6 +581,7 @@ class Project(object):
     self.upstream = upstream
     self.parent = parent
     self.is_derived = is_derived
+    self.optimized_fetch = optimized_fetch
     self.subprojects = []
 
     self.snapshots = {}
@@ -1037,7 +1041,8 @@ class Project(object):
       current_branch_only=False,
       clone_bundle=True,
       no_tags=False,
-      archive=False):
+      archive=False,
+      optimized_fetch=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1106,8 +1111,9 @@ class Project(object):
       elif self.manifest.default.sync_c:
         current_branch_only = True
 
-    has_sha1 = ID_RE.match(self.revisionExpr) and self._CheckForSha1()
-    if (not has_sha1  #Need to fetch since we don't already have this revision
+    need_to_fetch = not (optimized_fetch and \
+      (ID_RE.match(self.revisionExpr) and self._CheckForSha1()))
+    if (need_to_fetch
         and not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                                   current_branch_only=current_branch_only,
                                   no_tags=no_tags)):

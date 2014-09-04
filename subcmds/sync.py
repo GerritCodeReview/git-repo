@@ -128,6 +128,13 @@ HTTP client or proxy configuration, but the Git binary works.
 The --fetch-submodules option enables fetching Git submodules
 of a project from server.
 
+The -c/--current-branch option can be used to only fetch objects that
+are on the branch specified by a project's revision.
+
+The --optimized-fetch option can be used to only fetch projects that
+are fixed to a sha1 revision if the sha1 revision does not already
+exist locally.
+
 SSH Connections
 ---------------
 
@@ -203,6 +210,9 @@ later is required to fix a server side protocol bug.
     p.add_option('--no-tags',
                  dest='no_tags', action='store_true',
                  help="don't fetch tags")
+    p.add_option('--optimized-fetch',
+                 dest='optimized_fetch', action='store_true',
+                 help='only fetch projects fixed to sha1 if revision does not exist locally')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -272,7 +282,8 @@ later is required to fix a server side protocol bug.
           quiet=opt.quiet,
           current_branch_only=opt.current_branch_only,
           clone_bundle=not opt.no_clone_bundle,
-          no_tags=opt.no_tags, archive=self.manifest.IsArchive)
+          no_tags=opt.no_tags, archive=self.manifest.IsArchive,
+          optimized_fetch=opt.optimized_fetch)
         self._fetch_times.Set(project, time.time() - start)
 
         # Lock around all the rest of the code, since printing, updating a set
@@ -609,7 +620,8 @@ later is required to fix a server side protocol bug.
     if not opt.local_only:
       mp.Sync_NetworkHalf(quiet=opt.quiet,
                           current_branch_only=opt.current_branch_only,
-                          no_tags=opt.no_tags)
+                          no_tags=opt.no_tags,
+                          optimized_fetch=opt.optimized_fetch)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
