@@ -22,6 +22,30 @@
       "revId": "c68d5654e2887e6d4f0821600062b772a19c7abc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d03267f0_ac6a63b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-09-04T18:55:08Z",
+      "side": 1,
+      "message": "Right, I would assume the problem occurs when the user doesn\u0027t intend to sync to a fixed version.\n\nHowever, if that\u0027s the case, I\u0027m not sure just switching this to only happen with current-branch-only will be enough. We at least should update the docs for --current-branch to make it clear that it will have this behavior and that if all objects are desired, they should run sync without -c (either for all projects or just a specific project).",
+      "parentUuid": "905e2f2a_0a4a7b6d",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 19
+      },
+      "revId": "c68d5654e2887e6d4f0821600062b772a19c7abc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
