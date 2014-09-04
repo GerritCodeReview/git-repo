@@ -1107,7 +1107,8 @@ class Project(object):
         current_branch_only = True
 
     has_sha1 = ID_RE.match(self.revisionExpr) and self._CheckForSha1()
-    if (not has_sha1  #Need to fetch since we don't already have this revision
+    if (current_branch_only
+        and not has_sha1  #Need to fetch since we don't already have this revision
         and not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                                   current_branch_only=current_branch_only,
                                   no_tags=no_tags)):
