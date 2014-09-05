@@ -16,6 +16,7 @@
 from __future__ import print_function
 import re
 import sys
+import os
 
 from command import Command
 from error import GitError
@@ -26,11 +27,16 @@ class Download(Command):
   common = True
   helpSummary = "Download and checkout a change"
   helpUsage = """
-%prog {project change[/patchset]}...
+%prog {target change[/patchset]}...
 """
   helpDescription = """
-The '%prog' command downloads a change from the review system and
-makes it available in your project's local working directory.
+The '%prog' command downloads a change from the review system
+and makes it available in the local workspace at the target path
+relative to the top directory of the repo client.
+
+The target is the project's 'path' attribute value if it is
+specified in the manifest. If 'path' is not specified then the
+target is the project's 'name'.
 """
 
   def _Options(self, p):
@@ -99,4 +105,18 @@ makes it available in your project's local working directory.
       elif opt.ffonly:
         project._FastForward(dl.commit, ffonly=True)
       else:
-        project._Checkout(dl.commit)
+        if project.name != project.relpath:
+          curdir = os.getcwd()
+          projectpath = project.worktree
+          if args[0] == '.':
+            targetpath = curdir
+          else:
+            targetpath = os.path.join(curdir,args[0])
+
+          if projectpath != targetpath:
+            print("error: target '%s' should be the project path and not the project name." \
+                   " See 'repo help download'." % args[0], file=sys.stderr)
+          else:
+            project._Checkout(dl.commit)
+        else:
+          project._Checkout(dl.commit)
