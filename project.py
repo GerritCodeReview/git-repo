@@ -788,7 +788,7 @@ class Project(object):
     out = StatusColoring(self.config)
     if not output_redir == None:
       out.redirect(output_redir)
-    out.project('project %-40s', self.relpath + '/')
+    out.project('project %-40s', self.relpath + '/ ')
 
     branch = self.CurrentBranch
     if branch is None:
