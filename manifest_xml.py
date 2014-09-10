@@ -86,16 +86,20 @@ class _XmlRemote(object):
     # about here are:
     # * no scheme in the base url, like <hostname:port>
     # * persistent-https://
+    # * rpc://
     # We handle this by replacing these with obscure protocols
     # and then replacing them with the original when we are done.
     # gopher -> <none>
     # wais -> persistent-https
+    # nntp -> rpc
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
       manifestUrl = 'gopher://' + manifestUrl
     manifestUrl = re.sub(r'^persistent-https://', 'wais://', manifestUrl)
+    manifestUrl = re.sub(r'^rpc://', 'nntp://', manifestUrl)
     url = urllib.parse.urljoin(manifestUrl, url)
     url = re.sub(r'^gopher://', '', url)
     url = re.sub(r'^wais://', 'persistent-https://', url)
+    url = re.sub(r'^nntp://', 'rpc://', url)
     return url
 
   def ToRemoteSpec(self, projectName):
