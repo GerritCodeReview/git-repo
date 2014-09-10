@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "30dae333_1f2283c5",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 1006454
+      },
+      "writtenOn": "2014-09-10T16:37:03Z",
+      "side": 1,
+      "message": "if \"not need_to_fetch\" then fetch?",
+      "revId": "7bcc8677124464768998f60e3694b81d4fbe8109",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
