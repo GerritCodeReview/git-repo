@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "108ddf44_0ed0ab65",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-09-12T18:22:56Z",
+      "side": 1,
+      "message": "Why aren\u0027t you just using os.path.realpath?\n\ntargetpath \u003d os.path.realpath(args[0]) should make things a lot simpler here. This is also needed in case args[0] contains \"..\" or something that needs to be normalized.",
+      "range": {
+        "startLine": 114,
+        "startChar": 44,
+        "endLine": 114,
+        "endChar": 45
+      },
+      "revId": "c0942d80def605c3a8e7524a6bac82c48b724076",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "108ddf44_2ed56756",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2014-09-12T18:22:56Z",
+      "side": 1,
+      "message": "I don\u0027t understand this code. Can you add some more comments explaining how this works?\n\nIn the case where we only have one repo per project, it should be fine to supply a project. It\u0027s just in the case where a project name is ambiguous that folks need to learn to supply a path.",
+      "revId": "c0942d80def605c3a8e7524a6bac82c48b724076",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
