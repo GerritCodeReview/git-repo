@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "706ffb76_89d93992",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-18T21:59:58Z",
+      "side": 1,
+      "message": "this is used once. should it really be global?",
+      "revId": "399c6f2f4fed4140ce05694b3a39e0e5cc1b8859",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_a9de7d75",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-18T21:59:58Z",
+      "side": 1,
+      "message": "this can fit on one line (68 chars). loose the double assignment",
+      "revId": "399c6f2f4fed4140ce05694b3a39e0e5cc1b8859",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_4be4a544",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-18T21:59:58Z",
+      "side": 1,
+      "message": "Only keep what you need in the try/except block",
+      "revId": "399c6f2f4fed4140ce05694b3a39e0e5cc1b8859",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_49e4a144",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-18T21:59:58Z",
+      "side": 1,
+      "message": "test result once\n\n  if result:\n    return result.group(\u0027shaone\u0027)\nreturn None",
+      "revId": "399c6f2f4fed4140ce05694b3a39e0e5cc1b8859",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
