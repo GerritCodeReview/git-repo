@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "706ffb76_09eea922",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-18T22:55:41Z",
+      "side": 1,
+      "message": "why are \u0027name\u0027 and \u0027path\u0027 variables?",
+      "revId": "cf2bfe1401a3d146e4101a491bda256d02fa7567",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_69e16533",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-18T22:55:41Z",
+      "side": 1,
+      "message": "I think this will work, and it\u0027s cleaner\n\np \u003d self._paths.get(path)\ndeleteProject(p.name)",
+      "revId": "cf2bfe1401a3d146e4101a491bda256d02fa7567",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
