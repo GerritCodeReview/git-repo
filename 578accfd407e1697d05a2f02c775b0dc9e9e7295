@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "b07b3336_8bd92d92",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-18T21:04:49Z",
+      "side": 1,
+      "message": "Just checked. No mention of special treatment for mtime in the docs, and it\u0027s working fine on my windows. mtime is getting updated on modification as expected.\n\nas for calling it each time, I\u0027ll have to look for a way around this. I can think of one way, but I\u0027m not sure if I can access the data from this level. Essentially use a counter + modulus.",
+      "parentUuid": "30902399_0feea522",
+      "range": {
+        "startLine": 115,
+        "startChar": 29,
+        "endLine": 115,
+        "endChar": 37
+      },
+      "revId": "578accfd407e1697d05a2f02c775b0dc9e9e7295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "30902399_6fe17133",
         "filename": "project.py",
         "patchSetId": 5
