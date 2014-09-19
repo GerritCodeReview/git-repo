@@ -87,19 +87,24 @@ class _XmlRemote(object):
     # * no scheme in the base url, like <hostname:port>
     # * persistent-https://
     # * rpc://
-    # We handle this by replacing these with obscure protocols
-    # and then replacing them with the original when we are done.
-    # gopher -> <none>
-    # wais -> persistent-https
-    # nntp -> rpc
+    # We handle no scheme by replacing it with an obscure protocol, gopher
+    # and then replacing it with the original when we are done.
+    # the rest are added to the urllib.parse netloc and relative
+    def append_scheme(scheme):
+      if scheme not in urllib.parse.uses_netloc:
+        urllib.parse.uses_netloc.append(scheme)
+      if scheme not in urllib.parse.uses_relative:
+        urllib.parse.uses_relative.append(scheme)
+
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
       manifestUrl = 'gopher://' + manifestUrl
-    manifestUrl = re.sub(r'^persistent-https://', 'wais://', manifestUrl)
-    manifestUrl = re.sub(r'^rpc://', 'nntp://', manifestUrl)
+    elif manifestUrl.startswith('persistent-https://'):
+      append_scheme('persistent-https')
+    elif manifestUrl.startswith('rpc://'):
+      append_scheme('rpc')
     url = urllib.parse.urljoin(manifestUrl, url)
-    url = re.sub(r'^gopher://', '', url)
-    url = re.sub(r'^wais://', 'persistent-https://', url)
-    url = re.sub(r'^nntp://', 'rpc://', url)
+    if url.startswith('gopher://'):
+      url = url[9:]
     return url
 
   def ToRemoteSpec(self, projectName):
