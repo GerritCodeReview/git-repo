@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b07b3336_4b16e568",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T12:33:55Z",
+      "side": 1,
+      "message": "loose line \u003d None",
+      "revId": "1b78add21484428edcd0b48f62b8a4411a335d93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_a9499d7a",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1058,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T12:33:55Z",
+      "side": 1,
+      "message": "try: except: else:\n\n  else:\n    if line.startswith(\u0027ref: \u0027):",
+      "revId": "1b78add21484428edcd0b48f62b8a4411a335d93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_493fc1ce",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1060,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T12:33:55Z",
+      "side": 1,
+      "message": "this doesn\u0027t do anything, as it isn\u0027t being saved to a variable.\n\nline \u003d line[5:].strip()",
+      "revId": "1b78add21484428edcd0b48f62b8a4411a335d93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_693c05d9",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1092,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T12:33:55Z",
+      "side": 1,
+      "message": "archive \u003d archive or self.archive",
+      "revId": "1b78add21484428edcd0b48f62b8a4411a335d93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_2b1d997e",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T12:33:55Z",
+      "side": 1,
+      "message": "cmd.append(\u0027-t\u0027)",
+      "revId": "1b78add21484428edcd0b48f62b8a4411a335d93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_cb4ad570",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T12:33:55Z",
+      "side": 1,
+      "message": "cmd.append(rev)\n\n-h still searches through tags. will make sure to only return the sha for the requested head.\n\n$ git ls-remote https://gerrit.googlesource.com/git-repo -h v1.9.6\n\n185a2da661d8dc09b07eafc9e413d823b0a30ec7\trefs/tags/v1.9.6",
+      "revId": "1b78add21484428edcd0b48f62b8a4411a335d93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
