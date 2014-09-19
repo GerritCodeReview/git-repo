@@ -38,8 +38,9 @@ MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
-urllib.parse.uses_relative.extend(['ssh', 'git'])
-urllib.parse.uses_netloc.extend(['ssh', 'git'])
+# urljoin gets confused if the scheme is not known.
+urllib.parse.uses_relative.extend(['ssh', 'git', 'persistent-https', 'rpc'])
+urllib.parse.uses_netloc.extend(['ssh', 'git', 'persistent-https', 'rpc'])
 
 class _Default(object):
   """Project defaults within the manifest."""
@@ -85,21 +86,13 @@ class _XmlRemote(object):
     # urljoin will gets confused over quite a few things.  The ones we care
     # about here are:
     # * no scheme in the base url, like <hostname:port>
-    # * persistent-https://
-    # * rpc://
-    # We handle this by replacing these with obscure protocols
-    # and then replacing them with the original when we are done.
-    # gopher -> <none>
-    # wais -> persistent-https
-    # nntp -> rpc
+    # We handle no scheme by replacing it with an obscure protocol, gopher
+    # and then replacing it with the original when we are done.
+
     if manifestUrl.find(':') != manifestUrl.find('/') - 1:
-      manifestUrl = 'gopher://' + manifestUrl
-    manifestUrl = re.sub(r'^persistent-https://', 'wais://', manifestUrl)
-    manifestUrl = re.sub(r'^rpc://', 'nntp://', manifestUrl)
-    url = urllib.parse.urljoin(manifestUrl, url)
-    url = re.sub(r'^gopher://', '', url)
-    url = re.sub(r'^wais://', 'persistent-https://', url)
-    url = re.sub(r'^nntp://', 'rpc://', url)
+      url = urllib.parse.urljoin('gopher://' + manifestUrl, url)[9:]
+    else:
+      url = urllib.parse.urljoin(manifestUrl, url)
     return url
 
   def ToRemoteSpec(self, projectName):
