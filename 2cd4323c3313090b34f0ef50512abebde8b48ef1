@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b07b3336_8b560d08",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T15:59:55Z",
+      "side": 1,
+      "message": "if r.archive:\n  e.setAttribute(\u0027archive\u0027, \u0027true\u0027)\n\nno need to call it false as it isn\u0027t a required element",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_abd42928",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T15:59:55Z",
+      "side": 1,
+      "message": "or self.remotes[remoteName].archive or d.archive",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_89cff995",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T15:59:55Z",
+      "side": 1,
+      "message": "if p_archive:\n  if not self.remotes[remoteName].archive or d.archive:\n    e.setAttribute(\u0027archive\u0027, \u0027true\u0027)\n\nsorry I didn\u0027t pick up on the logic on the other patchset",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_8bcfed95",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T15:59:55Z",
+      "side": 1,
+      "message": "archive \u003d False\n\nmatch how other booleans are handled.",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_4bba65f8",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 795,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T15:59:55Z",
+      "side": 1,
+      "message": "this all needs cleaning up at some point in the future. Since I don\u0027t know if removing inheritance here will break anything, it\u0027s best to do it fully\n\nif not archive:\n  archive \u003d remote.archive or self._default.archive",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_e9b3151d",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 620,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-09-19T15:59:55Z",
+      "side": 1,
+      "message": "if self.manifest._loaded:\n  remote \u003d self.GetRemote(self.remote.name)\n  return remote.archive or self.manifest.default.archive",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
