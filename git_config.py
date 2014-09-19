@@ -625,6 +625,9 @@ class Remote(object):
     if not rev.startswith('refs/'):
       rev = R_HEADS + rev
 
+    if not rev.startswith(R_HEADS):
+      return rev
+
     for spec in self.fetch:
       if spec.SourceMatches(rev):
         return spec.MapSource(rev)

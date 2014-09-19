@@ -1820,9 +1820,9 @@ class Project(object):
       branch = self.revisionExpr
       if is_sha1:
         branch = self.upstream
-      if branch.startswith(R_HEADS):
-        branch = branch[len(R_HEADS):]
-      spec.append(str((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch)))
+      if not branch.startswith('refs/'):
+        branch = str(u'refs/heads/%s' % branch)
+      spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
     cmd.extend(spec)
 
     shallowfetch = self.config.GetString('repo.shallowfetch')
