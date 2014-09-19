@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "706ffb76_89a859ab",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-09-19T16:58:57Z",
+      "side": 1,
+      "message": "Actually, in this case, False !\u003d None\nIf remote acts as a \"first default for projects associated to this remote\", the behavior will be different wether you set remote\u0027s archive to False or you do not set it at all.\n\nFor exemple, if you have\n\u003cdefaut archive\u003d\"true\" .../\u003e\n\u003cremote name\u003d\"a\" archive\u003d\"false\" .../\u003e\n\u003cproject remote\u003d\"a\" .../\u003e\n\nIn that case, if project does not declare an \"archive\" option, it will take remote\u0027s option, which is \"false\", instead of default\u0027s which is \"true\".\n\nIf, when saving the manifest, the archive option disappears from the remote object, then project will take default\u0027s option (true) which would mean a change of behavior after saving the manifest.",
+      "parentUuid": "b07b3336_8b560d08",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b07b3336_abd42928",
         "filename": "manifest_xml.py",
         "patchSetId": 9
@@ -30,6 +48,24 @@
       "writtenOn": "2014-09-19T15:59:55Z",
       "side": 1,
       "message": "or self.remotes[remoteName].archive or d.archive",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_0bc45d75",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-09-19T16:58:57Z",
+      "side": 1,
+      "message": "self.remotes[remoteName].archive is integrated in p._archive in the _ParseProject method.\n\nd.archive is handled in the p.archive property method. This may not be the right place, I will put it in the _ParseProject method too.",
+      "parentUuid": "b07b3336_abd42928",
       "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "b07b3336_2bc11966",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-09-19T16:58:57Z",
+      "side": 1,
+      "message": "In this case too, false !\u003d None\nOne may say \"every project from this remote is \"archive\u003d\"true\"\", except this one\". In that case, a project should specifically say archive\u003d\"false\".\n\nBesides, we will check the default\u0027s value only if the remote one is not defined. If it is, we will use it instead. See the first comment for a more detailled explanation.",
+      "parentUuid": "706ffb76_89cff995",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b07b3336_8bcfed95",
         "filename": "manifest_xml.py",
         "patchSetId": 9
@@ -64,6 +118,24 @@
       "writtenOn": "2014-09-19T15:59:55Z",
       "side": 1,
       "message": "archive \u003d False\n\nmatch how other booleans are handled.",
+      "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_cbae55b8",
+        "filename": "manifest_xml.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-09-19T16:58:57Z",
+      "side": 1,
+      "message": "See previous comments",
+      "parentUuid": "b07b3336_8bcfed95",
       "revId": "2cd4323c3313090b34f0ef50512abebde8b48ef1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
