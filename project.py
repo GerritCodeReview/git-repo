@@ -42,6 +42,15 @@ if not is_python3():
   # pylint:disable=W0622
   input = raw_input
   # pylint:enable=W0622
+  import imp
+  import urlparse
+  import urllib2
+  urllib = imp.new_module('urllib')
+  urllib.parse = urlparse
+  urllib.request = urllib2
+else:
+  import urllib.parse
+  import urllib.request
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
@@ -69,6 +78,67 @@ def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
 _project_hook_list = None
+
+_fCmtCnt = {}
+
+def _FetchCommitMsgHook(hook_list, review):
+  """Fetches the latest commit-msg hook from gerrit.
+
+  This function removes the backup commit-msg script from the hook list
+  then fetches the latest commit-msg hook if the script hasn't been update
+  recently (based on mtime).
+
+  If an issue occurs fetching the latest hook, the backup commit-msg hook
+  is copied, with an mtime that will make it be updated in 1 hour.
+  Returns:
+    A list of absolute paths to all of the files in the hooks directory.
+  """
+  review = review or 'https://gerrit-review.googlesource.com/'
+  if not review.startswith("http"):  # fudge as we only support http/s here
+    review = None
+
+  d = os.path.realpath(os.path.abspath(os.path.dirname(__file__)))
+  d = os.path.join(d, 'hooks')
+
+  for hook in hook_list:
+    if hook.startswith(os.path.join(d, '.commit-msg')):
+      hook_list.remove(hook)
+
+  backup_hook = os.path.join(d, 'commit-msg_backup')
+  rdir = review.replace('/', '_')
+  d = os.path.join(d, '.commit-msg', rdir)
+
+  if not os.path.isdir(d):
+    os.makedirs(d)
+
+  new_hook = os.path.join(d, 'commit-msg')
+
+  if backup_hook in hook_list:
+    hook_list.remove(backup_hook)
+  if not new_hook in hook_list:
+    hook_list.append(new_hook)
+
+  if os.path.isfile(new_hook):
+    c = _fCmtCnt.get(review, 0)
+    _fCmtCnt[review] = c+1
+    if c%10 != 0 or time.time() - os.path.getmtime(new_hook) < 3600*6:
+      return hook_list
+    os.remove(new_hook)
+  url = urllib.parse.urljoin(review, 'tools/hooks/commit-msg')
+  try:
+    response = urllib.request.urlopen(url)
+  except:
+    shutil.copyfile(backup_hook, new_hook)
+    os.utime(new_hook, (1, time.time() - 3600*5))
+  else:
+    data = response.read().decode('utf-8')  # decode for python3 support
+    try:
+      with open(new_hook, 'w') as f:
+        f.write(data)
+    except IOError:
+      _error('Cannot create file %s' % new_hook)
+  return hook_list
+
 def _ProjectHooks():
   """List the hooks present in the 'hooks' directory.
 
@@ -2117,7 +2187,8 @@ class Project(object):
     hooks = os.path.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
-    for stock_hook in _ProjectHooks():
+    stock_hooks = _FetchCommitMsgHook(_ProjectHooks(), self.remote.review)
+    for stock_hook in stock_hooks:
       name = os.path.basename(stock_hook)
 
       if name in ('commit-msg',) and not self.remote.review \
@@ -2131,7 +2202,9 @@ class Project(object):
 
       dst = os.path.join(hooks, name)
       if os.path.islink(dst):
-        continue
+        if os.path.realpath(dst) == stock_hook:
+          continue
+        os.remove(dst)
       if os.path.exists(dst):
         if filecmp.cmp(stock_hook, dst, shallow=False):
           os.remove(dst)
