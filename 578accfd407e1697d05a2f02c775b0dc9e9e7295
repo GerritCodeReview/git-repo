@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "b07b3336_6b85e14a",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-19T13:55:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30902399_4fe4ad44",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 29
+      },
+      "revId": "578accfd407e1697d05a2f02c775b0dc9e9e7295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1075df3d_8ed93b92",
         "filename": "project.py",
         "patchSetId": 5
@@ -36,6 +60,30 @@
       "writtenOn": "2014-09-18T20:19:22Z",
       "side": 1,
       "message": "use single quotes throughout for consistency.",
+      "range": {
+        "startLine": 101,
+        "startChar": 21,
+        "endLine": 101,
+        "endChar": 22
+      },
+      "revId": "578accfd407e1697d05a2f02c775b0dc9e9e7295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_0b921d92",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-19T13:55:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1075df3d_8ed93b92",
       "range": {
         "startLine": 101,
         "startChar": 21,
@@ -95,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "706ffb76_a95bdd2e",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-19T13:55:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30902399_0feea522",
+      "range": {
+        "startLine": 115,
+        "startChar": 29,
+        "endLine": 115,
+        "endChar": 37
+      },
+      "revId": "578accfd407e1697d05a2f02c775b0dc9e9e7295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "30902399_6fe17133",
         "filename": "project.py",
         "patchSetId": 5
@@ -106,6 +178,30 @@
       "writtenOn": "2014-09-18T20:19:22Z",
       "side": 1,
       "message": "you overwrite the variable?",
+      "range": {
+        "startLine": 2183,
+        "startChar": 4,
+        "endLine": 2183,
+        "endChar": 15
+      },
+      "revId": "578accfd407e1697d05a2f02c775b0dc9e9e7295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "706ffb76_497101aa",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 2183,
+      "author": {
+        "id": 1013098
+      },
+      "writtenOn": "2014-09-19T13:55:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30902399_6fe17133",
       "range": {
         "startLine": 2183,
         "startChar": 4,
