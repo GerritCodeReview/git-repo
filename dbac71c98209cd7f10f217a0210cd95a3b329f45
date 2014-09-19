@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b07b3336_8ba84dab",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-09-19T17:11:29Z",
+      "side": 1,
+      "message": "I only use self._default.archive if remote.archive is not defined in manifest (is None).",
+      "revId": "dbac71c98209cd7f10f217a0210cd95a3b329f45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
