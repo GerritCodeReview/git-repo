@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b07b3336_6b0ac145",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-09-19T09:37:13Z",
+      "side": 1,
+      "message": "They shouldn\u0027t, this is a mistake.",
+      "parentUuid": "706ffb76_09eea922",
+      "revId": "cf2bfe1401a3d146e4101a491bda256d02fa7567",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "706ffb76_69e16533",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2014-09-18T22:55:41Z",
       "side": 1,
       "message": "I think this will work, and it\u0027s cleaner\n\np \u003d self._paths.get(path)\ndeleteProject(p.name)",
+      "revId": "cf2bfe1401a3d146e4101a491bda256d02fa7567",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b07b3336_4b0d855a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1013723
+      },
+      "writtenOn": "2014-09-19T09:37:13Z",
+      "side": 1,
+      "message": "I don\u0027t think this would work the same way as the point of having a path in remove-project is to remove only one project, even if several have the same name, but deleteProject(p.name) will remove every project with given name.\n\nThe first two lines handle project deletion from both project lists.\nThe last two line handle the case where we just removed the last (or only) project with that name. Calling deleteProject is used to handle repo_hooks_project and whatever else may come in the future that needs to be handled when fully deleting a project.\n\nAnother way to do it would be :\np \u003d self._paths.pop(path) \nif len(self._projects[p.name]) \u003c\u003d 1:\n  deleteProject(p.name)\nelse:\n  self._projects[p.name].remove(p)",
+      "parentUuid": "706ffb76_69e16533",
       "revId": "cf2bfe1401a3d146e4101a491bda256d02fa7567",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
