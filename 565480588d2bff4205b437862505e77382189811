@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b07b3336_abae696b",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1006454
+      },
+      "writtenOn": "2014-09-22T13:23:24Z",
+      "side": 1,
+      "message": "This seems to introduce another issue.\n\nFor instance, if the user run \"repo sync -c\" and the local git is connected to a reference-mirror, the refs of that reference-mirror will be checked here.\n\nThis is of course problematic, since if no refs can be found in the reference mirror, repo is supposed to look at the remote. Not just give up without a hint about what is wrong.",
+      "revId": "565480588d2bff4205b437862505e77382189811",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
