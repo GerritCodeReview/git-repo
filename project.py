@@ -1817,14 +1817,14 @@ class Project(object):
     elif tag_name is not None:
       spec.append('tag')
       spec.append(tag_name)
-    else:
-      branch = self.revisionExpr
-      if is_sha1:
-        branch = self.upstream
-      if branch is not None and branch.strip():
-        if not branch.startswith('refs/'):
-          branch = R_HEADS + branch
-        spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
+
+    branch = self.revisionExpr
+    if is_sha1:
+      branch = self.upstream
+    if branch is not None and branch.strip():
+      if not branch.startswith('refs/'):
+        branch = R_HEADS + branch
+      spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
     cmd.extend(spec)
 
     shallowfetch = self.config.GetString('repo.shallowfetch')
