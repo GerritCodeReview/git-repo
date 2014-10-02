@@ -22,6 +22,30 @@
       "revId": "f5229e45f6d4eadcab24125f63830bae1a9f34a3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d0d6e8da_114c0c8c",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 1012272
+      },
+      "writtenOn": "2014-10-02T19:52:56Z",
+      "side": 1,
+      "message": "So you\u0027re talking about the case where someone might rename the remote in their manifest file but not in their git repos? Yeah is_new would be False and self._InitRemote wouldn\u0027t be called... Maybe renaming a remote should be an explicit operation (basically `repo forall -c \"git remote rename...\"\u0027)? Or maybe _InitRemote can be made smart enough to just re-use the final component of the existing refspec instead of *...",
+      "parentUuid": "f0d12ce3_b25c203b",
+      "range": {
+        "startLine": 1078,
+        "startChar": 6,
+        "endLine": 1078,
+        "endChar": 24
+      },
+      "revId": "f5229e45f6d4eadcab24125f63830bae1a9f34a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
