@@ -96,6 +96,29 @@
     },
     {
       "key": {
+        "uuid": "f0d12ce3_d2ac44b1",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1822,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-10-02T22:38:08Z",
+      "side": 1,
+      "message": "What happens here if upstream wasn\u0027t defined? What\u0027s the value of branch? I haven\u0027t tested that case...",
+      "range": {
+        "startLine": 1822,
+        "startChar": 8,
+        "endLine": 1822,
+        "endChar": 30
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "90571041_b710c870",
         "filename": "project.py",
         "patchSetId": 1
