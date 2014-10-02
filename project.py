@@ -1326,6 +1326,8 @@ class Project(object):
     if not ID_RE.match(self.revisionExpr):
       # in case of manifest sync the revisionExpr might be a SHA1
       branch.merge = self.revisionExpr
+      if not branch.merge.startswith('refs/'):
+        branch.merge = R_HEADS + branch.merge
     branch.Save()
 
     if cnt_mine > 0 and self.rebase:
@@ -1394,6 +1396,8 @@ class Project(object):
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote(self.remote.name)
     branch.merge = self.revisionExpr
+    if not branch.merge.startswith('refs/'):
+      branch.merge = R_HEADS + self.revisionExpr
     revid = self.GetRevisionId(all_refs)
 
     if head.startswith(R_HEADS):
