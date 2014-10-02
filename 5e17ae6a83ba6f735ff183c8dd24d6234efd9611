@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b0db3405_f0062041",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1017653
+      },
+      "writtenOn": "2014-10-02T20:59:16Z",
+      "side": 1,
+      "message": "This adds unconditionally prefix \"refs/heads/\".\n\nBut, what if self.revisionExpr were a short version of tag or SHA1?\n\nI think you need to use:\ngit ls-remote -h \u003crepository\u003e branch.merge\nand\ngit ls-remote -t \u003crepository\u003e branch.merge\n\nto find out whether it is a branch head, tag, or something else.",
+      "range": {
+        "startLine": 1308,
+        "startChar": 10,
+        "endLine": 1308,
+        "endChar": 47
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b0db3405_90031430",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 1017653
+      },
+      "writtenOn": "2014-10-02T20:59:16Z",
+      "side": 1,
+      "message": "Same here.",
+      "range": {
+        "startLine": 1379,
+        "startChar": 8,
+        "endLine": 1379,
+        "endChar": 50
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
