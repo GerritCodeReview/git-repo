@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d0d6e8da_d1652403",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-10-02T22:34:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0db3405_d0099c53",
+      "range": {
+        "startLine": 622,
+        "startChar": 4,
+        "endLine": 623,
+        "endChar": 16
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0db3405_30f588e5",
         "filename": "git_config.py",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "d0d6e8da_f162a8f8",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-10-02T22:34:07Z",
+      "side": 1,
+      "message": "Hrm, maybe we do. The issue is that arbitrary refs likely aren\u0027t in the refspec, but we want to allow fetching them *somewhere*.\n\nHowever, it might make sense to move 628-629 below 633 to give the refspec a chance to match it first. I don\u0027t see any harm in that, so I\u0027ll plan to include that in my next PS.",
+      "parentUuid": "b0db3405_30f588e5",
+      "range": {
+        "startLine": 631,
+        "startChar": 4,
+        "endLine": 634,
+        "endChar": 67
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "90571041_b710c870",
         "filename": "project.py",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2014-10-02T20:54:17Z",
       "side": 1,
       "message": "`R_HEADS + branch` is how this file typically does this",
+      "range": {
+        "startLine": 1824,
+        "startChar": 17,
+        "endLine": 1824,
+        "endChar": 47
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0d12ce3_32c8307f",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1824,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-10-02T22:34:07Z",
+      "side": 1,
+      "message": "Except for 9 lines above this when it doesn\u0027t. :-)\n\nI couldn\u0027t find a pattern and short of fixing all of repo to be consistent I just went with this. I\u0027m happy to update if you prefer that. Consider it done.",
+      "parentUuid": "90571041_b710c870",
       "range": {
         "startLine": 1824,
         "startChar": 17,
