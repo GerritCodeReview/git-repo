@@ -558,7 +558,10 @@ later is required to fix a server side protocol bug.
             branch = branch[len(R_HEADS):]
 
           env = os.environ.copy()
-          if 'TARGET_PRODUCT' in env and 'TARGET_BUILD_VARIANT' in env:
+          if 'SYNC_TARGET' in env:
+            target = env['SYNC_TARGET']
+            [success, manifest_str] = server.GetApprovedManifest(branch, target)
+          elif 'TARGET_PRODUCT' in env and 'TARGET_BUILD_VARIANT' in env:
             target = '%s-%s' % (env['TARGET_PRODUCT'],
                                 env['TARGET_BUILD_VARIANT'])
             [success, manifest_str] = server.GetApprovedManifest(branch, target)
