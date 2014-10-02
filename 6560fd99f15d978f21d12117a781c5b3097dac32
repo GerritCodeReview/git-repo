@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b0db3405_d0099c53",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-02T20:54:17Z",
+      "side": 1,
+      "message": "As your code currently is, this is no longer needed.",
+      "range": {
+        "startLine": 622,
+        "startChar": 4,
+        "endLine": 623,
+        "endChar": 16
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b0db3405_30f588e5",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-02T20:54:17Z",
+      "side": 1,
+      "message": "I could probably figure it out with a little more thinking, but why don\u0027t we want to run these arbitrary refs/* through this check?",
+      "range": {
+        "startLine": 631,
+        "startChar": 4,
+        "endLine": 634,
+        "endChar": 67
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "90571041_b710c870",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1824,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-02T20:54:17Z",
+      "side": 1,
+      "message": "`R_HEADS + branch` is how this file typically does this",
+      "range": {
+        "startLine": 1824,
+        "startChar": 17,
+        "endLine": 1824,
+        "endChar": 47
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
