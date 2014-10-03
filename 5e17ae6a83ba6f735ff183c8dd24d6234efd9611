@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "d0d6e8da_713318ec",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2014-10-03T17:31:48Z",
+      "side": 1,
+      "message": "Sorry, see https://gerrit-review.googlesource.com/#/c/60310/\n\nAn example would be a project that specifies \"revision\u003d\u003csome sha-1 hash\u003e\" and \"upstream\u003drefs/sandbox/nasserg/devbranch\". Without my changes that doesn\u0027t work (and neither does something like \u0027repo init -b refs/sandbox/nasserg/dev-manifest-branch\u0027).",
+      "parentUuid": "b0db3405_f034e000",
+      "range": {
+        "startLine": 1308,
+        "startChar": 10,
+        "endLine": 1308,
+        "endChar": 47
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0db3405_90031430",
         "filename": "project.py",
         "patchSetId": 1
