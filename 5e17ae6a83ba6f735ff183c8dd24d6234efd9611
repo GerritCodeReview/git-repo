@@ -145,6 +145,30 @@
     },
     {
       "key": {
+        "uuid": "90571041_777590bd",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1017653
+      },
+      "writtenOn": "2014-10-03T18:14:15Z",
+      "side": 1,
+      "message": "OK, thanks.\n\nSo, in addition to this one, there are two other related changes:\nhttps://gerrit-review.googlesource.com/#/c/60310\nhttps://gerrit-review.googlesource.com/#/c/60550\n\nIn both, I see code:\nif not branch.startswith(\u0027refs/\u0027):\n  branch \u003d R_HEADS + branch\n\nI\u0027ll let you guys sort this out.",
+      "parentUuid": "d0d6e8da_713318ec",
+      "range": {
+        "startLine": 1308,
+        "startChar": 10,
+        "endLine": 1308,
+        "endChar": 47
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0db3405_90031430",
         "filename": "project.py",
         "patchSetId": 1
