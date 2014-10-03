@@ -73,6 +73,54 @@
     },
     {
       "key": {
+        "uuid": "b0db3405_f034e000",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1017653
+      },
+      "writtenOn": "2014-10-03T17:23:45Z",
+      "side": 1,
+      "message": "OK, fine. Short branch names are probably the most common use case anyways, so this is definitely a welcome fix for that.",
+      "parentUuid": "d0d6e8da_319fd06c",
+      "range": {
+        "startLine": 1308,
+        "startChar": 10,
+        "endLine": 1308,
+        "endChar": 47
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "90571041_f731a00e",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1017653
+      },
+      "writtenOn": "2014-10-03T17:23:45Z",
+      "side": 1,
+      "message": "Nasser, what is the case that you are trying to support? Can you give an example?",
+      "parentUuid": "d0d6e8da_91247ca5",
+      "range": {
+        "startLine": 1308,
+        "startChar": 10,
+        "endLine": 1308,
+        "endChar": 47
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0db3405_90031430",
         "filename": "project.py",
         "patchSetId": 1
