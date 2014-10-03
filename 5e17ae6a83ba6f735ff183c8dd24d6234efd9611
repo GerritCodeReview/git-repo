@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d0d6e8da_319fd06c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1308,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-03T01:32:31Z",
+      "side": 1,
+      "message": "\u003e But, what if self.revisionExpr were a short version of tag or SHA1?\n\nIt turns out the code assumes in tons of places that no one uses short versions of a tags.  Just try creating a small manifest with one.  You won\u0027t be able to sync (unless there is a branch of the same name.).\n\nAlso this code is only run if it\u0027s not a sha1 (1303).",
+      "parentUuid": "b0db3405_f0062041",
+      "range": {
+        "startLine": 1308,
+        "startChar": 10,
+        "endLine": 1308,
+        "endChar": 47
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0db3405_90031430",
         "filename": "project.py",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2014-10-02T20:59:16Z",
       "side": 1,
       "message": "Same here.",
+      "range": {
+        "startLine": 1379,
+        "startChar": 8,
+        "endLine": 1379,
+        "endChar": 50
+      },
+      "revId": "5e17ae6a83ba6f735ff183c8dd24d6234efd9611",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0d12ce3_329fd06c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1379,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-03T01:32:31Z",
+      "side": 1,
+      "message": "This operates on manifest revisions, where sha1s aren\u0027t allowed.",
+      "parentUuid": "b0db3405_90031430",
       "range": {
         "startLine": 1379,
         "startChar": 8,
