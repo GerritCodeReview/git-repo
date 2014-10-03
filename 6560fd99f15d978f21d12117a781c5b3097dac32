@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "f0d12ce3_d293e462",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-03T01:38:11Z",
+      "side": 1,
+      "message": "Will refs/tags/* fail on this check?  If so and you move 628-629 down, you can\u0027t remove 622-623.",
+      "parentUuid": "d0d6e8da_f162a8f8",
+      "range": {
+        "startLine": 631,
+        "startChar": 4,
+        "endLine": 634,
+        "endChar": 67
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0d12ce3_d2ac44b1",
         "filename": "project.py",
         "patchSetId": 1
@@ -154,6 +178,30 @@
       "side": 1,
       "message": "Except for 9 lines above this when it doesn\u0027t. :-)\n\nI couldn\u0027t find a pattern and short of fixing all of repo to be consistent I just went with this. I\u0027m happy to update if you prefer that. Consider it done.",
       "parentUuid": "90571041_b710c870",
+      "range": {
+        "startLine": 1824,
+        "startChar": 17,
+        "endLine": 1824,
+        "endChar": 47
+      },
+      "revId": "6560fd99f15d978f21d12117a781c5b3097dac32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d0d6e8da_f1906858",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1824,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-03T01:38:11Z",
+      "side": 1,
+      "message": "ah ok, that\u0027s fine then...I\u0027m really not happy with the whole R_HEADS testing and appending...I was writing something to clean it all up earlier, but just ended up making it messier.  I feel like deprecating shortname branches in revisions would clear up a lot of confusion, but I don\u0027t think people would like that in the short run.",
+      "parentUuid": "f0d12ce3_32c8307f",
       "range": {
         "startLine": 1824,
         "startChar": 17,
