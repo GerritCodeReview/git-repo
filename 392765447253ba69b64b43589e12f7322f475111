@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d0d6e8da_b194201a",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-07T17:35:15Z",
+      "side": 1,
+      "message": "Won\u0027t this lead to errors if review is None?  Did you mean to make this test before the previous one?",
+      "range": {
+        "startLine": 98,
+        "startChar": 4,
+        "endLine": 98,
+        "endChar": 10
+      },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0d12ce3_328030ce",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-07T17:35:15Z",
+      "side": 1,
+      "message": "I get that this is where the file used to be, but I\u0027m a little uncomfortable shoving dynamic files into the source directory.  Maybe this should be in .repo/hooks instead of .repo/repo/hooks.",
+      "range": {
+        "startLine": 101,
+        "startChar": 2,
+        "endLine": 101,
+        "endChar": 30
+      },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0d12ce3_127bac64",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-07T17:35:15Z",
+      "side": 1,
+      "message": "Is there a particular reason this is a hidden file?",
+      "range": {
+        "startLine": 109,
+        "startChar": 23,
+        "endLine": 109,
+        "endChar": 34
+      },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d0d6e8da_51713482",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-07T17:35:15Z",
+      "side": 1,
+      "message": "I\u0027d prefer you just run makedirs and catch the OSError",
+      "range": {
+        "startLine": 111,
+        "startChar": 2,
+        "endLine": 111,
+        "endChar": 26
+      },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0d12ce3_d26444c0",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-07T17:35:15Z",
+      "side": 1,
+      "message": "This isn\u0027t going to retain its value between invocations of repo if that\u0027s what you are expecting.  I\u0027d just go with mtime and not use a count at all.",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 26
+      },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b0db3405_9088f445",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-07T17:35:15Z",
+      "side": 1,
+      "message": "This is to trigger a retry on the next run?  I\u0027m fine with failure meaning that a retry doesn\u0027t happen for a while.",
+      "range": {
+        "startLine": 132,
+        "startChar": 4,
+        "endLine": 132,
+        "endChar": 49
+      },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "90571041_b7656804",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-10-07T17:35:15Z",
+      "side": 1,
+      "message": "I know it\u0027s not overwhelmingly consistent, but here there are generally two spaces between these major functions.",
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
