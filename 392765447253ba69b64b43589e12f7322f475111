@@ -25,6 +25,24 @@
     },
     {
       "key": {
+        "uuid": "307ae4aa_f407f883",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-10-07T18:58:03Z",
+      "side": 1,
+      "message": "Ah this is supposed to go before review \u003d review or \"url\"",
+      "parentUuid": "d0d6e8da_b194201a",
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f0d12ce3_328030ce",
         "filename": "project.py",
         "patchSetId": 6
@@ -42,6 +60,24 @@
         "endLine": 101,
         "endChar": 30
       },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1077a0c2_d3df7490",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-10-07T18:58:03Z",
+      "side": 1,
+      "message": "I also thought about it, but didn\u0027t want to change which folders to use. Guess this function can use .repo/hooks directly here",
+      "parentUuid": "f0d12ce3_328030ce",
       "revId": "392765447253ba69b64b43589e12f7322f475111",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -71,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "1077a0c2_f3dcf09d",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-10-07T18:58:03Z",
+      "side": 1,
+      "message": "It\u0027s a folder. Doesn\u0027t need to be hidden though. I can\u0027t remember my reasoning for it, perhaps to make less visible as it\u0027s inside the git repo",
+      "parentUuid": "f0d12ce3_127bac64",
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0d6e8da_51713482",
         "filename": "project.py",
         "patchSetId": 6
@@ -88,6 +142,24 @@
         "endLine": 111,
         "endChar": 26
       },
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1077a0c2_b3d67878",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-10-07T18:58:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0d6e8da_51713482",
       "revId": "392765447253ba69b64b43589e12f7322f475111",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -117,6 +189,24 @@
     },
     {
       "key": {
+        "uuid": "1077a0c2_33eb483a",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-10-07T18:58:03Z",
+      "side": 1,
+      "message": "This works as required, which is to count through each project in the repo sync process",
+      "parentUuid": "f0d12ce3_d26444c0",
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b0db3405_9088f445",
         "filename": "project.py",
         "patchSetId": 6
@@ -140,6 +230,24 @@
     },
     {
       "key": {
+        "uuid": "307ae4aa_941484b3",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-10-07T18:58:03Z",
+      "side": 1,
+      "message": "Failure means a retry won\u0027t happen for an hour. It would be simple enough to reset the counter which will trigger a retry within the next X projects synced. Your call.",
+      "parentUuid": "b0db3405_9088f445",
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "90571041_b7656804",
         "filename": "project.py",
         "patchSetId": 6
@@ -151,6 +259,24 @@
       "writtenOn": "2014-10-07T17:35:15Z",
       "side": 1,
       "message": "I know it\u0027s not overwhelmingly consistent, but here there are generally two spaces between these major functions.",
+      "revId": "392765447253ba69b64b43589e12f7322f475111",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1077a0c2_93d9fcac",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2014-10-07T18:58:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90571041_b7656804",
       "revId": "392765447253ba69b64b43589e12f7322f475111",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
