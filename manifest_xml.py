@@ -34,7 +34,13 @@ from git_refs import R_HEADS, HEAD
 from project import RemoteSpec, Project, MetaProject
 from error import ManifestParseError, ManifestInvalidRevisionError
 
+try:
+  from lxml import etree
+except ImportError:
+  etree = None
+
 MANIFEST_FILE_NAME = 'manifest.xml'
+MANIFEST_XSD_FILE_NAME = 'manifest.xsd'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
@@ -311,6 +317,28 @@ class XmlManifest(object):
       root.appendChild(e)
 
     doc.writexml(fd, '', '  ', '\n', 'UTF-8')
+
+  def Validate(self, manifest=None):
+    if not etree:
+      print('warning: no validation capabilities available', file=sys.stderr)
+      return True
+
+    if not manifest:
+      manifest = self.manifestFile
+
+    xsd = os.path.join(os.path.dirname(__file__), MANIFEST_XSD_FILE_NAME)
+
+    xmlschema_doc = etree.parse(xsd)
+    xmlschema = etree.XMLSchema(xmlschema_doc)
+    xml_doc = etree.parse(manifest)
+
+    try:
+      xmlschema.assertValid(xml_doc)
+      print('manifest %s is valid' % manifest)
+      return True
+    except etree.DocumentInvalid, msg:
+      print('manifest %s is NOT valid: %s' % (manifest, msg))
+      return False
 
   @property
   def paths(self):

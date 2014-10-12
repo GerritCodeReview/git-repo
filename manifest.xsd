@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="manifest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="include"/>
+        <xs:element minOccurs="0" ref="notice"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="remote"/>
+        <xs:element minOccurs="0" ref="default"/>
+        <xs:element minOccurs="0" ref="manifest-server"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="project"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="extend-project"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="remove-project"/>
+        <xs:element minOccurs="0" ref="repo-hooks"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="include">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="notice" type="xs:string"/>
+  <xs:element name="remote">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:ID" use="required"/>
+      <xs:attribute name="alias" type="xs:string"/>
+      <xs:attribute name="fetch" type="xs:string" use="required"/>
+      <xs:attribute name="review" type="xs:string"/>
+      <xs:attribute name="revision" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="default">
+    <xs:complexType>
+      <xs:attribute name="remote" type="xs:string"/>
+      <xs:attribute name="revision" type="xs:string"/>
+      <xs:attribute name="dest-branch" type="xs:string"/>
+      <xs:attribute name="sync-j" type="xs:string"/>
+      <xs:attribute name="sync-c" type="xs:string"/>
+      <xs:attribute name="sync-s" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="manifest-server">
+    <xs:complexType>
+      <xs:attribute name="url" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="project">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="copyfile"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="linkfile"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="annotation"/>
+        <xs:element maxOccurs="unbounded" minOccurs="0" ref="project"/>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="path" type="xs:string"/>
+      <xs:attribute name="remote" type="xs:string"/>
+      <xs:attribute name="revision" type="xs:string"/>
+      <xs:attribute name="dest-branch" type="xs:string"/>
+      <xs:attribute name="groups" type="xs:string"/>
+      <xs:attribute name="sync-c" type="xs:string"/>
+      <xs:attribute name="sync-s" type="xs:string"/>
+      <xs:attribute name="upstream" type="xs:string"/>
+      <xs:attribute name="clone-depth" type="xs:string"/>
+      <xs:attribute name="force-path" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="annotation">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="value" type="xs:string" use="required"/>
+      <xs:attribute default="true" name="keep" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="copyfile">
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:string" use="required"/>
+      <xs:attribute name="dest" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="linkfile">
+    <xs:complexType>
+      <xs:attribute name="src" type="xs:string" use="required"/>
+      <xs:attribute name="dest" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="extend-project">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="path" type="xs:string"/>
+      <xs:attribute name="groups" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="remove-project">
+    <xs:complexType>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="repo-hooks">
+    <xs:complexType>
+      <xs:attribute name="in-project" type="xs:string" use="required"/>
+      <xs:attribute name="enabled-list" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
