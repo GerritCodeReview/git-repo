@@ -1070,12 +1070,11 @@ class Project(object):
               "%s" % (tarpath, str(e)), file=sys.stderr)
       self._CopyAndLinkFiles()
       return True
-
-    if is_new is None:
-      is_new = not self.Exists
-    if is_new:
+    if is_new is not False:
       self._InitGitDir()
-    else:
+    if is_new is None:
+     is_new = not self.Exists
+    if not is_new:
       self._UpdateHooks()
     self._InitRemote()
 
@@ -2054,19 +2053,21 @@ class Project(object):
       raise GitError('%s merge %s ' % (self.name, head))
 
   def _InitGitDir(self, mirror_git=None):
-    if not os.path.exists(self.gitdir):
+    # Initialize the bare repository, which contains all of the objects.
+    if not os.path.exists(self.objdir):
+      os.makedirs(self.objdir)
+      self.bare_objdir.init()
 
-      # Initialize the bare repository, which contains all of the objects.
-      if not os.path.exists(self.objdir):
-        os.makedirs(self.objdir)
-        self.bare_objdir.init()
+    init_git_dir = not os.path.exists(self.gitdir)
+    if init_git_dir:
+      os.makedirs(self.gitdir)
 
-      # If we have a separate directory to hold refs, initialize it as well.
-      if self.objdir != self.gitdir:
-        os.makedirs(self.gitdir)
-        self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
+    # If we have a separate directory to hold refs, initialize it as well.
+    if self.objdir != self.gitdir:
+      self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
                               copy_all=True)
 
+    if init_git_dir:
       mp = self.manifest.manifestProject
       ref_dir = mp.config.GetString('repo.reference') or ''
 
@@ -2210,8 +2211,13 @@ class Project(object):
         src = os.path.realpath(os.path.join(gitdir, name))
         dst = os.path.realpath(os.path.join(dotgit, name))
 
-        if os.path.lexists(dst) and not os.path.islink(dst):
-          raise GitError('cannot overwrite a local work tree')
+        if os.path.lexists(dst):
+          # Only fail if the links are pointing to the wrong place
+          # If copy_all is true, and the links are correct, assume
+          # that files were copied correctly previously
+          if src != dst and name in to_symlink:
+            raise GitError('cannot overwrite a local work tree')
+          continue
 
         # If the source dir doesn't exist, create an empty dir.
         if name in symlink_dirs and not os.path.lexists(src):
@@ -2240,11 +2246,15 @@ class Project(object):
 
   def _InitWorkTree(self):
     dotgit = os.path.join(self.worktree, '.git')
-    if not os.path.exists(dotgit):
+    init_dotgit = not os.path.exists(dotgit)
+    if init_dotgit:
       os.makedirs(dotgit)
-      self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
-                            copy_all=False)
 
+    # Always check the symlinks for the work tree, even if they already exist
+    self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
+                          copy_all=False)
+
+    if init_dotgit:
       _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
 
       cmd = ['read-tree', '--reset', '-u']
