@@ -93,6 +93,7 @@ makes it available in your project's local working directory.
         except GitError:
           print('[%s] Could not complete the cherry-pick of %s' \
                 % (project.name, dl.commit), file=sys.stderr)
+          sys.exit(1)
 
       elif opt.revert:
         project._Revert(dl.commit)
