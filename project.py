@@ -736,27 +736,49 @@ class Project(object):
     return matched
 
 ## Status Display ##
+  def UncommitedFiles(self, get_all=True):
+    """Returns a list of strings, uncommitted files in the git tree.
 
-  def HasChanges(self):
-    """Returns true if there are uncommitted changes.
+    Args:
+      get_all: a boolean, if True - get information about all different
+               uncommitted files. If False - return as soon as any kind of
+               uncommitted files is detected.
     """
+    details = []
     self.work_git.update_index('-q',
                                '--unmerged',
                                '--ignore-missing',
                                '--refresh')
     if self.IsRebaseInProgress():
-      return True
+      details.append("rebase in progress")
+      if not get_all:
+        return details
 
-    if self.work_git.DiffZ('diff-index', '--cached', HEAD):
-      return True
+    changes = self.work_git.DiffZ('diff-index', '--cached', HEAD).keys()
+    if changes:
+      details.extend(changes)
+      if not get_all:
+        return details
 
-    if self.work_git.DiffZ('diff-files'):
-      return True
+    changes = self.work_git.DiffZ('diff-files').keys()
+    if changes:
+      details.extend(changes)
+      if not get_all:
+        return details
 
-    if self.work_git.LsOthers():
-      return True
+    changes = self.work_git.LsOthers()
+    if changes:
+      details.extend(changes)
 
-    return False
+    return details
+
+  def HasChanges(self):
+    """Returns true if there are uncommitted changes.
+    """
+    if self.UncommitedFiles(get_all=False):
+      return True
+    else:
+      return False
 
   def PrintWorkTreeStatus(self, output_redir=None):
     """Prints the status of the repository to stdout.

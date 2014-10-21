@@ -339,13 +339,17 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
         self._AppendAutoList(branch, people)
 
         # Check if there are local changes that may have been forgotten
-        if branch.project.HasChanges():
+        changes = branch.project.UncommitedFiles()
+        if changes:
           key = 'review.%s.autoupload' % branch.project.remote.review
           answer = branch.project.config.GetBoolean(key)
 
           # if they want to auto upload, let's not ask because it could be automated
           if answer is None:
-            sys.stdout.write('Uncommitted changes in ' + branch.project.name + ' (did you forget to amend?). Continue uploading? (y/N) ')
+            sys.stdout.write('Uncommitted changes in ' + branch.project.name)
+            sys.stdout.write(' (did you forget to amend?):\n')
+            sys.stdout.write('\n'.join(changes) + '\n')
+            sys.stdout.write('Continue uploading? (y/N) ')
             a = sys.stdin.readline().strip().lower()
             if a not in ('y', 'yes', 't', 'true', 'on'):
               print("skipping upload", file=sys.stderr)
