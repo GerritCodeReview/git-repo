@@ -619,8 +619,6 @@ class Remote(object):
     """
     if IsId(rev):
       return rev
-    if rev.startswith(R_TAGS):
-      return rev
 
     if not rev.startswith('refs/'):
       rev = R_HEADS + rev
@@ -628,6 +626,10 @@ class Remote(object):
     for spec in self.fetch:
       if spec.SourceMatches(rev):
         return spec.MapSource(rev)
+
+    if not rev.startswith(R_HEADS):
+      return rev
+
     raise GitError('remote %s does not have %s' % (self.name, rev))
 
   def WritesTo(self, ref):

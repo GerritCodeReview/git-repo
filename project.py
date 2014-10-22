@@ -1752,10 +1752,11 @@ class Project(object):
     if depth:
       current_branch_only = True
 
+    if ID_RE.match(self.revisionExpr) is not None:
+      is_sha1 = True
+
     if current_branch_only:
-      if ID_RE.match(self.revisionExpr) is not None:
-        is_sha1 = True
-      elif self.revisionExpr.startswith(R_TAGS):
+      if self.revisionExpr.startswith(R_TAGS):
         # this is a tag and its sha1 value should never change
         tag_name = self.revisionExpr[len(R_TAGS):]
 
@@ -1838,13 +1839,14 @@ class Project(object):
     elif tag_name is not None:
       spec.append('tag')
       spec.append(tag_name)
-    else:
-      branch = self.revisionExpr
-      if is_sha1:
-        branch = self.upstream
-      if branch.startswith(R_HEADS):
-        branch = branch[len(R_HEADS):]
-      spec.append(str((u'+refs/heads/%s:' % branch) + remote.ToLocal('refs/heads/%s' % branch)))
+
+    branch = self.revisionExpr
+    if is_sha1:
+      branch = self.upstream
+    if branch is not None and branch.strip():
+      if not branch.startswith('refs/'):
+        branch = R_HEADS + branch
+      spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
     cmd.extend(spec)
 
     shallowfetch = self.config.GetString('repo.shallowfetch')
