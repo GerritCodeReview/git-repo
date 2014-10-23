@@ -566,6 +566,8 @@ class Remote(object):
         return None
 
       u = self.review
+      if u.startswith('persistent-'):
+        u = u[len('persistent-'):]
       if u.split(':')[0] not in ('http', 'https', 'sso'):
         u = 'http://%s' % u
       if u.endswith('/Gerrit'):
