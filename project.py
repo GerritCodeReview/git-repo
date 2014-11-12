@@ -32,7 +32,7 @@ import traceback
 from color import Coloring
 from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
-from error import GitError, HookError, UploadError
+from error import GitError, HookError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
 from trace import IsTrace, Trace
@@ -1101,6 +1101,7 @@ class Project(object):
       quiet=False,
       is_new=None,
       current_branch_only=False,
+      force_sync=False,
       clone_bundle=True,
       no_tags=False,
       archive=False,
@@ -1233,11 +1234,11 @@ class Project(object):
         'revision %s in %s not found' % (self.revisionExpr,
                                          self.name))
 
-  def Sync_LocalHalf(self, syncbuf):
+  def Sync_LocalHalf(self, syncbuf, force_sync=False):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
-    self._InitWorkTree()
+    self._InitWorkTree(force_sync=force_sync)
     all_refs = self.bare_ref.all
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
@@ -2164,7 +2165,7 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self, mirror_git=None):
+  def _InitGitDir(self, mirror_git=None, force_sync=False):
     init_git_dir = not os.path.exists(self.gitdir)
     init_obj_dir = not os.path.exists(self.objdir)
     try:
@@ -2181,7 +2182,19 @@ class Project(object):
         if init_obj_dir or init_git_dir:
           self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
                                 copy_all=True)
-        self._CheckDirReference(self.objdir, self.gitdir, share_refs=False)
+        try:
+          self._CheckDirReference(self.objdir, self.gitdir, share_refs=False)
+        except GitError as e:
+          if force_sync:
+            try:
+              shutil.rmtree(os.path.realpath(self.gitdir))
+              if self.worktree and os.path.exists(
+                  os.path.realpath(self.worktree)):
+                shutil.rmtree(os.path.realpath(self.worktree))
+              return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
+            except:
+              raise e
+          raise e
 
       if init_git_dir:
         mp = self.manifest.manifestProject
@@ -2308,7 +2321,8 @@ class Project(object):
         src = os.path.realpath(os.path.join(srcdir, name))
         # Fail if the links are pointing to the wrong place
         if src != dst:
-          raise GitError('cannot overwrite a local work tree')
+          raise GitError('--force-sync not enabled; cannot overwrite a local '
+                         'work tree')
 
   def _ReferenceGitDir(self, gitdir, dotgit, share_refs, copy_all):
     """Update |dotgit| to reference |gitdir|, using symlinks where possible.
@@ -2361,11 +2375,11 @@ class Project(object):
             shutil.copy(src, dst)
       except OSError as e:
         if e.errno == errno.EPERM:
-          raise GitError('filesystem must support symlinks')
+          raise DownloadError('filesystem must support symlinks')
         else:
           raise
 
-  def _InitWorkTree(self):
+  def _InitWorkTree(self, force_sync=False):
     dotgit = os.path.join(self.worktree, '.git')
     init_dotgit = not os.path.exists(dotgit)
     try:
@@ -2374,7 +2388,16 @@ class Project(object):
         self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
                               copy_all=False)
 
+    try:
       self._CheckDirReference(self.gitdir, dotgit, share_refs=True)
+    except GitError as e:
+      if force_sync:
+        try:
+          shutil.rmtree(dotgit)
+          return self._InitWorkTree(force_sync=False)
+        except:
+          raise e
+      raise e
 
       if init_dotgit:
         _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
