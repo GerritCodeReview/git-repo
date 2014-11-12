@@ -119,6 +119,11 @@ credentials.
 The -f/--force-broken option can be used to proceed with syncing
 other projects if a project sync fails.
 
+The --force-sync option can be used to overwrite existing git
+directories if they have previously been linked to a different
+object direcotry. WARNING: This may cause data to be lost since
+refs may be removed when overwriting.
+
 The --no-clone-bundle option disables any attempt to use
 $URL/clone.bundle to bootstrap a new Git repository from a
 resumeable bundle file on a content delivery network. This
@@ -167,6 +172,11 @@ later is required to fix a server side protocol bug.
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
                  help="continue sync even if a project fails to sync")
+    p.add_option('--force-sync',
+                 dest='force_sync', action='store_true',
+                 help="overwrite an existing git directory if it needs to "
+                      "point to a different object directory. WARNING: this "
+                      "may cause loss of data")
     p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -271,6 +281,7 @@ later is required to fix a server side protocol bug.
         success = project.Sync_NetworkHalf(
           quiet=opt.quiet,
           current_branch_only=opt.current_branch_only,
+          force_sync=opt.force_sync,
           clone_bundle=not opt.no_clone_bundle,
           no_tags=opt.no_tags, archive=self.manifest.IsArchive)
         self._fetch_times.Set(project, time.time() - start)
@@ -672,7 +683,7 @@ later is required to fix a server side protocol bug.
     for project in all_projects:
       pm.update()
       if project.worktree:
-        project.Sync_LocalHalf(syncbuf)
+        project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
     pm.end()
     print(file=sys.stderr)
     if not syncbuf.Finish():

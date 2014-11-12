@@ -30,7 +30,7 @@ import time
 from color import Coloring
 from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
-from error import GitError, HookError, UploadError
+from error import GitError, HookError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
 from trace import IsTrace, Trace
@@ -524,6 +524,7 @@ class Project(object):
                groups = None,
                sync_c = False,
                sync_s = False,
+               force_sync = False,
                clone_depth = None,
                upstream = None,
                parent = None,
@@ -1035,6 +1036,7 @@ class Project(object):
       quiet=False,
       is_new=None,
       current_branch_only=False,
+      force_sync=False,
       clone_bundle=True,
       no_tags=False,
       archive=False):
@@ -1071,7 +1073,7 @@ class Project(object):
       self._CopyAndLinkFiles()
       return True
     if is_new is not False:
-      self._InitGitDir()
+      self._InitGitDir(force_sync=force_sync)
     if is_new is None:
      is_new = not self.Exists
     if not is_new:
@@ -1165,11 +1167,11 @@ class Project(object):
         'revision %s in %s not found' % (self.revisionExpr,
                                          self.name))
 
-  def Sync_LocalHalf(self, syncbuf):
+  def Sync_LocalHalf(self, syncbuf, force_sync=False):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
-    self._InitWorkTree()
+    self._InitWorkTree(force_sync=force_sync)
     all_refs = self.bare_ref.all
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
@@ -2052,7 +2054,7 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self, mirror_git=None):
+  def _InitGitDir(self, mirror_git=None, force_sync=False):
     # Initialize the bare repository, which contains all of the objects.
     if not os.path.exists(self.objdir):
       os.makedirs(self.objdir)
@@ -2064,8 +2066,20 @@ class Project(object):
 
     # If we have a separate directory to hold refs, initialize it as well.
     if self.objdir != self.gitdir:
-      self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
+      try:
+        self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
                               copy_all=True)
+      except GitError as e:
+        if force_sync:
+          try:
+            shutil.rmtree(os.path.realpath(self.gitdir))
+            if self.worktree and os.path.exists(
+                os.path.realpath(self.worktree)):
+              shutil.rmtree(os.path.realpath(self.worktree))
+            return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
+          except:
+            raise e
+        raise e
 
     if init_git_dir:
       mp = self.manifest.manifestProject
@@ -2240,19 +2254,28 @@ class Project(object):
             shutil.copy(src, dst)
       except OSError as e:
         if e.errno == errno.EPERM:
-          raise GitError('filesystem must support symlinks')
+          raise DownloadError('filesystem must support symlinks')
         else:
           raise
 
-  def _InitWorkTree(self):
+  def _InitWorkTree(self, force_sync=False):
     dotgit = os.path.join(self.worktree, '.git')
     init_dotgit = not os.path.exists(dotgit)
     if init_dotgit:
       os.makedirs(dotgit)
 
     # Always check the symlinks for the work tree, even if they already exist
-    self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
-                          copy_all=False)
+    try:
+      self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
+                            copy_all=False)
+    except GitError as e:
+      if force_sync:
+        try:
+          shutil.rmtree(dotgit)
+          return self._InitWorkTree(force_sync=False)
+        except:
+          raise e
+      raise e
 
     if init_dotgit:
       _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
