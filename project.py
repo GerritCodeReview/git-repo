@@ -1763,8 +1763,15 @@ class Project(object):
       if is_sha1 or tag_name is not None:
         if self._CheckForSha1():
           return True
-      if is_sha1 and (not self.upstream or ID_RE.match(self.upstream)):
-        current_branch_only = False
+      if is_sha1 and not depth:
+        # When syncing a specific commit and --depth is not set:
+        # * if upstream is explicitly specified and is not a sha1, fetch only
+        #   upstream as users expect only upstream to be fetch.
+        #   Note: The commit might not be in upstream in which case the sync
+        #   will fail.
+        # * otherwise, fetch all branches to make sure we end up with the
+        #   specific commit.
+        current_branch_only = self.upstream and not ID_RE.match(self.upstream)
 
     if not name:
       name = self.remote.name
@@ -1841,12 +1848,17 @@ class Project(object):
       spec.append(tag_name)
 
     branch = self.revisionExpr
-    if is_sha1:
-      branch = self.upstream
-    if branch is not None and branch.strip():
-      if not branch.startswith('refs/'):
-        branch = R_HEADS + branch
-      spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
+    if is_sha1 and depth:
+      # Shallow checkout of a specific commit, fetch from that commit and not
+      # the heads only as the commit might be deeper in the history.
+      spec.append(branch)
+    else:
+      if is_sha1:
+        branch = self.upstream
+      if branch is not None and branch.strip():
+        if not branch.startswith('refs/'):
+          branch = R_HEADS + branch
+        spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
     cmd.extend(spec)
 
     shallowfetch = self.config.GetString('repo.shallowfetch')
