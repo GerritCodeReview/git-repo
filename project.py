@@ -1763,8 +1763,6 @@ class Project(object):
       if is_sha1 or tag_name is not None:
         if self._CheckForSha1():
           return True
-      if is_sha1 and (not self.upstream or ID_RE.match(self.upstream)):
-        current_branch_only = False
 
     if not name:
       name = self.remote.name
@@ -1842,8 +1840,8 @@ class Project(object):
 
     branch = self.revisionExpr
     if is_sha1:
-      branch = self.upstream
-    if branch is not None and branch.strip():
+      spec.append(branch)
+    elif branch is not None and branch.strip():
       if not branch.startswith('refs/'):
         branch = R_HEADS + branch
       spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
