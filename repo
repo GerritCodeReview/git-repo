@@ -748,15 +748,17 @@ def main(orig_args):
     repo_main = my_main
 
   ver_str = '.'.join(map(str, VERSION))
-  me = [sys.executable, repo_main,
+  argv = [repo_main,
         '--repo-dir=%s' % rel_repo_dir,
         '--wrapper-version=%s' % ver_str,
         '--wrapper-path=%s' % wrapper_path,
         '--']
-  me.extend(orig_args)
-  me.extend(extra_args)
+  argv.extend(orig_args)
+  argv.extend(extra_args)
+  if sys.executable:
+    argv.insert(0, sys.executable)
   try:
-    os.execv(sys.executable, me)
+    os.execv(argv[0], argv)
   except OSError as e:
     _print("fatal: unable to start %s" % repo_main, file=sys.stderr)
     _print("fatal: %s" % e, file=sys.stderr)
