@@ -83,15 +83,34 @@ def _Color(fg = None, bg = None, attr = None):
   return code
 
 
+DEFAULT = None
+
+def SetDefaultColoring(state):
+  """Set coloring behavior to |state|.
+
+  This is useful for overriding config options via the command line.
+  """
+  global DEFAULT
+  state = state.lower()
+  if state in ('auto', None):
+    DEFAULT = 'auto'
+  elif state in ('always', 'yes', 'true', True):
+    DEFAULT = 'always'
+  elif state in ('never', 'no', 'false', False):
+    DEFAULT = 'never'
+
+
 class Coloring(object):
   def __init__(self, config, section_type):
     self._section = 'color.%s' % section_type
     self._config = config
     self._out = sys.stdout
 
-    on = self._config.GetString(self._section)
-    if on is None:
-      on = self._config.GetString('color.ui')
+    on = DEFAULT
+    if on == 'auto':
+      on = self._config.GetString(self._section)
+      if on is None:
+        on = self._config.GetString('color.ui')
 
     if on == 'auto':
       if pager.active or os.isatty(1):

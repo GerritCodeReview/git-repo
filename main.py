@@ -36,6 +36,7 @@ try:
 except ImportError:
   kerberos = None
 
+from color import SetDefaultColoring
 from trace import SetTrace
 from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
@@ -69,6 +70,9 @@ global_options.add_option('-p', '--paginate',
 global_options.add_option('--no-pager',
                           dest='no_pager', action='store_true',
                           help='disable the pager')
+global_options.add_option('--color',
+                          choices=('auto', 'always', 'never'), default='auto',
+                          help='control color usage: auto, always, never')
 global_options.add_option('--trace',
                           dest='trace', action='store_true',
                           help='trace git command execution')
@@ -112,6 +116,8 @@ class _Repo(object):
       else:
         print('fatal: invalid usage of --version', file=sys.stderr)
         return 1
+
+    SetDefaultColoring(gopts.color)
 
     try:
       cmd = self.commands[name]
