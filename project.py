@@ -1973,7 +1973,7 @@ class Project(object):
       return False
 
     if os.path.exists(tmpPath):
-      if curlret == 0 and self._IsValidBundle(tmpPath):
+      if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
         os.rename(tmpPath, dstPath)
         return True
       else:
@@ -1982,13 +1982,14 @@ class Project(object):
     else:
       return False
 
-  def _IsValidBundle(self, path):
+  def _IsValidBundle(self, path, quiet):
     try:
       with open(path) as f:
         if f.read(16) == '# v2 git bundle\n':
           return True
         else:
-          print("Invalid clone.bundle file; ignoring.", file=sys.stderr)
+          if not quiet:
+            print("Invalid clone.bundle file; ignoring.", file=sys.stderr)
           return False
     except OSError:
       return False
