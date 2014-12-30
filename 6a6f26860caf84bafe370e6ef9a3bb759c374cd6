@@ -22,6 +22,30 @@
       "revId": "6a6f26860caf84bafe370e6ef9a3bb759c374cd6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "813188d3_67cb925c",
+        "filename": "color.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2014-12-30T22:50:40Z",
+      "side": 1,
+      "message": "yeah, \u0027auto\u0027 is being exploded too much\n\nwhat if the default command line option was to expand into None, which means the default would be None, which means we\u0027d use that to (1) parse the config files and (2) fallback like we already are ?\n\nthen if the command line set \u0027auto\u0027, we wouldn\u0027t parse the user configs at all.",
+      "parentUuid": "c169c0a3_b9b05f85",
+      "range": {
+        "startLine": 110,
+        "startChar": 14,
+        "endLine": 110,
+        "endChar": 18
+      },
+      "revId": "6a6f26860caf84bafe370e6ef9a3bb759c374cd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
