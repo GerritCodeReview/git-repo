@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c169c0a3_b9b05f85",
+        "filename": "color.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2014-12-30T22:31:37Z",
+      "side": 1,
+      "message": "This is a little weird here because in most cases if you specify a value in the commandline, it overrides your git config.  However, if you specify \"auto\", \"auto\" can be overridden.  I think we\u0027re overloading the use of the word auto here (auto as in gitconfig determines, and auto as in environment determines).  Maybe you should add \"user\" to the choices for the flag...it\u0027s not that great of a name -- maybe you can come up with a better one.",
+      "range": {
+        "startLine": 110,
+        "startChar": 14,
+        "endLine": 110,
+        "endChar": 18
+      },
+      "revId": "6a6f26860caf84bafe370e6ef9a3bb759c374cd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
