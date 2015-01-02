@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "813188d3_0772d651",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2521,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-01-02T21:01:49Z",
+      "side": 1,
+      "message": "No underscore in these methods since they are used outside of the class.",
+      "range": {
+        "startLine": 2521,
+        "startChar": 6,
+        "endLine": 2521,
+        "endChar": 10
+      },
+      "revId": "6a97c7a83cbb6efe1ef57dd5cc57305643977bac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
