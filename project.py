@@ -1947,7 +1947,7 @@ class Project(object):
         os.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
-    with self._GetBundleCookieFile(srcUrl) as cookiefile:
+    with self._GetBundleCookieFile(srcUrl, quiet) as cookiefile:
       if cookiefile:
         cmd += ['--cookie', cookiefile, '--cookie-jar', cookiefile]
       if srcUrl.startswith('persistent-'):
@@ -1996,7 +1996,7 @@ class Project(object):
       return False
 
   @contextlib.contextmanager
-  def _GetBundleCookieFile(self, url):
+  def _GetBundleCookieFile(self, url, quiet):
     if url.startswith('persistent-'):
       try:
         p = subprocess.Popen(
@@ -2021,7 +2021,7 @@ class Project(object):
             err_msg = p.stderr.read()
             if ' -print_config' in err_msg:
               pass  # Persistent proxy doesn't support -print_config.
-            else:
+            elif not quiet:
               print(err_msg, file=sys.stderr)
       except OSError as e:
         if e.errno == errno.ENOENT:
