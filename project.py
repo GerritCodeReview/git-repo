@@ -13,7 +13,7 @@
 # limitations under the License.
 
 from __future__ import print_function
-import traceback
+import contextlib
 import errno
 import filecmp
 import os
@@ -26,6 +26,7 @@ import sys
 import tarfile
 import tempfile
 import time
+import traceback
 
 from color import Coloring
 from git_command import GitCommand, git_require
@@ -1946,31 +1947,31 @@ class Project(object):
         os.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
-    cookiefile = self._GetBundleCookieFile(srcUrl)
-    if cookiefile:
-      cmd += ['--cookie', cookiefile]
-    if srcUrl.startswith('persistent-'):
-      srcUrl = srcUrl[len('persistent-'):]
-    cmd += [srcUrl]
+    with self._GetBundleCookieFile(srcUrl) as cookiefile:
+      if cookiefile:
+        cmd += ['--cookie', cookiefile]
+      if srcUrl.startswith('persistent-'):
+        srcUrl = srcUrl[len('persistent-'):]
+      cmd += [srcUrl]
 
-    if IsTrace():
-      Trace('%s', ' '.join(cmd))
-    try:
-      proc = subprocess.Popen(cmd)
-    except OSError:
-      return False
+      if IsTrace():
+        Trace('%s', ' '.join(cmd))
+      try:
+        proc = subprocess.Popen(cmd)
+      except OSError:
+        return False
 
-    curlret = proc.wait()
+      curlret = proc.wait()
 
-    if curlret == 22:
-      # From curl man page:
-      # 22: HTTP page not retrieved. The requested url was not found or
-      # returned another error with the HTTP error code being 400 or above.
-      # This return code only appears if -f, --fail is used.
-      if not quiet:
-        print("Server does not provide clone.bundle; ignoring.",
-              file=sys.stderr)
-      return False
+      if curlret == 22:
+        # From curl man page:
+        # 22: HTTP page not retrieved. The requested url was not found or
+        # returned another error with the HTTP error code being 400 or above.
+        # This return code only appears if -f, --fail is used.
+        if not quiet:
+          print("Server does not provide clone.bundle; ignoring.",
+                file=sys.stderr)
+        return False
 
     if os.path.exists(tmpPath):
       if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
@@ -1994,6 +1995,7 @@ class Project(object):
     except OSError:
       return False
 
+  @contextlib.contextmanager
   def _GetBundleCookieFile(self, url):
     if url.startswith('persistent-'):
       try:
@@ -2001,27 +2003,31 @@ class Project(object):
             ['git-remote-persistent-https', '-print_config', url],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
-        p.stdin.close()  # Tell subprocess it's ok to close.
-        prefix = 'http.cookiefile='
-        cookiefile = None
-        for line in p.stdout:
-          line = line.strip()
-          if line.startswith(prefix):
-            cookiefile = line[len(prefix):]
-            break
-        if p.wait():
-          err_msg = p.stderr.read()
-          if ' -print_config' in err_msg:
-            pass  # Persistent proxy doesn't support -print_config.
-          else:
-            print(err_msg, file=sys.stderr)
-        if cookiefile:
-          return cookiefile
+        try:
+          prefix = 'http.cookiefile='
+          cookiefile = None
+          for line in p.stdout:
+            line = line.strip()
+            if line.startswith(prefix):
+              cookiefile = line[len(prefix):]
+              break
+          # Leave subprocess open, as cookie file may be transient.
+          if cookiefile:
+            yield cookiefile
+            return
+        finally:
+          p.stdin.close()
+          if p.wait():
+            err_msg = p.stderr.read()
+            if ' -print_config' in err_msg:
+              pass  # Persistent proxy doesn't support -print_config.
+            else:
+              print(err_msg, file=sys.stderr)
       except OSError as e:
         if e.errno == errno.ENOENT:
           pass  # No persistent proxy.
         raise
-    return GitConfig.ForUser().GetString('http.cookiefile')
+    yield GitConfig.ForUser().GetString('http.cookiefile')
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
