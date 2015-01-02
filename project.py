@@ -1946,31 +1946,35 @@ class Project(object):
         os.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
-    cookiefile = self._GetBundleCookieFile(srcUrl)
-    if cookiefile:
-      cmd += ['--cookie', cookiefile]
-    if srcUrl.startswith('persistent-'):
-      srcUrl = srcUrl[len('persistent-'):]
-    cmd += [srcUrl]
-
-    if IsTrace():
-      Trace('%s', ' '.join(cmd))
+    cookieholder = _BundleCookieHolder(srcUrl, quiet)
     try:
-      proc = subprocess.Popen(cmd)
-    except OSError:
-      return False
+      cookiefile = cookieholder.Get()
+      if cookiefile:
+        cmd += ['--cookie', cookiefile]
+      if srcUrl.startswith('persistent-'):
+        srcUrl = srcUrl[len('persistent-'):]
+      cmd += [srcUrl]
 
-    curlret = proc.wait()
+      if IsTrace():
+        Trace('%s', ' '.join(cmd))
+      try:
+        proc = subprocess.Popen(cmd)
+      except OSError:
+        return False
 
-    if curlret == 22:
-      # From curl man page:
-      # 22: HTTP page not retrieved. The requested url was not found or
-      # returned another error with the HTTP error code being 400 or above.
-      # This return code only appears if -f, --fail is used.
-      if not quiet:
-        print("Server does not provide clone.bundle; ignoring.",
-              file=sys.stderr)
-      return False
+      curlret = proc.wait()
+
+      if curlret == 22:
+        # From curl man page:
+        # 22: HTTP page not retrieved. The requested url was not found or
+        # returned another error with the HTTP error code being 400 or above.
+        # This return code only appears if -f, --fail is used.
+        if not quiet:
+          print("Server does not provide clone.bundle; ignoring.",
+                file=sys.stderr)
+        return False
+    finally:
+      cookieholder.Close()
 
     if os.path.exists(tmpPath):
       if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
@@ -1993,35 +1997,6 @@ class Project(object):
           return False
     except OSError:
       return False
-
-  def _GetBundleCookieFile(self, url):
-    if url.startswith('persistent-'):
-      try:
-        p = subprocess.Popen(
-            ['git-remote-persistent-https', '-print_config', url],
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        p.stdin.close()  # Tell subprocess it's ok to close.
-        prefix = 'http.cookiefile='
-        cookiefile = None
-        for line in p.stdout:
-          line = line.strip()
-          if line.startswith(prefix):
-            cookiefile = line[len(prefix):]
-            break
-        if p.wait():
-          err_msg = p.stderr.read()
-          if ' -print_config' in err_msg:
-            pass  # Persistent proxy doesn't support -print_config.
-          else:
-            print(err_msg, file=sys.stderr)
-        if cookiefile:
-          return cookiefile
-      except OSError as e:
-        if e.errno == errno.ENOENT:
-          pass  # No persistent proxy.
-        raise
-    return GitConfig.ForUser().GetString('http.cookiefile')
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
@@ -2534,6 +2509,54 @@ class Project(object):
           return r[:-1]
         return r
       return runner
+
+class _BundleCookieHolder(object):
+  def __init__(self, url, quiet):
+    self._url = url
+    self._quiet = quiet
+    self._proc = None
+    self._done = False
+    self._cookiefile = None
+
+  def Get(self):
+    if self._done:
+      return self._cookiefile
+    if self._url.startswith('persistent-'):
+      try:
+        self._proc = subprocess.Popen(
+            ['git-remote-persistent-https', '-print_config', self._url],
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        prefix = 'http.cookiefile='
+        for line in self._proc.stdout:
+          line = line.strip()
+          if line.startswith(prefix):
+            self._cookiefile = line[len(prefix):]
+            break
+        # Leave subprocess open, as cookie file may be transient.
+        if self._cookiefile:
+          self._done = True
+          return self._cookiefile
+      except OSError as e:
+        if e.errno == errno.ENOENT:
+          pass  # No persistent proxy.
+        raise
+    self._done = True
+    self._cookiefile = GitConfig.ForUser().GetString('http.cookiefile')
+    return self._cookiefile
+
+  def Close(self):
+    p = self._proc
+    if p is None:
+      return
+    self._proc = None
+    p.stdin.close()
+    if p.wait():
+      err_msg = p.stderr.read()
+      if ' -print_config' in err_msg:
+        pass  # Persistent proxy doesn't support -print_config.
+      elif not self._quiet:
+        print(err_msg, file=sys.stderr)
 
 
 class _PriorSyncFailedError(Exception):
