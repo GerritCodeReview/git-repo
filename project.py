@@ -1949,7 +1949,7 @@ class Project(object):
       cmd += ['--proxy', os.environ['http_proxy']]
     with self._GetBundleCookieFile(srcUrl) as cookiefile:
       if cookiefile:
-        cmd += ['--cookie', cookiefile]
+        cmd += ['--cookie', cookiefile, '--cookie-jar', cookiefile]
       if srcUrl.startswith('persistent-'):
         srcUrl = srcUrl[len('persistent-'):]
       cmd += [srcUrl]
