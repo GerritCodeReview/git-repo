@@ -1950,7 +1950,7 @@ class Project(object):
     try:
       cookiefile = cookieholder._Get()
       if cookiefile:
-        cmd += ['--cookie', cookiefile]
+        cmd += ['--cookie', cookiefile, '--cookie-jar', cookiefile]
       if srcUrl.startswith('persistent-'):
         srcUrl = srcUrl[len('persistent-'):]
       cmd += [srcUrl]
