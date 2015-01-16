@@ -22,6 +22,30 @@
       "revId": "3eb87cec5cae5f43becfe9fd1ff94de855cac08c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ebba239b_4af173f5",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2125,
+      "author": {
+        "id": 1012272
+      },
+      "writtenOn": "2015-01-16T07:33:05Z",
+      "side": 0,
+      "message": "Yeah with this patch we no longer restore back to repo\u0027s project hooks if the user has modified them (they see \"error: kernel: Not replacing commit-msg hook\", for example).  Do you think this is something that needs to be done?  Seems like if a user is editing their hooks they (hopefully) know what they\u0027re doing and might appreciate repo not stomping on their changes...\n\nI did verify that if a project hook is *removed* it\u0027s restored.\n\nI guess an alternative to dropping this altogether would be to only delete files from the _ProjectHooks() list so that they\u0027re always restored when we call _InitHooks()...  That way at least non project hooks will be left alone (which is what I really care about).",
+      "parentUuid": "ebba239b_aae26f2c",
+      "range": {
+        "startLine": 2124,
+        "startChar": 8,
+        "endLine": 2125,
+        "endChar": 32
+      },
+      "revId": "3eb87cec5cae5f43becfe9fd1ff94de855cac08c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
