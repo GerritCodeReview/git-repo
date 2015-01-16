@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ebba239b_aae26f2c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2125,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-01-16T07:07:08Z",
+      "side": 0,
+      "message": "If I understand lines 2154-2159 correctly, changed hooks will still be updated.\n\nHave you verified that this is the case?",
+      "range": {
+        "startLine": 2124,
+        "startChar": 8,
+        "endLine": 2125,
+        "endChar": 32
+      },
+      "revId": "3eb87cec5cae5f43becfe9fd1ff94de855cac08c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
