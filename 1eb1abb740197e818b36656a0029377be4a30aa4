@@ -16,6 +16,24 @@
       "revId": "1eb1abb740197e818b36656a0029377be4a30aa4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8ba8c791_0ff185f6",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1766,
+      "author": {
+        "id": 1018302
+      },
+      "writtenOn": "2015-01-21T22:17:08Z",
+      "side": 1,
+      "message": "I broke the if statement in two and added an explanation for this behavior.",
+      "parentUuid": "6b8d5344_aed87781",
+      "revId": "1eb1abb740197e818b36656a0029377be4a30aa4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
