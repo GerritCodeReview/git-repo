@@ -1815,9 +1815,7 @@ class Project(object):
 
     cmd = ['fetch']
 
-    # The --depth option only affects the initial fetch; after that we'll do
-    # full fetches of changes.
-    if depth and initial:
+    if depth:
       cmd.append('--depth=%s' % depth)
 
     if quiet:
