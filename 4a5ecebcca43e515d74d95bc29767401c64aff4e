@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cbeabfee_f1c7a8a7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-01-22T18:39:50Z",
+      "side": 1,
+      "message": "Have you tried this?  Are you sure the project gets populated with comments?",
+      "range": {
+        "startLine": 308,
+        "startChar": 17,
+        "endLine": 308,
+        "endChar": 25
+      },
+      "revId": "4a5ecebcca43e515d74d95bc29767401c64aff4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
