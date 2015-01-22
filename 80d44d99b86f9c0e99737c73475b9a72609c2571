@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aba10bbc_00a766c6",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1237,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-01-22T08:38:59Z",
+      "side": 1,
+      "message": "There\u0027s something going wrong here when using repo sync -d with a local manifest.\n\nI don\u0027t think it\u0027s to do with this change; it already exists and with this change we just get a nicer error message.",
+      "range": {
+        "startLine": 1230,
+        "startChar": 8,
+        "endLine": 1237,
+        "endChar": 9
+      },
+      "revId": "80d44d99b86f9c0e99737c73475b9a72609c2571",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
