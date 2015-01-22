@@ -22,6 +22,30 @@
       "revId": "60588ca895b7f0d288eec65a3c49eeedf0163403",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b8d5344_6e420f70",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-01-22T01:39:43Z",
+      "side": 1,
+      "message": "duh, thanks.",
+      "parentUuid": "8ba607d2_5f0b0b48",
+      "range": {
+        "startLine": 1234,
+        "startChar": 23,
+        "endLine": 1234,
+        "endChar": 32
+      },
+      "revId": "60588ca895b7f0d288eec65a3c49eeedf0163403",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
