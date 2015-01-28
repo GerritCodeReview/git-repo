@@ -2128,15 +2128,6 @@ class Project(object):
 
   def _UpdateHooks(self):
     if os.path.exists(self.gitdir):
-      # Always recreate hooks since they can have been changed
-      # since the latest update.
-      hooks = self._gitdir_path('hooks')
-      try:
-        to_rm = os.listdir(hooks)
-      except OSError:
-        to_rm = []
-      for old_hook in to_rm:
-        os.remove(os.path.join(hooks, old_hook))
       self._InitHooks()
 
   def _InitHooks(self):
