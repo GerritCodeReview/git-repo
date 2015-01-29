@@ -1855,9 +1855,14 @@ class Project(object):
       if is_sha1:
         branch = self.upstream
       if branch is not None and branch.strip():
-        if not branch.startswith('refs/'):
-          branch = R_HEADS + branch
-        spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
+        if current_branch_only and not branch.startswith('refs/'):
+            # If current_branch_only is set, a fetch refspec is required.
+            # Make sure to provide an absolute ref (starting with "refs/").
+            branch = R_HEADS + branch
+        if branch.startswith('refs/'):
+          # If branch starts with 'refs/', either current_branch_only is set,
+          # or it is potentially not part of 'refs/heads/*', add it to spec.
+          spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
     cmd.extend(spec)
 
     shallowfetch = self.config.GetString('repo.shallowfetch')
