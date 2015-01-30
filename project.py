@@ -1871,10 +1871,22 @@ class Project(object):
 
     ok = False
     for _i in range(2):
-      ret = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy).Wait()
+      gitcmd = GitCommand(self, cmd, bare=True, capture_stderr=True,
+                          ssh_proxy=ssh_proxy)
+      ret = gitcmd.Wait()
       if ret == 0:
         ok = True
         break
+      # If needed, run the 'git remote prune' the first time through the loop
+      elif (not _i and
+            "error:" in gitcmd.stderr and
+            "git remote prune".format(name) in gitcmd.stderr):
+        prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
+                              capture_stderr=True, ssh_proxy=ssh_proxy)
+        if prunecmd.Wait():
+          print(prunecmd.stderr, file=sys.stderr)
+          break
+        continue
       elif current_branch_only and is_sha1 and ret == 128:
         # Exit code 128 means "couldn't find the ref you asked for"; if we're in sha1
         # mode, we just tried sync'ing from the upstream field; it doesn't exist, thus
