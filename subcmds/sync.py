@@ -128,6 +128,9 @@ HTTP client or proxy configuration, but the Git binary works.
 The --fetch-submodules option enables fetching Git submodules
 of a project from server.
 
+The -c/--current-branch option can be used to only fetch objects that
+are on the branch specified by a project's revision.
+
 SSH Connections
 ---------------
 
