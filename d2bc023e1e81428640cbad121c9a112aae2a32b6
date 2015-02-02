@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "375bc3e2_c53b9afc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-02-02T20:32:15Z",
+      "side": 1,
+      "message": "From the mailing list, it looks like you\u0027re trying to address some issues with using abbreviated SHAs in your manifests here. Could you include some discussion of that in your commit message?\n\nAlso, why did you choose this workaround rather than adding explicit support for abbreviated SHAs?",
+      "range": {
+        "startLine": 7,
+        "startChar": 47,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "d2bc023e1e81428640cbad121c9a112aae2a32b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
