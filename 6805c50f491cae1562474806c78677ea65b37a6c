@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "770d3bbb_a718ca73",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1881,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-02-02T19:33:01Z",
+      "side": 1,
+      "message": "I recognize that this is probably enough of a string, but personally I\u0027d like to see the actual command suggestion in the test here before we run the command.\n\nIf you wanted to keep it on one line, you could test \u0027error:\u0027 and \u0027try running git remote prune\u0027 separately.",
+      "range": {
+        "startLine": 1881,
+        "startChar": 68,
+        "endLine": 1881,
+        "endChar": 80
+      },
+      "revId": "6805c50f491cae1562474806c78677ea65b37a6c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
