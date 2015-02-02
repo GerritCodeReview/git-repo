@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "770d3bbb_07ef96b9",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 2093,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-02-02T22:21:03Z",
+      "side": 1,
+      "message": "tws",
+      "range": {
+        "startLine": 2093,
+        "startChar": 77,
+        "endLine": 2093,
+        "endChar": 78
+      },
+      "revId": "02b8d7dec29ed693ce263b4b17848162faf3eae8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
