@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "375bc3e2_2555ce04",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-02-03T14:40:52Z",
+      "side": 1,
+      "message": "I believe so.  It has been this way since git version 1.7.5 I think.\n\n $ git blame fetch.c\n \u003csnip\u003e\n fa250759 builtin-fetch.c (Jeff King               2009-05-25 06:40:54 -0400  677)       if (rc \u0026 STORE_REF_ERROR_DF_CONFLICT)\n bd4a51fc builtin/fetch.c (\u003cC3\u003e\u003c86\u003evar Arnfj\u003cC3\u003e\u003cB6\u003er\u003cC3\u003e\u003cB0\u003e Bjarmason 2011-02-22 23:41:51 +0000  678)          error(_(\"some local refs could not be updated; try running\\n\"\n f3cb169b builtin-fetch.c (Jeff King               2008-06-27 00:01:41 -0400  679)                     \" \u0027git remote prune %s\u0027 to remove any old, conflicting \"\n bd4a51fc builtin/fetch.c (\u003cC3\u003e\u003c86\u003evar Arnfj\u003cC3\u003e\u003cB6\u003er\u003cC3\u003e\u003cB0\u003e Bjarmason 2011-02-22 23:41:51 +0000  680)                \"branches\"), remote_name);\n\n $ git patchver bd4a51fc\nv1.7.5-rc1~19^2~41",
+      "parentUuid": "5775973c_ee4ebf7d",
+      "range": {
+        "startLine": 1882,
+        "startChar": 12,
+        "endLine": 1883,
+        "endChar": 98
+      },
+      "revId": "1496478bba81b5b632a4f9a0789e75cbb8e70146",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "375bc3e2_856cc2f1",
         "filename": "project.py",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2015-02-03T02:02:43Z",
       "side": 1,
       "message": "nit: indentation should be 2 columns, not 4.",
+      "range": {
+        "startLine": 1887,
+        "startChar": 8,
+        "endLine": 1887,
+        "endChar": 12
+      },
+      "revId": "1496478bba81b5b632a4f9a0789e75cbb8e70146",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5775973c_ae96775b",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-02-03T14:40:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "375bc3e2_856cc2f1",
       "range": {
         "startLine": 1887,
         "startChar": 8,
