@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d73267d2_eaeca719",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-02-03T19:20:14Z",
+      "side": 1,
+      "message": "Yea, we may want to just check for \"error:\" and \"git remote prune\" to be tolerant of changes to git.",
+      "parentUuid": "375bc3e2_2555ce04",
+      "range": {
+        "startLine": 1882,
+        "startChar": 12,
+        "endLine": 1883,
+        "endChar": 98
+      },
+      "revId": "1496478bba81b5b632a4f9a0789e75cbb8e70146",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "375bc3e2_856cc2f1",
         "filename": "project.py",
         "patchSetId": 3
