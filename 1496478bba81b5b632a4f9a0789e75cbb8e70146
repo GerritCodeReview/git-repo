@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5775973c_ee4ebf7d",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-03T02:02:43Z",
+      "side": 1,
+      "message": "Is the error message going to be consistent across git versions?",
+      "range": {
+        "startLine": 1882,
+        "startChar": 12,
+        "endLine": 1883,
+        "endChar": 98
+      },
+      "revId": "1496478bba81b5b632a4f9a0789e75cbb8e70146",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "375bc3e2_856cc2f1",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1887,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-03T02:02:43Z",
+      "side": 1,
+      "message": "nit: indentation should be 2 columns, not 4.",
+      "range": {
+        "startLine": 1887,
+        "startChar": 8,
+        "endLine": 1887,
+        "endChar": 12
+      },
+      "revId": "1496478bba81b5b632a4f9a0789e75cbb8e70146",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
