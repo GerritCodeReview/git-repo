@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5775973c_6e896f39",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1862,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-02-03T15:53:20Z",
+      "side": 1,
+      "message": "s/elif/if/ and remove 1861 to avoid duplicating code?",
+      "range": {
+        "startLine": 1862,
+        "startChar": 20,
+        "endLine": 1862,
+        "endChar": 30
+      },
+      "revId": "d32e4982c4ed4945b336b1204dbb19a783b86021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
