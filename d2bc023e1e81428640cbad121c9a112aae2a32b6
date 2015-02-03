@@ -68,6 +68,78 @@
       "revId": "d2bc023e1e81428640cbad121c9a112aae2a32b6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "770d3bbb_87c5c610",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1018852
+      },
+      "writtenOn": "2015-02-03T10:43:54Z",
+      "side": 1,
+      "message": "Adding a regex for abbreviated SHA1s was my initial idea, but this approach seemed better to me in the end, since it consists of not adding a redundant refspec to the fetch command.\n\nAlso, a strict enough regex might have been a bit complex to produce. Even though in my case, the abbreviated SHA1s all have the same format, it is not necessarily always true (\"git describe\" can produce simple tags if \"--long\" is omitted, and abbreviated SHA1s of varying length using \"--abbrev\").",
+      "parentUuid": "375bc3e2_c53b9afc",
+      "range": {
+        "startLine": 7,
+        "startChar": 47,
+        "endLine": 7,
+        "endChar": 48
+      },
+      "revId": "d2bc023e1e81428640cbad121c9a112aae2a32b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "770d3bbb_a7c0ca00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1018852
+      },
+      "writtenOn": "2015-02-03T10:43:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5775973c_0e81cb27",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 89
+      },
+      "revId": "d2bc023e1e81428640cbad121c9a112aae2a32b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "770d3bbb_c7bbbea3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1018852
+      },
+      "writtenOn": "2015-02-03T10:43:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "375bc3e2_e567b60b",
+      "range": {
+        "startLine": 7,
+        "startChar": 5,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "d2bc023e1e81428640cbad121c9a112aae2a32b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
