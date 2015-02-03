@@ -46,6 +46,30 @@
       "revId": "d32e4982c4ed4945b336b1204dbb19a783b86021",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5775973c_0e86ab28",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1862,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-02-03T17:24:22Z",
+      "side": 1,
+      "message": "It looks like the only logic that depends on current_branch_only is the logic that adds \u0027refs/heads\u0027 though. Then you always want to add to the refspec if your branch starts with \u0027refs/\u0027.",
+      "parentUuid": "770d3bbb_87dca6e6",
+      "range": {
+        "startLine": 1862,
+        "startChar": 20,
+        "endLine": 1862,
+        "endChar": 30
+      },
+      "revId": "d32e4982c4ed4945b336b1204dbb19a783b86021",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
