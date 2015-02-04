@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c21e895_b511a07c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1753,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-04T02:13:10Z",
+      "side": 1,
+      "message": "Will this only be true for the repo project itself, and not for example if the manifest happens to include a project called \u0027repo\u0027?",
+      "revId": "9ab2f9b3b4b36792e2926277905f87b580aa2c90",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
