@@ -1749,6 +1749,9 @@ class Project(object):
         depth = self.clone_depth
       else:
         depth = self.manifest.manifestProject.config.GetString('repo.depth')
+      # The repo project should never be synced with partial depth
+      if self.relpath == '.repo/repo':
+        depth = None
 
     if depth:
       current_branch_only = True
