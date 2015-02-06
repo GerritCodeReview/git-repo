@@ -21,9 +21,11 @@ from progress import Progress
 
 class Abandon(Command):
   common = True
+  opt = None
+  args = None
   helpSummary = "Permanently abandon a development branch"
   helpUsage = """
-%prog <branchname> [<project>...]
+%prog [<branchname> [<project>...] | --all] [--confirm]
 
 This subcommand permanently abandons a development branch by
 deleting it (and all its history) from your local repository.
@@ -31,41 +33,89 @@ deleting it (and all its history) from your local repository.
 It is equivalent to "git branch -D <branchname>".
 """
 
-  def Execute(self, opt, args):
-    if not args:
+  def _Options(self, p):
+    p.add_option('--all', default=False,
+                 action='store_true', dest='abandon_all',
+                 help='Abandon all branches detected.')
+    p.add_option('--confirm', default=False,
+                 action='store_true', dest='abandon_deputed',
+                 help='Branch will only be abandoned after confirmation')
+
+  def _validate_parameters(self):
+    if not self.args and not self.opt.abandon_all:
       self.Usage()
 
-    nb = args[0]
-    if not git.check_ref_format('heads/%s' % nb):
-      print("error: '%s' is not a valid name" % nb, file=sys.stderr)
-      sys.exit(1)
+    if self.args and self.opt.abandon_all:
+      self.OptionParser.error("[<branchname> [<project>...]] and [--all] are mutually exclusive.")
 
-    nb = args[0]
-    err = []
-    success = []
-    all_projects = self.GetProjects(args[1:])
+    if self.args:
+      branch_name = self.args[0]
+      if not git.check_ref_format('heads/%s' % branch_name):
+        self.OptionParser.error("'%s' is not a valid name" % branch_name)
 
-    pm = Progress('Abandon %s' % nb, len(all_projects))
-    for project in all_projects:
-      pm.update()
+  def _collect_branches(self):
+    branches = {}
+    project_names = []
+    if not self.opt.abandon_all:
+      project_names = self.args[1:]
 
-      status = project.AbandonBranch(nb)
-      if status is not None:
-        if status:
-          success.append(project)
-        else:
-          err.append(project)
-    pm.end()
+    all_projects = self.GetProjects(project_names)
 
-    if err:
-      for p in err:
-        print("error: %s/: cannot abandon %s" % (p.relpath, nb),
-              file=sys.stderr)
-      sys.exit(1)
-    elif not success:
-      print('error: no project has branch %s' % nb, file=sys.stderr)
-      sys.exit(1)
+    if self.opt.abandon_all:
+      for project in all_projects:
+        for name in project.GetBranches():
+          branches.setdefault(name, [])
+          branches[name].append(project)
     else:
-      print('Abandoned in %d project(s):\n  %s'
-            % (len(success), '\n  '.join(p.relpath for p in success)),
-            file=sys.stderr)
+      branch_name = self.args[0]
+      branches[branch_name] = all_projects
+
+    return branches
+
+  def _request_to_skip(self, branch):
+    if not self.opt.abandon_deputed:
+      return False
+    while True:
+      print('Abandon %s\t[Y/n]? ' % branch, end='')
+      result = raw_input().strip().lower()
+      if not result or 'y' == result:
+        return False
+      if 'n' == result:
+        return True
+
+  def Execute(self, opt, args):
+    self.opt, self.args = opt, args
+    self._validate_parameters()
+    branches = self._collect_branches()
+
+    for current_branch in branches:
+      if self._request_to_skip(current_branch):
+        continue
+      err = []
+      success = []
+      all_projects = branches[current_branch]
+
+      pm = Progress('Abandon %s' % current_branch, len(all_projects))
+      for project in all_projects:
+        pm.update()
+
+        status = project.AbandonBranch(current_branch)
+        if status is not None:
+          if status:
+            success.append(project)
+          else:
+            err.append(project)
+      pm.end()
+
+      if err:
+        for p in err:
+          print("error: %s/: cannot abandon %s" % (p.relpath, current_branch),
+                file=sys.stderr)
+        sys.exit(1)
+      elif not success:
+        print('error: no project has branch %s' % current_branch, file=sys.stderr)
+        sys.exit(1)
+      else:
+        print('Abandoned in %d project(s):\n  %s'
+              % (len(success), '\n  '.join(p.relpath for p in success)),
+              file=sys.stderr)
