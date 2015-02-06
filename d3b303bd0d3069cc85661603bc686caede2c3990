@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ccee4a3_7408284e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-06T09:54:42Z",
+      "side": 1,
+      "message": "branches",
+      "range": {
+        "startLine": 10,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 23
+      },
+      "revId": "d3b303bd0d3069cc85661603bc686caede2c3990",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fcb1100e_3bfdf7c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-06T09:54:42Z",
+      "side": 1,
+      "message": "Is this actually a valid command?  As far as I can see from the code (abandon.py @ line 54), you have to pass either some arguments (project and branch), or the --all option.",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 22
+      },
+      "revId": "d3b303bd0d3069cc85661603bc686caede2c3990",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ccee4a3_d4181ca5",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-06T09:54:42Z",
+      "side": 1,
+      "message": "branches",
+      "range": {
+        "startLine": 37,
+        "startChar": 35,
+        "endLine": 37,
+        "endChar": 41
+      },
+      "revId": "d3b303bd0d3069cc85661603bc686caede2c3990",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ccee4a3_54052c34",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-06T09:54:42Z",
+      "side": 1,
+      "message": "This option doesn\u0027t do what one would normally expect \"verbose mode\" to do, i.e. print more detailed information.\n\nWhat it actually does it prompt the user to confirm abandon of each branch that was detected.\n\nA better name would be \"confirm\" or something like that.",
+      "range": {
+        "startLine": 38,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 65
+      },
+      "revId": "d3b303bd0d3069cc85661603bc686caede2c3990",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fcb1100e_5b00c32d",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-06T09:54:42Z",
+      "side": 1,
+      "message": "Call strip() on result before lower() ?\n\nAlso, put this on the previous line, so it\u0027s not necessary to call lower() twice.",
+      "range": {
+        "startLine": 48,
+        "startChar": 9,
+        "endLine": 48,
+        "endChar": 23
+      },
+      "revId": "d3b303bd0d3069cc85661603bc686caede2c3990",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ccee4a3_9422a4d3",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-06T09:54:42Z",
+      "side": 1,
+      "message": "What does \u0027nbs\u0027 mean?\n\nI see that \u0027nb\u0027 is used in the original code, and I don\u0027t know what it means there either.\n\nNow would be a good time to rename it to something meaningful.",
+      "range": {
+        "startLine": 57,
+        "startChar": 4,
+        "endLine": 57,
+        "endChar": 7
+      },
+      "revId": "d3b303bd0d3069cc85661603bc686caede2c3990",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fcb1100e_7b037f3c",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-06T09:54:42Z",
+      "side": 1,
+      "message": "This is unused.  Please prefix it with underscore to prevent warnings in Eclipse.",
+      "range": {
+        "startLine": 61,
+        "startChar": 18,
+        "endLine": 61,
+        "endChar": 19
+      },
+      "revId": "d3b303bd0d3069cc85661603bc686caede2c3990",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
