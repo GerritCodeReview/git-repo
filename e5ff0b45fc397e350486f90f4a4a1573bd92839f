@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fcb1100e_fb4aef69",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-09T02:16:31Z",
+      "side": 1,
+      "message": "rename this to \u0027confirm\u0027",
+      "range": {
+        "startLine": 41,
+        "startChar": 44,
+        "endLine": 41,
+        "endChar": 59
+      },
+      "revId": "e5ff0b45fc397e350486f90f4a4a1573bd92839f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
