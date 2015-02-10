@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ccee4a3_14d7b4f7",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-10T01:54:06Z",
+      "side": 1,
+      "message": "Rename this to just \u0027confirm\u0027",
+      "range": {
+        "startLine": 41,
+        "startChar": 44,
+        "endLine": 41,
+        "endChar": 59
+      },
+      "revId": "f3b673657f5e1ca210e506c17a35a6bc40b0bc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fcb1100e_bbfea770",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-10T01:54:06Z",
+      "side": 1,
+      "message": "Rename to `_confirm`",
+      "range": {
+        "startLine": 75,
+        "startChar": 6,
+        "endLine": 75,
+        "endChar": 22
+      },
+      "revId": "f3b673657f5e1ca210e506c17a35a6bc40b0bc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ccee4a3_d4093c0e",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-10T01:54:06Z",
+      "side": 1,
+      "message": "This bit can be removed.",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 77,
+        "endChar": 18
+      },
+      "revId": "f3b673657f5e1ca210e506c17a35a6bc40b0bc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fcb1100e_db09730e",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-10T01:54:06Z",
+      "side": 1,
+      "message": "True",
+      "range": {
+        "startLine": 82,
+        "startChar": 15,
+        "endLine": 82,
+        "endChar": 20
+      },
+      "revId": "f3b673657f5e1ca210e506c17a35a6bc40b0bc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ccee4a3_f40438f8",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-10T01:54:06Z",
+      "side": 1,
+      "message": "False",
+      "range": {
+        "startLine": 84,
+        "startChar": 15,
+        "endLine": 84,
+        "endChar": 19
+      },
+      "revId": "f3b673657f5e1ca210e506c17a35a6bc40b0bc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1ccee4a3_34dab01f",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-10T01:54:06Z",
+      "side": 1,
+      "message": "Change to:\n\n if self.opt.confirm and not self._confirm(current_branch):\n   continue",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 16
+      },
+      "revId": "f3b673657f5e1ca210e506c17a35a6bc40b0bc7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
