@@ -52,6 +52,16 @@ class GitError(Exception):
   def __str__(self):
     return self.command
 
+class GitParallelError(GitError):
+  """Unspecified internal error from server.
+  """
+  def __init__(self, command):
+    super(GitParallelError, self).__init__(command)
+    self.command = command
+
+  def __str__(self):
+    return self.command
+
 class UploadError(Exception):
   """A bundle upload to Gerrit did not succeed.
   """
