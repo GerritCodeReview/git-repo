@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d1ad17fe_52e0f420",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-11T13:39:10Z",
+      "side": 1,
+      "message": "depends",
+      "range": {
+        "startLine": 18,
+        "startChar": 41,
+        "endLine": 18,
+        "endChar": 48
+      },
+      "revId": "a38d72cc2f6d4571f39e71e9bdbdff56d03e8c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b1b2635a_31d9f07b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-11T13:39:10Z",
+      "side": 1,
+      "message": "protocol",
+      "range": {
+        "startLine": 18,
+        "startChar": 32,
+        "endLine": 18,
+        "endChar": 40
+      },
+      "revId": "a38d72cc2f6d4571f39e71e9bdbdff56d03e8c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1ad17fe_b2eb2005",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-11T13:39:10Z",
+      "side": 1,
+      "message": "connections",
+      "range": {
+        "startLine": 21,
+        "startChar": 52,
+        "endLine": 21,
+        "endChar": 62
+      },
+      "revId": "a38d72cc2f6d4571f39e71e9bdbdff56d03e8c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1ad17fe_92f09cee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-11T13:39:10Z",
+      "side": 1,
+      "message": "However",
+      "range": {
+        "startLine": 25,
+        "startChar": 56,
+        "endLine": 25,
+        "endChar": 64
+      },
+      "revId": "a38d72cc2f6d4571f39e71e9bdbdff56d03e8c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b1b2635a_d1d3445a",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-02-11T13:39:10Z",
+      "side": 1,
+      "message": "why does this need to be in a submethod?",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 109,
+        "endChar": 63
+      },
+      "revId": "a38d72cc2f6d4571f39e71e9bdbdff56d03e8c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
