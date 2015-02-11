@@ -16,14 +16,17 @@
 from __future__ import print_function
 import os
 import sys
+import re
 
 from command import PagedCommand
+from error import GitParallelError
+from git_command import GitCommand
 
 class Manifest(PagedCommand):
   common = False
   helpSummary = "Manifest inspection utility"
   helpUsage = """
-%prog [-o {-|NAME.xml} [-r]]
+%prog [-o {-|NAME.xml} [-r|R][--max-connection=N]]
 """
   _helpDescription = """
 
@@ -46,6 +49,12 @@ in a Git repository for use during future 'repo init' invocations.
     return helptext
 
   def _Options(self, p):
+    p.add_option('--max-connection',
+                 dest='max_connection', default='50', type='int',
+                 help='Default number of max connection for remote query')
+    p.add_option('-R', '--revision-as-remote-HEAD',
+                 dest='peg_remote_rev', action='store_true',
+                 help='Save revisions as remote HEAD')
     p.add_option('-r', '--revision-as-HEAD',
                  dest='peg_rev', action='store_true',
                  help='Save revisions as current HEAD')
@@ -60,15 +69,66 @@ in a Git repository for use during future 'repo init' invocations.
                  help='File to save the manifest to',
                  metavar='-|NAME.xml')
 
+
+  def _GetRemoteHash(self, opt):
+    projects = []
+    mp = self.manifest.manifestProject
+    groups = mp.config.GetString('manifest.groups')
+    if groups:
+      groups = [x for x in re.split(r'[,\s]+', groups) if x]
+    project_names = set(p.name for p in self.manifest.projects if not p.parent)
+    for project_name in project_names:
+      for project in self.manifest.GetProjectsWithName(project_name):
+        if not project.MatchesGroups(groups) or project in projects:
+          continue
+        projects.append(project)
+
+    def _GetProjectsRemoteHash(projects):
+      import math
+      max_connection = opt.max_connection
+      execute_steps = int(math.ceil(len(projects) / float(max_connection)))
+
+      for execute_step in xrange(execute_steps):
+        output_dict = {}
+        begin_idx = execute_step * max_connection
+        end_idx = begin_idx + max_connection
+        current_projects = projects[begin_idx:end_idx]
+        for project in current_projects:
+          cmd = ['ls-remote']
+          cmd.append(project.remote.url)
+          cmd.append(project.revisionExpr)
+          p = GitCommand(project, cmd,
+                         cwd=os.getcwd(),
+                         capture_stdout=True,
+                         capture_stderr=True)
+          output_dict[project.name] = p
+
+        for key in output_dict:
+          if not output_dict[key].Wait() == 0:
+            raise GitParallelError(output_dict[key].stdout.strip())
+          out[key] = output_dict[key].stdout.strip().split()[0]
+    out = {}
+    _GetProjectsRemoteHash(projects)
+    return out
+
   def _Output(self, opt):
     if opt.output_file == '-':
       fd = sys.stdout
     else:
       fd = open(opt.output_file, 'w')
-    self.manifest.Save(fd,
-                       peg_rev = opt.peg_rev,
-                       peg_rev_upstream = opt.peg_rev_upstream)
+
+    if opt.peg_remote_rev:
+      hash_dict = self._GetRemoteHash(opt)
+      self.manifest.Save(fd,
+                         peg_rev=opt.peg_rev,
+                         peg_rev_upstream=opt.peg_rev_upstream,
+                         assigned_hash_dict=hash_dict)
+    else:
+      self.manifest.Save(fd,
+                         peg_rev=opt.peg_rev,
+                         peg_rev_upstream=opt.peg_rev_upstream)
     fd.close()
+
     if opt.output_file != '-':
       print('Saved manifest to %s' % opt.output_file, file=sys.stderr)
 
