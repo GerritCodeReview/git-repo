@@ -94,6 +94,30 @@
       "revId": "126e298214df0ce364b9dae0aec12b7b02f627ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2517118d_e5ca7642",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1874,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-02-25T22:12:38Z",
+      "side": 1,
+      "message": "I\u0027d print it out every time.  The info is still useful.",
+      "parentUuid": "451a45b5_06b23ae1",
+      "range": {
+        "startLine": 1874,
+        "startChar": 48,
+        "endLine": 1874,
+        "endChar": 68
+      },
+      "revId": "126e298214df0ce364b9dae0aec12b7b02f627ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
