@@ -46,6 +46,30 @@
       "revId": "126e298214df0ce364b9dae0aec12b7b02f627ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "451a45b5_c6eca2c4",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1874,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-02-25T21:53:30Z",
+      "side": 1,
+      "message": "Well, we could print gitcmd.stderr.\n\nThis isn\u0027t the prettiest solution because it means that it won\u0027t be correctly interleaved with stdout.\n\nDepending on whether or not just printing the output works well, we could change the GitCommand class to instead of using the subprocess pipe mechanisms, use our own file object that always captures and optionally prints.",
+      "parentUuid": "2517118d_a5c07e24",
+      "range": {
+        "startLine": 1874,
+        "startChar": 48,
+        "endLine": 1874,
+        "endChar": 68
+      },
+      "revId": "126e298214df0ce364b9dae0aec12b7b02f627ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
