@@ -22,6 +22,30 @@
       "revId": "95ddcfaedb2b1aa775c2e3e32e76d044609aaa05",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "65e029b0_0fb705d2",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 1019251
+      },
+      "writtenOn": "2015-03-06T21:27:06Z",
+      "side": 1,
+      "message": "Yes indeed that\u0027s the case, when name \u003d \u0027.\u0027 then merge always has to start with refs/ so we can skip that check. Sent you an update.",
+      "parentUuid": "45c5e522_ae3a77ba",
+      "range": {
+        "startLine": 622,
+        "startChar": 3,
+        "endLine": 622,
+        "endChar": 17
+      },
+      "revId": "95ddcfaedb2b1aa775c2e3e32e76d044609aaa05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
