@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7cc449d2_a40e4267",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-03-11T01:48:06Z",
+      "side": 1,
+      "message": "I\u0027ve been staring at this for several minutes and don\u0027t really get why this change is needed...can you add some comments here or something?  starting with \"is not False\" is confusing in general and it\u0027d be nice if we could avoid it.",
+      "revId": "c03bfd6cceb3a8f0a0c6a9ff4080b9088380d07a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
