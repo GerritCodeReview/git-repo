@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e18ed27f_6fcdf1ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-03-12T06:03:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d76190bc_d7695ca9",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 78
+      },
+      "revId": "381bb2db4751f974f4afc4fcfd2e074306eede2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d76190bc_f76e60ae",
         "filename": "repo",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2015-03-11T17:39:58Z",
       "side": 1,
       "message": "This is just a nit, but I\u0027d prefer this go first.\n  argv \u003d []\n  if sys.executable:\n    argv.append(sys.executable)\n  argv.extend([repo_main, ...",
+      "range": {
+        "startLine": 758,
+        "startChar": 2,
+        "endLine": 759,
+        "endChar": 34
+      },
+      "revId": "381bb2db4751f974f4afc4fcfd2e074306eede2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e18ed27f_0fda2565",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-03-12T06:03:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d76190bc_f76e60ae",
       "range": {
         "startLine": 758,
         "startChar": 2,
