@@ -54,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "46cc147d_426a729b",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T21:47:04Z",
+      "side": 1,
+      "message": "I\u0027m always in favor of more changes if they make the code cleaner and more useful :)",
+      "parentUuid": "46cc147d_a2917e21",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46cc147d_6278567b",
         "filename": "project.py",
         "patchSetId": 4
@@ -83,6 +101,24 @@
       "side": 1,
       "message": "I copied a lot of this code from subcmd/forall.py in the DoWork() function.",
       "parentUuid": "46cc147d_6278567b",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_22656eca",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T21:47:04Z",
+      "side": 1,
+      "message": "TMYK, thanks.",
+      "parentUuid": "26cf2074_a1db3e18",
       "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -135,6 +171,24 @@
       "writtenOn": "2015-03-17T21:45:22Z",
       "side": 1,
       "message": "s/mute/moot/  :)",
+      "parentUuid": "46cc147d_c28e82fe",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26cf2074_21972e22",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T21:47:04Z",
+      "side": 1,
+      "message": "Mostly a moot point if you move it into GitCommand, yes. Except if you\u0027re trying to come up with an interface to support streamy processing of stderr, you should definitely _not_ use a callback function that takes a single bufferful of data as an arg :)",
       "parentUuid": "46cc147d_c28e82fe",
       "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
