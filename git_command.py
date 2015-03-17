@@ -14,7 +14,9 @@
 # limitations under the License.
 
 from __future__ import print_function
+import fcntl
 import os
+import select
 import sys
 import subprocess
 import tempfile
@@ -76,6 +78,13 @@ def terminate_ssh_clients():
 
 _git_version = None
 
+class _sfd(object):
+  def __init__(self, fd, dest):
+    self.fd = fd
+    self.dest = dest
+  def fileno(self):
+    return self.fd.fileno()
+
 class _GitCall(object):
   def version(self):
     p = GitCommand(None, ['--version'], capture_stdout=True)
@@ -126,6 +135,7 @@ class GitCommand(object):
                disable_editor = False,
                ssh_proxy = False,
                cwd = None,
+               tee_stderr = False,
                gitdir = None):
     env = os.environ.copy()
 
@@ -138,6 +148,15 @@ class GitCommand(object):
               'GIT_INDEX_FILE']:
       if key in env:
         del env[key]
+
+    # Using 'tee_stderr' will capture the stderr output and also print it while
+    # it is being received.  At this point it can not be used in conjuction
+    # with capture_stdout
+    if capture_stdout and tee_stderr:
+      raise ValueError('GitCommand(): "capture_stdout" and "tee_stderr" '
+                       'can not both be enabled')
+    capture_stderr |= tee_stderr
+    self.tee_stderr = tee_stderr
 
     if disable_editor:
       _setenv(env, 'GIT_EDITOR', ':')
@@ -226,8 +245,31 @@ class GitCommand(object):
   def Wait(self):
     try:
       p = self.process
-      (self.stdout, self.stderr) = p.communicate()
-      rc = p.returncode
+      if self.tee_stderr:
+        rc = self._TeeStderr()
+      else:
+        (self.stdout, self.stderr) = p.communicate()
+        rc = p.returncode
     finally:
       _remove_ssh_client(p)
     return rc
+
+  def _TeeStderr(self):
+    p = self.process
+    s_in = [_sfd(p.stderr, sys.stderr)]
+    for s in s_in:
+      flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
+      fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+    self.stdout = None
+    self.stderr = ''
+    while s_in:
+      in_ready, _, _ = select.select(s_in, [], [])
+      for s in in_ready:
+        buf = s.fd.read(4096)
+        if not buf:
+          s_in.remove(s)
+          continue
+        s.dest.write(buf)
+        s.dest.flush()
+        self.stderr += buf
+    return p.wait()
