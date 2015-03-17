@@ -16,6 +16,24 @@
       "revId": "e30f46b957c9c192f09a4907e3e7e802c9b782f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_e27c66b5",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1880,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-17T03:57:47Z",
+      "side": 1,
+      "message": "Dave,\n\nCan you take a look at the patch:\n https://gerrit-review.googlesource.com/66360\n\nI think it does what you are asking.  Though maybe your method was slightly better :)\n\nIn my testing it seems to work.  Feedback appreciated!",
+      "parentUuid": "26cf2074_61c5b68b",
+      "revId": "e30f46b957c9c192f09a4907e3e7e802c9b782f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
