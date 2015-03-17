@@ -211,6 +211,24 @@
       "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_224c8e52",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T22:57:39Z",
+      "side": 1,
+      "message": "Agreed, total size is probably not a huge issue.",
+      "parentUuid": "6692f867_0bbb3d0a",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
