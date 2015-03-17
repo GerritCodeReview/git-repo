@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "46cc147d_027a2ab6",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1862,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T04:27:45Z",
+      "side": 1,
+      "message": "Just use sys.stderr.write(line)",
+      "revId": "665f86a7390ccd5c187a751858d1ddbad668c5ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_22464e83",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1863,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T04:27:45Z",
+      "side": 1,
+      "message": "This could potentially buffer an unbounded amount of data. Granted it\u0027s no worse than just using capture_stderr and not processing the data before the subprocess exits, but we have the chance to do better.",
+      "revId": "665f86a7390ccd5c187a751858d1ddbad668c5ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26cf2074_21300e1b",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T04:27:45Z",
+      "side": 1,
+      "message": "Why sleep? IIUC just looping over p.stderr will block until ready to I/O.",
+      "revId": "665f86a7390ccd5c187a751858d1ddbad668c5ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
