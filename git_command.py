@@ -14,7 +14,9 @@
 # limitations under the License.
 
 from __future__ import print_function
+import fcntl
 import os
+import select
 import sys
 import subprocess
 import tempfile
@@ -75,6 +77,16 @@ def terminate_ssh_clients():
   _ssh_clients = []
 
 _git_version = None
+
+class _sfd(object):
+  """select file descriptor class"""
+  def __init__(self, fd, dest, std_name):
+    assert std_name in ('stdout', 'stderr')
+    self.fd = fd
+    self.dest = dest
+    self.std_name = std_name
+  def fileno(self):
+    return self.fd.fileno()
 
 class _GitCall(object):
   def version(self):
@@ -139,6 +151,9 @@ class GitCommand(object):
       if key in env:
         del env[key]
 
+    # If we are not capturing std* then need to print it.
+    self.tee = {'stdout': not capture_stdout, 'stderr': not capture_stderr}
+
     if disable_editor:
       _setenv(env, 'GIT_EDITOR', ':')
     if ssh_proxy:
@@ -162,22 +177,21 @@ class GitCommand(object):
       if gitdir:
         _setenv(env, GIT_DIR, gitdir)
       cwd = None
-    command.extend(cmdv)
+    command.append(cmdv[0])
+    # Need to use the --progress flag for fetch/clone so output will be
+    # displayed as by default git only does progress output if stderr is a TTY.
+    if sys.stderr.isatty() and cmdv[0] in ('fetch', 'clone'):
+      if '--progress' not in cmdv and '--quiet' not in cmdv:
+        command.append('--progress')
+    command.extend(cmdv[1:])
 
     if provide_stdin:
       stdin = subprocess.PIPE
     else:
       stdin = None
 
-    if capture_stdout:
-      stdout = subprocess.PIPE
-    else:
-      stdout = None
-
-    if capture_stderr:
-      stderr = subprocess.PIPE
-    else:
-      stderr = None
+    stdout = subprocess.PIPE
+    stderr = subprocess.PIPE
 
     if IsTrace():
       global LAST_CWD
@@ -226,8 +240,34 @@ class GitCommand(object):
   def Wait(self):
     try:
       p = self.process
-      (self.stdout, self.stderr) = p.communicate()
-      rc = p.returncode
+      rc = self._CaptureOutput()
     finally:
       _remove_ssh_client(p)
     return rc
+
+  def _CaptureOutput(self):
+    p = self.process
+    s_in = [_sfd(p.stdout, sys.stdout, 'stdout'),
+            _sfd(p.stderr, sys.stderr, 'stderr')]
+    self.stdout = ''
+    self.stderr = ''
+
+    for s in s_in:
+      flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
+      fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+
+    while s_in:
+      in_ready, _, _ = select.select(s_in, [], [])
+      for s in in_ready:
+        buf = s.fd.read(4096)
+        if not buf:
+          s_in.remove(s)
+          continue
+        if s.std_name == 'stdout':
+          self.stdout += buf
+        else:
+          self.stderr += buf
+        if self.tee[s.std_name]:
+          s.dest.write(buf)
+          s.dest.flush()
+    return p.wait()

@@ -1874,10 +1874,8 @@ class Project(object):
 
     ok = False
     for _i in range(2):
-      gitcmd = GitCommand(self, cmd, bare=True, capture_stderr=True,
-                          ssh_proxy=ssh_proxy)
+      gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy)
       ret = gitcmd.Wait()
-      print(gitcmd.stderr, file=sys.stderr, end='')
       if ret == 0:
         ok = True
         break
@@ -1886,9 +1884,8 @@ class Project(object):
             "error:" in gitcmd.stderr and
             "git remote prune" in gitcmd.stderr):
         prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
-                              capture_stderr=True, ssh_proxy=ssh_proxy)
+                              ssh_proxy=ssh_proxy)
         ret = prunecmd.Wait()
-        print(prunecmd.stderr, file=sys.stderr, end='')
         if ret:
           break
         continue
