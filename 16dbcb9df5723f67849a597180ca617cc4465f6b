@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26cf2074_01bceaa8",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1863,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T21:38:31Z",
+      "side": 1,
+      "message": "Honestly a little surprised that p.stderr is an actual file descriptor and not just a file-like object :)",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_827d5a6c",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T21:38:31Z",
+      "side": 1,
+      "message": "Ideally all this non-blocking I/O logic goes in GitCommand itself, but I\u0027m trying to think of a good interface. Maybe a \"tee_stderr\u003dTrue\" arg that preserves output to stderr and also saves in a cStringIO or something?",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_6278567b",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T21:38:31Z",
+      "side": 1,
+      "message": "Hm, fcntl isn\u0027t available on Windows AFAICT. But I honestly don\u0027t know if we support repo on Windows.",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26cf2074_21e80eaa",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T21:38:31Z",
+      "side": 1,
+      "message": "This doesn\u0027t work if the text is split across two buffers. You need to hold onto at least the last len(\"git remote prune\")-1 bytes and prepend that to the current buffer.\n\nOr just buffer the whole darn thing in memory. That is certainly less memory efficient, but I think it would make the GitCommand interface cleaner.",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
