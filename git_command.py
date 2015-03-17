@@ -14,7 +14,9 @@
 # limitations under the License.
 
 from __future__ import print_function
+import fcntl
 import os
+import select
 import sys
 import subprocess
 import tempfile
@@ -126,6 +128,7 @@ class GitCommand(object):
                disable_editor = False,
                ssh_proxy = False,
                cwd = None,
+               tee_stderr = False,
                gitdir = None):
     env = os.environ.copy()
 
@@ -139,6 +142,10 @@ class GitCommand(object):
       if key in env:
         del env[key]
 
+    # Using 'tee_stderr' will capture the stderr output and also print it while
+    # it is being received.  Only valid if capture_stderr is also set.  At this
+    # point it can not be used in conjuction with capture_stdout
+    self.tee_stderr = (tee_stderr and capture_stderr) and not capture_stdout
     if disable_editor:
       _setenv(env, 'GIT_EDITOR', ':')
     if ssh_proxy:
@@ -226,8 +233,33 @@ class GitCommand(object):
   def Wait(self):
     try:
       p = self.process
-      (self.stdout, self.stderr) = p.communicate()
-      rc = p.returncode
+      if self.tee_stderr:
+        class sfd(object):
+          def __init__(self, fd, dest):
+            self.fd = fd
+            self.dest = dest
+          def fileno(self):
+            return self.fd.fileno()
+        s_in = [sfd(p.stderr, sys.stderr)]
+        for s in s_in:
+          flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
+          fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+        self.stdout = ""
+        self.stderr = ""
+        while s_in:
+          in_ready, _out_ready, _err_ready = select.select(s_in, [], [])
+          for s in in_ready:
+            buf = s.fd.read(4096)
+            if not buf:
+              s_in.remove(s)
+              continue
+            s.dest.write(buf)
+            s.dest.flush()
+            self.stderr += buf
+        rc = p.wait()
+      else:
+        (self.stdout, self.stderr) = p.communicate()
+        rc = p.returncode
     finally:
       _remove_ssh_client(p)
     return rc
