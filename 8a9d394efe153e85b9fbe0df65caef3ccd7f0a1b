@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "46cc147d_824b9a37",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T23:57:40Z",
+      "side": 1,
+      "message": "Raise ValueError for incorrect combinations of parameters.\n\nAlthough I think it might make more sense to _not_ require capture_stderr if tee_stderr is set.",
+      "revId": "8a9d394efe153e85b9fbe0df65caef3ccd7f0a1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_425192e9",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T23:57:40Z",
+      "side": 1,
+      "message": "Extract this class to the top level, using a private name and appropriate case rules (e.g. _Sfd)",
+      "revId": "8a9d394efe153e85b9fbe0df65caef3ccd7f0a1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_c23cc296",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T23:57:40Z",
+      "side": 1,
+      "message": "Nit: use single quotes for consistency with the rest of the file.",
+      "range": {
+        "startLine": 247,
+        "startChar": 22,
+        "endLine": 247,
+        "endChar": 24
+      },
+      "revId": "8a9d394efe153e85b9fbe0df65caef3ccd7f0a1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6692f867_6bca019e",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T23:57:40Z",
+      "side": 1,
+      "message": "What\u0027s going on with stdout here? Why is it always empty?",
+      "range": {
+        "startLine": 247,
+        "startChar": 8,
+        "endLine": 247,
+        "endChar": 19
+      },
+      "revId": "8a9d394efe153e85b9fbe0df65caef3ccd7f0a1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_a23fbe88",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T23:57:40Z",
+      "side": 1,
+      "message": "I would have been ok with \"in_ready, _, _\"",
+      "revId": "8a9d394efe153e85b9fbe0df65caef3ccd7f0a1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_e239c6a3",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T23:57:40Z",
+      "side": 1,
+      "message": "Why not preserve stdout:\n\n self.stdout, _ \u003d p.communicate()\n\n?",
+      "revId": "8a9d394efe153e85b9fbe0df65caef3ccd7f0a1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6692f867_8bce4dae",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T23:57:40Z",
+      "side": 1,
+      "message": "Optional: the amount of indentation and long if blocks makes this a little hard to read. How about:\n\n def Wait(self):\n   ...\n   if self.tee_stderr:\n     self.stderr \u003d self._TeeStderr()\n     self.stdout \u003d ...\n     return rc\n   else:\n     self.stdout, self.stderr \u003d p.communicate()\n     return p.returncode",
+      "revId": "8a9d394efe153e85b9fbe0df65caef3ccd7f0a1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
