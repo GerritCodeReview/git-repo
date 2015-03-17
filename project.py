@@ -15,10 +15,12 @@
 from __future__ import print_function
 import contextlib
 import errno
+import fcntl
 import filecmp
 import os
 import random
 import re
+import select
 import shutil
 import stat
 import subprocess
@@ -1809,6 +1811,8 @@ class Project(object):
 
     if quiet:
       cmd.append('--quiet')
+    elif os.isatty(2):
+      cmd.append('--progress')
     if not self.worktree:
       cmd.append('--update-head-ok')
     cmd.append(name)
@@ -1851,23 +1855,42 @@ class Project(object):
     else:
       self.config.SetString('repo.shallowfetch', None)
 
+    class sfd(object):
+      def __init__(self, fd, dest):
+        self.fd = fd
+        self.dest = dest
+      def fileno(self):
+        return self.fd.fileno()
     ok = False
     for _i in range(2):
       gitcmd = GitCommand(self, cmd, bare=True, capture_stderr=True,
                           ssh_proxy=ssh_proxy)
+      p = gitcmd.process
+      has_error = False
+      has_need_prune = False
+      s_in = [sfd(p.stderr, sys.stderr)]
+      for s in s_in:
+        flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
+        fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+      while s_in:
+        in_ready, _out_ready, _err_ready = select.select(s_in, [], [])
+        for s in in_ready:
+          buf = s.fd.read(4096)
+          if not buf:
+            s_in.remove(s)
+            continue
+          print(buf, file=sys.stderr, end='')
+          has_error |= "error:" in buf
+          has_need_prune |= "git remote prune" in buf
       ret = gitcmd.Wait()
-      print(gitcmd.stderr, file=sys.stderr, end='')
       if ret == 0:
         ok = True
         break
       # If needed, run the 'git remote prune' the first time through the loop
-      elif (not _i and
-            "error:" in gitcmd.stderr and
-            "git remote prune" in gitcmd.stderr):
+      elif (not _i and has_error and has_need_prune):
         prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
-                              capture_stderr=True, ssh_proxy=ssh_proxy)
+                              ssh_proxy=ssh_proxy)
         ret = prunecmd.Wait()
-        print(prunecmd.stderr, file=sys.stderr, end='')
         if ret:
           break
         continue
