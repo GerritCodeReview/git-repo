@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "46cc147d_82455a75",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1862,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-17T04:32:08Z",
+      "side": 1,
+      "message": "I was trying to follow convention in the file.  I don\u0027t see any use of sys.stderr.write() but many uses of print(file\u003dsys.stderr,...)\n\nSo I will keep it this way unless strong objection.",
+      "parentUuid": "46cc147d_027a2ab6",
+      "revId": "665f86a7390ccd5c187a751858d1ddbad668c5ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46cc147d_22464e83",
         "filename": "project.py",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "46cc147d_a2597e62",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1863,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-17T04:32:08Z",
+      "side": 1,
+      "message": "I will do as you had suggested in other patch.",
+      "parentUuid": "46cc147d_22464e83",
+      "revId": "665f86a7390ccd5c187a751858d1ddbad668c5ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "26cf2074_21300e1b",
         "filename": "project.py",
         "patchSetId": 1
@@ -47,6 +83,24 @@
       "writtenOn": "2015-03-17T04:27:45Z",
       "side": 1,
       "message": "Why sleep? IIUC just looping over p.stderr will block until ready to I/O.",
+      "revId": "665f86a7390ccd5c187a751858d1ddbad668c5ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_c256822f",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1864,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-17T04:32:08Z",
+      "side": 1,
+      "message": "I wasn\u0027t positive, but in my testing it does appear to be the case that it does block.",
+      "parentUuid": "26cf2074_21300e1b",
       "revId": "665f86a7390ccd5c187a751858d1ddbad668c5ba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
