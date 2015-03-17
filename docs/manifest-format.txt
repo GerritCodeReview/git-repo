@@ -31,7 +31,7 @@ following DTD:
 
     <!ELEMENT notice (#PCDATA)>
 
-    <!ELEMENT remote (projecthook?)>
+    <!ELEMENT remote (EMPTY)>
     <!ATTLIST remote name         ID    #REQUIRED>
     <!ATTLIST remote alias        CDATA #IMPLIED>
     <!ATTLIST remote fetch        CDATA #REQUIRED>
@@ -72,10 +72,6 @@ following DTD:
     <!ATTLIST extend-project name CDATA #REQUIRED>
     <!ATTLIST extend-project path CDATA #IMPLIED>
     <!ATTLIST extend-project groups CDATA #IMPLIED>
-
-    <!ELEMENT projecthook (EMPTY)>
-    <!ATTLIST projecthook name CDATA #REQUIRED>
-    <!ATTLIST projecthook revision CDATA #REQUIRED>
 
     <!ELEMENT remove-project (EMPTY)>
     <!ATTLIST remove-project name  CDATA #REQUIRED>
@@ -310,15 +306,6 @@ target manifest to include - it must be a usable manifest on its own.
 Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
 
-Element projecthook
--------------------
-
-This element is used to define a per-remote hook git that is
-fetched and applied to all projects using the remote. The project-
-hook functionality allows for company/team .git/hooks to be used.
-The hooks in the supplied project and revision are supplemented to
-the current repo stock hooks for each project. Supplemented hooks
-overrule any stock hooks.
 
 Local Manifests
 ===============

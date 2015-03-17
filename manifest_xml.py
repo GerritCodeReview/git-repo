@@ -64,9 +64,7 @@ class _XmlRemote(object):
                fetch=None,
                manifestUrl=None,
                review=None,
-               revision=None,
-               projecthookName=None,
-               projecthookRevision=None):
+               revision=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
@@ -74,8 +72,6 @@ class _XmlRemote(object):
     self.reviewUrl = review
     self.revision = revision
     self.resolvedFetchUrl = self._resolveFetchUrl()
-    self.projecthookName = projecthookName
-    self.projecthookRevision = projecthookRevision
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -171,11 +167,6 @@ class XmlManifest(object):
       e.setAttribute('review', r.reviewUrl)
     if r.revision is not None:
       e.setAttribute('revision', r.revision)
-    if r.projecthookName is not None:
-      ph = doc.createElement('projecthook')
-      ph.setAttribute('name', r.projecthookName)
-      ph.setAttribute('revision', r.projecthookRevision)
-      e.appendChild(ph)
 
   def _ParseGroups(self, groups):
     return [x for x in re.split(r'[,\s]+', groups) if x]
@@ -638,13 +629,7 @@ class XmlManifest(object):
     if revision == '':
       revision = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    projecthookName = None
-    projecthookRevision = None
-    for n in node.childNodes:
-      if n.nodeName == 'projecthook':
-        projecthookName, projecthookRevision = self._ParseProjectHooks(n)
-        break
-    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision, projecthookName, projecthookRevision)
+    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision)
 
   def _ParseDefault(self, node):
     """
@@ -948,8 +933,3 @@ class XmlManifest(object):
       diff['added'].append(toProjects[proj])
 
     return diff
-
-  def _ParseProjectHooks(self, node):
-    name = self._reqatt(node, 'name')
-    revision = self._reqatt(node, 'revision')
-    return name, revision
