@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26cf2074_61c5b68b",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1880,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-03-17T00:54:16Z",
+      "side": 1,
+      "message": "This isn\u0027t actually useful. It still buffers stderr, which means progress monitors don\u0027t actually show progress, they\u0027re just dumped at the end.\n\nIMHO, based on dealing with several weeks of user reports where it\u0027s impossible to debug hangs on the server side because we can\u0027t see the progress output of git, the benefit of running \"git remote prune\" is outweighed by the cost of swallowing this output.\n\nIf you really really want to search the output of git\u0027s stderr, you should make sure to redirect the output to actual stderr as well. Something like (completely untested):\n\n has_error \u003d False\n has_prune \u003d False\n for line in gitcmd.process.stderr:\n   sys.stderr.write(line)\n   has_error |\u003d \u0027error:\u0027 in line\n   has_prune |\u003d \u0027git remote prune\u0027 in line\n gitcmd.Wait()\n\n has_err |\u003d \u0027error:\u0027 in gitcmd.stderr\n has_prune |\u003d \u0027git remote prune\u0027 in gitcmd.stderr",
+      "revId": "e30f46b957c9c192f09a4907e3e7e802c9b782f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
