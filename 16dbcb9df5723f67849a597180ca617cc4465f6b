@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "46cc147d_a2917e21",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-17T21:43:34Z",
+      "side": 1,
+      "message": "Agreed.  I was trying to not to make too many changes, but this could possibly be useful to other uses...",
+      "parentUuid": "46cc147d_827d5a6c",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46cc147d_6278567b",
         "filename": "project.py",
         "patchSetId": 4
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "26cf2074_a1db3e18",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-17T21:43:34Z",
+      "side": 1,
+      "message": "I copied a lot of this code from subcmd/forall.py in the DoWork() function.",
+      "parentUuid": "46cc147d_6278567b",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "26cf2074_21e80eaa",
         "filename": "project.py",
         "patchSetId": 4
@@ -64,6 +100,24 @@
       "writtenOn": "2015-03-17T21:38:31Z",
       "side": 1,
       "message": "This doesn\u0027t work if the text is split across two buffers. You need to hold onto at least the last len(\"git remote prune\")-1 bytes and prepend that to the current buffer.\n\nOr just buffer the whole darn thing in memory. That is certainly less memory efficient, but I think it would make the GitCommand interface cleaner.",
+      "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46cc147d_c28e82fe",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1883,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-17T21:43:34Z",
+      "side": 1,
+      "message": "Yeah, I was thinking about that.  In my testing it did catch the error case and did do the \u0027git remote prune\u0027 as needed. I was just thinking to fix it I would have to either capture all the output or spend time trying to make sure we have a full line of text to process.  But if this gets moved into GitCommand, then maybe a mute point.",
+      "parentUuid": "26cf2074_21e80eaa",
       "revId": "16dbcb9df5723f67849a597180ca617cc4465f6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
