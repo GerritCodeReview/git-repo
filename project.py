@@ -1855,19 +1855,24 @@ class Project(object):
     for _i in range(2):
       gitcmd = GitCommand(self, cmd, bare=True, capture_stderr=True,
                           ssh_proxy=ssh_proxy)
+      p = gitcmd.process
+      stderr = ""
+      while p.poll() is None:
+        for line in iter(p.stderr.readline, ''):
+          print(line, file=sys.stderr, end='')
+          stderr += line
+        time.sleep(0.1)
       ret = gitcmd.Wait()
-      print(gitcmd.stderr, file=sys.stderr, end='')
       if ret == 0:
         ok = True
         break
       # If needed, run the 'git remote prune' the first time through the loop
       elif (not _i and
-            "error:" in gitcmd.stderr and
-            "git remote prune" in gitcmd.stderr):
+            "error:" in stderr and
+            "git remote prune" in stderr):
         prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
-                              capture_stderr=True, ssh_proxy=ssh_proxy)
+                              ssh_proxy=ssh_proxy)
         ret = prunecmd.Wait()
-        print(prunecmd.stderr, file=sys.stderr, end='')
         if ret:
           break
         continue
