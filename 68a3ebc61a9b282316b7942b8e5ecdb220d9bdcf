@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66f758e2_c3e6162d",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-03-19T18:15:26Z",
+      "side": 1,
+      "message": "Do you see any downside to *always* reading the stream and storing it?  This would get rid of the need for a new arg here and simplify some of the code.  That\u0027s how I usually solve this problem in other projects I\u0027ve done in the past.\n\ncapture_stderr would just come to mean \"suppress_stderr\"...in fact, we could have a followup change that would swap it out with a new \"suppress_stderr\" -- and the same for stdout.",
+      "range": {
+        "startLine": 138,
+        "startChar": 15,
+        "endLine": 138,
+        "endChar": 34
+      },
+      "revId": "68a3ebc61a9b282316b7942b8e5ecdb220d9bdcf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
