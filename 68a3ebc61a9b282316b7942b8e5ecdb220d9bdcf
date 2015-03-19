@@ -22,6 +22,30 @@
       "revId": "68a3ebc61a9b282316b7942b8e5ecdb220d9bdcf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2637206d_41d6b246",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1017359
+      },
+      "writtenOn": "2015-03-19T18:25:24Z",
+      "side": 1,
+      "message": "There could possibly be a large amount of data.  Though in my testing for a \u0027git fetch\u0027 of 1.57GB repository it was less than 100K of data.  So probably not a concern, but I thought I would mention it.\n\nAnother thing would be needing to update the function to handle both stdout and stderr.  But not too difficult, I would just bring a little more of the code over from subcmds/forall.py\n\nAnd then of course it would probably require updating all the code that calls GitCommand....\n\nAnd finally not sure if would want to have a \u0027capture_output\u0027 / \u0027merge_output\u0027?  That would merge the output of stderr and stdout?  Popen(stderr\u003dsubprocess.STDOUT)",
+      "parentUuid": "66f758e2_c3e6162d",
+      "range": {
+        "startLine": 138,
+        "startChar": 15,
+        "endLine": 138,
+        "endChar": 34
+      },
+      "revId": "68a3ebc61a9b282316b7942b8e5ecdb220d9bdcf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
