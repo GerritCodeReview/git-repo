@@ -1865,7 +1865,8 @@ class Project(object):
 
     shallowfetch = self.config.GetString('repo.shallowfetch')
     if shallowfetch and shallowfetch != ' '.join(spec):
-      GitCommand(self, ['fetch', '--unshallow', name] + shallowfetch.split(),
+      GitCommand(self, ['fetch', '--depth=2147483647', name]
+                 + shallowfetch.split(),
                  bare=True, ssh_proxy=ssh_proxy).Wait()
     if depth:
       self.config.SetString('repo.shallowfetch', ' '.join(spec))
