@@ -20,7 +20,7 @@ REPO_REV = 'stable'
 # limitations under the License.
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 22)
+VERSION = (1, 21)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1, 2)
@@ -102,7 +102,7 @@ JuinEP+AwLAUZ1Bsx9ISC0Agpk2VeHXPL3FGhroEmoMvBzO0kTFGyoeT7PR/BfKv
 """
 
 GIT = 'git'                     # our git command
-MIN_GIT_VERSION = (1, 8, 2)     # minimum supported git version
+MIN_GIT_VERSION = (1, 7, 2)     # minimum supported git version
 repodir = '.repo'               # name of repo's private directory
 S_repo = 'repo'                 # special repo repository
 S_manifests = 'manifests'       # special manifest repository
