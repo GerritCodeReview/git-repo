@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e30a5a5c_cfd4bd40",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-03-30T21:23:26Z",
+      "side": 1,
+      "message": "take this back down to the previous version.  Since we never released it, it\u0027s OK to go back.  Also it will save me from having to make a new release of this launcher.",
+      "range": {
+        "startLine": 23,
+        "startChar": 14,
+        "endLine": 23,
+        "endChar": 16
+      },
+      "revId": "a71a0474f847b8b386bde3cacf772747e82e8883",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
