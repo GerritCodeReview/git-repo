@@ -16,6 +16,93 @@
       "revId": "c03bfd6cceb3a8f0a0c6a9ff4080b9088380d07a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2301d23d_71c49891",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1073,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-03-30T17:24:17Z",
+      "side": 1,
+      "message": "I think we can remove this change with the refactor to separate the error check from _ReferenceGitDir. I\u0027ll come back to it if we still need it then.",
+      "parentUuid": "7cc449d2_a40e4267",
+      "revId": "c03bfd6cceb3a8f0a0c6a9ff4080b9088380d07a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43fec670_12bf0cf5",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2066,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-03-30T17:24:17Z",
+      "side": 1,
+      "message": "We need to separate the existence conditionals anyway, but we could update this to check if either directory was created in addition to checking if they are different. That would avoid running _ReferenceGitDir for every sync.",
+      "range": {
+        "startLine": 2066,
+        "startChar": 19,
+        "endLine": 2066,
+        "endChar": 21
+      },
+      "revId": "c03bfd6cceb3a8f0a0c6a9ff4080b9088380d07a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2301d23d_11bf0cf5",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2214,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-03-30T17:24:17Z",
+      "side": 1,
+      "message": "This is the check we would want to run if we were to avoid running _ReferenceGitDir for every project. It relies on the symlink_files and symlink_dirs variables, and would want to share the same values for them that ReferenceGitDir does. Is the Project class the appropriate place to store them as constants?",
+      "range": {
+        "startLine": 2214,
+        "startChar": 26,
+        "endLine": 2214,
+        "endChar": 27
+      },
+      "revId": "c03bfd6cceb3a8f0a0c6a9ff4080b9088380d07a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43fec670_72c49891",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2253,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-03-30T17:24:17Z",
+      "side": 1,
+      "message": "This would also be updated to only run if we created the directory for dotgit.",
+      "range": {
+        "startLine": 2253,
+        "startChar": 12,
+        "endLine": 2253,
+        "endChar": 13
+      },
+      "revId": "c03bfd6cceb3a8f0a0c6a9ff4080b9088380d07a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
