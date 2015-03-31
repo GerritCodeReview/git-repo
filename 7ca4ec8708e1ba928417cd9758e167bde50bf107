@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "03084e62_909c9470",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-03-31T21:48:32Z",
+      "side": 1,
+      "message": "throwing it in the code directory seems weird...is there somewhere else we could put this?",
+      "range": {
+        "startLine": 116,
+        "startChar": 20,
+        "endLine": 116,
+        "endChar": 30
+      },
+      "revId": "7ca4ec8708e1ba928417cd9758e167bde50bf107",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "03084e62_b09f1864",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-03-31T21:48:32Z",
+      "side": 1,
+      "message": "How are we handling HTTP errors here?  Some gerrit servers might need special authentication that git handles.  You could look to see what the clone bundles does for that, or for now just tolerate http errors.",
+      "range": {
+        "startLine": 136,
+        "startChar": 4,
+        "endLine": 136,
+        "endChar": 42
+      },
+      "revId": "7ca4ec8708e1ba928417cd9758e167bde50bf107",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "03084e62_506d0cfe",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-03-31T21:48:32Z",
+      "side": 1,
+      "message": "Could you document the parameters here?",
+      "revId": "7ca4ec8708e1ba928417cd9758e167bde50bf107",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
