@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "43e6c629_32e8907b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-04-06T22:40:04Z",
+      "side": 1,
+      "message": "--no-logging sounds better.",
+      "revId": "f0b0ba1fd5471615d203a3185e357d57541497ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43e6c629_12e58ca3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-04-06T22:40:04Z",
+      "side": 1,
+      "message": "Is there always a debug.log being rolled too?",
+      "revId": "f0b0ba1fd5471615d203a3185e357d57541497ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
