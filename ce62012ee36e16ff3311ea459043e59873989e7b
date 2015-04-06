@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a3fdc2c1_e507d64d",
+        "filename": "logger.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2015-04-06T18:08:20Z",
+      "side": 1,
+      "message": "will post a commit in a bit",
+      "parentUuid": "43e6c629_72417816",
+      "revId": "ce62012ee36e16ff3311ea459043e59873989e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e3f25ae5_2f3b899c",
         "filename": "logger.py",
         "patchSetId": 1
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "a3fdc2c1_c50cda72",
+        "filename": "logger.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2015-04-06T18:08:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3f25ae5_2f3b899c",
+      "revId": "ce62012ee36e16ff3311ea459043e59873989e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e3f25ae5_4f3ecd8c",
         "filename": "logger.py",
         "patchSetId": 1
@@ -47,6 +83,41 @@
       "writtenOn": "2015-04-06T17:50:27Z",
       "side": 1,
       "message": "Is there a reason this is defined negatively if its default is True?  would it make more sense to say --log default\u003dFalse?\n\nAlso, I\u0027m fine with the logging being turned on by default.  I don\u0027t think we would accumulate logs big enough to hurt us.",
+      "revId": "ce62012ee36e16ff3311ea459043e59873989e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c302b68c_462232d0",
+        "filename": "logger.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2015-04-06T18:08:20Z",
+      "side": 1,
+      "message": "the visible option is to disable storing the log. the internal option is `store_log`, which is why it\u0027s set to default to True, and store False when selected.\n\nIt\u0027s just personal preference. `if store_log` looks nicer than `if not store_no_log`",
+      "parentUuid": "e3f25ae5_4f3ecd8c",
+      "revId": "ce62012ee36e16ff3311ea459043e59873989e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c302b68c_261f368c",
+        "filename": "logger.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1016072
+      },
+      "writtenOn": "2015-04-06T18:08:20Z",
+      "side": 1,
+      "message": "The log file is refreshed on a daily basis, and 5 backups are taken (debug.log.n).\n\nWould you rather have it so each run of repo starts a new log file?",
       "revId": "ce62012ee36e16ff3311ea459043e59873989e7b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
