@@ -121,6 +121,24 @@
       "revId": "ce62012ee36e16ff3311ea459043e59873989e7b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "43e6c629_d2cee430",
+        "filename": "logger.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-04-06T18:12:20Z",
+      "side": 1,
+      "message": "I *think* that would be more useful; at least that\u0027s the use case I\u0027m imagining...someone has something screw up and they want to look at the log of exactly that run.",
+      "parentUuid": "c302b68c_261f368c",
+      "revId": "ce62012ee36e16ff3311ea459043e59873989e7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
