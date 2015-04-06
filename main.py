@@ -50,6 +50,7 @@ from error import ManifestParseError
 from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
+from logger import build_logger, get_logger, logger_options
 from manifest_xml import XmlManifest
 from pager import RunPager
 from wrapper import WrapperPath, Wrapper
@@ -82,11 +83,14 @@ global_options.add_option('--time',
 global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
+logger_options(global_options)
+
 
 class _Repo(object):
   def __init__(self, repodir):
     self.repodir = repodir
     self.commands = all_commands
+    self.logger = get_logger()
     # add 'branch' as an alias for 'branches'
     all_commands['branch'] = all_commands['branches']
 
@@ -108,8 +112,11 @@ class _Repo(object):
       argv = []
     gopts, _gargs = global_options.parse_args(glob)
 
+    build_logger(gopts, repodir=self.repodir)
+
     if gopts.trace:
       SetTrace()
+
     if gopts.show_version:
       if name == 'help':
         name = 'version'
