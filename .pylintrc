@@ -61,9 +61,6 @@ disable=R0903,R0912,R0913,R0914,R0915,W0141,C0111,C0103,W0603,W0703,R0911,C0301,
 # (visual studio) and html
 output-format=text
 
-# Include message's id in output
-include-ids=yes
-
 # Put messages in a separate file for each module / package specified on the
 # command line instead of printing them on stdout. Reports (if any) will be
 # written in a file name "pylint_global.[txt|html]".
