@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e30b3aa7_27d85a71",
+        "filename": "logger.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-04-07T02:24:36Z",
+      "side": 1,
+      "message": "Are these case-sensitive?  The default is upper case (INFO) but all the choices are lower case.",
+      "range": {
+        "startLine": 41,
+        "startChar": 29,
+        "endLine": 42,
+        "endChar": 48
+      },
+      "revId": "c4047e228041a3ee95f37543de665e108ceb06be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "430fa6b1_2ad81f71",
+        "filename": "logger.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-04-07T02:24:36Z",
+      "side": 1,
+      "message": "This is not platform independent.  It would be better to use `os.path.join`.",
+      "range": {
+        "startLine": 75,
+        "startChar": 14,
+        "endLine": 75,
+        "endChar": 22
+      },
+      "revId": "c4047e228041a3ee95f37543de665e108ceb06be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e30b3aa7_07d55639",
+        "filename": "logger.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-04-07T02:24:36Z",
+      "side": 1,
+      "message": "nit: Indentation should be 2 chars.",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 86,
+        "endChar": 8
+      },
+      "revId": "c4047e228041a3ee95f37543de665e108ceb06be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
