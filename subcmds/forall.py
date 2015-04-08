@@ -212,8 +212,8 @@ without iterating through the remaining projects.
       config = self.manifest.manifestProject.config
       results_it = pool.imap(
          DoWorkWrapper,
-         [[mirror, opt, cmd, shell, cnt, config, self._SerializeProject(p)]
-          for cnt, p in enumerate(projects)]
+         ([mirror, opt, cmd, shell, cnt, config, self._SerializeProject(p)]
+          for cnt, p in enumerate(projects))
       )
       pool.close()
       for r in results_it:
