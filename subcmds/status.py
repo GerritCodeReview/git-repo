@@ -22,15 +22,8 @@ except ImportError:
 
 import glob
 
-from pyversion import is_python3
-if is_python3():
-  import io
-else:
-  import StringIO as io
-
 import itertools
 import os
-import sys
 
 from color import Coloring
 
@@ -97,7 +90,7 @@ the following meanings:
                  dest='orphans', action='store_true',
                  help="include objects in working directory outside of repo projects")
 
-  def _StatusHelper(self, project, clean_counter, sem, output):
+  def _StatusHelper(self, project, clean_counter, sem):
     """Obtains the status for a specific project.
 
     Obtains the status for a project, redirecting the output to
@@ -111,7 +104,7 @@ the following meanings:
       output: Where to output the status.
     """
     try:
-      state = project.PrintWorkTreeStatus(output)
+      state = project.PrintWorkTreeStatus()
       if state == 'CLEAN':
         next(clean_counter)
     finally:
@@ -122,16 +115,16 @@ the following meanings:
     status_header = ' --\t'
     for item in dirs:
       if not os.path.isdir(item):
-        outstring.write(''.join([status_header, item]))
+        outstring.append(''.join([status_header, item]))
         continue
       if item in proj_dirs:
         continue
       if item in proj_dirs_parents:
-        self._FindOrphans(glob.glob('%s/.*' % item) + \
-            glob.glob('%s/*' % item), \
+        self._FindOrphans(glob.glob('%s/.*' % item) +
+            glob.glob('%s/*' % item),
             proj_dirs, proj_dirs_parents, outstring)
         continue
-      outstring.write(''.join([status_header, item, '/']))
+      outstring.append(''.join([status_header, item, '/']))
 
   def Execute(self, opt, args):
     all_projects = self.GetProjects(args)
@@ -144,26 +137,17 @@ the following meanings:
           next(counter)
     else:
       sem = _threading.Semaphore(opt.jobs)
-      threads_and_output = []
+      threads = []
       for project in all_projects:
         sem.acquire()
 
-        class BufList(io.StringIO):
-          def dump(self, ostream):
-            for entry in self.buflist:
-              ostream.write(entry)
-
-        output = BufList()
-
         t = _threading.Thread(target=self._StatusHelper,
-                              args=(project, counter, sem, output))
-        threads_and_output.append((t, output))
+                              args=(project, counter, sem))
+        threads.append(t)
         t.daemon = True
         t.start()
-      for (t, output) in threads_and_output:
+      for t in threads:
         t.join()
-        output.dump(sys.stdout)
-        output.close()
     if len(all_projects) == next(counter):
       print('nothing to commit (working directory clean)')
 
@@ -188,22 +172,20 @@ the following meanings:
       try:
         os.chdir(self.manifest.topdir)
 
-        outstring = io.StringIO()
-        self._FindOrphans(glob.glob('.*') + \
-            glob.glob('*'), \
+        outstring = []
+        self._FindOrphans(glob.glob('.*') +
+            glob.glob('*'),
             proj_dirs, proj_dirs_parents, outstring)
 
-        if outstring.buflist:
+        if outstring:
           output = StatusColoring(self.manifest.globalConfig)
           output.project('Objects not within a project (orphans)')
           output.nl()
-          for entry in outstring.buflist:
+          for entry in outstring:
             output.untracked(entry)
             output.nl()
         else:
           print('No orphan files or directories')
-
-        outstring.close()
 
       finally:
         # Restore CWD.
