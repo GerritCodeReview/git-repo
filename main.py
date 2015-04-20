@@ -447,7 +447,7 @@ def init_http():
   if kerberos:
     handlers.append(_KerberosAuthHandler())
 
-  if 'http_proxy' in os.environ:
+  if 'http_proxy' in os.environ and 'darwin' == sys.platform:
     url = os.environ['http_proxy']
     handlers.append(urllib.request.ProxyHandler({'http': url, 'https': url}))
   if 'REPO_CURL_VERBOSE' in os.environ:
