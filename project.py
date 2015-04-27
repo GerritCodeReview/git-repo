@@ -1853,18 +1853,19 @@ class Project(object):
       spec.append('tag')
       spec.append(tag_name)
 
-    branch = self.revisionExpr
-    if is_sha1 and depth:
-      # Shallow checkout of a specific commit, fetch from that commit and not
-      # the heads only as the commit might be deeper in the history.
-      spec.append(branch)
-    else:
-      if is_sha1:
-        branch = self.upstream
-      if branch is not None and branch.strip():
-        if not branch.startswith('refs/'):
-          branch = R_HEADS + branch
-        spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
+    if not self.manifest.IsMirror:
+      branch = self.revisionExpr
+      if is_sha1 and depth:
+        # Shallow checkout of a specific commit, fetch from that commit and not
+        # the heads only as the commit might be deeper in the history.
+        spec.append(branch)
+      else:
+        if is_sha1:
+          branch = self.upstream
+        if branch is not None and branch.strip():
+          if not branch.startswith('refs/'):
+            branch = R_HEADS + branch
+          spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
     cmd.extend(spec)
 
     shallowfetch = self.config.GetString('repo.shallowfetch')
