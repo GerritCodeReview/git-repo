@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b070aa50_edbd65fa",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-04-28T20:26:02Z",
+      "side": 1,
+      "message": "I\u0027m actually a little confused about the use of self.worktree instead of the earlier IsMirror (L1751).\n\nAre you sure this is only run in mirrors?",
+      "revId": "bb7d244be28beb588cddc83bd4b1302d5a02cc24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
