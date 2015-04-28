@@ -1836,6 +1836,7 @@ class Project(object):
       cmd.append('--quiet')
     if not self.worktree:
       cmd.append('--update-head-ok')
+      cmd.append('--prune')
     cmd.append(name)
 
     # If using depth then we should not get all the tags since they may
