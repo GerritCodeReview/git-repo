@@ -16,6 +16,24 @@
       "revId": "bb7d244be28beb588cddc83bd4b1302d5a02cc24",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f067829d_47f48ed1",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-04-30T01:42:15Z",
+      "side": 1,
+      "message": "In my tests I\u0027ve only seen this code path executed when syncing a mirror, but having looked a bit closer it looks like there might be other circumstances under which we don\u0027t have a worktree.\n\nIn the next patch set I\u0027ve changed it to use self.manifest.isMirror instead.",
+      "parentUuid": "b070aa50_edbd65fa",
+      "revId": "bb7d244be28beb588cddc83bd4b1302d5a02cc24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
