@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f067829d_c7ae3e99",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1399,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-04-30T14:31:38Z",
+      "side": 1,
+      "message": "Unrelated to this change, but this is not a very good name for this constant...",
+      "range": {
+        "startLine": 1399,
+        "startChar": 52,
+        "endLine": 1399,
+        "endChar": 57
+      },
+      "revId": "382582728ea779aa4cc5e8a7eba2b7b2167efabc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
