@@ -1396,7 +1396,7 @@ class Project(object):
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote(self.remote.name)
     branch.merge = self.revisionExpr
-    if not branch.merge.startswith('refs/'):
+    if not branch.merge.startswith('refs/') and not ID_RE.match(self.revisionExpr):
       branch.merge = R_HEADS + self.revisionExpr
     revid = self.GetRevisionId(all_refs)
 
