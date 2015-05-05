@@ -233,14 +233,14 @@ class _CopyFile(object):
         _error('Cannot copy file %s to %s', src, dest)
 
 class _LinkFile(object):
-  def __init__(self, src, dest, abssrc, absdest):
+  def __init__(self, src, dest, relsrc, absdest):
     self.src = src
     self.dest = dest
-    self.abs_src = abssrc
+    self.src_rel_to_dest = relsrc
     self.abs_dest = absdest
 
   def _Link(self):
-    src = self.abs_src
+    src = self.src_rel_to_dest
     dest = self.abs_dest
     # link file if it does not exist or is out of date
     if not os.path.islink(dest) or os.readlink(dest) != src:
@@ -1351,9 +1351,10 @@ class Project(object):
 
   def AddLinkFile(self, src, dest, absdest):
     # dest should already be an absolute path, but src is project relative
-    # make src an absolute path
-    abssrc = os.path.join(self.worktree, src)
-    self.linkfiles.append(_LinkFile(src, dest, abssrc, absdest))
+    # make src relative path to dest
+    absdestdir = os.path.dirname(absdest)
+    relsrc = os.path.relpath(os.path.join(self.worktree, src), absdestdir)
+    self.linkfiles.append(_LinkFile(src, dest, relsrc, absdest))
 
   def AddAnnotation(self, name, value, keep):
     self.annotations.append(_Annotation(name, value, keep))
