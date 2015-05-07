@@ -517,6 +517,9 @@ later is required to fix a server side protocol bug.
       self.manifest.Override(opt.manifest_name)
 
     manifest_name = opt.manifest_name
+    smart_sync_manifest_name = "smart_sync_override.xml"
+    smart_sync_manifest_path = os.path.join(
+      self.manifest.manifestProject.worktree, smart_sync_manifest_name)
 
     if opt.smart_sync or opt.smart_tag:
       if not self.manifest.manifest_server:
@@ -583,18 +586,16 @@ later is required to fix a server side protocol bug.
           [success, manifest_str] = server.GetManifest(opt.smart_tag)
 
         if success:
-          manifest_name = "smart_sync_override.xml"
-          manifest_path = os.path.join(self.manifest.manifestProject.worktree,
-                                       manifest_name)
+          manifest_name = smart_sync_manifest_name
           try:
-            f = open(manifest_path, 'w')
+            f = open(smart_sync_manifest_path, 'w')
             try:
               f.write(manifest_str)
             finally:
               f.close()
           except IOError as e:
             print('error: cannot write manifest to %s:\n%s'
-                  % (manifest_path, e),
+                  % (smart_sync_manifest_path, e),
                   file=sys.stderr)
             sys.exit(1)
           self._ReloadManifest(manifest_name)
@@ -611,6 +612,13 @@ later is required to fix a server side protocol bug.
               % (self.manifest.manifest_server, e.errcode, e.errmsg),
               file=sys.stderr)
         sys.exit(1)
+    else:  # Not smart sync or smart tag mode
+      if os.path.isfile(smart_sync_manifest_path):
+        try:
+          os.remove(smart_sync_manifest_path)
+        except OSError as e:
+          print('error: failed to remove existing smart sync override manifest: %s' %
+                e, file=sys.stderr)
 
     rp = self.manifest.repoProject
     rp.PreSync()
