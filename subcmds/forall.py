@@ -150,11 +150,15 @@ without iterating through the remaining projects.
     attributes that we need.
 
     """
+    if not self.manifest.IsMirror:
+      lrev = project.GetRevisionId()
+    else:
+      lrev = None
     return {
       'name': project.name,
       'relpath': project.relpath,
       'remote_name': project.remote.name,
-      'lrev': project.GetRevisionId(),
+      'lrev': lrev,
       'rrev': project.revisionExpr,
       'annotations': dict((a.name, a.value) for a in project.annotations),
       'gitdir': project.gitdir,
