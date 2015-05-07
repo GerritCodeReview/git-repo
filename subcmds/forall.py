@@ -204,6 +204,13 @@ without iterating through the remaining projects.
     mirror = self.manifest.IsMirror
     rc = 0
 
+    smart_sync_manifest_name = "smart_sync_override.xml"
+    smart_sync_manifest_path = os.path.join(
+      self.manifest.manifestProject.worktree, smart_sync_manifest_name)
+
+    if os.path.isfile(smart_sync_manifest_path):
+      self.manifest.Override(smart_sync_manifest_path)
+
     if not opt.regex:
       projects = self.GetProjects(args)
     else:
