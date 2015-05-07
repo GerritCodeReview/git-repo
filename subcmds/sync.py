@@ -592,8 +592,9 @@ later is required to fix a server side protocol bug.
               f.write(manifest_str)
             finally:
               f.close()
-          except IOError:
-            print('error: cannot write manifest to %s' % manifest_path,
+          except IOError as e:
+            print('error: cannot write manifest to %s:\n%s'
+                  % (manifest_path, e),
                   file=sys.stderr)
             sys.exit(1)
           self._ReloadManifest(manifest_name)
