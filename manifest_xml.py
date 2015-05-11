@@ -243,9 +243,13 @@ class XmlManifest(object):
         e.setAttribute('path', relpath)
       remoteName = None
       if d.remote:
-        remoteName = d.remote.remoteAlias or d.remote.name
+        remoteName = d.remote.name
       if not d.remote or p.remote.name != remoteName:
-        remoteName = p.remote.name
+        for remote in self.remotes.values():
+          if (p.remote.url.startswith(remote.fetchUrl) and
+              (p.remote.name == remote.name or p.remote.name == remote.remoteAlias)):
+            remoteName = remote.name
+      if remoteName:
         e.setAttribute('remote', remoteName)
       if peg_rev:
         if self.IsMirror:
