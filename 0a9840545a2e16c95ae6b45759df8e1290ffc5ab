@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4dbb55a0_4ab89309",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2068,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-05-11T19:52:14Z",
+      "side": 1,
+      "message": "Evaluating this after objdir is created causes issues when gitdir \u003d\u003d objdir. New patchset on its way.",
+      "range": {
+        "startLine": 2068,
+        "startChar": 4,
+        "endLine": 2068,
+        "endChar": 16
+      },
+      "revId": "0a9840545a2e16c95ae6b45759df8e1290ffc5ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
