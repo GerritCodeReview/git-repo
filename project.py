@@ -1908,6 +1908,9 @@ class Project(object):
         # mode, we just tried sync'ing from the upstream field; it doesn't exist, thus
         # abort the optimization attempt and do a full sync.
         break
+      elif ret < 0:
+        # Git died with a signal, exit immediately
+        break
       time.sleep(random.randint(30, 45))
 
     if initial:
