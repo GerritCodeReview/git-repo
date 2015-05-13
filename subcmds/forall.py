@@ -207,14 +207,12 @@ without iterating through the remaining projects.
 
     os.environ['REPO_COUNT'] = str(len(projects))
 
-    pool = multiprocessing.Pool(opt.jobs)
     try:
+      pool = multiprocessing.Pool(opt.jobs)
       config = self.manifest.manifestProject.config
       results_it = pool.imap(
          DoWorkWrapper,
-         ([mirror, opt, cmd, shell, cnt, config, self._SerializeProject(p)]
-          for cnt, p in enumerate(projects))
-      )
+         self.ProjectArgs(projects, mirror, opt, cmd, shell, config))
       pool.close()
       for r in results_it:
         rc = rc or r
@@ -236,6 +234,19 @@ without iterating through the remaining projects.
     if rc != 0:
       sys.exit(rc)
 
+  def ProjectArgs(self, projects, mirror, opt, cmd, shell, config):
+    for cnt, p in enumerate(projects):
+      try:
+        project = self._SerializeProject(p)
+      except Exception as e:
+        print('Project list error: %r' % e,
+              file=sys.stderr)
+        return
+      except KeyboardInterrupt:
+        print('Project list interrupted',
+              file=sys.stderr)
+        return
+      yield [mirror, opt, cmd, shell, cnt, config, project]
 
 class WorkerKeyboardInterrupt(Exception):
   """ Keyboard interrupt exception for worker processes. """
