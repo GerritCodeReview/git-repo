@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d83551d_2ae63f31",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2015-05-14T06:41:00Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this block appear above the `except Exception as e` line? Unless I\u0027m very much mistaken, KeyboardInterrupt is an Exception and will be caught by the catch-all line (line 242).",
+      "range": {
+        "startLine": 246,
+        "startChar": 6,
+        "endLine": 246,
+        "endChar": 31
+      },
+      "revId": "31a7be561ef34c134447d92a3d391b17ecd7c790",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
