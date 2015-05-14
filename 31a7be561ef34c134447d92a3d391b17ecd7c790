@@ -22,6 +22,30 @@
       "revId": "31a7be561ef34c134447d92a3d391b17ecd7c790",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2d86212e_e9d2754f",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-14T07:47:23Z",
+      "side": 1,
+      "message": "\"The exception inherits from BaseException so as to not be accidentally caught by code that catches Exception and thus prevent the interpreter from exiting.\"\n\nhttps://docs.python.org/2/library/exceptions.html#exceptions.KeyboardInterrupt",
+      "parentUuid": "4d83551d_2ae63f31",
+      "range": {
+        "startLine": 246,
+        "startChar": 6,
+        "endLine": 246,
+        "endChar": 31
+      },
+      "revId": "31a7be561ef34c134447d92a3d391b17ecd7c790",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
