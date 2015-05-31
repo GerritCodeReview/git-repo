@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "f90db02c_d71c1c9e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-05-31T13:52:02Z",
+      "side": 1,
+      "message": "Agreed.",
+      "parentUuid": "f90db02c_172bb4b9",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 12
+      },
+      "revId": "77310c6127d273b8156c9a0a029536749b5cd447",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d9246ca6_1614dc7b",
         "filename": "project.py",
         "patchSetId": 1
