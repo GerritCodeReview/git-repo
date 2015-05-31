@@ -48,6 +48,54 @@
     },
     {
       "key": {
+        "uuid": "d9246ca6_f6f840be",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1020318
+      },
+      "writtenOn": "2015-05-31T13:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f90db02c_b702c83a",
+      "range": {
+        "startLine": 12,
+        "startChar": 24,
+        "endLine": 12,
+        "endChar": 31
+      },
+      "revId": "77310c6127d273b8156c9a0a029536749b5cd447",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f90db02c_3726b8f1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1020318
+      },
+      "writtenOn": "2015-05-31T13:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f90db02c_d7f53cc4",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 9
+      },
+      "revId": "77310c6127d273b8156c9a0a029536749b5cd447",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f90db02c_97ffc4a2",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "f90db02c_172bb4b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1020318
+      },
+      "writtenOn": "2015-05-31T13:40:49Z",
+      "side": 1,
+      "message": "I too was surprised that it wasn\u0027t documented, seems repo documentation needs some love, but I\u0027d say that\u0027s work outside of this change.",
+      "parentUuid": "f90db02c_97ffc4a2",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 12
+      },
+      "revId": "77310c6127d273b8156c9a0a029536749b5cd447",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d9246ca6_1614dc7b",
         "filename": "project.py",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2015-05-31T13:17:14Z",
       "side": 1,
       "message": "is",
+      "range": {
+        "startLine": 270,
+        "startChar": 30,
+        "endLine": 270,
+        "endChar": 33
+      },
+      "revId": "77310c6127d273b8156c9a0a029536749b5cd447",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f90db02c_57312c29",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1020318
+      },
+      "writtenOn": "2015-05-31T13:40:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9246ca6_1614dc7b",
       "range": {
         "startLine": 270,
         "startChar": 30,
