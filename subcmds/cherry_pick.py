@@ -76,6 +76,7 @@ change id will be added.
                      capture_stdout = True,
                      capture_stderr = True)
       p.stdin.write(new_msg)
+      p.stdin.close()
       if p.Wait() != 0:
         print("error: Failed to update commit message", file=sys.stderr)
         sys.exit(1)
