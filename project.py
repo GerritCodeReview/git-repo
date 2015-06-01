@@ -2555,6 +2555,9 @@ class Project(object):
                        gitdir=self._gitdir,
                        capture_stdout=True,
                        capture_stderr=True)
+        ret = p.Wait()
+        if ret in [-2, 130]:
+          raise KeyboardInterrupt
         if p.Wait() != 0:
           raise GitError('%s %s: %s' % (
                          self._project.name,
