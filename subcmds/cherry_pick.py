@@ -14,8 +14,10 @@
 # limitations under the License.
 
 from __future__ import print_function
+import os
 import re
 import sys
+import tempfile
 from command import Command
 from git_command import GitCommand
 
@@ -71,12 +73,17 @@ change id will be added.
       # commit message.
       new_msg = self._Reformat(old_msg, sha1)
 
-      p = GitCommand(None, ['commit', '--amend', '-F', '-'],
-                     provide_stdin = True,
+      # Emit edited message to temp file
+      fd, temp_new_msg_path = tempfile.mkstemp()
+      os.write(fd, new_msg)
+      os.close(fd)
+
+      p = GitCommand(None, ['commit', '--amend', '-F', temp_new_msg_path],
                      capture_stdout = True,
                      capture_stderr = True)
-      p.stdin.write(new_msg)
-      if p.Wait() != 0:
+      returncode = p.Wait()
+      os.unlink(temp_new_msg_path)
+      if returncode != 0:
         print("error: Failed to update commit message", file=sys.stderr)
         sys.exit(1)
 
