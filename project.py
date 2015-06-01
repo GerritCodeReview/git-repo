@@ -16,6 +16,7 @@ from __future__ import print_function
 import contextlib
 import errno
 import filecmp
+import glob
 import os
 import random
 import re
@@ -239,22 +240,52 @@ class _LinkFile(object):
     self.src_rel_to_dest = relsrc
     self.abs_dest = absdest
 
-  def _Link(self):
-    src = self.src_rel_to_dest
-    dest = self.abs_dest
+  def __linkIt(self, relSrc, absDest):
     # link file if it does not exist or is out of date
-    if not os.path.islink(dest) or os.readlink(dest) != src:
+    if not os.path.islink(absDest) or (os.readlink(absDest) != relSrc):
       try:
         # remove existing file first, since it might be read-only
-        if os.path.exists(dest):
-          os.remove(dest)
+        if os.path.exists(absDest):
+          os.remove(absDest)
         else:
-          dest_dir = os.path.dirname(dest)
+          dest_dir = os.path.dirname(absDest)
           if not os.path.isdir(dest_dir):
             os.makedirs(dest_dir)
-        os.symlink(src, dest)
+        os.symlink(relSrc, absDest)
       except IOError:
-        _error('Cannot link file %s to %s', src, dest)
+        _error('Cannot link file %s to %s', relSrc, absDest)
+
+  def _Link(self):
+    """Link the self.rel_src_to_dest and self.abs_dest. Handles wild cards
+    on the src linking all of the files in the source in to the destination
+    directory.
+    """
+    relSrc = self.src_rel_to_dest
+    dest = self.abs_dest
+    if os.path.exists(relSrc):
+      # Entitiy exists so just a simple one to one link operation
+      self.__linkIt(relSrc, dest)
+    else:
+      # Entitiy doesn't exist assume there is a wild card
+      absDestDir = self.abs_dest
+      if os.path.exists(absDestDir) and not os.path.isdir(absDestDir):
+        _error('Link error: src did not exist, %s must be a directory',
+            absDestDir)
+      else:
+        srcFiles = glob.glob(relSrc)
+        for workTreeRelSrc in srcFiles:
+          # Create a releative path from source dir to destination dir
+          absSrcDir = os.path.dirname(os.path.abspath(workTreeRelSrc))
+          relSrcDir = os.path.relpath(absSrcDir, absDestDir)
+
+          # Get the source file name
+          srcFile = os.path.basename(workTreeRelSrc)
+
+          # Now form the final full paths to srcFile. They will be
+          # absolute for the desintaiton and relative for the srouce.
+          absDest = os.path.join(absDestDir, srcFile)
+          relSrc = os.path.join(relSrcDir, srcFile)
+          self.__linkIt(relSrc, absDest)
 
 class RemoteSpec(object):
   def __init__(self,
