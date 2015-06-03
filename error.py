@@ -80,7 +80,7 @@ class NoSuchProjectError(Exception):
     self.name = name
 
   def __str__(self):
-    if self.Name is None:
+    if self.name is None:
       return 'in current directory'
     return self.name
 
@@ -93,7 +93,7 @@ class InvalidProjectGroupsError(Exception):
     self.name = name
 
   def __str__(self):
-    if self.Name is None:
+    if self.name is None:
       return 'in current directory'
     return self.name
 
