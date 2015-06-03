@@ -263,6 +263,8 @@ class GitCommand(object):
         if not buf:
           s_in.remove(s)
           continue
+        if not hasattr(buf, 'encode'):
+          buf = buf.decode()
         if s.std_name == 'stdout':
           self.stdout += buf
         else:
