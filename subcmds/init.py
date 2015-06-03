@@ -27,7 +27,7 @@ else:
   import imp
   import urlparse
   urllib = imp.new_module('urllib')
-  urllib.parse = urlparse.urlparse
+  urllib.parse = urlparse
 
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
@@ -153,7 +153,7 @@ to update the working directory files.
       # server where this git is located, so let's save that here.
       mirrored_manifest_git = None
       if opt.reference:
-        manifest_git_path = urllib.parse(opt.manifest_url).path[1:]
+        manifest_git_path = urllib.parse.urlparse(opt.manifest_url).path[1:]
         mirrored_manifest_git = os.path.join(opt.reference, manifest_git_path)
         if not mirrored_manifest_git.endswith(".git"):
           mirrored_manifest_git += ".git"
