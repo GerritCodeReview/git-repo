@@ -280,7 +280,7 @@ class GitConfig(object):
       finally:
         fd.close()
     except (IOError, TypeError):
-      if os.path.exists(self.json):
+      if os.path.exists(self._json):
         os.remove(self._json)
 
   def _ReadGit(self):
