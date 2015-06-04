@@ -22,6 +22,30 @@
       "revId": "e5edfbb9be99badb002b57b67afc4e46e0d9acc4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d91aacb3_46dd5251",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-06-04T00:37:54Z",
+      "side": 1,
+      "message": "Gah, yes, you\u0027re right.  I copied it from Gerrit\u0027s config and it isn\u0027t actually doing what I intended.\n\nWe probably don\u0027t really want to copy the score on a rebase anyway, so I\u0027ll abandon this.",
+      "parentUuid": "59febc70_52c6b48c",
+      "range": {
+        "startLine": 7,
+        "startChar": 37,
+        "endLine": 7,
+        "endChar": 54
+      },
+      "revId": "e5edfbb9be99badb002b57b67afc4e46e0d9acc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
