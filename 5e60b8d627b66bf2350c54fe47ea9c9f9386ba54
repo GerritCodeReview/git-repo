@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d91aacb3_06e35a1a",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2563,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-06-04T00:35:41Z",
+      "side": 1,
+      "message": "Are there not any constants that we can use here instead of magic numbers?",
+      "range": {
+        "startLine": 2563,
+        "startChar": 19,
+        "endLine": 2563,
+        "endChar": 26
+      },
+      "revId": "5e60b8d627b66bf2350c54fe47ea9c9f9386ba54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
