@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "59febc70_52c6b48c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2015-06-04T00:33:56Z",
+      "side": 1,
+      "message": "s/trivial rebase/commit message change/, if I\u0027m reading the patch correctly",
+      "range": {
+        "startLine": 7,
+        "startChar": 37,
+        "endLine": 7,
+        "endChar": 54
+      },
+      "revId": "e5edfbb9be99badb002b57b67afc4e46e0d9acc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
