@@ -19,70 +19,70 @@ XML File Format
 A manifest XML file (e.g. 'default.xml') roughly conforms to the
 following DTD:
 
-  <!DOCTYPE manifest [
-    <!ELEMENT manifest (notice?,
-                        remote*,
-                        default?,
-                        manifest-server?,
-                        remove-project*,
-                        project*,
-                        extend-project*,
-                        repo-hooks?)>
+    <!DOCTYPE manifest [
+      <!ELEMENT manifest (notice?,
+                          remote*,
+                          default?,
+                          manifest-server?,
+                          remove-project*,
+                          project*,
+                          extend-project*,
+                          repo-hooks?)>
 
-    <!ELEMENT notice (#PCDATA)>
+      <!ELEMENT notice (#PCDATA)>
 
-    <!ELEMENT remote (EMPTY)>
-    <!ATTLIST remote name         ID    #REQUIRED>
-    <!ATTLIST remote alias        CDATA #IMPLIED>
-    <!ATTLIST remote fetch        CDATA #REQUIRED>
-    <!ATTLIST remote review       CDATA #IMPLIED>
-    <!ATTLIST remote revision     CDATA #IMPLIED>
+      <!ELEMENT remote (EMPTY)>
+      <!ATTLIST remote name         ID    #REQUIRED>
+      <!ATTLIST remote alias        CDATA #IMPLIED>
+      <!ATTLIST remote fetch        CDATA #REQUIRED>
+      <!ATTLIST remote review       CDATA #IMPLIED>
+      <!ATTLIST remote revision     CDATA #IMPLIED>
 
-    <!ELEMENT default (EMPTY)>
-    <!ATTLIST default remote      IDREF #IMPLIED>
-    <!ATTLIST default revision    CDATA #IMPLIED>
-    <!ATTLIST default dest-branch CDATA #IMPLIED>
-    <!ATTLIST default sync-j      CDATA #IMPLIED>
-    <!ATTLIST default sync-c      CDATA #IMPLIED>
-    <!ATTLIST default sync-s      CDATA #IMPLIED>
+      <!ELEMENT default (EMPTY)>
+      <!ATTLIST default remote      IDREF #IMPLIED>
+      <!ATTLIST default revision    CDATA #IMPLIED>
+      <!ATTLIST default dest-branch CDATA #IMPLIED>
+      <!ATTLIST default sync-j      CDATA #IMPLIED>
+      <!ATTLIST default sync-c      CDATA #IMPLIED>
+      <!ATTLIST default sync-s      CDATA #IMPLIED>
 
-    <!ELEMENT manifest-server (EMPTY)>
-    <!ATTLIST url              CDATA #REQUIRED>
+      <!ELEMENT manifest-server (EMPTY)>
+      <!ATTLIST url              CDATA #REQUIRED>
 
-    <!ELEMENT project (annotation*,
+      <!ELEMENT project (annotation*,
                        project*)>
-    <!ATTLIST project name        CDATA #REQUIRED>
-    <!ATTLIST project path        CDATA #IMPLIED>
-    <!ATTLIST project remote      IDREF #IMPLIED>
-    <!ATTLIST project revision    CDATA #IMPLIED>
-    <!ATTLIST project dest-branch CDATA #IMPLIED>
-    <!ATTLIST project groups      CDATA #IMPLIED>
-    <!ATTLIST project sync-c      CDATA #IMPLIED>
-    <!ATTLIST project sync-s      CDATA #IMPLIED>
-    <!ATTLIST project upstream CDATA #IMPLIED>
-    <!ATTLIST project clone-depth CDATA #IMPLIED>
-    <!ATTLIST project force-path CDATA #IMPLIED>
+      <!ATTLIST project name        CDATA #REQUIRED>
+      <!ATTLIST project path        CDATA #IMPLIED>
+      <!ATTLIST project remote      IDREF #IMPLIED>
+      <!ATTLIST project revision    CDATA #IMPLIED>
+      <!ATTLIST project dest-branch CDATA #IMPLIED>
+      <!ATTLIST project groups      CDATA #IMPLIED>
+      <!ATTLIST project sync-c      CDATA #IMPLIED>
+      <!ATTLIST project sync-s      CDATA #IMPLIED>
+      <!ATTLIST project upstream CDATA #IMPLIED>
+      <!ATTLIST project clone-depth CDATA #IMPLIED>
+      <!ATTLIST project force-path CDATA #IMPLIED>
 
-    <!ELEMENT annotation (EMPTY)>
-    <!ATTLIST annotation name  CDATA #REQUIRED>
-    <!ATTLIST annotation value CDATA #REQUIRED>
-    <!ATTLIST annotation keep  CDATA "true">
+      <!ELEMENT annotation (EMPTY)>
+      <!ATTLIST annotation name  CDATA #REQUIRED>
+      <!ATTLIST annotation value CDATA #REQUIRED>
+      <!ATTLIST annotation keep  CDATA "true">
 
-    <!ELEMENT extend-project>
-    <!ATTLIST extend-project name CDATA #REQUIRED>
-    <!ATTLIST extend-project path CDATA #IMPLIED>
-    <!ATTLIST extend-project groups CDATA #IMPLIED>
+      <!ELEMENT extend-project>
+      <!ATTLIST extend-project name CDATA #REQUIRED>
+      <!ATTLIST extend-project path CDATA #IMPLIED>
+      <!ATTLIST extend-project groups CDATA #IMPLIED>
 
-    <!ELEMENT remove-project (EMPTY)>
-    <!ATTLIST remove-project name  CDATA #REQUIRED>
+      <!ELEMENT remove-project (EMPTY)>
+      <!ATTLIST remove-project name  CDATA #REQUIRED>
 
-    <!ELEMENT repo-hooks (EMPTY)>
-    <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
-    <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
+      <!ELEMENT repo-hooks (EMPTY)>
+      <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
+      <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
 
-    <!ELEMENT include      (EMPTY)>
-    <!ATTLIST include name CDATA #REQUIRED>
-  ]>
+      <!ELEMENT include      (EMPTY)>
+      <!ATTLIST include name CDATA #REQUIRED>
+    ]>
 
 A description of the elements and their attributes follows.
 
@@ -92,7 +92,14 @@ Element manifest
 
 The root element of the file.
 
+Element notice
+--------------
+The optional `notice` element contains text that is printed out at the
+end of a **repo sync**.
 
+The `notice` element is distinct from other tags in the XML in that the
+data is conveyed between the start and end tag (it's not an empty-element
+tag).
 Element remote
 --------------
 
@@ -162,19 +169,19 @@ XML RPC service.
 
 The manifest server should implement the following RPC methods:
 
-  GetApprovedManifest(branch, target)
+    GetApprovedManifest(branch, target)
 
 Return a manifest in which each project is pegged to a known good revision
 for the current branch and target.
 
-The target to use is defined by environment variables TARGET_PRODUCT
-and TARGET_BUILD_VARIANT. These variables are used to create a string
-of the form $TARGET_PRODUCT-$TARGET_BUILD_VARIANT, e.g. passion-userdebug.
+The target to use is defined by environment variables `TARGET_PRODUCT`
+and `TARGET_BUILD_VARIANT`. These variables are used to create a string
+of the form `$TARGET_PRODUCT-$TARGET_BUILD_VARIANT`, e.g. passion-userdebug.
 If one of those variables or both are not present, the program will call
 GetApprovedManifest without the target parameter and the manifest server
 should choose a reasonable default target.
 
-  GetManifest(tag)
+    GetManifest(tag)
 
 Return a manifest in which each project is pegged to the revision at
 the specified tag.
@@ -194,10 +201,10 @@ Attribute `name`: A unique name for this project.  The project's
 name is appended onto its remote's fetch URL to generate the actual
 URL to configure the Git remote with.  The URL gets formed as:
 
-  ${remote_fetch}/${project_name}.git
+    ${remote_fetch}/${project_name}.git
 
-where ${remote_fetch} is the remote's fetch attribute and
-${project_name} is the project's name attribute.  The suffix ".git"
+where `${remote_fetch}` is the remote's fetch attribute and
+`${project_name}` is the project's name attribute.  The suffix ".git"
 is always appended as repo assumes the upstream is a forest of
 bare Git repositories.  If the project has a parent element, its
 name will be prefixed by the parent's.
@@ -231,9 +238,9 @@ Attribute `groups`: List of groups to which this project belongs,
 whitespace or comma separated.  All projects belong to the group
 "all", and each project automatically belongs to a group of
 its name:`name` and path:`path`.  E.g. for
-<project name="monkeys" path="barrel-of"/>, that project
+`<project name="monkeys" path="barrel-of"/>`, that project
 definition is implicitly in the following manifest groups:
-default, name:monkeys, and path:barrel-of.  If you place a project in the
+`default`, `name:monkeys`, and `path:barrel-of`.  If you place a project in the
 group "notdefault", it will not be automatically downloaded by repo.
 If the project has a parent element, the `name` and `path` here
 are the prefixed ones.
@@ -280,10 +287,10 @@ Element annotation
 Zero or more annotation elements may be specified as children of a
 project element. Each element describes a name-value pair that will be
 exported into each project's environment during a 'forall' command,
-prefixed with REPO__.  In addition, there is an optional attribute
-"keep" which accepts the case insensitive values "true" (default) or
-"false".  This attribute determines whether or not the annotation will
-be kept when exported with the manifest subcommand.
+prefixed with `REPO__`.  In addition, there is an optional attribute
+`keep` which accepts the case insensitive values `true` (default) or
+`false`.  This attribute determines whether or not the annotation will
+be kept when exported with the `manifest` subcommand.
 
 Element remove-project
 ----------------------
@@ -295,6 +302,34 @@ replace the project with a different source.
 This element is mostly useful in a local manifest file, where
 the user can remove a project, and possibly replace it with their
 own definition.
+
+Element repo-hooks
+------------------
+
+This optional element specifies a repo that contains hooks.
+
+There are two kinds of hook: **repo hooks** and **git hooks**.
+
+A repo hook is run upon certain repo tool events.  There is a
+(very short) list of repo hooks that can be defined.  The repo
+hook must be a python module with a function `main`, which is
+called with keyword arguments.  The python module is stored in
+the root of the repo named by the `in-project` attribute, in a
+filename named for the repo hook with the **.py** suffix, e.g.
+`pre-upload.py`.
+
+The full list of repo hooks is:
+* `pre-upload`: called by **repo upload**.  Passed two keyword
+arguments: **project_list** is the list of projects with pending
+(unreviewed) changes; **worktree_list** is the list of paths for
+the same list of projects.
+
+
+Attribute `in-project`: The name of the project containing the
+repo hooks.
+
+Attribute `enabled-list`: List of enabled repo hooks; contains one
+or more of the repo hook names, i.e. `pre-upload`.
 
 Element include
 ---------------
@@ -315,18 +350,18 @@ files stored in `$TOP_DIR/.repo/local_manifests/*.xml`.
 
 For example:
 
-  $ ls .repo/local_manifests
-  local_manifest.xml
-  another_local_manifest.xml
+    $ ls .repo/local_manifests
+    local_manifest.xml
+    another_local_manifest.xml
 
-  $ cat .repo/local_manifests/local_manifest.xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <manifest>
-    <project path="manifest"
-             name="tools/manifest" />
-    <project path="platform-manifest"
-             name="platform/manifest" />
-  </manifest>
+    $ cat .repo/local_manifests/local_manifest.xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <manifest>
+      <project path="manifest"
+               name="tools/manifest" />
+      <project path="platform-manifest"
+               name="platform/manifest" />
+    </manifest>
 
 Users may add projects to the local manifest(s) prior to a `repo sync`
 invocation, instructing repo to automatically download and manage
