@@ -16,6 +16,7 @@ from __future__ import print_function
 import contextlib
 import errno
 import filecmp
+import glob
 import os
 import random
 import re
@@ -233,28 +234,60 @@ class _CopyFile(object):
         _error('Cannot copy file %s to %s', src, dest)
 
 class _LinkFile(object):
-  def __init__(self, src, dest, relsrc, absdest):
+  def __init__(self, git_worktree, src, dest, relsrc, absdest):
+    self.git_worktree = git_worktree
     self.src = src
     self.dest = dest
     self.src_rel_to_dest = relsrc
     self.abs_dest = absdest
 
-  def _Link(self):
-    src = self.src_rel_to_dest
-    dest = self.abs_dest
+  def __linkIt(self, relSrc, absDest):
     # link file if it does not exist or is out of date
-    if not os.path.islink(dest) or os.readlink(dest) != src:
+    if not os.path.islink(absDest) or (os.readlink(absDest) != relSrc):
       try:
         # remove existing file first, since it might be read-only
-        if os.path.exists(dest):
-          os.remove(dest)
+        if os.path.exists(absDest):
+          os.remove(absDest)
         else:
-          dest_dir = os.path.dirname(dest)
+          dest_dir = os.path.dirname(absDest)
           if not os.path.isdir(dest_dir):
             os.makedirs(dest_dir)
-        os.symlink(src, dest)
+        os.symlink(relSrc, absDest)
       except IOError:
-        _error('Cannot link file %s to %s', src, dest)
+        _error('Cannot link file %s to %s', relSrc, absDest)
+
+  def _Link(self):
+    """Link the self.rel_src_to_dest and self.abs_dest. Handles wild cards
+    on the src linking all of the files in the source in to the destination
+    directory.
+    """
+    # We use the absSrc to handle the situation where the current directory
+    # is not the root of the repo
+    absSrc = os.path.join(self.git_worktree, self.src)
+    if os.path.exists(absSrc):
+      # Entity exists so just a simple one to one link operation
+      self.__linkIt(self.src_rel_to_dest, self.abs_dest)
+    else:
+      # Entity doesn't exist assume there is a wild card
+      absDestDir = self.abs_dest
+      if os.path.exists(absDestDir) and not os.path.isdir(absDestDir):
+        _error('Link error: src with wildcard, %s must be a directory',
+            absDestDir)
+      else:
+        absSrcFiles = glob.glob(absSrc)
+        for absSrcFile in absSrcFiles:
+          # Create a releative path from source dir to destination dir
+          absSrcDir = os.path.dirname(absSrcFile)
+          relSrcDir = os.path.relpath(absSrcDir, absDestDir)
+
+          # Get the source file name
+          srcFile = os.path.basename(absSrcFile)
+
+          # Now form the final full paths to srcFile. They will be
+          # absolute for the desintaiton and relative for the srouce.
+          absDest = os.path.join(absDestDir, srcFile)
+          relSrc = os.path.join(relSrcDir, srcFile)
+          self.__linkIt(relSrc, absDest)
 
 class RemoteSpec(object):
   def __init__(self,
@@ -1362,7 +1395,7 @@ class Project(object):
     # make src relative path to dest
     absdestdir = os.path.dirname(absdest)
     relsrc = os.path.relpath(os.path.join(self.worktree, src), absdestdir)
-    self.linkfiles.append(_LinkFile(src, dest, relsrc, absdest))
+    self.linkfiles.append(_LinkFile(self.worktree, src, dest, relsrc, absdest))
 
   def AddAnnotation(self, name, value, keep):
     self.annotations.append(_Annotation(name, value, keep))
