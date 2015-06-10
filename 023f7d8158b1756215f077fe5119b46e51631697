@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1909a4af_48efdffa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1020421
+      },
+      "writtenOn": "2015-06-10T12:17:09Z",
+      "side": 1,
+      "message": "Yes.  I used the full path, as the same term is used in \"repo list\"",
+      "parentUuid": "d9d46c30_36b998b7",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 43
+      },
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f9bdb0e6_b7eda8b6",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2015-06-10T11:56:06Z",
       "side": 1,
       "message": "Instead of this, add REPO_ABS_PATH which will contain the same value that the user would get by using `$REPO_ROOT/$REPO_PATH`?",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 13
+      },
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "99b594fa_dc03ad14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1020421
+      },
+      "writtenOn": "2015-06-10T12:17:09Z",
+      "side": 1,
+      "message": "The reason I did this was to avoid blowing out the environment on (primarily non-linux) systems where ARG_MAX isn\u0027t very big.  \n\nIf those systems need not be considered, then we can export a environment variable with the full / absolute path.  In that case, I prefer REPO_FULLPATH over REPO_ABS_PATH, to be consistent with existing terminology used elsewhere in repo.",
+      "parentUuid": "f9bdb0e6_b7eda8b6",
       "range": {
         "startLine": 10,
         "startChar": 4,
@@ -76,6 +124,48 @@
       "writtenOn": "2015-06-10T11:56:06Z",
       "side": 1,
       "message": "absolute path?",
+      "range": {
+        "startLine": 96,
+        "startChar": 17,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1909a4af_08e9e7f3",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1020421
+      },
+      "writtenOn": "2015-06-10T12:17:09Z",
+      "side": 1,
+      "message": "Ok.",
+      "parentUuid": "f9bdb0e6_d7f81c7a",
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1909a4af_28ecab03",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1020421
+      },
+      "writtenOn": "2015-06-10T12:17:09Z",
+      "side": 1,
+      "message": "Yes, better...",
+      "parentUuid": "d9d46c30_56ac1475",
       "range": {
         "startLine": 96,
         "startChar": 17,
