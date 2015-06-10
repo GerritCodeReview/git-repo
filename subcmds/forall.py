@@ -80,7 +80,9 @@ a mirror client, then pwd is the Git repository.
 
 REPO_PROJECT is set to the unique name of the project.
 
-REPO_PATH is the path relative the the root of the client.
+REPO_PATH is the work tree path relative the the root of the client.
+
+REPO_FULLPATH is the full work tree path.
 
 REPO_REMOTE is the name of the remote system from the manifest.
 
@@ -284,6 +286,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
 
   setenv('REPO_PROJECT', project['name'])
   setenv('REPO_PATH', project['relpath'])
+  setenv('REPO_FULLPATH', project['worktree'])
   setenv('REPO_REMOTE', project['remote_name'])
   setenv('REPO_LREV', project['lrev'])
   setenv('REPO_RREV', project['rrev'])
