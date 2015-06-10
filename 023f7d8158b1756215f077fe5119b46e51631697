@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d9d46c30_36b998b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-06-10T11:56:06Z",
+      "side": 1,
+      "message": "by \u0027full path\u0027 do you mean the absolute path?",
+      "range": {
+        "startLine": 9,
+        "startChar": 34,
+        "endLine": 9,
+        "endChar": 43
+      },
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9bdb0e6_b7eda8b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-06-10T11:56:06Z",
+      "side": 1,
+      "message": "Instead of this, add REPO_ABS_PATH which will contain the same value that the user would get by using `$REPO_ROOT/$REPO_PATH`?",
+      "range": {
+        "startLine": 10,
+        "startChar": 4,
+        "endLine": 10,
+        "endChar": 13
+      },
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9bdb0e6_d7f81c7a",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-06-10T11:56:06Z",
+      "side": 1,
+      "message": "nit: missing period at the end of the sentence.",
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d9d46c30_56ac1475",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-06-10T11:56:06Z",
+      "side": 1,
+      "message": "absolute path?",
+      "range": {
+        "startLine": 96,
+        "startChar": 17,
+        "endLine": 96,
+        "endChar": 21
+      },
+      "revId": "023f7d8158b1756215f077fe5119b46e51631697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
