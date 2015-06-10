@@ -93,6 +93,8 @@ as written in the manifest.
 
 REPO_COUNT is the total number of projects being iterated.
 
+REPO_ROOT is the path of the root of the client
+
 REPO_I is the current (1-based) iteration count. Can be used in
 conjunction with REPO_COUNT to add a simple progress indicator to your
 command.
@@ -207,6 +209,7 @@ without iterating through the remaining projects.
       projects = self.FindProjects(args)
 
     os.environ['REPO_COUNT'] = str(len(projects))
+    os.environ['REPO_ROOT'] = self.manifest.topdir
 
     pool = multiprocessing.Pool(opt.jobs, InitWorker)
     try:
