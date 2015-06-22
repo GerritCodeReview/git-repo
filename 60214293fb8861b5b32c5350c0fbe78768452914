@@ -22,6 +22,30 @@
       "revId": "60214293fb8861b5b32c5350c0fbe78768452914",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fe3cb6f3_bf653715",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1020295
+      },
+      "writtenOn": "2015-06-22T12:00:05Z",
+      "side": 1,
+      "message": "Yes, \"hang\". Thanks for the correction.",
+      "parentUuid": "be679e30_352dd0ce",
+      "range": {
+        "startLine": 14,
+        "startChar": 38,
+        "endLine": 14,
+        "endChar": 42
+      },
+      "revId": "60214293fb8861b5b32c5350c0fbe78768452914",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
