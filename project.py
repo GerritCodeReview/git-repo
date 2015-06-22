@@ -1897,7 +1897,7 @@ class Project(object):
 
     if not self.manifest.IsMirror:
       branch = self.revisionExpr
-      if is_sha1 and depth:
+      if is_sha1 and depth and git_require((1, 8, 3)):
         # Shallow checkout of a specific commit, fetch from that commit and not
         # the heads only as the commit might be deeper in the history.
         spec.append(branch)
@@ -1960,8 +1960,15 @@ class Project(object):
       # got what we wanted, else trigger a second run of all
       # refs.
       if not self._CheckForSha1():
-        return self._RemoteFetch(name=name, current_branch_only=False,
-                                 initial=False, quiet=quiet, alt_dir=alt_dir)
+        if not depth:
+          # Avoid infinite recursion when depth is True (since depth implies
+          # current_branch_only
+          return self._RemoteFetch(name=name, current_branch_only=False,
+                                   initial=False, quiet=quiet, alt_dir=alt_dir)
+        if self.clone_depth:
+          self.clone_depth = None
+          return self._RemoteFetch(name=name, current_branch_only=current_branch_only,
+                                   initial=False, quiet=quiet, alt_dir=alt_dir)
 
     return ok
 
