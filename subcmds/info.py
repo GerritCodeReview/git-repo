@@ -59,7 +59,8 @@ class Info(PagedCommand):
                       or 'all,-notdefault')
 
     self.heading("Manifest branch: ")
-    self.headtext(self.manifest.default.revisionExpr)
+    if self.manifest.default.revisionExpr:
+        self.headtext(self.manifest.default.revisionExpr)
     self.out.nl()
     self.heading("Manifest merge branch: ")
     self.headtext(mergeBranch)
