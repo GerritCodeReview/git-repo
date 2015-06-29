@@ -58,9 +58,10 @@ class Info(PagedCommand):
     manifestGroups = (manifestConfig.GetString('manifest.groups')
                       or 'all,-notdefault')
 
-    self.heading("Manifest branch: ")
-    self.headtext(self.manifest.default.revisionExpr)
-    self.out.nl()
+    if self.manifest.default.revisionExpr:
+        self.heading("Manifest branch: ")
+        self.headtext(self.manifest.default.revisionExpr)
+        self.out.nl()
     self.heading("Manifest merge branch: ")
     self.headtext(mergeBranch)
     self.out.nl()
