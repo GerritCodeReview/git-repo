@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "739481c1_3bc6f78b",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1002883
+      },
+      "writtenOn": "2015-07-02T15:50:51Z",
+      "side": 1,
+      "message": "Do we generally perfer to remove the section entirely, or include the section with an indication that there is no data in repo?",
+      "range": {
+        "startLine": 61,
+        "startChar": 21,
+        "endLine": 61,
+        "endChar": 28
+      },
+      "revId": "09e255527442d8f83e9247d2a72b1e49c3421fa7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
