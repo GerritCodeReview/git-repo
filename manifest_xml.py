@@ -253,11 +253,13 @@ class XmlManifest(object):
         else:
           value = p.work_git.rev_parse(HEAD + '^0')
         e.setAttribute('revision', value)
-        if peg_rev_upstream and value != p.revisionExpr:
-          # Only save the origin if the origin is not a sha1, and the default
-          # isn't our value, and the if the default doesn't already have that
-          # covered.
-          e.setAttribute('upstream', p.revisionExpr)
+        if peg_rev_upstream:
+          if p.upstream:
+            e.setAttribute('upstream', p.upstream)
+          elif value != p.revisionExpr:
+            # Only save the origin if the origin is not a sha1, and the default
+            # isn't our value
+            e.setAttribute('upstream', p.revisionExpr)
       else:
         revision = self.remotes[remoteName].revision or d.revisionExpr
         if not revision or revision != p.revisionExpr:
