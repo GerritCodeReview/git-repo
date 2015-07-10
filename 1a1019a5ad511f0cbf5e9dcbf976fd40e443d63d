@@ -22,6 +22,30 @@
       "revId": "1a1019a5ad511f0cbf5e9dcbf976fd40e443d63d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "98667235_d46a9ce0",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-07-10T22:18:28Z",
+      "side": 1,
+      "message": "This isn\u0027t something we\u0027d want to force an update on.",
+      "parentUuid": "ad4db187_65c2463b",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 17
+      },
+      "revId": "1a1019a5ad511f0cbf5e9dcbf976fd40e443d63d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
