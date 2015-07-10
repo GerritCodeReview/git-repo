@@ -93,6 +93,29 @@
       "revId": "381bb2db4751f974f4afc4fcfd2e074306eede2c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d76190bc_1754b4db",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1006257
+      },
+      "writtenOn": "2015-07-10T22:18:28Z",
+      "side": 1,
+      "message": "Just a nit, but I\u0027d prefer this come first.\n\n  ie.\n  \n  if sys.executable",
+      "range": {
+        "startLine": 758,
+        "startChar": 2,
+        "endLine": 759,
+        "endChar": 34
+      },
+      "revId": "381bb2db4751f974f4afc4fcfd2e074306eede2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
