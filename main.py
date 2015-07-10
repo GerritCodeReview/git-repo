@@ -45,6 +45,7 @@ from command import MirrorSafeCommand
 from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
+from error import InvalidProjectGroupsError
 from error import ManifestInvalidRevisionError
 from error import ManifestParseError
 from error import NoManifestException
@@ -172,6 +173,12 @@ class _Repo(object):
         print('error: project %s not found' % e.name, file=sys.stderr)
       else:
         print('error: no project in current directory', file=sys.stderr)
+      result = 1
+    except InvalidProjectGroupsError as e:
+      if e.name:
+        print('error: project group must be enabled for project %s' % e.name, file=sys.stderr)
+      else:
+        print('error: project group must be enabled for the project in the current directory', file=sys.stderr)
       result = 1
     finally:
       elapsed = time.time() - start
