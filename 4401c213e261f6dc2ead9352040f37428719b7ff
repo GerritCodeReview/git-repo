@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "581ddaf5_bac25179",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1965,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2015-07-15T15:49:49Z",
+      "side": 1,
+      "message": "Missing the end paren )",
+      "range": {
+        "startLine": 1964,
+        "startChar": 56,
+        "endLine": 1965,
+        "endChar": 31
+      },
+      "revId": "4401c213e261f6dc2ead9352040f37428719b7ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
