@@ -202,6 +202,9 @@ class XmlManifest(object):
     if d.revisionExpr:
       have_default = True
       e.setAttribute('revision', d.revisionExpr)
+    if d.destBranchExpr:
+      have_default = True
+      e.setAttribute('dest-branch', d.destBranchExpr)
     if d.sync_j > 1:
       have_default = True
       e.setAttribute('sync-j', '%d' % d.sync_j)
@@ -266,6 +269,9 @@ class XmlManifest(object):
           e.setAttribute('revision', p.revisionExpr)
         if p.upstream and p.upstream != p.revisionExpr:
           e.setAttribute('upstream', p.upstream)
+
+      if p.dest_branch and p.dest_branch != d.destBranchExpr:
+        e.setAttribute('dest-branch', p.dest_branch)
 
       for c in p.copyfiles:
         ce = doc.createElement('copyfile')
