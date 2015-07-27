@@ -2169,54 +2169,61 @@ class Project(object):
   def _InitGitDir(self, mirror_git=None):
     init_git_dir = not os.path.exists(self.gitdir)
     init_obj_dir = not os.path.exists(self.objdir)
-    # Initialize the bare repository, which contains all of the objects.
-    if init_obj_dir:
-      os.makedirs(self.objdir)
-      self.bare_objdir.init()
+    try:
+      # Initialize the bare repository, which contains all of the objects.
+      if init_obj_dir:
+        os.makedirs(self.objdir)
+        self.bare_objdir.init()
 
-    # If we have a separate directory to hold refs, initialize it as well.
-    if self.objdir != self.gitdir:
+      # If we have a separate directory to hold refs, initialize it as well.
+      if self.objdir != self.gitdir:
+        if init_git_dir:
+          os.makedirs(self.gitdir)
+
+        if init_obj_dir or init_git_dir:
+          self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
+                                copy_all=True)
+        self._CheckDirReference(self.objdir, self.gitdir, share_refs=False)
+
       if init_git_dir:
-        os.makedirs(self.gitdir)
+        mp = self.manifest.manifestProject
+        ref_dir = mp.config.GetString('repo.reference') or ''
 
-      if init_obj_dir or init_git_dir:
-        self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
-                              copy_all=True)
-      self._CheckDirReference(self.objdir, self.gitdir, share_refs=False)
+        if ref_dir or mirror_git:
+          if not mirror_git:
+            mirror_git = os.path.join(ref_dir, self.name + '.git')
+          repo_git = os.path.join(ref_dir, '.repo', 'projects',
+                                  self.relpath + '.git')
 
-    if init_git_dir:
-      mp = self.manifest.manifestProject
-      ref_dir = mp.config.GetString('repo.reference') or ''
+          if os.path.exists(mirror_git):
+            ref_dir = mirror_git
 
-      if ref_dir or mirror_git:
-        if not mirror_git:
-          mirror_git = os.path.join(ref_dir, self.name + '.git')
-        repo_git = os.path.join(ref_dir, '.repo', 'projects',
-                                self.relpath + '.git')
+          elif os.path.exists(repo_git):
+            ref_dir = repo_git
 
-        if os.path.exists(mirror_git):
-          ref_dir = mirror_git
+          else:
+            ref_dir = None
 
-        elif os.path.exists(repo_git):
-          ref_dir = repo_git
+          if ref_dir:
+            _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
+                    os.path.join(ref_dir, 'objects') + '\n')
 
+        self._UpdateHooks()
+
+        m = self.manifest.manifestProject.config
+        for key in ['user.name', 'user.email']:
+          if m.Has(key, include_defaults=False):
+            self.config.SetString(key, m.GetString(key))
+        if self.manifest.IsMirror:
+          self.config.SetString('core.bare', 'true')
         else:
-          ref_dir = None
-
-        if ref_dir:
-          _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
-                  os.path.join(ref_dir, 'objects') + '\n')
-
-      self._UpdateHooks()
-
-      m = self.manifest.manifestProject.config
-      for key in ['user.name', 'user.email']:
-        if m.Has(key, include_defaults=False):
-          self.config.SetString(key, m.GetString(key))
-      if self.manifest.IsMirror:
-        self.config.SetString('core.bare', 'true')
-      else:
-        self.config.SetString('core.bare', None)
+          self.config.SetString('core.bare', None)
+    except Exception:
+      if init_obj_dir and os.path.exists(self.objdir):
+        shutil.rmtree(self.objdir)
+      if init_git_dir and os.path.exists(self.gitdir):
+        shutil.rmtree(self.gitdir)
+      raise
 
   def _UpdateHooks(self):
     if os.path.exists(self.gitdir):
@@ -2363,23 +2370,28 @@ class Project(object):
   def _InitWorkTree(self):
     dotgit = os.path.join(self.worktree, '.git')
     init_dotgit = not os.path.exists(dotgit)
-    if init_dotgit:
-      os.makedirs(dotgit)
-      self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
-                            copy_all=False)
+    try:
+      if init_dotgit:
+        os.makedirs(dotgit)
+        self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
+                              copy_all=False)
 
-    self._CheckDirReference(self.gitdir, dotgit, share_refs=True)
+      self._CheckDirReference(self.gitdir, dotgit, share_refs=True)
 
-    if init_dotgit:
-      _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
+      if init_dotgit:
+        _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
 
-      cmd = ['read-tree', '--reset', '-u']
-      cmd.append('-v')
-      cmd.append(HEAD)
-      if GitCommand(self, cmd).Wait() != 0:
-        raise GitError("cannot initialize work tree")
+        cmd = ['read-tree', '--reset', '-u']
+        cmd.append('-v')
+        cmd.append(HEAD)
+        if GitCommand(self, cmd).Wait() != 0:
+          raise GitError("cannot initialize work tree")
 
-      self._CopyAndLinkFiles()
+        self._CopyAndLinkFiles()
+    except Exception:
+      if init_dotgit:
+        shutil.rmtree(dotgit)
+      raise
 
   def _gitdir_path(self, path):
     return os.path.realpath(os.path.join(self.gitdir, path))
