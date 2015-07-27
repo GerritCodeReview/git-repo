@@ -70,6 +70,30 @@
       "revId": "09e255527442d8f83e9247d2a72b1e49c3421fa7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6d349e66_025c2a52",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1020673
+      },
+      "writtenOn": "2015-07-27T21:42:31Z",
+      "side": 1,
+      "message": "Having no explicit default branch defined means every project has to have a branch listed or repo will reject the manifest. Also the description \"Manifest branch\" is a bit misleading, would changing it to \"Default branch\" be a good idea?",
+      "parentUuid": "6de65e2a_92097c3a",
+      "range": {
+        "startLine": 61,
+        "startChar": 21,
+        "endLine": 61,
+        "endChar": 28
+      },
+      "revId": "09e255527442d8f83e9247d2a72b1e49c3421fa7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
