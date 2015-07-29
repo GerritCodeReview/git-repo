@@ -35,6 +35,9 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
                  help="Filter the project list based on regex or wildcard matching of strings")
+    p.add_option('-g', '--groups',
+                 dest='groups',
+                 help="Filter the project list based on the groups the project is in")
     p.add_option('-f', '--fullpath',
                  dest='fullpath', action='store_true',
                  help="Display the full work tree path instead of the relative path")
@@ -62,7 +65,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
       sys.exit(1)
 
     if not opt.regex:
-      projects = self.GetProjects(args)
+      projects = self.GetProjects(args, groups=opt.groups)
     else:
       projects = self.FindProjects(args)
 

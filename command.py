@@ -126,7 +126,7 @@ class Command(object):
         pass
     return project
 
-  def GetProjects(self, args, missing_ok=False, submodules_ok=False):
+  def GetProjects(self, args, groups='', missing_ok=False, submodules_ok=False):
     """A list of projects that match the arguments.
     """
     all_projects_list = self.manifest.projects
@@ -134,7 +134,8 @@ class Command(object):
 
     mp = self.manifest.manifestProject
 
-    groups = mp.config.GetString('manifest.groups')
+    if not groups:
+        groups = mp.config.GetString('manifest.groups')
     if not groups:
       groups = 'default,platform-' + platform.system().lower()
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
