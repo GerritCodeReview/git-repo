@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0d3082cc_4794ce15",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-07-30T12:57:03Z",
+      "side": 1,
+      "message": "nit: wrong indentation",
+      "revId": "1e376a39685832a8b877fd10ed1dad07bea8e83e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0d3082cc_6791d224",
+        "filename": "subcmds/list.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-07-30T12:57:03Z",
+      "side": 1,
+      "message": "nit: indentation",
+      "revId": "1e376a39685832a8b877fd10ed1dad07bea8e83e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
