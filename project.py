@@ -2347,10 +2347,11 @@ class Project(object):
     if copy_all:
       to_copy = os.listdir(gitdir)
 
+    dotgit = os.path.realpath(dotgit)
     for name in set(to_copy).union(to_symlink):
       try:
         src = os.path.realpath(os.path.join(gitdir, name))
-        dst = os.path.realpath(os.path.join(dotgit, name))
+        dst = os.path.join(dotgit, name)
 
         if os.path.lexists(dst):
           continue
