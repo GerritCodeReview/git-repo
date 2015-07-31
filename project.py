@@ -2323,7 +2323,7 @@ class Project(object):
         # Fail if the links are pointing to the wrong place
         if src != dst:
           raise GitError('--force-sync not enabled; cannot overwrite a local '
-                         'work tree')
+                         'work tree (for project {0})'.format(self.name))
 
   def _ReferenceGitDir(self, gitdir, dotgit, share_refs, copy_all):
     """Update |dotgit| to reference |gitdir|, using symlinks where possible.
