@@ -1877,6 +1877,13 @@ class Project(object):
 
     if depth:
       cmd.append('--depth=%s' % depth)
+    else:
+      # If this repo has shallow objects, then we don't know which refs have
+      # shallow objects or not. Tell git to unshallow all fetched refs.  Don't
+      # do this with repos that don't have shallow objects, since it is less
+      # efficient.
+      if os.path.exists(os.path.join(self.gitdir, 'shallow')):
+        cmd.append('--depth=2147483647')
 
     if quiet:
       cmd.append('--quiet')
@@ -1913,16 +1920,6 @@ class Project(object):
             branch = R_HEADS + branch
           spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
     cmd.extend(spec)
-
-    shallowfetch = self.config.GetString('repo.shallowfetch')
-    if shallowfetch and shallowfetch != ' '.join(spec):
-      GitCommand(self, ['fetch', '--depth=2147483647', name]
-                 + shallowfetch.split(),
-                 bare=True, ssh_proxy=ssh_proxy).Wait()
-    if depth:
-      self.config.SetString('repo.shallowfetch', ' '.join(spec))
-    else:
-      self.config.SetString('repo.shallowfetch', None)
 
     ok = False
     for _i in range(2):
