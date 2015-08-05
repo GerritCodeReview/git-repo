@@ -120,6 +120,9 @@ without iterating through the remaining projects.
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
                  help="Execute the command only on projects matching regex or wildcard expression")
+    p.add_option('-g', '--groups',
+                 dest='groups',
+                 help="Execute the command only on projects matching the specified groups")
     p.add_option('-c', '--command',
                  help='Command (and arguments) to execute',
                  dest='command',
@@ -213,7 +216,7 @@ without iterating through the remaining projects.
       self.manifest.Override(smart_sync_manifest_path)
 
     if not opt.regex:
-      projects = self.GetProjects(args)
+      projects = self.GetProjects(args, groups=opt.groups)
     else:
       projects = self.FindProjects(args)
 
