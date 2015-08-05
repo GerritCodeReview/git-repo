@@ -31,8 +31,15 @@ class Command(object):
   manifest = None
   _optparse = None
 
+  def __init__(self):
+    self.repodir = None
+
+
   def WantPager(self, opt):
     return False
+
+  def SetVariablesFromOptions(self, opts):
+    """ Initalizes instance variables based off of the supplied options. """
 
   def ReadEnvironmentOptions(self, opts):
     """ Set options from environment variables. """
