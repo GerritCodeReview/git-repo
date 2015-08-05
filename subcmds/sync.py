@@ -171,11 +171,6 @@ later is required to fix a server side protocol bug.
 """
 
   def _Options(self, p, show_smart=True):
-    try:
-      self.jobs = self.manifest.default.sync_j
-    except ManifestParseError:
-      self.jobs = 1
-
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
                  help="continue sync even if a project fails to sync")
@@ -201,7 +196,7 @@ later is required to fix a server side protocol bug.
                  help='be more quiet')
     p.add_option('-j', '--jobs',
                  dest='jobs', action='store', type='int',
-                 help="projects to fetch simultaneously (default %d)" % self.jobs)
+                 help="projects to fetch simultaneously")
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
@@ -499,6 +494,11 @@ later is required to fix a server side protocol bug.
   def Execute(self, opt, args):
     if opt.jobs:
       self.jobs = opt.jobs
+    else:
+      try:
+        self.jobs = self.manifest.default.sync_j
+      except ManifestParseError:
+        self.jobs = 1
     if self.jobs > 1:
       soft_limit, _ = _rlimit_nofile()
       self.jobs = min(self.jobs, (soft_limit - 5) / 3)

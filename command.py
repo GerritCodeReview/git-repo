@@ -34,6 +34,9 @@ class Command(object):
   def WantPager(self, opt):
     return False
 
+  def SetVariablesFromOptions(self, opts):
+    """ Initalizes instance variables based off of the supplied options. """
+
   def ReadEnvironmentOptions(self, opts):
     """ Set options from environment variables. """
 
