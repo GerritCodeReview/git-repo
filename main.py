@@ -127,22 +127,16 @@ class _Repo(object):
             file=sys.stderr)
       return 1
 
+    copts, cargs = cmd.OptionParser.parse_args(argv)
+    copts = cmd.ReadEnvironmentOptions(copts)
+    cmd.SetVariablesFromOptions(copts)
+
     cmd.repodir = self.repodir
     cmd.manifest = XmlManifest(cmd.repodir)
     Editor.globalConfig = cmd.manifest.globalConfig
 
     if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
       print("fatal: '%s' requires a working directory" % name,
-            file=sys.stderr)
-      return 1
-
-    try:
-      copts, cargs = cmd.OptionParser.parse_args(argv)
-      copts = cmd.ReadEnvironmentOptions(copts)
-    except NoManifestException as e:
-      print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
-        file=sys.stderr)
-      print('error: manifest missing or unreadable -- please run init',
             file=sys.stderr)
       return 1
 
