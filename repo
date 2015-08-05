@@ -108,6 +108,7 @@ S_repo = 'repo'                 # special repo repository
 S_manifests = 'manifests'       # special manifest repository
 REPO_MAIN = S_repo + '/main.py' # main script
 MIN_PYTHON_VERSION = (2, 6)     # minimum supported python version
+GITC_MANIFEST_DIR = '/usr/local/google/gitc'
 
 
 import errno
@@ -212,14 +213,25 @@ group.add_option('--config-name',
                  dest='config_name', action="store_true", default=False,
                  help='Always prompt for name/e-mail')
 
+def _GitcInitOptions(init_optparse):
+  g = init_optparse.add_option_group('GITC options')
+  g.add_option('-f', '--manifest-file',
+               dest='manifest_file',
+               help='Optional manifest file to use for this GITC client.')
+  g.add_option('-c', '--gitc-client',
+               dest='gitc_client',
+               help='The name for the new gitc_client instance.')
+
 class CloneFailure(Exception):
   """Indicate the remote clone of repo itself failed.
   """
 
 
-def _Init(args):
+def _Init(args, gitc_init=False):
   """Installs repo by cloning it over the network.
   """
+  if gitc_init:
+    _GitcInitOptions(init_optparse)
   opt, args = init_optparse.parse_args(args)
   if args:
     init_optparse.print_usage()
@@ -242,6 +254,15 @@ def _Init(args):
     raise CloneFailure()
 
   try:
+    if gitc_init:
+      client_dir = os.path.join(GITC_MANIFEST_DIR, opt.gitc_client)
+      if not os.path.exists(client_dir):
+        os.makedirs(client_dir)
+      os.chdir(client_dir)
+      if os.path.exists(repodir):
+        # This GITC Client has already initialized repo so continue.
+        return
+
     os.mkdir(repodir)
   except OSError as e:
     if e.errno != errno.EEXIST:
@@ -732,11 +753,11 @@ def main(orig_args):
       _Help(args)
     if not cmd:
       _NotInstalled()
-    if cmd == 'init':
+    if cmd == 'init' or cmd == 'gitc-init':
       if my_git:
         _SetDefaultsTo(my_git)
       try:
-        _Init(args)
+        _Init(args, gitc_init=(cmd == 'gitc-init'))
       except CloneFailure:
         shutil.rmtree(os.path.join(repodir, S_repo), ignore_errors=True)
         sys.exit(1)
