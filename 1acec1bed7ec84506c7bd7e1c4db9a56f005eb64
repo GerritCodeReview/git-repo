@@ -1,0 +1,153 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "67e83f66_62b6b627",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-06T23:04:31Z",
+      "side": 1,
+      "message": "So google needs to be hardcoded here?",
+      "range": {
+        "startLine": 26,
+        "startChar": 32,
+        "endLine": 26,
+        "endChar": 38
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_42bbb20d",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-06T23:04:31Z",
+      "side": 1,
+      "message": "file system",
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_22c0ae73",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-06T23:04:31Z",
+      "side": 1,
+      "message": "optparser default to None anyway.",
+      "range": {
+        "startLine": 59,
+        "startChar": 38,
+        "endLine": 59,
+        "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_02c5aa83",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-06T23:04:31Z",
+      "side": 1,
+      "message": "be",
+      "range": {
+        "startLine": 68,
+        "startChar": 47,
+        "endLine": 68,
+        "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a705d7ff_7cb1b92c",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-06T23:04:31Z",
+      "side": 1,
+      "message": "maybe this check belongs to _Options?",
+      "range": {
+        "startLine": 89,
+        "startChar": 6,
+        "endLine": 92,
+        "endChar": 19
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_e2c1a677",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-06T23:04:31Z",
+      "side": 1,
+      "message": "This for loop could be cleaner with list comprehension.\n\nproject_gitcmds \u003d [(project, git_command.GitCommand(...))\n                                    for project in manifest.projects]\nindex \u003d 0\nwhile index \u003c len(project_gitcmds)\n  self._ProcessProjGitcmdDict(project_gitcmds[index:(index+NUM_BATCH_RETREIVE_REVISIONID)])\n  index +\u003d NUM_BATCH_RETREIVE_REVISIONID\n\nThe number of lines most likely be similar, just a bit more pythonic.",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_82b1ba2f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-06T23:04:31Z",
+      "side": 1,
+      "message": "Why this section needs to be moved here? Seems the value of self.jobs will be the same anyway?\n\nThe change does make the code cleaner though.",
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
