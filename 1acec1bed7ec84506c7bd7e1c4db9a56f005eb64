@@ -25,6 +25,46 @@
     },
     {
       "key": {
+        "uuid": "a705d7ff_1cc07573",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-06T23:15:35Z",
+      "side": 1,
+      "message": "eventually we\u0027ll need a way to customize these paths, but I guess that\u0027s not an issue yet",
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_c2cea2a7",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-06T23:15:35Z",
+      "side": 1,
+      "message": "typo",
+      "range": {
+        "startLine": 28,
+        "startChar": 14,
+        "endLine": 28,
+        "endChar": 16
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_42bbb20d",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 2
@@ -36,6 +76,29 @@
       "writtenOn": "2015-08-06T23:04:31Z",
       "side": 1,
       "message": "file system",
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a705d7ff_5cb6fd26",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-06T23:15:35Z",
+      "side": 1,
+      "message": "In order to do this, you\u0027ll also need to modify the repo wrapper (the file called \u0027repo\u0027 at the top level of this project). Otherwise this command will only work in an already created directory.\n\nThe wrapper special cases the \u0027init\u0027 command to download and install repo, then passes the arguments down to these files.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 20
+      },
       "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -81,6 +144,29 @@
         "startChar": 47,
         "endLine": 68,
         "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_a2cb9e95",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-06T23:15:35Z",
+      "side": 1,
+      "message": "This won\u0027t have a copy of repo in it, so i\u0027m not sure it\u0027s a valid repodir",
+      "range": {
+        "startLine": 75,
+        "startChar": 4,
+        "endLine": 75,
+        "endChar": 57
       },
       "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
