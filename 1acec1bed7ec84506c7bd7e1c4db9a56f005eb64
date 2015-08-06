@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a705d7ff_9ccb6596",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "Yes currently this location is set in the FUSE system to be at /usr/local/google/gitc.\n\nWe can make this adjustable in the future for now lets leave it be.",
+      "parentUuid": "67e83f66_62b6b627",
+      "range": {
+        "startLine": 26,
+        "startChar": 32,
+        "endLine": 26,
+        "endChar": 38
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a705d7ff_1cc07573",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 2
@@ -65,6 +89,30 @@
     },
     {
       "key": {
+        "uuid": "67e83f66_82d89a67",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "Right, i before e except after c.",
+      "parentUuid": "67e83f66_c2cea2a7",
+      "range": {
+        "startLine": 28,
+        "startChar": 14,
+        "endLine": 28,
+        "endChar": 16
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_42bbb20d",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 2
@@ -82,6 +130,24 @@
     },
     {
       "key": {
+        "uuid": "a705d7ff_5cdddd54",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67e83f66_42bbb20d",
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a705d7ff_5cb6fd26",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 2
@@ -93,6 +159,30 @@
       "writtenOn": "2015-08-06T23:15:35Z",
       "side": 1,
       "message": "In order to do this, you\u0027ll also need to modify the repo wrapper (the file called \u0027repo\u0027 at the top level of this project). Otherwise this command will only work in an already created directory.\n\nThe wrapper special cases the \u0027init\u0027 command to download and install repo, then passes the arguments down to these files.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 20
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a705d7ff_1cd75535",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "Good catch, I need to fix this.",
+      "parentUuid": "a705d7ff_5cb6fd26",
       "range": {
         "startLine": 41,
         "startChar": 0,
@@ -128,6 +218,30 @@
     },
     {
       "key": {
+        "uuid": "67e83f66_62dd9655",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67e83f66_22c0ae73",
+      "range": {
+        "startLine": 59,
+        "startChar": 38,
+        "endLine": 59,
+        "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_02c5aa83",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 2
@@ -139,6 +253,30 @@
       "writtenOn": "2015-08-06T23:04:31Z",
       "side": 1,
       "message": "be",
+      "range": {
+        "startLine": 68,
+        "startChar": 47,
+        "endLine": 68,
+        "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a705d7ff_3cd21145",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67e83f66_02c5aa83",
       "range": {
         "startLine": 68,
         "startChar": 47,
@@ -197,6 +335,30 @@
     },
     {
       "key": {
+        "uuid": "a705d7ff_7cd89966",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "_Options actually does not parse, so it has to be in Execute or in SetVariablesFromOptions.",
+      "parentUuid": "a705d7ff_7cb1b92c",
+      "range": {
+        "startLine": 89,
+        "startChar": 6,
+        "endLine": 92,
+        "endChar": 19
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_e2c1a677",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 2
@@ -220,6 +382,30 @@
     },
     {
       "key": {
+        "uuid": "67e83f66_42d29245",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "No that won\u0027t do what I want.\n\nSee the problem here is that I can\u0027t have too many GitCommand objects existing at the same time. As soon as you create it, it launches the git process and eats a file descriptor. Too many created this quickly results in the program running out of file descriptors.\n\n\nWhat I am doing here is going through and creating NUM_BATCH_RETRIEVE_REVISIONID GitCommand objects at once, then I wait for all those to finish, throw them away, loop repeat.\n\nThis prevents me from running out of file descriptors.",
+      "parentUuid": "67e83f66_e2c1a677",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_82b1ba2f",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -231,6 +417,24 @@
       "writtenOn": "2015-08-06T23:04:31Z",
       "side": 1,
       "message": "Why this section needs to be moved here? Seems the value of self.jobs will be the same anyway?\n\nThe change does make the code cleaner though.",
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a705d7ff_fceb89eb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-06T23:56:57Z",
+      "side": 1,
+      "message": "If you look at my change in main.py, the manifest is no longer parsed till after the options is parsed. So because of that change, the original code to this file broke as manifest is None in the old code.",
+      "parentUuid": "67e83f66_82b1ba2f",
       "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
