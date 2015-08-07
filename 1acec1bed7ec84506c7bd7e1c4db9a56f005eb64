@@ -382,6 +382,30 @@
     },
     {
       "key": {
+        "uuid": "a705d7ff_9ce2450c",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-07T00:08:59Z",
+      "side": 1,
+      "message": "right, i mean SetVariablesFromOptions. I just thought it\u0027s cleaner to have all option value validation in a single place.",
+      "parentUuid": "a705d7ff_7cd89966",
+      "range": {
+        "startLine": 89,
+        "startChar": 6,
+        "endLine": 92,
+        "endChar": 19
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_e2c1a677",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 2
@@ -429,6 +453,30 @@
     },
     {
       "key": {
+        "uuid": "67e83f66_02ec8a03",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-07T00:08:59Z",
+      "side": 1,
+      "message": "i see, the limit of GitCommand. Another option is to move the instantiation of GitCommand to _ProcessProjGitcmdDict. anyway, not much of a big deal.",
+      "parentUuid": "67e83f66_42d29245",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 52
+      },
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_82b1ba2f",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -458,6 +506,24 @@
       "side": 1,
       "message": "If you look at my change in main.py, the manifest is no longer parsed till after the options is parsed. So because of that change, the original code to this file broke as manifest is None in the old code.",
       "parentUuid": "67e83f66_82b1ba2f",
+      "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_e2e886f1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 501,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-07T00:08:59Z",
+      "side": 1,
+      "message": "got it.",
+      "parentUuid": "a705d7ff_fceb89eb",
       "revId": "1acec1bed7ec84506c7bd7e1c4db9a56f005eb64",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
