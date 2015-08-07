@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "67e83f66_420df275",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-07T01:30:37Z",
+      "side": 1,
+      "message": "Is there a good place to refactor out my constants?",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 44
+      },
+      "revId": "268f30a278a40972738f7d705c7949268daa0882",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "67e83f66_2212ee93",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-07T01:30:37Z",
+      "side": 1,
+      "message": "Dan, let me know if this looks wrong but it seems all the init options are duplicated here already.",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 36
+      },
+      "revId": "268f30a278a40972738f7d705c7949268daa0882",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
