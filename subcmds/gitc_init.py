@@ -18,13 +18,8 @@ import os
 import shutil
 import sys
 
-import git_command
+import gitc_utils
 from subcmds import init
-
-
-GITC_MANIFEST_DIR = '/usr/local/google/gitc'
-GITC_FS_ROOT_DIR = '/gitc/sha/rw'
-NUM_BATCH_RETRIEVE_REVISIONID = 300
 
 
 class GitcInit(init.Init):
@@ -65,59 +60,24 @@ use for this GITC client.
     if not opt.gitc_client:
       print('fatal: gitc client (-c) is required', file=sys.stderr)
       sys.exit(1)
-    self.client_dir = os.path.join(GITC_MANIFEST_DIR, opt.gitc_client)
-    if not os.path.exists(GITC_MANIFEST_DIR):
-      os.makedirs(GITC_MANIFEST_DIR)
+    self.client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
+                                   opt.gitc_client)
+    if not os.path.exists(gitc_utils.GITC_MANIFEST_DIR):
+      os.makedirs(gitc_utils.GITC_MANIFEST_DIR)
     if not os.path.exists(self.client_dir):
       os.mkdir(self.client_dir)
     super(GitcInit, self).Execute(opt, args)
+    # Make the destination manifest file a symlink to repo's so both repo and
+    # GITC refer to the same manifest.
     if opt.manifest_file:
       if not os.path.exists(opt.manifest_file):
         print('fatal: Specified manifest file %s does not exist.' %
               opt.manifest_file)
         sys.exit(1)
-      shutil.copyfile(opt.manifest_file,
-                      os.path.join(self.client_dir, '.manifest'))
+      shutil.copyfile(opt.manifest_file, os.path.join(self.client_dir,
+                                                      '.manifest'))
+      gitc_utils.sync_manifests(self.client_dir)
     else:
-      self._GenerateGITCManifest()
+      gitc_utils.generate_gitc_manifest(self.client_dir, self.manifest)
     print('Please run `cd %s` to view your GITC client.' %
-          os.path.join(GITC_FS_ROOT_DIR, opt.gitc_client))
-
-  def _SetProjectRevisions(self, projects, branch):
-    """Sets the revisionExpr for a list of projects.
-
-    Because of the limit of open file descriptors allowed, length of projects
-    should not be overly large. Recommend calling this function multiple times
-    with each call not exceeding NUM_BATCH_RETRIEVE_REVISIONID projects.
-
-    @param projects: List of project objects to set the revionExpr for.
-    @param branch: The remote branch to retrieve the SHA from. If branch is
-                   None, 'HEAD' is used.
-    """
-    project_gitcmds = [(
-        project, git_command.GitCommand(None,
-                                        ['ls-remote',
-                                         project.remote.url,
-                                         branch], capture_stdout=True))
-        for project in projects]
-    for proj, gitcmd in project_gitcmds:
-      if gitcmd.Wait():
-        print('FATAL: Failed to retrieve revisionID for %s' % project)
-        sys.exit(1)
-      proj.revisionExpr = gitcmd.stdout.split('\t')[0]
-
-  def _GenerateGITCManifest(self):
-    """Generate a manifest for shafsd to use for this GITC client."""
-    print('Generating GITC Manifest by fetching revision SHAs for each '
-          'project.')
-    manifest = self.manifest
-    project_gitcmd_dict = {}
-    index = 0
-    while index < len(manifest.projects):
-      self._SetProjectRevisions(
-          manifest.projects[index:(index+NUM_BATCH_RETRIEVE_REVISIONID)],
-          manifest.default.revisionExpr)
-      index += NUM_BATCH_RETRIEVE_REVISIONID
-    # Save the manifest.
-    with open(os.path.join(self.client_dir, '.manifest'), 'w') as f:
-      manifest.Save(f)
+          os.path.join(gitc_utils.GITC_FS_ROOT_DIR, opt.gitc_client))

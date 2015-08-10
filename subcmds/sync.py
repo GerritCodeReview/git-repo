@@ -58,6 +58,7 @@ except ImportError:
 
 from git_command import GIT, git_require
 from git_refs import R_HEADS, HEAD
+import gitc_utils
 from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
@@ -184,6 +185,9 @@ later is required to fix a server side protocol bug.
                  help="overwrite an existing git directory if it needs to "
                       "point to a different object directory. WARNING: this "
                       "may cause loss of data")
+    p.add_option('--force-gitc',
+                 dest='force_gitc', action='store_true',
+                 help="actually sync sources in the gitc client directory.")
     p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -526,6 +530,25 @@ later is required to fix a server side protocol bug.
         print('error: both -u and -p must be given', file=sys.stderr)
         sys.exit(1)
 
+    cwd = os.getcwd()
+    if cwd.startswith(gitc_utils.GITC_MANIFEST_DIR) and not opt.force_gitc:
+      print('WARNING this will pull all the sources like a normal repo sync.\n'
+            '\nIf you want to update your GITC Client View please rerun this '
+            'command in \n%s%s.\nOr if you actually want to pull the sources, '
+            'rerun with --force-gitc.' %
+            (gitc_utils.GITC_FS_ROOT_DIR,
+             cwd.split(gitc_utils.GITC_MANIFEST_DIR)[1]))
+      sys.exit(1)
+
+    self._gitc_sync = False
+    if cwd.startswith(gitc_utils.GITC_FS_ROOT_DIR):
+      self._gitc_sync = True
+      self._client_name = cwd.split(gitc_utils.GITC_FS_ROOT_DIR)[1].split(
+          '/')[0]
+      self._client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
+                                      self._client_name)
+      print('Updating GITC client: %s' % self._client_name)
+
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
 
@@ -641,6 +664,19 @@ later is required to fix a server side protocol bug.
 
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
+
+    if self._gitc_sync:
+      if opt.smart_sync:
+        print('Retrieved smart sync manifest.')
+        shutil.copyfile(smart_sync_manifest_path,
+                        os.path.join(self._client_dir, '.manifest'))
+        gitc_utils.sync_manifests(self._client_dir)
+      else:
+        gitc_utils.generate_gitc_manifest(self._client_dir, self.manifest)
+      gitc_utils.sync_manifests(self._client_dir)
+      print('GITC Client successfully updated.')
+      return
+
 
     if not opt.local_only:
       mp.Sync_NetworkHalf(quiet=opt.quiet,
