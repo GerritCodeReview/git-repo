@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8419b174_73b0c02a",
+        "filename": "main.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-11T22:42:29Z",
+      "side": 1,
+      "message": "Why does this still need to move? Now that you\u0027re not changing repodir in subcmds/gitc_init.py, there\u0027s no reason to change this, is there?",
+      "revId": "06939b8664e77a3e11cc5838918a852bd6cab008",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8419b174_53b5c418",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-11T22:42:29Z",
+      "side": 1,
+      "message": "Can\u0027t this be moved to the top of Execute now?",
+      "revId": "06939b8664e77a3e11cc5838918a852bd6cab008",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
