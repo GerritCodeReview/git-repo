@@ -113,6 +113,24 @@
     },
     {
       "key": {
+        "uuid": "8711b30b_93b55c1b",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-11T18:10:29Z",
+      "side": 1,
+      "message": "Add the chdir and removed my repodir logic but decided that I don\u0027t want to error out if the client directory exists.\n\n\nI found times like with Android, where the gitc-init process began, got halfway (created all the folders) but died repo init\u0027ing because I lacked prodaccess. So right now I can quickly run prodaccess and rerun the same command and it will complete.\n\nGenerally repo init can be re-ran multiple times in a repo checkout (especially for Android devs changing branches) so I want to keep that possible here.\n\n\nMy thoughts for \"repo gitc-init\" is that it does not matter where you run it ever. It does 2 things: initialize a new gitc checkout and modifies an existing repo (like changing branches and everything else repo init is capable of doing currently). And it will only affect the -c gitc-client which is a required argument.\n\nThis is similar to how g4d -f \u003cclient_name\u003e creates a new CITC client.\n\nLet me know if you have any more questions.",
+      "parentUuid": "8761b321_b3f618c9",
+      "revId": "268f30a278a40972738f7d705c7949268daa0882",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_e2f3e6d7",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 3
