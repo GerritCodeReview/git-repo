@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8761b321_730da076",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-11T00:10:44Z",
+      "side": 1,
+      "message": "No, this script is distributed independently from the rest of the repo source. The only way to share would be to define here, and pass into repo as a command line option.",
+      "parentUuid": "67e83f66_420df275",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 111,
+        "endChar": 44
+      },
+      "revId": "268f30a278a40972738f7d705c7949268daa0882",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67e83f66_2212ee93",
         "filename": "repo",
         "patchSetId": 3
@@ -42,6 +66,47 @@
         "endLine": 216,
         "endChar": 36
       },
+      "revId": "268f30a278a40972738f7d705c7949268daa0882",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "87e453f8_9bf6abc9",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-11T00:10:44Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s expected.",
+      "parentUuid": "67e83f66_2212ee93",
+      "range": {
+        "startLine": 216,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 36
+      },
+      "revId": "268f30a278a40972738f7d705c7949268daa0882",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8761b321_b3f618c9",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-11T00:10:44Z",
+      "side": 1,
+      "message": "Since we expect not to be in the correct directory for this gitc-init case, we could error out if the client directory exists. Or just chdir to it directly.\n\nThen once we\u0027ve created it, os.chdir to it, so that _FindRepo picks it up and you no longer need to deal with changing repodir in subcmds/gitc_init.py. We may need to handle the paths changing if they\u0027re relative paths though, but that\u0027s already necessary for some of them. (-u can be a relative path, and is saved and expected to be relative from the top directory)\n\nAlso, do you expect \"repo gitc-init\" to do something in a non-gitc initialized repo? Or should it only be handling new gitc checkouts, and modifying existing gitc repos (by being inside it). This isn\u0027t specified in the doc.",
       "revId": "268f30a278a40972738f7d705c7949268daa0882",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
