@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "443979cf_51b5d418",
+        "filename": "main.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-12T00:05:14Z",
+      "side": 1,
+      "message": "You are right, undoing.",
+      "parentUuid": "8419b174_73b0c02a",
+      "revId": "06939b8664e77a3e11cc5838918a852bd6cab008",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8419b174_53b5c418",
         "filename": "subcmds/gitc_init.py",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2015-08-11T22:42:29Z",
       "side": 1,
       "message": "Can\u0027t this be moved to the top of Execute now?",
+      "revId": "06939b8664e77a3e11cc5838918a852bd6cab008",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8419b174_33ba4809",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-12T00:05:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8419b174_53b5c418",
       "revId": "06939b8664e77a3e11cc5838918a852bd6cab008",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
