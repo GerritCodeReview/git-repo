@@ -2294,10 +2294,13 @@ class Project(object):
   def _InitAnyMRef(self, ref):
     cur = self.bare_ref.symref(ref)
 
-    if self.revisionId:
-      if cur != '' or self.bare_ref.get(ref) != self.revisionId:
-        msg = 'manifest set to %s' % self.revisionId
-        dst = self.revisionId + '^0'
+    revid = self.revisionId \
+        or (self.revisionExpr.endswith('-g' + self.GetCommitRevisionId()[:7]) \
+        and self.GetCommitRevisionId())
+    if revid:
+      if cur != '' or self.bare_ref.get(ref) != revid:
+        msg = 'manifest set to %s' % revid
+        dst = revid + '^0'
         self.bare_git.UpdateRef(ref, dst, message=msg, detach=True)
     else:
       remote = self.GetRemote(self.remote.name)
