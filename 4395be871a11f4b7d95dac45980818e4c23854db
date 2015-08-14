@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "84e451f8_1bb0db29",
+        "filename": "gitc_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-14T22:20:25Z",
+      "side": 1,
+      "message": "git_config.IsId(rev) can be used to identify (full) sha strings",
+      "parentUuid": "84a3717f_63b58219",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 36
+      },
+      "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44bed991_09baa908",
         "filename": "gitc_utils.py",
         "patchSetId": 2
