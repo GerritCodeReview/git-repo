@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "84e451f8_5bba6309",
+        "filename": "gitc_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-14T22:26:18Z",
+      "side": 1,
+      "message": "Very cool, thanks.",
+      "parentUuid": "84e451f8_1bb0db29",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 36
+      },
+      "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44bed991_09baa908",
         "filename": "gitc_utils.py",
         "patchSetId": 2
