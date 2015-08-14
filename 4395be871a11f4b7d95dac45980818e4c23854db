@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "84a3717f_63b58219",
+        "filename": "gitc_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-14T22:15:49Z",
+      "side": 1,
+      "message": "Your comment here made me realize I actually don\u0027t need this arg, I should just be using project.revisionExpr for each project because Repo will have already have set this correctly when repo init ran.\n\nI\u0027ll still call git ls-remote and if nothing is outputted, then I won\u0027t update the revisionExpr. I can avoid this if I can determine if the revisionExpr is a sha and not a string but I can\u0027t think of an easy way to do this cause a sha is a string.",
+      "parentUuid": "8419b174_73d9e068",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 36
+      },
+      "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44bed991_09baa908",
         "filename": "gitc_utils.py",
         "patchSetId": 2
@@ -36,6 +60,24 @@
       "writtenOn": "2015-08-13T01:24:37Z",
       "side": 1,
       "message": "this definitely won\u0027t do what you want, since it\u0027ll make local changes to the manifest git project, and repo won\u0027t be able to handle manifest changes.\n\nyou\u0027d be better off with using manifest.Override(...)",
+      "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "84a3717f_43b0862a",
+        "filename": "gitc_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-14T22:15:49Z",
+      "side": 1,
+      "message": "Ahh got it, the manifest is actually stored in a git checkout. My use case for this is down the road (repo start) but I\u0027ll try something different for that.\n\nDeleting this for now.",
+      "parentUuid": "44bed991_09baa908",
       "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "84a3717f_03ba8e08",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-14T22:15:49Z",
+      "side": 1,
+      "message": "I was trying to prepare for future changes but your previous comment about it being part of the manifests git project killed that idea.",
+      "parentUuid": "8419b174_53dee452",
+      "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8419b174_33d3684b",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -70,6 +130,24 @@
       "writtenOn": "2015-08-13T01:24:37Z",
       "side": 1,
       "message": "you don\u0027t need to do anything special with smart_sync -- the manifest is already loaded into self.manifest, so you can run gitc_utils.generate_gitc_manifest just like normal.",
+      "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44333920_41b0922a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-14T22:15:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8419b174_33d3684b",
       "revId": "4395be871a11f4b7d95dac45980818e4c23854db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
