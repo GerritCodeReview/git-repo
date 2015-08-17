@@ -23,18 +23,26 @@ import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 
 from pyversion import is_python3
 if is_python3():
+  import http.cookiejar as cookielib
+  import urllib.error
   import urllib.parse
+  import urllib.request
   import xmlrpc.client
 else:
+  import cookielib
   import imp
+  import urllib2
   import urlparse
   import xmlrpclib
   urllib = imp.new_module('urllib')
+  urllib.error = urllib2
   urllib.parse = urlparse
+  urllib.request = urllib2
   xmlrpc = imp.new_module('xmlrpc')
   xmlrpc.client = xmlrpclib
 
@@ -57,6 +65,7 @@ except ImportError:
   multiprocessing = None
 
 from git_command import GIT, git_require
+from git_config import GetSchemeFromUrl, GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 from project import Project
 from project import RemoteSpec
@@ -554,8 +563,7 @@ later is required to fix a server side protocol bug.
           try:
             info = netrc.netrc()
           except IOError:
-            print('.netrc file does not exist or could not be opened',
-                  file=sys.stderr)
+            pass
           else:
             try:
               parse_result = urllib.parse.urlparse(manifest_server)
@@ -575,8 +583,12 @@ later is required to fix a server side protocol bug.
                                                     (username, password),
                                                     1)
 
+      transport = PersistentTransport(manifest_server)
+      if manifest_server.startswith('persistent-'):
+        manifest_server = manifest_server[len('persistent-'):]
+
       try:
-        server = xmlrpc.client.Server(manifest_server)
+        server = xmlrpc.client.Server(manifest_server, transport=transport)
         if opt.smart_sync:
           p = self.manifest.manifestProject
           b = p.GetBranch(p.CurrentBranch)
@@ -850,3 +862,85 @@ class _FetchTimes(object):
         os.remove(self._path)
       except OSError:
         pass
+
+# This is a replacement for xmlrpc.client.Transport using urllib2
+# and supporting persistent-http[s]
+class PersistentTransport(object):
+  def __init__(self, orig_host):
+    self.orig_host = orig_host
+    orig = urllib.parse.urlparse(orig_host)
+    self.orig_hostname = orig.hostname
+
+  def request(self, host, handler, request_body, verbose=False):
+    # The XML-RPC client doesn't accept persistent-* schemes,
+    # so we take it early, and abort if the host changes.
+    if host != self.orig_hostname:
+      raise Exception('Internal error: Using a different host is unsupported')
+
+    with GetUrlCookieFile(self.orig_host, not verbose) as (cookiefile, proxy):
+      url = urllib.parse.urljoin(self.orig_host, handler)
+      if url.startswith('persistent-'):
+        url = url[len('persistent-'):]
+        # If we're proxying through persistent-https, use http. The
+        # proxy itself will do the https.
+        if proxy and url.startswith('https'):
+          url = 'http' + url[len('https'):]
+
+      # Python doesn't understand cookies with the #HttpOnly_ prefix
+      # Since we're only using them for HTTP, copy the file temporarily,
+      # stripping those prefixes away.
+      tmpcookiefile = tempfile.NamedTemporaryFile()
+      try:
+        f = open(cookiefile)
+        try:
+          while 1:
+            line = f.readline()
+            if line == "":
+              break
+            if line.startswith("#HttpOnly_"):
+              line = line[len("#HttpOnly_"):]
+            tmpcookiefile.write(line)
+        finally:
+          f.close()
+        tmpcookiefile.flush()
+
+        cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
+        cookiejar.load()
+      finally:
+        tmpcookiefile.close()
+
+      proxyhandler = urllib.request.ProxyHandler
+      if proxy:
+        proxyhandler = urllib.request.ProxyHandler({
+            "http": proxy,
+            "https": proxy })
+
+      opener = urllib.request.build_opener(
+          urllib.request.HTTPBasicAuthHandler,
+          urllib.request.HTTPCookieProcessor(cookiejar),
+          proxyhandler)
+
+      request = urllib.request.Request(url, request_body)
+      request.add_header('Content-Type', 'text/xml')
+      try:
+        response = opener.open(request)
+      except urllib.error.HTTPError as e:
+        if e.code == 501:
+          # We may have been redirected through a login process
+          # but our POST turned into a GET. Retry.
+          response = opener.open(request)
+        else:
+          raise
+
+      p, u = xmlrpc.client.getparser()
+      while 1:
+        data = response.read(1024)
+        if not data:
+          break
+        p.feed(data)
+      p.close()
+      return u.close()
+
+  def close(self):
+    pass
+

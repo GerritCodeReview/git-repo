@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from __future__ import print_function
-import contextlib
 import errno
 import filecmp
 import glob
@@ -31,7 +30,7 @@ import traceback
 
 from color import Coloring
 from git_command import GitCommand, git_require
-from git_config import GitConfig, IsId, GetSchemeFromUrl, ID_RE
+from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, ID_RE
 from error import GitError, HookError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
@@ -2030,7 +2029,7 @@ class Project(object):
         os.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
-    with self._GetBundleCookieFile(srcUrl, quiet) as cookiefile:
+    with GetUrlCookieFile(srcUrl, quiet) as (cookiefile, proxy):
       if cookiefile:
         cmd += ['--cookie', cookiefile, '--cookie-jar', cookiefile]
       if srcUrl.startswith('persistent-'):
@@ -2077,40 +2076,6 @@ class Project(object):
           return False
     except OSError:
       return False
-
-  @contextlib.contextmanager
-  def _GetBundleCookieFile(self, url, quiet):
-    if url.startswith('persistent-'):
-      try:
-        p = subprocess.Popen(
-            ['git-remote-persistent-https', '-print_config', url],
-            stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        try:
-          prefix = 'http.cookiefile='
-          cookiefile = None
-          for line in p.stdout:
-            line = line.strip()
-            if line.startswith(prefix):
-              cookiefile = line[len(prefix):]
-              break
-          # Leave subprocess open, as cookie file may be transient.
-          if cookiefile:
-            yield cookiefile
-            return
-        finally:
-          p.stdin.close()
-          if p.wait():
-            err_msg = p.stderr.read()
-            if ' -print_config' in err_msg:
-              pass  # Persistent proxy doesn't support -print_config.
-            elif not quiet:
-              print(err_msg, file=sys.stderr)
-      except OSError as e:
-        if e.errno == errno.ENOENT:
-          pass  # No persistent proxy.
-        raise
-    yield GitConfig.ForUser().GetString('http.cookiefile')
 
   def _Checkout(self, rev, quiet=False):
     cmd = ['checkout']
