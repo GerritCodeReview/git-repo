@@ -303,6 +303,9 @@ class XmlManifest(object):
       if p.sync_s:
         e.setAttribute('sync-s', 'true')
 
+      if p.clone_depth:
+        e.setAttribute('clone-depth', str(p.clone_depth))
+
       if p.subprojects:
         subprojects = set(subp.name for subp in p.subprojects)
         output_projects(p, e, list(sorted(subprojects)))
