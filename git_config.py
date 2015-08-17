@@ -15,6 +15,8 @@
 
 from __future__ import print_function
 
+import contextlib
+import errno
 import json
 import os
 import re
@@ -501,6 +503,43 @@ def GetSchemeFromUrl(url):
   if m:
     return m.group(1)
   return None
+
+@contextlib.contextmanager
+def GetUrlCookieFile(url, quiet):
+  if url.startswith('persistent-'):
+    try:
+      p = subprocess.Popen(
+          ['git-remote-persistent-https', '-print_config', url],
+          stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+          stderr=subprocess.PIPE)
+      try:
+        cookieprefix = 'http.cookiefile='
+        proxyprefix = 'http.proxy='
+        cookiefile = None
+        proxy = None
+        for line in p.stdout:
+          line = line.strip()
+          if line.startswith(cookieprefix):
+            cookiefile = line[len(cookieprefix):]
+          if line.startswith(proxyprefix):
+            proxy = line[len(proxyprefix):]
+        # Leave subprocess open, as cookie file may be transient.
+        if cookiefile or proxy:
+          yield cookiefile, proxy
+          return
+      finally:
+        p.stdin.close()
+        if p.wait():
+          err_msg = p.stderr.read()
+          if ' -print_config' in err_msg:
+            pass  # Persistent proxy doesn't support -print_config.
+          elif not quiet:
+            print(err_msg, file=sys.stderr)
+    except OSError as e:
+      if e.errno == errno.ENOENT:
+        pass  # No persistent proxy.
+      raise
+  yield GitConfig.ForUser().GetString('http.cookiefile'), None
 
 def _preconnect(url):
   m = URI_ALL.match(url)

@@ -323,7 +323,7 @@ def _CheckGitVersion():
            file=sys.stderr)
     raise CloneFailure()
 
-  ver_str = proc.stdout.read().strip()
+  ver_str = str(proc.stdout.read()).strip()
   proc.stdout.close()
   proc.wait()
 
