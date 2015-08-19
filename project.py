@@ -2182,8 +2182,8 @@ class Project(object):
         try:
           self._CheckDirReference(self.objdir, self.gitdir, share_refs=False)
         except GitError as e:
-          print("Retrying clone after deleting %s" % force_sync, file=sys.stderr)
           if force_sync:
+            print("Retrying clone after deleting %s" % self.gitdir, file=sys.stderr)
             try:
               shutil.rmtree(os.path.realpath(self.gitdir))
               if self.worktree and os.path.exists(
