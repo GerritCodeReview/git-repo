@@ -23,18 +23,26 @@ import shutil
 import socket
 import subprocess
 import sys
+import tempfile
 import time
 
 from pyversion import is_python3
 if is_python3():
+  import http.cookiejar as cookielib
+  import urllib.error
   import urllib.parse
+  import urllib.request
   import xmlrpc.client
 else:
+  import cookielib
   import imp
+  import urllib2
   import urlparse
   import xmlrpclib
   urllib = imp.new_module('urllib')
+  urllib.error = urllib2
   urllib.parse = urlparse
+  urllib.request = urllib2
   xmlrpc = imp.new_module('xmlrpc')
   xmlrpc.client = xmlrpclib
 
@@ -57,6 +65,7 @@ except ImportError:
   multiprocessing = None
 
 from git_command import GIT, git_require
+from git_config import GetSchemeFromUrl, GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import gitc_utils
 from project import Project
@@ -598,8 +607,12 @@ later is required to fix a server side protocol bug.
                                                     (username, password),
                                                     1)
 
+      transport = PersistentTransport(manifest_server)
+      if manifest_server.startswith('persistent-'):
+        manifest_server = manifest_server[len('persistent-'):]
+
       try:
-        server = xmlrpc.client.Server(manifest_server)
+        server = xmlrpc.client.Server(manifest_server, transport=transport)
         if opt.smart_sync:
           p = self.manifest.manifestProject
           b = p.GetBranch(p.CurrentBranch)
@@ -879,3 +892,93 @@ class _FetchTimes(object):
         os.remove(self._path)
       except OSError:
         pass
+
+# This is a replacement for xmlrpc.client.Transport using urllib2
+# and supporting persistent-http[s]. It cannot change hosts from
+# request to request like the normal transport, the real url
+# is passed during initialization.
+class PersistentTransport(xmlrpc.client.Transport):
+  def __init__(self, orig_host):
+    self.orig_host = orig_host
+
+  def request(self, host, handler, request_body, verbose=False):
+    with GetUrlCookieFile(self.orig_host, not verbose) as (cookiefile, proxy):
+      # Python doesn't understand cookies with the #HttpOnly_ prefix
+      # Since we're only using them for HTTP, copy the file temporarily,
+      # stripping those prefixes away.
+      tmpcookiefile = tempfile.NamedTemporaryFile()
+      try:
+        with open(cookiefile) as f:
+          for line in f:
+            if line.startswith("#HttpOnly_"):
+              line = line[len("#HttpOnly_"):]
+            tmpcookiefile.write(line)
+        tmpcookiefile.flush()
+
+        cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
+        cookiejar.load()
+      finally:
+        tmpcookiefile.close()
+
+      proxyhandler = urllib.request.ProxyHandler
+      if proxy:
+        proxyhandler = urllib.request.ProxyHandler({
+            "http": proxy,
+            "https": proxy })
+
+      opener = urllib.request.build_opener(
+          urllib.request.HTTPCookieProcessor(cookiejar),
+          proxyhandler)
+
+      url = urllib.parse.urljoin(self.orig_host, handler)
+      parse_results = urllib.parse.urlparse(url)
+
+      scheme = parse_results.scheme
+      if scheme == 'persistent-http':
+        scheme = 'http'
+      if scheme == 'persistent-https':
+        # If we're proxying through persistent-https, use http. The
+        # proxy itself will do the https.
+        if proxy:
+          scheme = 'http'
+        else:
+          scheme = 'https'
+
+      # Parse out any authentication information using the base class
+      host, extra_headers, _ = self.get_host_info(parse_results.netloc)
+
+      url = urllib.parse.urlunparse((
+          scheme,
+          host,
+          parse_results.path,
+          parse_results.params,
+          parse_results.query,
+          parse_results.fragment))
+
+      request = urllib.request.Request(url, request_body)
+      if extra_headers is not None:
+        for (name, header) in extra_headers:
+          request.add_header(name, header)
+      request.add_header('Content-Type', 'text/xml')
+      try:
+        response = opener.open(request)
+      except urllib.error.HTTPError as e:
+        if e.code == 501:
+          # We may have been redirected through a login process
+          # but our POST turned into a GET. Retry.
+          response = opener.open(request)
+        else:
+          raise
+
+      p, u = xmlrpc.client.getparser()
+      while 1:
+        data = response.read(1024)
+        if not data:
+          break
+        p.feed(data)
+      p.close()
+      return u.close()
+
+  def close(self):
+    pass
+
