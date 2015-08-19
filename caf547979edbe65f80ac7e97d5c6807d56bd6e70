@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24a2c5bf_a0d79a33",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2015-08-19T13:38:12Z",
+      "side": 1,
+      "message": "Also spelled:\n\n for line in f:",
+      "range": {
+        "startLine": 884,
+        "startChar": 12,
+        "endLine": 886,
+        "endChar": 19
+      },
+      "revId": "caf547979edbe65f80ac7e97d5c6807d56bd6e70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
