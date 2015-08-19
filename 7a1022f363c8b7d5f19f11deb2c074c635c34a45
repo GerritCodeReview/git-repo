@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4e955d1_fce32910",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-19T03:33:17Z",
+      "side": 1,
+      "message": "nit: this is an unrelated change.",
+      "range": {
+        "startLine": 566,
+        "startChar": 12,
+        "endLine": 566,
+        "endChar": 16
+      },
+      "revId": "7a1022f363c8b7d5f19f11deb2c074c635c34a45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "84e451f8_9bf5cbc1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-19T03:33:17Z",
+      "side": 1,
+      "message": "Can we use `with open(cookiefile) as f:` here to avoid the inner try-finally block?",
+      "range": {
+        "startLine": 882,
+        "startChar": 7,
+        "endLine": 891,
+        "endChar": 19
+      },
+      "revId": "7a1022f363c8b7d5f19f11deb2c074c635c34a45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
