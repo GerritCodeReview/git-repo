@@ -29,6 +29,7 @@ else:
   urllib = imp.new_module('urllib')
   urllib.parse = urlparse
 
+import gitc_utils
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 from project import RemoteSpec, Project, MetaProject
@@ -112,6 +113,7 @@ class XmlManifest(object):
     self.manifestFile = os.path.join(self.repodir, MANIFEST_FILE_NAME)
     self.globalConfig = GitConfig.ForUser()
     self.localManifestWarning = False
+    self.isGitcClient = False
 
     self.repoProject = MetaProject(self, 'repo',
       gitdir   = os.path.join(repodir, 'repo/.git'),
@@ -306,6 +308,8 @@ class XmlManifest(object):
       if p.clone_depth:
         e.setAttribute('clone-depth', str(p.clone_depth))
 
+      self._output_manifest_project_extras(p, e)
+
       if p.subprojects:
         subprojects = set(subp.name for subp in p.subprojects)
         output_projects(p, e, list(sorted(subprojects)))
@@ -322,6 +326,10 @@ class XmlManifest(object):
       root.appendChild(e)
 
     doc.writexml(fd, '', '  ', '\n', 'UTF-8')
+
+  def _output_manifest_project_extras(self, p, e):
+    """Manifests can modify e if they support extra project attributes."""
+    pass
 
   @property
   def paths(self):
@@ -712,7 +720,7 @@ class XmlManifest(object):
   def _UnjoinName(self, parent_name, name):
     return os.path.relpath(name, parent_name)
 
-  def _ParseProject(self, node, parent = None):
+  def _ParseProject(self, node, parent = None, **extra_proj_attrs):
     """
     reads a <project> element from the manifest file
     """
@@ -807,7 +815,8 @@ class XmlManifest(object):
                       clone_depth = clone_depth,
                       upstream = upstream,
                       parent = parent,
-                      dest_branch = dest_branch)
+                      dest_branch = dest_branch,
+                      **extra_proj_attrs)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
@@ -938,3 +947,26 @@ class XmlManifest(object):
       diff['added'].append(toProjects[proj])
 
     return diff
+
+
+class GitcManifest(XmlManifest):
+
+  def __init__(self, repodir, gitc_client_name):
+    """Initialize the GitcManifest object."""
+    super(GitcManifest, self).__init__(repodir)
+    self.isGitcClient = True
+    self.gitc_client_name = gitc_client_name
+    self.gitc_client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
+                                        gitc_client_name)
+    self.manifestFile = os.path.join(self.gitc_client_dir, '.manifest')
+
+  def _ParseProject(self, node, parent = None):
+    """Override _ParseProject and add support for GITC specific attributes."""
+    return super(GitcManifest, self)._ParseProject(
+        node, parent=parent, old_revision=node.getAttribute('old-revision'))
+
+  def _output_manifest_project_extras(self, p, e):
+    """Output GITC Specific Project attributes"""
+    if p.old_revision:
+        e.setAttribute('old-revision', str(p.old_revision))
+

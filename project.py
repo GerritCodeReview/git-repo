@@ -572,7 +572,8 @@ class Project(object):
                parent=None,
                is_derived=False,
                dest_branch=None,
-               optimized_fetch=False):
+               optimized_fetch=False,
+               old_revision=None):
     """Init a Project object.
 
     Args:
@@ -596,6 +597,7 @@ class Project(object):
       dest_branch: The branch to which to push changes for review by default.
       optimized_fetch: If True, when a project is set to a sha1 revision, only
                        fetch from the remote if the sha1 is not present locally.
+      old_revision: saved git commit id for open GITC projects.
     """
     self.manifest = manifest
     self.name = name
@@ -643,6 +645,7 @@ class Project(object):
     self.bare_ref = GitRefs(gitdir)
     self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=objdir)
     self.dest_branch = dest_branch
+    self.old_revision = old_revision
 
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
@@ -1195,6 +1198,8 @@ class Project(object):
     self._InitHooks()
 
   def _CopyAndLinkFiles(self):
+    if self.manifest.isGitcClient:
+      return
     for copyfile in self.copyfiles:
       copyfile._Copy()
     for linkfile in self.linkfiles:
@@ -1425,9 +1430,11 @@ class Project(object):
 
 ## Branch Management ##
 
-  def StartBranch(self, name):
+  def StartBranch(self, name, branch_merge=''):
     """Create a new branch off the manifest's revision.
     """
+    if not branch_merge:
+      branch_merge = self.revisionExpr
     head = self.work_git.GetHead()
     if head == (R_HEADS + name):
       return True
@@ -1441,9 +1448,9 @@ class Project(object):
 
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote(self.remote.name)
-    branch.merge = self.revisionExpr
-    if not branch.merge.startswith('refs/') and not ID_RE.match(self.revisionExpr):
-      branch.merge = R_HEADS + self.revisionExpr
+    branch.merge = branch_merge
+    if not branch.merge.startswith('refs/') and not ID_RE.match(branch_merge):
+      branch.merge = R_HEADS + branch_merge
     revid = self.GetRevisionId(all_refs)
 
     if head.startswith(R_HEADS):
@@ -1451,7 +1458,6 @@ class Project(object):
         head = all_refs[head]
       except KeyError:
         head = None
-
     if revid and head and revid == head:
       ref = os.path.join(self.gitdir, R_HEADS + name)
       try:
