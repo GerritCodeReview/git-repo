@@ -106,13 +106,13 @@ class Command(object):
   def _UpdatePathToProjectMap(self, project):
     self._by_path[project.worktree] = project
 
-  def _GetProjectByPath(self, path):
+  def _GetProjectByPath(self, manifest, path):
     project = None
     if os.path.exists(path):
       oldpath = None
       while path \
         and path != oldpath \
-        and path != self.manifest.topdir:
+        and path != manifest.topdir:
         try:
           project = self._by_path[path]
           break
@@ -126,13 +126,16 @@ class Command(object):
         pass
     return project
 
-  def GetProjects(self, args, groups='', missing_ok=False, submodules_ok=False):
+  def GetProjects(self, args, manifest=None, groups='', missing_ok=False,
+                  submodules_ok=False):
     """A list of projects that match the arguments.
     """
-    all_projects_list = self.manifest.projects
+    if not manifest:
+      manifest = self.manifest
+    all_projects_list = manifest.projects
     result = []
 
-    mp = self.manifest.manifestProject
+    mp = manifest.manifestProject
 
     if not groups:
         groups = mp.config.GetString('manifest.groups')
@@ -155,11 +158,11 @@ class Command(object):
       self._ResetPathToProjectMap(all_projects_list)
 
       for arg in args:
-        projects = self.manifest.GetProjectsWithName(arg)
+        projects = manifest.GetProjectsWithName(arg)
 
         if not projects:
           path = os.path.abspath(arg).replace('\\', '/')
-          project = self._GetProjectByPath(path)
+          project = self._GetProjectByPath(manifest, path)
 
           # If it's not a derived project, update path->project mapping and
           # search again, as arg might actually point to a derived subproject.
@@ -170,7 +173,7 @@ class Command(object):
               self._UpdatePathToProjectMap(subproject)
               search_again = True
             if search_again:
-              project = self._GetProjectByPath(path) or project
+              project = self._GetProjectByPath(manifest, path) or project
 
           if project:
             projects = [project]
