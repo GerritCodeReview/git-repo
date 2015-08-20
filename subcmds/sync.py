@@ -905,19 +905,22 @@ class PersistentTransport(xmlrpc.client.Transport):
       # Python doesn't understand cookies with the #HttpOnly_ prefix
       # Since we're only using them for HTTP, copy the file temporarily,
       # stripping those prefixes away.
-      tmpcookiefile = tempfile.NamedTemporaryFile()
-      try:
-        with open(cookiefile) as f:
-          for line in f:
-            if line.startswith("#HttpOnly_"):
-              line = line[len("#HttpOnly_"):]
-            tmpcookiefile.write(line)
-        tmpcookiefile.flush()
+      if cookiefile:
+        tmpcookiefile = tempfile.NamedTemporaryFile()
+        try:
+          with open(cookiefile) as f:
+            for line in f:
+              if line.startswith("#HttpOnly_"):
+                line = line[len("#HttpOnly_"):]
+              tmpcookiefile.write(line)
+          tmpcookiefile.flush()
 
-        cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
-        cookiejar.load()
-      finally:
-        tmpcookiefile.close()
+          cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
+          cookiejar.load()
+        finally:
+          tmpcookiefile.close()
+      else:
+        cookiejar = cookielib.CookieJar()
 
       proxyhandler = urllib.request.ProxyHandler
       if proxy:
