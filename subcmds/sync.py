@@ -549,15 +549,6 @@ later is required to fix a server side protocol bug.
              cwd.split(gitc_utils.GITC_MANIFEST_DIR)[1]))
       sys.exit(1)
 
-    self._gitc_sync = False
-    if cwd.startswith(gitc_utils.GITC_FS_ROOT_DIR):
-      self._gitc_sync = True
-      self._client_name = cwd.split(gitc_utils.GITC_FS_ROOT_DIR)[1].split(
-          '/')[0]
-      self._client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
-                                      self._client_name)
-      print('Updating GITC client: %s' % self._client_name)
-
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
 
@@ -678,8 +669,10 @@ later is required to fix a server side protocol bug.
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
-    if self._gitc_sync:
-      gitc_utils.generate_gitc_manifest(self._client_dir, self.manifest)
+    gitc_client_name, gitc_client_dir = gitc_utils.parse_clientdir_info(cwd)
+    if gitc_client_name:
+      print('Updating GITC client: %s' % gitc_client_name)
+      gitc_utils.generate_gitc_manifest(gitc_client_dir, self.manifest)
       print('GITC client successfully synced.')
       return
 

@@ -26,6 +26,21 @@ GITC_MANIFEST_DIR = '/usr/local/google/gitc/'
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 NUM_BATCH_RETRIEVE_REVISIONID = 300
 
+def parse_clientdir_info(gitc_fs_path):
+  """Parse a path in the GITC FS and return its client name and directory.
+
+  @param gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
+
+  @returns: A tuple of format (client_name, client_dir) specifying the client's
+            name and the path to its GITC manifest directory.
+  """
+  if (gitc_fs_path == GITC_FS_ROOT_DIR or
+      not gitc_fs_path.startswith(GITC_FS_ROOT_DIR)):
+    return None, None
+  client_name = gitc_fs_path.split(GITC_FS_ROOT_DIR)[1].split('/')[0]
+  client_dir = os.path.join(GITC_MANIFEST_DIR, client_name)
+  return client_name, client_dir
+
 def _set_project_revisions(projects):
   """Sets the revisionExpr for a list of projects.
 
@@ -65,5 +80,13 @@ def generate_gitc_manifest(client_dir, manifest):
         manifest.projects[index:(index+NUM_BATCH_RETRIEVE_REVISIONID)])
     index += NUM_BATCH_RETRIEVE_REVISIONID
   # Save the manifest.
+  save_manifest(client_dir, manifest)
+
+def save_manifest(client_dir, manifest):
+  """Save the manifest file in the client_dir.
+
+  @param client_dir: Client directory to save the manifest in.
+  @param manifest: Manifest object to save.
+  """
   with open(os.path.join(client_dir, '.manifest'), 'w') as f:
     manifest.Save(f)
