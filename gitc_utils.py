@@ -58,7 +58,6 @@ def generate_gitc_manifest(client_dir, manifest):
   """
   print('Generating GITC Manifest by fetching revision SHAs for each '
         'project.')
-  project_gitcmd_dict = {}
   index = 0
   while index < len(manifest.projects):
     _set_project_revisions(
