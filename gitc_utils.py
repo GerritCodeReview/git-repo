@@ -46,7 +46,7 @@ def _set_project_revisions(projects):
       for project in projects if not git_config.IsId(project.revisionExpr)]
   for proj, gitcmd in project_gitcmds:
     if gitcmd.Wait():
-      print('FATAL: Failed to retrieve revisionExpr for %s' % project)
+      print('FATAL: Failed to retrieve revisionExpr for %s' % proj)
       sys.exit(1)
     proj.revisionExpr = gitcmd.stdout.split('\t')[0]
 
