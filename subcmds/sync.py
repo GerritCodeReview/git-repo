@@ -552,10 +552,8 @@ later is required to fix a server side protocol bug.
     self._gitc_sync = False
     if cwd.startswith(gitc_utils.GITC_FS_ROOT_DIR):
       self._gitc_sync = True
-      self._client_name = cwd.split(gitc_utils.GITC_FS_ROOT_DIR)[1].split(
-          '/')[0]
-      self._client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
-                                      self._client_name)
+      (self._client_name, self._client_dir) = gitc_utils.parse_clientdir_info(
+          cwd)
       print('Updating GITC client: %s' % self._client_name)
 
     if opt.manifest_name:
