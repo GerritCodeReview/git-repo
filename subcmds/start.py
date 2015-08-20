@@ -14,11 +14,15 @@
 # limitations under the License.
 
 from __future__ import print_function
+import os
 import sys
+
 from command import Command
 from git_config import IsId
 from git_command import git
+import gitc_utils
 from progress import Progress
+from project import SyncBuffer
 
 class Start(Command):
   common = True
@@ -53,6 +57,26 @@ revision specified in the manifest.
         print("error: at least one project must be specified", file=sys.stderr)
         sys.exit(1)
 
+    _, gitc_client_dir = gitc_utils.parse_clientdir_info(os.getcwd())
+    if gitc_client_dir:
+      gitc_manifest = os.path.join(gitc_client_dir, '.manifest')
+      original_manifest = self.manifest.manifestFile
+      self.manifest.Override(gitc_manifest)
+      all_projects = self.GetProjects(projects, missing_ok=True)
+
+      for project in all_projects:
+        proj_localdir = os.path.join(gitc_client_dir, project.relpath)
+        project.worktree = proj_localdir
+        if not os.path.exists(proj_localdir):
+          os.makedirs(proj_localdir)
+        project.Sync_NetworkHalf(current_branch_only=True)
+        sync_buf = SyncBuffer(self.manifest.manifestProject.config)
+        project.Sync_LocalHalf(sync_buf)
+        project.revisionExpr = None
+      # Save the GITC manifest.
+      gitc_utils.save_manifest(gitc_client_dir, self.manifest)
+      self.manifest.Override(original_manifest)
+
     all_projects = self.GetProjects(projects)
 
     pm = Progress('Starting %s' % nb, len(all_projects))
@@ -75,3 +99,9 @@ revision specified in the manifest.
         print("error: %s/: cannot start %s" % (p.relpath, nb),
               file=sys.stderr)
       sys.exit(1)
+
+    if gitc_client_dir:
+      print('Branches successfully created, please cd to your local disk to '
+            'begin editing: \n')
+      for project in all_projects:
+        print('cd %s' % os.path.join(client_dir, project.relpath))
