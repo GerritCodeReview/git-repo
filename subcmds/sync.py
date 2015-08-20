@@ -468,16 +468,20 @@ later is required to fix a server side protocol bug.
         if not path:
           continue
         if path not in new_project_paths:
+          if self.gitc_manifest:
+            manifest = self.gitc_manifest
+          else:
+            manifest = self.manifest
           # If the path has already been deleted, we don't need to do it
-          if os.path.exists(self.manifest.topdir + '/' + path):
-            gitdir = os.path.join(self.manifest.topdir, path, '.git')
+          if os.path.exists(manifest.topdir + '/' + path):
+            gitdir = os.path.join(manifest.topdir, path, '.git')
             project = Project(
-                           manifest = self.manifest,
+                           manifest = manifest,
                            name = path,
                            remote = RemoteSpec('origin'),
                            gitdir = gitdir,
                            objdir = gitdir,
-                           worktree = os.path.join(self.manifest.topdir, path),
+                           worktree = os.path.join(manifest.topdir, path),
                            relpath = path,
                            revisionExpr = 'HEAD',
                            revisionId = None,
@@ -495,7 +499,7 @@ later is required to fix a server side protocol bug.
               shutil.rmtree(project.worktree)
               # Try deleting parent subdirs if they are empty
               project_dir = os.path.dirname(project.worktree)
-              while project_dir != self.manifest.topdir:
+              while project_dir != manifest.topdir:
                 try:
                   os.rmdir(project_dir)
                 except OSError:
@@ -548,15 +552,6 @@ later is required to fix a server side protocol bug.
             (gitc_utils.GITC_FS_ROOT_DIR,
              cwd.split(gitc_utils.GITC_MANIFEST_DIR)[1]))
       sys.exit(1)
-
-    self._gitc_sync = False
-    if cwd.startswith(gitc_utils.GITC_FS_ROOT_DIR):
-      self._gitc_sync = True
-      self._client_name = cwd.split(gitc_utils.GITC_FS_ROOT_DIR)[1].split(
-          '/')[0]
-      self._client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
-                                      self._client_name)
-      print('Updating GITC client: %s' % self._client_name)
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
@@ -677,12 +672,6 @@ later is required to fix a server side protocol bug.
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
-    if self._gitc_sync:
-      gitc_utils.generate_gitc_manifest(self._client_dir, self.manifest)
-      print('GITC client successfully synced.')
-      return
-
-
     if not opt.local_only:
       mp.Sync_NetworkHalf(quiet=opt.quiet,
                           current_branch_only=opt.current_branch_only,
@@ -697,6 +686,35 @@ later is required to fix a server side protocol bug.
       self._ReloadManifest(manifest_name)
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
+
+    # TODO (sbasi) - Add support for manifest changes, aka projects
+    # have been added or deleted from the manifest.
+    opened_projects = []
+    if self.gitc_manifest:
+      gitc_manifest_projects = self.GetProjects(args,
+                                                manifest=self.gitc_manifest,
+                                                missing_ok=True)
+      gitc_projects = []
+      for project in gitc_manifest_projects:
+        if not project.old_revision:
+          gitc_projects.append(project)
+        else:
+          opened_projects.append(project)
+
+      if gitc_projects and not opt.local_only:
+        print('Updating GITC client: %s' % self.gitc_manifest.gitc_client_name)
+        gitc_utils.generate_gitc_manifest(self.gitc_manifest.gitc_client_dir,
+                                          self.gitc_manifest,
+                                          gitc_projects)
+        print('GITC client successfully synced.')
+
+      # The opened projects need to be synced as normal, therefore we
+      # generate a new args list to represent the opened projects.
+      args = []
+      for proj in opened_projects:
+        args.append(os.path.relpath(proj.worktree, cwd))
+      if not args:
+        return
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
