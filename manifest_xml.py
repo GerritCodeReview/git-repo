@@ -306,6 +306,9 @@ class XmlManifest(object):
       if p.clone_depth:
         e.setAttribute('clone-depth', str(p.clone_depth))
 
+      if p.old_revision:
+        e.setAttribute('old-revision', str(p.old_revision))
+
       if p.subprojects:
         subprojects = set(subp.name for subp in p.subprojects)
         output_projects(p, e, list(sorted(subprojects)))
@@ -791,6 +794,8 @@ class XmlManifest(object):
       if node.getAttribute('force-path').lower() in ("yes", "true", "1"):
         gitdir = os.path.join(self.topdir, '%s.git' % path)
 
+    old_revision = node.getAttribute('old-revision')
+
     project = Project(manifest = self,
                       name = name,
                       remote = remote.ToRemoteSpec(name),
@@ -807,7 +812,8 @@ class XmlManifest(object):
                       clone_depth = clone_depth,
                       upstream = upstream,
                       parent = parent,
-                      dest_branch = dest_branch)
+                      dest_branch = dest_branch,
+                      old_revision = old_revision)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':

@@ -14,11 +14,15 @@
 # limitations under the License.
 
 from __future__ import print_function
+import os
 import sys
+
 from command import Command
 from git_config import IsId
 from git_command import git
+import gitc_utils
 from progress import Progress
+from project import SyncBuffer
 
 class Start(Command):
   common = True
@@ -53,20 +57,53 @@ revision specified in the manifest.
         print("error: at least one project must be specified", file=sys.stderr)
         sys.exit(1)
 
-    all_projects = self.GetProjects(projects)
+    proj_name_to_gitc_proj_dict = {}
+    _, gitc_client_dir = gitc_utils.parse_clientdir_info(os.getcwd())
+    if gitc_client_dir:
+      gitc_manifest = os.path.join(gitc_client_dir, '.manifest')
+      original_manifest = self.manifest.manifestFile
 
+      self.manifest.Override(gitc_manifest)
+      all_projects = self.GetProjects(projects, missing_ok=True)
+      for project in all_projects:
+        if project.old_revision:
+          project.already_synced = True
+        else:
+          project.already_synced = False
+          project.old_revision = project.revisionExpr
+        proj_name_to_gitc_proj_dict[project.name] = project
+        project.revisionExpr = None
+      # Save the GITC manifest.
+      gitc_utils.save_manifest(gitc_client_dir, self.manifest)
+      self.manifest.Override(original_manifest)
+
+    all_projects = self.GetProjects(projects, missing_ok=bool(gitc_client_dir))
     pm = Progress('Starting %s' % nb, len(all_projects))
     for project in all_projects:
       pm.update()
+      if gitc_client_dir:
+        gitc_project = proj_name_to_gitc_proj_dict[project.name]
+        # Sync projects that have already been opened.
+        if not gitc_project.already_synced:
+          proj_localdir = os.path.join(gitc_client_dir, project.relpath)
+          project.worktree = proj_localdir
+          if not os.path.exists(proj_localdir):
+            os.makedirs(proj_localdir)
+          project.Sync_NetworkHalf()
+          sync_buf = SyncBuffer(self.manifest.manifestProject.config)
+          project.Sync_LocalHalf(sync_buf)
+          project.revisionExpr = gitc_project.old_revision
+
       # If the current revision is a specific SHA1 then we can't push back
       # to it; so substitute with dest_branch if defined, or with manifest
       # default revision instead.
+      branch_merge = ''
       if IsId(project.revisionExpr):
         if project.dest_branch:
-          project.revisionExpr = project.dest_branch
+          branch_merge = project.dest_branch
         else:
-          project.revisionExpr = self.manifest.default.revisionExpr
-      if not project.StartBranch(nb):
+          branch_merge = self.manifest.default.revisionExpr
+      if not project.StartBranch(nb, branch_merge=branch_merge):
         err.append(project)
     pm.end()
 
