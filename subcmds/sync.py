@@ -65,7 +65,7 @@ except ImportError:
   multiprocessing = None
 
 from git_command import GIT, git_require
-from git_config import GetSchemeFromUrl, GetUrlCookieFile
+from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import gitc_utils
 from project import Project
@@ -586,19 +586,18 @@ later is required to fix a server side protocol bug.
           try:
             info = netrc.netrc()
           except IOError:
-            print('.netrc file does not exist or could not be opened',
-                  file=sys.stderr)
+            # .netrc file does not exist or could not be opened
+            pass
           else:
             try:
               parse_result = urllib.parse.urlparse(manifest_server)
               if parse_result.hostname:
-                username, _account, password = \
-                  info.authenticators(parse_result.hostname)
-            except TypeError:
-              # TypeError is raised when the given hostname is not present
-              # in the .netrc file.
-              print('No credentials found for %s in .netrc'
-                    % parse_result.hostname, file=sys.stderr)
+                auth = info.authenticators(parse_result.hostname)
+                if auth:
+                  username, _account, password = auth
+                else:
+                  print('No credentials found for %s in .netrc'
+                        % parse_result.hostname, file=sys.stderr)
             except netrc.NetrcParseError as e:
               print('Error parsing .netrc file: %s' % e, file=sys.stderr)
 
