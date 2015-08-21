@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6482fd52_92d2bc44",
+        "filename": "gitc_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-21T00:16:55Z",
+      "side": 1,
+      "message": "if gitc_fs_path \u003d\u003d GITC_FS_ROOT_DIR, client_name will be None, and next line will raise an exception.\n\nyou might need to handle that.\n\nif not gitc_fs_path:\n  return None, None",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 13
+      },
+      "revId": "6ac4bd997b4b6c639deeb21feca9f2a9650b38fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6482fd52_f2dd4855",
+        "filename": "subcmds/start.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-21T00:16:55Z",
+      "side": 1,
+      "message": "where will gitc_start be used?\n\nif it will be used in later CL, would it be cleaner to do:\n\ngitc_start \u003d cwd.startswith(gitc_utils.GITC_FS_ROOT_DIR)\nif gitc_start:\n  ...\n\n\nalso, if cwd is actually gitc_utils.GITC_FS_ROOT_DIR, code inside if block will raise exception as client_dir will be None. How about let function parse_clientdir_info to handle such edge case. and code here will become:\n\n_, client_dir \u003d gitc_utils.parse_clientdir_info(cwd)\nif client_dir:\n  ...",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 23
+      },
+      "revId": "6ac4bd997b4b6c639deeb21feca9f2a9650b38fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "646bdd6a_0ae77b20",
+        "filename": "subcmds/start.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1021169
+      },
+      "writtenOn": "2015-08-21T00:16:55Z",
+      "side": 1,
+      "message": "I think you don\u0027t need () here.",
+      "range": {
+        "startLine": 65,
+        "startChar": 6,
+        "endLine": 65,
+        "endChar": 7
+      },
+      "revId": "6ac4bd997b4b6c639deeb21feca9f2a9650b38fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
