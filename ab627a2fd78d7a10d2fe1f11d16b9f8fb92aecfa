@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "646bdd6a_6af397db",
+        "filename": "gitc_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1015803
+      },
+      "writtenOn": "2015-08-21T00:59:20Z",
+      "side": 1,
+      "message": "In person, you asked if you perhaps should delay for a second here to be sure that gitcfs notices the changed manifest.  I think that\u0027s a good idea.  (To be replaced later with an explicit file system access that tells gitcfs to recheck the manifest)",
+      "revId": "ab627a2fd78d7a10d2fe1f11d16b9f8fb92aecfa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6482fd52_b2d7c033",
+        "filename": "subcmds/start.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1015803
+      },
+      "writtenOn": "2015-08-21T00:59:20Z",
+      "side": 1,
+      "message": "This sleep (and the TODO) belongs in save_manifest().",
+      "revId": "ab627a2fd78d7a10d2fe1f11d16b9f8fb92aecfa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
