@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "646bdd6a_8a0b6b62",
+        "filename": "gitc_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-21T00:33:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6482fd52_92d2bc44",
+      "range": {
+        "startLine": 37,
+        "startChar": 2,
+        "endLine": 37,
+        "endChar": 13
+      },
+      "revId": "6ac4bd997b4b6c639deeb21feca9f2a9650b38fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6482fd52_f2dd4855",
         "filename": "subcmds/start.py",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "646bdd6a_ca016346",
+        "filename": "subcmds/start.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-21T00:33:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6482fd52_f2dd4855",
+      "range": {
+        "startLine": 62,
+        "startChar": 4,
+        "endLine": 64,
+        "endChar": 23
+      },
+      "revId": "6ac4bd997b4b6c639deeb21feca9f2a9650b38fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "646bdd6a_0ae77b20",
         "filename": "subcmds/start.py",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2015-08-21T00:16:55Z",
       "side": 1,
       "message": "I think you don\u0027t need () here.",
+      "range": {
+        "startLine": 65,
+        "startChar": 6,
+        "endLine": 65,
+        "endChar": 7
+      },
+      "revId": "6ac4bd997b4b6c639deeb21feca9f2a9650b38fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "646bdd6a_ea06a75b",
+        "filename": "subcmds/start.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-21T00:33:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "646bdd6a_0ae77b20",
       "range": {
         "startLine": 65,
         "startChar": 6,
