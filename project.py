@@ -63,6 +63,10 @@ def _error(fmt, *args):
   msg = fmt % args
   print('error: %s' % msg, file=sys.stderr)
 
+def _warn(fmt, *args):
+  msg = fmt % args
+  print('warn: %s' % msg, file=sys.stderr)
+
 def not_rev(r):
   return '^' + r
 
@@ -1092,8 +1096,7 @@ class Project(object):
         tar.extractall(path=path)
         return True
     except (IOError, tarfile.TarError) as e:
-      print("error: Cannot extract archive %s: "
-            "%s" % (tarpath, str(e)), file=sys.stderr)
+      _error("Cannot extract archive %s: %s", tarpath, str(e))
     return False
 
   def Sync_NetworkHalf(self,
@@ -1110,8 +1113,7 @@ class Project(object):
     """
     if archive and not isinstance(self, MetaProject):
       if self.remote.url.startswith(('http://', 'https://')):
-        print("error: %s: Cannot fetch archives from http/https "
-              "remotes." % self.name, file=sys.stderr)
+        _error("%s: Cannot fetch archives from http/https remotes.", self.name)
         return False
 
       name = self.relpath.replace('\\', '/')
@@ -1122,7 +1124,7 @@ class Project(object):
       try:
         self._FetchArchive(tarpath, cwd=topdir)
       except GitError as e:
-        print('error: %s' % str(e), file=sys.stderr)
+        _error('%s', e)
         return False
 
       # From now on, we only need absolute tarpath
@@ -1133,8 +1135,7 @@ class Project(object):
       try:
         os.remove(tarpath)
       except OSError as e:
-        print("warn: Cannot remove archive %s: "
-              "%s" % (tarpath, str(e)), file=sys.stderr)
+        _warn("Cannot remove archive %s: %s", tarpath, str(e))
       self._CopyAndLinkFiles()
       return True
     if is_new is None:
