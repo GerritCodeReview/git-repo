@@ -46,6 +46,30 @@
       "revId": "384db4f23673e860b27d8bcab501f7b47cacb18d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24d1e58c_88419766",
+        "filename": "subcmds/start.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1015803
+      },
+      "writtenOn": "2015-08-24T21:56:40Z",
+      "side": 1,
+      "message": "I\u0027m assuming:\n\n$ repo gitc-init -c Alphabet -u persistent-https://googleplex-android.git.corp.google.com/platform/manifest -b master\n$ cd /gitc/manifest-rw/Alphabet\n$ repo start branch1 build/kati\n$ cd build/kati\n$ vim main.cc\n\nYou also have \"sync\" commands and in one case, two \"repo start\"s.  Are those necessary?\n\n(Side note: currently this causes an error \"NameError: global name \u0027client_dir\u0027 is not defined\", but I assume you know that because of your comment not to do anything until you mark it ready with CR\u003d0)",
+      "parentUuid": "04d4e17b_c7625e0a",
+      "range": {
+        "startLine": 104,
+        "startChar": 6,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "384db4f23673e860b27d8bcab501f7b47cacb18d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
