@@ -2227,7 +2227,7 @@ class Project(object):
         if filecmp.cmp(stock_hook, dst, shallow=False):
           os.remove(dst)
         else:
-          _error("%s: Not replacing %s hook", self.relpath, name)
+          _warn("%s: Not replacing locally modified %s hook", self.relpath, name)
           continue
       try:
         os.symlink(os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
