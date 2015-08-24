@@ -22,6 +22,30 @@
       "revId": "384db4f23673e860b27d8bcab501f7b47cacb18d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_c7625e0a",
+        "filename": "subcmds/start.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-24T21:22:11Z",
+      "side": 1,
+      "message": "Hmm that makes me wonder if I should not be pulling the sources if the revisionExpr is already None.\n\nOriginal use case:\ngitc-init (new repo)\nrepo start (pull sources and create new branch)\ncd to directory\nrepo sync (updates sources)\nrepo start work like normal.\n\n\nIf we don\u0027t cd:\ngitc-init (new repo)\nrepo start branch1 (pull sources and create new branch)\nrepo start branch2 (would again pull sources and create new branch)\nrepo sync (would not pull sources instead updates gitc manifest)\n\n\nI\u0027m wondering if now I should update sync and start to act like normal if revisionExpr is None?",
+      "parentUuid": "24d1e58c_c8626f0a",
+      "range": {
+        "startLine": 104,
+        "startChar": 6,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "384db4f23673e860b27d8bcab501f7b47cacb18d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
