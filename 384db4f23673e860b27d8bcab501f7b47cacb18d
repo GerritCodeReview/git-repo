@@ -70,6 +70,47 @@
       "revId": "384db4f23673e860b27d8bcab501f7b47cacb18d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24d1e58c_88935762",
+        "filename": "subcmds/start.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-25T03:04:37Z",
+      "side": 1,
+      "message": "Yeah, you shouldn\u0027t be doing any syncing if the project already exists locally. The only sync should be the first time.",
+      "parentUuid": "24d1e58c_88419766",
+      "range": {
+        "startLine": 104,
+        "startChar": 6,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "384db4f23673e860b27d8bcab501f7b47cacb18d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_e7884230",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-25T03:04:37Z",
+      "side": 1,
+      "message": "I\u0027d expect this function to continue for any projects that aren\u0027t being handled by the gitc manifest now.",
+      "revId": "384db4f23673e860b27d8bcab501f7b47cacb18d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
