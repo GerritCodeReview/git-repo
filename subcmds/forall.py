@@ -227,7 +227,7 @@ without iterating through the remaining projects.
       rc = rc or errno.EINTR
     except Exception as e:
       # Catch any other exceptions raised
-      print('Got an error, terminating the pool: %r' % e,
+      print('Got an error, terminating the pool: %r, %r' % (type(e).__name__, str(e)),
             file=sys.stderr)
       pool.terminate()
       rc = rc or getattr(e, 'errno', 1)
