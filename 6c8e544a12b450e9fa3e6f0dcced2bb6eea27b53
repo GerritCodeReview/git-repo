@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "647cbd57_e2ece6b7",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1021417
+      },
+      "writtenOn": "2015-08-26T19:27:51Z",
+      "side": 1,
+      "message": "e.g. old:\n\"Got an error, terminating the pool: GitError()\"\nnew:\nGot an error, terminating the pool: \u0027GitError\u0027: \u0027remote origin does not have refs/heads/master\u0027",
+      "revId": "6c8e544a12b450e9fa3e6f0dcced2bb6eea27b53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
