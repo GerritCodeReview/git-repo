@@ -16,6 +16,24 @@
       "revId": "8b6114cbfef477d0119ef21120e85a3508284edd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_6793b22e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-26T20:48:48Z",
+      "side": 1,
+      "message": "Yeah, it should be moved down to ~line 714 so that you get the new manifest",
+      "parentUuid": "24d1e58c_48b79fbc",
+      "revId": "8b6114cbfef477d0119ef21120e85a3508284edd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
