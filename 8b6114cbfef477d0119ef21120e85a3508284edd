@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24d1e58c_48b79fbc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-26T20:43:41Z",
+      "side": 1,
+      "message": "Hey Dan, so I think I\u0027m missing this case here which is: \"Update the GITC manifest should the manifest change (aka its adding/removing a project.\"\n\nAm I right? In which case I need to bring my logic after the mp updates and determine if there any new/deleted projects and update my GITC manifest for these cases.",
+      "revId": "8b6114cbfef477d0119ef21120e85a3508284edd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
