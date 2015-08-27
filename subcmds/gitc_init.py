@@ -16,6 +16,7 @@
 from __future__ import print_function
 import os
 import sys
+import urlparse
 
 import gitc_utils
 from subcmds import init
@@ -66,8 +67,14 @@ use for this GITC client.
     if not os.path.exists(self.client_dir):
       os.mkdir(self.client_dir)
     super(GitcInit, self).Execute(opt, args)
-    # Make the destination manifest file a symlink to repo's so both repo and
-    # GITC refer to the same manifest.
+
+    manifest_baseurl = os.path.dirname(opt.manifest_url)
+    for name, remote in self.manifest.remotes.iteritems():
+      # Check if the remote's fetchUrl is a relative and if so make it absolute
+      # relative to the manifest's base URL.
+      if not urlparse.urlparse(remote.fetchUrl).netloc:
+        remote.fetchUrl = remote.resolvedFetchUrl
+
     if opt.manifest_file:
       if not os.path.exists(opt.manifest_file):
         print('fatal: Specified manifest file %s does not exist.' %
