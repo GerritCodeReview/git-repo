@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4c569ce_e51af673",
+        "filename": "subcmds/start.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T21:37:08Z",
+      "side": 1,
+      "message": "I\u0027m actually thinking that we could subclass the XmlManifest class into a GitcManifest class that we could load separately, instead of bouncing back and forth between the two manifests.\n\nThat could handle where the gitc manifest file is, and (with some refactoring) add the support in for the old-revision attribute, which I don\u0027t really want to see supported in the main manifest format.\n\nThough GetProjects would need to handle a separate manifest",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "245f25fb_f83bb1f1",
+        "filename": "subcmds/start.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T21:37:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure Command._GetProjectByPath() (called from GetProjects) works properly on gitc checkouts, since we have two topdirs... (or should we only allow repo commands in /gitc/manifest-rw/.../ now?)",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c4c569ce_c51ffa61",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T21:37:08Z",
+      "side": 1,
+      "message": "If we make sure this points to the GITC_MANIFEST_DIR for gitc clients, this should do the right thing already for projects being removed.",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_a702ca7f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T21:37:08Z",
+      "side": 1,
+      "message": "and not opt.local_only",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_47d5ce5e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T21:37:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure this actually adds much - this should be transparent to the user (just a bit slower, and that should be obvious from the sync messages)",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
