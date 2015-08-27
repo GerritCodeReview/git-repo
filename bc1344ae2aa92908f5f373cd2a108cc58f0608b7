@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04d4e17b_e7e3224e",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T20:29:03Z",
+      "side": 1,
+      "message": "OK, should have made it more specific, no need to do any urlparse\u0027ing here, or grab the manifest_baseurl. Just loop through the remotes and copy the attribute:\n\n  for name, remote in self.manifest.remotes.iteritems():\n    remote.fetchUrl \u003d remote.resolvedFetchUrl",
+      "revId": "bc1344ae2aa92908f5f373cd2a108cc58f0608b7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
