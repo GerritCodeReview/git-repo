@@ -66,8 +66,10 @@ use for this GITC client.
     if not os.path.exists(self.client_dir):
       os.mkdir(self.client_dir)
     super(GitcInit, self).Execute(opt, args)
-    # Make the destination manifest file a symlink to repo's so both repo and
-    # GITC refer to the same manifest.
+
+    for name, remote in self.manifest.remotes.iteritems():
+      remote.fetchUrl = remote.resolvedFetchUrl
+
     if opt.manifest_file:
       if not os.path.exists(opt.manifest_file):
         print('fatal: Specified manifest file %s does not exist.' %
