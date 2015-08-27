@@ -53,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "245f25fb_1851452f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T21:38:06Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be a check for old-revision? The source manifest may use sha-1s",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04d4e17b_a702ca7f",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
