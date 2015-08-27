@@ -16,6 +16,29 @@
       "revId": "6c8e544a12b450e9fa3e6f0dcced2bb6eea27b53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24d1e58c_a84c5b1c",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-27T15:35:18Z",
+      "side": 1,
+      "message": "These should be %s.\n\nUsing %r in the original was correct because it formats with the __repr__ of the given exception class.  Since __name__ and str(e) are both strings, %s should be used.\n\nAlternatively, leave this as it was, and add __repr__ implementations on the error classes.",
+      "range": {
+        "startLine": 230,
+        "startChar": 49,
+        "endLine": 230,
+        "endChar": 55
+      },
+      "revId": "6c8e544a12b450e9fa3e6f0dcced2bb6eea27b53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
