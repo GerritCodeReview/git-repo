@@ -16,6 +16,24 @@
       "revId": "bc1344ae2aa92908f5f373cd2a108cc58f0608b7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_27cedad8",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-27T20:40:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_e7e3224e",
+      "revId": "bc1344ae2aa92908f5f373cd2a108cc58f0608b7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
