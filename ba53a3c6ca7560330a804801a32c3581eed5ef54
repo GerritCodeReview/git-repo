@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "245f25fb_384e0990",
+        "filename": "subcmds/pause.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-27T21:46:57Z",
+      "side": 1,
+      "message": "We should find some way to hide this subcmd if you\u0027re not in a gitc checkout",
+      "revId": "ba53a3c6ca7560330a804801a32c3581eed5ef54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
