@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "04d4e17b_67ca92b4",
+        "filename": "subcmds/start.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T00:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4c569ce_e51af673",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "245f25fb_f83bb1f1",
         "filename": "subcmds/start.py",
         "patchSetId": 9
@@ -30,6 +48,24 @@
       "writtenOn": "2015-08-27T21:37:08Z",
       "side": 1,
       "message": "I\u0027m not sure Command._GetProjectByPath() (called from GetProjects) works properly on gitc checkouts, since we have two topdirs... (or should we only allow repo commands in /gitc/manifest-rw/.../ now?)",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_8707c68f",
+        "filename": "subcmds/start.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T00:17:52Z",
+      "side": 1,
+      "message": "Since Jorg made it possible to read+write under /gitc/manifest-rw, I\u0027ve gone with the mentality that the user will be operating under this path.\n\nIt\u0027s still possible for them to go to the local filesystem copy and work normally. All the old repo commands work as you would expect over there. The only difference is the manifest is not manipulated.",
+      "parentUuid": "245f25fb_f83bb1f1",
       "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "04d4e17b_879986d3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T00:17:52Z",
+      "side": 1,
+      "message": "Confused by what you want here, please look at my next PS if that can help you be more specific.",
+      "parentUuid": "c4c569ce_c51ffa61",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "245f25fb_1851452f",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
@@ -64,6 +118,24 @@
       "writtenOn": "2015-08-27T21:38:06Z",
       "side": 1,
       "message": "Shouldn\u0027t this be a check for old-revision? The source manifest may use sha-1s",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_e7fcc2e5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 697,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T00:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "245f25fb_1851452f",
       "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "04d4e17b_c701be7b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 702,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T00:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_a702ca7f",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04d4e17b_47d5ce5e",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
@@ -98,6 +188,24 @@
       "writtenOn": "2015-08-27T21:37:08Z",
       "side": 1,
       "message": "I\u0027m not sure this actually adds much - this should be transparent to the user (just a bit slower, and that should be obvious from the sync messages)",
+      "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_07f476f8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T00:17:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_47d5ce5e",
       "revId": "b675283df10f201b5a7ce002a38ac432aa68f481",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
