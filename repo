@@ -108,7 +108,6 @@ S_repo = 'repo'                 # special repo repository
 S_manifests = 'manifests'       # special manifest repository
 REPO_MAIN = S_repo + '/main.py' # main script
 MIN_PYTHON_VERSION = (2, 6)     # minimum supported python version
-GITC_MANIFEST_DIR = '/usr/local/google/gitc'
 
 
 import errno
@@ -119,6 +118,8 @@ import shutil
 import stat
 import subprocess
 import sys
+
+import wrapper
 
 if sys.version_info[0] == 3:
   import urllib.request
@@ -255,7 +256,12 @@ def _Init(args, gitc_init=False):
 
   try:
     if gitc_init:
-      client_dir = os.path.join(GITC_MANIFEST_DIR, opt.gitc_client)
+      gitc_manifest_dir = wrapper.Wrapper().get_gitc_manifest_dir()
+      if not gitc_manifest_dir:
+        _print('error: GITC filesystem is not running. Exiting...',
+               file=sys.stderr)
+        sys.exit(1)
+      client_dir = os.path.join(gitc_manifest_dir, opt.gitc_client)
       if not os.path.exists(client_dir):
         os.makedirs(client_dir)
       os.chdir(client_dir)

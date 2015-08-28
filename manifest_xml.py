@@ -956,7 +956,7 @@ class GitcManifest(XmlManifest):
     super(GitcManifest, self).__init__(repodir)
     self.isGitcClient = True
     self.gitc_client_name = gitc_client_name
-    self.gitc_client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
+    self.gitc_client_dir = os.path.join(gitc_utils.get_gitc_manifest_dir(),
                                         gitc_client_name)
     self.manifestFile = os.path.join(self.gitc_client_dir, '.manifest')
 

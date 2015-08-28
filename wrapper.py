@@ -19,8 +19,25 @@ import imp
 import os
 
 
+GITC_CONFIG_FILE = '/gitc/.config'
+
 def WrapperPath():
   return os.path.join(os.path.dirname(__file__), 'repo')
+
+_gitc_manifest_dir = None
+def get_gitc_manifest_dir():
+  global _gitc_manifest_dir
+  if _gitc_manifest_dir is None:
+    try:
+      with open(GITC_CONFIG_FILE, 'r') as gitc_config:
+        for line in gitc_config:
+          match = re.match('gitc_dir=(?P<gitc_manifest_dir>.*)', line)
+          if match:
+            _gitc_manifest_dir = match.group('gitc_manifest_dir')
+    except IOError:
+      _gitc_manifest_dir = ''
+  return _gitc_manifest_dir
+
 
 _wrapper_module = None
 def Wrapper():
