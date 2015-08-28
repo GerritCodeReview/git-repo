@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "04d4e17b_ea012714",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_8a934b62",
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "045781ea_8f533543",
         "filename": "gitc_utils.py",
         "patchSetId": 1
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "045781ea_6f6ff1ed",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "045781ea_8f533543",
+      "range": {
+        "startLine": 30,
+        "startChar": 21,
+        "endLine": 30,
+        "endChar": 23
+      },
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04d4e17b_4a7af394",
         "filename": "gitc_utils.py",
         "patchSetId": 1
@@ -53,6 +95,24 @@
       "writtenOn": "2015-08-28T21:52:05Z",
       "side": 1,
       "message": "since we can use functions from the repo launcher with wrapper.Wrapper(), this may be a good candidate for that.",
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_ca06e329",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_4a7af394",
       "revId": "06dac97928d6d2c84976496d95b63480786497b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -99,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "045781ea_2f65e90f",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_ea880730",
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "04d4e17b_2a833f13",
         "filename": "gitc_utils.py",
         "patchSetId": 1
@@ -110,6 +188,30 @@
       "writtenOn": "2015-08-28T21:52:05Z",
       "side": 1,
       "message": "just:\n\n  for line in gitc_config:",
+      "range": {
+        "startLine": 36,
+        "startChar": 29,
+        "endLine": 36,
+        "endChar": 41
+      },
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "045781ea_0f6825e7",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_2a833f13",
       "range": {
         "startLine": 36,
         "startChar": 29,
@@ -173,6 +275,24 @@
       "writtenOn": "2015-08-28T21:52:05Z",
       "side": 1,
       "message": "this should print to stderr",
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "045781ea_4f722dd7",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04d4e17b_0a80fb02",
       "revId": "06dac97928d6d2c84976496d95b63480786497b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -254,6 +374,24 @@
       "writtenOn": "2015-08-28T21:52:05Z",
       "side": 1,
       "message": "What do you think about moving this check to the launcher, and just not letting you use repo under the manifest dir?",
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "045781ea_af41d965",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:32:28Z",
+      "side": 1,
+      "message": "I still find it useful to use repo in the manifest directory for debugging, etc so I would prefer not to kill this for now.",
+      "parentUuid": "045781ea_0f1f4593",
       "revId": "06dac97928d6d2c84976496d95b63480786497b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
