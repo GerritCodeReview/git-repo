@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "04d4e17b_0a091b37",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:53:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "045781ea_ef3be1f1",
+      "revId": "a6e0534d32871cb3afc862b8b0ac4623c13c0232",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "045781ea_0f51052f",
         "filename": "wrapper.py",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2015-08-28T22:36:25Z",
       "side": 1,
       "message": "no, this should go in \u0027repo\u0027. This file lets the other code access code in that file",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 27
+      },
+      "revId": "a6e0534d32871cb3afc862b8b0ac4623c13c0232",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "647cbd57_a24c9e1c",
+        "filename": "wrapper.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T22:53:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "045781ea_0f51052f",
       "range": {
         "startLine": 27,
         "startChar": 0,
