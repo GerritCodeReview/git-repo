@@ -16,6 +16,92 @@
       "revId": "ba53a3c6ca7560330a804801a32c3581eed5ef54",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_ca10a38e",
+        "filename": "subcmds/pause.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-28T03:13:06Z",
+      "side": 1,
+      "message": "\u0027or the --all option\u0027",
+      "range": {
+        "startLine": 45,
+        "startChar": 42,
+        "endLine": 45,
+        "endChar": 43
+      },
+      "revId": "ba53a3c6ca7560330a804801a32c3581eed5ef54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_0af3dbdb",
+        "filename": "subcmds/pause.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-28T03:13:06Z",
+      "side": 1,
+      "message": "It might be worth breaking this out into a util method that can be called from all the gitc-related commands.  Call it `require_gitc` or something like that.",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 49,
+        "endChar": 69
+      },
+      "revId": "ba53a3c6ca7560330a804801a32c3581eed5ef54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_2af69fcb",
+        "filename": "subcmds/pause.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-28T03:13:06Z",
+      "side": 1,
+      "message": "missing sys.exit(1) after this error message?",
+      "revId": "ba53a3c6ca7560330a804801a32c3581eed5ef54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d4e17b_ea0be760",
+        "filename": "subcmds/pause.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-28T03:13:06Z",
+      "side": 1,
+      "message": "\"Paused\"?",
+      "range": {
+        "startLine": 55,
+        "startChar": 11,
+        "endLine": 55,
+        "endChar": 17
+      },
+      "revId": "ba53a3c6ca7560330a804801a32c3581eed5ef54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
