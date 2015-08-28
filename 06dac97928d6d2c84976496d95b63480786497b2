@@ -219,6 +219,30 @@
     },
     {
       "key": {
+        "uuid": "045781ea_ef62010a",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1015803
+      },
+      "writtenOn": "2015-08-28T21:56:16Z",
+      "side": 1,
+      "message": "No, the daemon install doesn\u0027t create that dir.",
+      "parentUuid": "04d4e17b_6a7d378b",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 53
+      },
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "045781ea_0f1f4593",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
