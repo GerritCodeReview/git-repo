@@ -194,9 +194,6 @@ later is required to fix a server side protocol bug.
                  help="overwrite an existing git directory if it needs to "
                       "point to a different object directory. WARNING: this "
                       "may cause loss of data")
-    p.add_option('--force-gitc',
-                 dest='force_gitc', action='store_true',
-                 help="actually sync sources in the gitc client directory.")
     p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -538,16 +535,6 @@ later is required to fix a server side protocol bug.
       if None in [opt.manifest_server_username, opt.manifest_server_password]:
         print('error: both -u and -p must be given', file=sys.stderr)
         sys.exit(1)
-
-    cwd = os.getcwd()
-    if cwd.startswith(gitc_utils.GITC_MANIFEST_DIR) and not opt.force_gitc:
-      print('WARNING this will pull all the sources like a normal repo sync.\n'
-            '\nIf you want to update your GITC Client View please rerun this '
-            'command in \n%s%s.\nOr if you actually want to pull the sources, '
-            'rerun with --force-gitc.' %
-            (gitc_utils.GITC_FS_ROOT_DIR,
-             cwd.split(gitc_utils.GITC_MANIFEST_DIR)[1]))
-      sys.exit(1)
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)

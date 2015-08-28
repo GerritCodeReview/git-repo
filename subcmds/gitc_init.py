@@ -59,10 +59,10 @@ use for this GITC client.
     if not opt.gitc_client:
       print('fatal: gitc client (-c) is required', file=sys.stderr)
       sys.exit(1)
-    self.client_dir = os.path.join(gitc_utils.GITC_MANIFEST_DIR,
+    self.client_dir = os.path.join(gitc_utils.get_gitc_manifest_dir(),
                                    opt.gitc_client)
-    if not os.path.exists(gitc_utils.GITC_MANIFEST_DIR):
-      os.makedirs(gitc_utils.GITC_MANIFEST_DIR)
+    if not os.path.exists(gitc_utils.get_gitc_manifest_dir()):
+      os.makedirs(gitc_utils.get_gitc_manifest_dir())
     if not os.path.exists(self.client_dir):
       os.mkdir(self.client_dir)
     super(GitcInit, self).Execute(opt, args)
