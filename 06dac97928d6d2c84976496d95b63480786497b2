@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "045781ea_2f1c099c",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T21:30:36Z",
+      "side": 1,
+      "message": "Not sure if there is a cleaner way to do this but it does what I want, looks it up only the first time.",
+      "range": {
+        "startLine": 33,
+        "startChar": 9,
+        "endLine": 33,
+        "endChar": 27
+      },
+      "revId": "06dac97928d6d2c84976496d95b63480786497b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
