@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "04d4e17b_67557248",
+        "filename": "manifest_xml.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-08-28T01:33:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4c569ce_a5c91e56",
+      "range": {
+        "startLine": 329,
+        "startChar": 14,
+        "endLine": 329,
+        "endChar": 37
+      },
+      "revId": "bf67a11e3a3dcb1e7f14602dd9bc45a3876614d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "245f25fb_b8aa198a",
         "filename": "subcmds/sync.py",
         "patchSetId": 11
