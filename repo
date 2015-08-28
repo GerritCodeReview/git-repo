@@ -108,7 +108,7 @@ S_repo = 'repo'                 # special repo repository
 S_manifests = 'manifests'       # special manifest repository
 REPO_MAIN = S_repo + '/main.py' # main script
 MIN_PYTHON_VERSION = (2, 6)     # minimum supported python version
-GITC_MANIFEST_DIR = '/usr/local/google/gitc'
+GITC_CONFIG_FILE = '/gitc/.config'
 
 
 import errno
@@ -222,6 +222,20 @@ def _GitcInitOptions(init_optparse):
                dest='gitc_client',
                help='The name for the new gitc_client instance.')
 
+_gitc_manifest_dir = None
+def get_gitc_manifest_dir():
+  global _gitc_manifest_dir
+  if _gitc_manifest_dir is None:
+    try:
+      with open(GITC_CONFIG_FILE, 'r') as gitc_config:
+        for line in gitc_config:
+          match = re.match('gitc_dir=(?P<gitc_manifest_dir>.*)', line)
+          if match:
+            _gitc_manifest_dir = match.group('gitc_manifest_dir')
+    except IOError:
+      _gitc_manifest_dir = ''
+  return _gitc_manifest_dir
+
 class CloneFailure(Exception):
   """Indicate the remote clone of repo itself failed.
   """
@@ -255,7 +269,12 @@ def _Init(args, gitc_init=False):
 
   try:
     if gitc_init:
-      client_dir = os.path.join(GITC_MANIFEST_DIR, opt.gitc_client)
+      gitc_manifest_dir = get_gitc_manifest_dir()
+      if not gitc_manifest_dir:
+        _print('error: GITC filesystem is not running. Exiting...',
+               file=sys.stderr)
+        sys.exit(1)
+      client_dir = os.path.join(gitc_manifest_dir, opt.gitc_client)
       if not os.path.exists(client_dir):
         os.makedirs(client_dir)
       os.chdir(client_dir)
@@ -746,6 +765,12 @@ def main(orig_args):
   wrapper_path = os.path.abspath(__file__)
   my_main, my_git = _RunSelf(wrapper_path)
 
+  cwd = os.getcwd()
+  if cwd.startswith(get_gitc_manifest_dir()):
+    _print('error: repo cannot be used in the GITC local manifest directory.'
+           '\nIf you want to work on this GITC client please rerun this '
+           'command from the corresponding client under /gitc/', file=sys.stderr)
+    sys.exit(1)
   if not repo_main:
     if opt.help:
       _Usage()
