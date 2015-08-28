@@ -540,13 +540,13 @@ later is required to fix a server side protocol bug.
         sys.exit(1)
 
     cwd = os.getcwd()
-    if cwd.startswith(gitc_utils.GITC_MANIFEST_DIR) and not opt.force_gitc:
+    if cwd.startswith(gitc_utils.get_gitc_manifest_dir()) and not opt.force_gitc:
       print('WARNING this will pull all the sources like a normal repo sync.\n'
             '\nIf you want to update your GITC Client View please rerun this '
             'command in \n%s%s.\nOr if you actually want to pull the sources, '
             'rerun with --force-gitc.' %
             (gitc_utils.GITC_FS_ROOT_DIR,
-             cwd.split(gitc_utils.GITC_MANIFEST_DIR)[1]))
+             cwd.split(gitc_utils.get_gitc_manifest_dir())[1]))
       sys.exit(1)
 
     if opt.manifest_name:

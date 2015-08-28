@@ -108,7 +108,7 @@ S_repo = 'repo'                 # special repo repository
 S_manifests = 'manifests'       # special manifest repository
 REPO_MAIN = S_repo + '/main.py' # main script
 MIN_PYTHON_VERSION = (2, 6)     # minimum supported python version
-GITC_MANIFEST_DIR = '/usr/local/google/gitc'
+GITC_CONFIG_FILE = '/gitc/.config'
 
 
 import errno
@@ -255,7 +255,16 @@ def _Init(args, gitc_init=False):
 
   try:
     if gitc_init:
-      client_dir = os.path.join(GITC_MANIFEST_DIR, opt.gitc_client)
+      gitc_manifest_dir = ''
+      with open(GITC_CONFIG_FILE, 'r') as gitc_config:
+        for line in gitc_config.readlines():
+          match = re.match('gitc_dir=(?P<gitc_manifest_dir>.*)', line)
+          if match:
+            gitc_manifest_dir = match.group('gitc_manifest_dir')
+      if not gitc_manifest_dir:
+        print('error: GITC filesystem is not running. Exiting...')
+        sys.exit(1)
+      client_dir = os.path.join(gitc_manifest_dir, opt.gitc_client)
       if not os.path.exists(client_dir):
         os.makedirs(client_dir)
       os.chdir(client_dir)

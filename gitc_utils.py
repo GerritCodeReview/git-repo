@@ -15,6 +15,7 @@
 
 from __future__ import print_function
 import os
+import re
 import sys
 import time
 
@@ -22,10 +23,21 @@ import git_command
 import git_config
 
 
-# TODO (sbasi) - Remove this constant and fetch manifest dir from /gitc/.config
-GITC_MANIFEST_DIR = '/usr/local/google/gitc/'
+GITC_CONFIG_FILE = '/gitc/.config'
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 NUM_BATCH_RETRIEVE_REVISIONID = 300
+
+_gitc_manifest_dir = ''
+
+def get_gitc_manifest_dir():
+  global _gitc_manifest_dir
+  if not _gitc_manifest_dir:
+    with open(GITC_CONFIG_FILE, 'r') as gitc_config:
+      for line in gitc_config.readlines():
+        match = re.match('gitc_dir=(?P<gitc_manifest_dir>.*)', line)
+        if match:
+          _gitc_manifest_dir = match.group('gitc_manifest_dir')
+  return _gitc_manifest_dir
 
 def parse_clientdir(gitc_fs_path):
   """Parse a path in the GITC FS and return its client name.
