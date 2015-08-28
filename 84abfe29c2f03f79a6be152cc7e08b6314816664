@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04d4e17b_2aedffff",
+        "filename": "manifest_xml.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-28T02:39:00Z",
+      "side": 1,
+      "message": "this is still wrong",
+      "range": {
+        "startLine": 329,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 37
+      },
+      "revId": "84abfe29c2f03f79a6be152cc7e08b6314816664",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
