@@ -230,3 +230,8 @@ class MirrorSafeCommand(object):
   """Command permits itself to run within a mirror,
      and does not require a working directory.
   """
+
+class RequiresGitcCommand(object):
+  """Command that requires GITC to be available, but does
+     not require the local client to be a GITC client.
+  """

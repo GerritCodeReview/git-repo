@@ -18,10 +18,11 @@ import os
 import sys
 
 import gitc_utils
+from command import RequiresGitcCommand
 from subcmds import init
 
 
-class GitcInit(init.Init):
+class GitcInit(init.Init, RequiresGitcCommand):
   common = True
   helpSummary = "Initialize a GITC Client."
   helpUsage = """
