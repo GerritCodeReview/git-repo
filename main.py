@@ -42,6 +42,7 @@ from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
+from command import RequiresGitcCommand
 from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
@@ -140,6 +141,11 @@ class _Repo(object):
 
     if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
       print("fatal: '%s' requires a working directory" % name,
+            file=sys.stderr)
+      return 1
+
+    if isinstance(cmd, RequiresGitcCommand) and not gitc_utils.get_gitc_manifest_dir():
+      print("fatal: '%s' requires GITC to be running" % name,
             file=sys.stderr)
       return 1
 
