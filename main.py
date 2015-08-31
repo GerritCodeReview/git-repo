@@ -42,7 +42,7 @@ from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from command import RequiresGitcCommand
+from command import GitcCommand, RequiresGitcCommand
 from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
