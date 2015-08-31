@@ -18,12 +18,12 @@ import os
 import sys
 
 import gitc_utils
-from command import RequiresGitcCommand
+from command import GitcAvailableCommand
 from manifest_xml import GitcManifest
 from subcmds import init
 
 
-class GitcInit(init.Init, RequiresGitcCommand):
+class GitcInit(init.Init, GitcAvailableCommand):
   common = True
   helpSummary = "Initialize a GITC Client."
   helpUsage = """
