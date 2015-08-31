@@ -226,6 +226,7 @@ _gitc_manifest_dir = None
 def get_gitc_manifest_dir():
   global _gitc_manifest_dir
   if _gitc_manifest_dir is None:
+    _gitc_manifest_dir = ''
     try:
       with open(GITC_CONFIG_FILE, 'r') as gitc_config:
         for line in gitc_config:
@@ -233,7 +234,7 @@ def get_gitc_manifest_dir():
           if match:
             _gitc_manifest_dir = match.group('gitc_manifest_dir')
     except IOError:
-      _gitc_manifest_dir = ''
+      pass
   return _gitc_manifest_dir
 
 class CloneFailure(Exception):
@@ -766,7 +767,7 @@ def main(orig_args):
   my_main, my_git = _RunSelf(wrapper_path)
 
   cwd = os.getcwd()
-  if cwd.startswith(get_gitc_manifest_dir()):
+  if get_gitc_manifest_dir() and cwd.startswith(get_gitc_manifest_dir()):
     _print('error: repo cannot be used in the GITC local manifest directory.'
            '\nIf you want to work on this GITC client please rerun this '
            'command from the corresponding client under /gitc/', file=sys.stderr)
