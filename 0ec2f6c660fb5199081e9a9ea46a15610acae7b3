@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a442364a_8fc9d591",
+        "filename": "repo",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-31T21:40:33Z",
+      "side": 1,
+      "message": "Since the only things that are changing are gitc, and that\u0027s not widely available, we\u0027re not planning on it.",
+      "parentUuid": "a4f4f641_1fbe23eb",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 17
+      },
+      "revId": "0ec2f6c660fb5199081e9a9ea46a15610acae7b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "242d6577_88afb7cb",
         "filename": "repo",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2015-08-29T07:16:06Z",
       "side": 1,
       "message": "I don\u0027t believe there is a space between \"this\" and \"command\", and also you\u0027re missing the word \"from\" after \"command\".",
+      "range": {
+        "startLine": 772,
+        "startChar": 12,
+        "endLine": 772,
+        "endChar": 19
+      },
+      "revId": "0ec2f6c660fb5199081e9a9ea46a15610acae7b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a442364a_6fd6b132",
+        "filename": "repo",
+        "patchSetId": 4
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-08-31T21:40:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "242d6577_88afb7cb",
       "range": {
         "startLine": 772,
         "startChar": 12,
