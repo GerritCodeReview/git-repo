@@ -42,7 +42,7 @@ from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from command import RequiresGitcCommand
+from command import GitcCommand, RequiresGitcCommand
 from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
@@ -145,7 +145,12 @@ class _Repo(object):
       return 1
 
     if isinstance(cmd, RequiresGitcCommand) and not gitc_utils.get_gitc_manifest_dir():
-      print("fatal: '%s' requires GITC to be available" % name,
+      print("fatal: '%s' requires GITC to be running" % name,
+            file=sys.stderr)
+      return 1
+
+    if isinstance(cmd, GitcCommand) and not gitc_client_name:
+      print("fatal: '%s' requires a GITC client" % name,
             file=sys.stderr)
       return 1
 
