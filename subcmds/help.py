@@ -19,7 +19,7 @@ import sys
 from formatter import AbstractFormatter, DumbWriter
 
 from color import Coloring
-from command import PagedCommand, MirrorSafeCommand, RequiresGitcCommand
+from command import PagedCommand, MirrorSafeCommand, GitcCommand, RequiresGitcCommand
 import gitc_utils
 
 class Help(PagedCommand, MirrorSafeCommand):
@@ -57,8 +57,12 @@ Displays detailed usage information about a command.
     print('The most commonly used repo commands are:')
 
     def gitc_supported(cmd):
-      if not isinstance(cmd, RequiresGitcCommand):
+      if not isinstance(cmd, GitcCommand) and not isinstance(cmd, RequiresGitcCommand):
         return True
+      if self.manifest.isGitcClient:
+        return True
+      if isinstance(cmd, GitcCommand):
+        return False
       if gitc_utils.get_gitc_manifest_dir():
         return True
       return False
