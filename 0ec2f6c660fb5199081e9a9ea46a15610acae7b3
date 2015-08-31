@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a4f4f641_1fbe23eb",
+        "filename": "repo",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-08-31T02:38:31Z",
+      "side": 1,
+      "message": "Are the changes here important enough for a version increment?",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 17
+      },
+      "revId": "0ec2f6c660fb5199081e9a9ea46a15610acae7b3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "242d6577_88afb7cb",
         "filename": "repo",
         "patchSetId": 4
