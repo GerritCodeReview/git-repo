@@ -20,7 +20,7 @@ REPO_REV = 'stable'
 # limitations under the License.
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 21)
+VERSION = (1, 22)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1, 2)
@@ -567,8 +567,7 @@ def _Clone(url, local, quiet):
                     '+refs/heads/*:refs/remotes/origin/*')
   if _DownloadBundle(url, local, quiet):
     _ImportBundle(local)
-  else:
-    _Fetch(url, local, 'origin', quiet)
+  _Fetch(url, local, 'origin', quiet)
 
 
 def _Verify(cwd, branch, quiet):
