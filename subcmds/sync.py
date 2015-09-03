@@ -695,7 +695,7 @@ later is required to fix a server side protocol bug.
       # generate a new args list to represent the opened projects.
       args = []
       for proj in opened_projects:
-        args.append(os.path.relpath(proj.worktree, cwd))
+        args.append(os.path.relpath(proj.worktree, os.getcwd()))
       if not args:
         return
     all_projects = self.GetProjects(args,
