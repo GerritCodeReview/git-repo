@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24f6469e_2b329928",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1015803
+      },
+      "writtenOn": "2015-09-03T17:45:40Z",
+      "side": 0,
+      "message": "You\u0027re still using cwd down on line 698, \"args.append(os.path.relpath(proj.worktree, cwd))\"\n\nThis is causing http://b/23785024",
+      "range": {
+        "startLine": 542,
+        "startChar": 4,
+        "endLine": 542,
+        "endChar": 21
+      },
+      "revId": "f7a51898d3c989321c29f4ebaf7c3e9d106bc509",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
