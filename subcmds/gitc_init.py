@@ -77,6 +77,7 @@ use for this GITC client.
               opt.manifest_file)
         sys.exit(1)
       self.manifest.Override(opt.manifest_file)
-    gitc_utils.generate_gitc_manifest(self.client_dir, self.manifest)
+    gitc_utils.generate_gitc_manifest(self.client_dir, self.manifest,
+                                      set_upstream=True)
     print('Please run `cd %s` to view your GITC client.' %
           os.path.join(gitc_utils.GITC_FS_ROOT_DIR, opt.gitc_client))

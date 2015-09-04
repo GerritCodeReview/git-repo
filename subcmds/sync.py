@@ -681,6 +681,12 @@ later is required to fix a server side protocol bug.
       for project in gitc_manifest_projects:
         if not project.old_revision:
           gitc_projects.append(project)
+          # TODO (sbasi) - Delete fixing of upstream revision tag.
+          if not project.upstream:
+            cooresponding_proj = self.GetProjects(
+                [os.path.relpath(project.worktree, os.getcwd())], missing_ok=True)
+            if len(cooresponding_proj) == 1:
+              project.upstream = cooresponding_proj[0].revisionExpr
         else:
           opened_projects.append(project)
 

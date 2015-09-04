@@ -56,16 +56,17 @@ def _set_project_revisions(projects):
       project, git_command.GitCommand(None,
                                       ['ls-remote',
                                        project.remote.url,
-                                       project.revisionExpr],
+                                       project.upstream],
                                       capture_stdout=True, cwd='/tmp'))
-      for project in projects if not git_config.IsId(project.revisionExpr)]
+      for project in projects]
   for proj, gitcmd in project_gitcmds:
     if gitcmd.Wait():
       print('FATAL: Failed to retrieve revisionExpr for %s' % proj)
       sys.exit(1)
     proj.revisionExpr = gitcmd.stdout.split('\t')[0]
 
-def generate_gitc_manifest(client_dir, manifest, projects=None):
+def generate_gitc_manifest(client_dir, manifest, projects=None,
+                           set_upstream=False):
   """Generate a manifest for shafsd to use for this GITC client.
 
   @param client_dir: GITC client directory to install the .manifest file in.
@@ -73,11 +74,16 @@ def generate_gitc_manifest(client_dir, manifest, projects=None):
   @param projects: List of projects we want to update, this must be a sublist
                    of manifest.projects to work properly. If not provided,
                    manifest.projects is used.
+  @param set_upstream: If true save the project's current revisionExpr as its
+                       upstream value.
   """
   print('Generating GITC Manifest by fetching revision SHAs for each '
         'project.')
   if projects is None:
     projects = manifest.projects
+  if set_upstream:
+    for proj in projects:
+      proj.upstream = proj.revisionExpr
   index = 0
   while index < len(projects):
     _set_project_revisions(
