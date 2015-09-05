@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "24f6469e_2b0619e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-09-05T00:46:32Z",
+      "side": 1,
+      "message": "I\u0027ve been considering always modifying the new manifest with the short list of changes that we need from the gitc manifest (setting old-revision, copying the revisions that we aren\u0027t updating, unsetting the revision for local changes). If we\u0027ve got both the new manifest and the gitc manifest on hand, we should have all the information we need.\n\nThis also solves most of the adding/removing projects problems. But it may still get complicated if we\u0027re only syncing a subset of repos. Maybe we should only support syncing everything for now(for gitc clients), and tackle partial syncs next week.",
+      "parentUuid": "44fb3a86_0c59b7ff",
+      "revId": "deaffe074a083d02de658195d5780ed5b7231fb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "24f6469e_8bef4d7a",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
