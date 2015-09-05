@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "44fb3a86_2c5473c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-09-05T00:27:07Z",
+      "side": 1,
+      "message": "Unfortunately, this redefines upstream in this \"gitc\" manifest format. In the normal manifests, this is just a ref in which a sha1 can be found (not necessarily at the top of history).",
+      "revId": "deaffe074a083d02de658195d5780ed5b7231fb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24f6469e_8bef4d7a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-09-05T00:27:07Z",
+      "side": 1,
+      "message": "This will likely just be taken over by the code that handles manifest updates.",
+      "range": {
+        "startLine": 684,
+        "startChar": 10,
+        "endLine": 684,
+        "endChar": 66
+      },
+      "revId": "deaffe074a083d02de658195d5780ed5b7231fb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24f6469e_ebfc1139",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 685,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-09-05T00:27:07Z",
+      "side": 1,
+      "message": "This should handle changes too",
+      "range": {
+        "startLine": 685,
+        "startChar": 10,
+        "endLine": 685,
+        "endChar": 34
+      },
+      "revId": "deaffe074a083d02de658195d5780ed5b7231fb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44fb3a86_cc27af76",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-09-05T00:27:07Z",
+      "side": 1,
+      "message": "typo: corresponding\n\nself.manifest.paths[project.relpath] instead of the GetProjects call",
+      "range": {
+        "startLine": 686,
+        "startChar": 12,
+        "endLine": 686,
+        "endChar": 50
+      },
+      "revId": "deaffe074a083d02de658195d5780ed5b7231fb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
