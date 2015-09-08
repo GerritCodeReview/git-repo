@@ -670,32 +670,36 @@ later is required to fix a server side protocol bug.
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
 
-    # TODO (sbasi) - Add support for manifest changes, aka projects
-    # have been added or deleted from the manifest.
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
-                                                manifest=self.gitc_manifest,
                                                 missing_ok=True)
       gitc_projects = []
       opened_projects = []
       for project in gitc_manifest_projects:
-        if not project.old_revision:
-          gitc_projects.append(project)
+        if project.relpath in self.gitc_manifest.paths and \
+           self.gitc_manifest.paths[project.relpath].old_revision:
+          opened_projects.append(project.relpath)
         else:
-          opened_projects.append(project)
+          gitc_projects.append(project.relpath)
 
-      if gitc_projects and not opt.local_only:
+      if not args:
+        gitc_projects = None
+
+      if gitc_projects != [] and not opt.local_only:
         print('Updating GITC client: %s' % self.gitc_manifest.gitc_client_name)
-        gitc_utils.generate_gitc_manifest(self.gitc_manifest.gitc_client_dir,
+        gitc_utils.generate_gitc_manifest(self.repodir,
+                                          self.gitc_manifest.gitc_client_name,
                                           self.gitc_manifest,
+                                          self.manifest.manifestFile,
                                           gitc_projects)
         print('GITC client successfully synced.')
 
       # The opened projects need to be synced as normal, therefore we
       # generate a new args list to represent the opened projects.
-      args = []
-      for proj in opened_projects:
-        args.append(os.path.relpath(proj.worktree, os.getcwd()))
+      # TODO: make this more reliable -- if there's a project name/path overlap,
+      # this may choose the wrong project.
+      args = [os.path.relpath(self.manifest.paths[p].worktree, os.getcwd())
+              for p in opened_projects]
       if not args:
         return
     all_projects = self.GetProjects(args,
