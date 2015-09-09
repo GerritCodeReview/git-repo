@@ -68,13 +68,15 @@ use for this GITC client.
       os.mkdir(self.client_dir)
     super(GitcInit, self).Execute(opt, args)
 
-    manifest_file = self.manifest.manifestFile
+    for name, remote in self.manifest.remotes.iteritems():
+      remote.fetchUrl = remote.resolvedFetchUrl
+
     if opt.manifest_file:
       if not os.path.exists(opt.manifest_file):
         print('fatal: Specified manifest file %s does not exist.' %
               opt.manifest_file)
         sys.exit(1)
-      manifest_file = opt.manifest_file
-    gitc_utils.generate_gitc_manifest(self.repodir, opt.gitc_client, None, manifest_file)
+      self.manifest.Override(opt.manifest_file)
+    gitc_utils.generate_gitc_manifest(self.client_dir, self.manifest)
     print('Please run `cd %s` to view your GITC client.' %
           os.path.join(gitc_utils.GITC_FS_ROOT_DIR, opt.gitc_client))
