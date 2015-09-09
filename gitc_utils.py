@@ -15,8 +15,6 @@
 
 from __future__ import print_function
 import os
-import platform
-import re
 import sys
 import time
 
@@ -24,7 +22,6 @@ import git_command
 import git_config
 import wrapper
 
-from manifest_xml import GitcManifest
 
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 NUM_BATCH_RETRIEVE_REVISIONID = 300
@@ -68,86 +65,26 @@ def _set_project_revisions(projects):
       sys.exit(1)
     proj.revisionExpr = gitcmd.stdout.split('\t')[0]
 
-def _manifest_groups(manifest):
-  """Returns the manifest group string that should be synced
-
-  This is the same logic used by Command.GetProjects(), which is used during
-  repo sync
-
-  @param manifest: The XmlManifest object
-  """
-  mp = manifest.manifestProject
-  groups = mp.config.GetString('manifest.groups')
-  if not groups:
-    groups = 'default,platform-' + platform.system().lower()
-  return groups
-
-def generate_gitc_manifest(repodir, client_name, gitc_manifest, repo_manifest_file, paths=None):
+def generate_gitc_manifest(client_dir, manifest, projects=None):
   """Generate a manifest for shafsd to use for this GITC client.
 
-  @param repodir: The repo directory
-  @param client_name: The gitc client name
-  @param gitc_manifest: Current gitc manifest, or None if there isn't one yet
-  @param repo_manifest_file: The file used by the main repo manifest
-  @param paths: List of project paths we want to update.
+  @param client_dir: GITC client directory to install the .manifest file in.
+  @param manifest: XmlManifest object representing the repo manifest.
+  @param projects: List of projects we want to update, this must be a sublist
+                   of manifest.projects to work properly. If not provided,
+                   manifest.projects is used.
   """
-  manifest = GitcManifest(repodir, client_name)
-  manifest.Override(repo_manifest_file)
-
   print('Generating GITC Manifest by fetching revision SHAs for each '
         'project.')
-  if paths is None:
-    paths = manifest.paths.keys()
-
-  groups = [x for x in re.split(r'[,\s]+', _manifest_groups(manifest)) if x]
-
-  # Convert the paths to projects, and filter them to the matched groups.
-  projects = [manifest.paths[p] for p in paths]
-  projects = [p for p in projects if p.MatchesGroups(groups)]
-
-  if gitc_manifest is not None:
-    for path, proj in manifest.paths.iteritems():
-      if not proj.MatchesGroups(groups):
-        continue
-
-      if not proj.upstream and not git_config.IsId(proj.revisionExpr):
-        proj.upstream = proj.revisionExpr
-
-      if not path in gitc_manifest.paths:
-        # Any new projects need their first revision, even if we weren't asked
-        # for them.
-        projects.append(proj)
-      elif not path in paths:
-        # And copy revisions from the previous manifest if we're not updating
-        # them now.
-        gitc_proj = gitc_manifest.paths[path]
-        if gitc_proj.old_revision:
-          proj.revisionExpr = None
-          proj.old_revision = gitc_proj.old_revision
-        else:
-          proj.revisionExpr = gitc_proj.revisionExpr
-
+  if projects is None:
+    projects = manifest.projects
   index = 0
   while index < len(projects):
     _set_project_revisions(
         projects[index:(index+NUM_BATCH_RETRIEVE_REVISIONID)])
     index += NUM_BATCH_RETRIEVE_REVISIONID
-
-  if gitc_manifest is not None:
-    for path, proj in gitc_manifest.paths.iteritems():
-      if proj.old_revision and path in paths:
-        # If we updated a project that has been started, keep the old-revision
-        # updated.
-        repo_proj = manifest.paths[path]
-        repo_proj.old_revision = repo_proj.revisionExpr
-        repo_proj.revisionExpr = None
-
-  # Convert URLs from relative to absolute.
-  for name, remote in manifest.remotes.iteritems():
-    remote.fetchUrl = remote.resolvedFetchUrl
-
   # Save the manifest.
-  save_manifest(manifest)
+  save_manifest(manifest, client_dir=client_dir)
 
 def save_manifest(manifest, client_dir=None):
   """Save the manifest file in the client_dir.
@@ -158,7 +95,7 @@ def save_manifest(manifest, client_dir=None):
   if not client_dir:
     client_dir = manifest.gitc_client_dir
   with open(os.path.join(client_dir, '.manifest'), 'w') as f:
-    manifest.Save(f, groups=_manifest_groups(manifest))
+    manifest.Save(f)
   # TODO(sbasi/jorg): Come up with a solution to remove the sleep below.
   # Give the GITC filesystem time to register the manifest changes.
   time.sleep(3)

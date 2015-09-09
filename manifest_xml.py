@@ -167,13 +167,12 @@ class XmlManifest(object):
   def _ParseGroups(self, groups):
     return [x for x in re.split(r'[,\s]+', groups) if x]
 
-  def Save(self, fd, peg_rev=False, peg_rev_upstream=True, groups=None):
+  def Save(self, fd, peg_rev=False, peg_rev_upstream=True):
     """Write the current manifest out to the given file descriptor.
     """
     mp = self.manifestProject
 
-    if groups is None:
-      groups = mp.config.GetString('manifest.groups')
+    groups = mp.config.GetString('manifest.groups')
     if groups:
       groups = self._ParseGroups(groups)
 
