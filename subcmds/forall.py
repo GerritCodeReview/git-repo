@@ -240,7 +240,7 @@ without iterating through the remaining projects.
       rc = rc or errno.EINTR
     except Exception as e:
       # Catch any other exceptions raised
-      print('Got an error, terminating the pool: %r' % e,
+      print('Got an error, terminating the pool: %s' % e,
             file=sys.stderr)
       pool.terminate()
       rc = rc or getattr(e, 'errno', 1)
@@ -254,7 +254,7 @@ without iterating through the remaining projects.
       try:
         project = self._SerializeProject(p)
       except Exception as e:
-        print('Project list error: %r' % e,
+        print('Project list error: %s: %s' % (p.name, e),
               file=sys.stderr)
         return
       except KeyboardInterrupt:
