@@ -1275,6 +1275,8 @@ class Project(object):
         # Except if the head needs to be detached
         #
         if not syncbuf.detach_head:
+          # The copy/linkfile config may have changed.
+          self._CopyAndLinkFiles()
           return
       else:
         lost = self._revlist(not_rev(revid), HEAD)
@@ -1292,6 +1294,8 @@ class Project(object):
     if head == revid:
       # No changes; don't do anything further.
       #
+      # The copy/linkfile config may have changed.
+      self._CopyAndLinkFiles()
       return
 
     branch = self.GetBranch(branch)
