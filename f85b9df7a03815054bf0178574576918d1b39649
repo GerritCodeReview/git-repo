@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4bacaed_d8360d1b",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-09-09T18:24:25Z",
+      "side": 1,
+      "message": "Could you add a docstring?\n\nThat might answer my question as to why you are applying the default \u0026 platform groups to the manifest Project.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 31
+      },
+      "revId": "f85b9df7a03815054bf0178574576918d1b39649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c4bacaed_b82b59b1",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-09-09T18:24:25Z",
+      "side": 1,
+      "message": "repo_manifest_file",
+      "range": {
+        "startLine": 83,
+        "startChar": 9,
+        "endLine": 83,
+        "endChar": 22
+      },
+      "revId": "f85b9df7a03815054bf0178574576918d1b39649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4f236e4_af2bf9b0",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-09-09T18:24:25Z",
+      "side": 1,
+      "message": "Should ParseGroups be made public now? i.e. no _",
+      "range": {
+        "startLine": 94,
+        "startChar": 20,
+        "endLine": 94,
+        "endChar": 32
+      },
+      "revId": "f85b9df7a03815054bf0178574576918d1b39649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c4bacaed_9830951e",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-09-09T18:24:25Z",
+      "side": 1,
+      "message": "Adding a comment about group filtering here would be nice.",
+      "range": {
+        "startLine": 96,
+        "startChar": 2,
+        "endLine": 97,
+        "endChar": 61
+      },
+      "revId": "f85b9df7a03815054bf0178574576918d1b39649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4f236e4_8f30351e",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-09-09T18:24:25Z",
+      "side": 1,
+      "message": "period",
+      "revId": "f85b9df7a03815054bf0178574576918d1b39649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c4bacaed_7846e18b",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-09-09T18:24:25Z",
+      "side": 1,
+      "message": "period",
+      "revId": "f85b9df7a03815054bf0178574576918d1b39649",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

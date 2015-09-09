@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4bacaed_58431d7a",
+        "filename": "subcmds/gitc_init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-09-09T18:24:25Z",
+      "side": 0,
+      "message": "Is this handled elsewhere now?",
+      "range": {
+        "startLine": 72,
+        "startChar": 6,
+        "endLine": 72,
+        "endChar": 47
+      },
+      "revId": "ba72d8301e33344b3b11e286619c99568c37db1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
