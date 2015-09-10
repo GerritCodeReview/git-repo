@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a4195610_1712348f",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1021577
+      },
+      "writtenOn": "2015-09-10T08:43:57Z",
+      "side": 1,
+      "message": "Oh, I only now realized it\u0027s underlined text (not just separator). Will fix it in next patch",
+      "parentUuid": "a4f236e4_aff0999e",
+      "range": {
+        "startLine": 299,
+        "startChar": 16,
+        "endLine": 299,
+        "endChar": 18
+      },
+      "revId": "e3ea08955dacbe8a4a761fea52c794d194e7bd18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c4bacaed_d8b96db5",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 3
@@ -48,6 +72,53 @@
     },
     {
       "key": {
+        "uuid": "a4195610_d74a7c9b",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1021577
+      },
+      "writtenOn": "2015-09-10T08:43:57Z",
+      "side": 1,
+      "message": "Will use \" here",
+      "parentUuid": "c4bacaed_d8b96db5",
+      "range": {
+        "startLine": 305,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 5
+      },
+      "revId": "e3ea08955dacbe8a4a761fea52c794d194e7bd18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4195610_370f3866",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1021577
+      },
+      "writtenOn": "2015-09-10T08:43:57Z",
+      "side": 1,
+      "message": "Here also too many -",
+      "range": {
+        "startLine": 308,
+        "startChar": 16,
+        "endLine": 308,
+        "endChar": 18
+      },
+      "revId": "e3ea08955dacbe8a4a761fea52c794d194e7bd18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c4bacaed_f8b431bd",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 3
@@ -59,6 +130,30 @@
       "writtenOn": "2015-09-10T00:55:22Z",
       "side": 1,
       "message": "nit: this is redundant; the sentence already says \"instead of\" earlier.",
+      "range": {
+        "startLine": 311,
+        "startChar": 40,
+        "endLine": 311,
+        "endChar": 47
+      },
+      "revId": "e3ea08955dacbe8a4a761fea52c794d194e7bd18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8430d27f_f628e0c7",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1021577
+      },
+      "writtenOn": "2015-09-10T08:43:57Z",
+      "side": 1,
+      "message": "Agree.",
+      "parentUuid": "c4bacaed_f8b431bd",
       "range": {
         "startLine": 311,
         "startChar": 40,
