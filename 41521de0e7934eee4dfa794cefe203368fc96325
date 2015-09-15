@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09115b42_9a6b6de3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "Move this bit into the body of the commit message.",
+      "range": {
+        "startLine": 7,
+        "startChar": 35,
+        "endLine": 7,
+        "endChar": 83
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "09115b42_ba6e31f3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "This option is only for the post-sync hook, but the name \u0027--no-hooks\u0027 is plural and implies it relates to more than one hook.",
+      "range": {
+        "startLine": 239,
+        "startChar": 23,
+        "endLine": 239,
+        "endChar": 28
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d7827f_2a8dff26",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "This is redundant.  Just name it \u0027hooks_exist\u0027",
+      "range": {
+        "startLine": 771,
+        "startChar": 15,
+        "endLine": 771,
+        "endChar": 20
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d7827f_eaa2c79b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "does",
+      "range": {
+        "startLine": 772,
+        "startChar": 28,
+        "endLine": 772,
+        "endChar": 30
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d7827f_caa703aa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "nit: put a space after #",
+      "range": {
+        "startLine": 772,
+        "startChar": 4,
+        "endLine": 772,
+        "endChar": 5
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d7827f_0a8abb0e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "nit: wrap this line",
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04d7827f_6a97f736",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "Why not just inline the conditions on line 773 here?",
+      "range": {
+        "startLine": 776,
+        "startChar": 4,
+        "endLine": 776,
+        "endChar": 24
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "09115b42_da71e5d8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "check if this hook exists before attempting to run?",
+      "range": {
+        "startLine": 777,
+        "startChar": 22,
+        "endLine": 777,
+        "endChar": 33
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "09115b42_fa74a9ca",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-09-15T08:51:24Z",
+      "side": 1,
+      "message": "Shouldn\u0027t we exit here too?",
+      "range": {
+        "startLine": 781,
+        "startChar": 6,
+        "endLine": 782,
+        "endChar": 52
+      },
+      "revId": "41521de0e7934eee4dfa794cefe203368fc96325",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
