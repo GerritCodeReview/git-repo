@@ -25,6 +25,8 @@ import subprocess
 import sys
 import tempfile
 import time
+from project import RepoHook
+from error import HookError
 
 from pyversion import is_python3
 if is_python3():
@@ -234,6 +236,9 @@ later is required to fix a server side protocol bug.
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
+    p.add_option('--no-hooks',
+                 dest='bypass_hooks', action='store_true',
+                 help='Do not run the sync hook.')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -762,7 +767,20 @@ later is required to fix a server side protocol bug.
         project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
     pm.end()
     print(file=sys.stderr)
-    if not syncbuf.Finish():
+    ret = syncbuf.Finish()
+    hooks_exist_flag = False
+    #if repohook repository is not exist, no need to run hook 
+    if self.manifest.repo_hooks_project and os.path.exists(self.manifest.repo_hooks_project.gitdir):
+      hooks_exist_flag = True
+    
+    if hooks_exist_flag and (not opt.bypass_hooks):
+      hook = RepoHook('post-sync', self.manifest.repo_hooks_project,
+                      self.manifest.topdir, abort_if_user_denies=True)
+      try:
+        hook.Run(True, project_list=all_projects, manifest_project=mp, sync_opt=opt)
+      except HookError as e:
+        print("ERROR: %s" % str(e), file=sys.stderr)
+    if not ret:
       sys.exit(1)
 
     # If there's a notice that's supposed to print at the end of the sync, print
