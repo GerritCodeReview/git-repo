@@ -235,3 +235,6 @@ class RequiresGitcCommand(object):
   """Command that requires GITC to be available, but does
      not require the local client to be a GITC client.
   """
+  # Mark visible_everywhere to False for commands that should only be
+  # available inside of a GITC client.
+  visible_everywhere = True

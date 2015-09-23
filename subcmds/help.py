@@ -14,6 +14,7 @@
 # limitations under the License.
 
 from __future__ import print_function
+import os
 import re
 import sys
 from formatter import AbstractFormatter, DumbWriter
@@ -59,9 +60,11 @@ Displays detailed usage information about a command.
     def gitc_supported(cmd):
       if not isinstance(cmd, RequiresGitcCommand):
         return True
-      if gitc_utils.get_gitc_manifest_dir():
-        return True
-      return False
+      if not gitc_utils.get_gitc_manifest_dir():
+        return False
+      if not cmd.visible_everywhere:
+        return os.getcwd().startswith(gitc_utils.GITC_FS_ROOT_DIR)
+      return True
 
     commandNames = list(sorted([name
                     for name, command in self.commands.items()
