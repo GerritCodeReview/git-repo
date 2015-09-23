@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e9e24745_c12422f5",
+        "filename": "command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-09-23T21:13:24Z",
+      "side": 1,
+      "message": "Just depend on https://gerrit-review.googlesource.com/70574",
+      "revId": "13455e3e210f6514ccae84c624c27be6a9445b76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
