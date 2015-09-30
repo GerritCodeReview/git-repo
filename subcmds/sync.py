@@ -925,7 +925,10 @@ class PersistentTransport(xmlrpc.client.Transport):
           tmpcookiefile.flush()
 
           cookiejar = cookielib.MozillaCookieJar(tmpcookiefile.name)
-          cookiejar.load()
+          try:
+            cookiejar.load()
+          except cookielib.LoadError:
+            cookiejar = cookielib.CookieJar()
         finally:
           tmpcookiefile.close()
       else:
