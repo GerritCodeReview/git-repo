@@ -916,6 +916,7 @@ class PersistentTransport(xmlrpc.client.Transport):
       # stripping those prefixes away.
       if cookiefile:
         tmpcookiefile = tempfile.NamedTemporaryFile()
+        tmpcookiefile.write("# HTTP Cookie File")
         try:
           with open(cookiefile) as f:
             for line in f:
