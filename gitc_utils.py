@@ -24,23 +24,13 @@ import git_command
 import git_config
 import wrapper
 
-GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 NUM_BATCH_RETRIEVE_REVISIONID = 300
 
 def get_gitc_manifest_dir():
   return wrapper.Wrapper().get_gitc_manifest_dir()
 
 def parse_clientdir(gitc_fs_path):
-  """Parse a path in the GITC FS and return its client name.
-
-  @param gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
-
-  @returns: The GITC client name
-  """
-  if (gitc_fs_path == GITC_FS_ROOT_DIR or
-      not gitc_fs_path.startswith(GITC_FS_ROOT_DIR)):
-    return None
-  return gitc_fs_path.split(GITC_FS_ROOT_DIR)[1].split('/')[0]
+  return wrapper.Wrapper().gitc_parse_clientdir(gitc_fs_path)
 
 def _set_project_revisions(projects):
   """Sets the revisionExpr for a list of projects.
