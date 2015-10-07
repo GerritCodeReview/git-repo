@@ -22,6 +22,30 @@
       "revId": "aa9ccdc1877b3935135f2d112ee3c434fa0d7481",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "853e19eb_7dc61778",
+        "filename": "subcmds/gitc_pause.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2015-10-07T23:11:11Z",
+      "side": 1,
+      "message": "Yeah, that should be done",
+      "parentUuid": "4ea8b95b_c419deb3",
+      "range": {
+        "startLine": 51,
+        "startChar": 17,
+        "endLine": 51,
+        "endChar": 29
+      },
+      "revId": "aa9ccdc1877b3935135f2d112ee3c434fa0d7481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
