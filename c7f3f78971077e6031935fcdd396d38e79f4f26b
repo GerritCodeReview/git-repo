@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "853e19eb_1d2d53d0",
+        "filename": "subcmds/start.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1021132
+      },
+      "writtenOn": "2015-10-08T18:44:29Z",
+      "side": 1,
+      "message": "alignment.",
+      "revId": "c7f3f78971077e6031935fcdd396d38e79f4f26b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
