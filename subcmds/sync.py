@@ -151,6 +151,9 @@ The --optimized-fetch option can be used to only fetch projects that
 are fixed to a sha1 revision if the sha1 revision does not already
 exist locally.
 
+The --prune option can be used to remove any refs that no longer
+exist on the remote.
+
 SSH Connections
 ---------------
 
@@ -234,6 +237,8 @@ later is required to fix a server side protocol bug.
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
+    p.add_option('--prune', dest='prune', action='store_true',
+                 help='delete refs that no longer exist on the remote')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -305,7 +310,8 @@ later is required to fix a server side protocol bug.
           force_sync=opt.force_sync,
           clone_bundle=not opt.no_clone_bundle,
           no_tags=opt.no_tags, archive=self.manifest.IsArchive,
-          optimized_fetch=opt.optimized_fetch)
+          optimized_fetch=opt.optimized_fetch,
+          prune=opt.prune)
         self._fetch_times.Set(project, time.time() - start)
 
         # Lock around all the rest of the code, since printing, updating a set
