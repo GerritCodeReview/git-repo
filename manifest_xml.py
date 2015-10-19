@@ -604,7 +604,10 @@ class XmlManifest(object):
         name = m_url[len(url):]
 
     if name is None:
-      s = m_url.rindex('/') + 1
+      s = m_url.rfind('/')
+      if s == -1:
+        s = m_url.rindex(':')
+      s += 1
       manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
       remote = _XmlRemote('origin', fetch=m_url[:s], manifestUrl=manifestUrl)
       name = m_url[s:]
