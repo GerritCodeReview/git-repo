@@ -2288,6 +2288,14 @@ class Project(object):
         msg = 'manifest set to %s' % self.revisionExpr
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
+  def _LocallyChanged(self):
+    if self.HasChanges():
+      return True
+    branches = self.GetBranches()
+    if len(branches) > 0:
+      return True
+    return False
+
   def _CheckDirReference(self, srcdir, destdir, share_refs):
     symlink_files = self.shareable_files
     symlink_dirs = self.shareable_dirs
@@ -2300,7 +2308,7 @@ class Project(object):
       if os.path.lexists(dst):
         src = os.path.realpath(os.path.join(srcdir, name))
         # Fail if the links are pointing to the wrong place
-        if src != dst:
+        if src != dst and self._LocallyChanged():
           raise GitError('--force-sync not enabled; cannot overwrite a local '
                          'work tree. If you\'re comfortable with the '
                          'possibility of losing the work tree\'s git metadata,'
