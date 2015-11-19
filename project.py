@@ -249,7 +249,7 @@ class _LinkFile(object):
     if not os.path.islink(absDest) or (os.readlink(absDest) != relSrc):
       try:
         # remove existing file first, since it might be read-only
-        if os.path.exists(absDest):
+        if os.path.lexists(absDest):
           os.remove(absDest)
         else:
           dest_dir = os.path.dirname(absDest)
