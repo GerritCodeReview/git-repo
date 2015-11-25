@@ -324,6 +324,7 @@ later is required to fix a server side protocol bug.
           if opt.force_broken:
             print('warn: --force-broken, continuing to sync',
                   file=sys.stderr)
+            err_event.set()
           else:
             raise _FetchError()
 
