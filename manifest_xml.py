@@ -84,6 +84,8 @@ class _XmlRemote(object):
   def _resolveFetchUrl(self):
     url = self.fetchUrl.rstrip('/')
     manifestUrl = self.manifestUrl.rstrip('/')
+    if url.lstrip().startswith('ext::'):
+      raise ManifestParseError('illegal fetch url %s' % url)
     # urljoin will gets confused over quite a few things.  The ones we care
     # about here are:
     # * no scheme in the base url, like <hostname:port>
