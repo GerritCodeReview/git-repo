@@ -320,6 +320,7 @@ later is required to fix a server side protocol bug.
         did_lock = True
 
         if not success:
+          err_event.set()
           print('error: Cannot fetch %s' % project.name, file=sys.stderr)
           if opt.force_broken:
             print('warn: --force-broken, continuing to sync',
@@ -330,7 +331,7 @@ later is required to fix a server side protocol bug.
         fetched.add(project.gitdir)
         pm.update()
       except _FetchError:
-        err_event.set()
+        pass
       except Exception as e:
         print('error: Cannot fetch %s (%s: %s)' \
             % (project.name, type(e).__name__, str(e)), file=sys.stderr)
