@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3b3f57ea_7df9f770",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-11-25T06:22:46Z",
+      "side": 1,
+      "message": "It would be preferable to use a real name.",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 20
+      },
+      "revId": "5a9e4bc04dad281cb4aeba1fcce6dea1de3ca165",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b3f57ea_1d04332d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-11-25T06:22:46Z",
+      "side": 1,
+      "message": "The commit message does not follow the usual convention, and does not describe what the actual problem is.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 24
+      },
+      "revId": "5a9e4bc04dad281cb4aeba1fcce6dea1de3ca165",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bafab61_86a1aa66",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-11-25T06:22:46Z",
+      "side": 1,
+      "message": "I believe it was intentional to not set this.\n\nIn the case where opt.force_broken is false, a _FetchError is raised on line 329, which is then caught at 333 and the event is set.",
+      "range": {
+        "startLine": 327,
+        "startChar": 12,
+        "endLine": 327,
+        "endChar": 27
+      },
+      "revId": "5a9e4bc04dad281cb4aeba1fcce6dea1de3ca165",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
