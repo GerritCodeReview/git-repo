@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "3bd0373b_35bcf0dc",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-11-26T02:07:13Z",
+      "side": 1,
+      "message": "Also changed the syntax here a bit, according to:\n\nhttp://stackoverflow.com/questions/2710940/python-if-x-is-not-none-or-if-not-x-is-none",
+      "range": {
+        "startLine": 171,
+        "startChar": 6,
+        "endLine": 171,
+        "endChar": 39
+      },
+      "revId": "09ab37602655bd76c3cdede7c51f8100fe03b517",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3bd0373b_75b2680f",
         "filename": "git_command.py",
         "patchSetId": 1
