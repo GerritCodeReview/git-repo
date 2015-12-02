@@ -1997,7 +1997,10 @@ class Project(object):
     bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
     if GetSchemeFromUrl(bundle_url) not in (
         'http', 'https', 'persistent-http', 'persistent-https'):
-      return False
+      bundle_url = GitConfig.ForUser().UrlBundleUrlOf(bundle_url)
+      if GetSchemeFromUrl(bundle_url) not in (
+          'http', 'https', 'persistent-http', 'persistent-https'):
+        return False
 
     bundle_dst = os.path.join(self.gitdir, 'clone.bundle')
     bundle_tmp = os.path.join(self.gitdir, 'clone.bundle.tmp')
