@@ -221,7 +221,7 @@ without iterating through the remaining projects.
       projects = self.FindProjects(args)
 
     os.environ['REPO_COUNT'] = str(len(projects))
-
+    error_projects = []
     pool = multiprocessing.Pool(opt.jobs, InitWorker)
     try:
       config = self.manifest.manifestProject.config
@@ -229,10 +229,13 @@ without iterating through the remaining projects.
          DoWorkWrapper,
          self.ProjectArgs(projects, mirror, opt, cmd, shell, config))
       pool.close()
-      for r in results_it:
+      for r, project in results_it:
         rc = rc or r
-        if r != 0 and opt.abort_on_errors:
-          raise Exception('Aborting due to previous error')
+        if r != 0:
+          if opt.abort_on_errors:
+             raise Exception('Aborting due to previous error')
+          if project:
+             error_projects.append(project["name"])
     except (KeyboardInterrupt, WorkerKeyboardInterrupt):
       # Catch KeyboardInterrupt raised inside and outside of workers
       print('Interrupted - terminating the pool')
@@ -247,6 +250,8 @@ without iterating through the remaining projects.
     finally:
       pool.join()
     if rc != 0:
+      if error_projects:
+        print("error projects: %s" % " ".join(error_projects), file=sys.stderr)
       sys.exit(rc)
 
   def ProjectArgs(self, projects, mirror, opt, cmd, shell, config):
@@ -315,7 +320,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     if (opt.project_header and opt.verbose) \
     or not opt.project_header:
       print('skipping %s/' % project['relpath'], file=sys.stderr)
-    return
+    return 0, project
 
   if opt.project_header:
     stdin = subprocess.PIPE
@@ -390,4 +395,4 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
         s.dest.flush()
 
   r = p.wait()
-  return r
+  return r, project
