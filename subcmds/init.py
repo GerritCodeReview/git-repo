@@ -113,7 +113,9 @@ to update the working directory files.
                  help='restrict manifest projects to ones with a specified '
                       'platform group [auto|all|none|linux|darwin|...]',
                  metavar='PLATFORM')
-
+    g.add_option('--no-clone-bundle',
+                 dest='no_clone_bundle', action='store_true',
+                 help='disable use of /clone.bundle on HTTP/HTTPS')
     # Tool
     g = p.add_option_group('repo Version options')
     g.add_option('--repo-url',
@@ -222,7 +224,8 @@ to update the working directory files.
               'in another location.', file=sys.stderr)
         sys.exit(1)
 
-    if not m.Sync_NetworkHalf(is_new=is_new):
+    if not m.Sync_NetworkHalf(is_new=is_new, 
+                              clone_bundle=not opt.no_clone_bundle):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 
