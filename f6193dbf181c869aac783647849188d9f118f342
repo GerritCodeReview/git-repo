@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25fd76c1_44dfce25",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-16T08:12:27Z",
+      "side": 1,
+      "message": "nit: wrong indentation.  should be 2 columns, but this is 3.",
+      "range": {
+        "startLine": 236,
+        "startChar": 10,
+        "endLine": 236,
+        "endChar": 13
+      },
+      "revId": "f6193dbf181c869aac783647849188d9f118f342",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "25fd76c1_24ecd2e4",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-16T08:12:27Z",
+      "side": 1,
+      "message": "wrong indentation",
+      "range": {
+        "startLine": 238,
+        "startChar": 10,
+        "endLine": 238,
+        "endChar": 13
+      },
+      "revId": "f6193dbf181c869aac783647849188d9f118f342",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "45feeabd_25eccee4",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-16T08:12:27Z",
+      "side": 1,
+      "message": "It might be better to separate them with newline.",
+      "range": {
+        "startLine": 254,
+        "startChar": 31,
+        "endLine": 254,
+        "endChar": 61
+      },
+      "revId": "f6193dbf181c869aac783647849188d9f118f342",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "25fd76c1_04e9d6d4",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-16T08:12:27Z",
+      "side": 1,
+      "message": "\"projects with error\" or \"failed projects\"?",
+      "range": {
+        "startLine": 254,
+        "startChar": 15,
+        "endLine": 254,
+        "endChar": 29
+      },
+      "revId": "f6193dbf181c869aac783647849188d9f118f342",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
