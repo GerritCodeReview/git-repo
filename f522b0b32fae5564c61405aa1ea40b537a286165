@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45feeabd_05e9d2d4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-16T08:16:57Z",
+      "side": 1,
+      "message": "nit: trailing whitespace.",
+      "range": {
+        "startLine": 118,
+        "startChar": 67,
+        "endLine": 118,
+        "endChar": 68
+      },
+      "revId": "f522b0b32fae5564c61405aa1ea40b537a286165",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "45feeabd_e516b696",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2015-12-16T08:16:57Z",
+      "side": 1,
+      "message": "nit: this line length exceeds 80 columns.  Please wrap it, or initialise clone_bundle as a separate variable on the previous line.",
+      "revId": "f522b0b32fae5564c61405aa1ea40b537a286165",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
