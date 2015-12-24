@@ -2447,6 +2447,23 @@ class Project(object):
     logs['removed'] = self._getLogs(toId, selfId, oneline=oneline, color=color)
     return logs
 
+  def LsRemoteRevision(self):
+    if self.revisionId:
+      return self.revisionId
+    else:
+      p = GitCommand(self,
+                     ['ls-remote',
+                      self.remote.url,
+                      self.revisionExpr],
+                     gitdir=self.manifest.topdir,
+                     cwd=self.manifest.topdir,
+                     capture_stdout=True,
+                     capture_stderr=True)
+      if p.Wait() == 0:
+        out = p.stdout
+        if out:
+          return re.split(r'\t+', out)[0]
+
   class _GitGetByExec(object):
     def __init__(self, project, bare, gitdir):
       self._project = project
