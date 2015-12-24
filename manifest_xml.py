@@ -167,7 +167,7 @@ class XmlManifest(object):
   def _ParseGroups(self, groups):
     return [x for x in re.split(r'[,\s]+', groups) if x]
 
-  def Save(self, fd, peg_rev=False, peg_rev_upstream=True, groups=None):
+  def Save(self, fd, peg_rev=False, peg_rev_remote=False, peg_rev_upstream=True, groups=None):
     """Write the current manifest out to the given file descriptor.
     """
     mp = self.manifestProject
@@ -254,10 +254,13 @@ class XmlManifest(object):
         remoteName = p.remote.name
         e.setAttribute('remote', remoteName)
       if peg_rev:
-        if self.IsMirror:
-          value = p.bare_git.rev_parse(p.revisionExpr + '^0')
+        if peg_rev_remote:
+          value = p.LsRemoteRevision()
         else:
-          value = p.work_git.rev_parse(HEAD + '^0')
+          if self.IsMirror:
+            value = p.bare_git.rev_parse(p.revisionExpr + '^0')
+          else:
+            value = p.work_git.rev_parse(HEAD + '^0')
         e.setAttribute('revision', value)
         if peg_rev_upstream:
           if p.upstream:

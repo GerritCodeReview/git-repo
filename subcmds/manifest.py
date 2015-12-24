@@ -49,6 +49,9 @@ in a Git repository for use during future 'repo init' invocations.
     p.add_option('-r', '--revision-as-HEAD',
                  dest='peg_rev', action='store_true',
                  help='Save revisions as current HEAD')
+    p.add_option('--remote-revision',
+                 dest='peg_rev_remote', action='store_true',
+                 help='If in -r mode, use remote revisions.')
     p.add_option('--suppress-upstream-revision', dest='peg_rev_upstream',
                  default=True, action='store_false',
                  help='If in -r mode, do not write the upstream field.  '
@@ -67,6 +70,7 @@ in a Git repository for use during future 'repo init' invocations.
       fd = open(opt.output_file, 'w')
     self.manifest.Save(fd,
                        peg_rev = opt.peg_rev,
+                       peg_rev_remote = opt.peg_rev_remote,
                        peg_rev_upstream = opt.peg_rev_upstream)
     fd.close()
     if opt.output_file != '-':
