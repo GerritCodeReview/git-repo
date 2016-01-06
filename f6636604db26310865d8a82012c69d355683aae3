@@ -22,6 +22,30 @@
       "revId": "f6636604db26310865d8a82012c69d355683aae3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2afe23e6_5cb63dfa",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2457,
+      "author": {
+        "id": 1019939
+      },
+      "writtenOn": "2016-01-06T02:10:17Z",
+      "side": 1,
+      "message": "I found that if revisionExpr is a SHA1, then revisionId would be set, so i just return revisionId instead of calling remote git command.",
+      "parentUuid": "2afe23e6_7cb979ea",
+      "range": {
+        "startLine": 2457,
+        "startChar": 27,
+        "endLine": 2457,
+        "endChar": 39
+      },
+      "revId": "f6636604db26310865d8a82012c69d355683aae3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
