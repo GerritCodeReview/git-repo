@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2afe23e6_7cb979ea",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2457,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2016-01-06T00:08:39Z",
+      "side": 1,
+      "message": "How does this work when revision is a SHA1?",
+      "range": {
+        "startLine": 2457,
+        "startChar": 27,
+        "endLine": 2457,
+        "endChar": 39
+      },
+      "revId": "f6636604db26310865d8a82012c69d355683aae3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
