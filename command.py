@@ -193,14 +193,20 @@ class Command(object):
     result.sort(key=_getpath)
     return result
 
-  def FindProjects(self, args):
+  def FindProjects(self, args, inverse=False):
     result = []
     patterns = [re.compile(r'%s' % a, re.IGNORECASE) for a in args]
     for project in self.GetProjects(''):
       for pattern in patterns:
-        if pattern.search(project.name) or pattern.search(project.relpath):
+        match = pattern.search(project.name) or pattern.search(project.relpath)
+        if not inverse and match:
           result.append(project)
           break
+        if inverse and match:
+          break
+      else:
+        if inverse:
+          result.append(project)
     result.sort(key=lambda project: project.relpath)
     return result
 
