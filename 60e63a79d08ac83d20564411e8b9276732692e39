@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3473ee96_f422d8e0",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1013477
+      },
+      "writtenOn": "2016-02-01T05:08:54Z",
+      "side": 1,
+      "message": "This logic is broken. We should keep search in all patterns.",
+      "revId": "60e63a79d08ac83d20564411e8b9276732692e39",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
