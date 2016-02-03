@@ -830,12 +830,32 @@ class Project(object):
     else:
       return False
 
-  def PrintWorkTreeStatus(self, output_redir=None):
+
+  def PrintWorkTreeStatus(self, quiet, output_redir=None):
     """Prints the status of the repository to stdout.
 
     Args:
       output: If specified, redirect the output to this object.
     """
+    class HeaderPrinter(object):
+      def __init__(self, project, out):
+        self.project = project
+        self.out = out
+        self.need_header = True
+
+      def PrintProject(self):
+        if self.need_header:
+          self.out.project('project %-40s', self.project.relpath + '/ ')
+
+          branch = self.project.CurrentBranch
+          if branch is None:
+            self.out.nobranch('(*** NO BRANCH ***)')
+          else:
+            self.out.branch('branch %s', branch)
+          self.out.nl()
+
+          self.need_header = False
+
     if not os.path.isdir(self.worktree):
       if output_redir == None:
         output_redir = sys.stdout
@@ -858,16 +878,13 @@ class Project(object):
     out = StatusColoring(self.config)
     if not output_redir == None:
       out.redirect(output_redir)
-    out.project('project %-40s', self.relpath + '/ ')
 
-    branch = self.CurrentBranch
-    if branch is None:
-      out.nobranch('(*** NO BRANCH ***)')
-    else:
-      out.branch('branch %s', branch)
-    out.nl()
+    header = HeaderPrinter(self, out)
+    if not quiet:
+      header.PrintProject()
 
     if rb:
+      header.PrintProject()
       out.important('prior sync failed; rebase still in progress')
       out.nl()
 
@@ -904,13 +921,18 @@ class Project(object):
         line = ' %s%s\t%s' % (i_status, f_status, p)
 
       if i and not f:
+        header.PrintProject()
         out.added('%s', line)
       elif (i and f) or (not i and f):
+        header.PrintProject()
         out.changed('%s', line)
       elif not i and not f:
+        header.PrintProject()
         out.untracked('%s', line)
       else:
+        header.PrintProject()
         out.write('%s', line)
+
       out.nl()
 
     return 'DIRTY'
