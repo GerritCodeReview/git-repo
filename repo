@@ -2,7 +2,10 @@
 
 ## repo default configuration
 ##
-REPO_URL = 'https://gerrit.googlesource.com/git-repo'
+import os
+REPO_URL = os.environ.get('REPO_URL', None)
+if not REPO_URL:
+  REPO_URL = 'https://gerrit.googlesource.com/git-repo'
 REPO_REV = 'stable'
 
 # Copyright (C) 2008 Google Inc.
@@ -114,7 +117,6 @@ GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 
 import errno
 import optparse
-import os
 import re
 import shutil
 import stat
