@@ -1583,8 +1583,6 @@ class Project(object):
 
     if kill:
       old = self.bare_git.GetHead()
-      if old is None:
-        old = 'refs/heads/please_never_use_this_as_a_branch_name'
 
       try:
         self.bare_git.DetachHead(rev)
@@ -1596,7 +1594,10 @@ class Project(object):
                        capture_stderr=True)
         b.Wait()
       finally:
-        self.bare_git.SetHead(old)
+        if ID_RE.match(old):
+          self.bare_git.DetachHead(old)
+        else:
+          self.bare_git.SetHead(old)
         left = self._allrefs
 
       for branch in kill:
