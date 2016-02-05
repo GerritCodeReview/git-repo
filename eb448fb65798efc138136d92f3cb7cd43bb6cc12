@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1c1686d_fac0a95a",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-02-05T00:33:36Z",
+      "side": 1,
+      "message": "This documentation should be updated to explain \u0027\u003d\u0027",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 41
+      },
+      "revId": "eb448fb65798efc138136d92f3cb7cd43bb6cc12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
