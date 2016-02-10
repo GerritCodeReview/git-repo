@@ -31,7 +31,7 @@ class Command(object):
   manifest = None
   _optparse = None
 
-  def WantPager(self, opt):
+  def WantPager(self, opt):  # pylint: disable=unused-argument
     return False
 
   def ReadEnvironmentOptions(self, opts):
@@ -63,7 +63,7 @@ class Command(object):
         usage = self.helpUsage.strip().replace('%prog', me)
       except AttributeError:
         usage = 'repo %s' % self.NAME
-      self._optparse = optparse.OptionParser(usage = usage)
+      self._optparse = optparse.OptionParser(usage=usage)
       self._Options(self._optparse)
     return self._optparse
 
@@ -138,7 +138,7 @@ class Command(object):
     mp = manifest.manifestProject
 
     if not groups:
-        groups = mp.config.GetString('manifest.groups')
+      groups = mp.config.GetString('manifest.groups')
     if not groups:
       groups = 'default,platform-' + platform.system().lower()
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
