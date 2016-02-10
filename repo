@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## repo default configuration
-##
+# repo default configuration
+#
 import os
 REPO_URL = os.environ.get('REPO_URL', None)
 if not REPO_URL:
@@ -104,13 +104,13 @@ JuinEP+AwLAUZ1Bsx9ISC0Agpk2VeHXPL3FGhroEmoMvBzO0kTFGyoeT7PR/BfKv
 -----END PGP PUBLIC KEY BLOCK-----
 """
 
-GIT = 'git'                     # our git command
-MIN_GIT_VERSION = (1, 7, 2)     # minimum supported git version
-repodir = '.repo'               # name of repo's private directory
-S_repo = 'repo'                 # special repo repository
-S_manifests = 'manifests'       # special manifest repository
-REPO_MAIN = S_repo + '/main.py' # main script
-MIN_PYTHON_VERSION = (2, 6)     # minimum supported python version
+GIT = 'git'                      # our git command
+MIN_GIT_VERSION = (1, 7, 2)      # minimum supported git version
+repodir = '.repo'                # name of repo's private directory
+S_repo = 'repo'                  # special repo repository
+S_manifests = 'manifests'        # special manifest repository
+REPO_MAIN = S_repo + '/main.py'  # main script
+MIN_PYTHON_VERSION = (2, 6)      # minimum supported python version
 GITC_CONFIG_FILE = '/gitc/.config'
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 
@@ -216,9 +216,10 @@ group.add_option('--config-name',
                  dest='config_name', action="store_true", default=False,
                  help='Always prompt for name/e-mail')
 
-def _GitcInitOptions(init_optparse):
-  init_optparse.set_usage("repo gitc-init -u url -c client [options]")
-  g = init_optparse.add_option_group('GITC options')
+
+def _GitcInitOptions(init_optparse_arg):
+  init_optparse_arg.set_usage("repo gitc-init -u url -c client [options]")
+  g = init_optparse_arg.add_option_group('GITC options')
   g.add_option('-f', '--manifest-file',
                dest='manifest_file',
                help='Optional manifest file to use for this GITC client.')
@@ -227,6 +228,8 @@ def _GitcInitOptions(init_optparse):
                help='The name of the gitc_client instance to create or modify.')
 
 _gitc_manifest_dir = None
+
+
 def get_gitc_manifest_dir():
   global _gitc_manifest_dir
   if _gitc_manifest_dir is None:
@@ -240,6 +243,7 @@ def get_gitc_manifest_dir():
     except IOError:
       pass
   return _gitc_manifest_dir
+
 
 def gitc_parse_clientdir(gitc_fs_path):
   """Parse a path in the GITC FS and return its client name.
@@ -263,7 +267,9 @@ def gitc_parse_clientdir(gitc_fs_path):
     return gitc_fs_path.split(manifest_dir)[1].split('/')[0]
   return gitc_fs_path.split(GITC_FS_ROOT_DIR)[1].split('/')[0]
 
+
 class CloneFailure(Exception):
+
   """Indicate the remote clone of repo itself failed.
   """
 
@@ -431,8 +437,8 @@ def SetupGnuPG(quiet):
   cmd = ['gpg', '--import']
   try:
     proc = subprocess.Popen(cmd,
-                            env = env,
-                            stdin = subprocess.PIPE)
+                            env=env,
+                            stdin=subprocess.PIPE)
   except OSError as e:
     if not quiet:
       _print('warning: gpg (GnuPG) is not available.', file=sys.stderr)
@@ -458,7 +464,7 @@ def _SetConfig(local, name, value):
   """Set a git configuration option to the specified value.
   """
   cmd = [GIT, 'config', name, value]
-  if subprocess.Popen(cmd, cwd = local).wait() != 0:
+  if subprocess.Popen(cmd, cwd=local).wait() != 0:
     raise CloneFailure()
 
 
@@ -471,9 +477,9 @@ def _InitHttp():
     n = netrc.netrc()
     for host in n.hosts:
       p = n.hosts[host]
-      mgr.add_password(p[1], 'http://%s/'  % host, p[0], p[2])
+      mgr.add_password(p[1], 'http://%s/' % host, p[0], p[2])
       mgr.add_password(p[1], 'https://%s/' % host, p[0], p[2])
-  except:
+  except:  # pylint: disable=bare-except
     pass
   handlers.append(urllib.request.HTTPBasicAuthHandler(mgr))
   handlers.append(urllib.request.HTTPDigestAuthHandler(mgr))
@@ -485,6 +491,7 @@ def _InitHttp():
     handlers.append(urllib.request.HTTPHandler(debuglevel=1))
     handlers.append(urllib.request.HTTPSHandler(debuglevel=1))
   urllib.request.install_opener(urllib.request.build_opener(*handlers))
+
 
 def _Fetch(url, local, src, quiet):
   if not quiet:
@@ -500,12 +507,13 @@ def _Fetch(url, local, src, quiet):
   cmd.append('+refs/heads/*:refs/remotes/origin/*')
   cmd.append('refs/tags/*:refs/tags/*')
 
-  proc = subprocess.Popen(cmd, cwd = local, stderr = err)
+  proc = subprocess.Popen(cmd, cwd=local, stderr=err)
   if err:
     proc.stderr.read()
     proc.stderr.close()
   if proc.wait() != 0:
     raise CloneFailure()
+
 
 def _DownloadBundle(url, local, quiet):
   if not url.endswith('/'):
@@ -513,9 +521,9 @@ def _DownloadBundle(url, local, quiet):
   url += 'clone.bundle'
 
   proc = subprocess.Popen(
-    [GIT, 'config', '--get-regexp', 'url.*.insteadof'],
-    cwd = local,
-    stdout = subprocess.PIPE)
+      [GIT, 'config', '--get-regexp', 'url.*.insteadof'],
+      cwd=local,
+      stdout=subprocess.PIPE)
   for line in proc.stdout:
     m = re.compile(r'^url\.(.*)\.insteadof (.*)$').match(line)
     if m:
@@ -557,12 +565,14 @@ def _DownloadBundle(url, local, quiet):
   finally:
     dest.close()
 
+
 def _ImportBundle(local):
   path = os.path.join(local, '.git', 'clone.bundle')
   try:
     _Fetch(local, local, path, True)
   finally:
     os.remove(path)
+
 
 def _Clone(url, local, quiet):
   """Clones a git repository to a new subdirectory of repodir
@@ -576,14 +586,14 @@ def _Clone(url, local, quiet):
 
   cmd = [GIT, 'init', '--quiet']
   try:
-    proc = subprocess.Popen(cmd, cwd = local)
+    proc = subprocess.Popen(cmd, cwd=local)
   except OSError as e:
     _print(file=sys.stderr)
     _print("fatal: '%s' is not available" % GIT, file=sys.stderr)
     _print('fatal: %s' % e, file=sys.stderr)
     _print(file=sys.stderr)
     _print('Please make sure %s is installed and in your path.' % GIT,
-          file=sys.stderr)
+           file=sys.stderr)
     raise CloneFailure()
   if proc.wait() != 0:
     _print('fatal: could not create %s' % local, file=sys.stderr)
@@ -591,8 +601,9 @@ def _Clone(url, local, quiet):
 
   _InitHttp()
   _SetConfig(local, 'remote.origin.url', url)
-  _SetConfig(local, 'remote.origin.fetch',
-                    '+refs/heads/*:refs/remotes/origin/*')
+  _SetConfig(local,
+             'remote.origin.fetch',
+             '+refs/heads/*:refs/remotes/origin/*')
   if _DownloadBundle(url, local, quiet):
     _ImportBundle(local)
   _Fetch(url, local, 'origin', quiet)
@@ -605,7 +616,7 @@ def _Verify(cwd, branch, quiet):
   proc = subprocess.Popen(cmd,
                           stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE,
-                          cwd = cwd)
+                          cwd=cwd)
   cur = proc.stdout.read().strip()
   proc.stdout.close()
 
@@ -623,7 +634,7 @@ def _Verify(cwd, branch, quiet):
     if not quiet:
       _print(file=sys.stderr)
       _print("info: Ignoring branch '%s'; using tagged release '%s'"
-            % (branch, cur), file=sys.stderr)
+             % (branch, cur), file=sys.stderr)
       _print(file=sys.stderr)
 
   env = os.environ.copy()
@@ -631,10 +642,10 @@ def _Verify(cwd, branch, quiet):
 
   cmd = [GIT, 'tag', '-v', cur]
   proc = subprocess.Popen(cmd,
-                          stdout = subprocess.PIPE,
-                          stderr = subprocess.PIPE,
-                          cwd = cwd,
-                          env = env)
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          cwd=cwd,
+                          env=env)
   out = proc.stdout.read()
   proc.stdout.close()
 
@@ -654,21 +665,21 @@ def _Checkout(cwd, branch, rev, quiet):
   """Checkout an upstream branch into the repository and track it.
   """
   cmd = [GIT, 'update-ref', 'refs/heads/default', rev]
-  if subprocess.Popen(cmd, cwd = cwd).wait() != 0:
+  if subprocess.Popen(cmd, cwd=cwd).wait() != 0:
     raise CloneFailure()
 
   _SetConfig(cwd, 'branch.default.remote', 'origin')
   _SetConfig(cwd, 'branch.default.merge', 'refs/heads/%s' % branch)
 
   cmd = [GIT, 'symbolic-ref', 'HEAD', 'refs/heads/default']
-  if subprocess.Popen(cmd, cwd = cwd).wait() != 0:
+  if subprocess.Popen(cmd, cwd=cwd).wait() != 0:
     raise CloneFailure()
 
   cmd = [GIT, 'read-tree', '--reset', '-u']
   if not quiet:
     cmd.append('-v')
   cmd.append('HEAD')
-  if subprocess.Popen(cmd, cwd = cwd).wait() != 0:
+  if subprocess.Popen(cmd, cwd=cwd).wait() != 0:
     raise CloneFailure()
 
 
@@ -680,8 +691,8 @@ def _FindRepo():
 
   olddir = None
   while curdir != '/' \
-    and curdir != olddir \
-    and not repo:
+          and curdir != olddir \
+          and not repo:
     repo = os.path.join(curdir, repodir, REPO_MAIN)
     if not os.path.isfile(repo):
       repo = None
@@ -690,7 +701,7 @@ def _FindRepo():
   return (repo, os.path.join(curdir, repodir))
 
 
-class _Options:
+class _Options(object):
   help = False
 
 
@@ -717,7 +728,7 @@ def _Usage():
     gitc_usage = "  gitc-init Initialize a GITC Client.\n"
 
   _print(
-"""usage: repo COMMAND [ARGS]
+      """usage: repo COMMAND [ARGS]
 
 repo is not yet installed.  Use "repo init" to install it here.
 
@@ -725,7 +736,7 @@ The most commonly used repo commands are:
 
   init      Install repo in the current working directory
 """ + gitc_usage +
-"""  help      Display detailed help on a command
+      """  help      Display detailed help on a command
 
 For access to the full online help, install repo ("repo init").
 """, file=sys.stderr)
@@ -786,8 +797,8 @@ def _SetDefaultsTo(gitdir):
                            '--git-dir=%s' % gitdir,
                            'symbolic-ref',
                            'HEAD'],
-                          stdout = subprocess.PIPE,
-                          stderr = subprocess.PIPE)
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE)
   REPO_REV = proc.stdout.read().strip()
   proc.stdout.close()
 
@@ -814,7 +825,8 @@ def main(orig_args):
   if get_gitc_manifest_dir() and cwd.startswith(get_gitc_manifest_dir()):
     _print('error: repo cannot be used in the GITC local manifest directory.'
            '\nIf you want to work on this GITC client please rerun this '
-           'command from the corresponding client under /gitc/', file=sys.stderr)
+           'command from the corresponding client under /gitc/',
+           file=sys.stderr)
     sys.exit(1)
   if not repo_main:
     if opt.help:
