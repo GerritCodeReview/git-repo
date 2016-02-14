@@ -66,13 +66,15 @@ class _XmlRemote(object):
                fetch=None,
                manifestUrl=None,
                review=None,
-               revision=None):
+               revision=None,
+               path=None):
     self.name = name
     self.fetchUrl = fetch
     self.manifestUrl = manifestUrl
     self.remoteAlias = alias
     self.reviewUrl = review
     self.revision = revision
+    self.path = path
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
   def __eq__(self, other):
@@ -645,8 +647,11 @@ class XmlManifest(object):
     revision = node.getAttribute('revision')
     if revision == '':
       revision = None
+    path = node.getAttribute('path')
+    if path == '':
+      path = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision)
+    return _XmlRemote(name, alias, fetch, manifestUrl, review, revision, path)
 
   def _ParseDefault(self, node):
     """
@@ -752,6 +757,8 @@ class XmlManifest(object):
     if path.startswith('/'):
       raise ManifestParseError("project %s path cannot be absolute in %s" %
             (name, self.manifestFile))
+    if remote.path:
+      path = os.path.join(remote.path, path)
 
     rebase = node.getAttribute('rebase')
     if not rebase:
