@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5d688870_67d6720d",
+        "filename": "SUBMITTING_PATCHES",
+        "patchSetId": 1
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-02-17T01:06:58Z",
+      "side": 1,
+      "message": "It might be worth noting that the Verified button is only visible after the user has been added into the necessary group.  It\u0027s not visible by default.\n\nActually, I\u0027ll check if we can just allow Registered Users to verify instead of having a separate group.",
+      "revId": "54d20abb2a4be4316ef9fde16dac0f6112e75624",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5d688870_47d9ee3b",
+        "filename": "SUBMITTING_PATCHES",
+        "patchSetId": 1
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-02-17T01:06:58Z",
+      "side": 1,
+      "message": "tested",
+      "range": {
+        "startLine": 113,
+        "startChar": 70,
+        "endLine": 113,
+        "endChar": 77
+      },
+      "revId": "54d20abb2a4be4316ef9fde16dac0f6112e75624",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
