@@ -624,7 +624,7 @@ class Project(object):
     self.gitdir = gitdir.replace('\\', '/')
     self.objdir = objdir.replace('\\', '/')
     if worktree:
-      self.worktree = worktree.replace('\\', '/')
+      self.worktree = os.path.normpath(worktree.replace('\\', '/'))
     else:
       self.worktree = None
     self.relpath = relpath
