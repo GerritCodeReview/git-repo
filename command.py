@@ -119,6 +119,11 @@ class Command(object):
         except KeyError:
           oldpath = path
           path = os.path.dirname(path)
+      if not project and path == manifest.topdir:
+        try:
+          project = self._by_path[path]
+        except KeyError:
+          pass
     else:
       try:
         project = self._by_path[path]
