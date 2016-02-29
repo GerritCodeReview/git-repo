@@ -22,6 +22,30 @@
       "revId": "15b68a7ee8d6e8b85e2a428a616181e294aeff70",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2e0153f_422f72d2",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1023148
+      },
+      "writtenOn": "2016-02-29T20:56:12Z",
+      "side": 1,
+      "message": "I was trying to match what I saw done most often in this files history: https://gerrit.googlesource.com/git-repo/+log/master/hooks/commit-msg",
+      "parentUuid": "a20c01ef_19d5ebff",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "15b68a7ee8d6e8b85e2a428a616181e294aeff70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
