@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "c2e0153f_a2847efe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-03-01T00:10:45Z",
+      "side": 1,
+      "message": "The changes are not from the released version 2.12, but from the head of stable-2.12.\n\nChanges from [1] are included, which was not in 2.12 (but will be in 2.12.1).\n\nWe can either remove those changes, or wait until 2.12.1 is released and then update this.\n\n[1] https://gerrit-review.googlesource.com/#/c/74760/",
+      "range": {
+        "startLine": 7,
+        "startChar": 34,
+        "endLine": 7,
+        "endChar": 50
+      },
+      "revId": "15b68a7ee8d6e8b85e2a428a616181e294aeff70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a20c01ef_19d5ebff",
         "filename": "hooks/commit-msg",
         "patchSetId": 1
@@ -66,6 +89,52 @@
         "startChar": 0,
         "endLine": 2,
         "endChar": 30
+      },
+      "revId": "15b68a7ee8d6e8b85e2a428a616181e294aeff70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a20c01ef_19432b8c",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-03-01T00:10:45Z",
+      "side": 1,
+      "message": "This is not in 2.12",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 30
+      },
+      "revId": "15b68a7ee8d6e8b85e2a428a616181e294aeff70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2e0153f_c27f02b7",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-03-01T00:10:45Z",
+      "side": 1,
+      "message": "This is not in 2.12",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 90,
+        "endChar": 29
       },
       "revId": "15b68a7ee8d6e8b85e2a428a616181e294aeff70",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
