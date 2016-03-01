@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a20c01ef_7950674f",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-03-01T00:20:52Z",
+      "side": 1,
+      "message": "This line is now too long and should cause a PEP-8 warning.",
+      "revId": "4c0e6e86365694d812a22963a1f5ccb096826e2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2e0153f_427492d8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1199,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-03-01T00:20:52Z",
+      "side": 1,
+      "message": "I would wrap this line after \u0027and\u0027 to avoid long line warning.",
+      "revId": "4c0e6e86365694d812a22963a1f5ccb096826e2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a20c01ef_594da3b1",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2067,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-03-01T00:20:52Z",
+      "side": 1,
+      "message": "Instead of suppressing like this, you can prefix the unused variable with underscore.\n\nIt looks like it\u0027s \u0027proxy\u0027 that\u0027s unused, so just change it to \u0027_proxy\u0027.",
+      "range": {
+        "startLine": 2067,
+        "startChar": 64,
+        "endLine": 2067,
+        "endChar": 99
+      },
+      "revId": "4c0e6e86365694d812a22963a1f5ccb096826e2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2e0153f_22718ee8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2491,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-03-01T00:20:52Z",
+      "side": 1,
+      "message": "I would either remove this comment or put it on the line before the code statement.\n\nIt was aligned with the pylint suppression to make it clear that it\u0027s related to that.",
+      "revId": "4c0e6e86365694d812a22963a1f5ccb096826e2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
