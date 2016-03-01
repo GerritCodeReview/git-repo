@@ -22,6 +22,30 @@
       "revId": "722d596b0e0b57b5e393bdb6d12fa320508c4368",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2e0153f_62f9d66c",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1022809
+      },
+      "writtenOn": "2016-03-01T01:23:04Z",
+      "side": 1,
+      "message": "Yes, and yes. The other warnings can be fixed the same way. Not sure why they didn\u0027t appear when I ran it before.",
+      "parentUuid": "c2e0153f_627b96c6",
+      "range": {
+        "startLine": 34,
+        "startChar": 27,
+        "endLine": 34,
+        "endChar": 62
+      },
+      "revId": "722d596b0e0b57b5e393bdb6d12fa320508c4368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
