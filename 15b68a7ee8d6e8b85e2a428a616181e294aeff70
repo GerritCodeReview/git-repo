@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "a20c01ef_f9891715",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1023148
+      },
+      "writtenOn": "2016-03-01T00:34:43Z",
+      "side": 1,
+      "message": "Okay, then this can just wait",
+      "parentUuid": "a20c01ef_b97f9fb7",
+      "range": {
+        "startLine": 7,
+        "startChar": 34,
+        "endLine": 7,
+        "endChar": 50
+      },
+      "revId": "15b68a7ee8d6e8b85e2a428a616181e294aeff70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a20c01ef_19d5ebff",
         "filename": "hooks/commit-msg",
         "patchSetId": 1
