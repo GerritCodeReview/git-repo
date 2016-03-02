@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c2ae55f9_f2892815",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1022809
+      },
+      "writtenOn": "2016-03-02T16:07:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2ae55f9_322f30d4",
+      "revId": "94991472341e1b9d6e6be0e64c5543736842af8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "82b8dd3e_10a784d3",
         "filename": "project.py",
         "patchSetId": 2
@@ -30,6 +48,30 @@
       "writtenOn": "2016-03-02T05:29:28Z",
       "side": 1,
       "message": "this is a parameter to the SshReviewUrl method.  It would be better to leave the opening parenthesis on the previous line.",
+      "range": {
+        "startLine": 183,
+        "startChar": 45,
+        "endLine": 183,
+        "endChar": 69
+      },
+      "revId": "94991472341e1b9d6e6be0e64c5543736842af8d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c2ae55f9_d28ea41a",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1022809
+      },
+      "writtenOn": "2016-03-02T16:07:41Z",
+      "side": 1,
+      "message": "I tried that, but pylint whined until I shifted the line left, which I thought looked ugly. Instead I\u0027ve put both parameters to ls_remote on separate lines. This passes both pep8 and pylint and looks a little better.",
+      "parentUuid": "82b8dd3e_10a784d3",
       "range": {
         "startLine": 183,
         "startChar": 45,
