@@ -475,7 +475,7 @@ class RepoHook(object):
 
       # Exec, storing global context in the context dict.  We catch exceptions
       # and  convert to a HookError w/ just the failing traceback.
-      context = {}
+      context = {'__file__': self._script_fullpath}
       try:
         exec(compile(open(self._script_fullpath).read(),
                      self._script_fullpath, 'exec'), context)
