@@ -22,6 +22,30 @@
       "revId": "085a0f34a9587b73cd88bd5c63328fa955595b97",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "822d3d79_88e337f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2016-03-05T21:53:00Z",
+      "side": 1,
+      "message": "i\u0027ve dropped the lines.  doesn\u0027t look like this project uses this convention.",
+      "parentUuid": "822d3d79_e8bd93dd",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 14
+      },
+      "revId": "085a0f34a9587b73cd88bd5c63328fa955595b97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
