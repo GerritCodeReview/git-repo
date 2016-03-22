@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c37666b_c1a2c2c6",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 1010021
+      },
+      "writtenOn": "2016-03-22T19:22:25Z",
+      "side": 1,
+      "message": "Is this the right way to get the upstream name?\n\nIn my local test, this gives something like \"refs/remotes/goog/ub-finsky-dirtymartini\". However, I think something like \"m/ub-finsky-dirtymartini\" would be preferable.",
+      "range": {
+        "startLine": 450,
+        "startChar": 29,
+        "endLine": 450,
+        "endChar": 30
+      },
+      "revId": "e0c59471c83f206e6377916a0b2637c52247527f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
