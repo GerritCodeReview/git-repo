@@ -444,10 +444,15 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
           avail = [up_branch]
         else:
           avail = None
+          upstream = "m/master"
+          if project.revisionExpr:
+            remote = project.GetRemote(project.remote.name)
+            upstream = remote.ToLocal(project.revisionExpr)
+
           print('ERROR: Current branch (%s) not uploadable. '
                 'You may be able to type '
-                '"git branch --set-upstream-to m/master" to fix '
-                'your branch.' % str(cbr),
+                '"git branch --set-upstream-to %s" to fix '
+                'your branch.' % (str(cbr), upstream),
                 file=sys.stderr)
       else:
         avail = project.GetUploadableBranches(branch)
