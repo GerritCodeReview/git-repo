@@ -615,6 +615,11 @@ class Remote(object):
         u = u[:len(u) - len('/ssh_info')]
       if not u.endswith('/'):
         u += '/'
+
+      # Grab host + subfolder from full URL
+      split_pos = u.find('/', u.find('//') + 2) + 1
+      sub_folder = u[split_pos:]
+      u = u[:split_pos]
       http_url = u
 
       if u in REVIEW_CACHE:
@@ -647,7 +652,7 @@ class Remote(object):
           raise UploadError('%s: %s' % (self.review, e.__class__.__name__))
 
         REVIEW_CACHE[u] = self._review_url
-    return self._review_url + self.projectname
+    return self._review_url + sub_folder + self.projectname
 
   def _SshReviewUrl(self, userEmail, host, port):
     username = self._config.GetString('review.%s.username' % self.review)
