@@ -2437,7 +2437,7 @@ class Project(object):
   def _allrefs(self):
     return self.bare_ref.all
 
-  def _getLogs(self, rev1, rev2, oneline=False, color=True):
+  def _getLogs(self, rev1, rev2, oneline=False, color=True, pretty_format=None):
     """Get logs between two revisions of this project."""
     comp = '..'
     if rev1:
@@ -2448,6 +2448,8 @@ class Project(object):
       out = DiffColoring(self.config)
       if out.is_on and color:
         cmd.append('--color')
+      if pretty_format is not None:
+        cmd.append('--pretty=%s' % pretty_format)
       if oneline:
         cmd.append('--oneline')
 
@@ -2464,14 +2466,17 @@ class Project(object):
           raise
     return None
 
-  def getAddedAndRemovedLogs(self, toProject, oneline=False, color=True):
+  def getAddedAndRemovedLogs(self, toProject, oneline=False, color=True,
+                             pretty_format=None):
     """Get the list of logs from this revision to given revisionId"""
     logs = {}
     selfId = self.GetRevisionId(self._allrefs)
     toId = toProject.GetRevisionId(toProject._allrefs)
 
-    logs['added'] = self._getLogs(selfId, toId, oneline=oneline, color=color)
-    logs['removed'] = self._getLogs(toId, selfId, oneline=oneline, color=color)
+    logs['added'] = self._getLogs(selfId, toId, oneline=oneline, color=color,
+                                  pretty_format=pretty_format)
+    logs['removed'] = self._getLogs(toId, selfId, oneline=oneline, color=color,
+                                    pretty_format=pretty_format)
     return logs
 
   class _GitGetByExec(object):
