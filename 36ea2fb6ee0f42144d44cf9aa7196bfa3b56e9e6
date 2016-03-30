@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "11c521ce_c4453e94",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1025350
+      },
+      "writtenOn": "2016-03-30T21:02:15Z",
+      "side": 1,
+      "message": "This line broke repo-manifest command for projects with alias. Note that remoteName here is in fact remote alias, but self.remotes is indexed with remote name.",
+      "revId": "36ea2fb6ee0f42144d44cf9aa7196bfa3b56e9e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
