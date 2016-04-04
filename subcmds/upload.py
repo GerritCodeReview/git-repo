@@ -454,7 +454,11 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       if avail:
         pending.append((project, avail))
 
-    if pending and (not opt.bypass_hooks):
+    if not pending:
+      print("no branches ready for upload", file=sys.stderr)
+      return
+
+    if not opt.bypass_hooks:
       hook = RepoHook('pre-upload', self.manifest.repo_hooks_project,
                       self.manifest.topdir,
                       self.manifest.manifestProject.GetRemote('origin').url,
@@ -474,9 +478,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       cc = _SplitEmails(opt.cc)
     people = (reviewers, cc)
 
-    if not pending:
-      print("no branches ready for upload", file=sys.stderr)
-    elif len(pending) == 1 and len(pending[0][1]) == 1:
+    if len(pending) == 1 and len(pending[0][1]) == 1:
       self._SingleBranch(opt, pending[0][1][0], people)
     else:
       self._MultipleBranches(opt, pending, people)
