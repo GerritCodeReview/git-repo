@@ -2315,8 +2315,8 @@ class Project(object):
         self.bare_git.symbolic_ref('-m', msg, ref, dst)
 
   def _CheckDirReference(self, srcdir, destdir, share_refs):
-    symlink_files = self.shareable_files
-    symlink_dirs = self.shareable_dirs
+    symlink_files = self.shareable_files[:]
+    symlink_dirs = self.shareable_dirs[:]
     if share_refs:
       symlink_files += self.working_tree_files
       symlink_dirs += self.working_tree_dirs
@@ -2344,8 +2344,8 @@ class Project(object):
       copy_all: If true, copy all remaining files from |gitdir| -> |dotgit|.
           This saves you the effort of initializing |dotgit| yourself.
     """
-    symlink_files = self.shareable_files
-    symlink_dirs = self.shareable_dirs
+    symlink_files = self.shareable_files[:]
+    symlink_dirs = self.shareable_dirs[:]
     if share_refs:
       symlink_files += self.working_tree_files
       symlink_dirs += self.working_tree_dirs
