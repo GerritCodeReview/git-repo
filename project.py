@@ -315,11 +315,13 @@ class RemoteSpec(object):
                name,
                url=None,
                review=None,
-               revision=None):
+               revision=None,
+               orig_name=None):
     self.name = name
     self.url = url
     self.review = review
     self.revision = revision
+    self.orig_name = orig_name
 
 
 class RepoHook(object):

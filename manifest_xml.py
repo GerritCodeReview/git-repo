@@ -102,7 +102,10 @@ class _XmlRemote(object):
     remoteName = self.name
     if self.remoteAlias:
       remoteName = self.remoteAlias
-    return RemoteSpec(remoteName, url, self.reviewUrl)
+    return RemoteSpec(remoteName,
+                      url=url,
+                      review=self.reviewUrl,
+                      orig_name=self.name)
 
 class XmlManifest(object):
   """manages the repo configuration file"""
@@ -249,9 +252,9 @@ class XmlManifest(object):
         e.setAttribute('path', relpath)
       remoteName = None
       if d.remote:
-        remoteName = d.remote.remoteAlias or d.remote.name
-      if not d.remote or p.remote.name != remoteName:
-        remoteName = p.remote.name
+        remoteName = d.remote.name
+      if not d.remote or p.remote.orig_name != remoteName:
+        remoteName = p.remote.orig_name
         e.setAttribute('remote', remoteName)
       if peg_rev:
         if self.IsMirror:
@@ -267,7 +270,7 @@ class XmlManifest(object):
             # isn't our value
             e.setAttribute('upstream', p.revisionExpr)
       else:
-        revision = self.remotes[remoteName].revision or d.revisionExpr
+        revision = self.remotes[p.remote.orig_name].revision or d.revisionExpr
         if not revision or revision != p.revisionExpr:
           e.setAttribute('revision', p.revisionExpr)
         if p.upstream and p.upstream != p.revisionExpr:
