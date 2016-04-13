@@ -242,7 +242,7 @@ later is required to fix a server side protocol bug.
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
-                   help='smart sync using manifest from a known good build')
+                   help='smart sync using manifest from the latest known good build')
       p.add_option('-t', '--smart-tag',
                    dest='smart_tag', action='store',
                    help='smart sync using manifest from a known tag')
