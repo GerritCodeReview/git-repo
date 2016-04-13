@@ -175,7 +175,8 @@ The manifest server should implement the following RPC methods:
   GetApprovedManifest(branch, target)
 
 Return a manifest in which each project is pegged to a known good revision
-for the current branch and target.
+for the current branch and target. This is used by repo sync when the
+--smart-sync option is given.
 
 The target to use is defined by environment variables TARGET_PRODUCT
 and TARGET_BUILD_VARIANT. These variables are used to create a string
@@ -187,7 +188,8 @@ should choose a reasonable default target.
   GetManifest(tag)
 
 Return a manifest in which each project is pegged to the revision at
-the specified tag.
+the specified tag. This is used by repo sync when the --smart-tag option
+is given.
 
 
 Element project
