@@ -51,6 +51,24 @@
       "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab4dc25b_b13a20c1",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2016-04-15T11:51:21Z",
+      "side": 1,
+      "message": "By \"expected format\" I guess you mean \"valid format\" in sense what Git supports? I don\u0027t think we should do any checks here but leave it to Git to fail in that case.",
+      "parentUuid": "8b2d5e79_c8f9af66",
+      "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
