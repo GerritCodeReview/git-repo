@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68f5903c_5fe70bfd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-04-15T09:45:02Z",
+      "side": 1,
+      "message": "Please wrap the commit message at around 72 characters.",
+      "revId": "0e26d0dbf3a84c21f98b652042e13ee457684848",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
