@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68f5903c_3fec47dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-04-15T09:51:50Z",
+      "side": 1,
+      "message": "The subject needs to be a single line, otherwise the line wrapping makes no difference.",
+      "revId": "38ee3bc304dd3ef95d3cdf91d88c69493296cc63",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
