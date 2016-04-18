@@ -69,6 +69,24 @@
       "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8b2d5e79_c8652fab",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-04-18T01:25:11Z",
+      "side": 1,
+      "message": "Yes, that\u0027s what I meant.\n\nHave you confirmed what it does if an invalid (not supported by git) value is given?  I.e. does it catch it and display a user-friendly error message, or just dump a backtrace to the console?",
+      "parentUuid": "ab4dc25b_b13a20c1",
+      "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
