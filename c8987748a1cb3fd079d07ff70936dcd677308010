@@ -105,6 +105,24 @@
       "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8d2fce6_12696cf5",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-04-19T12:44:39Z",
+      "side": 1,
+      "message": "So just to confirm, it prints a formatted error message to the console, rather than an error message at the bottom of a backtrace?",
+      "parentUuid": "88dc84fe_d0475c9c",
+      "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
