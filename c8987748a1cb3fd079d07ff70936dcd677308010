@@ -87,6 +87,24 @@
       "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88dc84fe_d0475c9c",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2016-04-19T07:53:39Z",
+      "side": 1,
+      "message": "It behaves then exactly as Git itself does: In case of an invalid / unsupported format string, the given characters are simply printed literally and not expanded. In that sense neither vanilla Git nor git-repo fail.",
+      "parentUuid": "8b2d5e79_c8652fab",
+      "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
