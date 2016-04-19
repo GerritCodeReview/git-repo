@@ -123,6 +123,24 @@
       "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a8d5c8d0_91723cac",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2016-04-19T15:09:17Z",
+      "side": 1,
+      "message": "No. There is no dedicated error message printed at all. If you do something like\n\n    $ repo diffmanifests $PWD/manifest_before_sync.xml $PWD/manifest_after_sync.xml --pretty-format\u003dformat:this_is_an_invalid_format_string\n\nThen you\u0027d get something like\n\n\tchanged projects :\n\n\t\t\tProjA changed from 910b57479e7881c977d8813603ce1ac600045925 to 5447464636454173f4baea7184bc59e8a7bac226\n\t\t\t\t\t[+] this_is_an_invalid_format_string\n\t\t\t\t\t[+] this_is_an_invalid_format_string\n\t\t\t\t\t[+] this_is_an_invalid_format_string\n\t\t\t\t\t[+] this_is_an_invalid_format_string\n\nGit itself does not fail on this format string, so repo shouldn\u0027t either, IMO. From the log output it\u0027s quite obvious that something went wrong and what, i.e. that there must be an error in the format string.",
+      "parentUuid": "c8d2fce6_12696cf5",
+      "revId": "c8987748a1cb3fd079d07ff70936dcd677308010",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
