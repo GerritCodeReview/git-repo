@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88bba4f1_3825099f",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-04-21T13:30:48Z",
+      "side": 1,
+      "message": "\u0027STRING\u0027 for consistency with how metavar is used in other commands.\n\nOr maybe \u0027FORMAT\u0027?",
+      "range": {
+        "startLine": 76,
+        "startChar": 26,
+        "endLine": 76,
+        "endChar": 34
+      },
+      "revId": "b8415e938f60adffd77d8a8109b3cb3caebea50b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88bba4f1_5828bd76",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-04-21T13:30:48Z",
+      "side": 1,
+      "message": "nit: long lines",
+      "revId": "b8415e938f60adffd77d8a8109b3cb3caebea50b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
