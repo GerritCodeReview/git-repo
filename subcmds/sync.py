@@ -76,6 +76,7 @@ from project import SyncBuffer
 from progress import Progress
 from wrapper import Wrapper
 from manifest_xml import GitcManifest
+from trace import IsTrace
 
 _ONE_DAY_S = 24 * 60 * 60
 
@@ -908,6 +909,15 @@ class _FetchTimes(object):
       except OSError:
         pass
 
+# A HTTPRedirectHandler that converts https:// redirects to http://
+# (The local proxy will take care of using https:// as appropriate)
+class PersistentHttpsRedirectHandler(urllib.request.HTTPRedirectHandler):
+  def redirect_request(self, req, fp, code, msg, headers, newurl):
+    if newurl.startswith('https://'):
+      newurl = 'http' + newurl[5:]
+    return urllib.request.HTTPRedirectHandler.redirect_request(
+        self, req, fp, code, msg, headers, newurl)
+
 # This is a replacement for xmlrpc.client.Transport using urllib2
 # and supporting persistent-http[s]. It cannot change hosts from
 # request to request like the normal transport, the real url
@@ -948,13 +958,10 @@ class PersistentTransport(xmlrpc.client.Transport):
             "http": proxy,
             "https": proxy })
 
-      opener = urllib.request.build_opener(
-          urllib.request.HTTPCookieProcessor(cookiejar),
-          proxyhandler)
-
       url = urllib.parse.urljoin(self.orig_host, handler)
       parse_results = urllib.parse.urlparse(url)
 
+      redirecthandler = urllib.request.HTTPRedirectHandler
       scheme = parse_results.scheme
       if scheme == 'persistent-http':
         scheme = 'http'
@@ -963,8 +970,20 @@ class PersistentTransport(xmlrpc.client.Transport):
         # proxy itself will do the https.
         if proxy:
           scheme = 'http'
+          redirecthandler = PersistentHttpsRedirectHandler()
         else:
           scheme = 'https'
+
+      # Turn on HTTP debugging when --trace is set
+      handler = urllib.request.HTTPHandler(debuglevel=IsTrace())
+      if scheme == 'https':
+        handler = urllib.request.HTTPSHandler(debuglevel=IsTrace())
+
+      opener = urllib.request.build_opener(
+          urllib.request.HTTPCookieProcessor(cookiejar),
+          proxyhandler,
+          redirecthandler,
+          handler)
 
       # Parse out any authentication information using the base class
       host, extra_headers, _ = self.get_host_info(parse_results.netloc)
