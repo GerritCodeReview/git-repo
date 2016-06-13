@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "af1b185a_e3fa127e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 1025422
+      },
+      "writtenOn": "2016-06-13T11:25:19Z",
+      "side": 1,
+      "message": "trailing whitespaces",
+      "range": {
+        "startLine": 771,
+        "startChar": 64,
+        "endLine": 771,
+        "endChar": 68
+      },
+      "revId": "55a71d84049cee483ef079c3088c547eb17db532",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
