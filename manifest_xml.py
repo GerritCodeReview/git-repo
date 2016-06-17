@@ -972,5 +972,5 @@ class GitcManifest(XmlManifest):
   def _output_manifest_project_extras(self, p, e):
     """Output GITC Specific Project attributes"""
     if p.old_revision:
-        e.setAttribute('old-revision', str(p.old_revision))
+      e.setAttribute('old-revision', str(p.old_revision))
 
