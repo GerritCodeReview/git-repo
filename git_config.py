@@ -578,8 +578,9 @@ class Remote(object):
     self.fetch = list(map(RefSpec.FromString,
                       self._Get('fetch', all_keys=True)))
     self._review_url = None
+    self.lfs = self._Get('lfsurl')
 
-  def _InsteadOf(self):
+  def _InsteadOf(self, url):
     globCfg = GitConfig.ForUser()
     urlList = globCfg.GetSubSections('url')
     longest = ""
@@ -590,18 +591,18 @@ class Remote(object):
       insteadOfList = globCfg.GetString(key, all_keys=True)
 
       for insteadOf in insteadOfList:
-        if self.url.startswith(insteadOf) \
+        if url.startswith(insteadOf) \
         and len(insteadOf) > len(longest):
           longest = insteadOf
           longestUrl = url
 
     if len(longest) == 0:
-      return self.url
+      return url
 
-    return self.url.replace(longest, longestUrl, 1)
+    return url.replace(longest, longestUrl, 1)
 
-  def PreConnectFetch(self):
-    connectionUrl = self._InsteadOf()
+  def PreConnectFetch(self, url):
+    connectionUrl = self._InsteadOf(url)
     return _preconnect(connectionUrl)
 
   def ReviewUrl(self, userEmail):
@@ -706,6 +707,7 @@ class Remote(object):
     self._Set('review', self.review)
     self._Set('projectname', self.projectname)
     self._Set('fetch', list(map(str, self.fetch)))
+    self._Set('lfsurl', self.lfs)
 
   def _Set(self, key, value):
     key = 'remote.%s.%s' % (self.name, key)

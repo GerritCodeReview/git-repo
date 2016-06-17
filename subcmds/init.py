@@ -34,7 +34,8 @@ from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from project import SyncBuffer
 from git_config import GitConfig
-from git_command import git_require, MIN_GIT_VERSION
+from git_command import git, git_require, MIN_GIT_VERSION
+
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
@@ -383,6 +384,19 @@ to update the working directory files.
       print('   rm -r %s/.repo' % self.manifest.topdir)
       print('and try again.')
 
+  def _checkLfs(self):
+    """
+    Check that lfs is correctly installed, if it is configured for at least one project
+    """
+    if self.manifest.IsMirror:
+      # Nothing to check on a mirror
+      return
+    lfs_version = git.lfsVersion()
+    lfs_enabled = any([project.lfs for project in self.manifest.projects])
+    if lfs_enabled and lfs_version is None:
+      print('fatal: git lfs is not installed', file=sys.stderr)
+      sys.exit(1)
+
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION, fail=True)
 
@@ -405,5 +419,7 @@ to update the working directory files.
       self._ConfigureColor()
 
     self._ConfigureDepth(opt)
+
+    self._checkLfs()
 
     self._DisplayResult()
