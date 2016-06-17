@@ -62,6 +62,7 @@ class _Default(object):
   sync_j = 1
   sync_c = False
   sync_s = False
+  lfs = None
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -77,7 +78,8 @@ class _XmlRemote(object):
                pushUrl=None,
                manifestUrl=None,
                review=None,
-               revision=None):
+               revision=None,
+               lfs=None):
     self.name = name
     self.fetchUrl = fetch
     self.pushUrl = pushUrl
@@ -85,6 +87,7 @@ class _XmlRemote(object):
     self.remoteAlias = alias
     self.reviewUrl = review
     self.revision = revision
+    self.lfs = lfs
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
   def __eq__(self, other):
@@ -109,8 +112,16 @@ class _XmlRemote(object):
       url = urllib.parse.urljoin(manifestUrl, url)
     return url
 
-  def ToRemoteSpec(self, projectName):
+  def ToRemoteSpec(self, projectName, lfs=None):
     url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
+    lfsurl = None
+    if lfs:
+      if self.lfs:
+        lfsurl = self.lfs.rstrip('/') + '/' + lfs
+      else:
+        raise ManifestParseError(
+          "lfs is enabled for the {} project, "
+          "but lfs element is missing in {} remote".format(projectName, self.name))
     remoteName = self.name
     if self.remoteAlias:
       remoteName = self.remoteAlias
@@ -118,7 +129,8 @@ class _XmlRemote(object):
                       url=url,
                       pushUrl=self.pushUrl,
                       review=self.reviewUrl,
-                      orig_name=self.name)
+                      orig_name=self.name,
+                      lfs=lfsurl)
 
 class XmlManifest(object):
   """manages the repo configuration file"""
@@ -663,8 +675,9 @@ class XmlManifest(object):
     revision = node.getAttribute('revision')
     if revision == '':
       revision = None
+    lfs = node.getAttribute('lfs')
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, pushUrl, manifestUrl, review, revision)
+    return _XmlRemote(name, alias, fetch, pushUrl, manifestUrl, review, revision, lfs=lfs)
 
   def _ParseDefault(self, node):
     """
@@ -802,6 +815,7 @@ class XmlManifest(object):
     dest_branch = node.getAttribute('dest-branch') or self._default.destBranchExpr
 
     upstream = node.getAttribute('upstream')
+    lfs = node.getAttribute('lfs')
 
     groups = ''
     if node.hasAttribute('groups'):
@@ -823,7 +837,7 @@ class XmlManifest(object):
 
     project = Project(manifest = self,
                       name = name,
-                      remote = remote.ToRemoteSpec(name),
+                      remote = remote.ToRemoteSpec(name, lfs=lfs),
                       gitdir = gitdir,
                       objdir = objdir,
                       worktree = worktree,
@@ -838,6 +852,7 @@ class XmlManifest(object):
                       upstream = upstream,
                       parent = parent,
                       dest_branch = dest_branch,
+                      lfs=lfs,
                       **extra_proj_attrs)
 
     for n in node.childNodes:
