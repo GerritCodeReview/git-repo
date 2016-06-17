@@ -323,13 +323,15 @@ class RemoteSpec(object):
                pushUrl=None,
                review=None,
                revision=None,
-               orig_name=None):
+               orig_name=None,
+               lfs=None):
     self.name = name
     self.url = url
     self.pushUrl = pushUrl
     self.review = review
     self.revision = revision
     self.orig_name = orig_name
+    self.lfs = lfs
 
 
 class RepoHook(object):
@@ -655,7 +657,8 @@ class Project(object):
                is_derived=False,
                dest_branch=None,
                optimized_fetch=False,
-               old_revision=None):
+               old_revision=None,
+               lfs=None):
     """Init a Project object.
 
     Args:
@@ -715,6 +718,7 @@ class Project(object):
     self.copyfiles = []
     self.linkfiles = []
     self.annotations = []
+    self.lfs = lfs
     self.config = GitConfig.ForRepository(gitdir=self.gitdir,
                                           defaults=self.manifest.globalConfig)
 
@@ -1278,6 +1282,17 @@ class Project(object):
                               no_tags=no_tags, prune=prune, depth=depth)):
       return False
 
+    if self._isLfsEnabled():
+      remote = self.GetRemote(self.remote.name)
+      dst = remote.ToLocal(self.revisionExpr)
+      lfs_fetch_cmd = GitCommand(self, ['lfs', 'fetch', self.remote.name, dst],
+                                 bare=True)
+      if lfs_fetch_cmd.Wait() != 0:
+        if not quiet:
+          print("cannot fetch lfs in {}".format(self.gitdir),
+                file=sys.stderr)
+        return False
+
     if self.worktree:
       self._InitMRef()
     else:
@@ -1367,6 +1382,9 @@ class Project(object):
         # Except if the head needs to be detached
         #
         if not syncbuf.detach_head:
+          # git checkout will not be called in that case, so we need to explicitely
+          # checkout lfs objects. This is the case for the initial Sync_LocalHalf
+          self._checkoutLfs()
           # The copy/linkfile config may have changed.
           self._CopyAndLinkFiles()
           return
@@ -1490,6 +1508,12 @@ class Project(object):
         return
     else:
       syncbuf.later1(self, _doff)
+
+  def _checkoutLfs(self):
+    if self._isLfsEnabled():
+      lfs_checkout_cmd = GitCommand(self, ['lfs', 'checkout'])
+      if lfs_checkout_cmd.Wait() != 0:
+        raise GitError("cannot checkout lfs objects in {}".format(self.worktree))
 
   def AddCopyFile(self, src, dest, absdest):
     # dest should already be an absolute path, but src is project relative
@@ -1840,7 +1864,8 @@ class Project(object):
                           url=url,
                           pushUrl=self.remote.pushUrl,
                           review=self.remote.review,
-                          revision=self.remote.revision)
+                          revision=self.remote.revision,
+                          lfs=self.remote.lfs)
       subproject = Project(manifest=self.manifest,
                            name=name,
                            remote=remote,
@@ -1935,7 +1960,9 @@ class Project(object):
 
     ssh_proxy = False
     remote = self.GetRemote(name)
-    if remote.PreConnectFetch():
+    if remote.PreConnectFetch(remote.url):
+      ssh_proxy = True
+    if remote.PreConnectFetch(remote.lfs):
       ssh_proxy = True
 
     if initial:
@@ -2306,6 +2333,7 @@ class Project(object):
           self.config.SetString('core.bare', 'true')
         else:
           self.config.SetString('core.bare', None)
+        self._initLfs(isNew=True)
     except Exception:
       if init_obj_dir and os.path.exists(self.objdir):
         shutil.rmtree(self.objdir)
@@ -2358,12 +2386,30 @@ class Project(object):
       remote.pushUrl = self.remote.pushUrl
       remote.review = self.remote.review
       remote.projectname = self.name
+      if self._isLfsEnabled():
+        remote.lfs = self.remote.lfs
 
       if self.worktree:
         remote.ResetFetch(mirror=False)
       else:
         remote.ResetFetch(mirror=True)
       remote.Save()
+      self._initLfs()
+
+  def _isLfsEnabled(self):
+    return self.lfs and not self.manifest.IsMirror
+
+  def _initLfs(self, isNew=False):
+    if self._isLfsEnabled():
+      self.config.SetString('lfs.url', self.remote.lfs)
+      if isNew:
+        self.config.SetString('filter.lfs.clean', 'git-lfs clean -- %f')
+        self.config.SetString('filter.lfs.smudge', 'git-lfs smudge -- %f')
+        self.config.SetString('filter.lfs.required', 'true')
+        lfs_init_cmd = GitCommand(self, ['lfs', 'install'], bare=True)
+        if lfs_init_cmd.Wait() != 0:
+          raise GitError("cannot initialize lfs in {}".format(self.gitdir))
+
 
   def _InitMRef(self):
     if self.manifest.branch:
@@ -2390,6 +2436,8 @@ class Project(object):
   def _CheckDirReference(self, srcdir, destdir, share_refs):
     symlink_files = self.shareable_files[:]
     symlink_dirs = self.shareable_dirs[:]
+    if self._isLfsEnabled():
+      symlink_dirs.append('lfs')
     if share_refs:
       symlink_files += self.working_tree_files
       symlink_dirs += self.working_tree_dirs
@@ -2420,6 +2468,8 @@ class Project(object):
     """
     symlink_files = self.shareable_files[:]
     symlink_dirs = self.shareable_dirs[:]
+    if self._isLfsEnabled():
+      symlink_dirs.append('lfs')
     if share_refs:
       symlink_files += self.working_tree_files
       symlink_dirs += self.working_tree_dirs

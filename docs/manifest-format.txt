@@ -38,6 +38,7 @@ following DTD:
     <!ATTLIST remote pushurl      CDATA #IMPLIED>
     <!ATTLIST remote review       CDATA #IMPLIED>
     <!ATTLIST remote revision     CDATA #IMPLIED>
+    <!ATTLIST remote lfs          CDATA #IMPLIED>
 
     <!ELEMENT default (EMPTY)>
     <!ATTLIST default remote      IDREF #IMPLIED>
@@ -62,9 +63,10 @@ following DTD:
     <!ATTLIST project groups      CDATA #IMPLIED>
     <!ATTLIST project sync-c      CDATA #IMPLIED>
     <!ATTLIST project sync-s      CDATA #IMPLIED>
-    <!ATTLIST project upstream CDATA #IMPLIED>
+    <!ATTLIST project upstream    CDATA #IMPLIED>
     <!ATTLIST project clone-depth CDATA #IMPLIED>
-    <!ATTLIST project force-path CDATA #IMPLIED>
+    <!ATTLIST project force-path  CDATA #IMPLIED>
+    <!ATTLIST project lfs         CDATA #IMPLIED>
 
     <!ELEMENT annotation (EMPTY)>
     <!ATTLIST annotation name  CDATA #REQUIRED>
@@ -139,6 +141,10 @@ if not specified then `repo upload` will not function.
 Attribute `revision`: Name of a Git branch (e.g. `master` or
 `refs/heads/master`). Remotes with their own revision will override
 the default revision.
+
+Attribute `lfs`: The lfs URL prefix for all projects which use
+this remote.  Each project's lfs name is appended to this prefix to
+form the actual URL used to fetch the lfs objects for this project.
 
 Element default
 ---------------
@@ -276,6 +282,15 @@ local mirror repository according to its `path` attribute (if supplied)
 rather than the `name` attribute.  This attribute only applies to the
 local mirrors syncing, it will be ignored when syncing the projects in a
 client working directory.
+
+Attribute `lfs`: A lfs name for this project.  The project's
+lfs name is appended onto its remote's lfs URL to generate the actual
+URL to configure the lfs remote with.  The URL gets formed as:
+
+  ${remote_lfs}/${project_lfs}
+
+where ${remote_lfs} is the remote's lfs attribute and
+${project_lfs} is the project's lfs attribute.
 
 Element extend-project
 ----------------------

@@ -98,6 +98,15 @@ class _GitCall(object):
         return p.stdout
     return None
 
+  def lfsVersion(self):
+    p = GitCommand(None, ['lfs', 'version'], capture_stdout=True)
+    if p.Wait() == 0:
+      if hasattr(p.stdout, 'decode'):
+        return p.stdout.decode('utf-8')
+      else:
+        return p.stdout
+    return None
+
   def version_tuple(self):
     global _git_version
     if _git_version is None:
