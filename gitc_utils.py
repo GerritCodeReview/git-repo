@@ -127,7 +127,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
         repo_proj.revisionExpr = None
 
   # Convert URLs from relative to absolute.
-  for name, remote in manifest.remotes.iteritems():
+  for name, remote in manifest.remotes.iteritems(): # pylint:disable=unused-variable
     remote.fetchUrl = remote.resolvedFetchUrl
 
   # Save the manifest.
