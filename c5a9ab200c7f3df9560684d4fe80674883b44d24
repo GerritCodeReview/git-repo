@@ -1,4 +1,22 @@
 {
   "pushCert": "certificate version 0.1\npusher Stefan Beller \u003csbeller@google.com\u003e 1466207169 -0700\nnonce AD0XjTWhMkgApa5WVxKmhq5vXYrUa+6WMOEpBQcdoFpikcQPMliqTXYGIbxMKN+xfX5i4YzaJH6S\n\n0000000000000000000000000000000000000000 c5a9ab200c7f3df9560684d4fe80674883b44d24 refs/for/master\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1\n\niQEcBAABAgAGBQJXZIvBAAoJEGt7+xNJsB0bFLAH/A7s388nhF+hrUj7L7lZUKiT\nIRsnDi7FsKIp/canc6d2+08D/ZXhJVO08CCU4zLFj64m299qdZjqg00yT2gjpdtQ\nDf9ds96sfgzj3begjRA12llv76i7ACzuWZhEyoYQjj+nufYyCjN1qcbDXMTAOUCl\nGxpYT8X4U4pufaEyC9cpadQU/Is4Xln5wce7CcIEXgq9kyfdnXD77eHmsACYzkn9\nrXKBVLhBk6oRek/xus3kqL7iqzwZ4UvVTZhiFergLvBPY4C8pJDd63TEip/d+wTN\nFdd5a56Iht9zEcuG+Xtzz6/Dl8wz8chvvy1GN7BUetc2pBzQio/gl7nFZ2BkD/k\u003d\n\u003dn0ra\n-----END PGP SIGNATURE-----\n",
-  "comments": []
+  "comments": [
+    {
+      "key": {
+        "uuid": "49bb7cf2_d8896d39",
+        "filename": "gitc_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-06-18T03:07:29Z",
+      "side": 1,
+      "message": "I think we can avoid the warning, without suppressing it, by prefixing the unused var with underscore.",
+      "revId": "c5a9ab200c7f3df9560684d4fe80674883b44d24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
 }
