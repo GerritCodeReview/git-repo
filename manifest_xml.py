@@ -739,18 +739,18 @@ class XmlManifest(object):
       raise ManifestParseError("no remote for project %s within %s" %
             (name, self.manifestFile))
 
-    revisionExpr = node.getAttribute('revision') or remote.revision
-    if not revisionExpr:
-      revisionExpr = self._default.revisionExpr
-    if not revisionExpr:
-      raise ManifestParseError("no revision for project %s within %s" %
-            (name, self.manifestFile))
-
     path = node.getAttribute('path')
     if not path:
       path = name
     if path.startswith('/'):
       raise ManifestParseError("project %s path cannot be absolute in %s" %
+            (name, self.manifestFile))
+
+    revisionExpr = node.getAttribute('revision') or remote.revision
+    if not revisionExpr:
+      revisionExpr = self._default.revisionExpr
+    if not revisionExpr:
+      raise ManifestParseError("no revision for project %s within %s" %
             (name, self.manifestFile))
 
     rebase = node.getAttribute('rebase')
