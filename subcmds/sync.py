@@ -660,6 +660,9 @@ later is required to fix a server side protocol bug.
     mp = self.manifest.manifestProject
     mp.PreSync()
 
+    rp = self.manifest.revisionProject
+    rp.PreSync()
+
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
@@ -668,6 +671,18 @@ later is required to fix a server side protocol bug.
                           current_branch_only=opt.current_branch_only,
                           no_tags=opt.no_tags,
                           optimized_fetch=opt.optimized_fetch)
+      if self.manifest.default.useSuperProject is not None:
+        if not rp.Exists:
+          rp._InitGitDir()
+          rp.remote.url = self.manifest.default.useSuperProject
+          rp.remote.Save()
+
+      if rp.Exists:
+        rp.Sync_NetworkHalf(quiet=opt.quiet,
+                            current_branch_only=opt.current_branch_only,
+                            no_tags=opt.no_tags,
+                            optimized_fetch=opt.optimized_fetch)
+        self._ReloadManifest()
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
