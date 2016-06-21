@@ -35,6 +35,24 @@
       "revId": "5773a383807dd215dc1b640163d74684fcfb2bc9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae479e66_63848221",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-06-21T23:26:27Z",
+      "side": 1,
+      "message": "I meant the case where a caller invokes the method through a base class interface, using named arguments.",
+      "parentUuid": "c9abecee_8c252711",
+      "revId": "5773a383807dd215dc1b640163d74684fcfb2bc9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
