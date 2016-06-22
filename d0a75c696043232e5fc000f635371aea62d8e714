@@ -16,6 +16,24 @@
       "revId": "d0a75c696043232e5fc000f635371aea62d8e714",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6e01263d_3184d020",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T17:19:50Z",
+      "side": 1,
+      "message": "will do; this was just separated out for the next patch to be easier to read, but that patch might change a lot, so let\u0027s see if this change is needed after refactoring the next change.",
+      "parentUuid": "ce669236_b4c9e05d",
+      "revId": "d0a75c696043232e5fc000f635371aea62d8e714",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
