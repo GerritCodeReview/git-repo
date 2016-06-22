@@ -26,6 +26,30 @@
     },
     {
       "key": {
+        "uuid": "0e818ac8_36e578e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T17:58:34Z",
+      "side": 1,
+      "message": "\"repo manifest\" is broken by this indeed..\n\nI\u0027ll look into the revisionId in Projects.",
+      "parentUuid": "0e250aa0_56b254ff",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 21
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efc2a2a_fec9415c",
         "filename": "manifest_xml.py",
         "patchSetId": 3
@@ -66,6 +90,30 @@
     },
     {
       "key": {
+        "uuid": "2e0bae62_2f846920",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T17:58:34Z",
+      "side": 1,
+      "message": "no, will remove.",
+      "parentUuid": "0efc2a2a_7ed65101",
+      "range": {
+        "startLine": 398,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 30
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efc2a2a_5edb9525",
         "filename": "manifest_xml.py",
         "patchSetId": 3
@@ -77,6 +125,30 @@
       "writtenOn": "2016-06-22T01:27:19Z",
       "side": 1,
       "message": "Local manifests complicate this, since they can change anything in the manifest, and it won\u0027t be reflected in the superproject. Should we just disable useSuperProject if there are local manifests, or verify that the project definition matches the submodule definition?",
+      "range": {
+        "startLine": 409,
+        "startChar": 6,
+        "endLine": 409,
+        "endChar": 61
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e0bae62_0f89a536",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T17:58:34Z",
+      "side": 1,
+      "message": "I would not disable the superproject in case of local manifests, but only take care of the revisions as provided by the superproject.",
+      "parentUuid": "0efc2a2a_5edb9525",
       "range": {
         "startLine": 409,
         "startChar": 6,
@@ -112,6 +184,53 @@
     },
     {
       "key": {
+        "uuid": "2e0bae62_6f8e7140",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T17:58:34Z",
+      "side": 1,
+      "message": "Oh, right.\n\nHere would also be the place where we set the revisionId instead of the revisionExpr ?",
+      "parentUuid": "0e250aa0_36a7d8c1",
+      "range": {
+        "startLine": 756,
+        "startChar": 28,
+        "endLine": 756,
+        "endChar": 55
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e0bae62_4f93ad64",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T17:58:34Z",
+      "side": 1,
+      "message": "This would go away with local manifests as it is just useless output. Maybe we can collect it and print it later nicely formatted (\"There were 42 projects not synced by superproject\")",
+      "range": {
+        "startLine": 761,
+        "startChar": 0,
+        "endLine": 763,
+        "endChar": 18
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efc2a2a_3ee0c9d5",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -123,6 +242,30 @@
       "writtenOn": "2016-06-22T01:27:19Z",
       "side": 1,
       "message": "This should be moved inside the useSuperProject check, since revp may exist from a prior use of useSuperProject that has since been removed.",
+      "range": {
+        "startLine": 683,
+        "startChar": 6,
+        "endLine": 683,
+        "endChar": 21
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2e0bae62_af97b94e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T17:58:34Z",
+      "side": 1,
+      "message": "That makes sense. I just thought we\u0027d want an easy way to enable it without changing the manifest, so it can be dog fooded easier. But I guess editing the local manifest is the way to go instead of correctly setting up the revisions project.",
+      "parentUuid": "0efc2a2a_3ee0c9d5",
       "range": {
         "startLine": 683,
         "startChar": 6,
