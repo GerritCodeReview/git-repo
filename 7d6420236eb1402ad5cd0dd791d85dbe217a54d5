@@ -85,6 +85,24 @@
     },
     {
       "key": {
+        "uuid": "ee67d62f_f5a198af",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T21:16:27Z",
+      "side": 1,
+      "message": "Yeah, I\u0027m fine with no worktree here, but nothing is asking for a particular branch, so we fall back to the default defined in MetaProject constructor, which is \u0027refs/heads/master\u0027.",
+      "parentUuid": "4e08e263_50aceca0",
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efc2a2a_7ed65101",
         "filename": "manifest_xml.py",
         "patchSetId": 3
