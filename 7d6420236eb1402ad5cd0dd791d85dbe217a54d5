@@ -67,6 +67,24 @@
     },
     {
       "key": {
+        "uuid": "4e08e263_50aceca0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-22T21:08:05Z",
+      "side": 1,
+      "message": "All we want from this repository is a \"git ls-tree \u003csha1\u003e -- paths\" to read the versions, so strictly speaking we don\u0027t need to have a worktree as we can do \"git ls-tree non-master -- submodule-path\" in a bare repository for any branch.\n\nThat\u0027s what we do in Project._GetSubmodules using the internal git_ls_tree there. I think we need to add a \u0027--recursive\u0027 there, too.\n\nSo having a worktree is more about making changes to the repo and I don\u0027t think we want that to be done?",
+      "parentUuid": "0efc2a2a_fec9415c",
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0efc2a2a_7ed65101",
         "filename": "manifest_xml.py",
         "patchSetId": 3
