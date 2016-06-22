@@ -161,6 +161,30 @@
     },
     {
       "key": {
+        "uuid": "ae479e66_c3efb6ba",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T20:10:06Z",
+      "side": 1,
+      "message": "Ok, as long as you\u0027re verifying that the url and branch match between the submodule and the project. Local manifests can use \u003cremove-project\u003e + \u003cproject\u003e to change the url or branch.",
+      "parentUuid": "2e0bae62_0f89a536",
+      "range": {
+        "startLine": 409,
+        "startChar": 6,
+        "endLine": 409,
+        "endChar": 61
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0e250aa0_36a7d8c1",
         "filename": "manifest_xml.py",
         "patchSetId": 3
@@ -208,6 +232,30 @@
     },
     {
       "key": {
+        "uuid": "ae479e66_a3ecbac6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T20:10:06Z",
+      "side": 1,
+      "message": "Yeah, in the Project constructor below we\u0027re using None for revisionId. Setting that to the submodule revision seems like the right choice. Though we may be using revisionExpr / revisionId improperly in some places.",
+      "parentUuid": "2e0bae62_6f8e7140",
+      "range": {
+        "startLine": 756,
+        "startChar": 28,
+        "endLine": 756,
+        "endChar": 55
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2e0bae62_4f93ad64",
         "filename": "manifest_xml.py",
         "patchSetId": 3
@@ -219,6 +267,30 @@
       "writtenOn": "2016-06-22T17:58:34Z",
       "side": 1,
       "message": "This would go away with local manifests as it is just useless output. Maybe we can collect it and print it later nicely formatted (\"There were 42 projects not synced by superproject\")",
+      "range": {
+        "startLine": 761,
+        "startChar": 0,
+        "endLine": 763,
+        "endChar": 18
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae479e66_83e9beb6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T20:10:06Z",
+      "side": 1,
+      "message": "Yeah, it would probably be a good idea to let the user know that some fetches won\u0027t be atomic.",
+      "parentUuid": "2e0bae62_4f93ad64",
       "range": {
         "startLine": 761,
         "startChar": 0,
@@ -266,6 +338,30 @@
       "side": 1,
       "message": "That makes sense. I just thought we\u0027d want an easy way to enable it without changing the manifest, so it can be dog fooded easier. But I guess editing the local manifest is the way to go instead of correctly setting up the revisions project.",
       "parentUuid": "0efc2a2a_3ee0c9d5",
+      "range": {
+        "startLine": 683,
+        "startChar": 6,
+        "endLine": 683,
+        "endChar": 21
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ae479e66_63200201",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T20:10:06Z",
+      "side": 1,
+      "message": "Maybe an init and/or sync command line option to override the manifest? (with init saving the choice to the manifest gitconfig like --depth is stored)",
+      "parentUuid": "2e0bae62_af97b94e",
       "range": {
         "startLine": 683,
         "startChar": 6,
