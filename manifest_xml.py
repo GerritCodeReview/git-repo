@@ -48,6 +48,7 @@ class _Default(object):
 
   revisionExpr = None
   destBranchExpr = None
+  useSuperProject = None
   remote = None
   sync_j = 1
   sync_c = False
@@ -126,6 +127,9 @@ class XmlManifest(object):
       gitdir   = os.path.join(repodir, 'manifests.git'),
       worktree = os.path.join(repodir, 'manifests'))
 
+    self.revisionProject = MetaProject(self, 'revisions',
+      gitdir   = os.path.join(repodir, 'revisions.git'),
+      worktree = None)
     self._Unload()
 
   def Override(self, name):
@@ -391,6 +395,7 @@ class XmlManifest(object):
 
   def _Load(self):
     if not self._loaded:
+      r = self.revisionProject
       m = self.manifestProject
       b = m.GetBranch(m.CurrentBranch).merge
       if b is not None and b.startswith(R_HEADS):
@@ -658,6 +663,7 @@ class XmlManifest(object):
     if d.revisionExpr == '':
       d.revisionExpr = None
 
+    d.useSuperProject = node.getAttribute('use_superproject') or None
     d.destBranchExpr = node.getAttribute('dest-branch') or None
 
     sync_j = node.getAttribute('sync-j')
@@ -747,6 +753,15 @@ class XmlManifest(object):
             (name, self.manifestFile))
 
     revisionExpr = node.getAttribute('revision') or remote.revision
+    if not revisionExpr and self.revisionProject.Exists:
+      subs = self.revisionProject._GetSubmodules()
+      tpl = [item for item in subs if item[1] == path]
+      if len(tpl) == 1:
+        revisionExpr = tpl[0][0]
+      else:
+        print ("path %s not found in superproject"%(path))
+        print(tpl)
+
     if not revisionExpr:
       revisionExpr = self._default.revisionExpr
     if not revisionExpr:
