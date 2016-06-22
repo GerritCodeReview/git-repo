@@ -1,4 +1,137 @@
 {
   "pushCert": "certificate version 0.1\npusher Stefan Beller \u003csbeller@google.com\u003e 1466553782 -0700\nnonce AD0XjTWOJduPZu8vKBcWYzBm97q6Zds2LqRmygz3U/JG8zkma6Ac1Ah86QvQlj4YIDU9OR4ENLDk\n\n0000000000000000000000000000000000000000 7d6420236eb1402ad5cd0dd791d85dbe217a54d5 refs/for/master\n-----BEGIN PGP SIGNATURE-----\nVersion: GnuPG v1\n\niQEcBAABAgAGBQJXadW2AAoJEGt7+xNJsB0b0eoH+wQIxJdX9PnbSvds6Uk5s8Z2\nq4YKIvrm8DVqrEWMkJSmb7ku9qjDZTe2MKJC23KhDyz3Ij3eKhwubKh8IsDsePPy\niyBNqWf7BwbineszanWgBkSbdvyYcA3kNLgn+hx2MYVz2I/2XHbmLROak7z/MUdV\nZSfYScT6Q61wObfG6YD3Sq7DesFNsN1KJPcCpEwFS6WElH3S8/GDA6FfBPrsVyF2\n8NHUEYn9P06WUqECaWiVITI9DR7EFNeFwoA6Nheu4xTdTjZzAzNR7QfISw2VT0iC\nCCFQpB66LKYmbQLrlCW+ImyoOYFAgOuXft2Z1eAGea6gGK1Z7bFN9lKJcnn1mFc\u003d\n\u003d8DQD\n-----END PGP SIGNATURE-----\n",
-  "comments": []
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e250aa0_56b254ff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T01:27:19Z",
+      "side": 1,
+      "message": "This seems strange -- the default is just a parsing thing, it doesn\u0027t change the behavior otherwise. And we still need to know the ref-based revision for things like upload, so changing the revision during parsing seems wrong. (You could also set upstream if there isn\u0027t an upstream I suppose)\n\nWhat\u0027s the behavior of \"repo manifest\" then -- currently only \u0027-r\u0027 would resolve the revision (and to the current value in the worktree).\n\nWhy not use the revisionExpr / revisionId split in Project, so we\u0027d create the project with revisionExpr as we do now, but if we have a matching submodule, set revisionId to the revision from the submodule.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 21
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efc2a2a_fec9415c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T01:27:19Z",
+      "side": 1,
+      "message": "How are you going to support branches other than master?",
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efc2a2a_7ed65101",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T01:27:19Z",
+      "side": 1,
+      "message": "is this used?",
+      "range": {
+        "startLine": 398,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 30
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efc2a2a_5edb9525",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T01:27:19Z",
+      "side": 1,
+      "message": "Local manifests complicate this, since they can change anything in the manifest, and it won\u0027t be reflected in the superproject. Should we just disable useSuperProject if there are local manifests, or verify that the project definition matches the submodule definition?",
+      "range": {
+        "startLine": 409,
+        "startChar": 6,
+        "endLine": 409,
+        "endChar": 61
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0e250aa0_36a7d8c1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T01:27:19Z",
+      "side": 1,
+      "message": "useSuperProject? (In case it was turned off in the manifest)",
+      "range": {
+        "startLine": 756,
+        "startChar": 28,
+        "endLine": 756,
+        "endChar": 55
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0efc2a2a_3ee0c9d5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 683,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-22T01:27:19Z",
+      "side": 1,
+      "message": "This should be moved inside the useSuperProject check, since revp may exist from a prior use of useSuperProject that has since been removed.",
+      "range": {
+        "startLine": 683,
+        "startChar": 6,
+        "endLine": 683,
+        "endChar": 21
+      },
+      "revId": "7d6420236eb1402ad5cd0dd791d85dbe217a54d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
 }
