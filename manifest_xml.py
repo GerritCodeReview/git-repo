@@ -48,6 +48,7 @@ class _Default(object):
 
   revisionExpr = None
   destBranchExpr = None
+  useSuperProject = None
   remote = None
   sync_j = 1
   sync_c = False
@@ -125,6 +126,10 @@ class XmlManifest(object):
     self.manifestProject = MetaProject(self, 'manifests',
       gitdir   = os.path.join(repodir, 'manifests.git'),
       worktree = os.path.join(repodir, 'manifests'))
+
+    self.revisionProject = MetaProject(self, 'revisions',
+      gitdir   = os.path.join(repodir, 'revisions.git'),
+      worktree = os.path.join(repodir, 'revisions'))
 
     self._Unload()
 
@@ -431,7 +436,54 @@ class XmlManifest(object):
         self._AddMetaProjectMirror(self.repoProject)
         self._AddMetaProjectMirror(self.manifestProject)
 
+      self._loadRevisionIds()
       self._loaded = True
+
+  def _loadRevisionIds(self):
+    """
+    Loads revisions in projects and the subprojects when possible
+    """
+    if self._default.useSuperProject is None \
+        or not self.revisionProject.Exists:
+      self._default.revisionIds = None
+      return
+    # We cannot use GetDerivedSubprojects() for two reasons here:
+    # 1) The revision metaproject is not recursive. In case of a derived
+    # subproject we need to query the actual parent project not the revision
+    # project.
+    # 2) We're part of the loading; calling GetDerivedSubprojects would result
+    # in an un-anchored recursion as it has an implicit load call.
+
+    self.revisionProject.revisionId = \
+        self.revisionProject.work_git.rev_parse('HEAD')
+
+    for relpath in self._paths: # This may include submodule projects
+      proj = self._paths[relpath]
+      if proj.revisionId is not None:
+        continue
+      if proj.parent is not None:
+        if not proj.parent.revisionId:
+          # parent did not get a revision Id assigned? But we assume parents
+          # are done before the submodules, so it must be new or error:
+          raise ManifestInvalidRevisionError("Submodule %s could not " + \
+                "find out parents revision" % (relpath))
+        if not proj.parent.revisionId is valid:
+          # The parent project was updated, and we don't have the commit yet,
+          # so we do not know about this submodule, we have to fetch it.
+          continue
+        cmppath = proj.relpath[len(proj.parent.relpath) + 1:]
+        superProject = proj.parent
+      else:
+        superProject = self.revisionProject
+        cmppath = relpath
+      for rev, path, url in superProject._GetSubmodules():
+        if path == cmppath:
+          proj.revisionId = rev
+          break;
+      else:
+        # We could not find a revisionId for the project.
+        # That is ok as we may not have fetched the superproject yet
+        pass
 
   def _ParseManifestXml(self, path, include_root):
     try:
@@ -591,7 +643,6 @@ class XmlManifest(object):
         if self._repo_hooks_project and (self._repo_hooks_project.name == name):
           self._repo_hooks_project = None
 
-
   def _AddMetaProjectMirror(self, m):
     name = None
     m_url = m.GetRemote(m.remote.name).url
@@ -659,6 +710,7 @@ class XmlManifest(object):
       d.revisionExpr = None
 
     d.destBranchExpr = node.getAttribute('dest-branch') or None
+    d.useSuperProject = node.getAttribute('use_superproject') or None
 
     sync_j = node.getAttribute('sync-j')
     if sync_j == '' or sync_j is None:
