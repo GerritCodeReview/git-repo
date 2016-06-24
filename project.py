@@ -1754,7 +1754,7 @@ class Project(object):
                            objdir=objdir,
                            worktree=worktree,
                            relpath=relpath,
-                           revisionExpr=self.revisionExpr,
+                           revisionExpr=rev,
                            revisionId=rev,
                            rebase=self.rebase,
                            groups=self.groups,
