@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6385c158_51df74e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-27T16:52:39Z",
+      "side": 1,
+      "message": "or an explicit revision is set in the parent, i.e. anything apart from a branch name?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "c183efdbd42b20c14e161d87f3e94802bf5832a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8382b54f_92eb9c7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-27T16:52:39Z",
+      "side": 1,
+      "message": "I think this is the correct way to go.\n\nThanks for fixing this bug.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 11
+      },
+      "revId": "c183efdbd42b20c14e161d87f3e94802bf5832a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
