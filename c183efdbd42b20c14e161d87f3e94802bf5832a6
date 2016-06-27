@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a325f944_53b44493",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1025422
+      },
+      "writtenOn": "2016-06-27T18:06:09Z",
+      "side": 1,
+      "message": "The checkout will also fail even when using a branch if there is no branch with this name in the submodule.\n\nI can make it work if I put a sha1 as revision of the parent project. But I think this only work because of next check in _RemoteFetch:\n\n    if ID_RE.match(self.revisionExpr) is not None:\n      is_sha1 \u003d True",
+      "parentUuid": "6385c158_51df74e5",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "c183efdbd42b20c14e161d87f3e94802bf5832a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8382b54f_92eb9c7d",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
