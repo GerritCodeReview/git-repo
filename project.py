@@ -1739,7 +1739,7 @@ class Project(object):
               [urls.get(name, '') for name in names])
 
     def git_ls_tree(gitdir, rev, paths):
-      cmd = ['ls-tree', rev, '--']
+      cmd = ['ls-tree', '-r', rev, '--']
       cmd.extend(paths)
       try:
         p = GitCommand(None, cmd, capture_stdout=True, capture_stderr=True,
