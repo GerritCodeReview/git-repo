@@ -1830,18 +1830,21 @@ class Project(object):
       if is_sha1 or tag_name is not None:
         if self._CheckForSha1():
           return True
-      if is_sha1 and not depth:
-        # When syncing a specific commit and --depth is not set:
+      if is_sha1:
+        # When syncing a specific commit
         # * if upstream is explicitly specified and is not a sha1, fetch only
         #   upstream as users expect only upstream to be fetch.
         #   Note: The commit might not be in upstream in which case the sync
         #   will fail.
         # * otherwise, fetch all branches to make sure we end up with the
         #   specific commit.
+        # In both cases, force depth to None to make sure we end up with the
+        # specific commit
         if self.upstream:
           current_branch_only = not ID_RE.match(self.upstream)
         else:
           current_branch_only = False
+        depth = None
 
     if not name:
       name = self.remote.name
