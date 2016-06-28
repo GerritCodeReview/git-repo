@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2043bf51_8f6e750e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2016-06-28T17:47:43Z",
+      "side": 1,
+      "message": "The underlying Git is learning possibly about depth and fixed sha1s, too, see http://thread.gmane.org/gmane.comp.version-control.git/298414\n\nI wonder if we want to rush it here in repo or wait for a Git upstream solution for good sha1 fetching.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 12
+      },
+      "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
