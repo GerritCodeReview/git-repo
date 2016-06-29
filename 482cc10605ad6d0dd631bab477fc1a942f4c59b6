@@ -46,6 +46,30 @@
       "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "002a3b7a_ae95b7fc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-06-29T01:14:33Z",
+      "side": 1,
+      "message": "We can decide what to do based on git version, with older versions falling back. But this has the potential to pull down extremely large amounts of data, so I\u0027d like to check how our current usecases are working (or not).",
+      "parentUuid": "c033c3f3_ac3943e3",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 12
+      },
+      "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
