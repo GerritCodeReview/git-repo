@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c033c3f3_0c1a9765",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-06-29T05:45:49Z",
+      "side": 1,
+      "message": "Join with newline, rather than space?",
+      "range": {
+        "startLine": 254,
+        "startChar": 39,
+        "endLine": 254,
+        "endChar": 40
+      },
+      "revId": "350fce1c75bf4e1ac3f485c8c1e1a6b56ac5217b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
