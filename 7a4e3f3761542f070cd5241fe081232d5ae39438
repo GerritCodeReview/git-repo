@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c033c3f3_4c209f91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-06-29T05:40:41Z",
+      "side": 1,
+      "message": "Is this a Google internal reference?  If so please replace it with a reference to the public issue tracker.\n\nhttps://code.google.com/p/git-repo/issues/list",
+      "revId": "7a4e3f3761542f070cd5241fe081232d5ae39438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a02ecf8e_eb2e1182",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-06-29T05:40:41Z",
+      "side": 1,
+      "message": "\"if not revisionExpr\"?",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 60,
+        "endChar": 25
+      },
+      "revId": "7a4e3f3761542f070cd5241fe081232d5ae39438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a02ecf8e_cb2b5570",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-06-29T05:40:41Z",
+      "side": 1,
+      "message": "nit: please wrap lines at 80 columns.",
+      "revId": "7a4e3f3761542f070cd5241fe081232d5ae39438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
