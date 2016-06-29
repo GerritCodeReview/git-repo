@@ -22,6 +22,30 @@
       "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c033c3f3_ac3943e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-06-29T01:02:08Z",
+      "side": 1,
+      "message": "Unfortunately many users of repo do not (or cannot) use the latest version of git, so it might be better to work around it.",
+      "parentUuid": "2043bf51_8f6e750e",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 12
+      },
+      "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
