@@ -1860,7 +1860,10 @@ class Project(object):
         #   will fail.
         # * otherwise, fetch all branches to make sure we end up with the
         #   specific commit.
-        current_branch_only = self.upstream and not ID_RE.match(self.upstream)
+        if self.upstream:
+          current_branch_only = not ID_RE.match(self.upstream)
+        else:
+          current_branch_only = False
 
     if not name:
       name = self.remote.name
