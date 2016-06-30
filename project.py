@@ -717,6 +717,17 @@ class Project(object):
   _userident_name = None
   _userident_email = None
 
+  def hasCommit(self, commit):
+    """ Returns true if the given commit is found locally.
+    """
+    cmd = ['cat-file', '-e', commit]
+    try:
+      p = GitCommand(None, cmd, capture_stdout=True, capture_stderr=True,
+                     bare=True, gitdir=self.gitdir)
+      return p.Wait() == 0
+    except GitError:
+      return False
+
   @property
   def UserName(self):
     """Obtain the user's personal name.
