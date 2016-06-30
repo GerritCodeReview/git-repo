@@ -210,6 +210,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-c', '--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current branch from server')
+    p.add_option('-Q', '--quick',
+                 dest='quick_sync', action='store_true',
+                 help="only fetch projects that are behind in the superproject")
     p.add_option('-q', '--quiet',
                  dest='quiet', action='store_true',
                  help='be more quiet')
@@ -293,6 +296,15 @@ later is required to fix a server side protocol bug.
     """
     # We'll set to true once we've locked the lock.
     did_lock = False
+
+    if opt.quick_sync and project.revisionId is not None:
+      if project.hasCommit(project.revisionId):
+        if not opt.quiet:
+          lock.acquire()
+          print('Skipping project %s' % project.name)
+          lock.release()
+        sem.release()
+        return True
 
     if not opt.quiet:
       print('Fetching project %s' % project.name)
