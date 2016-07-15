@@ -638,7 +638,11 @@ class Remote(object):
             self._review_url = http_url
           else:
             host, port = info.split()
-            self._review_url = self._SshReviewUrl(userEmail, host, port)
+            ssh_connected = _open_ssh(host, port)
+            if ssh_connected:
+              self._review_url = self._SshReviewUrl(userEmail, host, port)
+            else:
+              self._review_url = http_url
         except urllib.error.HTTPError as e:
           raise UploadError('%s: %s' % (self.review, str(e)))
         except urllib.error.URLError as e:
