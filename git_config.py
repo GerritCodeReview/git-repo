@@ -464,9 +464,13 @@ def _open_ssh(host, port=None):
              % (host,port, str(e)), file=sys.stderr)
       return False
 
+    time.sleep(1)
+    ssh_died = (p.poll() is not None)
+    if ssh_died:
+      return False
+
     _master_processes.append(p)
     _master_keys.add(key)
-    time.sleep(1)
     return True
   finally:
     _master_keys_lock.release()
