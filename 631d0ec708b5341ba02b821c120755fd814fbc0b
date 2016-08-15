@@ -22,6 +22,30 @@
       "revId": "631d0ec708b5341ba02b821c120755fd814fbc0b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7ee1e13f_82b05ad7",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-08-15T00:51:27Z",
+      "side": 1,
+      "message": "There\u0027s another pending change that touches this wrapper script.\n\nIf a version increment is needed we can do it in a separate commit before the next release it tagged.",
+      "parentUuid": "7e0ac1d3_da89a521",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 17
+      },
+      "revId": "631d0ec708b5341ba02b821c120755fd814fbc0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
