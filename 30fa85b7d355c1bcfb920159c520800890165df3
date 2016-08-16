@@ -16,6 +16,23 @@
       "revId": "30fa85b7d355c1bcfb920159c520800890165df3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_a7114aaf",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-08-16T16:24:20Z",
+      "side": 1,
+      "message": "This prompts twice if the user says \u0027No\u0027 to the first prompt. It should be possible to do something similar by:\n\n  if self._ManifestUrlHasSecureScheme():\n    return self._CheckForHookApprovalManifest()\n  else:\n    return self._CheckForHookApprovalHash()",
+      "revId": "30fa85b7d355c1bcfb920159c520800890165df3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
