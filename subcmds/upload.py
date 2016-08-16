@@ -456,7 +456,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
     if pending and (not opt.bypass_hooks):
       hook = RepoHook('pre-upload', self.manifest.repo_hooks_project,
-                      self.manifest.topdir, abort_if_user_denies=True)
+                      self.manifest.topdir,
+                      self.manifest.manifestProject.GetRemote('origin').url,
+                      abort_if_user_denies=True)
       pending_proj_names = [project.name for (project, avail) in pending]
       pending_worktrees = [project.worktree for (project, avail) in pending]
       try:
