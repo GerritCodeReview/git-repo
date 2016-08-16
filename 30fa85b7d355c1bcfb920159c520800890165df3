@@ -33,6 +33,47 @@
       "revId": "30fa85b7d355c1bcfb920159c520800890165df3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc18f1c_e91715a3",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2016-08-16T16:42:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1bb717b7_a7114aaf",
+      "revId": "30fa85b7d355c1bcfb920159c520800890165df3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc18f1c_c91a51cc",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2016-08-16T16:42:56Z",
+      "side": 1,
+      "message": "i\u0027m not familiar with the sso/rpc schemes.  are they actually secure transports ?",
+      "range": {
+        "startLine": 506,
+        "startChar": 66,
+        "endLine": 506,
+        "endChar": 78
+      },
+      "revId": "30fa85b7d355c1bcfb920159c520800890165df3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
