@@ -16,6 +16,24 @@
       "revId": "96e5ee152e7939b2c1b2de3d163218a3d8f985d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bb4a8b96_3cc81155",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2240,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-08-16T12:57:30Z",
+      "side": 1,
+      "message": "Thanks, I\u0027ve removed the others in the latest patch set.\n\nIt\u0027s a slight overhead to have this extra config all the time, but if it makes LFS work I think we can live  with it.",
+      "parentUuid": "5bc18f1c_491e61ce",
+      "revId": "96e5ee152e7939b2c1b2de3d163218a3d8f985d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
