@@ -522,9 +522,8 @@ class RepoHook(object):
     prompt = ('Repo %s run the script:\n'
               '  %s\n'
               '\n'
-              'Do you want to allow this script to run '
-              '(yes/yes-never-ask-again/NO)? ') % (self._GetMustVerb(),
-                                                   self._script_fullpath)
+              'Do you want to allow this script to run')
+             % (self._GetMustVerb(), self._script_fullpath)
     return self._CheckForHookApprovalHelper(
         'approvedhash',
         self._GetHash(),
