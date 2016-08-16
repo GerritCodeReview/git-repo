@@ -40,7 +40,13 @@ from trace import IsTrace, Trace
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
 from pyversion import is_python3
-if not is_python3():
+if is_python3():
+  import urllib.parse
+else:
+  import imp
+  import urlparse
+  urllib = imp.new_module('urllib')
+  urllib.parse = urlparse
   # pylint:disable=W0622
   input = raw_input
   # pylint:enable=W0622
@@ -343,6 +349,7 @@ class RepoHook(object):
                hook_type,
                hooks_project,
                topdir,
+               manifest_url,
                abort_if_user_denies=False):
     """RepoHook constructor.
 
@@ -356,11 +363,13 @@ class RepoHook(object):
       topdir: Repo's top directory (the one containing the .repo directory).
           Scripts will run with CWD as this directory.  If you have a manifest,
           this is manifest.topdir
+      manifest_url: The URL to the manifest git repo.
       abort_if_user_denies: If True, we'll throw a HookError() if the user
           doesn't allow us to run the hook.
     """
     self._hook_type = hook_type
     self._hooks_project = hooks_project
+    self._manifest_url = manifest_url
     self._topdir = topdir
     self._abort_if_user_denies = abort_if_user_denies
 
@@ -409,9 +418,9 @@ class RepoHook(object):
   def _CheckForHookApproval(self):
     """Check to see whether this hook has been approved.
 
-    We'll look at the hash of all of the hooks.  If this matches the hash that
-    the user last approved, we're done.  If it doesn't, we'll ask the user
-    about approval.
+    We'll accept approval of manifest URLs if they're using secure transports.
+    This way the user can say they trust the manifest hoster.  For insecure
+    hosts, we fall back to checking the hash of the hooks repo.
 
     Note that we ask permission for each individual hook even though we use
     the hash of all hooks when detecting changes.  We'd like the user to be
@@ -425,44 +434,58 @@ class RepoHook(object):
       HookError: Raised if the user doesn't approve and abort_if_user_denies
           was passed to the consturctor.
     """
+    if self._ManifestUrlHasSecureScheme():
+      return self._CheckForHookApprovalManifest()
+    else:
+      return self._CheckForHookApprovalHash()
+
+  def _CheckForHookApprovalHelper(self, subkey, new_val, main_prompt,
+                                  changed_prompt):
+    """Check for approval for a particular attribute and hook.
+
+    Args:
+      subkey: The git config key under [repo.hooks.<hook_type>] to store the
+          last approved string.
+      new_val: The new value to compare against the last approved one.
+      main_prompt: Message to display to the user to ask for approval.
+      changed_prompt: Message explaining why we're re-asking for approval.
+
+    Returns:
+      True if this hook is approved to run; False otherwise.
+
+    Raises:
+      HookError: Raised if the user doesn't approve and abort_if_user_denies
+          was passed to the consturctor.
+    """
     hooks_config = self._hooks_project.config
-    git_approval_key = 'repo.hooks.%s.approvedhash' % self._hook_type
+    git_approval_key = 'repo.hooks.%s.%s' % (self._hook_type, subkey)
 
-    # Get the last hash that the user approved for this hook; may be None.
-    old_hash = hooks_config.GetString(git_approval_key)
+    # Get the last value that the user approved for this hook; may be None.
+    old_val = hooks_config.GetString(git_approval_key)
 
-    # Get the current hash so we can tell if scripts changed since approval.
-    new_hash = self._GetHash()
-
-    if old_hash is not None:
+    if old_val is not None:
       # User previously approved hook and asked not to be prompted again.
-      if new_hash == old_hash:
+      if new_val == old_val:
         # Approval matched.  We're done.
         return True
       else:
         # Give the user a reason why we're prompting, since they last told
         # us to "never ask again".
-        prompt = 'WARNING: Scripts have changed since %s was allowed.\n\n' % (
-            self._hook_type)
+        prompt = 'WARNING: %s\n\n' % (changed_prompt,)
     else:
       prompt = ''
 
     # Prompt the user if we're not on a tty; on a tty we'll assume "no".
     if sys.stdout.isatty():
-      prompt += ('Repo %s run the script:\n'
-                 '  %s\n'
-                 '\n'
-                 'Do you want to allow this script to run '
-                 '(yes/yes-never-ask-again/NO)? ') % (self._GetMustVerb(),
-                                                      self._script_fullpath)
+      prompt += main_prompt + ' (yes/always/NO)? '
       response = input(prompt).lower()
       print()
 
       # User is doing a one-time approval.
       if response in ('y', 'yes'):
         return True
-      elif response == 'yes-never-ask-again':
-        hooks_config.SetString(git_approval_key, new_hash)
+      elif response == 'always':
+        hooks_config.SetString(git_approval_key, new_val)
         return True
 
     # For anything else, we'll assume no approval.
@@ -471,6 +494,42 @@ class RepoHook(object):
                       self._hook_type)
 
     return False
+
+  def _ManifestUrlHasSecureScheme(self):
+    """Check if the URI for the manifest is a secure transport."""
+    secure_schemes = ('file', 'https', 'ssh', 'persistent-https', 'sso', 'rpc')
+    parse_results = urllib.parse.urlparse(self._manifest_url)
+    return parse_results.scheme in secure_schemes
+
+  def _CheckForHookApprovalManifest(self):
+    """Check whether the user has approved this manifest host.
+
+    Returns:
+      True if this hook is approved to run; False otherwise.
+    """
+    return self._CheckForHookApprovalHelper(
+        'approvedmanifest',
+        self._manifest_url,
+        'Run hook scripts from %s' % (self._manifest_url,),
+        'Manifest has changed since %s was allowed.' % (self._hook_type,))
+
+  def _CheckForHookApprovalHash(self):
+    """Check whether the user has approved the hooks repo.
+
+    Returns:
+      True if this hook is approved to run; False otherwise.
+    """
+    prompt = ('Repo %s run the script:\n'
+              '  %s\n'
+              '\n'
+              'Do you want to allow this script to run '
+              '(yes/yes-never-ask-again/NO)? ') % (self._GetMustVerb(),
+                                                   self._script_fullpath)
+    return self._CheckForHookApprovalHelper(
+        'approvedhash',
+        self._GetHash(),
+        prompt,
+        'Scripts have changed since %s was allowed.' % (self._hook_type,))
 
   def _ExecuteHook(self, **kwargs):
     """Actually execute the given hook.
