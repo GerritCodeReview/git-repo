@@ -1,4 +1,4 @@
-Short Version:
+# Short Version
 
  - Make small logical changes.
  - Provide a meaningful commit message.
@@ -8,10 +8,10 @@ Short Version:
  - Make corrections if requested.
  - Verify your changes on gerrit so they can be submitted.
 
-   git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/master
+   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/master`
 
 
-Long Version:
+# Long Version
 
 I wanted a file describing how to submit patches for repo,
 so I started with the one found in the core Git distribution
@@ -19,10 +19,10 @@ so I started with the one found in the core Git distribution
 patch submission guidelines for the Linux kernel.
 
 However there are some differences, so please review and familiarize
-yourself with the following relevant bits:
+yourself with the following relevant bits.
 
 
-(1) Make separate commits for logically separate changes.
+## Make separate commits for logically separate changes.
 
 Unless your patch is really trivial, you should not be sending
 out a patch that was generated between your working tree and your
@@ -36,14 +36,14 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 
 
-(2) Check for coding errors with pylint
+## Check for coding errors with pylint
 
 Run pylint on changed modules using the provided configuration:
 
-  pylint --rcfile=.pylintrc file.py
+    pylint --rcfile=.pylintrc file.py
 
 
-(3) Check the license
+## Check the license
 
 repo is licensed under the Apache License, 2.0.
 
@@ -59,7 +59,7 @@ your patch.  It is virtually impossible to remove a patch once it
 has been applied and pushed out.
 
 
-(4) Sending your patches.
+## Sending your patches.
 
 Do not email your patches to anyone.
 
@@ -91,23 +91,23 @@ to get the ChangeId added.
 Push your patches over HTTPS to the review server, possibly through
 a remembered remote to make this easier in the future:
 
-   git config remote.review.url https://gerrit-review.googlesource.com/git-repo
-   git config remote.review.push HEAD:refs/for/master
+    git config remote.review.url https://gerrit-review.googlesource.com/git-repo
+    git config remote.review.push HEAD:refs/for/master
 
-   git push review
+    git push review
 
 You will be automatically emailed a copy of your commits, and any
 comments made by the project maintainers.
 
 
-(5) Make changes if requested
+## Make changes if requested
 
 The project maintainer who reviews your changes might request changes to your
 commit. If you make the requested changes you will need to amend your commit
 and push it to the review server again.
 
 
-(6) Verify your changes on gerrit
+## Verify your changes on gerrit
 
 After you receive a Code-Review+2 from the maintainer, select the Verified
 button on the gerrit page for the change. This verifies that you have tested
