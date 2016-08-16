@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5bc18f1c_491e61ce",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2240,
+      "author": {
+        "id": 1029383
+      },
+      "writtenOn": "2016-08-16T12:08:53Z",
+      "side": 1,
+      "message": "Only `filter.lfs.smudge` is needed here. The other values should already be in the user\u0027s global git config if they installed git lfs properly.\n\nAlso, this will add an unnecessary git config key for repo users that aren\u0027t using Git LFS. Not a huge problem, but not ideal.",
+      "revId": "96e5ee152e7939b2c1b2de3d163218a3d8f985d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
