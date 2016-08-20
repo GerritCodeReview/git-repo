@@ -22,6 +22,30 @@
       "revId": "1a2304754e2e9dc47152af1dbc923e103eb99fc6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c80213f7_dc144d9f",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1029493
+      },
+      "writtenOn": "2016-08-20T17:07:59Z",
+      "side": 1,
+      "message": "ahhh - interesting use-case....\nSo, in this case it really needs to perform:\n: git config --file /xxx/.repo/projects/xxx.git/config --unset-all remote.tools.pushurl 1\u003e| 2\u003e|\nThanks!",
+      "parentUuid": "683cc7c0_5174b4fc",
+      "range": {
+        "startLine": 698,
+        "startChar": 4,
+        "endLine": 699,
+        "endChar": 65
+      },
+      "revId": "1a2304754e2e9dc47152af1dbc923e103eb99fc6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
