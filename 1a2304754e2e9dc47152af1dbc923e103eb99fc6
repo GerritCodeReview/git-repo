@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "683cc7c0_5174b4fc",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 699,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-08-20T00:56:31Z",
+      "side": 1,
+      "message": "It looks like the pushurl is only getting set in the config when it\u0027s set in the manifest.\n\nWhat happens if the attribute is set on a project in a manifest, then later removed (after the project has been synced)?  If I understand this correctly, it\u0027ll keep the previous value in the config.",
+      "range": {
+        "startLine": 698,
+        "startChar": 4,
+        "endLine": 699,
+        "endChar": 65
+      },
+      "revId": "1a2304754e2e9dc47152af1dbc923e103eb99fc6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
