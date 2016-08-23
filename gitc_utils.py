@@ -26,7 +26,7 @@ import wrapper
 
 from error import ManifestParseError
 
-NUM_BATCH_RETRIEVE_REVISIONID = 300
+NUM_BATCH_RETRIEVE_REVISIONID = 32
 
 def get_gitc_manifest_dir():
   return wrapper.Wrapper().get_gitc_manifest_dir()
