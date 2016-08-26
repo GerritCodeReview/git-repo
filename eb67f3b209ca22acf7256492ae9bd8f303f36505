@@ -34,6 +34,24 @@
       "revId": "eb67f3b209ca22acf7256492ae9bd8f303f36505",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "457a8ef7_e80fd387",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2016-08-26T21:44:08Z",
+      "side": 1,
+      "message": "Um, I am not 100%.  I am suggesting this because the pushurl is similar to fetchurl and the resolution of the fetchurl is only done once in the ToRemoteSpec().  I figure may be those should go together?",
+      "parentUuid": "457a8ef7_48ffff50",
+      "revId": "eb67f3b209ca22acf7256492ae9bd8f303f36505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
