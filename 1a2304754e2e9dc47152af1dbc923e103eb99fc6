@@ -46,6 +46,29 @@
       "revId": "1a2304754e2e9dc47152af1dbc923e103eb99fc6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "65c1521d_09edc9b9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2016-08-26T07:36:55Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be a capital \u0027U\u0027, thus pushUrl?\n\nI got this error with this patch:\n File \".../repo/.repo/repo/manifest_xml.py\", line 111, in ToRemoteSpec\n    orig_name\u003dself.name)\nTypeError: __init__() got an unexpected keyword argument \u0027pushurl\u0027",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "1a2304754e2e9dc47152af1dbc923e103eb99fc6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
