@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "457a8ef7_081c27d1",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2016-08-26T20:39:54Z",
+      "side": 1,
+      "message": "Instead of putting this here, would it be better to place it around manifest_xml.pl:L103?",
+      "revId": "eb67f3b209ca22acf7256492ae9bd8f303f36505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
