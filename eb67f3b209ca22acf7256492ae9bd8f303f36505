@@ -16,6 +16,24 @@
       "revId": "eb67f3b209ca22acf7256492ae9bd8f303f36505",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "457a8ef7_48ffff50",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 1029493
+      },
+      "writtenOn": "2016-08-26T21:23:30Z",
+      "side": 1,
+      "message": "hmmm - that location then calls RemoteSpec()....\nisn\u0027t RemoteSpec() called from multiple places?\nthen maybe all of then need to be updated?\nLet me know...",
+      "parentUuid": "457a8ef7_081c27d1",
+      "revId": "eb67f3b209ca22acf7256492ae9bd8f303f36505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
