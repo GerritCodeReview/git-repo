@@ -497,9 +497,22 @@ later is required to fix a server side protocol bug.
             else:
               print('Deleting obsolete path %s' % project.worktree,
                     file=sys.stderr)
-              shutil.rmtree(project.worktree)
-              # Try deleting parent subdirs if they are empty
-              project_dir = os.path.dirname(project.worktree)
+              # Delete everything under the worktree, except for
+              # directories that contain another git project
+              shutil.rmtree(os.path.join(project.worktree, '.git'))
+              dirs_to_remove = []
+              for root, dirs, files in os.walk(project.worktree):
+                for f in files:
+                  os.remove(os.path.join(root, f))
+                dirs[:] = [d for d in dirs if not os.path.lexists(os.path.join(root, d, '.git'))]
+                dirs_to_remove += [os.path.join(root, d) for d in dirs]
+              for d in reversed(dirs_to_remove):
+                try:
+                  os.rmdir(d)
+                except OSError:
+                  continue
+              # Try deleting parent dirs if they are empty
+              project_dir = project.worktree
               while project_dir != self.manifest.topdir:
                 try:
                   os.rmdir(project_dir)
