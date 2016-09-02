@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "111e1d18_f66ac014",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-09-02T04:20:14Z",
+      "side": 1,
+      "message": "OK.  Maybe better to fix this in a follow-up change?",
+      "parentUuid": "111e1d18_b6604837",
+      "range": {
+        "startLine": 506,
+        "startChar": 18,
+        "endLine": 506,
+        "endChar": 50
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "910a0dd1_3a270124",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "That\u0027s what I though, then pylint didn\u0027t complain, so I didn\u0027t end up looking into it. Strange.",
       "parentUuid": "910a0dd1_3a270124",
+      "range": {
+        "startLine": 507,
+        "startChar": 80,
+        "endLine": 507,
+        "endChar": 97
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "910a0dd1_3a0ee193",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-09-02T04:20:14Z",
+      "side": 1,
+      "message": "That\u0027s strange.  The .pylintrc file in this project has a setting for it:\n\n # Maximum number of characters on a single line.\n max-line-length\u003d80\n\nIt looks like it\u0027s not using it though.  It could be that the config is out of sync with what the latest version of pylint expects; I\u0027ll look into it when I have time.",
+      "parentUuid": "111e1d18_360ef893",
       "range": {
         "startLine": 507,
         "startChar": 80,
