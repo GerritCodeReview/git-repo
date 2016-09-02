@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "910a0dd1_9a172db3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-09-02T00:52:05Z",
+      "side": 1,
+      "message": "this isn\u0027t safe while iterating, fixing...",
+      "range": {
+        "startLine": 509,
+        "startChar": 20,
+        "endLine": 509,
+        "endChar": 34
+      },
+      "revId": "6c133d8a05e51d4b609b125d882b743687da2d56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
