@@ -144,6 +144,30 @@
     },
     {
       "key": {
+        "uuid": "910a0dd1_7a085985",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-09-02T04:25:00Z",
+      "side": 1,
+      "message": "OTOH, pylint is really noisy and difficult to tweak, so it might be better to abandon it in favour of pyflakes and flake8. I already did that on some of my other projects.",
+      "parentUuid": "910a0dd1_3a0ee193",
+      "range": {
+        "startLine": 507,
+        "startChar": 80,
+        "endLine": 507,
+        "endChar": 97
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "111e1d18_36271824",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
