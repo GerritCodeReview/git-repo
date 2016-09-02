@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "111e1d18_b6604837",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-09-02T04:02:34Z",
+      "side": 1,
+      "message": "This is the same behavior as before -- we weren\u0027t handling errors from shutil.rmtree. Though this isn\u0027t a very good experience -- i triggered a failure here by removing write permissions from build/core, and do get a semi-reasonable error:\n\n  Deleting obsolete path /tmp/repotest/build\n  Traceback (most recent call last):\n  File \"/tmp/repotest/.repo/repo/main.py\", line 531, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n  File \"/tmp/repotest/.repo/repo/main.py\", line 507, in _Main\n    result \u003d repo._Run(argv) or 0\n  File \"/tmp/repotest/.repo/repo/main.py\", line 180, in _Run\n    result \u003d cmd.Execute(copts, cargs)\n  File \"/tmp/repotest/.repo/repo/subcmds/sync.py\", line 773, in Execute\n    if self.UpdateProjectList():\n  File \"/tmp/repotest/.repo/repo/subcmds/sync.py\", line 505, in UpdateProjectList\n    os.remove(os.path.join(root, f))\n  OSError: [Errno 13] Permission denied: \u0027/tmp/repotest/build/core/droiddoc.mk\u0027\n\nBut, if I run another repo sync, we fail in Project.IsDirty, because the .git directory has already been torn down:\n\n  File \"/tmp/repotest/.repo/repo/subcmds/sync.py\", line 491, in UpdateProjectList\n    if project.IsDirty():\n  File \"/tmp/repotest/.repo/repo/project.py\", line 765, in IsDirty\n    \u0027--refresh\u0027)\n  File \"/tmp/repotest/.repo/repo/project.py\", line 2743, in runner\n    (self._project.name, name, p.stderr))\n  error.GitError: build update-index: fatal: Not a git repository (or any of the parent directories): .git\n\nIf I don\u0027t tear down the git directory until later, then the files that did get deleted make the project dirty and we just fail out.\n\nI suspect the best answer includes tearing down the .git directory, then skipping cleanup if the .git directory is missing. That would be required if multiple projects (with nested projects) were being removed, and we successfully finished the first, but failed a later one and the user synced again.\n\nI guess printing out all the errors, and not progressing to the next project if there were any errors would be about the best we could do. If there are thousands of files filling up the scrollback, the user will just need to deal with that.",
+      "parentUuid": "111e1d18_d6218410",
+      "range": {
+        "startLine": 506,
+        "startChar": 18,
+        "endLine": 506,
+        "endChar": 50
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "910a0dd1_3a270124",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "111e1d18_360ef893",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-09-02T04:02:34Z",
+      "side": 1,
+      "message": "That\u0027s what I though, then pylint didn\u0027t complain, so I didn\u0027t end up looking into it. Strange.",
+      "parentUuid": "910a0dd1_3a270124",
+      "range": {
+        "startLine": 507,
+        "startChar": 80,
+        "endLine": 507,
+        "endChar": 97
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "111e1d18_36271824",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2016-09-02T01:09:17Z",
       "side": 1,
       "message": "It was like this previously, but would it be better to show a warning when a directory couldn\u0027t be removed?",
+      "range": {
+        "startLine": 512,
+        "startChar": 16,
+        "endLine": 513,
+        "endChar": 26
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "910a0dd1_baf9516f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-09-02T04:02:34Z",
+      "side": 1,
+      "message": "It\u0027s like this below because the directories may not be empty. That will happen here when there\u0027s a git directory somewhere below the folder, and that would be normal. I haven\u0027t come up with a simple way of filtering these out.\n\nOn other errors, yes, we probably should print a warning. (To be portable, it looks like it\u0027s best to test len(os.listdir()), then only call rmdir if that\u0027s 0)",
+      "parentUuid": "111e1d18_36271824",
       "range": {
         "startLine": 512,
         "startChar": 16,
