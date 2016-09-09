@@ -37,6 +37,7 @@ following DTD:
     <!ATTLIST remote fetch        CDATA #REQUIRED>
     <!ATTLIST remote pushurl      CDATA #IMPLIED>
     <!ATTLIST remote review       CDATA #IMPLIED>
+    <!ATTLIST remote review-project CDATA #IMPLIED>
     <!ATTLIST remote revision     CDATA #IMPLIED>
 
     <!ELEMENT default (EMPTY)>
@@ -136,6 +137,10 @@ Attribute `review`: Hostname of the Gerrit server where reviews
 are uploaded to by `repo upload`.  This attribute is optional;
 if not specified then `repo upload` will not function.
 
+Attribute `review-project`: A prefix to the projectname that is
+common among all projects for this remote. This attribute is optional;
+if not specified then `repo upload` will just use the project `name`.
+
 Attribute `revision`: Name of a Git branch (e.g. `master` or
 `refs/heads/master`). Remotes with their own revision will override
 the default revision.
@@ -222,7 +227,10 @@ bare Git repositories.  If the project has a parent element, its
 name will be prefixed by the parent's.
 
 The project name must match the name Gerrit knows, if Gerrit is
-being used for code reviews.
+being used for code reviews. If the project name is in a
+subdirectory on the gerrit server, then `review-project` (see
+remote) can be used to avoid assigning the project name for
+all projects.
 
 Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project

@@ -67,6 +67,7 @@ class _XmlRemote(object):
                pushUrl=None,
                manifestUrl=None,
                review=None,
+               review_project=None,
                revision=None):
     self.name = name
     self.fetchUrl = fetch
@@ -74,6 +75,7 @@ class _XmlRemote(object):
     self.manifestUrl = manifestUrl
     self.remoteAlias = alias
     self.reviewUrl = review
+    self.review_project = review_project
     self.revision = revision
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
@@ -108,6 +110,7 @@ class _XmlRemote(object):
                       url=url,
                       pushUrl=self.pushUrl,
                       review=self.reviewUrl,
+                      review_project=self.review_project,
                       orig_name=self.name)
 
 class XmlManifest(object):
@@ -653,8 +656,11 @@ class XmlManifest(object):
     revision = node.getAttribute('revision')
     if revision == '':
       revision = None
+    review_project = node.getAttribute('review-project')
+    if review_project == '':
+      review_project = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, pushUrl, manifestUrl, review, revision)
+    return _XmlRemote(name, alias, fetch, pushUrl, manifestUrl, review, review_project, revision)
 
   def _ParseDefault(self, node):
     """

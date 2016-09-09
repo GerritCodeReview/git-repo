@@ -574,6 +574,7 @@ class Remote(object):
     self.url = self._Get('url')
     self.pushUrl = self._Get('pushurl')
     self.review = self._Get('review')
+    self.review_project = self._Get('review-project')
     self.projectname = self._Get('projectname')
     self.fetch = list(map(RefSpec.FromString,
                       self._Get('fetch', all_keys=True)))
@@ -655,6 +656,10 @@ class Remote(object):
           raise UploadError('%s: %s' % (self.review, e.__class__.__name__))
 
         REVIEW_CACHE[u] = self._review_url
+    if self.review_project:
+      if not self.review_project.endswith('/'):
+        self.review_project += '/'
+      return self._review_url + self.review_project + self.projectname
     return self._review_url + self.projectname
 
   def _SshReviewUrl(self, userEmail, host, port):
@@ -707,6 +712,7 @@ class Remote(object):
     else:
       self._Set('pushurl', self.pushUrl)
     self._Set('review', self.review)
+    self._Set('review-project', self.review_project)
     self._Set('projectname', self.projectname)
     self._Set('fetch', list(map(str, self.fetch)))
 
