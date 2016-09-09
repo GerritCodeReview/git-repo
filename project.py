@@ -321,11 +321,13 @@ class RemoteSpec(object):
                name,
                url=None,
                review=None,
+               review_project=None,
                revision=None,
                orig_name=None):
     self.name = name
     self.url = url
     self.review = review
+    self.review_project = review_project
     self.revision = revision
     self.orig_name = orig_name
 
@@ -1826,6 +1828,7 @@ class Project(object):
       remote = RemoteSpec(self.remote.name,
                           url=url,
                           review=self.remote.review,
+                          review_project=self.remote.review_project,
                           revision=self.remote.revision)
       subproject = Project(manifest=self.manifest,
                            name=name,
@@ -2347,6 +2350,7 @@ class Project(object):
       remote = self.GetRemote(self.remote.name)
       remote.url = self.remote.url
       remote.review = self.remote.review
+      remote.review_project = self.remote.review_project
       remote.projectname = self.name
 
       if self.worktree:
