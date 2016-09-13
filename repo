@@ -27,6 +27,8 @@ VERSION = (1, 23)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1, 2)
+# The individual key entry was created by using:
+# gpg --armor --export email@example.com
 MAINTAINER_KEYS = """
 
      Repo Maintainer <repo@android.kernel.org>
