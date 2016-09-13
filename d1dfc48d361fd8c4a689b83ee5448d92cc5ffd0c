@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b0622a0_288dcbde",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-09-13T10:30:30Z",
+      "side": 1,
+      "message": "I wonder if we should name this just `push` to be consistent with `fetch`?",
+      "range": {
+        "startLine": 129,
+        "startChar": 11,
+        "endLine": 129,
+        "endChar": 18
+      },
+      "revId": "d1dfc48d361fd8c4a689b83ee5448d92cc5ffd0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
