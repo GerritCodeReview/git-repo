@@ -397,9 +397,12 @@ later is required to fix a server side protocol bug.
     return fetched
 
   def _GCProjects(self, projects):
-    gitdirs = {}
+    gc_gitdirs = {}
     for project in projects:
-      gitdirs[project.gitdir] = project.bare_git
+      if len(project.manifest.GetProjectsWithName(project.name)) > 1:
+        print('Shared project %s found, disabling pruning.' % project.name)
+        project.bare_git.config('--replace-all', 'gc.pruneExpire', 'never')
+      gc_gitdirs[project.gitdir] = project.bare_git
 
     has_dash_c = git_require((1, 7, 2))
     if multiprocessing and has_dash_c:
@@ -409,7 +412,7 @@ later is required to fix a server side protocol bug.
     jobs = min(self.jobs, cpu_count)
 
     if jobs < 2:
-      for bare_git in gitdirs.values():
+      for bare_git in gc_gitdirs.values():
         bare_git.gc('--auto')
       return
 
@@ -431,7 +434,7 @@ later is required to fix a server side protocol bug.
       finally:
         sem.release()
 
-    for bare_git in gitdirs.values():
+    for bare_git in gc_gitdirs.values():
       if err_event.isSet():
         break
       sem.acquire()
