@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4be70257_c0f7fe74",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-09-14T05:23:14Z",
+      "side": 1,
+      "message": "\"Each individual key entry is created\"?",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 30,
+        "endChar": 38
+      },
+      "revId": "32c3cff3b77232222462296fabfc56ac32b0d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2bec8e3b_bf1017bb",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-09-14T05:23:14Z",
+      "side": 1,
+      "message": "nit: add a blank line before the comment",
+      "revId": "32c3cff3b77232222462296fabfc56ac32b0d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
