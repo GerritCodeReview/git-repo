@@ -2,7 +2,7 @@
 
  - Make small logical changes.
  - Provide a meaningful commit message.
- - Check for coding errors with pylint
+ - Check for coding errors and style nits with pyflakes and flake8
  - Make sure all code is under the Apache License, 2.0.
  - Publish your changes for review.
  - Make corrections if requested.
@@ -36,12 +36,32 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 
 
-## Check for coding errors with pylint
+## Check for coding errors and style nits with pyflakes and flake8
 
-Run pylint on changed modules using the provided configuration:
+### Coding errors
 
-    pylint --rcfile=.pylintrc file.py
+Run `pyflakes` on changed modules:
 
+    pyflakes file.py
+
+Ideally there should be no new errors or warnings introduced.
+
+### Style violations
+
+Run `flake8` on changes modules:
+
+    flake8 file.py
+
+Note that repo generally follows [Google's python style guide]
+(https://google.github.io/styleguide/pyguide.html) rather than [PEP 8]
+(https://www.python.org/dev/peps/pep-0008/), so it's possible that
+the output of `flake8` will be quite noisy. It's not mandatory to
+avoid all warnings, but at least the maximum line length should be
+followed.
+
+If there are many occurrences of the same warning that cannot be
+avoided without going against the Google style guide, these may be
+suppressed in the included `.flake8` file.
 
 ## Check the license
 
