@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "90b68be5_ba84510d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-09-21T00:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "111e1d18_f66ac014",
+      "range": {
+        "startLine": 506,
+        "startChar": 18,
+        "endLine": 506,
+        "endChar": 50
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "910a0dd1_3a270124",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -168,6 +192,30 @@
     },
     {
       "key": {
+        "uuid": "70bbd7d1_39792f21",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-09-21T00:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "910a0dd1_7a085985",
+      "range": {
+        "startLine": 507,
+        "startChar": 80,
+        "endLine": 507,
+        "endChar": 97
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "111e1d18_36271824",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -203,6 +251,30 @@
       "side": 1,
       "message": "It\u0027s like this below because the directories may not be empty. That will happen here when there\u0027s a git directory somewhere below the folder, and that would be normal. I haven\u0027t come up with a simple way of filtering these out.\n\nOn other errors, yes, we probably should print a warning. (To be portable, it looks like it\u0027s best to test len(os.listdir()), then only call rmdir if that\u0027s 0)",
       "parentUuid": "111e1d18_36271824",
+      "range": {
+        "startLine": 512,
+        "startChar": 16,
+        "endLine": 513,
+        "endChar": 26
+      },
+      "revId": "e033b4bbbbbc791ceee50d8ffc62f27d6d57aefa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70bbd7d1_19746b2a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-09-21T00:19:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "910a0dd1_baf9516f",
       "range": {
         "startLine": 512,
         "startChar": 16,
