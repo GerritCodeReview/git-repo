@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70dd979f_69070578",
+        "filename": "git_config.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 1021862
+      },
+      "writtenOn": "2016-09-22T19:42:26Z",
+      "side": 1,
+      "message": "Because of this return, the change in this patch will cause cygwin user to not able to upload using ssh",
+      "range": {
+        "startLine": 420,
+        "startChar": 4,
+        "endLine": 423,
+        "endChar": 18
+      },
+      "revId": "488bf092d5992bd1b8f8681c444f2cc283d05bcb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
