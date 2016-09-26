@@ -487,7 +487,13 @@ later is required to fix a server side protocol bug.
       dirs_to_remove += [os.path.join(root, d) for d in dirs
                          if os.path.join(root, d) not in dirs_to_remove]
     for d in reversed(dirs_to_remove):
-      if len(os.listdir(d)) == 0:
+      if os.path.islink(d):
+        try:
+          os.remove(d)
+        except OSError:
+          print('Failed to remove %s' % os.path.join(root, d), file=sys.stderr)
+          failed = True
+      elif len(os.listdir(d)) == 0:
         try:
           os.rmdir(d)
         except OSError:
