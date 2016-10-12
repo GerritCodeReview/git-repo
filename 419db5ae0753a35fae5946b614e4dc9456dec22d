@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c365611_a1807efc",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-12T00:25:00Z",
+      "side": 1,
+      "message": "nit: indent with spaces, not tabs.",
+      "range": {
+        "startLine": 93,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 3
+      },
+      "revId": "419db5ae0753a35fae5946b614e4dc9456dec22d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
