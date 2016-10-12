@@ -16,6 +16,24 @@
       "revId": "7f1ccfbb7bb29195e53fcc374a648379f5f53d3a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fc1886be_4598aa6a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1016173
+      },
+      "writtenOn": "2016-10-12T16:37:01Z",
+      "side": 1,
+      "message": "Hmm... I think it\u0027s just cosmetic - a dict isn\u0027t ordered.   It seemed good to keep the explicit params separate from the kwargs passed to FetchHelper.",
+      "parentUuid": "7c365611_c1830208",
+      "revId": "7f1ccfbb7bb29195e53fcc374a648379f5f53d3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
