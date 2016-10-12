@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c365611_c1830208",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-12T00:23:46Z",
+      "side": 1,
+      "message": "Does changing the order of the arguments have any effect or is this only a cosmetic change?",
+      "revId": "7f1ccfbb7bb29195e53fcc374a648379f5f53d3a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
