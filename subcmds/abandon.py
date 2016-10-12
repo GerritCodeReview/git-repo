@@ -40,7 +40,6 @@ It is equivalent to "git branch -D <branchname>".
       print("error: '%s' is not a valid name" % nb, file=sys.stderr)
       sys.exit(1)
 
-    nb = args[0]
     err = []
     success = []
     all_projects = self.GetProjects(args[1:])
