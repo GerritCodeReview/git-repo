@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c3cdef1_ff317f59",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-12T09:57:13Z",
+      "side": 1,
+      "message": "nit: move this up before \"from command ...\"",
+      "revId": "5eeb177b4d70bbfd5dc093251086e7540134c628",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c3cdef1_df2e3bf9",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-12T09:57:13Z",
+      "side": 1,
+      "message": "nit: indentation should be done with 2 spaces according to the Google python style guide, rather than the usual python style of 4 spaces.\n\nSame comment applies to the rest of this patch.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 6
+      },
+      "revId": "5eeb177b4d70bbfd5dc093251086e7540134c628",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3c3cdef1_3ffda752",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-12T09:57:13Z",
+      "side": 1,
+      "message": "nit: wrap long lines at 80 columns.",
+      "revId": "5eeb177b4d70bbfd5dc093251086e7540134c628",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
