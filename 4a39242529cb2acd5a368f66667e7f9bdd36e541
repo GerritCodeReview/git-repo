@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c9fd279_e02da29b",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1016173
+      },
+      "writtenOn": "2016-10-14T02:25:25Z",
+      "side": 1,
+      "message": "Oops, the comment says -q, but the command still implements -s.  I will switch the code to implement -q to conform with other commands like repo-sync.",
+      "revId": "4a39242529cb2acd5a368f66667e7f9bdd36e541",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
