@@ -93,6 +93,30 @@
       "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dca2e37b_e3b7328a",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1994,
+      "author": {
+        "id": 1025422
+      },
+      "writtenOn": "2016-10-17T12:55:18Z",
+      "side": 1,
+      "message": "I made a test without my patch and it\u0027s not working because self.clone_depth is empty. If a add a print of self.clone_depth at the beginning of _RemoteFetch(), I get this log:\n\n\"\"\"\n $ repo init -u /url/of/manifest --depth\u003d1\n $ repo sync\n self.clone_depth\u003dNone\n Fetching project a\n self.clone_depth\u003d\n True\n True\n dev\n error: Cannot fetch a\n\n error: Exited sync due to fetch errors\n\"\"\"\n\nIf I add attribute clone-depth\u003d\"1\" to project \"a\" in manifest, the condition \"if self.clone_depth\" is verified but fetch still fails.",
+      "parentUuid": "1c7f1b9a_759be850",
+      "range": {
+        "startLine": 1991,
+        "startChar": 0,
+        "endLine": 1994,
+        "endChar": 79
+      },
+      "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
