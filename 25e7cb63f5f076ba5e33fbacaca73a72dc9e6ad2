@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc31af18_42e412ca",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-17T01:59:42Z",
+      "side": 1,
+      "message": "Is the indentation of this block correct?  It\u0027s within the \"else\" at line 62 so won\u0027t get executed when --all is given.",
+      "range": {
+        "startLine": 65,
+        "startChar": 8,
+        "endLine": 71,
+        "endChar": 39
+      },
+      "revId": "25e7cb63f5f076ba5e33fbacaca73a72dc9e6ad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
