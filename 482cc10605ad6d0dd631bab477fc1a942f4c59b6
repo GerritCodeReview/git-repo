@@ -70,6 +70,29 @@
       "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1c7f1b9a_759be850",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1994,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-10-17T09:43:25Z",
+      "side": 1,
+      "message": "Is this retry without clone_depth not working for you?",
+      "range": {
+        "startLine": 1991,
+        "startChar": 0,
+        "endLine": 1994,
+        "endChar": 79
+      },
+      "revId": "482cc10605ad6d0dd631bab477fc1a942f4c59b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
