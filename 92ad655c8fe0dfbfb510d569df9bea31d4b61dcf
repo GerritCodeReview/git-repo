@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dca2e37b_a3b7fab8",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-17T01:07:01Z",
+      "side": 1,
+      "message": "Why is it necessary to pass explicit None here but not at line 109?\n\nThe default value of the first parameter (output_redir) is already None.",
+      "range": {
+        "startLine": 137,
+        "startChar": 44,
+        "endLine": 137,
+        "endChar": 48
+      },
+      "revId": "92ad655c8fe0dfbfb510d569df9bea31d4b61dcf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
