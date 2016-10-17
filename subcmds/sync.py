@@ -255,7 +255,7 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
-  def _FetchProjectList(self, opt, projects, *args, **kwargs):
+  def _FetchProjectList(self, opt, projects, sem, *args, **kwargs):
     """Main function of the fetch threads when jobs are > 1.
 
     Delegates most of the work to _FetchHelper.
@@ -263,15 +263,20 @@ later is required to fix a server side protocol bug.
     Args:
       opt: Program options returned from optparse.  See _Options().
       projects: Projects to fetch.
+      sem: We'll release() this semaphore when we exit so that another thread
+          can be started up.
       *args, **kwargs: Remaining arguments to pass to _FetchHelper. See the
           _FetchHelper docstring for details.
     """
-    for project in projects:
-      success = self._FetchHelper(opt, project, *args, **kwargs)
-      if not success and not opt.force_broken:
-        break
+    try:
+        for project in projects:
+          success = self._FetchHelper(opt, project, *args, **kwargs)
+          if not success and not opt.force_broken:
+            break
+    finally:
+        sem.release()
 
-  def _FetchHelper(self, opt, project, lock, fetched, pm, sem, err_event):
+  def _FetchHelper(self, opt, project, lock, fetched, pm, err_event):
     """Fetch git objects for a single project.
 
     Args:
@@ -283,8 +288,6 @@ later is required to fix a server side protocol bug.
           (with our lock held).
       pm: Instance of a Project object.  We will call pm.update() (with our
           lock held).
-      sem: We'll release() this semaphore when we exit so that another thread
-          can be started up.
       err_event: We'll set this event in the case of an error (after printing
           out info about the error).
 
@@ -340,7 +343,6 @@ later is required to fix a server side protocol bug.
     finally:
       if did_lock:
         lock.release()
-      sem.release()
 
     return success
 
@@ -365,10 +367,10 @@ later is required to fix a server side protocol bug.
       sem.acquire()
       kwargs = dict(opt=opt,
                     projects=project_list,
+                    sem=sem,
                     lock=lock,
                     fetched=fetched,
                     pm=pm,
-                    sem=sem,
                     err_event=err_event)
       if self.jobs > 1:
         t = _threading.Thread(target = self._FetchProjectList,
