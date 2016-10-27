@@ -40,8 +40,18 @@ LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
 # urljoin gets confused if the scheme is not known.
-urllib.parse.uses_relative.extend(['ssh', 'git', 'persistent-https', 'rpc'])
-urllib.parse.uses_netloc.extend(['ssh', 'git', 'persistent-https', 'rpc'])
+urllib.parse.uses_relative.extend([
+    'ssh',
+    'git',
+    'persistent-https',
+    'sso',
+    'rpc'])
+urllib.parse.uses_netloc.extend([
+    'ssh',
+    'git',
+    'persistent-https',
+    'sso',
+    'rpc'])
 
 class _Default(object):
   """Project defaults within the manifest."""
