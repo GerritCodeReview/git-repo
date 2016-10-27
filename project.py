@@ -2444,7 +2444,8 @@ class Project(object):
             pass
 
         if name in to_symlink:
-          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
+          if os.path.lexists(src):
+            os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
         elif copy_all and not os.path.islink(dst):
           if os.path.isdir(src):
             shutil.copytree(src, dst)
