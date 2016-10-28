@@ -2400,6 +2400,7 @@ class Project(object):
         src = os.path.realpath(os.path.join(srcdir, name))
         # Fail if the links are pointing to the wrong place
         if src != dst:
+          _error('%s is different in %s vs %s', name, destdir, srcdir)
           raise GitError('--force-sync not enabled; cannot overwrite a local '
                          'work tree. If you\'re comfortable with the '
                          'possibility of losing the work tree\'s git metadata,'
