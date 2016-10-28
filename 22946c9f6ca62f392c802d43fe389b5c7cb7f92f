@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26c4ce28_cd8029e2",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2453,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2016-10-28T06:03:57Z",
+      "side": 1,
+      "message": "we use os.path.lexists above",
+      "revId": "22946c9f6ca62f392c802d43fe389b5c7cb7f92f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
