@@ -347,6 +347,10 @@ def _Init(args, gitc_init=False):
     dst = os.path.abspath(os.path.join(repodir, S_repo))
     _Clone(url, dst, opt.quiet, not opt.no_clone_bundle)
 
+    if not os.path.isfile('%s/repo' % dst):
+      _print("warning: '%s' does not look like a git-repo repository, is "
+             "REPO_URL set correctly?" % url, file=sys.stderr)
+
     if can_verify and not opt.no_repo_verify:
       rev = _Verify(dst, branch, opt.quiet)
     else:
@@ -853,7 +857,10 @@ def main(orig_args):
       try:
         _Init(args, gitc_init=(cmd == 'gitc-init'))
       except CloneFailure:
-        shutil.rmtree(os.path.join(repodir, S_repo), ignore_errors=True)
+        path = os.path.join(repodir, S_repo)
+        _print("fatal: cloning the git-repo repository failed, will remove "
+               "'%s' " % path, file=sys.stderr)
+        shutil.rmtree(path, ignore_errors=True)
         sys.exit(1)
       repo_main, rel_repo_dir = _FindRepo()
     else:
