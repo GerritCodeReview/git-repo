@@ -242,3 +242,57 @@ def rename(src, dst):
         raise
   else:
     os.rename(src, dst)
+
+
+def islink(path):
+  """Test whether a path is a symbolic link.
+
+  Availability: Windows, Unix.
+  """
+  if isWindows():
+    import platform_utils_win32
+    return platform_utils_win32.islink(path)
+  else:
+    return os.path.islink(path)
+
+
+def readlink(path):
+  """Return a string representing the path to which the symbolic link
+  points. The result may be either an absolute or relative pathname;
+  if it is relative, it may be converted to an absolute pathname using
+  os.path.join(os.path.dirname(path), result).
+
+  Availability: Windows, Unix.
+  """
+  if isWindows():
+    import platform_utils_win32
+    return platform_utils_win32.readlink(path)
+  else:
+    return os.readlink(path)
+
+
+def realpath(path):
+  """Return the canonical path of the specified filename, eliminating
+  any symbolic links encountered in the path.
+
+  Availability: Windows, Unix.
+  """
+  if isWindows():
+    current_path = os.path.abspath(path)
+    path_tail = []
+    for c in range(0, 100):  # Avoid cycles
+      if islink(current_path):
+        target = readlink(current_path)
+        current_path = os.path.join(os.path.dirname(current_path), target)
+      else:
+        basename = os.path.basename(current_path)
+        if basename == '':
+          path_tail.append(current_path)
+          break
+        path_tail.append(basename)
+        current_path = os.path.dirname(current_path)
+    path_tail.reverse()
+    result = os.path.normpath(os.path.join(*path_tail))
+    return result
+  else:
+    return os.path.realpath(path)
