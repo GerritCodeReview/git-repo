@@ -54,7 +54,7 @@ from error import NoSuchProjectError
 from error import RepoChangedException
 import gitc_utils
 from manifest_xml import GitcManifest, XmlManifest
-from pager import RunPager
+from pager import RunPager, TerminatePager
 from wrapper import WrapperPath, Wrapper
 
 from subcmds import all_commands
@@ -525,6 +525,7 @@ def _Main(argv):
       print('fatal: %s' % e, file=sys.stderr)
       result = 128
 
+  TerminatePager()
   sys.exit(result)
 
 if __name__ == '__main__':
