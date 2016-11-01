@@ -16,19 +16,53 @@
 from __future__ import print_function
 import os
 import select
+import subprocess
 import sys
 
+import platform_utils
+
 active = False
+pager_process = None
+old_stdout = None
+old_stderr = None
 
 def RunPager(globalConfig):
-  global active
-
   if not os.isatty(0) or not os.isatty(1):
     return
   pager = _SelectPager(globalConfig)
   if pager == '' or pager == 'cat':
     return
 
+  if platform_utils.isWindows():
+    _PipePager(pager);
+  else:
+    _ForkPager(pager)
+
+def TerminatePager():
+  global pager_process, old_stdout, old_stderr
+  if pager_process:
+    sys.stdout.flush()
+    sys.stderr.flush()
+    pager_process.stdin.close()
+    pager_process.wait();
+    pager_process = None
+    # Restore initial stdout/err in case there is more output in this process
+    # after shutting down the pager process
+    sys.stdout = old_stdout
+    sys.stderr = old_stderr
+
+def _PipePager(pager):
+  global pager_process, old_stdout, old_stderr
+  assert pager_process is None, "Only one active pager process at a time"
+  # Create pager process, piping stdout/err into its stdin
+  pager_process = subprocess.Popen([pager], stdin=subprocess.PIPE, stdout=sys.stdout, stderr=sys.stderr)
+  old_stdout = sys.stdout
+  old_stderr = sys.stderr
+  sys.stdout = pager_process.stdin
+  sys.stderr = pager_process.stdin
+
+def _ForkPager(pager):
+  global active
   # This process turns into the pager; a child it forks will
   # do the real processing and output back to the pager. This
   # is necessary to keep the pager in control of the tty.
