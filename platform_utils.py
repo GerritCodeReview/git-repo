@@ -167,3 +167,19 @@ class _FileDescriptorStreamsThreads(FileDescriptorStreams):
         self.queue.put(_FileDescriptorStreamsThreads.QueueItem(self, line))
       self.fd.close()
       self.queue.put(_FileDescriptorStreamsThreads.QueueItem(self, None))
+
+
+def symlink(source, link_name):
+  """Creates a symbolic link pointing to source named link_name.
+  Note: On Windows, source must exist on disk, as the implementation needs
+  to know whether to create a "File" or a "Directory" symbolic link.
+  """
+  if isWindows():
+    import platform_utils_win32
+    target = os.path.join(os.path.dirname(link_name), source)
+    if os.path.isdir(target):
+      platform_utils_win32.create_dirsymlink(source, link_name)
+    else:
+      platform_utils_win32.create_filesymlink(source, link_name)
+  else:
+    return os.symlink(source, link_name)
