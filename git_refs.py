@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import platform_utils
 from trace import Trace
 
 HEAD    = 'HEAD'
@@ -146,6 +147,8 @@ class GitRefs(object):
       try:
         mtime = os.path.getmtime(path)
         ref_id = fd.readline()
+        if platform_utils.isWindows():
+          ref_id = ref_id.replace('\r\n', '\n')
       except (IOError, OSError):
         return
     finally:
