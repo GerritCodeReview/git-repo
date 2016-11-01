@@ -14,14 +14,14 @@
 # limitations under the License.
 
 from __future__ import print_function
-import fcntl
 import os
-import select
 import sys
 import subprocess
 import tempfile
 from signal import SIGTERM
+
 from error import GitError
+import platform_utils
 from trace import REPO_TRACE, IsTrace, Trace
 from wrapper import Wrapper
 
@@ -77,16 +77,6 @@ def terminate_ssh_clients():
   _ssh_clients = []
 
 _git_version = None
-
-class _sfd(object):
-  """select file descriptor class"""
-  def __init__(self, fd, dest, std_name):
-    assert std_name in ('stdout', 'stderr')
-    self.fd = fd
-    self.dest = dest
-    self.std_name = std_name
-  def fileno(self):
-    return self.fd.fileno()
 
 class _GitCall(object):
   def version(self):
@@ -253,19 +243,16 @@ class GitCommand(object):
 
   def _CaptureOutput(self):
     p = self.process
-    s_in = [_sfd(p.stdout, sys.stdout, 'stdout'),
-            _sfd(p.stderr, sys.stderr, 'stderr')]
+    s_in = platform_utils.FileDescriptorStreams.create()
+    s_in.add(p.stdout, sys.stdout, 'stdout')
+    s_in.add(p.stderr, sys.stderr, 'stderr')
     self.stdout = ''
     self.stderr = ''
 
-    for s in s_in:
-      flags = fcntl.fcntl(s.fd, fcntl.F_GETFL)
-      fcntl.fcntl(s.fd, fcntl.F_SETFL, flags | os.O_NONBLOCK)
-
-    while s_in:
-      in_ready, _, _ = select.select(s_in, [], [])
+    while not s_in.is_done:
+      in_ready = s_in.select()
       for s in in_ready:
-        buf = s.fd.read(4096)
+        buf = s.read()
         if not buf:
           s_in.remove(s)
           continue
