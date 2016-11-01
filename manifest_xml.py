@@ -32,6 +32,7 @@ else:
 import gitc_utils
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
+import platform_utils
 from project import RemoteSpec, Project, MetaProject
 from error import ManifestParseError, ManifestInvalidRevisionError
 
@@ -164,7 +165,7 @@ class XmlManifest(object):
     try:
       if os.path.lexists(self.manifestFile):
         os.remove(self.manifestFile)
-      os.symlink('manifests/%s' % name, self.manifestFile)
+      platform_utils.symlink('manifests/%s' % name, self.manifestFile)
     except OSError as e:
       raise ManifestParseError('cannot link manifest %s: %s' % (name, str(e)))
 

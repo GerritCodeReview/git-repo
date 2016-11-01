@@ -167,3 +167,46 @@ class _FileDescriptorStreamsThreads(FileDescriptorStreams):
         self.queue.put(_FileDescriptorStreamsThreads.QueueItem(self, line))
       self.fd.close()
       self.queue.put(_FileDescriptorStreamsThreads.QueueItem(self, None))
+
+
+def symlink(source, link_name):
+  """Creates a symbolic link pointing to source named link_name.
+  Note: On Windows, source must exist on disk, as the implementation needs
+  to know whether to create a "File" or a "Directory" symbolic link.
+  """
+  if isWindows():
+    import platform_utils_win32
+    source = _validate_winpath(source)
+    link_name = _validate_winpath(link_name)
+    target = os.path.join(os.path.dirname(link_name), source)
+    if os.path.isdir(target):
+      platform_utils_win32.create_dirsymlink(source, link_name)
+    else:
+      platform_utils_win32.create_filesymlink(source, link_name)
+  else:
+    return os.symlink(source, link_name)
+
+
+def _validate_winpath(path):
+  path = os.path.normpath(path)
+  if _winpath_is_valid(path):
+    return path
+  raise ValueError("Path \"%s\" must be a relative path or an absolute "
+                   "path starting with a drive letter".format(path))
+
+
+def _winpath_is_valid(path):
+  """Windows only: returns True if path is relative (e.g. ".\\foo") or is
+  absolute including a drive letter (e.g. "c:\\foo"). Returns False if path
+  is ambiguous (e.g. "x:foo" or "\\foo").
+  """
+  assert isWindows()
+  path = os.path.normpath(path)
+  drive, tail = os.path.splitdrive(path)
+  if tail:
+    if not drive:
+      return tail[0] != os.sep  # "\\foo" is invalid
+    else:
+      return tail[0] == os.sep  # "x:foo" is invalid
+  else:
+    return not drive  # "x:" is invalid
