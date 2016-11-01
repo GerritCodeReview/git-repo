@@ -225,3 +225,16 @@ def handle_rmtree_error(function, path, excinfo):
   # Allow deleting read-only files
   os.chmod(path, stat.S_IWRITE)
   function(path)
+
+
+def rename(src, dst):
+  if isWindows():
+    # On Windows, rename fails if destination exists, see
+    # https://docs.python.org/2/library/os.html#os.rename
+    try:
+      os.rename(src, dst)
+    except OSError:
+      os.remove(dst)
+      os.rename(src, dst)
+  else:
+    os.rename(src, dst)
