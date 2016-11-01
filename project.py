@@ -103,7 +103,7 @@ def _ProjectHooks():
   """
   global _project_hook_list
   if _project_hook_list is None:
-    d = os.path.realpath(os.path.abspath(os.path.dirname(__file__)))
+    d = platform_utils.realpath(os.path.abspath(os.path.dirname(__file__)))
     d = os.path.join(d, 'hooks')
     _project_hook_list = [os.path.join(d, x) for x in os.listdir(d)]
   return _project_hook_list
@@ -269,7 +269,7 @@ class _LinkFile(object):
 
   def __linkIt(self, relSrc, absDest):
     # link file if it does not exist or is out of date
-    if not os.path.islink(absDest) or (os.readlink(absDest) != relSrc):
+    if not platform_utils.islink(absDest) or (platform_utils.readlink(absDest) != relSrc):
       try:
         # remove existing file first, since it might be read-only
         if os.path.lexists(absDest):
@@ -2266,10 +2266,10 @@ class Project(object):
             print("Retrying clone after deleting %s" %
                   self.gitdir, file=sys.stderr)
             try:
-              platform_utils.rmtree(os.path.realpath(self.gitdir))
-              if self.worktree and os.path.exists(os.path.realpath
+              platform_utils.rmtree(platform_utils.realpath(self.gitdir))
+              if self.worktree and os.path.exists(platform_utils.realpath
                                                   (self.worktree)):
-                platform_utils.rmtree(os.path.realpath(self.worktree))
+                platform_utils.rmtree(platform_utils.realpath(self.worktree))
               return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
             except:
               raise e
@@ -2321,7 +2321,7 @@ class Project(object):
       self._InitHooks()
 
   def _InitHooks(self):
-    hooks = os.path.realpath(self._gitdir_path('hooks'))
+    hooks = platform_utils.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
     for stock_hook in _ProjectHooks():
@@ -2337,7 +2337,7 @@ class Project(object):
         continue
 
       dst = os.path.join(hooks, name)
-      if os.path.islink(dst):
+      if platform_utils.islink(dst):
         continue
       if os.path.exists(dst):
         if filecmp.cmp(stock_hook, dst, shallow=False):
@@ -2399,9 +2399,9 @@ class Project(object):
       symlink_dirs += self.working_tree_dirs
     to_symlink = symlink_files + symlink_dirs
     for name in set(to_symlink):
-      dst = os.path.realpath(os.path.join(destdir, name))
+      dst = platform_utils.realpath(os.path.join(destdir, name))
       if os.path.lexists(dst):
-        src = os.path.realpath(os.path.join(srcdir, name))
+        src = platform_utils.realpath(os.path.join(srcdir, name))
         # Fail if the links are pointing to the wrong place
         if src != dst:
           _error('%s is different in %s vs %s', name, destdir, srcdir)
@@ -2433,10 +2433,10 @@ class Project(object):
     if copy_all:
       to_copy = os.listdir(gitdir)
 
-    dotgit = os.path.realpath(dotgit)
+    dotgit = platform_utils.realpath(dotgit)
     for name in set(to_copy).union(to_symlink):
       try:
-        src = os.path.realpath(os.path.join(gitdir, name))
+        src = platform_utils.realpath(os.path.join(gitdir, name))
         dst = os.path.join(dotgit, name)
 
         if os.path.lexists(dst):
@@ -2457,7 +2457,7 @@ class Project(object):
         if name in to_symlink:
           platform_utils.symlink(
               os.path.relpath(src, os.path.dirname(dst)), dst)
-        elif copy_all and not os.path.islink(dst):
+        elif copy_all and not platform_utils.islink(dst):
           if os.path.isdir(src):
             shutil.copytree(src, dst)
           elif os.path.isfile(src):
@@ -2504,7 +2504,7 @@ class Project(object):
       raise
 
   def _gitdir_path(self, path):
-    return os.path.realpath(os.path.join(self.gitdir, path))
+    return platform_utils.realpath(os.path.join(self.gitdir, path))
 
   def _revlist(self, *args, **kw):
     a = []
