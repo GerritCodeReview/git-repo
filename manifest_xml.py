@@ -165,7 +165,7 @@ class XmlManifest(object):
     try:
       if os.path.lexists(self.manifestFile):
         os.remove(self.manifestFile)
-      platform_utils.symlink('manifests/%s' % name, self.manifestFile)
+      platform_utils.symlink(os.path.join('manifests', name), self.manifestFile)
     except OSError as e:
       raise ManifestParseError('cannot link manifest %s: %s' % (name, str(e)))
 
