@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import errno
 import os
 import platform
 import select
@@ -225,3 +226,19 @@ def handle_rmtree_error(function, path, excinfo):
   # Allow deleting read-only files
   os.chmod(path, stat.S_IWRITE)
   function(path)
+
+
+def rename(src, dst):
+  if isWindows():
+    # On Windows, rename fails if destination exists, see
+    # https://docs.python.org/2/library/os.html#os.rename
+    try:
+      os.rename(src, dst)
+    except OSError as e:
+      if e.errno == errno.EEXIST:
+        os.remove(dst)
+        os.rename(src, dst)
+      else:
+        raise
+  else:
+    os.rename(src, dst)
