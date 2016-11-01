@@ -496,7 +496,7 @@ later is required to fix a server side protocol bug.
       dirs_to_remove += [os.path.join(root, d) for d in dirs
                          if os.path.join(root, d) not in dirs_to_remove]
     for d in reversed(dirs_to_remove):
-      if os.path.islink(d):
+      if platform_utils.islink(d):
         try:
           os.remove(d)
         except OSError:
