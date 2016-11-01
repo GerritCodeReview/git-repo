@@ -17,6 +17,7 @@ import errno
 import filecmp
 import glob
 import os
+import platform_utils
 import random
 import re
 import shutil
@@ -277,7 +278,7 @@ class _LinkFile(object):
           dest_dir = os.path.dirname(absDest)
           if not os.path.isdir(dest_dir):
             os.makedirs(dest_dir)
-        os.symlink(relSrc, absDest)
+        platform_utils.symlink(relSrc, absDest)
       except IOError:
         _error('Cannot link file %s to %s', relSrc, absDest)
 
@@ -2344,7 +2345,8 @@ class Project(object):
                 self.relpath, name)
           continue
       try:
-        os.symlink(os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
+        platform_utils.symlink(
+            os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
       except OSError as e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
@@ -2451,7 +2453,7 @@ class Project(object):
             pass
 
         if name in to_symlink:
-          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
+          platform_utils.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
         elif copy_all and not os.path.islink(dst):
           if os.path.isdir(src):
             shutil.copytree(src, dst)
