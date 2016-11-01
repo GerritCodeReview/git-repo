@@ -35,6 +35,7 @@ from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, \
 from error import GitError, HookError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
+import platform_utils
 from trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
@@ -277,7 +278,7 @@ class _LinkFile(object):
           dest_dir = os.path.dirname(absDest)
           if not os.path.isdir(dest_dir):
             os.makedirs(dest_dir)
-        os.symlink(relSrc, absDest)
+        platform_utils.symlink(relSrc, absDest)
       except IOError:
         _error('Cannot link file %s to %s', relSrc, absDest)
 
@@ -2344,7 +2345,8 @@ class Project(object):
                 self.relpath, name)
           continue
       try:
-        os.symlink(os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
+        platform_utils.symlink(
+            os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
       except OSError as e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
@@ -2451,7 +2453,8 @@ class Project(object):
             pass
 
         if name in to_symlink:
-          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
+          platform_utils.symlink(
+              os.path.relpath(src, os.path.dirname(dst)), dst)
         elif copy_all and not os.path.islink(dst):
           if os.path.isdir(src):
             shutil.copytree(src, dst)
