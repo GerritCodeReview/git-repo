@@ -1244,6 +1244,8 @@ class Project(object):
         fd = open(alt, 'rb')
         try:
           alt_dir = fd.readline().rstrip()
+          if platform_utils.isWindows():
+            alt_dir = alt_dir.replace('\r\n', '\n')
         finally:
           fd.close()
       except IOError:
@@ -2643,6 +2645,8 @@ class Project(object):
         raise NoManifestException(path, str(e))
       try:
         line = fd.read()
+        if platform_utils.isWindows():
+          line = line.replace('\r\n', '\n')
       finally:
         fd.close()
       try:
