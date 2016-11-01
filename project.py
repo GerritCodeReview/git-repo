@@ -63,7 +63,7 @@ def _lwrite(path, content):
     fd.close()
 
   try:
-    os.rename(lock, path)
+    platform_utils.rename(lock, path)
   except OSError:
     os.remove(lock)
     raise
@@ -2198,7 +2198,7 @@ class Project(object):
 
     if os.path.exists(tmpPath):
       if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
-        os.rename(tmpPath, dstPath)
+        platform_utils.rename(tmpPath, dstPath)
         return True
       else:
         os.remove(tmpPath)
