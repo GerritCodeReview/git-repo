@@ -1258,7 +1258,7 @@ class Project(object):
     if is_new:
       alt = os.path.join(self.gitdir, 'objects/info/alternates')
       try:
-        fd = open(alt, 'rb')
+        fd = open(alt)
         try:
           alt_dir = fd.readline().rstrip()
         finally:
@@ -2691,11 +2691,11 @@ class Project(object):
       else:
         path = os.path.join(self._project.worktree, '.git', HEAD)
       try:
-        fd = open(path, 'rb')
+        fd = open(path)
       except IOError as e:
         raise NoManifestException(path, str(e))
       try:
-        line = fd.read()
+        line = fd.readline()
       finally:
         fd.close()
       try:
