@@ -16,6 +16,8 @@
 import os
 import platform
 import select
+import shutil
+import stat
 
 from Queue import Queue
 from threading import Thread
@@ -210,3 +212,16 @@ def _winpath_is_valid(path):
       return tail[0] == os.sep  # "x:foo" is invalid
   else:
     return not drive  # "x:" is invalid
+
+
+def rmtree(path):
+  if isWindows():
+    shutil.rmtree(path, onerror=handle_rmtree_error)
+  else:
+    shutil.rmtree(path)
+
+
+def handle_rmtree_error(function, path, excinfo):
+  # Allow deleting read-only files
+  os.chmod(path, stat.S_IWRITE)
+  function(path)

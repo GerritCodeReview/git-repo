@@ -18,8 +18,8 @@ import json
 import netrc
 from optparse import SUPPRESS_HELP
 import os
+import platform_utils
 import re
-import shutil
 import socket
 import subprocess
 import sys
@@ -466,7 +466,7 @@ later is required to fix a server side protocol bug.
     # working git repository around. There shouldn't be any git projects here,
     # so rmtree works.
     try:
-      shutil.rmtree(os.path.join(path, '.git'))
+      platform_utils.rmtree(os.path.join(path, '.git'))
     except OSError:
       print('Failed to remove %s' % os.path.join(path, '.git'), file=sys.stderr)
       print('error: Failed to delete obsolete path %s' % path, file=sys.stderr)
