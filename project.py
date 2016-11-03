@@ -2264,10 +2264,10 @@ class Project(object):
             print("Retrying clone after deleting %s" %
                   self.gitdir, file=sys.stderr)
             try:
-              shutil.rmtree(os.path.realpath(self.gitdir))
+              platform_utils.rmtree(os.path.realpath(self.gitdir))
               if self.worktree and os.path.exists(os.path.realpath
                                                   (self.worktree)):
-                shutil.rmtree(os.path.realpath(self.worktree))
+                platform_utils.rmtree(os.path.realpath(self.worktree))
               return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
             except:
               raise e
@@ -2309,9 +2309,9 @@ class Project(object):
           self.config.SetString('core.bare', None)
     except Exception:
       if init_obj_dir and os.path.exists(self.objdir):
-        shutil.rmtree(self.objdir)
+        platform_utils.rmtree(self.objdir)
       if init_git_dir and os.path.exists(self.gitdir):
-        shutil.rmtree(self.gitdir)
+        platform_utils.rmtree(self.gitdir)
       raise
 
   def _UpdateHooks(self):
@@ -2480,7 +2480,7 @@ class Project(object):
       except GitError as e:
         if force_sync:
           try:
-            shutil.rmtree(dotgit)
+            platform_utils.rmtree(dotgit)
             return self._InitWorkTree(force_sync=False)
           except:
             raise e
@@ -2498,7 +2498,7 @@ class Project(object):
         self._CopyAndLinkFiles()
     except Exception:
       if init_dotgit:
-        shutil.rmtree(dotgit)
+        platform_utils.rmtree(dotgit)
       raise
 
   def _gitdir_path(self, path):
