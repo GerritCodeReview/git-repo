@@ -143,6 +143,30 @@
     },
     {
       "key": {
+        "uuid": "cb9bfb7a_325f908b",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2331,
+      "author": {
+        "id": 1031862
+      },
+      "writtenOn": "2016-11-08T13:17:32Z",
+      "side": 1,
+      "message": "Hum actually, this is still required if lfs is not configured in the manifest",
+      "parentUuid": "aba087a6_115a8c9a",
+      "range": {
+        "startLine": 2331,
+        "startChar": 8,
+        "endLine": 2331,
+        "endChar": 81
+      },
+      "revId": "408b60aecd10c2056acce073cb2c2db8893c98f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b757707_857f221a",
         "filename": "subcmds/init.py",
         "patchSetId": 1
