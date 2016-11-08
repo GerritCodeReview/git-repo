@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "cb9bfb7a_9204bc7e",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1031862
+      },
+      "writtenOn": "2016-11-08T13:09:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b757707_25710e52",
+      "range": {
+        "startLine": 145,
+        "startChar": 21,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "revId": "408b60aecd10c2056acce073cb2c2db8893c98f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b757707_45760a4b",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2016-11-07T23:47:27Z",
       "side": 1,
       "message": "An",
+      "range": {
+        "startLine": 286,
+        "startChar": 17,
+        "endLine": 286,
+        "endChar": 18
+      },
+      "revId": "408b60aecd10c2056acce073cb2c2db8893c98f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aba087a6_914d9ce2",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 1
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1031862
+      },
+      "writtenOn": "2016-11-08T13:09:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b757707_45760a4b",
       "range": {
         "startLine": 286,
         "startChar": 17,
@@ -112,6 +160,24 @@
     },
     {
       "key": {
+        "uuid": "aba087a6_b14aa0c5",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1031862
+      },
+      "writtenOn": "2016-11-08T13:09:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b757707_857f221a",
+      "revId": "408b60aecd10c2056acce073cb2c2db8893c98f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b757707_a57c1e26",
         "filename": "subcmds/init.py",
         "patchSetId": 1
@@ -123,6 +189,30 @@
       "writtenOn": "2016-11-07T23:47:27Z",
       "side": 1,
       "message": "nit: wrong indentation",
+      "range": {
+        "startLine": 393,
+        "startChar": 4,
+        "endLine": 393,
+        "endChar": 8
+      },
+      "revId": "408b60aecd10c2056acce073cb2c2db8893c98f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cb9bfb7a_b201c06d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1031862
+      },
+      "writtenOn": "2016-11-08T13:09:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b757707_a57c1e26",
       "range": {
         "startLine": 393,
         "startChar": 4,
