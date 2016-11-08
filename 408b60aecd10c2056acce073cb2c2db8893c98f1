@@ -71,6 +71,30 @@
     },
     {
       "key": {
+        "uuid": "aba087a6_115a8c9a",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2331,
+      "author": {
+        "id": 1031862
+      },
+      "writtenOn": "2016-11-08T12:48:31Z",
+      "side": 1,
+      "message": "Good question. According to my understanding of the https://github.com/github/git-lfs/issues/1422 issue, it can be removed",
+      "parentUuid": "2b757707_657b0630",
+      "range": {
+        "startLine": 2331,
+        "startChar": 8,
+        "endLine": 2331,
+        "endChar": 81
+      },
+      "revId": "408b60aecd10c2056acce073cb2c2db8893c98f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2b757707_857f221a",
         "filename": "subcmds/init.py",
         "patchSetId": 1
