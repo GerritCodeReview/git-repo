@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "ab716759_8975b93e",
+        "filename": "platform_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2016-11-09T20:05:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b7d1329_ec700b50",
+      "revId": "01ddf0683b9d79845d37777423f10762e226291c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ab716759_c96bb163",
         "filename": "platform_utils.py",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2016-11-09T18:51:20Z",
       "side": 1,
       "message": "this module and its classes are sorely lacking in docstrings.  please sprinkle some reasonable amount around.",
+      "revId": "01ddf0683b9d79845d37777423f10762e226291c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0b7d1329_6c7dfb1f",
+        "filename": "platform_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2016-11-09T20:05:20Z",
+      "side": 1,
+      "message": "Done. Let me know if more are needed.",
+      "parentUuid": "ab716759_c96bb163",
       "revId": "01ddf0683b9d79845d37777423f10762e226291c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
