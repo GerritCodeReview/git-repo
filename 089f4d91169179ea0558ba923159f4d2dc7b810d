@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b70b387_347d3021",
+        "filename": "platform_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2016-11-10T20:32:44Z",
+      "side": 1,
+      "message": "pretty sure this misbehaves if source starts with a slash",
+      "revId": "089f4d91169179ea0558ba923159f4d2dc7b810d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0b70b387_548aacff",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2016-11-10T20:32:44Z",
+      "side": 1,
+      "message": "should be 4 space indent",
+      "revId": "089f4d91169179ea0558ba923159f4d2dc7b810d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
