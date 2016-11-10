@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0b70b387_d4e07cb9",
+        "filename": "platform_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2016-11-10T22:07:27Z",
+      "side": 1,
+      "message": "Wow, I was unaware of that behavior. Any advice? I am tempted to throw an exception if source starts with a slash (or is in the \"C:path\" form, without a slash), as this should never happen in the git-repo case (source should either contain the drive letter, or be relative without a drive letter).\n\nThoughts?",
+      "parentUuid": "0b70b387_347d3021",
+      "revId": "089f4d91169179ea0558ba923159f4d2dc7b810d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0b70b387_548aacff",
         "filename": "platform_utils_win32.py",
         "patchSetId": 4
@@ -30,6 +48,24 @@
       "writtenOn": "2016-11-10T20:32:44Z",
       "side": 1,
       "message": "should be 4 space indent",
+      "revId": "089f4d91169179ea0558ba923159f4d2dc7b810d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eb6c3fba_d38ed40d",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2016-11-10T22:07:27Z",
+      "side": 1,
+      "message": "Oh sorry, my bad, I mixed up styles: this whole file uses 4 space indent, but it looks like most git-repo source files use 2 space indent. Is 2 space indent preferred for git-repo source files? (i.e. should I change this whole file to use 2 space indent).",
+      "parentUuid": "0b70b387_548aacff",
       "revId": "089f4d91169179ea0558ba923159f4d2dc7b810d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
