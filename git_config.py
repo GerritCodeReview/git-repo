@@ -19,6 +19,7 @@ import contextlib
 import errno
 import json
 import os
+import platform_utils
 import re
 import subprocess
 import sys
@@ -259,7 +260,7 @@ class GitConfig(object):
     try:
       if os.path.getmtime(self._json) \
       <= os.path.getmtime(self.file):
-        os.remove(self._json)
+        platform_utils.remove(self._json)
         return None
     except OSError:
       return None
@@ -271,7 +272,7 @@ class GitConfig(object):
       finally:
         fd.close()
     except (IOError, ValueError):
-      os.remove(self._json)
+      platform_utils.remove(self._json)
       return None
 
   def _SaveJson(self, cache):
@@ -283,7 +284,7 @@ class GitConfig(object):
         fd.close()
     except (IOError, TypeError):
       if os.path.exists(self._json):
-        os.remove(self._json)
+        platform_utils.remove(self._json)
 
   def _ReadGit(self):
     """
