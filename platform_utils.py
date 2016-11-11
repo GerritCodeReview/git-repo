@@ -244,6 +244,23 @@ def rename(src, dst):
     os.rename(src, dst)
 
 
+def remove(path):
+  """Remove (delete) the file path. This is a replacement for os.remove, but
+  allows deleting read-only files on Windows.
+  """
+  if isWindows():
+    try:
+      os.remove(path)
+    except OSError as e:
+      if e.errno == errno.EACCES:
+        os.chmod(path, stat.S_IWRITE)
+        os.remove(path)
+      else:
+        raise
+  else:
+    os.remove(path)
+
+
 def islink(path):
   """Test whether a path is a symbolic link.
 
