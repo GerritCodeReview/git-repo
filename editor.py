@@ -21,6 +21,7 @@ import subprocess
 import tempfile
 
 from error import EditorError
+import platform_utils
 
 class Editor(object):
   """Manages the user's preferred text editor."""
@@ -107,4 +108,4 @@ least one of these before using this command.""", file=sys.stderr)
     finally:
       if fd:
         os.close(fd)
-      os.remove(path)
+      platform_utils.remove(path)
