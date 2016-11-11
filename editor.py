@@ -15,6 +15,7 @@
 
 from __future__ import print_function
 import os
+import platform_utils
 import re
 import sys
 import subprocess
@@ -107,4 +108,4 @@ least one of these before using this command.""", file=sys.stderr)
     finally:
       if fd:
         os.close(fd)
-      os.remove(path)
+      platform_utils.remove(path)

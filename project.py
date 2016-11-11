@@ -65,7 +65,7 @@ def _lwrite(path, content):
   try:
     platform_utils.rename(lock, path)
   except OSError:
-    os.remove(lock)
+    platform_utils.remove(lock)
     raise
 
 
@@ -244,7 +244,7 @@ class _CopyFile(object):
       try:
         # remove existing file first, since it might be read-only
         if os.path.exists(dest):
-          os.remove(dest)
+          platform_utils.remove(dest)
         else:
           dest_dir = os.path.dirname(dest)
           if not os.path.isdir(dest_dir):
@@ -273,7 +273,7 @@ class _LinkFile(object):
       try:
         # remove existing file first, since it might be read-only
         if os.path.lexists(absDest):
-          os.remove(absDest)
+          platform_utils.remove(absDest)
         else:
           dest_dir = os.path.dirname(absDest)
           if not os.path.isdir(dest_dir):
@@ -1225,7 +1225,7 @@ class Project(object):
       if not self._ExtractArchive(tarpath, path=topdir):
         return False
       try:
-        os.remove(tarpath)
+        platform_utils.remove(tarpath)
       except OSError as e:
         _warn("Cannot remove archive %s: %s", tarpath, str(e))
       self._CopyAndLinkFiles()
@@ -1286,7 +1286,7 @@ class Project(object):
     else:
       self._InitMirrorHead()
       try:
-        os.remove(os.path.join(self.gitdir, 'FETCH_HEAD'))
+        platform_utils.remove(os.path.join(self.gitdir, 'FETCH_HEAD'))
       except OSError:
         pass
     return True
@@ -1778,7 +1778,7 @@ class Project(object):
       except GitError:
         return [], []
       finally:
-        os.remove(temp_gitmodules_path)
+        platform_utils.remove(temp_gitmodules_path)
 
       names = set()
       paths = {}
@@ -2062,7 +2062,7 @@ class Project(object):
         if old_packed != '':
           _lwrite(packed_refs, old_packed)
         else:
-          os.remove(packed_refs)
+          platform_utils.remove(packed_refs)
       self.bare_git.pack_refs('--all', '--prune')
 
     if is_sha1 and current_branch_only:
@@ -2124,14 +2124,14 @@ class Project(object):
 
     ok = GitCommand(self, cmd, bare=True).Wait() == 0
     if os.path.exists(bundle_dst):
-      os.remove(bundle_dst)
+      platform_utils.remove(bundle_dst)
     if os.path.exists(bundle_tmp):
-      os.remove(bundle_tmp)
+      platform_utils.remove(bundle_tmp)
     return ok
 
   def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet):
     if os.path.exists(dstPath):
-      os.remove(dstPath)
+      platform_utils.remove(dstPath)
 
     cmd = ['curl', '--fail', '--output', tmpPath, '--netrc', '--location']
     if quiet:
@@ -2141,7 +2141,7 @@ class Project(object):
       if size >= 1024:
         cmd += ['--continue-at', '%d' % (size,)]
       else:
-        os.remove(tmpPath)
+        platform_utils.remove(tmpPath)
     if 'http_proxy' in os.environ and 'darwin' == sys.platform:
       cmd += ['--proxy', os.environ['http_proxy']]
     with GetUrlCookieFile(srcUrl, quiet) as (cookiefile, _proxy):
@@ -2175,7 +2175,7 @@ class Project(object):
         platform_utils.rename(tmpPath, dstPath)
         return True
       else:
-        os.remove(tmpPath)
+        platform_utils.remove(tmpPath)
         return False
     else:
       return False
@@ -2341,7 +2341,7 @@ class Project(object):
         continue
       if os.path.exists(dst):
         if filecmp.cmp(stock_hook, dst, shallow=False):
-          os.remove(dst)
+          platform_utils.remove(dst)
         else:
           _warn("%s: Not replacing locally modified %s hook",
                 self.relpath, name)
@@ -2450,7 +2450,7 @@ class Project(object):
         # file doesn't either.
         if name in symlink_files and not os.path.lexists(src):
           try:
-            os.remove(dst)
+            platform_utils.remove(dst)
           except OSError:
             pass
 
