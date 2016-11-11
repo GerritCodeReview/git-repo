@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb6c3fba_3303882e",
+        "filename": "platform_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2016-11-11T18:18:55Z",
+      "side": 1,
+      "message": "shouldn\u0027t you check the errno value to verify ?",
+      "revId": "b21dafe91cd3e2b49c30466ef5917fd26f6122c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
