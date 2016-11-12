@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90ee9471_81e09ab2",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-11-12T01:36:53Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this policy is followed here, but typically package specific imports are done in a separate block from the standard imports.",
+      "revId": "122cbe0361940b2f847b889153ec06a9cf680b2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
