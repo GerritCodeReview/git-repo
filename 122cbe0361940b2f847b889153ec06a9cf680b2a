@@ -16,6 +16,24 @@
       "revId": "122cbe0361940b2f847b889153ec06a9cf680b2a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b031d818_68abf76c",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2016-11-16T18:16:24Z",
+      "side": 1,
+      "message": "Ok, I have updated all patches to use the proper ordering.",
+      "parentUuid": "90ee9471_81e09ab2",
+      "revId": "122cbe0361940b2f847b889153ec06a9cf680b2a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
