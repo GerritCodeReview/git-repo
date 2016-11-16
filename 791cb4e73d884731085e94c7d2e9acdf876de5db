@@ -22,6 +22,30 @@
       "revId": "791cb4e73d884731085e94c7d2e9acdf876de5db",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f0a51083_6de56dc0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2016-11-16T18:11:58Z",
+      "side": 0,
+      "message": "No, but Windows and Python API are usually lenient and accept both separators. That said, I can\u0027t recall exactly why I had to make as change in this particular spot, but it does not hurt to make this change anyways imho.",
+      "parentUuid": "90ee9471_a1b39ec8",
+      "range": {
+        "startLine": 168,
+        "startChar": 30,
+        "endLine": 168,
+        "endChar": 42
+      },
+      "revId": "791cb4e73d884731085e94c7d2e9acdf876de5db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
