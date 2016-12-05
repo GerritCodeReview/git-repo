@@ -620,7 +620,7 @@ class Remote(object):
       u = self.review
       if u.startswith('persistent-'):
         u = u[len('persistent-'):]
-      if u.split(':')[0] not in ('http', 'https', 'sso'):
+      if u.split(':')[0] not in ('http', 'https', 'sso', 'ssh'):
         u = 'http://%s' % u
       if u.endswith('/Gerrit'):
         u = u[:len(u) - len('/Gerrit')]
@@ -636,7 +636,7 @@ class Remote(object):
         host, port = os.environ['REPO_HOST_PORT_INFO'].split()
         self._review_url = self._SshReviewUrl(userEmail, host, port)
         REVIEW_CACHE[u] = self._review_url
-      elif u.startswith('sso:'):
+      elif u.startswith('sso:') or u.startswith('ssh:'):
         self._review_url = u  # Assume it's right
         REVIEW_CACHE[u] = self._review_url
       elif 'REPO_IGNORE_SSH_INFO' in os.environ:
