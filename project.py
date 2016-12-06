@@ -2442,6 +2442,14 @@ class Project(object):
         if name in symlink_dirs and not os.path.lexists(src):
           os.makedirs(src)
 
+        if name in to_symlink:
+          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
+        elif copy_all and not os.path.islink(dst):
+          if os.path.isdir(src):
+            shutil.copytree(src, dst)
+          elif os.path.isfile(src):
+            shutil.copy(src, dst)
+
         # If the source file doesn't exist, ensure the destination
         # file doesn't either.
         if name in symlink_files and not os.path.lexists(src):
@@ -2450,13 +2458,6 @@ class Project(object):
           except OSError:
             pass
 
-        if name in to_symlink:
-          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
-        elif copy_all and not os.path.islink(dst):
-          if os.path.isdir(src):
-            shutil.copytree(src, dst)
-          elif os.path.isfile(src):
-            shutil.copy(src, dst)
       except OSError as e:
         if e.errno == errno.EPERM:
           raise DownloadError('filesystem must support symlinks')
