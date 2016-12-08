@@ -477,8 +477,8 @@ class RepoHook(object):
     else:
       prompt = ''
 
-    # Prompt the user if we're not on a tty; on a tty we'll assume "no".
-    if sys.stdout.isatty():
+    # Prompt the user if we're on a tty; otherwise we'll assume "no".
+    if sys.stdin.isatty():
       prompt += main_prompt + ' (yes/always/NO)? '
       response = input(prompt).lower()
       print()
