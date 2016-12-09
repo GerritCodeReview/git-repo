@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed6ff7a9_d4c4fcfa",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-09T02:29:58Z",
+      "side": 1,
+      "message": "nit: this should go in a separate paragraph from the system imports (https://google.github.io/styleguide/pyguide.html#Imports_formatting).",
+      "revId": "928b2d66b1dbdc4bfb3fd407858514859708d6ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
