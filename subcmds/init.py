@@ -91,6 +91,9 @@ to update the working directory files.
     g.add_option('-b', '--manifest-branch',
                  dest='manifest_branch',
                  help='manifest branch or revision', metavar='REVISION')
+    g.add_option('-c', '--current-branch',
+                 dest='current_branch_only', action='store_true',
+                 help='fetch only current manifest branch from server')
     g.add_option('-m', '--manifest-name',
                  dest='manifest_name', default='default.xml',
                  help='initial manifest file', metavar='NAME.xml')
@@ -121,6 +124,9 @@ to update the working directory files.
     g.add_option('--no-clone-bundle',
                  dest='no_clone_bundle', action='store_true',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
+    g.add_option('--no-tags',
+                 dest='no_tags', action='store_true',
+                 help="don't fetch tags in the manifest")
 
     # Tool
     g = p.add_option_group('repo Version options')
@@ -231,7 +237,9 @@ to update the working directory files.
         sys.exit(1)
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet,
-        clone_bundle=not opt.no_clone_bundle):
+        clone_bundle=not opt.no_clone_bundle,
+        current_branch_only=opt.current_branch_only,
+        no_tags=opt.no_tags):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 
