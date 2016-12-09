@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2d7aef68_16df5cc5",
+        "filename": "platform_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-09T02:27:29Z",
+      "side": 1,
+      "message": "optional: would it make sense for this to be a conditional import at the toplevel instead?",
+      "revId": "83e944cc41436d6fc73e5981ce224dbd6e0c3e6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
