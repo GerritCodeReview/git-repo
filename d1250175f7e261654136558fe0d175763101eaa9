@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed6ff7a9_d4ab1c23",
+        "filename": "editor.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-09T02:14:40Z",
+      "side": 1,
+      "message": "Not about this patch: it would be nicer to \u0027import error\u0027 and use qualified EditorError in the module body (https://google.github.io/styleguide/pyguide.html#Imports).\n\nI don\u0027t understand how imports are ordered here (but it\u0027s not a problem introduced by this patch).",
+      "revId": "d1250175f7e261654136558fe0d175763101eaa9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
