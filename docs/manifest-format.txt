@@ -31,7 +31,7 @@ following DTD:
 
     <!ELEMENT notice (#PCDATA)>
 
-    <!ELEMENT remote (EMPTY)>
+    <!ELEMENT remote EMPTY>
     <!ATTLIST remote name         ID    #REQUIRED>
     <!ATTLIST remote alias        CDATA #IMPLIED>
     <!ATTLIST remote fetch        CDATA #REQUIRED>
@@ -39,7 +39,7 @@ following DTD:
     <!ATTLIST remote review       CDATA #IMPLIED>
     <!ATTLIST remote revision     CDATA #IMPLIED>
 
-    <!ELEMENT default (EMPTY)>
+    <!ELEMENT default EMPTY>
     <!ATTLIST default remote      IDREF #IMPLIED>
     <!ATTLIST default revision    CDATA #IMPLIED>
     <!ATTLIST default dest-branch CDATA #IMPLIED>
@@ -47,7 +47,7 @@ following DTD:
     <!ATTLIST default sync-c      CDATA #IMPLIED>
     <!ATTLIST default sync-s      CDATA #IMPLIED>
 
-    <!ELEMENT manifest-server (EMPTY)>
+    <!ELEMENT manifest-server EMPTY>
     <!ATTLIST manifest-server url CDATA #REQUIRED>
 
     <!ELEMENT project (annotation*,
@@ -66,32 +66,32 @@ following DTD:
     <!ATTLIST project clone-depth CDATA #IMPLIED>
     <!ATTLIST project force-path CDATA #IMPLIED>
 
-    <!ELEMENT annotation (EMPTY)>
+    <!ELEMENT annotation EMPTY>
     <!ATTLIST annotation name  CDATA #REQUIRED>
     <!ATTLIST annotation value CDATA #REQUIRED>
     <!ATTLIST annotation keep  CDATA "true">
 
-    <!ELEMENT copyfile (EMPTY)>
+    <!ELEMENT copyfile EMPTY>
     <!ATTLIST copyfile src  CDATA #REQUIRED>
     <!ATTLIST copyfile dest CDATA #REQUIRED>
 
-    <!ELEMENT linkfile (EMPTY)>
+    <!ELEMENT linkfile EMPTY>
     <!ATTLIST linkfile src CDATA #REQUIRED>
     <!ATTLIST linkfile dest CDATA #REQUIRED>
 
-    <!ELEMENT extend-project (EMPTY)>
+    <!ELEMENT extend-project EMPTY>
     <!ATTLIST extend-project name CDATA #REQUIRED>
     <!ATTLIST extend-project path CDATA #IMPLIED>
     <!ATTLIST extend-project groups CDATA #IMPLIED>
 
-    <!ELEMENT remove-project (EMPTY)>
+    <!ELEMENT remove-project EMPTY>
     <!ATTLIST remove-project name  CDATA #REQUIRED>
 
-    <!ELEMENT repo-hooks (EMPTY)>
+    <!ELEMENT repo-hooks EMPTY>
     <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
     <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
 
-    <!ELEMENT include      (EMPTY)>
+    <!ELEMENT include EMPTY>
     <!ATTLIST include name CDATA #REQUIRED>
   ]>
 
