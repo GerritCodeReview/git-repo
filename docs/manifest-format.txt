@@ -27,7 +27,8 @@ following DTD:
                         remove-project*,
                         project*,
                         extend-project*,
-                        repo-hooks?)>
+                        repo-hooks?,
+                        include*)>
 
     <!ELEMENT notice (#PCDATA)>
 
