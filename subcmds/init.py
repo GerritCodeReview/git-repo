@@ -401,7 +401,7 @@ to update the working directory files.
     git_require(MIN_GIT_VERSION, fail=True)
 
     if opt.reference:
-      opt.reference = os.path.expanduser(opt.reference)
+      opt.reference = os.path.abspath(os.path.expanduser(opt.reference))
 
     # Check this here, else manifest will be tagged "not new" and init won't be
     # possible anymore without removing the .repo/manifests directory.
