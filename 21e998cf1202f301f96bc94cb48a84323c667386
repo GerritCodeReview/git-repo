@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "777c704a_de8b6ac6",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-01-26T00:38:40Z",
+      "side": 1,
+      "message": "do you really need this check ?  can\u0027t you write this:\n\n opt.reference \u003d os.path.abspath(os.path.expanduser(opt.reference))",
+      "revId": "21e998cf1202f301f96bc94cb48a84323c667386",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
