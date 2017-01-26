@@ -16,6 +16,23 @@
       "revId": "21e998cf1202f301f96bc94cb48a84323c667386",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a38e195c_4792c1ad",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1033617
+      },
+      "writtenOn": "2017-01-26T00:53:53Z",
+      "side": 1,
+      "message": "Thanks for point it.",
+      "revId": "21e998cf1202f301f96bc94cb48a84323c667386",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
