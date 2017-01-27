@@ -16,6 +16,23 @@
       "revId": "928b2d66b1dbdc4bfb3fd407858514859708d6ff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a6c03fe7_8f43d312",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2017-01-27T22:58:31Z",
+      "side": 1,
+      "message": "Done",
+      "revId": "928b2d66b1dbdc4bfb3fd407858514859708d6ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
