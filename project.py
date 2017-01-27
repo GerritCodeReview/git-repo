@@ -2386,7 +2386,7 @@ class Project(object):
             os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
       except OSError as e:
         if e.errno == errno.EPERM:
-          raise GitError('filesystem must support symlinks')
+          raise GitError(self._get_symlink_error_message())
         else:
           raise
 
@@ -2500,7 +2500,7 @@ class Project(object):
 
       except OSError as e:
         if e.errno == errno.EPERM:
-          raise DownloadError('filesystem must support symlinks')
+          raise DownloadError(self._get_symlink_error_message())
         else:
           raise
 
@@ -2540,6 +2540,14 @@ class Project(object):
       if init_dotgit:
         platform_utils.rmtree(dotgit)
       raise
+
+  def _get_symlink_error_message(self):
+    if platform_utils.isWindows():
+      return ('Unable to create symbolic link. Please re-run the command as '
+              'Administrator, or see '
+              'https://github.com/git-for-windows/git/wiki/Symbolic-Links '
+              'for other options.')
+    return 'filesystem must support symlinks'
 
   def _gitdir_path(self, path):
     return platform_utils.realpath(os.path.join(self.gitdir, path))
