@@ -537,22 +537,35 @@ class XmlManifest(object):
         project = self._ParseProject(node)
         recursively_add_projects(project)
       if node.nodeName == 'extend-project':
-        name = self._reqatt(node, 'name')
-
-        if name not in self._projects:
-          raise ManifestParseError('extend-project element specifies non-existent '
-                                   'project: %s' % name)
+        name_pattern = self._reqatt(node, 'name')
 
         path = node.getAttribute('path')
         groups = node.getAttribute('groups')
+        clone_depth = node.getAttribute('clone-depth')
+
+        if clone_depth:
+          try:
+            clone_depth = int(clone_depth)
+            if  clone_depth <= 0:
+              raise ValueError()
+          except ValueError:
+            raise ManifestParseError('invalid clone-depth %s in %s' %
+                                     (clone_depth, self.manifestFile))
+
         if groups:
           groups = self._ParseGroups(groups)
 
-        for p in self._projects[name]:
-          if path and p.relpath != path:
-            continue
-          if groups:
-            p.groups.extend(groups)
+        regexObj = re.compile(name_pattern)
+        for name, plist in self._projects.items():
+          if regexObj.match(name):
+            for p in plist:
+              if path and p.relpath != path:
+                continue
+              if groups:
+                p.groups.extend(groups)
+              if clone_depth:
+                p.clone_depth = clone_depth
+
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
@@ -581,20 +594,19 @@ class XmlManifest(object):
         # Store the enabled hooks in the Project object.
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
       if node.nodeName == 'remove-project':
-        name = self._reqatt(node, 'name')
+        name_pattern = self._reqatt(node, 'name')
 
-        if name not in self._projects:
-          raise ManifestParseError('remove-project element specifies non-existent '
-                                   'project: %s' % name)
+        regexObj = re.compile(name_pattern)
+        for name, plist in self._projects.items():
+          if regexObj.match(name):
+            for p in plist:
+              del self._paths[p.relpath]
+            del self._projects[name]
 
-        for p in self._projects[name]:
-          del self._paths[p.relpath]
-        del self._projects[name]
-
-        # If the manifest removes the hooks project, treat it as if it deleted
-        # the repo-hooks element too.
-        if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-          self._repo_hooks_project = None
+          # If the manifest removes the hooks project, treat it as if it deleted
+          # the repo-hooks element too.
+          if self._repo_hooks_project and self._repo_hooks_project.name == name:
+            self._repo_hooks_project = None
 
 
   def _AddMetaProjectMirror(self, m):
