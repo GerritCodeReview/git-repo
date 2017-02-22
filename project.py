@@ -272,7 +272,10 @@ class _LinkFile(object):
       try:
         # remove existing file first, since it might be read-only
         if os.path.lexists(absDest):
-          os.remove(absDest)
+          if os.path.isdir(absDest):
+            shutil.rmtree(absDest)
+          else:
+            os.remove(absDest)
         else:
           dest_dir = os.path.dirname(absDest)
           if not os.path.isdir(dest_dir):
