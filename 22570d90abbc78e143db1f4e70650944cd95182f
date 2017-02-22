@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "848dab11_85558f25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-02-22T23:36:51Z",
+      "side": 1,
+      "message": "Wrong author name?",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 65
+      },
+      "revId": "22570d90abbc78e143db1f4e70650944cd95182f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "42aa2ca2_8ce17937",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-02-22T23:36:51Z",
+      "side": 1,
+      "message": "Please separate the subject and body, and wrap the commit message at around 72 columns.\n\nhttp://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html\n\nThe new elements should also be added to docs/manifest-format.txt",
+      "revId": "22570d90abbc78e143db1f4e70650944cd95182f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
