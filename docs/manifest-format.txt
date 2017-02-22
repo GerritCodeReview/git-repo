@@ -83,6 +83,7 @@ following DTD:
     <!ATTLIST extend-project name CDATA #REQUIRED>
     <!ATTLIST extend-project path CDATA #IMPLIED>
     <!ATTLIST extend-project groups CDATA #IMPLIED>
+    <!ATTLIST extend-project clone-depth CDATA #IMPLIED>
 
     <!ELEMENT remove-project (EMPTY)>
     <!ATTLIST remove-project name  CDATA #REQUIRED>
@@ -280,18 +281,24 @@ client working directory.
 Element extend-project
 ----------------------
 
-Modify the attributes of the named project.
+Modify the attributes of projects matching a regular expression.
 
 This element is mostly useful in a local manifest file, to modify the
 attributes of an existing project without completely replacing the
 existing project definition.  This makes the local manifest more robust
 against changes to the original manifest.
 
+Attribute `name`: A regex with which to match project names on. Can match
+multiple projects.
+
 Attribute `path`: If specified, limit the change to projects checked out
 at the specified path, rather than all projects with the given name.
 
 Attribute `groups`: List of additional groups to which this project
 belongs.  Same syntax as the corresponding element of `project`.
+
+Attribute `clone-depth`: Sets or modifies the clone depth of the matching 
+projects.
 
 Element annotation
 ------------------
@@ -322,13 +329,16 @@ instead of copying it creates a symlink.
 Element remove-project
 ----------------------
 
-Deletes the named project from the internal manifest table, possibly
-allowing a subsequent project element in the same manifest file to
-replace the project with a different source.
+Deletes projects whose name matches a regular expression from the internal
+manifest table, possibly allowing a subsequent project element in the same
+manifest file to replace the project with a different source.
 
 This element is mostly useful in a local manifest file, where
 the user can remove a project, and possibly replace it with their
 own definition.
+
+Attribute `name`: A regex with which to match project names on. Can match
+multiple projects.
 
 Element include
 ---------------
