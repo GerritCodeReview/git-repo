@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # An example hook script to verify if you are on battery, in case you
-# are running Linux or OS X. Called by git-gc --auto with no arguments.
-# The hook should exit with non-zero status after issuing an appropriate
-# message if it wants to stop the auto repacking.
+# are running Windows, Linux or OS X. Called by git-gc --auto with no
+# arguments. The hook should exit with non-zero status after issuing an
+# appropriate message if it wants to stop the auto repacking.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +18,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+if uname -s | grep -q "_NT-"
+then
+	if test -x $SYSTEMROOT/System32/Wbem/wmic
+	then
+		STATUS=$(wmic path win32_battery get batterystatus /format:list | tr -d '\r\n')
+		[ "$STATUS" = "BatteryStatus=2" ] && exit 0 || exit 1
+	fi
+	exit 0
+fi
 
 if test -x /sbin/on_ac_power && /sbin/on_ac_power
 then
