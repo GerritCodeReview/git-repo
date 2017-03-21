@@ -723,11 +723,12 @@ later is required to fix a server side protocol bug.
       mp.Sync_NetworkHalf(quiet=opt.quiet,
                           current_branch_only=opt.current_branch_only,
                           no_tags=opt.no_tags,
-                          optimized_fetch=opt.optimized_fetch)
+                          optimized_fetch=opt.optimized_fetch,
+                          submodules=self.manifest.HasSubmodules)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
-      mp.Sync_LocalHalf(syncbuf)
+      mp.Sync_LocalHalf(syncbuf, submodules=self.manifest.HasSubmodules)
       if not syncbuf.Finish():
         sys.exit(1)
       self._ReloadManifest(manifest_name)

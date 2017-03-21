@@ -1198,7 +1198,8 @@ class Project(object):
                        no_tags=False,
                        archive=False,
                        optimized_fetch=False,
-                       prune=False):
+                       prune=False,
+                       submodules=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1275,7 +1276,8 @@ class Project(object):
     if (need_to_fetch and
         not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                               current_branch_only=current_branch_only,
-                              no_tags=no_tags, prune=prune, depth=depth)):
+                              no_tags=no_tags, prune=prune, depth=depth,
+                              submodules=submodules)):
       return False
 
     if self.worktree:
@@ -1331,7 +1333,7 @@ class Project(object):
       raise ManifestInvalidRevisionError('revision %s in %s not found' %
                                          (self.revisionExpr, self.name))
 
-  def Sync_LocalHalf(self, syncbuf, force_sync=False):
+  def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
@@ -1343,6 +1345,9 @@ class Project(object):
     def _doff():
       self._FastForward(revid)
       self._CopyAndLinkFiles()
+
+    def _dosubmodules():
+      self._SyncSubmodules(quiet=True)
 
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
@@ -1377,6 +1382,8 @@ class Project(object):
 
       try:
         self._Checkout(revid, quiet=True)
+        if submodules:
+          self._SyncSubmodules(quiet=True)
       except GitError as e:
         syncbuf.fail(self, e)
         return
@@ -1401,6 +1408,8 @@ class Project(object):
                    branch.name)
       try:
         self._Checkout(revid, quiet=True)
+        if submodules:
+          self._SyncSubmodules(quiet=True)
       except GitError as e:
         syncbuf.fail(self, e)
         return
@@ -1426,6 +1435,8 @@ class Project(object):
         # strict subset.  We can fast-forward safely.
         #
         syncbuf.later1(self, _doff)
+        if submodules:
+          syncbuf.later1(self, _dosubmodules)
         return
 
     # Examine the local commits not in the remote.  Find the
@@ -1477,19 +1488,28 @@ class Project(object):
     branch.Save()
 
     if cnt_mine > 0 and self.rebase:
+      def _docopyandlink():
+        self._CopyAndLinkFiles()
+
       def _dorebase():
         self._Rebase(upstream='%s^1' % last_mine, onto=revid)
-        self._CopyAndLinkFiles()
       syncbuf.later2(self, _dorebase)
+      if submodules:
+        syncbuf.later2(self, _dosubmodules)
+      syncbuf.later2(self, _docopyandlink)
     elif local_changes:
       try:
         self._ResetHard(revid)
+        if submodules:
+          self._SyncSubmodules(quiet=True)
         self._CopyAndLinkFiles()
       except GitError as e:
         syncbuf.fail(self, e)
         return
     else:
       syncbuf.later1(self, _doff)
+      if submodules:
+        syncbuf.later1(self, _dosubmodules)
 
   def AddCopyFile(self, src, dest, absdest):
     # dest should already be an absolute path, but src is project relative
@@ -1892,7 +1912,8 @@ class Project(object):
                    alt_dir=None,
                    no_tags=False,
                    prune=False,
-                   depth=None):
+                   depth=None,
+                   submodules=False):
 
     is_sha1 = False
     tag_name = None
@@ -2003,6 +2024,9 @@ class Project(object):
 
     if prune:
       cmd.append('--prune')
+
+    if submodules:
+      cmd.append('--recurse-submodules=on-demand')
 
     spec = []
     if not current_branch_only:
@@ -2223,6 +2247,13 @@ class Project(object):
     cmd.append(rev)
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s reset --hard %s ' % (self.name, rev))
+
+  def _SyncSubmodules(self, quiet=True):
+    cmd = ['submodule', 'update', '--init', '--recursive']
+    if quiet:
+      cmd.append('-q')
+    if GitCommand(self, cmd).Wait() != 0:
+      raise GitError('%s submodule update --init --recursive %s ' % self.name)
 
   def _Rebase(self, upstream, onto=None):
     cmd = ['rebase']
