@@ -1198,7 +1198,8 @@ class Project(object):
                        no_tags=False,
                        archive=False,
                        optimized_fetch=False,
-                       prune=False):
+                       prune=False,
+                       submodules=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1275,7 +1276,8 @@ class Project(object):
     if (need_to_fetch and
         not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                               current_branch_only=current_branch_only,
-                              no_tags=no_tags, prune=prune, depth=depth)):
+                              no_tags=no_tags, prune=prune, depth=depth,
+                              submodules=submodules)):
       return False
 
     if self.worktree:
@@ -1331,7 +1333,7 @@ class Project(object):
       raise ManifestInvalidRevisionError('revision %s in %s not found' %
                                          (self.revisionExpr, self.name))
 
-  def Sync_LocalHalf(self, syncbuf, force_sync=False):
+  def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
@@ -1353,6 +1355,9 @@ class Project(object):
         head = None
     else:
       branch = None
+
+    if submodules:
+      self._SyncSubmodules(quiet=True)
 
     if branch is None or syncbuf.detach_head:
       # Currently on a detached HEAD.  The user is assumed to
@@ -1892,7 +1897,8 @@ class Project(object):
                    alt_dir=None,
                    no_tags=False,
                    prune=False,
-                   depth=None):
+                   depth=None,
+                   submodules=False):
 
     is_sha1 = False
     tag_name = None
@@ -2003,6 +2009,9 @@ class Project(object):
 
     if prune:
       cmd.append('--prune')
+
+    if submodules:
+      cmd.append('--recurse-submodules=on-demand')
 
     spec = []
     if not current_branch_only:
@@ -2223,6 +2232,13 @@ class Project(object):
     cmd.append(rev)
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s reset --hard %s ' % (self.name, rev))
+
+  def _SyncSubmodules(self, quiet=True):
+    cmd = ['submodule', 'update', '--init', '--recursive']
+    if quiet:
+      cmd.append('-q')
+    if GitCommand(self, cmd).Wait() != 0:
+      raise GitError('%s submodule update --init --recursive %s ' % self.name)
 
   def _Rebase(self, upstream, onto=None):
     cmd = ['rebase']

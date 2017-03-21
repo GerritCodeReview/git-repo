@@ -192,6 +192,9 @@ group.add_option('--archive',
                  dest='archive', action='store_true',
                  help='checkout an archive instead of a git repository for '
                       'each project. See git archive.')
+group.add_option('--submodules',
+                 dest='submodules', action='store_true',
+                 help='sync any submodules associated with the manifest repo')
 group.add_option('-g', '--groups',
                  dest='groups', default='default',
                  help='restrict manifest projects to ones with specified '
