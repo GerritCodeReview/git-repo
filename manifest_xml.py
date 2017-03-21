@@ -393,6 +393,10 @@ class XmlManifest(object):
   def IsArchive(self):
     return self.manifestProject.config.GetBoolean('repo.archive')
 
+  @property
+  def HasSubmodules(self):
+    return self.manifestProject.config.GetBoolean('repo.submodules')
+
   def _Unload(self):
     self._loaded = False
     self._projects = {}
