@@ -22,6 +22,30 @@
       "revId": "13fa6dcd8aeff27dbd1353e9fb2a61fd56dbb214",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ab2b2340_d527b94a",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2017-03-23T16:59:37Z",
+      "side": 1,
+      "message": "My version of the man pages claim that \u0027yes\u0027 is the default.  Anyway, I do strongly agree to hardcode the mode, as Git may change its default.",
+      "parentUuid": "3989ea28_7d6963f2",
+      "range": {
+        "startLine": 2013,
+        "startChar": 4,
+        "endLine": 2014,
+        "endChar": 50
+      },
+      "revId": "13fa6dcd8aeff27dbd1353e9fb2a61fd56dbb214",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
