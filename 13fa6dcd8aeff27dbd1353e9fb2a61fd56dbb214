@@ -46,6 +46,30 @@
       "revId": "13fa6dcd8aeff27dbd1353e9fb2a61fd56dbb214",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ec16f921_56e64614",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2014,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-03-24T01:17:50Z",
+      "side": 1,
+      "message": "If you pass --recurse-submodules without any value it defaults to \"yes\", but what I meant is when you don\u0027t use the --recurse-submodules option at all, it defaults to \"on-demand\". (as far as I understand).",
+      "parentUuid": "ab2b2340_d527b94a",
+      "range": {
+        "startLine": 2013,
+        "startChar": 4,
+        "endLine": 2014,
+        "endChar": 50
+      },
+      "revId": "13fa6dcd8aeff27dbd1353e9fb2a61fd56dbb214",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
