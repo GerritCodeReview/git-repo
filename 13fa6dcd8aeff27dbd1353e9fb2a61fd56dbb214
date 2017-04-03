@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "4cdf605f_d588ebcc",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1017837
+      },
+      "writtenOn": "2017-04-03T18:57:14Z",
+      "side": 1,
+      "message": "Does repo have a documentation, that e.g. lists all available config options, do we need to add this there?",
+      "range": {
+        "startLine": 398,
+        "startChar": 50,
+        "endLine": 398,
+        "endChar": 67
+      },
+      "revId": "13fa6dcd8aeff27dbd1353e9fb2a61fd56dbb214",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3989ea28_7d6963f2",
         "filename": "project.py",
         "patchSetId": 1
