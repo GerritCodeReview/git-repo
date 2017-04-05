@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "e3783570_247e2f5d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "Reworded.",
+      "parentUuid": "2b903bb6_806d66d2",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e13da9ad_c5a1f803",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -71,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "664134bb_9d55e670",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff5c5774_a7d183a2",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e1da1dbc_3c0b8508",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -82,6 +118,30 @@
       "writtenOn": "2017-04-05T07:34:18Z",
       "side": 1,
       "message": "only one space here",
+      "range": {
+        "startLine": 934,
+        "startChar": 44,
+        "endLine": 934,
+        "endChar": 46
+      },
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "23ed2541_78026fc2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1da1dbc_3c0b8508",
       "range": {
         "startLine": 934,
         "startChar": 44,
@@ -111,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "8d4995bd_6b241cf4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "Done. \n\nYeah I based this from some chromite code.  I\u0027ve since removed the comment.",
+      "parentUuid": "a8105923_2bec17d7",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "06754b8f_1a3dd40d",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -122,6 +200,24 @@
       "writtenOn": "2017-04-05T07:34:18Z",
       "side": 1,
       "message": "i would use self.filename",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80ef63bd_45fcd551",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "Removed, just moved to an argument of the Write.",
+      "parentUuid": "06754b8f_1a3dd40d",
       "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -145,6 +241,24 @@
     },
     {
       "key": {
+        "uuid": "17381008_bb476ed9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcb6ccfc_6e84418a",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d225872f_a1c32faa",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -156,6 +270,24 @@
       "writtenOn": "2017-04-05T07:34:18Z",
       "side": 1,
       "message": "i would short circuit this\n\n if self._filename is None:\n   return",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2aadff60_4e2847fd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "d225872f_a1c32faa",
       "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -214,6 +346,24 @@
     },
     {
       "key": {
+        "uuid": "9022e491_ac1687b2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "For cbuildbot \u0027w\u0027 is prefered, but you\u0027re right, for any users \u0027w+\u0027 is probably more useful.  I\u0027ve changed it and cbuildbot can just use a temporary file.",
+      "parentUuid": "3635a281_32fc9e0c",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3a166219_2080ccb7",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -243,6 +393,24 @@
       "side": 1,
       "message": "This is the expected format of export_to_gcloud.  I can\u0027t remember the reasoning why akeshet@ wanted single event per line, but this is the only format it accepts.",
       "parentUuid": "3a166219_2080ccb7",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "463749b3_fab36482",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T18:30:07Z",
+      "side": 1,
+      "message": "It\u0027s also much, much easier to read by humans.",
+      "parentUuid": "5049741d_fcdb5fd0",
       "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
