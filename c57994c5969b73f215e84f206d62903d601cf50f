@@ -1,0 +1,180 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2b903bb6_806d66d2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "the help makes it sound like a bool when it\u0027s really a path",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e13da9ad_c5a1f803",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "aren\u0027t you duplicating self._fetch_times logic ?",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff5c5774_a7d183a2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 933,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "should have some docstrings",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1da1dbc_3c0b8508",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "only one space here",
+      "range": {
+        "startLine": 934,
+        "startChar": 44,
+        "endLine": 934,
+        "endChar": 46
+      },
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8105923_2bec17d7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "\"that is\" -\u003e \"this\" ?\n\ni don\u0027t think we should be talking about chromite in this project",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "06754b8f_1a3dd40d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 955,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "i would use self.filename",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fcb6ccfc_6e84418a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "should just assign to [] here\n\nif you want a marker, should create a stable bool flag",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d225872f_a1c32faa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "i would short circuit this\n\n if self._filename is None:\n   return",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8697a8e9_c97e39eb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "can you be less broad in the except list ?",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3a166219_2080ccb7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T07:34:18Z",
+      "side": 1,
+      "message": "why write one entry per line ?  you\u0027re clobbering the file above, so it would be simpler to just write out the existing list as-is.\n\n json.dump(self._log, f)",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
