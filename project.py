@@ -2841,13 +2841,14 @@ class SyncBuffer(object):
 
     self.detach_head = detach_head
     self.clean = True
+    self.recent_clean = True
 
   def info(self, project, fmt, *args):
     self._messages.append(_InfoMessage(project, fmt % args))
 
   def fail(self, project, err=None):
     self._failures.append(_Failure(project, err))
-    self.clean = False
+    self._MarkUnclean()
 
   def later1(self, project, what):
     self._later_queue1.append(_Later(project, what))
@@ -2861,6 +2862,15 @@ class SyncBuffer(object):
     self._PrintMessages()
     return self.clean
 
+  def Recently(self):
+    recent_clean = self.recent_clean
+    self.recent_clean = True
+    return recent_clean
+
+  def _MarkUnclean(self):
+    self.clean = False
+    self.recent_clean = False
+
   def _RunLater(self):
     for q in ['_later_queue1', '_later_queue2']:
       if not self._RunQueue(q):
@@ -2869,7 +2879,7 @@ class SyncBuffer(object):
   def _RunQueue(self, queue):
     for m in getattr(self, queue):
       if not m.Run(self):
-        self.clean = False
+        self._MarkUnclean()
         return False
     setattr(self, queue, [])
     return True
