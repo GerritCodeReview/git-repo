@@ -204,6 +204,10 @@ class _Repo(object):
       else:
         print('error: project group must be enabled for the project in the current directory', file=sys.stderr)
       result = 1
+    except SystemExit as e:
+      if e.code:
+        result = e.code
+      raise
     finally:
       finish = time.time()
       elapsed = finish - start
@@ -216,7 +220,8 @@ class _Repo(object):
           print('real\t%dh%dm%.3fs' % (hours, minutes, seconds),
                 file=sys.stderr)
 
-      cmd.event_log.FinishEvent(cmd_event, finish, result == 0)
+      cmd.event_log.FinishEvent(cmd_event, finish,
+                                result is None or result == 0)
       if gopts.event_log:
         cmd.event_log.Write(gopts.event_log)
 
