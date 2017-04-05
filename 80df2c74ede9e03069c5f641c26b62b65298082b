@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "efbfb7fa_8eea15ac",
+        "filename": "event_log.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T18:48:55Z",
+      "side": 1,
+      "message": "is this needed ?  multiprocessing is part of standard python-2+.",
+      "revId": "80df2c74ede9e03069c5f641c26b62b65298082b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "25dbc95c_28c454bc",
         "filename": "event_log.py",
         "patchSetId": 3
@@ -13,6 +30,23 @@
       "writtenOn": "2017-04-05T18:43:15Z",
       "side": 1,
       "message": "extra whitespace",
+      "revId": "80df2c74ede9e03069c5f641c26b62b65298082b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d0d21506_1f769c9f",
+        "filename": "event_log.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T18:48:55Z",
+      "side": 1,
+      "message": "trim trailing whitespace too",
       "revId": "80df2c74ede9e03069c5f641c26b62b65298082b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
