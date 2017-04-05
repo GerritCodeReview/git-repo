@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "57c972ad_0f57fe54",
+        "filename": "event_log.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T21:08:42Z",
+      "side": 1,
+      "message": "It was in sync.py like that.  I\u0027ve removed it and just moved to assuming it is available.",
+      "parentUuid": "efbfb7fa_8eea15ac",
+      "revId": "80df2c74ede9e03069c5f641c26b62b65298082b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "25dbc95c_28c454bc",
         "filename": "event_log.py",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "0b3282c6_4d58f020",
+        "filename": "event_log.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T21:08:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25dbc95c_28c454bc",
+      "revId": "80df2c74ede9e03069c5f641c26b62b65298082b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d0d21506_1f769c9f",
         "filename": "event_log.py",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2017-04-05T18:48:55Z",
       "side": 1,
       "message": "trim trailing whitespace too",
+      "revId": "80df2c74ede9e03069c5f641c26b62b65298082b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ec047fd1_e4421f3c",
+        "filename": "event_log.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T21:08:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0d21506_1f769c9f",
       "revId": "80df2c74ede9e03069c5f641c26b62b65298082b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
