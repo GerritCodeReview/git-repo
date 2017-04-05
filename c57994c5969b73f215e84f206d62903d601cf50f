@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "7a01591c_a2171698",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T08:05:00Z",
+      "side": 1,
+      "message": "_fetch_times just tracks the final duration and is maintained from run-to-run to help select packages to emerge first.  There\u0027s some similarity, but they\u0027re distinct in my eyes.",
+      "parentUuid": "e13da9ad_c5a1f803",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ff5c5774_a7d183a2",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -161,6 +179,24 @@
     },
     {
       "key": {
+        "uuid": "c16d33ed_86394144",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T08:05:00Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure what the possible cases in which this git invocation could end up throwing, but I felt that no matter what, it wasn\u0027t worth failing a repo sync (and consequently build) due to not being able to get the git hash for this log.  What do you suggest?",
+      "parentUuid": "8697a8e9_c97e39eb",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3a166219_2080ccb7",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -172,6 +208,24 @@
       "writtenOn": "2017-04-05T07:34:18Z",
       "side": 1,
       "message": "why write one entry per line ?  you\u0027re clobbering the file above, so it would be simpler to just write out the existing list as-is.\n\n json.dump(self._log, f)",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5049741d_fcdb5fd0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 982,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T08:05:00Z",
+      "side": 1,
+      "message": "This is the expected format of export_to_gcloud.  I can\u0027t remember the reasoning why akeshet@ wanted single event per line, but this is the only format it accepts.",
+      "parentUuid": "3a166219_2080ccb7",
       "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
