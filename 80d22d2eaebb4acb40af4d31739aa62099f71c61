@@ -34,6 +34,24 @@
       "revId": "80d22d2eaebb4acb40af4d31739aa62099f71c61",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dc694ae5_c85840a9",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T22:16:47Z",
+      "side": 1,
+      "message": "only looked up as far as line 186 since that\u0027s the main code path here.  seems like we should throw away line 101, but that\u0027s a diff story ;).\n\nSystemExit handling could probably be split off and submitted by itself, and then squash the event_log logic into the other CL.",
+      "parentUuid": "63f5d210_e4ce838e",
+      "revId": "80d22d2eaebb4acb40af4d31739aa62099f71c61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
