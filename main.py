@@ -204,6 +204,10 @@ class _Repo(object):
       else:
         print('error: project group must be enabled for the project in the current directory', file=sys.stderr)
       result = 1
+    except SystemExit as e:
+      if e.code:
+        result = e.code
+      raise
     finally:
       finish = time.time()
       elapsed = finish - start
