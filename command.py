@@ -19,6 +19,7 @@ import platform
 import re
 import sys
 
+from event_log import EventLog
 from error import NoSuchProjectError
 from error import InvalidProjectGroupsError
 
@@ -28,6 +29,7 @@ class Command(object):
   """
 
   common = False
+  event_log = EventLog()
   manifest = None
   _optparse = None
 

@@ -37,6 +37,7 @@ except ImportError:
   kerberos = None
 
 from color import SetDefaultColoring
+import event_log
 from trace import SetTrace
 from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
@@ -85,6 +86,9 @@ global_options.add_option('--time',
 global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
+global_options.add_option('--event-log',
+                          dest='event_log', action='store',
+                          help='filename of event log to append timeline to')
 
 class _Repo(object):
   def __init__(self, repodir):
@@ -176,6 +180,8 @@ class _Repo(object):
         RunPager(config)
 
     start = time.time()
+    cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
+    cmd.event_log.SetParent(cmd_event)
     try:
       result = cmd.Execute(copts, cargs)
     except (DownloadError, ManifestInvalidRevisionError,
@@ -199,7 +205,8 @@ class _Repo(object):
         print('error: project group must be enabled for the project in the current directory', file=sys.stderr)
       result = 1
     finally:
-      elapsed = time.time() - start
+      finish = time.time()
+      elapsed = finish - start
       hours, remainder = divmod(elapsed, 3600)
       minutes, seconds = divmod(remainder, 60)
       if gopts.time:
@@ -208,6 +215,10 @@ class _Repo(object):
         else:
           print('real\t%dh%dm%.3fs' % (hours, minutes, seconds),
                 file=sys.stderr)
+
+      cmd.event_log.FinishEvent(cmd_event, finish, result == 0)
+      if gopts.event_log:
+        cmd.event_log.Write(gopts.event_log)
 
     return result
 
