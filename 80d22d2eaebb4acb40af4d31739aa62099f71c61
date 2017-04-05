@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26fc6d19_e4e0211d",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T21:23:46Z",
+      "side": 1,
+      "message": "if e.code is 0, then result won\u0027t be None, it won\u0027t even be defined, so the logic below will still fail",
+      "revId": "80d22d2eaebb4acb40af4d31739aa62099f71c61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
