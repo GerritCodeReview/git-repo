@@ -254,6 +254,9 @@ later is required to fix a server side protocol bug.
     g.add_option('--repo-upgraded',
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
+    p.add_option('--event-log',
+                 dest='event_log', action='store',
+                 help='write event log')
 
   def _FetchProjectList(self, opt, projects, sem, *args, **kwargs):
     """Main function of the fetch threads when jobs are > 1.
@@ -304,9 +307,10 @@ later is required to fix a server side protocol bug.
     # - We always set err_event in the case of an exception.
     # - We always make sure we call sem.release().
     # - We always make sure we unlock the lock if we locked it.
+    start = time.time()
+    success = False
     try:
       try:
-        start = time.time()
         success = project.Sync_NetworkHalf(
           quiet=opt.quiet,
           current_branch_only=opt.current_branch_only,
@@ -343,6 +347,8 @@ later is required to fix a server side protocol bug.
     finally:
       if did_lock:
         lock.release()
+      finish = time.time()
+      self._event_log.Add(project, success, start, finish, 'network')
 
     return success
 
@@ -388,7 +394,7 @@ later is required to fix a server side protocol bug.
     # If we saw an error, exit with code 1 so that other scripts can check.
     if err_event.isSet():
       print('\nerror: Exited sync due to fetch errors', file=sys.stderr)
-      sys.exit(1)
+      self._Exit(1)
 
     pm.end()
     self._fetch_times.Save()
@@ -450,7 +456,7 @@ later is required to fix a server side protocol bug.
 
     if err_event.isSet():
       print('\nerror: Exited sync due to gc errors', file=sys.stderr)
-      sys.exit(1)
+      self._Exit(1)
 
   def _ReloadManifest(self, manifest_name=None):
     if manifest_name:
@@ -517,6 +523,13 @@ later is required to fix a server side protocol bug.
       project_dir = os.path.dirname(project_dir)
 
     return 0
+
+  def _WriteLog(self):
+    self._event_log.Write()
+
+  def _Exit(self, arg):
+    self._WriteLog()
+    sys.exit(arg)
 
   def UpdateProjectList(self):
     new_project_paths = []
@@ -708,6 +721,8 @@ later is required to fix a server side protocol bug.
           print('error: failed to remove existing smart sync override manifest: %s' %
                 e, file=sys.stderr)
 
+    self._event_log = _EventLog(opt.event_log)
+
     rp = self.manifest.repoProject
     rp.PreSync()
 
@@ -718,16 +733,22 @@ later is required to fix a server side protocol bug.
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
     if not opt.local_only:
-      mp.Sync_NetworkHalf(quiet=opt.quiet,
-                          current_branch_only=opt.current_branch_only,
-                          no_tags=opt.no_tags,
-                          optimized_fetch=opt.optimized_fetch)
+      start = time.time()
+      success = mp.Sync_NetworkHalf(quiet=opt.quiet,
+                                    current_branch_only=opt.current_branch_only,
+                                    no_tags=opt.no_tags,
+                                    optimized_fetch=opt.optimized_fetch)
+      finish = time.time()
+      self._event_log.Add(mp, success, start, finish, 'network')
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
+      start = time.time()
       mp.Sync_LocalHalf(syncbuf)
-      if not syncbuf.Finish():
-        sys.exit(1)
+      clean = syncbuf.Finish()
+      self._event_log.Add(mp, clean, start, time.time(), 'local')
+      if not clean:
+        self._Exit(1)
       self._ReloadManifest(manifest_name)
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
@@ -812,7 +833,7 @@ later is required to fix a server side protocol bug.
       return
 
     if self.UpdateProjectList():
-      sys.exit(1)
+      self._Exit(1)
 
     syncbuf = SyncBuffer(mp.config,
                          detach_head = opt.detach_head)
@@ -820,16 +841,21 @@ later is required to fix a server side protocol bug.
     for project in all_projects:
       pm.update()
       if project.worktree:
+        start = time.time()
         project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
+        self._event_log.Add(project, syncbuf.Recently(), start, time.time(),
+                            'local')
     pm.end()
     print(file=sys.stderr)
     if not syncbuf.Finish():
-      sys.exit(1)
+      self._Exit(1)
 
     # If there's a notice that's supposed to print at the end of the sync, print
     # it now...
     if self.manifest.notice:
       print(self.manifest.notice)
+
+    self._WriteLog()
 
 def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = Wrapper()
@@ -847,7 +873,7 @@ def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
       syncbuf = SyncBuffer(rp.config)
       rp.Sync_LocalHalf(syncbuf)
       if not syncbuf.Finish():
-        sys.exit(1)
+        self._Exit(1)
       print('info: Restarting repo with latest version', file=sys.stderr)
       raise RepoChangedException(['--repo-upgraded'])
     else:
@@ -903,6 +929,59 @@ def _VerifyTag(project):
     print(file=sys.stderr)
     return False
   return True
+
+def _EventIdGenerator():
+  """Returns multiprocess safe iterator that  generates locally unique id"""
+  # NOTE: that is might be as issue if chromite libraries are imported.
+  #       Update to chromite.lib.parallel.Manager().Value('i') if this
+  #       becomes an issue
+  if multiprocessing:
+    eid = multiprocessing.Value('i', 1)
+
+    while True:
+      with eid.get_lock():
+        val = eid.value
+        eid.value += 1
+      yield val
+  else:
+    eid = 1
+    while True:
+      val = eid
+      eid += 1
+      yield val
+
+class _EventLog(object):
+  def __init__(self, filename):
+    self._filename = filename
+    self._log = [] if filename else None
+    self._next_id = _EventIdGenerator()
+
+  def Add(self, project, success, start, finish, task_name):
+    if self._log is not None:
+      event = {
+          'id': ('RepoSync', self._next_id.next()),
+          'name': project.relpath,
+          'status': 'pass' if success else 'fail',
+          'start_time': start,
+          'finish_time': finish,
+          'task_name': task_name,
+          'try': 1,
+          'project': project.name,
+          'revision': project.revisionExpr,
+          'remote_url': project.remote.url,
+      }
+      try:
+        event['git_hash'] = project.GetCommitRevisionId()
+      except:
+        pass
+      self._log.append(event)
+
+  def Write(self):
+    if self._log:
+      with open(self._filename, 'w') as f:
+        for e in self._log:
+          json.dump(e, f, sort_keys=True)
+          f.write('\n')
 
 class _FetchTimes(object):
   _ALPHA = 0.5
