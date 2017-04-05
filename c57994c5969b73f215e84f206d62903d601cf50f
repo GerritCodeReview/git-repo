@@ -197,6 +197,23 @@
     },
     {
       "key": {
+        "uuid": "3635a281_32fc9e0c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 981,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-04-05T08:35:57Z",
+      "side": 1,
+      "message": "not sure if \u0027w\u0027 is a good default as that truncates.  would it be better to just always append and leave it to the caller to truncate as needed ?",
+      "revId": "c57994c5969b73f215e84f206d62903d601cf50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3a166219_2080ccb7",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
