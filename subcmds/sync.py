@@ -64,6 +64,7 @@ try:
 except ImportError:
   multiprocessing = None
 
+import event_log
 from git_command import GIT, git_require
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
@@ -304,9 +305,10 @@ later is required to fix a server side protocol bug.
     # - We always set err_event in the case of an exception.
     # - We always make sure we call sem.release().
     # - We always make sure we unlock the lock if we locked it.
+    start = time.time()
+    success = False
     try:
       try:
-        start = time.time()
         success = project.Sync_NetworkHalf(
           quiet=opt.quiet,
           current_branch_only=opt.current_branch_only,
@@ -343,6 +345,9 @@ later is required to fix a server side protocol bug.
     finally:
       if did_lock:
         lock.release()
+      finish = time.time()
+      self.event_log.AddSync(project, success, start, finish, 
+                             event_log.TASK_SYNC_NETWORK)
 
     return success
 
@@ -718,15 +723,23 @@ later is required to fix a server side protocol bug.
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
     if not opt.local_only:
-      mp.Sync_NetworkHalf(quiet=opt.quiet,
-                          current_branch_only=opt.current_branch_only,
-                          no_tags=opt.no_tags,
-                          optimized_fetch=opt.optimized_fetch)
+      start = time.time()
+      success = mp.Sync_NetworkHalf(quiet=opt.quiet,
+                                    current_branch_only=opt.current_branch_only,
+                                    no_tags=opt.no_tags,
+                                    optimized_fetch=opt.optimized_fetch)
+      finish = time.time()
+      self.event_log.AddSync(mp, success, start, finish, 
+                             event_log.TASK_SYNC_NETWORK)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
+      start = time.time()
       mp.Sync_LocalHalf(syncbuf)
-      if not syncbuf.Finish():
+      clean = syncbuf.Finish()
+      self.event_log.AddSync(mp, clean, start, time.time(), 
+                             event_log.TASK_SYNC_LOCAL)
+      if not clean:
         sys.exit(1)
       self._ReloadManifest(manifest_name)
       if opt.jobs is None:
@@ -820,7 +833,10 @@ later is required to fix a server side protocol bug.
     for project in all_projects:
       pm.update()
       if project.worktree:
+        start = time.time()
         project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
+        self.event_log.AddSync(project, syncbuf.Recently(), start, time.time(),
+                               event_log.TASK_SYNC_LOCAL)
     pm.end()
     print(file=sys.stderr)
     if not syncbuf.Finish():
@@ -830,6 +846,8 @@ later is required to fix a server side protocol bug.
     # it now...
     if self.manifest.notice:
       print(self.manifest.notice)
+
+    self._WriteLog()
 
 def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = Wrapper()
@@ -903,6 +921,7 @@ def _VerifyTag(project):
     print(file=sys.stderr)
     return False
   return True
+
 
 class _FetchTimes(object):
   _ALPHA = 0.5
