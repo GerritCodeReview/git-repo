@@ -110,7 +110,8 @@ class _XmlRemote(object):
     return url
 
   def ToRemoteSpec(self, projectName):
-    url = self.resolvedFetchUrl.rstrip('/') + '/' + projectName
+    fetchUrl = self.resolvedFetchUrl.rstrip('/')
+    url = fetchUrl + '/' + projectName
     remoteName = self.name
     if self.remoteAlias:
       remoteName = self.remoteAlias
@@ -118,7 +119,8 @@ class _XmlRemote(object):
                       url=url,
                       pushUrl=self.pushUrl,
                       review=self.reviewUrl,
-                      orig_name=self.name)
+                      orig_name=self.name,
+                      fetchUrl=self.fetchUrl)
 
 class XmlManifest(object):
   """manages the repo configuration file"""
