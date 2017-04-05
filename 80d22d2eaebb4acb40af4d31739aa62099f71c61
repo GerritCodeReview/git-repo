@@ -16,6 +16,24 @@
       "revId": "80d22d2eaebb4acb40af4d31739aa62099f71c61",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63f5d210_e4ce838e",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-04-05T21:40:54Z",
+      "side": 1,
+      "message": "It\u0027s defined already at line 101.\n\nThere\u0027s essentially two fixes here:\n1. catch sys.exit and set to result\n2. handle result\u003dNone when subcommands just do a return",
+      "parentUuid": "26fc6d19_e4e0211d",
+      "revId": "80d22d2eaebb4acb40af4d31739aa62099f71c61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
