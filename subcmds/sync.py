@@ -324,7 +324,9 @@ later is required to fix a server side protocol bug.
 
         if not success:
           err_event.set()
-          print('error: Cannot fetch %s' % project.name, file=sys.stderr)
+          print('error: Cannot fetch %s from %s'
+                % (project.name, project.remote.url),
+                file=sys.stderr)
           if opt.force_broken:
             print('warn: --force-broken, continuing to sync',
                   file=sys.stderr)
