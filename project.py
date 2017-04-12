@@ -1963,15 +1963,17 @@ class Project(object):
           ids.add(ref_id)
           tmp.add(r)
 
-        tmp_packed = ''
-        old_packed = ''
+        tmp_packed_lines = []
+        old_packed_lines = []
 
         for r in sorted(all_refs):
           line = '%s %s\n' % (all_refs[r], r)
-          tmp_packed += line
+          tmp_packed_lines.append(line)
           if r not in tmp:
-            old_packed += line
+            old_packed_lines.append(line)
 
+        tmp_packed = ''.join(tmp_packed_lines)
+        old_packed = ''.join(old_packed_lines)
         _lwrite(packed_refs, tmp_packed)
       else:
         alt_dir = None
