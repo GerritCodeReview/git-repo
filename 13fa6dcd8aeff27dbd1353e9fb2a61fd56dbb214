@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "f8f1f0ea_e807a9d4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-04-13T23:30:44Z",
+      "side": 1,
+      "message": "I don\u0027t think these are documented anywhere.\n\nI haven\u0027t checked the other repo.* properties but this one is only used internally by repo and we don\u0027t expect users to do anything with it, so it probably doesn\u0027t need documenting anyway.",
+      "parentUuid": "ee684524_c6b0b23e",
+      "range": {
+        "startLine": 398,
+        "startChar": 50,
+        "endLine": 398,
+        "endChar": 67
+      },
+      "revId": "13fa6dcd8aeff27dbd1353e9fb2a61fd56dbb214",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3989ea28_7d6963f2",
         "filename": "project.py",
         "patchSetId": 1
