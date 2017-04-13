@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ee684524_c6b0b23e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1037022
+      },
+      "writtenOn": "2017-04-13T19:39:27Z",
+      "side": 1,
+      "message": "If so, I\u0027m not sure where. Doing a grep for repo.archive, repo.mirror, mirror (case-insensitive) turns up only code, AFAICT.",
+      "parentUuid": "4cdf605f_d588ebcc",
+      "range": {
+        "startLine": 398,
+        "startChar": 50,
+        "endLine": 398,
+        "endChar": 67
+      },
+      "revId": "13fa6dcd8aeff27dbd1353e9fb2a61fd56dbb214",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3989ea28_7d6963f2",
         "filename": "project.py",
         "patchSetId": 1
