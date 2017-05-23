@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b2ae67c8_46430840",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-05-23T23:24:31Z",
+      "side": 1,
+      "message": "nit: indentation here is inconsistent with the others",
+      "range": {
+        "startLine": 115,
+        "startChar": 16,
+        "endLine": 115,
+        "endChar": 21
+      },
+      "revId": "b0c75a0929d1e0d634bd877595ebd621b1880b71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
