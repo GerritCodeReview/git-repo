@@ -16,6 +16,24 @@
       "revId": "3a13480bbe94db63b1157df060159ba8587b7258",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c73a254_3a1f6579",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1028572
+      },
+      "writtenOn": "2017-05-26T12:42:44Z",
+      "side": 1,
+      "message": "Unfortunately our company network has to be considered an edge case.\nSSH is not available for the biggest part of our developer base and there\u0027s currently nothing we can do about it (without seriously violating company rules).\n\nSo our gerrit is SSH enabled and returns a (syntactically correct) ssh_info, but we must prevent repo from using it. So I think we rely on that override. At least I see no generic way to solve this.",
+      "parentUuid": "b7a460db_80644943",
+      "revId": "3a13480bbe94db63b1157df060159ba8587b7258",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
