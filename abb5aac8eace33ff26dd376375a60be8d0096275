@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "11b8a16c_382c4761",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 6
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1016007
+      },
+      "writtenOn": "2017-05-26T11:49:43Z",
+      "side": 1,
+      "message": "Perhaps there should be a separate attribute, e.g. name-regex, for this new behaviour, just to make sure that we keep the legacy behaviour exactly the same? As far as I know, the \u0027.\u0027 is a valid character for in a project name.",
+      "revId": "abb5aac8eace33ff26dd376375a60be8d0096275",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
