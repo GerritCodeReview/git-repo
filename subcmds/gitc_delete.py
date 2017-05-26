@@ -14,12 +14,10 @@
 # limitations under the License.
 
 from __future__ import print_function
-import os
 import shutil
 import sys
 
 from command import Command, GitcClientCommand
-import gitc_utils
 
 from pyversion import is_python3
 if not is_python3():
