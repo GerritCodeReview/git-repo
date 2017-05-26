@@ -52,6 +52,24 @@
       "revId": "3a13480bbe94db63b1157df060159ba8587b7258",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dd20e82_30a6d726",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 1028572
+      },
+      "writtenOn": "2017-05-26T13:08:39Z",
+      "side": 1,
+      "message": "yes, I\u0027ll fix it",
+      "parentUuid": "ee7cef2a_1ae73368",
+      "revId": "3a13480bbe94db63b1157df060159ba8587b7258",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
