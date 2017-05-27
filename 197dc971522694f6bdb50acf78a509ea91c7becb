@@ -16,6 +16,24 @@
       "revId": "197dc971522694f6bdb50acf78a509ea91c7becb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "719c8f0a_f79e38ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1022544
+      },
+      "writtenOn": "2017-05-27T21:54:36Z",
+      "side": 1,
+      "message": "Many Android projects switch the upstream source for packages on a frequent basis, particularly shortly after a new major version is released. For example, a project may switch a package from aosp to caf for hardware changes or from aosp to github for local changes. This typically happens with a couple dozen packages in a project. Most developers on a project won\u0027t have any local changes or branches for most of these packages. So it is needlessly cumbersome to require a force sync in these cases.",
+      "parentUuid": "018596a2_d9c94c94",
+      "revId": "197dc971522694f6bdb50acf78a509ea91c7becb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
