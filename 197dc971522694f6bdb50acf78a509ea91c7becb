@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "018596a2_d9c94c94",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1016007
+      },
+      "writtenOn": "2017-05-27T10:38:34Z",
+      "side": 1,
+      "message": "Could you explain a bit more about the use-case in which this is useful/necessary, instead of simply specifying --force-sync?",
+      "revId": "197dc971522694f6bdb50acf78a509ea91c7becb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
