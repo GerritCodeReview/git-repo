@@ -631,6 +631,9 @@ class Remote(object):
       elif u.startswith('sso:'):
         self._review_url = u  # Assume it's right
         REVIEW_CACHE[u] = self._review_url
+      elif 'REPO_IGNORE_SSH_INFO' in os.environ:
+        self._review_url = http_url
+        REVIEW_CACHE[u] = self._review_url
       else:
         try:
           info_url = u + 'ssh_info'
