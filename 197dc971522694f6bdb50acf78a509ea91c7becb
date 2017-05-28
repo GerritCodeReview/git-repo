@@ -34,6 +34,24 @@
       "revId": "197dc971522694f6bdb50acf78a509ea91c7becb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6c76fd9_f4653334",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-05-28T00:03:49Z",
+      "side": 1,
+      "message": "Can you add this additional context in the commit message?",
+      "parentUuid": "719c8f0a_f79e38ea",
+      "revId": "197dc971522694f6bdb50acf78a509ea91c7becb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
