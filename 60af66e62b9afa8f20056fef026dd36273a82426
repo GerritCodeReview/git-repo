@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ba2c75b_6f04c76b",
+        "filename": "main.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-05-29T04:36:51Z",
+      "side": 1,
+      "message": "This doesn\u0027t work if you specify something like:\n\n  ~/log.txt\n\nIt fails with:\n\n  IOError: [Errno 2] No such file or directory: \u0027~/log.txt\u0027\n\nthe given path should be expanded with:\n\n  os.path.expanduser\n\nand to be safe, should probably also convert to an absolute path:\n\n  os.path.abspath",
+      "range": {
+        "startLine": 226,
+        "startChar": 28,
+        "endLine": 226,
+        "endChar": 43
+      },
+      "revId": "60af66e62b9afa8f20056fef026dd36273a82426",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
