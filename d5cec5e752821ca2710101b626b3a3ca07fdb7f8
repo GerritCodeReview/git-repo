@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa59f689_23e56835",
+        "filename": "platform_utils.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-29T12:41:25Z",
+      "side": 1,
+      "message": "I guess this should also note that Symbolic Links on Windows only work for Administrators, or users that were granted SeCreateSymbolicLinkPrivilege, see\n\nhttps://github.com/esrlabs/git-repo#setup-steps-for-microsoft-windows\n\nIn general, a more portable / safer implementation would use Junctions for folders and Hardlinks for files.",
+      "revId": "d5cec5e752821ca2710101b626b3a3ca07fdb7f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
