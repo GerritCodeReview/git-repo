@@ -52,6 +52,24 @@
       "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ad784a83_e4a0ff2d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2017-05-29T23:01:32Z",
+      "side": 1,
+      "message": "My recollection is at the time Git on Windows wrote the files under its repository in binary mode, as a reference file was 40 digit hex SHA-1 and LF, not CRLF. Apparently that isn\u0027t true?\n\nI kind of agree with Sebastian above, these are text format files. If we open them as text files on Windows, the platform readline should kick in and handle the CRLF for us. But I\u0027m concerned about something not honoring the CRLF convention and writing just a trailing LF to one of these files. If we read it in text mode, will the platform readline still give us the correct line handling?",
+      "parentUuid": "444d8d48_cc5870cc",
+      "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
