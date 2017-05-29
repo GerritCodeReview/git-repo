@@ -16,6 +16,24 @@
       "revId": "ad1abcb556bfff2744928a8f29d216aee43fdbe3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8c76798a_1489b6ea",
+        "filename": "platform_utils.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2017-05-29T16:49:57Z",
+      "side": 1,
+      "message": "I don\u0027t have a strong preference, but I think this version is more efficient in terms of file I/O operations.\n\n* If the destination does not exist, there is only 1 file operation executed (os.rename)\n\n* If the destination does exists, there are 3 files I/O operations executed (rename, remove, rename).\n\nThe esrlabs implementation is either 2 or 3 file I/O operation (exists + optional remove + rename).",
+      "parentUuid": "804b0549_35ed3768",
+      "revId": "ad1abcb556bfff2744928a8f29d216aee43fdbe3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
