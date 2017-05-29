@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8211471d_2bf62da5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-29T12:54:53Z",
+      "side": 1,
+      "message": "Wouldn\u0027t the real / more generic fix to this be to not read these as binary files then? I seems awkward to replace text line separators in non-text files.",
+      "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
