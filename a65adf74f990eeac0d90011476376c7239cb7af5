@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "60cd1ae4_268d80c2",
+        "filename": "platform_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-29T12:48:43Z",
+      "side": 1,
+      "message": "Won\u0027t this recurse indefinitely if the path still fails to be deleted, e.g. because it is in use by another process? If so, we should probably add a check whether the file already is writable, and apply the chmod / function call only if it is not.",
+      "revId": "a65adf74f990eeac0d90011476376c7239cb7af5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
