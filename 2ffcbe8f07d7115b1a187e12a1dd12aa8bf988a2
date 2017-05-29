@@ -16,6 +16,24 @@
       "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "79cfc5da_3267ec0d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2017-05-29T16:52:08Z",
+      "side": 1,
+      "message": "I\u0027ll let the original repo owners answer the question. I was assuming there was a good reason a couple of open operation used \"binary\" mode (whereas all the other ones use \"text\" mode), so I didn\u0027t want to change that.",
+      "parentUuid": "8211471d_2bf62da5",
+      "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
