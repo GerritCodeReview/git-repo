@@ -16,6 +16,24 @@
       "revId": "a65adf74f990eeac0d90011476376c7239cb7af5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4bcabe7d_fee61828",
+        "filename": "platform_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2017-05-29T16:45:59Z",
+      "side": 1,
+      "message": "I initially implemented this after searching on stackoverflow (https://stackoverflow.com/a/23925439), but it turns out that this code is the exact code recommended on the official python documentation (see https://hg.python.org/cpython/rev/31d63ea5dffa).\n\nI believe the reason this is safe is because, in case of a locked file, the second call to \"function(path)\" throws again, and rmtree only calls the error handler once.",
+      "parentUuid": "60cd1ae4_268d80c2",
+      "revId": "a65adf74f990eeac0d90011476376c7239cb7af5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
