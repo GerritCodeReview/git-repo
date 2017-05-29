@@ -34,6 +34,24 @@
       "revId": "d5cec5e752821ca2710101b626b3a3ca07fdb7f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bd46db09_011dde1f",
+        "filename": "platform_utils.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-29T19:43:31Z",
+      "side": 1,
+      "message": "Some answers:\n\n* I agree turning off UAC in general is not a good idea from the security perspective. But I find it funny that you say \"Turning off UAC might also not be allowed by group policy\", which is true, but your whole change about using Symbolic Links counts on having admin rights anyway. So to be fair, you should also say \"Creating Symbolic Links might also not be allowed by group policy\" (which actually is the case in our company).\n\n* You have valid points about Symbolic Links not being equivalent to Junctions + Hardlinks, and I agree that from a technical perspective using Symbolic Links would be favorable. I\u0027m just concerned about the limitations, as not everybody is a local admin, or has a very recent version of Windows 10 running.\n\nAnyway, if we\u0027re aware of the limitations, properly document them, and agree on choosing Symbolic Links as the (only) implementation on Windows, that\u0027s fine with me.",
+      "parentUuid": "b55f3568_ffc3d639",
+      "revId": "d5cec5e752821ca2710101b626b3a3ca07fdb7f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
