@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "804b0549_35ed3768",
+        "filename": "platform_utils.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-29T12:51:41Z",
+      "side": 1,
+      "message": "How about implementing this without try / except like at\n\nhttps://github.com/esrlabs/git-repo/blob/stable/portable.py#L33\n\nwhich I personally find a bit cleaner as it only calls os.rename() twice, not three times in total.",
+      "revId": "ad1abcb556bfff2744928a8f29d216aee43fdbe3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
