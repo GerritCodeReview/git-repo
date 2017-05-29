@@ -16,6 +16,24 @@
       "revId": "d5cec5e752821ca2710101b626b3a3ca07fdb7f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b55f3568_ffc3d639",
+        "filename": "platform_utils.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2017-05-29T16:38:15Z",
+      "side": 1,
+      "message": "A few (in no particular order) notes:\n\n* I would not recommend following the instructions on https://github.com/esrlabs/git-repo#setup-steps-for-microsoft-windows. Turning off UAC is too much, all is required is (for admin users) to run \"repo\" commands that need to create symbolic links (mostly repo init and repo sync) in a command prompt with \"Run As Adminstrator\". Turning off UAC might also not be allowed by group policy, depending on the organization (for good reasons).\n\n* I agree it would be nice to be able to use hardlinks/junctions folders, but these a not a 1-1 replacements for symbolic links:\n\n* Hardlinks don\u0027t have the notion of \"target\" of the link, so it is impossible (in general) to provide a \"realpath\" primitive for them, for example.\n\n*  Deleting the \"target\" of hardlink does not make \"links\" become invalid (the links are just additional ref counts on the original file). This can lead to situations (delete + re-create) where the \"link\" is lost.\n\n* As for junction points, as mentioned, not only they work for directories only, but the target is always an absolute path (there is no such thing as a relative junction point). This has many subtle implications on the implementation side (repo), but also for end-users: for example, moving a repository directory to a new location make junction points point to an \"invalid\" directory (since paths are absolute).\n\n* All in all, none of the 2 options (symbolic links or hardlink+junction points) are perfect solutions, but I think that using symbolic links is the better option, as it matches the repo semantics closer. The main (only?) drawback is that some commands have to be run \"as administrator\"\n\n* One last note: The most recent version of Windows 10 (creator edition) has lifted the \"run as admin\" restriction (see https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10), so things are only get better over time.",
+      "parentUuid": "aa59f689_23e56835",
+      "revId": "d5cec5e752821ca2710101b626b3a3ca07fdb7f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
