@@ -34,6 +34,24 @@
       "revId": "ad1abcb556bfff2744928a8f29d216aee43fdbe3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6ba4f55b_bb7a2f29",
+        "filename": "platform_utils.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-29T19:48:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8c76798a_1489b6ea",
+      "revId": "ad1abcb556bfff2744928a8f29d216aee43fdbe3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
