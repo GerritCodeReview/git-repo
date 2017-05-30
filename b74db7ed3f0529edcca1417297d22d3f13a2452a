@@ -22,6 +22,30 @@
       "revId": "b74db7ed3f0529edcca1417297d22d3f13a2452a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c77c55a_efe571d7",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2445,
+      "author": {
+        "id": 1022544
+      },
+      "writtenOn": "2017-05-30T20:48:48Z",
+      "side": 1,
+      "message": "I can move the check down to _InitWorkTree to address the first concern, like this:\n\nif force_sync or not self._LocallyChanged():\n\nIn order to address the second concern, it should be pretty trivial to verify that there are no stashes.  I\u0027m not familiar enough with repo to know how to verify that HEAD matches the old remote HEAD, but I can try to figure it out.",
+      "parentUuid": "8187ee80_506e88ad",
+      "range": {
+        "startLine": 2445,
+        "startChar": 21,
+        "endLine": 2445,
+        "endChar": 49
+      },
+      "revId": "b74db7ed3f0529edcca1417297d22d3f13a2452a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
