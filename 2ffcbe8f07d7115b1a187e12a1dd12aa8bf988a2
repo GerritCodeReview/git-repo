@@ -106,6 +106,24 @@
       "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a956a225_5cfb9dc7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-30T18:35:05Z",
+      "side": 1,
+      "message": "After reading [1] I just double-checked what I said above about how readline() reads the file in text mode, and have to correct myself: After testing again, it turns out readline() normalizes line endings in text more, i.e. the returned string has LF in any case, even if the file has CRLF. That is, exactly what we need. Looks like in my initial check, where I piped some script output into \"od -c\", some MSYS shell magic kicked in that converted LF to CRLF again.\n\nLong story short, we should be able to simply use open() as all of mode \"rt\" and \"newline\u003dNone\" (to enable universal newlines mode) are default.\n\n[1] https://stackoverflow.com/a/20350545/1127485",
+      "parentUuid": "b23824a8_f8e53cbe",
+      "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
