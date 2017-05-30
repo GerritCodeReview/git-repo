@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8187ee80_506e88ad",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2445,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2017-05-30T20:26:28Z",
+      "side": 1,
+      "message": "We wouldn\u0027t want to just ignore the error here -- we\u0027d still want to be fixing the symlinks.\n\nAnd I\u0027m not convinced HasChanged / GetBranches is enough -- what about a changed index / stashed changes / etc? We\u0027ve got IsDirty for when we need to delete the working directory, but that doesn\u0027t really care about the rest of the git metadata.",
+      "range": {
+        "startLine": 2445,
+        "startChar": 21,
+        "endLine": 2445,
+        "endChar": 49
+      },
+      "revId": "b74db7ed3f0529edcca1417297d22d3f13a2452a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
