@@ -70,6 +70,24 @@
       "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8d8533ef_d51e0b92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2017-05-30T04:57:29Z",
+      "side": 1,
+      "message": "I just checked, my repos created by Git for Windows have LF only in HEAD, so I\u0027m unsure under what circumstances CRLF would be used in there. Using Python for Windows and opening the file in text mode will make fd.readline() return a string including CRLF. So all is good, probably because of Python\u0027s universal newline support [1].\n\nRenaud, could you clarify what you mean by \"sometime\" in your commit message? When do you see CRLF in HEAD files? And which Python are you using that it doe snot handle any of CRLF or LF transparently?\n\n[1] https://stackoverflow.com/a/4158708/1127485",
+      "parentUuid": "ad784a83_e4a0ff2d",
+      "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
