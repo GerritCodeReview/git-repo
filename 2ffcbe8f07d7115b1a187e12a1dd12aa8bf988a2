@@ -88,6 +88,24 @@
       "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b23824a8_f8e53cbe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1031563
+      },
+      "writtenOn": "2017-05-30T15:59:08Z",
+      "side": 1,
+      "message": "\u003e Renaud, could you clarify what you mean by \"sometime\" in your commit message? When do you see CRLF in HEAD files? \n\n\"sometime\" was a matter of speaking. It was actually happening 100% of the time with the version of Git For Windows and the manifest I was working with at the time. That said, I did a quick test on my machine (\"git init\" in an empty directory), and the HEAD file is LR only. Maybe this happens with older version of Git For Windows?  I am 100% sure this happens, as I clearly recall spending more than one day tracking down the issue in the description (running a 2nd repo init would reset the branch to \"master\")\n\n\u003e And which Python are you using that it doe snot handle any of CRLF or LF transparently?\n\nI did not see that behavior. I never tried to fix this bug by using python text file handling.\n\n\u003e Using Python for Windows and opening the file in text mode will make fd.readline() return a string including CRLF. \n\nIt sounds like python\u0027s behavior is reasonable, however, the repo source code is currently written with the assumptions that (most or all?) text files uses unix line endings. If you search for \u0027\\n\u0027 in the repo source, you will find many hits. In particular, this is the line of code that was causing the bug described in this CL:\n\nhttps://gerrit.googlesource.com/git-repo/+/master/project.py#2686\n\n      if line.startswith(\u0027ref: \u0027):\n        return line[5:-1]\n\nAs you can see, it is a subtle assumption that the line ending is 1 character only. (with a CRLF ending, the returned value is a string that contains a \"CR\" character at the end in addition to the reference name)\n\nGiven how subtle the bug was, and how many hits of \u0027\\n\u0027 I found, I thought the best course of action was to try to make sure text files are always read in memory with unix line endings.",
+      "parentUuid": "8d8533ef_d51e0b92",
+      "revId": "2ffcbe8f07d7115b1a187e12a1dd12aa8bf988a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
