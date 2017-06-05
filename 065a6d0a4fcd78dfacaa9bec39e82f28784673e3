@@ -16,6 +16,24 @@
       "revId": "065a6d0a4fcd78dfacaa9bec39e82f28784673e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a3cda681_e4adfd17",
+        "filename": "progress.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1032997
+      },
+      "writtenOn": "2017-06-05T20:06:38Z",
+      "side": 1,
+      "message": "Oops, you\u0027re right.\nI indeed forgot to test --quiet.\nIs it worth introducing a new argument/variable to fix this or should I search for another solution?",
+      "parentUuid": "",
+      "revId": "065a6d0a4fcd78dfacaa9bec39e82f28784673e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
