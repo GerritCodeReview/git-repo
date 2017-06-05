@@ -356,7 +356,8 @@ later is required to fix a server side protocol bug.
   def _Fetch(self, projects, opt):
     fetched = set()
     lock = _threading.Lock()
-    pm = Progress('Fetching projects', len(projects))
+    pm = Progress('Fetching projects', len(projects),
+                  print_newline=not(opt.quiet))
 
     objdir_project_map = dict()
     for project in projects:
