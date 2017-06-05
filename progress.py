@@ -52,7 +52,7 @@ class Progress(object):
 
       if self._lastp != p:
         self._lastp = p
-        sys.stderr.write('\r%s: %3d%% (%d%s/%d%s)  ' % (
+        sys.stderr.write('\r%s: %3d%% (%d%s/%d%s)  \n' % (
           self._title,
           p,
           self._done, self._units,
