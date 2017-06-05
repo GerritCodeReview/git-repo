@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a104776e_4a393b43",
+        "filename": "progress.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2017-06-05T17:39:23Z",
+      "side": 1,
+      "message": "Won\u0027t this break `repo sync -q`, since we\u0027re not overwriting the same line with the \u0027\\r\u0027 now?",
+      "revId": "065a6d0a4fcd78dfacaa9bec39e82f28784673e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
