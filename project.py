@@ -1326,7 +1326,7 @@ class Project(object):
     rem = self.GetRemote(self.remote.name)
     rev = rem.ToLocal(self.revisionExpr)
 
-    if all_refs is not None and rev in all_refs:
+    if all_refs is not None and rev in all_refs and not rev.startswith(R_TAGS):
       return all_refs[rev]
 
     try:
