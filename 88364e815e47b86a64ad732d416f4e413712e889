@@ -22,6 +22,24 @@
       "revId": "88364e815e47b86a64ad732d416f4e413712e889",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "db6dd7eb_d4c93946",
+        "filename": "progress.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1032997
+      },
+      "writtenOn": "2017-06-06T08:14:29Z",
+      "side": 1,
+      "message": "My idea was to name it like this because it ignores the percentage change (or it does not check for it and always prints it). I could make it a \"always_print_percentage\", would that be better?",
+      "parentUuid": "0b454be5_e6374f92",
+      "revId": "88364e815e47b86a64ad732d416f4e413712e889",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
