@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b454be5_e6374f92",
+        "filename": "progress.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-06-06T05:46:50Z",
+      "side": 1,
+      "message": "When this is set, the percentage is printed, so I think naming it \"ignore\" is a bit confusing.",
+      "range": {
+        "startLine": 24,
+        "startChar": 47,
+        "endLine": 24,
+        "endChar": 64
+      },
+      "revId": "88364e815e47b86a64ad732d416f4e413712e889",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
