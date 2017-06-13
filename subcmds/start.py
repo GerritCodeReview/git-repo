@@ -18,7 +18,7 @@ import os
 import sys
 
 from command import Command
-from git_config import IsId
+from git_config import IsImmutable
 from git_command import git
 import gitc_utils
 from progress import Progress
@@ -96,11 +96,11 @@ revision specified in the manifest.
           project.Sync_LocalHalf(sync_buf)
           project.revisionId = gitc_project.old_revision
 
-      # If the current revision is a specific SHA1 then we can't push back
-      # to it; so substitute with dest_branch if defined, or with manifest
-      # default revision instead.
+      # If the current revision is immutable, such as a SHA1, a tag or
+      # a change, then we can't push back to it. Substitute with
+      # dest_branch, if defined; or with manifest default revision instead.
       branch_merge = ''
-      if IsId(project.revisionExpr):
+      if IsImmutable(project.revisionExpr):
         if project.dest_branch:
           branch_merge = project.dest_branch
         else:

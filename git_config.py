@@ -50,15 +50,23 @@ else:
 from git_command import GitCommand
 from git_command import ssh_sock
 from git_command import terminate_ssh_clients
+from git_refs import R_CHANGES, R_HEADS, R_TAGS
 
-R_HEADS = 'refs/heads/'
-R_TAGS  = 'refs/tags/'
 ID_RE = re.compile(r'^[0-9a-f]{40}$')
 
 REVIEW_CACHE = dict()
 
+def IsChange(rev):
+  return rev.startswith(R_CHANGES)
+
 def IsId(rev):
   return ID_RE.match(rev)
+
+def IsTag(rev):
+  return rev.startswith(R_TAGS)
+
+def IsImmutable(rev):
+    return IsChange(rev) or IsId(rev) or IsTag(rev)
 
 def _key(name):
   parts = name.split('.')
