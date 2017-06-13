@@ -57,8 +57,17 @@ ID_RE = re.compile(r'^[0-9a-f]{40}$')
 
 REVIEW_CACHE = dict()
 
+def IsChange(rev):
+  return rev.startswith(R_CHANGES)
+
 def IsId(rev):
   return ID_RE.match(rev)
+
+def IsTag(rev):
+  return rev.startswith(R_TAGS)
+
+def IsImmutable(rev):
+    return IsChange(rev) or IsId(rev) or IsTag(rev)
 
 def _key(name):
   parts = name.split('.')
