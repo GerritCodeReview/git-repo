@@ -1285,7 +1285,7 @@ class Project(object):
 
     need_to_fetch = not (optimized_fetch and
                          (ID_RE.match(self.revisionExpr) and
-                          self._CheckForSha1()))
+                          self._CheckForImmutableRevision()))
     if (need_to_fetch and
         not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                               current_branch_only=current_branch_only,
@@ -1895,7 +1895,7 @@ class Project(object):
 
 
 # Direct Git Commands ##
-  def _CheckForSha1(self):
+  def _CheckForImmutableRevision(self):
     try:
       # if revision (sha or tag) is not present then following function
       # throws an error.
@@ -1949,7 +1949,9 @@ class Project(object):
         tag_name = self.revisionExpr[len(R_TAGS):]
 
       if is_sha1 or tag_name is not None:
-        if self._CheckForSha1():
+        if self._CheckForImmutableRevision():
+          print('Skipped fetching project %s (already have persistent ref)'
+                % self.name)
           return True
       if is_sha1 and not depth:
         # When syncing a specific commit and --depth is not set:
@@ -2105,7 +2107,7 @@ class Project(object):
       # We just synced the upstream given branch; verify we
       # got what we wanted, else trigger a second run of all
       # refs.
-      if not self._CheckForSha1():
+      if not self._CheckForImmutableRevision():
         if current_branch_only and depth:
           # Sync the current branch only with depth set to None
           return self._RemoteFetch(name=name,
