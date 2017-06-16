@@ -393,7 +393,7 @@ later is required to fix a server side protocol bug.
       t.join()
 
     # If we saw an error, exit with code 1 so that other scripts can check.
-    if err_event.isSet():
+    if err_event.isSet() and not opt.force_broken:
       print('\nerror: Exited sync due to fetch errors', file=sys.stderr)
       sys.exit(1)
 
