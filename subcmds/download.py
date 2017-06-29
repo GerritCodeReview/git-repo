@@ -26,11 +26,12 @@ class Download(Command):
   common = True
   helpSummary = "Download and checkout a change"
   helpUsage = """
-%prog {project change[/patchset]}...
+%prog {[project] change[/patchset]}...
 """
   helpDescription = """
 The '%prog' command downloads a change from the review system and
 makes it available in your project's local working directory.
+If no project is specified try to use current directory as a project.
 """
 
   def _Options(self, p):
@@ -55,7 +56,7 @@ makes it available in your project's local working directory.
       m = CHANGE_RE.match(a)
       if m:
         if not project:
-          self.Usage()
+          project = self.GetProjects(".")[0]
         chg_id = int(m.group(1))
         if m.group(2):
           ps_id = int(m.group(2))
