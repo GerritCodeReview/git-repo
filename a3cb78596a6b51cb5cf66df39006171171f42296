@@ -22,6 +22,30 @@
       "revId": "a3cb78596a6b51cb5cf66df39006171171f42296",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1df2e78_805da828",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1046782
+      },
+      "writtenOn": "2017-07-04T11:30:02Z",
+      "side": 1,
+      "message": "If \".\" is inside a project it will return the parent directory.\nOtherwise it throws \"No such project\".",
+      "parentUuid": "63b50207_a531a647",
+      "range": {
+        "startLine": 59,
+        "startChar": 20,
+        "endLine": 59,
+        "endChar": 44
+      },
+      "revId": "a3cb78596a6b51cb5cf66df39006171171f42296",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
