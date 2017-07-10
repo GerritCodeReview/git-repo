@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "d3e9933a_8612092e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-07-10T13:08:26Z",
+      "side": 1,
+      "message": "drop \"to\" here",
+      "range": {
+        "startLine": 7,
+        "startChar": 5,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "4b92ddf009488bcb4022b00fff7cd2eb3e452f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "35c69359_14098071",
         "filename": "subcmds/upload.py",
         "patchSetId": 3
