@@ -198,7 +198,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
       commit_list = branch.commits
 
       destination = opt.dest_branch or project.dest_branch or project.revisionExpr
-      print('Upload project %s/ to remote branch %s:' % (project.relpath, destination))
+      print('Upload project %s/ to remote branch %s%s:' %
+            (project.relpath, destination, " as draft" if opt.draft else ""))
       print('  branch %s (%2d commit%s, %s):' % (
                     name,
                     len(commit_list),
