@@ -256,7 +256,7 @@ to update the working directory files.
       sys.exit(1)
 
     if opt.manifest_branch:
-      m.MetaBranchSwitch()
+      m.MetaBranchSwitch(submodules=opt.submodules)
 
     syncbuf = SyncBuffer(m.config)
     m.Sync_LocalHalf(syncbuf, submodules=opt.submodules)

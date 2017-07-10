@@ -2958,14 +2958,14 @@ class MetaProject(Project):
           self.revisionExpr = base
           self.revisionId = None
 
-  def MetaBranchSwitch(self):
+  def MetaBranchSwitch(self, submodules=False):
     """ Prepare MetaProject for manifest branch switch
     """
 
     # detach and delete manifest branch, allowing a new
     # branch to take over
     syncbuf = SyncBuffer(self.config, detach_head=True)
-    self.Sync_LocalHalf(syncbuf)
+    self.Sync_LocalHalf(syncbuf, submodules=submodules)
     syncbuf.Finish()
 
     return GitCommand(self,
