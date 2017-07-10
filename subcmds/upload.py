@@ -464,8 +464,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                       self.manifest.topdir,
                       self.manifest.manifestProject.GetRemote('origin').url,
                       abort_if_user_denies=True)
-      pending_proj_names = [project.name for (project, avail) in pending]
-      pending_worktrees = [project.worktree for (project, avail) in pending]
+      pending_proj_names = [project.name for (project, available) in pending]
+      pending_worktrees = [project.worktree for (project, available) in pending]
       try:
         hook.Run(opt.allow_all_hooks, project_list=pending_proj_names,
                  worktree_list=pending_worktrees)

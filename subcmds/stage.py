@@ -60,8 +60,8 @@ The '%prog' command stages files to prepare the next commit.
       out.nl()
 
       for i in range(len(all_projects)):
-        p = all_projects[i]
-        out.write('%3d:    %s', i + 1, p.relpath + '/')
+        project = all_projects[i]
+        out.write('%3d:    %s', i + 1, project.relpath + '/')
         out.nl()
       out.nl()
 
