@@ -152,8 +152,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                  dest='current_branch', action='store_true',
                  help='Upload current git branch.')
     p.add_option('-d', '--draft',
-                 action='store_true', dest='draft', default=False,
-                 help='If specified, upload as a draft.')
+                 action='store_true', dest='private', default=False,
+                 help='(Deprecated). If specified, upload as a private change.')
     p.add_option('-p', '--private',
                  action='store_true', dest='private', default=False,
                  help='If specified, upload as a private change.')
@@ -205,7 +205,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
 
       destination = opt.dest_branch or project.dest_branch or project.revisionExpr
       print('Upload project %s/ to remote branch %s%s:' %
-            (project.relpath, destination, ' (draft)' if opt.draft else ''))
+            (project.relpath, destination, ' (private)' if opt.private else ''))
       print('  branch %s (%2d commit%s, %s):' % (
                     name,
                     len(commit_list),
@@ -384,7 +384,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
             branch.uploaded = False
             continue
 
-        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, private=opt.private, wip=opt.wip, dest_branch=destination)
+        branch.UploadForReview(people, auto_topic=opt.auto_topic, private=opt.private, wip=opt.wip, dest_branch=destination)
         branch.uploaded = True
       except UploadError as e:
         branch.error = e
