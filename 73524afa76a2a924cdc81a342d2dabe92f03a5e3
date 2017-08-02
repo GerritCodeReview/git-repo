@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce6e9304_c4f005bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-02T14:37:11Z",
+      "side": 1,
+      "message": "migrates",
+      "range": {
+        "startLine": 9,
+        "startChar": 54,
+        "endLine": 10,
+        "endChar": 7
+      },
+      "revId": "73524afa76a2a924cdc81a342d2dabe92f03a5e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5fa79b69_4f426ca6",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-02T14:37:11Z",
+      "side": 1,
+      "message": "private change",
+      "range": {
+        "startLine": 156,
+        "startChar": 68,
+        "endLine": 156,
+        "endChar": 75
+      },
+      "revId": "73524afa76a2a924cdc81a342d2dabe92f03a5e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cdf78526_b7fef041",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-02T14:37:11Z",
+      "side": 1,
+      "message": "I would suggest replacing this with \"(Deprecated)\"",
+      "range": {
+        "startLine": 156,
+        "startChar": 23,
+        "endLine": 156,
+        "endChar": 39
+      },
+      "revId": "73524afa76a2a924cdc81a342d2dabe92f03a5e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c4b2c4a1_85ffd85c",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-02T14:37:11Z",
+      "side": 1,
+      "message": "private change",
+      "range": {
+        "startLine": 159,
+        "startChar": 49,
+        "endLine": 159,
+        "endChar": 56
+      },
+      "revId": "73524afa76a2a924cdc81a342d2dabe92f03a5e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
