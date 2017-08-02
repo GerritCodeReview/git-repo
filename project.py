@@ -176,11 +176,15 @@ class ReviewableBranch(object):
   def UploadForReview(self, people,
                       auto_topic=False,
                       draft=False,
+                      private=False,
+                      wip=False,
                       dest_branch=None):
     self.project.UploadForReview(self.name,
                                  people,
                                  auto_topic=auto_topic,
                                  draft=draft,
+                                 private=private,
+                                 wip=wip,
                                  dest_branch=dest_branch)
 
   def GetPublishedRefs(self):
@@ -1107,6 +1111,8 @@ class Project(object):
                       people=([], []),
                       auto_topic=False,
                       draft=False,
+                      private=False,
+                      wip=False,
                       dest_branch=None):
     """Uploads the named branch for code review.
     """
@@ -1158,9 +1164,14 @@ class Project(object):
                                   dest_branch)
     if auto_topic:
       ref_spec = ref_spec + '/' + branch.name
+
     if not url.startswith('ssh://'):
       rp = ['r=%s' % p for p in people[0]] + \
            ['cc=%s' % p for p in people[1]]
+      if private:
+        rp = rp + ['private']
+      if wip:
+        rp = rp + ['wip']
       if rp:
         ref_spec = ref_spec + '%' + ','.join(rp)
     cmd.append(ref_spec)
