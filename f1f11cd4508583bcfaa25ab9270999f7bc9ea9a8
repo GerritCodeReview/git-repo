@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "57b6a1b2_96fb95db",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-04T08:33:09Z",
+      "side": 1,
+      "message": "nit: wrap this long line.",
+      "revId": "f1f11cd4508583bcfaa25ab9270999f7bc9ea9a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
