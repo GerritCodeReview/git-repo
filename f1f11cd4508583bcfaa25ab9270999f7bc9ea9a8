@@ -52,6 +52,24 @@
       "revId": "f1f11cd4508583bcfaa25ab9270999f7bc9ea9a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "294e0edf_a2d6b1c8",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-04T08:59:10Z",
+      "side": 1,
+      "message": "PEP8 says 80 columns, but IIRC the google style guide says 100.\n\nOn the other hand, there hasn\u0027t really been any enforcing of code style on this project.",
+      "parentUuid": "ca92229b_3856c315",
+      "revId": "f1f11cd4508583bcfaa25ab9270999f7bc9ea9a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
