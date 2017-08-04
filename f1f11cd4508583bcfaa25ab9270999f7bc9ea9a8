@@ -34,6 +34,24 @@
       "revId": "f1f11cd4508583bcfaa25ab9270999f7bc9ea9a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca92229b_3856c315",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1031898
+      },
+      "writtenOn": "2017-08-04T08:49:22Z",
+      "side": 1,
+      "message": "I kept this long line because I didn\u0027t found clear rule here. But I think it\u0027s better to change it to be shorter.",
+      "parentUuid": "0934120b_4294603f",
+      "revId": "f1f11cd4508583bcfaa25ab9270999f7bc9ea9a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
