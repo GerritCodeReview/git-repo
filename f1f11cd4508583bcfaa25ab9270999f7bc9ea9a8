@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "465ce4c8_f9682dfc",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1171,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2017-08-07T12:33:20Z",
+      "side": 1,
+      "message": "This will produce \"%private%wip\" if both are set, which I don\u0027t think works. (It might though?) It should be % followed by \u0027,\u0027.join(whatever options), as on line 1177. And it needs to work when people is present as well.",
+      "revId": "f1f11cd4508583bcfaa25ab9270999f7bc9ea9a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "57b6a1b2_96fb95db",
         "filename": "subcmds/upload.py",
         "patchSetId": 1
