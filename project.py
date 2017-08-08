@@ -178,14 +178,16 @@ class ReviewableBranch(object):
                       draft=False,
                       private=False,
                       wip=False,
-                      dest_branch=None):
+                      dest_branch=None,
+                      no_ssl=False):
     self.project.UploadForReview(self.name,
                                  people,
                                  auto_topic=auto_topic,
                                  draft=draft,
                                  private=private,
                                  wip=wip,
-                                 dest_branch=dest_branch)
+                                 dest_branch=dest_branch,
+                                 no_ssl=no_ssl)
 
   def GetPublishedRefs(self):
     refs = {}
@@ -1111,9 +1113,10 @@ class Project(object):
                       people=([], []),
                       auto_topic=False,
                       draft=False,
-                      private=False,
+                      provate=False,
                       wip=False,
-                      dest_branch=None):
+                      dest_branch=None,
+                      no_ssl=False):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -1138,7 +1141,7 @@ class Project(object):
       branch.remote.projectname = self.name
       branch.remote.Save()
 
-    url = branch.remote.ReviewUrl(self.UserEmail)
+    url = branch.remote.ReviewUrl(self.UserEmail, no_ssl)
     if url is None:
       raise UploadError('review not configured')
     cmd = ['push']
