@@ -181,6 +181,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     #   Never run upload hooks, but upload anyway (AKA bypass hooks).
     # - no-verify=True, verify=True:
     #   Invalid
+    p.add_option('--no-ssl',
+                 dest='no_ssl', action='store_true',
+                 help='Disable verifying ssl certs.')
     p.add_option('--no-verify',
                  dest='bypass_hooks', action='store_true',
                  help='Do not run the upload hook.')
@@ -384,12 +387,13 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
             branch.uploaded = False
             continue
 
-        branch.UploadForReview(people,
-                               auto_topic=opt.auto_topic,
-                               draft=opt.draft,
+        branch.UploadForReview(people, 
+                               auto_topic=opt.auto_topic, 
+                               draft=opt.draft, 
                                private=opt.private,
                                wip=opt.wip,
-                               dest_branch=destination)
+                               dest_branch=destination, 
+                               no_ssl=opt.no_ssl)
         branch.uploaded = True
       except UploadError as e:
         branch.error = e

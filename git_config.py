@@ -22,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+import ssl
 try:
   import threading as _threading
 except ImportError:
@@ -604,7 +605,7 @@ class Remote(object):
     connectionUrl = self._InsteadOf()
     return _preconnect(connectionUrl)
 
-  def ReviewUrl(self, userEmail):
+  def ReviewUrl(self, userEmail, no_ssl):
     if self._review_url is None:
       if self.review is None:
         return None
@@ -637,7 +638,11 @@ class Remote(object):
       else:
         try:
           info_url = u + 'ssh_info'
-          info = urllib.request.urlopen(info_url).read()
+          if no_ssl:
+              context = ssl._create_unverified_context()
+              info = urllib.request.urlopen(info_url, context=context).read()
+          else:
+              info = urllib.request.urlopen(info_url).read()
           if info == 'NOT_AVAILABLE' or '<' in info:
             # If `info` contains '<', we assume the server gave us some sort
             # of HTML response back, like maybe a login page.
