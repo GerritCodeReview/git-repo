@@ -17,6 +17,16 @@ from __future__ import print_function
 import copy
 import re
 import sys
+import ssl
+
+try:
+    _create_unverified_https_context = ssl._create_unverified_context
+except AttributeError:
+    # Legacy Python that doesn't verify HTTPS certificates by default
+    pass
+else:
+    # Handle target environment that doesn't support HTTPS verification
+    ssl._create_default_https_context = _create_unverified_https_context
 
 from command import InteractiveCommand
 from editor import Editor
@@ -175,6 +185,9 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     #   Never run upload hooks, but upload anyway (AKA bypass hooks).
     # - no-verify=True, verify=True:
     #   Invalid
+    p.add_option('--no-ssl',
+                 dest='no_ssl', action='store_true',
+                 help='Disable verifying ssl certs.')
     p.add_option('--no-verify',
                  dest='bypass_hooks', action='store_true',
                  help='Do not run the upload hook.')
@@ -377,7 +390,7 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
             branch.uploaded = False
             continue
 
-        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=destination)
+        branch.UploadForReview(people, auto_topic=opt.auto_topic, draft=opt.draft, dest_branch=destination, no_ssl=opt.no_ssl)
         branch.uploaded = True
       except UploadError as e:
         branch.error = e
