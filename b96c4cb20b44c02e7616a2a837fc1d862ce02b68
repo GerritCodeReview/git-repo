@@ -16,6 +16,24 @@
       "revId": "b96c4cb20b44c02e7616a2a837fc1d862ce02b68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2b4fac7_29a369f9",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1052159
+      },
+      "writtenOn": "2017-08-10T05:46:55Z",
+      "side": 1,
+      "message": "Missed that, updated with next patch set",
+      "parentUuid": "194b8f17_45b0b7c8",
+      "revId": "b96c4cb20b44c02e7616a2a837fc1d862ce02b68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
