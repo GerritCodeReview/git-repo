@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "45cf437e_afbfd3a0",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-08-10T14:16:28Z",
+      "side": 1,
+      "message": "negative variable names are undesirable as it makes code harder to read/reason about.  set the dest to something like \u0027validate_certs\u0027, change action\u003d\u0027store_false\u0027, and add default\u003dTrue.\n\nthen you can change the API everywhere to use the variable name \u0027validate_certs\u0027 and have it default to True.",
+      "revId": "74c397cda76e3928fc2c080dde108383d203fb5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
