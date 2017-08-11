@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a9ffc9ec_e16fc266",
+        "filename": "git_config.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-08-11T16:12:52Z",
+      "side": 1,
+      "message": "shouldn\u0027t this default to True too ?",
+      "revId": "f8bc255a057ed35a786bc0bceebf5b2a20df492c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
