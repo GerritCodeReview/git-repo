@@ -16,6 +16,24 @@
       "revId": "f8bc255a057ed35a786bc0bceebf5b2a20df492c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2531c95c_d5fb167e",
+        "filename": "git_config.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1052159
+      },
+      "writtenOn": "2017-08-17T05:44:40Z",
+      "side": 1,
+      "message": "option was checked and verified, but I can update that for better view",
+      "parentUuid": "a9ffc9ec_e16fc266",
+      "revId": "f8bc255a057ed35a786bc0bceebf5b2a20df492c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
