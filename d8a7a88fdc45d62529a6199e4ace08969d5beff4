@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a5488cf4_b018ab10",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-25T00:14:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a8d2b0f4_d5ed31fb",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 22
+      },
+      "revId": "d8a7a88fdc45d62529a6199e4ace08969d5beff4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1e37c0e6_46cadfce",
         "filename": "git_config.py",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2017-08-25T00:04:57Z",
       "side": 1,
       "message": "R_CHANGES is not defined.",
+      "range": {
+        "startLine": 61,
+        "startChar": 24,
+        "endLine": 61,
+        "endChar": 33
+      },
+      "revId": "d8a7a88fdc45d62529a6199e4ace08969d5beff4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c7bad317_e5428646",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-25T00:14:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e37c0e6_46cadfce",
       "range": {
         "startLine": 61,
         "startChar": 24,
