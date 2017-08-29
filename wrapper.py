@@ -20,11 +20,14 @@ import os
 
 
 def WrapperPath():
-  return os.path.join(os.path.dirname(__file__), 'repo')
+    return os.path.join(os.path.dirname(__file__), 'repo')
+
 
 _wrapper_module = None
+
+
 def Wrapper():
-  global _wrapper_module
-  if not _wrapper_module:
-    _wrapper_module = imp.load_source('wrapper', WrapperPath())
-  return _wrapper_module
+    global _wrapper_module
+    if not _wrapper_module:
+        _wrapper_module = imp.load_source('wrapper', WrapperPath())
+    return _wrapper_module
