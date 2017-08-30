@@ -19,7 +19,6 @@ import netrc
 from optparse import SUPPRESS_HELP
 import os
 import re
-import shutil
 import socket
 import subprocess
 import sys
@@ -73,6 +72,7 @@ from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError, ManifestParseError
+import platform_utils
 from project import SyncBuffer
 from progress import Progress
 from wrapper import Wrapper
@@ -475,7 +475,7 @@ later is required to fix a server side protocol bug.
     # working git repository around. There shouldn't be any git projects here,
     # so rmtree works.
     try:
-      shutil.rmtree(os.path.join(path, '.git'))
+      platform_utils.rmtree(os.path.join(path, '.git'))
     except OSError:
       print('Failed to remove %s' % os.path.join(path, '.git'), file=sys.stderr)
       print('error: Failed to delete obsolete path %s' % path, file=sys.stderr)

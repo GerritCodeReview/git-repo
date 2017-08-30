@@ -35,6 +35,7 @@ from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, \
 from error import GitError, HookError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
+import platform_utils
 from trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
@@ -62,7 +63,7 @@ def _lwrite(path, content):
     fd.close()
 
   try:
-    os.rename(lock, path)
+    platform_utils.rename(lock, path)
   except OSError:
     os.remove(lock)
     raise
@@ -281,7 +282,7 @@ class _LinkFile(object):
           dest_dir = os.path.dirname(absDest)
           if not os.path.isdir(dest_dir):
             os.makedirs(dest_dir)
-        os.symlink(relSrc, absDest)
+        platform_utils.symlink(relSrc, absDest)
       except IOError:
         _error('Cannot link file %s to %s', relSrc, absDest)
 
@@ -2210,7 +2211,7 @@ class Project(object):
 
     if os.path.exists(tmpPath):
       if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
-        os.rename(tmpPath, dstPath)
+        platform_utils.rename(tmpPath, dstPath)
         return True
       else:
         os.remove(tmpPath)
@@ -2311,10 +2312,10 @@ class Project(object):
             print("Retrying clone after deleting %s" %
                   self.gitdir, file=sys.stderr)
             try:
-              shutil.rmtree(os.path.realpath(self.gitdir))
+              platform_utils.rmtree(os.path.realpath(self.gitdir))
               if self.worktree and os.path.exists(os.path.realpath
                                                   (self.worktree)):
-                shutil.rmtree(os.path.realpath(self.worktree))
+                platform_utils.rmtree(os.path.realpath(self.worktree))
               return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
             except:
               raise e
@@ -2356,9 +2357,9 @@ class Project(object):
           self.config.SetString('core.bare', None)
     except Exception:
       if init_obj_dir and os.path.exists(self.objdir):
-        shutil.rmtree(self.objdir)
+        platform_utils.rmtree(self.objdir)
       if init_git_dir and os.path.exists(self.gitdir):
-        shutil.rmtree(self.gitdir)
+        platform_utils.rmtree(self.gitdir)
       raise
 
   def _UpdateHooks(self):
@@ -2392,7 +2393,8 @@ class Project(object):
                 self.relpath, name)
           continue
       try:
-        os.symlink(os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
+        platform_utils.symlink(
+            os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
       except OSError as e:
         if e.errno == errno.EPERM:
           raise GitError('filesystem must support symlinks')
@@ -2491,7 +2493,8 @@ class Project(object):
           os.makedirs(src)
 
         if name in to_symlink:
-          os.symlink(os.path.relpath(src, os.path.dirname(dst)), dst)
+          platform_utils.symlink(
+              os.path.relpath(src, os.path.dirname(dst)), dst)
         elif copy_all and not os.path.islink(dst):
           if os.path.isdir(src):
             shutil.copytree(src, dst)
@@ -2526,7 +2529,7 @@ class Project(object):
       except GitError as e:
         if force_sync:
           try:
-            shutil.rmtree(dotgit)
+            platform_utils.rmtree(dotgit)
             return self._InitWorkTree(force_sync=False, submodules=submodules)
           except:
             raise e
@@ -2546,7 +2549,7 @@ class Project(object):
         self._CopyAndLinkFiles()
     except Exception:
       if init_dotgit:
-        shutil.rmtree(dotgit)
+        platform_utils.rmtree(dotgit)
       raise
 
   def _gitdir_path(self, path):
