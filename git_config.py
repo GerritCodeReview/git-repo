@@ -20,6 +20,7 @@ import errno
 import json
 import os
 import re
+import ssl
 import subprocess
 import sys
 try:
@@ -612,7 +613,7 @@ class Remote(object):
     connectionUrl = self._InsteadOf()
     return _preconnect(connectionUrl)
 
-  def ReviewUrl(self, userEmail):
+  def ReviewUrl(self, userEmail, validate_certs):
     if self._review_url is None:
       if self.review is None:
         return None
@@ -645,7 +646,11 @@ class Remote(object):
       else:
         try:
           info_url = u + 'ssh_info'
-          info = urllib.request.urlopen(info_url).read()
+          if not validate_certs:
+              context = ssl._create_unverified_context()
+              info = urllib.request.urlopen(info_url, context=context).read()
+          else:
+              info = urllib.request.urlopen(info_url).read()
           if info == 'NOT_AVAILABLE' or '<' in info:
             # If `info` contains '<', we assume the server gave us some sort
             # of HTML response back, like maybe a login page.
