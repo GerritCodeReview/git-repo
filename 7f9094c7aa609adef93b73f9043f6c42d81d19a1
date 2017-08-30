@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63efc55f_5ba41208",
+        "filename": "platform_utils.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-08-30T04:20:48Z",
+      "side": 1,
+      "message": "symbolic",
+      "range": {
+        "startLine": 248,
+        "startChar": 30,
+        "endLine": 248,
+        "endChar": 37
+      },
+      "revId": "7f9094c7aa609adef93b73f9043f6c42d81d19a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
