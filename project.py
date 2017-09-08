@@ -2073,14 +2073,15 @@ class Project(object):
     cmd.extend(spec)
 
     ok = False
-    for _i in range(2):
+    num_tries = 2
+    for i in range(num_tries):
       gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy)
       ret = gitcmd.Wait()
       if ret == 0:
         ok = True
         break
       # If needed, run the 'git remote prune' the first time through the loop
-      elif (not _i and
+      elif (not i and
             "error:" in gitcmd.stderr and
             "git remote prune" in gitcmd.stderr):
         prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
@@ -2097,7 +2098,10 @@ class Project(object):
       elif ret < 0:
         # Git died with a signal, exit immediately
         break
-      time.sleep(random.randint(30, 45))
+      if i < num_tries - 1:
+        duration = random.randint(30, 45)
+        print('project fetch failed; sleeping ' + str(duration) + 's before retrying', file=sys.stderr)
+        time.sleep(duration)
 
     if initial:
       if alt_dir:
