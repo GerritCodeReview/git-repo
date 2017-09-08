@@ -736,6 +736,9 @@ later is required to fix a server side protocol bug.
       finish = time.time()
       self.event_log.AddSync(mp, event_log.TASK_SYNC_NETWORK,
                              start, finish, success)
+      if not success and not opt.force_broken:
+        print('error: failed to sync manifest')
+        sys.exit(1)
 
     if mp.HasChanges:
       syncbuf = SyncBuffer(mp.config)
