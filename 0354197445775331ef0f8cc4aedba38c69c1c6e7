@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e745ffa_c4b7974c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2077,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-09-09T07:07:49Z",
+      "side": 1,
+      "message": "seems like a mistake that _i was used below but not renamed ... it was using the underscore prefix before because it was an unused var\n\ni.e. change \"_i\" to \"i\" here and in the two usages below",
+      "revId": "0354197445775331ef0f8cc4aedba38c69c1c6e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3dada5e8_f5658992",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2101,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-09-09T07:07:49Z",
+      "side": 1,
+      "message": "should really be a \u003c here rather than !\u003d ... it reads better, and will continue working if num_tries is increased",
+      "revId": "0354197445775331ef0f8cc4aedba38c69c1c6e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b51d7dae_70f57364",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2103,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-09-09T07:07:49Z",
+      "side": 1,
+      "message": "add file\u003dsys.stderr here since this is really a warning\n\nit should also be clear that it\u0027s going to retry",
+      "revId": "0354197445775331ef0f8cc4aedba38c69c1c6e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9812d7d_2149962f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-09-09T07:07:49Z",
+      "side": 1,
+      "message": "errors need to go to stderr, so add file\u003dsys.stderr here",
+      "revId": "0354197445775331ef0f8cc4aedba38c69c1c6e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
