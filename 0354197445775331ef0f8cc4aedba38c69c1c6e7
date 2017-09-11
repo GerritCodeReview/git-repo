@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "a3ccba11_8a4c71f0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-09-11T23:31:34Z",
+      "side": 1,
+      "message": "Hmm, it looks like the tracker was archived.  I\u0027m not sure where it has been migrated to (or if it has been migrated at all).  Gerrit was migrated to monorail [1] but there doesn\u0027t seem to be anything for git-repo there.\n\nDan, any idea?\n\n[1] https://bugs.chromium.org/hosting/",
+      "parentUuid": "04991805_d8c56d20",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 13
+      },
+      "revId": "0354197445775331ef0f8cc4aedba38c69c1c6e7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0e745ffa_c4b7974c",
         "filename": "project.py",
         "patchSetId": 1
