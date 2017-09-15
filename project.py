@@ -2696,8 +2696,20 @@ class Project(object):
           line = line[:-1]
         r.append(line)
       if p.Wait() != 0:
+        #  Convert the values then raise GitError
+        values=[]
+        for i in [self._project.name, str(args), p.stderr]:
+          try:
+            value=str(i) # this one did the job
+          except:
+            try:
+              ##never tested
+              value=str(i.decode('utf8').encode())
+            except:
+              value=repr(i)
+          values.append(value)
         raise GitError('%s rev-list %s: %s' %
-                       (self._project.name, str(args), p.stderr))
+                       (values[0],values[1],values[2]))
       return r
 
     def __getattr__(self, name):
