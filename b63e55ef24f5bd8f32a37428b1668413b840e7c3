@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b89636ad_ea3e1d13",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-09-15T23:41:54Z",
+      "side": 1,
+      "message": "Please fix the .gitconfig to show the name properly.",
+      "range": {
+        "startLine": 2,
+        "startChar": 12,
+        "endLine": 2,
+        "endChar": 31
+      },
+      "revId": "b63e55ef24f5bd8f32a37428b1668413b840e7c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a6ceca49_61888769",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2708,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-09-15T23:41:54Z",
+      "side": 1,
+      "message": "nit: missing space after commas",
+      "range": {
+        "startLine": 2708,
+        "startChar": 33,
+        "endLine": 2708,
+        "endChar": 34
+      },
+      "revId": "b63e55ef24f5bd8f32a37428b1668413b840e7c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
