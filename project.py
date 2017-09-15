@@ -2696,8 +2696,15 @@ class Project(object):
           line = line[:-1]
         r.append(line)
       if p.Wait() != 0:
-        raise GitError('%s rev-list %s: %s' %
-                       (self._project.name, str(args), p.stderr))
+        print('GitError:')  # with print no unicode error
+        print('p.stderr:')
+        print(p.stderr)
+        print('cmdv:')
+        print(cmdv)
+        print('self._project.name:')
+        print(self._project.name)
+        print(args)
+        raise GitError('GitError')
       return r
 
     def __getattr__(self, name):
