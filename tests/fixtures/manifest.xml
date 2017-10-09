@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+
+  <remote  name="repo-current"
+           fetch="." />
+  <remote  name="repo-parent"
+           fetch=".." />
+  <remote  name="repo-root"
+           fetch="/" />
+  <remote  name="repo-empty"
+           fetch="" />
+
+  <default revision="master"
+           remote="repo-parent"
+           sync-j="4" />
+
+  <project name="project1" />
+  <project name="project2" remote="repo-empty" />
+
+</manifest>

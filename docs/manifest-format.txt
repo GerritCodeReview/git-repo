@@ -125,7 +125,8 @@ same remote name which actually points to different remote url.
 
 Attribute `fetch`: The Git URL prefix for all projects which use
 this remote.  Each project's name is appended to this prefix to
-form the actual URL used to clone the project.
+form the actual URL used to clone the project. A relative URL (RFC 1808)
+may be specifyied being relative to the manifest URL.
 
 Attribute `pushurl`: The Git "push" URL prefix for all projects
 which use this remote.  Each project's name is appended to this

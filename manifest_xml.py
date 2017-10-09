@@ -95,8 +95,8 @@ class _XmlRemote(object):
     return self.__dict__ != other.__dict__
 
   def _resolveFetchUrl(self):
-    url = self.fetchUrl.rstrip('/')
-    manifestUrl = self.manifestUrl.rstrip('/')
+    url = self.fetchUrl
+    manifestUrl = self.manifestUrl
     # urljoin will gets confused over quite a few things.  The ones we care
     # about here are:
     # * no scheme in the base url, like <hostname:port>
@@ -660,7 +660,7 @@ class XmlManifest(object):
     alias = node.getAttribute('alias')
     if alias == '':
       alias = None
-    fetch = self._reqatt(node, 'fetch')
+    fetch = self._reqatt(node, 'fetch', True)
     pushUrl = node.getAttribute('pushurl')
     if pushUrl == '':
       pushUrl = None
@@ -932,12 +932,12 @@ class XmlManifest(object):
             (name, self.manifestFile))
     return v
 
-  def _reqatt(self, node, attname):
+  def _reqatt(self, node, attname, allow_empty=False):
     """
     reads a required attribute from the node.
     """
     v = node.getAttribute(attname)
-    if not v:
+    if not node.hasAttribute(attname) or (not allow_empty and not v):
       raise ManifestParseError("no %s in <%s> within %s" %
             (attname, node.nodeName, self.manifestFile))
     return v
@@ -998,4 +998,3 @@ class GitcManifest(XmlManifest):
     """Output GITC Specific Project attributes"""
     if p.old_revision:
       e.setAttribute('old-revision', str(p.old_revision))
-

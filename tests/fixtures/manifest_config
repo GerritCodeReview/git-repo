@@ -1,0 +1,6 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+[remote "origin"]
+	url = https://url:8080/path1/path2/path3
+	fetch = +refs/heads/*:refs/remotes/origin/*
