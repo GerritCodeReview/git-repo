@@ -54,7 +54,7 @@ def _ssh_proxy():
   if _ssh_proxy_path is None:
     _ssh_proxy_path = os.path.join(
       os.path.dirname(__file__),
-      'git_ssh')
+      'ssh')
   return _ssh_proxy_path
 
 def _add_ssh_client(p):
