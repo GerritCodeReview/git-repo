@@ -152,6 +152,7 @@ class GitCommand(object):
     if ssh_proxy:
       _setenv(env, 'REPO_SSH_SOCK', ssh_sock())
       _setenv(env, 'GIT_SSH', _ssh_proxy())
+      _setenv(env, 'GIT_SSH_VARIANT', 'ssh')
     if 'http_proxy' in env and 'darwin' == sys.platform:
       s = "'http.proxy=%s'" % (env['http_proxy'],)
       p = env.get('GIT_CONFIG_PARAMETERS')
