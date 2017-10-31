@@ -104,6 +104,13 @@ annotating tree details.
 shell positional arguments ($1, $2, .., $#) are set to any arguments
 following <command>.
 
+Example: to list projects:
+
+  %prog% forall -c 'echo $REPO_PROJECT'
+
+Notice that $REPO_PROJECT is quoted to ensure it is expanded in
+the context of running <command> instead of in the calling shell.
+
 Unless -p is used, stdin, stdout, stderr are inherited from the
 terminal and are not redirected.
 
