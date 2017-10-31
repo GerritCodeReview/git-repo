@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "46d92c51_85762abd",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-10-31T04:06:45Z",
+      "side": 1,
+      "message": "Grepping doesn\u0027t find a REPO_NAME envvar. Should this be REPO_PROJECT?",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 35
+      },
+      "revId": "12c8ff5bea28eeaf550413facc68825033de9d44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac31db4a_d7b0d6ef",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-10-31T04:06:45Z",
+      "side": 1,
+      "message": "Likewise. Sorry I missed that before.",
+      "range": {
+        "startLine": 111,
+        "startChar": 13,
+        "endLine": 111,
+        "endChar": 22
+      },
+      "revId": "12c8ff5bea28eeaf550413facc68825033de9d44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
