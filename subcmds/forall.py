@@ -104,6 +104,12 @@ annotating tree details.
 shell positional arguments ($1, $2, .., $#) are set to any arguments
 following <command>.
 
+Note that REPO_* environment values are not expanded in arguments
+passed to <command> unless the entire command and arguments are quoted,
+for example:
+
+  %prog% forall -c 'echo $REPO_NAME'
+
 Unless -p is used, stdin, stdout, stderr are inherited from the
 terminal and are not redirected.
 
