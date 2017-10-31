@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fea8494d_1286f474",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-10-31T03:57:23Z",
+      "side": 1,
+      "message": "This note feels a little out of place to me --- this is not something special about REPO_* environment variables, or about repo for that matter. Maybe it would work better done as an example. E.g.\n\n Example: to list projects:\n\n  %prog% forall -c \u0027echo $REPO_NAME\u0027\n\n Notice that $REPO_NAME is quoted to ensure it is expanded in\n the context of running \u003ccommand\u003e instead of in the calling shell.",
+      "revId": "6b1a9d8675b6d1f64bd0e264cf36a6bde6ee5f7c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
