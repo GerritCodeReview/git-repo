@@ -22,6 +22,30 @@
       "revId": "f4837d600ce2deaa33e66d92c0936c06ed0b890a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfbf00b7_233c21d1",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2017-11-11T02:54:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "467943d0_d366ad49",
+      "range": {
+        "startLine": 20,
+        "startChar": 38,
+        "endLine": 20,
+        "endChar": 43
+      },
+      "revId": "f4837d600ce2deaa33e66d92c0936c06ed0b890a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
