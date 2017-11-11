@@ -11,4 +11,6 @@ that you can put anywhere in your path.
 * Source: https://code.google.com/p/git-repo/
 * Overview: https://source.android.com/source/developing.html
 * Docs: https://source.android.com/source/using-repo.html
+* [repo Manifest Format](./docs/manifest-format.txt)
+* [repo Hooks](./docs/repo-hooks.md)
 * [Submitting patches](./SUBMITTING_PATCHES.md)
