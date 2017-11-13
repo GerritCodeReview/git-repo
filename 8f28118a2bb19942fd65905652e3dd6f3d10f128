@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2f1a26c5_f15e1fcd",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-11-13T23:46:07Z",
+      "side": 1,
+      "message": "It\u0027s better not to pass empty list as default argument for a list.  Instead pass None, and at the point where it\u0027s used:\n\n  push_options or []",
+      "range": {
+        "startLine": 184,
+        "startChar": 35,
+        "endLine": 184,
+        "endChar": 37
+      },
+      "revId": "8f28118a2bb19942fd65905652e3dd6f3d10f128",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4ffb7a9_0127d33e",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1123,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-11-13T23:46:07Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 1123,
+        "startChar": 35,
+        "endLine": 1123,
+        "endChar": 37
+      },
+      "revId": "8f28118a2bb19942fd65905652e3dd6f3d10f128",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30a28c14_2dcb1349",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1161,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-11-13T23:46:07Z",
+      "side": 1,
+      "message": "Change this to:\n\n in (push_options or []):\n\nIt works like this:\n\n \u003e\u003e\u003e x \u003d None\n \u003e\u003e\u003e for y in (x or []):\n ...   print y\n ...\n \u003e\u003e\u003e x \u003d [1,2]\n \u003e\u003e\u003e for y in (x or []):\n ...   print y\n ...\n 1\n 2",
+      "range": {
+        "startLine": 1161,
+        "startChar": 20,
+        "endLine": 1161,
+        "endChar": 35
+      },
+      "revId": "8f28118a2bb19942fd65905652e3dd6f3d10f128",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
