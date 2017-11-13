@@ -160,6 +160,10 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
     p.add_option('-w', '--wip',
                  action='store_true', dest='wip', default=False,
                  help='If specified, upload as a work-in-progress change.')
+    p.add_option('-o', '--push-option',
+                 type='string', action='append', dest='push_options',
+                 default=[],
+                 help='Additional push options to transmit')
     p.add_option('-D', '--destination', '--dest',
                  type='string', action='store', dest='dest_branch',
                  metavar='BRANCH',
@@ -393,7 +397,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                                private=opt.private,
                                wip=opt.wip,
                                dest_branch=destination,
-                               validate_certs=opt.validate_certs)
+                               validate_certs=opt.validate_certs,
+                               push_options=opt.push_options)
 
         branch.uploaded = True
       except UploadError as e:
