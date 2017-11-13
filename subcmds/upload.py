@@ -164,6 +164,10 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                  type='string', action='store', dest='dest_branch',
                  metavar='BRANCH',
                  help='Submit for review on this target branch.')
+    p.add_option('-o', '--push-option',
+                 type='string', action='append', dest='push_options',
+                 default=[],
+                 help='Additional push options')
 
     # Options relating to upload hook.  Note that verify and no-verify are NOT
     # opposites of each other, which is why they store to different locations.
@@ -393,7 +397,8 @@ Gerrit Code Review:  http://code.google.com/p/gerrit/
                                private=opt.private,
                                wip=opt.wip,
                                dest_branch=destination,
-                               validate_certs=opt.validate_certs)
+                               validate_certs=opt.validate_certs,
+                               push_options=opt.push_options)
 
         branch.uploaded = True
       except UploadError as e:

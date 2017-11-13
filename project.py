@@ -180,7 +180,8 @@ class ReviewableBranch(object):
                       private=False,
                       wip=False,
                       dest_branch=None,
-                      validate_certs=True):
+                      validate_certs=True,
+                      push_options=[]):
     self.project.UploadForReview(self.name,
                                  people,
                                  auto_topic=auto_topic,
@@ -188,7 +189,8 @@ class ReviewableBranch(object):
                                  private=private,
                                  wip=wip,
                                  dest_branch=dest_branch,
-                                 validate_certs=validate_certs)
+                                 validate_certs=validate_certs,
+                                 push_options=push_options)
 
   def GetPublishedRefs(self):
     refs = {}
@@ -1117,7 +1119,8 @@ class Project(object):
                       private=False,
                       wip=False,
                       dest_branch=None,
-                      validate_certs=True):
+                      validate_certs=True,
+                      push_options=[]):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -1156,6 +1159,10 @@ class Project(object):
       cmd.append('--receive-pack=%s' % " ".join(rp))
 
     cmd.append(url)
+
+    for push_option in push_options:
+      cmd.append('-o')
+      cmd.append(push_option)
 
     if dest_branch.startswith(R_HEADS):
       dest_branch = dest_branch[len(R_HEADS):]
