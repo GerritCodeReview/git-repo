@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "77f156c2_e79fadf0",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1163,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-11-13T19:01:23Z",
+      "side": 1,
+      "message": "This should go before the URL.",
+      "revId": "24e142b754d36ef2ac02c65aa7d77e13f0b8ad07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ff7328a6_0000a436",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-11-13T19:01:23Z",
+      "side": 1,
+      "message": "Can this go before -D? (Since most of the options above there are logically push options --- e.g. --cc \u003cemail\u003e \u003d\u003d -o cc\u003d\u003cemail\u003e.)",
+      "revId": "24e142b754d36ef2ac02c65aa7d77e13f0b8ad07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fd8cb0df_0a7b7ca5",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-11-13T19:01:23Z",
+      "side": 1,
+      "message": "Is there a way to clarify that this means the kind of push options used with \"git push -o\", not arbitrary options for \"git push\"?\n\n\"git push -h\" describes this as \"option to transmit\".",
+      "range": {
+        "startLine": 170,
+        "startChar": 23,
+        "endLine": 170,
+        "endChar": 46
+      },
+      "revId": "24e142b754d36ef2ac02c65aa7d77e13f0b8ad07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
