@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3bad16bc_6386be25",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1030482
+      },
+      "writtenOn": "2017-12-06T19:12:58Z",
+      "side": 1,
+      "message": "Incidentally I know some of these footers trigger behavior like updating a bug tracker, but only from experience. Do you know if there\u0027s a canonical list of special footers, or where the code is that handles them?",
+      "revId": "cbe8aeb52b08a6509a22b58f9b395e705673b792",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
