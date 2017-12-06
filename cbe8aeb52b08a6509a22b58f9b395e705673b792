@@ -16,6 +16,24 @@
       "revId": "cbe8aeb52b08a6509a22b58f9b395e705673b792",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ae38209_93892e9e",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1023148
+      },
+      "writtenOn": "2017-12-06T19:49:03Z",
+      "side": 1,
+      "message": "Git Watcher is the internal tool that updates bugs based on the Bug/Fixes/Fixed tags\n\n(Also note: despite being the most recent person to touch this file, someone else should definitely review; I\u0027m really just a user of this project)",
+      "parentUuid": "3bad16bc_6386be25",
+      "revId": "cbe8aeb52b08a6509a22b58f9b395e705673b792",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
