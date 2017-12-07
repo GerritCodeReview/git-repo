@@ -1,5 +1,5 @@
 #!/bin/sh
-# From Gerrit Code Review 2.12.1
+# From Gerrit Code Review 2.14.6
 #
 # Part of Gerrit Code Review (https://www.gerritcodereview.com/)
 #
@@ -20,7 +20,7 @@
 
 unset GREP_OPTIONS
 
-CHANGE_ID_AFTER="Bug|Issue|Test"
+CHANGE_ID_AFTER="Bug|Depends-On|Issue|Test|Feature|Fixes|Fixed"
 MSG="$1"
 
 # Check for, and add if missing, a unique Change-Id
