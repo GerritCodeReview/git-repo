@@ -1880,6 +1880,13 @@ class Project(object):
         result.extend(project.GetDerivedSubprojects())
         continue
 
+      if url.startswith('..'):
+        count = url.count('../')
+        relurl = url.lstrip('../')
+        tmpurl = self.remote.url
+        for i in range(0, count):
+          tmpurl = tmpurl[:tmpurl.rindex('/')]
+        url = '%s%s%s' % (tmpurl, '/', relurl)
       remote = RemoteSpec(self.remote.name,
                           url=url,
                           pushUrl=self.remote.pushUrl,
