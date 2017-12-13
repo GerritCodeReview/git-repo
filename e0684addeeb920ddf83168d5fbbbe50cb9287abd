@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "e5844b2c_810f7152",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1004651
+      },
+      "writtenOn": "2017-12-13T19:32:19Z",
+      "side": 1,
+      "message": "ok for:\n\n    \u0027id\u0027: str(self._next_id.next())\n    \u0027kind\u0027: kind  # also store the kind, for easy filtering by kind",
+      "parentUuid": "34ca2a55_b43095e8",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a1586fff_162e84bd",
         "filename": "event_log.py",
         "patchSetId": 8
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "I\u0027m find with adding that.  We always post-process this and calculate elapsed_time during presentation of the data, but for straight reading of the data I can see that it\u0027d be useful.",
       "parentUuid": "cc685f0c_46348885",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "caeb1dd2_aa37ca74",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1004651
+      },
+      "writtenOn": "2017-12-13T19:32:19Z",
+      "side": 1,
+      "message": "This will allow indeed easier management in ELK (no need to use calculated fields)",
+      "parentUuid": "3f8285da_336a1db3",
       "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
