@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "34ca2a55_b43095e8",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-12-13T16:06:00Z",
+      "side": 1,
+      "message": "This is what the Chrome OS export tool expects (https://chromium.googlesource.com/chromiumos/chromite/+/master/scripts/export_to_gcloud.py). \n\nIf this is unacceptable, I\u0027d prefer id to just be str(self._next_id.next()) and then change our internal tooling to recognize the presence of a separate kind key.",
+      "parentUuid": "1420538c_97a1728c",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a1586fff_162e84bd",
         "filename": "event_log.py",
         "patchSetId": 8
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "bea57c18_07446135",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-12-13T16:06:00Z",
+      "side": 1,
+      "message": "Nice catch.",
+      "parentUuid": "a1586fff_162e84bd",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cc685f0c_46348885",
         "filename": "event_log.py",
         "patchSetId": 8
@@ -47,6 +83,24 @@
       "writtenOn": "2017-12-13T13:35:19Z",
       "side": 1,
       "message": "I would prefer to store the total_time. It avoids further processing later.",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f8285da_336a1db3",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2017-12-13T16:06:00Z",
+      "side": 1,
+      "message": "I\u0027m find with adding that.  We always post-process this and calculate elapsed_time during presentation of the data, but for straight reading of the data I can see that it\u0027d be useful.",
+      "parentUuid": "cc685f0c_46348885",
       "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
