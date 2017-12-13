@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "1420538c_97a1728c",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1004651
+      },
+      "writtenOn": "2017-12-13T13:35:19Z",
+      "side": 1,
+      "message": "is this a good idea to use a tuple for an id?\n\nIf you push that event to elasticsearch via logstash for review in kibana, then elastic search will get an array with items of different kind, which it does not like.\n\nI would rather use:\n\n    \u0027id\u0027: kind + \u0027-\u0027 + str(self._next_id.next())\n    \u0027kind\u0027: kind  # also store the kind, for easy filtering by kind",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a1586fff_162e84bd",
         "filename": "event_log.py",
         "patchSetId": 8
@@ -13,6 +30,23 @@
       "writtenOn": "2017-12-13T10:58:04Z",
       "side": 1,
       "message": "This call to add is sending the parameters in the wrong order.\n\nsignature is:\n\nAdd(self, name, task_name, start, finish\u003dNone, success\u003dNone, try_count\u003d1, kind\u003d\u0027RepoOp\u0027)\n\nso the sync events will get a switched task_name and success",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc685f0c_46348885",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1004651
+      },
+      "writtenOn": "2017-12-13T13:35:19Z",
+      "side": 1,
+      "message": "I would prefer to store the total_time. It avoids further processing later.",
       "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
