@@ -101,7 +101,7 @@ class EventLog(object):
     Returns:
       A dictionary of the event added to the log.
     """
-    event = self.Add(project.relpath, success, start, finish, task_name)
+    event = self.Add(project.relpath, task_name, start, finish, success)
     if event is not None:
       event['project'] = project.name
       if project.revisionExpr:
