@@ -90,6 +90,24 @@
     },
     {
       "key": {
+        "uuid": "13e9d767_1802ece4",
+        "filename": "event_log.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-12-14T04:40:17Z",
+      "side": 1,
+      "message": "Fixed in https://gerrit-review.googlesource.com/#/c/git-repo/+/148130",
+      "parentUuid": "bea57c18_07446135",
+      "revId": "e0684addeeb920ddf83168d5fbbbe50cb9287abd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cc685f0c_46348885",
         "filename": "event_log.py",
         "patchSetId": 8
