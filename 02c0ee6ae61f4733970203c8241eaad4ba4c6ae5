@@ -46,6 +46,30 @@
       "revId": "02c0ee6ae61f4733970203c8241eaad4ba4c6ae5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "27fc89d6_12aa4b1e",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1884,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-01-09T00:49:20Z",
+      "side": 1,
+      "message": "Sorry, yes, you are right.",
+      "parentUuid": "586dfbd7_5da319cc",
+      "range": {
+        "startLine": 1884,
+        "startChar": 38,
+        "endLine": 1884,
+        "endChar": 39
+      },
+      "revId": "02c0ee6ae61f4733970203c8241eaad4ba4c6ae5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
