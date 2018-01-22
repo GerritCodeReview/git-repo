@@ -175,7 +175,8 @@ to update the working directory files.
         if not mirrored_manifest_git.endswith(".git"):
           mirrored_manifest_git += ".git"
         if not os.path.exists(mirrored_manifest_git):
-          mirrored_manifest_git = os.path.join(opt.reference + '/.repo/manifests.git')
+          mirrored_manifest_git = os.path.join(opt.reference,
+                                               '.repo/manifests.git')
 
       m._InitGitDir(mirror_git=mirrored_manifest_git)
 
