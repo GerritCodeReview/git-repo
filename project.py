@@ -1267,7 +1267,8 @@ class Project(object):
       try:
         fd = open(alt)
         try:
-          alt_dir = fd.readline().rstrip()
+          # This works for both absolute and relative alternate directories.
+          alt_dir = os.path.join(self.objdir, 'objects', fd.readline().rstrip())
         finally:
           fd.close()
       except IOError:
@@ -2353,6 +2354,10 @@ class Project(object):
             ref_dir = None
 
           if ref_dir:
+            if not os.path.isabs(ref_dir):
+              # The alternate directory is relative to the object database.
+              ref_dir = os.path.relpath(ref_dir,
+                                        os.path.join(self.objdir, 'objects'))
             _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
                     os.path.join(ref_dir, 'objects') + '\n')
 
