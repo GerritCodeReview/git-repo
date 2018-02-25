@@ -534,7 +534,7 @@ def GetUrlCookieFile(url, quiet):
         for line in p.stdout:
           line = line.strip()
           if line.startswith(cookieprefix):
-            cookiefile = line[len(cookieprefix):]
+            cookiefile = os.path.expanduser(line[len(cookieprefix):])
           if line.startswith(proxyprefix):
             proxy = line[len(proxyprefix):]
         # Leave subprocess open, as cookie file may be transient.
@@ -553,7 +553,10 @@ def GetUrlCookieFile(url, quiet):
       if e.errno == errno.ENOENT:
         pass  # No persistent proxy.
       raise
-  yield GitConfig.ForUser().GetString('http.cookiefile'), None
+  cookiefile = GitConfig.ForUser().GetString('http.cookiefile')
+  if cookiefile:
+    cookiefile = os.path.expanduser(cookiefile)
+  yield cookiefile, None
 
 def _preconnect(url):
   m = URI_ALL.match(url)
