@@ -63,6 +63,7 @@ class _Default(object):
   sync_j = 1
   sync_c = False
   sync_s = False
+  sync_tags = True
 
   def __eq__(self, other):
     return self.__dict__ == other.__dict__
@@ -238,6 +239,9 @@ class XmlManifest(object):
     if d.sync_s:
       have_default = True
       e.setAttribute('sync-s', 'true')
+    if not d.sync_tags:
+      have_default = True
+      e.setAttribute('sync-tags', 'false')
     if have_default:
       root.appendChild(e)
       root.appendChild(doc.createTextNode(''))
@@ -326,6 +330,9 @@ class XmlManifest(object):
 
       if p.sync_s:
         e.setAttribute('sync-s', 'true')
+
+      if not p.sync_tags:
+        e.setAttribute('sync-tags', 'false')
 
       if p.clone_depth:
         e.setAttribute('clone-depth', str(p.clone_depth))
@@ -702,6 +709,12 @@ class XmlManifest(object):
       d.sync_s = False
     else:
       d.sync_s = sync_s.lower() in ("yes", "true", "1")
+
+    sync_tags = node.getAttribute('sync-tags')
+    if not sync_tags:
+      d.sync_tags = True
+    else:
+      d.sync_tags = sync_tags.lower() in ("yes", "true", "1")
     return d
 
   def _ParseNotice(self, node):
@@ -796,6 +809,12 @@ class XmlManifest(object):
     else:
       sync_s = sync_s.lower() in ("yes", "true", "1")
 
+    sync_tags = node.getAttribute('sync-tags')
+    if not sync_tags:
+      sync_tags = self._default.sync_tags
+    else:
+      sync_tags = sync_tags.lower() in ("yes", "true", "1")
+
     clone_depth = node.getAttribute('clone-depth')
     if clone_depth:
       try:
@@ -841,6 +860,7 @@ class XmlManifest(object):
                       groups = groups,
                       sync_c = sync_c,
                       sync_s = sync_s,
+                      sync_tags = sync_tags,
                       clone_depth = clone_depth,
                       upstream = upstream,
                       parent = parent,

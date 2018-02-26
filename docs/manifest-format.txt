@@ -47,6 +47,7 @@ following DTD:
     <!ATTLIST default sync-j      CDATA #IMPLIED>
     <!ATTLIST default sync-c      CDATA #IMPLIED>
     <!ATTLIST default sync-s      CDATA #IMPLIED>
+    <!ATTLIST default sync-tags   CDATA #IMPLIED>
 
     <!ELEMENT manifest-server EMPTY>
     <!ATTLIST manifest-server url CDATA #REQUIRED>
@@ -63,6 +64,7 @@ following DTD:
     <!ATTLIST project groups      CDATA #IMPLIED>
     <!ATTLIST project sync-c      CDATA #IMPLIED>
     <!ATTLIST project sync-s      CDATA #IMPLIED>
+    <!ATTLIST default sync-tags   CDATA #IMPLIED>
     <!ATTLIST project upstream CDATA #IMPLIED>
     <!ATTLIST project clone-depth CDATA #IMPLIED>
     <!ATTLIST project force-path CDATA #IMPLIED>
@@ -169,6 +171,10 @@ whole ref space.  Project elements lacking a sync-c element of
 their own will use this value.
 
 Attribute `sync-s`: Set to true to also sync sub-projects.
+
+Attribute `sync-tags`: Set to false to only sync the given Git
+branch (specified in the `revision` attribute) rather than
+the other ref tags.
 
 
 Element manifest-server
