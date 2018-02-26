@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2af39fa9_a687c1b5",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-02-26T01:20:58Z",
+      "side": 1,
+      "message": "Support for git-remote-persistent-https was added in [1] and includes support for the case where -print_config is not supported (see L548 below).  As you pointed out, this option is not included in the open source version of the command, so I\u0027m guessing it\u0027s something that\u0027s added in Google\u0027s internal version. Dan might be able to confirm.\n\n[1] https://gerrit-review.googlesource.com/c/git-repo/+/70342",
+      "parentUuid": "998022fe_5e00707a",
+      "revId": "ce7e02601cfb0fdd0d9faa5cc2afa42717b63f1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "81bc11b1_9629f85b",
         "filename": "git_config.py",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2018-02-26T00:02:27Z",
       "side": 1,
       "message": "(These have been verified)",
+      "revId": "ce7e02601cfb0fdd0d9faa5cc2afa42717b63f1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b61cad74_ca590d20",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-02-26T01:20:58Z",
+      "side": 1,
+      "message": "I think this is sufficient to set Verified+1.",
+      "parentUuid": "81bc11b1_9629f85b",
       "revId": "ce7e02601cfb0fdd0d9faa5cc2afa42717b63f1f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
