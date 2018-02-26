@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "998022fe_5e00707a",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 1061906
+      },
+      "writtenOn": "2018-02-26T00:02:27Z",
+      "side": 1,
+      "message": "I was trying to verify the change on this line but git-remote-persistent-https doesn\u0027t work properly at my local env. \u0027-print_config\u0027 option at L.526 really exists? (I can\u0027t find it in https://github.com/git/git/blob/master/contrib/persistent-https/main.go)",
+      "revId": "ce7e02601cfb0fdd0d9faa5cc2afa42717b63f1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "81bc11b1_9629f85b",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 1061906
+      },
+      "writtenOn": "2018-02-26T00:02:27Z",
+      "side": 1,
+      "message": "(These have been verified)",
+      "revId": "ce7e02601cfb0fdd0d9faa5cc2afa42717b63f1f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
