@@ -62,6 +62,14 @@ If no project is specified try to use current directory as a project.
           ps_id = int(m.group(2))
         else:
           ps_id = 1
+          regex = r'refs/changes/%2.2d/%d/(\d+)' % (chg_id % 100, chg_id)
+          output = project._LsRemote()
+          if output:
+            rcomp = re.compile(regex, re.I)
+            for line in output.splitlines():
+              match = rcomp.search(line)
+              if match:
+                ps_id = max(int(match.group(1)), ps_id)
         to_get.append((project, chg_id, ps_id))
       else:
         project = self.GetProjects([a])[0]

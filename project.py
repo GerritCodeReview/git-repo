@@ -2270,6 +2270,16 @@ class Project(object):
       if self._allrefs:
         raise GitError('%s cherry-pick %s ' % (self.name, rev))
 
+  def _LsRemote(self):
+    cmd = ['ls-remote']
+    p = GitCommand(self, cmd, capture_stdout=True)
+    if p.Wait() == 0:
+      if hasattr(p.stdout, 'decode'):
+        return p.stdout.decode('utf-8')
+      else:
+        return p.stdout
+    return None
+
   def _Revert(self, rev):
     cmd = ['revert']
     cmd.append('--no-edit')
