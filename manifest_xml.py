@@ -571,12 +571,15 @@ class XmlManifest(object):
         groups = node.getAttribute('groups')
         if groups:
           groups = self._ParseGroups(groups)
+        revision = node.getAttribute('revision')
 
         for p in self._projects[name]:
           if path and p.relpath != path:
             continue
           if groups:
             p.groups.extend(groups)
+          if revision:
+            p.revisionExpr = revision
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
