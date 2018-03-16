@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66489949_cb20bee9",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-03-16T01:46:52Z",
+      "side": 1,
+      "message": "regexes should start with a r prefix\n\n regex \u003d r\u0027refs/.......",
+      "revId": "9753b0aba59102e476af4c80739eeafd4b283dbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1c16650_6a91d64f",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-03-16T01:46:52Z",
+      "side": 1,
+      "message": "isn\u0027t this max() ?\n\n ps_id \u003d max(int(match.group(1)), ps_id)",
+      "revId": "9753b0aba59102e476af4c80739eeafd4b283dbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
