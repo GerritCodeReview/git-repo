@@ -61,9 +61,14 @@ not be too verbose.  A short summary is nice, and some status information when
 long running operations occur, but long/verbose output should be used only if
 the hook ultimately fails.
 
-The hook runs from the top level of the git repo where the operation is started.
-e.g. If you're in the git repo `src/foo/`, that is where the hook runs, even if
-the `repo` command was started from a subdir like `src/foo/bar/`.
+The hook runs from the top level of the repo client where the operation is
+started.
+For example, if the repo client is under `~/tree/`, then that is where the hook
+runs, even if you ran repo in a git repository at `~/tree/src/foo/`, or in a
+subdirectory of that git repository of that git tree in `~/tree/src/foo/bar/`.
+Hooks frequently start off by doing a `os.chdir` to the specific project they're
+called on (see below) and then changing back to the original dir when they're
+finished.
 
 Python's `sys.path` is modified so that the top of repohooks directory comes
 first.  This should help simplify the hook logic to easily allow importing of
