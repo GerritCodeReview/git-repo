@@ -2270,8 +2270,8 @@ class Project(object):
       if self._allrefs:
         raise GitError('%s cherry-pick %s ' % (self.name, rev))
 
-  def _LsRemote(self):
-    cmd = ['ls-remote']
+  def _LsRemote(self, refs):
+    cmd = ['ls-remote', self.remote.name, refs]
     p = GitCommand(self, cmd, capture_stdout=True)
     if p.Wait() == 0:
       if hasattr(p.stdout, 'decode'):

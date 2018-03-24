@@ -62,9 +62,10 @@ If no project is specified try to use current directory as a project.
           ps_id = int(m.group(2))
         else:
           ps_id = 1
-          regex = r'refs/changes/%2.2d/%d/(\d+)' % (chg_id % 100, chg_id)
-          output = project._LsRemote()
+          refs = 'refs/changes/%2.2d/%d/' % (chg_id % 100, chg_id)
+          output = project._LsRemote(refs + '*')
           if output:
+            regex = refs + r'(\d+)'
             rcomp = re.compile(regex, re.I)
             for line in output.splitlines():
               match = rcomp.search(line)
