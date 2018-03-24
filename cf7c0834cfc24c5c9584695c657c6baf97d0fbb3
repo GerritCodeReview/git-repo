@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1d81b96f_4967a4a8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2274,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-03-24T07:05:27Z",
+      "side": 0,
+      "message": "should just build this directly\n\n cmd \u003d [\u0027ls-remote\u0027, \u0027origin\u0027, refs]",
+      "revId": "cf7c0834cfc24c5c9584695c657c6baf97d0fbb3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

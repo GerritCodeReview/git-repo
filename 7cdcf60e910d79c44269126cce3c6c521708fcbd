@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3214b1b_7ec596e9",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2275,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-03-24T07:05:27Z",
+      "side": 1,
+      "message": "i don\u0027t think we can assume \u0027origin\u0027 is how it\u0027s always named ... i think the name used depends on the repo manifest\n\ni assume there\u0027s a repo func somewhere to get the remote name ... or maybe we can just query directly based on the existing branch.  i haven\u0027t poked around the code in a while in this regard.",
+      "revId": "7cdcf60e910d79c44269126cce3c6c521708fcbd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "51a799c8_7d40dc99",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-03-24T07:05:27Z",
+      "side": 1,
+      "message": "single quotes",
+      "revId": "7cdcf60e910d79c44269126cce3c6c521708fcbd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a7bf462d_5d5ef2b2",
+        "filename": "subcmds/download.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-03-24T07:05:27Z",
+      "side": 1,
+      "message": "you\u0027ll need to make this an explicit tuple:\n\n regex \u003d r\u0027%s(\\d+)\u0027 % (refs,)\n\nor use string concat:\n\n regex \u003d refs + r\u0027(\\d+)\u0027",
+      "revId": "7cdcf60e910d79c44269126cce3c6c521708fcbd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
