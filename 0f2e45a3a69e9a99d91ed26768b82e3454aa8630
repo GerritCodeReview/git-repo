@@ -46,6 +46,30 @@
       "revId": "0f2e45a3a69e9a99d91ed26768b82e3454aa8630",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9091ae18_76dee1c9",
+        "filename": "subcmds/download.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-03-25T19:08:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e9cfe043_5e28dc0b",
+      "range": {
+        "startLine": 66,
+        "startChar": 41,
+        "endLine": 66,
+        "endChar": 47
+      },
+      "revId": "0f2e45a3a69e9a99d91ed26768b82e3454aa8630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
