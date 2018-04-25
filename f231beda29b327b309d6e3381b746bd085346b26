@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a4c7b1b5_2fffeb23",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-04-25T03:42:48Z",
+      "side": 1,
+      "message": "I think other docs (e.g. docs/manifest-format.txt and https://source.android.com/setup/develop/#common-tasks) call this a repo client.",
+      "range": {
+        "startLine": 64,
+        "startChar": 45,
+        "endLine": 64,
+        "endChar": 53
+      },
+      "revId": "f231beda29b327b309d6e3381b746bd085346b26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ee271a6_4e66c9ab",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-04-25T03:42:48Z",
+      "side": 1,
+      "message": "nit: \"For example, if\"",
+      "range": {
+        "startLine": 65,
+        "startChar": 10,
+        "endLine": 65,
+        "endChar": 16
+      },
+      "revId": "f231beda29b327b309d6e3381b746bd085346b26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dfd91ba7_76bc7e1e",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-04-25T03:42:48Z",
+      "side": 1,
+      "message": "Git repository",
+      "range": {
+        "startLine": 66,
+        "startChar": 37,
+        "endLine": 66,
+        "endChar": 45
+      },
+      "revId": "f231beda29b327b309d6e3381b746bd085346b26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb2df996_3ba34e45",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-04-25T03:42:48Z",
+      "side": 1,
+      "message": "in a subdirectory of that Git repository",
+      "range": {
+        "startLine": 66,
+        "startChar": 71,
+        "endLine": 67,
+        "endChar": 16
+      },
+      "revId": "f231beda29b327b309d6e3381b746bd085346b26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
