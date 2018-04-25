@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e26ed2e6_3bfa2ac6",
+        "filename": "project.config",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-04-25T03:36:52Z",
+      "side": 1,
+      "message": "Not sure what\u0027s happened here.  These were not intentionally changed.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 34
+      },
+      "revId": "5c51bb4190eb96b79d0f21ec95ddcf8388296801",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
