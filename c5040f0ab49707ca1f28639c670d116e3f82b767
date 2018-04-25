@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4591f247_aab21345",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-04-25T04:08:30Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 52
+      },
+      "revId": "c5040f0ab49707ca1f28639c670d116e3f82b767",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
