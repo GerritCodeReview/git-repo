@@ -44,6 +44,7 @@ following DTD:
     <!ATTLIST default remote      IDREF #IMPLIED>
     <!ATTLIST default revision    CDATA #IMPLIED>
     <!ATTLIST default dest-branch CDATA #IMPLIED>
+    <!ATTLIST default upstream    CDATA #IMPLIED>
     <!ATTLIST default sync-j      CDATA #IMPLIED>
     <!ATTLIST default sync-c      CDATA #IMPLIED>
     <!ATTLIST default sync-s      CDATA #IMPLIED>
@@ -163,6 +164,11 @@ Attribute `dest-branch`: Name of a Git branch (e.g. `master`).
 Project elements not setting their own `dest-branch` will inherit
 this value. If this value is not set, projects will use `revision`
 by default instead.
+
+Attribute `upstream`: Name of the Git ref in which a sha1
+can be found.  Used when syncing a revision locked manifest in
+-c mode to avoid having to sync the entire ref space. Project elements
+not setting their own `upstream` will inherit this value.
 
 Attribute `sync-j`: Number of parallel jobs to use when synching.
 
