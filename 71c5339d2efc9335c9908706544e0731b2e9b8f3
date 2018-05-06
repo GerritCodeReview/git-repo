@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6b4b4a85_8f277fb8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-05-06T17:05:43Z",
+      "side": 1,
+      "message": "the scope here is really manifest.xml, not \"upstream\"\n\nthis is adding support for a default upstream, not \"inherit from default\"",
+      "revId": "71c5339d2efc9335c9908706544e0731b2e9b8f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3d5186f_4cbe5b53",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-05-06T17:05:43Z",
+      "side": 1,
+      "message": "prefer not to split the expression in the middle.  plus the alignment on the next line is incorrect.\n\n if (p.upstream and (p.upstream !\u003d p.revisionExpr or\n                     p.upstream !\u003d d.upstreamExpr)):\n\nyou could write this too using a set operator:\n\n if p.upstream and p.upstream not in (p.revisionExpr, d.upstreamExpr):",
+      "revId": "71c5339d2efc9335c9908706544e0731b2e9b8f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
