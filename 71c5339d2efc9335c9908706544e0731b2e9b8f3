@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7460c5b0_f28e69ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2018-05-08T14:19:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b4b4a85_8f277fb8",
+      "revId": "71c5339d2efc9335c9908706544e0731b2e9b8f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c3d5186f_4cbe5b53",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "71c5339d2efc9335c9908706544e0731b2e9b8f3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f46234e9_f360ace6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2018-05-08T14:19:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3d5186f_4cbe5b53",
+      "revId": "71c5339d2efc9335c9908706544e0731b2e9b8f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
