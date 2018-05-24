@@ -393,3 +393,35 @@ above.
 
 If `$TOP_DIR/.repo/local_manifest.xml` exists, it will be loaded before
 any manifest files stored in `$TOP_DIR/.repo/local_manifests/*.xml`.
+
+
+Manifest Parsing Order
+======================
+
+Manifests parsed by other tools must maintain the ordering that the
+git-repo tool does in order to avoid ambiguity in the result of
+parsing the same manifest.
+
+Accordingly, the way in which all nodes must be parsed should be taken
+from manifest_xml.py's parsing. The parsing order is recreated here for
+convenience:
+
+ * All first-level nodes should be scanned completely for these types
+   in this order (that is, all nodes should be scanned for "remote"
+   element types before scanning for "default" element types):
+
+   1. remote ("name" must be unique)
+   2. default (only one allowed)
+   3. notice (only one allowed)
+   4. manifest-server (only one allowed)
+
+ * Subsequently all nodes should be scanned linearly once for
+   these types and applied in the order they appear in the file:
+
+   1. project (must have relpath and relpath must not be a duplicate)
+     a. All subprojects should be added recursively.
+   2. extend-project (project name must be defined already)
+   3. repo-hooks (only one project allowed and must already be defined)
+   4. remove-project (project must already be defined)
+     a. Can undefine the repo-hooks project which should allow another
+        repo-hooks to be defined.
