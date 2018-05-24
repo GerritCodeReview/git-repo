@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "0969bd20_4a189203",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002975
+      },
+      "writtenOn": "2018-05-24T07:14:49Z",
+      "side": 1,
+      "message": "Done. I actually made this change before I found the offending code, so I updated the message with the actual problem as well.",
+      "parentUuid": "13a03fe3_bbe197a1",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 29
+      },
+      "revId": "ed3daf9cf3f714c182f23a3d3f8e7acfa74dc8f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8490aeb7_4513ed5d",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 2
