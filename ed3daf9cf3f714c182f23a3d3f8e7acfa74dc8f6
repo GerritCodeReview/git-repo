@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "92c728c0_6b5ededc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-05-24T06:44:31Z",
+      "side": 1,
+      "message": "This sounds more like a bug in repo, particularly given the description of remove-project in the manifest document (see my inline comments there).",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 29
+      },
+      "revId": "ed3daf9cf3f714c182f23a3d3f8e7acfa74dc8f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8490aeb7_4513ed5d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-05-24T06:44:31Z",
+      "side": 1,
+      "message": "According to my understanding of this, it should be possible to specify a remove-project element in the way described in the commit message.",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 44
+      },
+      "revId": "ed3daf9cf3f714c182f23a3d3f8e7acfa74dc8f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b7c305c_577837dd",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-05-24T06:44:31Z",
+      "side": 1,
+      "message": "However, I have only ever used (or seen used) the remove-project element in the context of a local manifest file as described here.\n\nCould it be that the previous paragraph is out of date?",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 348,
+        "endChar": 15
+      },
+      "revId": "ed3daf9cf3f714c182f23a3d3f8e7acfa74dc8f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
