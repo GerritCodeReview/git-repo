@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "027ad5d5_1fc863e5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1002975
+      },
+      "writtenOn": "2018-05-24T06:49:24Z",
+      "side": 1,
+      "message": "\u003e This sounds more like a bug in repo, particularly given the description of remove-project in the manifest document (see my inline comments there).\n\nrepo works correctly with this example. It\u0027s Android\u0027s build bot that doesn\u0027t work with this tag. The build bot does not use \"git-repo\" tool to download the repositories.",
+      "parentUuid": "92c728c0_6b5ededc",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 29
+      },
+      "revId": "ed3daf9cf3f714c182f23a3d3f8e7acfa74dc8f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8490aeb7_4513ed5d",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "537d7fad_3138a230",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1002975
+      },
+      "writtenOn": "2018-05-24T06:49:24Z",
+      "side": 1,
+      "message": "\u003e According to my understanding of this, it should be possible to specify a remove-project element in the way described in the commit message.\n\nI agree.",
+      "parentUuid": "8490aeb7_4513ed5d",
+      "range": {
+        "startLine": 342,
+        "startChar": 0,
+        "endLine": 344,
+        "endChar": 44
+      },
+      "revId": "ed3daf9cf3f714c182f23a3d3f8e7acfa74dc8f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5b7c305c_577837dd",
         "filename": "docs/manifest-format.txt",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2018-05-24T06:44:31Z",
       "side": 1,
       "message": "However, I have only ever used (or seen used) the remove-project element in the context of a local manifest file as described here.\n\nCould it be that the previous paragraph is out of date?",
+      "range": {
+        "startLine": 346,
+        "startChar": 0,
+        "endLine": 348,
+        "endChar": 15
+      },
+      "revId": "ed3daf9cf3f714c182f23a3d3f8e7acfa74dc8f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5614a844_4c02a30b",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1002975
+      },
+      "writtenOn": "2018-05-24T06:49:24Z",
+      "side": 1,
+      "message": "\u003e However, I have only ever used (or seen used) the remove-project element in the context of a local manifest file as described here.\n\u003e \n\u003e Could it be that the previous paragraph is out of date?\n\nI don\u0027t think this is out of date, but it\u0027s just a new usage that a colleague came up with. This particular example works locally with git-repo, but when uploading to the Android build bot, it fails. My fix for that issue is cl/179499547 which is unrelated to git-repo\u0027s code.",
+      "parentUuid": "5b7c305c_577837dd",
       "range": {
         "startLine": 346,
         "startChar": 0,
