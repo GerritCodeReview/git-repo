@@ -135,6 +135,7 @@ class XmlManifest(object):
     self.globalConfig = GitConfig.ForUser()
     self.localManifestWarning = False
     self.isGitcClient = False
+    self._load_local_manifests = True
 
     self.repoProject = MetaProject(self, 'repo',
       gitdir   = os.path.join(repodir, 'repo/.git'),
@@ -146,15 +147,23 @@ class XmlManifest(object):
 
     self._Unload()
 
-  def Override(self, name):
+  def Override(self, name, load_local_manifests=True):
     """Use a different manifest, just for the current instantiation.
     """
-    path = os.path.join(self.manifestProject.worktree, name)
-    if not os.path.isfile(path):
-      raise ManifestParseError('manifest %s not found' % name)
+    if not load_local_manifests:
+      path = os.path.abspath(name)
+      if not os.path.isfile(path):
+        path = os.path.join(self.manifestProject.worktree, name)
+        if not os.path.isfile(path):
+          raise ManifestParseError('manifest %s not found' % name)
+    else:
+      path = os.path.join(self.manifestProject.worktree, name)
+      if not os.path.isfile(path):
+        raise ManifestParseError('manifest %s not found' % name)
 
     old = self.manifestFile
     try:
+      self._load_local_manifests = load_local_manifests
       self.manifestFile = path
       self._Unload()
       self._Load()
@@ -435,23 +444,26 @@ class XmlManifest(object):
       nodes.append(self._ParseManifestXml(self.manifestFile,
                                           self.manifestProject.worktree))
 
-      local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
-      if os.path.exists(local):
-        if not self.localManifestWarning:
-          self.localManifestWarning = True
-          print('warning: %s is deprecated; put local manifests in `%s` instead'
-                % (LOCAL_MANIFEST_NAME, os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
-                file=sys.stderr)
-        nodes.append(self._ParseManifestXml(local, self.repodir))
+      if self._load_local_manifests:
+        local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
+        if os.path.exists(local):
+          if not self.localManifestWarning:
+            self.localManifestWarning = True
+            print('warning: %s is deprecated; put local manifests '
+                  'in `%s` instead' % (LOCAL_MANIFEST_NAME,
+                  os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
+                  file=sys.stderr)
+          nodes.append(self._ParseManifestXml(local, self.repodir))
 
-      local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
-      try:
-        for local_file in sorted(platform_utils.listdir(local_dir)):
-          if local_file.endswith('.xml'):
-            local = os.path.join(local_dir, local_file)
-            nodes.append(self._ParseManifestXml(local, self.repodir))
-      except OSError:
-        pass
+        local_dir = os.path.abspath(os.path.join(self.repodir,
+                                    LOCAL_MANIFESTS_DIR_NAME))
+        try:
+          for local_file in sorted(platform_utils.listdir(local_dir)):
+            if local_file.endswith('.xml'):
+              local = os.path.join(local_dir, local_file)
+              nodes.append(self._ParseManifestXml(local, self.repodir))
+        except OSError:
+          pass
 
       try:
         self._ParseManifest(nodes)
