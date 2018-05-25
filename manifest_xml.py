@@ -135,6 +135,7 @@ class XmlManifest(object):
     self.globalConfig = GitConfig.ForUser()
     self.localManifestWarning = False
     self.isGitcClient = False
+    self._overridden = False
 
     self.repoProject = MetaProject(self, 'repo',
       gitdir   = os.path.join(repodir, 'repo/.git'),
@@ -156,6 +157,7 @@ class XmlManifest(object):
     old = self.manifestFile
     try:
       self.manifestFile = path
+      self._overridden = True
       self._Unload()
       self._Load()
     finally:
@@ -435,23 +437,24 @@ class XmlManifest(object):
       nodes.append(self._ParseManifestXml(self.manifestFile,
                                           self.manifestProject.worktree))
 
-      local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
-      if os.path.exists(local):
-        if not self.localManifestWarning:
-          self.localManifestWarning = True
-          print('warning: %s is deprecated; put local manifests in `%s` instead'
-                % (LOCAL_MANIFEST_NAME, os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
-                file=sys.stderr)
-        nodes.append(self._ParseManifestXml(local, self.repodir))
+      if not self._overridden:
+        local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
+        if os.path.exists(local):
+          if not self.localManifestWarning:
+            self.localManifestWarning = True
+            print('warning: %s is deprecated; put local manifests in `%s` instead'
+                  % (LOCAL_MANIFEST_NAME, os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
+                  file=sys.stderr)
+          nodes.append(self._ParseManifestXml(local, self.repodir))
 
-      local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
-      try:
-        for local_file in sorted(platform_utils.listdir(local_dir)):
-          if local_file.endswith('.xml'):
-            local = os.path.join(local_dir, local_file)
-            nodes.append(self._ParseManifestXml(local, self.repodir))
-      except OSError:
-        pass
+        local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
+        try:
+          for local_file in sorted(platform_utils.listdir(local_dir)):
+            if local_file.endswith('.xml'):
+              local = os.path.join(local_dir, local_file)
+              nodes.append(self._ParseManifestXml(local, self.repodir))
+        except OSError:
+          pass
 
       try:
         self._ParseManifest(nodes)
