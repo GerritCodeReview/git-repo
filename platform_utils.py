@@ -110,7 +110,13 @@ class _FileDescriptorStreamsNonBlocking(FileDescriptorStreams):
     return self.Stream(fd, dest, std_name)
 
   def select(self):
-    ready_streams, _, _ = select.select(self.streams, [], [])
+    try:
+      ready_streams, _, _ = select.select(self.streams, [], [])
+    except select.error as e:
+      if e.args[0] == errno.EINTR:
+        return []
+      else:
+        raise
     return ready_streams
 
 
