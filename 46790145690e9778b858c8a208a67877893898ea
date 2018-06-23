@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "70a5ee8b_04ae14b3",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-06-23T18:51:32Z",
+      "side": 1,
+      "message": "prob could use \\x00 to avoid the lint warning",
+      "revId": "46790145690e9778b858c8a208a67877893898ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
