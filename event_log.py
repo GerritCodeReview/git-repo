@@ -18,6 +18,8 @@ from __future__ import print_function
 import json
 import multiprocessing
 
+from pyversion import is_python3
+
 TASK_COMMAND = 'command'
 TASK_SYNC_NETWORK = 'sync-network'
 TASK_SYNC_LOCAL = 'sync-local'
@@ -71,7 +73,7 @@ class EventLog(object):
       A dictionary of the event added to the log.
     """
     event = {
-        'id': (kind, self._next_id.next()),
+        'id': (kind, self._next_id.__next__() if is_python3() else self._next_id.next()),
         'name': name,
         'task_name': task_name,
         'start_time': start,
