@@ -306,7 +306,9 @@ class GitConfig(object):
     d = self._do('--null', '--list')
     if d is None:
       return c
-    for line in d.decode('utf-8').rstrip('\0').split('\0'):
+    if not is_python3():
+      d = d.decode('utf-8')
+    for line in d.rstrip('\0').split('\0'):
       if '\n' in line:
         key, val = line.split('\n', 1)
       else:
