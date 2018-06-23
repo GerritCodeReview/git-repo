@@ -20,7 +20,12 @@ import select
 import shutil
 import stat
 
-from Queue import Queue
+from pyversion import is_python3
+if is_python3():
+  from queue import Queue
+else:
+  from Queue import Queue
+
 from threading import Thread
 
 
