@@ -25,12 +25,10 @@ from git_command import GitCommand
 from project import RepoHook
 
 from pyversion import is_python3
-# pylint:disable=W0622
 if not is_python3():
   input = raw_input
 else:
   unicode = str
-# pylint:enable=W0622
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 
