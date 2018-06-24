@@ -483,8 +483,7 @@ class XmlManifest(object):
       raise ManifestParseError("no <manifest> in %s" % (path,))
 
     nodes = []
-    for node in manifest.childNodes:  # pylint:disable=W0631
-                                      # We only get here if manifest is initialised
+    for node in manifest.childNodes:
       if node.nodeName == 'include':
         name = self._reqatt(node, 'name')
         fp = os.path.join(include_root, name)
