@@ -16,6 +16,24 @@
       "revId": "46790145690e9778b858c8a208a67877893898ea",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "658486b6_18700dfa",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-06-24T00:48:57Z",
+      "side": 1,
+      "message": "ack.\n\nthat should be done as a separate change though.",
+      "parentUuid": "70a5ee8b_04ae14b3",
+      "revId": "46790145690e9778b858c8a208a67877893898ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
