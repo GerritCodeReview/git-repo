@@ -61,9 +61,7 @@ from wrapper import WrapperPath, Wrapper
 from subcmds import all_commands
 
 if not is_python3():
-  # pylint:disable=W0622
   input = raw_input
-  # pylint:enable=W0622
 
 global_options = optparse.OptionParser(
                  usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
@@ -396,7 +394,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
     self.context = None
     self.handler_order = urllib.request.BaseHandler.handler_order - 50
 
-  def http_error_401(self, req, fp, code, msg, headers): # pylint:disable=unused-argument
+  def http_error_401(self, req, fp, code, msg, headers):
     host = req.get_host()
     retry = self.http_error_auth_reqed('www-authenticate', host, req, headers)
     return retry

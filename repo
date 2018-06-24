@@ -502,7 +502,7 @@ def _InitHttp():
       p = n.hosts[host]
       mgr.add_password(p[1], 'http://%s/' % host, p[0], p[2])
       mgr.add_password(p[1], 'https://%s/' % host, p[0], p[2])
-  except:  # pylint: disable=bare-except
+  except:
     pass
   handlers.append(urllib.request.HTTPBasicAuthHandler(mgr))
   handlers.append(urllib.request.HTTPDigestAuthHandler(mgr))

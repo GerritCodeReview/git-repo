@@ -21,9 +21,7 @@ import platform_utils
 
 from pyversion import is_python3
 if not is_python3():
-  # pylint:disable=W0622
   input = raw_input
-  # pylint:enable=W0622
 
 class GitcDelete(Command, GitcClientCommand):
   common = True
