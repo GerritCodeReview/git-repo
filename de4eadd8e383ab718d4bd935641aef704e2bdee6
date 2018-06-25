@@ -22,6 +22,30 @@
       "revId": "de4eadd8e383ab718d4bd935641aef704e2bdee6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e25d0bb_905966af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-06-25T23:22:11Z",
+      "side": 1,
+      "message": "Yes but no. The pyflakes cleanup has not been done, but given that this project is pretty much dead I no longer think it\u0027s worth spending time doing it. Leaving the pylint suppressions causes confusion because it leads people to think that we are still using pylint (I even thought so myself, briefly, and I\u0027m the one who removed it).",
+      "parentUuid": "f1102578_4f7f484f",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "de4eadd8e383ab718d4bd935641aef704e2bdee6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
