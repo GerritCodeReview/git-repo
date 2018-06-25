@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1102578_4f7f484f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2018-06-25T16:24:59Z",
+      "side": 1,
+      "message": "That commit has this at the end of the message:\n\n The existing pylint suppression comments are left as-is. These will be\n helpful when cleaning up pyflakes warnings later.\n\nDoes that still apply?",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "de4eadd8e383ab718d4bd935641aef704e2bdee6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
