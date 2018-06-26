@@ -46,6 +46,30 @@
       "revId": "de4eadd8e383ab718d4bd935641aef704e2bdee6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "914c2007_ac38ab76",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2018-06-26T22:53:34Z",
+      "side": 1,
+      "message": "I strongly disagree about the \u0027dead\u0027 part (it could use some love and attention, but it\u0027s heavily used still), but I see your point on the rest.",
+      "parentUuid": "6e25d0bb_905966af",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "de4eadd8e383ab718d4bd935641aef704e2bdee6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
