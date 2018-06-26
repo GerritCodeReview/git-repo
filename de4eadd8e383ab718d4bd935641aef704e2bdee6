@@ -70,6 +70,30 @@
       "revId": "de4eadd8e383ab718d4bd935641aef704e2bdee6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4fc0963_9687cbaf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-06-26T23:47:10Z",
+      "side": 1,
+      "message": "I meant dead more in terms of development/maintenance than usage. I\u0027m quite sure there are many people still heavily using it.\n\nI\u0027ll push a new PS with a better commit message.",
+      "parentUuid": "914c2007_ac38ab76",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "de4eadd8e383ab718d4bd935641aef704e2bdee6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
