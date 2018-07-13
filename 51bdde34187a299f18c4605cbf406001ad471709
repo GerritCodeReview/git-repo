@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cd651ecf_a76bb33e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-07-13T15:01:17Z",
+      "side": 1,
+      "message": "Can you describe the impact and motivation? What symptom does this address, or if it doesn\u0027t change user-visible behavior, what does it make possible or easier?",
+      "revId": "51bdde34187a299f18c4605cbf406001ad471709",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
