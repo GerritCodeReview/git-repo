@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca785d82_acab03eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-07-13T15:16:36Z",
+      "side": 1,
+      "message": "Huh, wow. Trying to reproduce it with\n\n repo init -u https://android.googlesource.com/platform/manifest\n\nI don\u0027t see the warning, though I do see a lot of other noise:\n\n curl: (22) The requested URL returned error: 404 \n Server does not provide clone.bundle; ignoring.\n[...]\nFrom https://android.googlesource.com/platform/manifest\n * [new branch]      adt_23.0.3                  -\u003e origin/adt_23.0.3\n[etc]",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 69
+      },
+      "revId": "d7e8fe0e24b78281b4ca7cdcce5550605f6f828a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
