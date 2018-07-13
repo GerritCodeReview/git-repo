@@ -144,6 +144,10 @@ def _print(*objects, **kwargs):
   out = kwargs.get('file', sys.stdout)
   out.write(sep.join(objects) + end)
 
+  # On Windows stderr is buffered, so flush to maintain the order of error messages.
+  if out == sys.stderr and platform.system() == "Windows":
+    out.flush()
+
 
 # Python version check
 ver = sys.version_info
