@@ -357,16 +357,17 @@ def _Init(args, gitc_init=False):
     dst = os.path.abspath(os.path.join(repodir, S_repo))
     _Clone(url, dst, opt.quiet, not opt.no_clone_bundle)
 
-    if not os.path.isfile('%s/repo' % dst):
-      _print("warning: '%s' does not look like a git-repo repository, is "
-             "REPO_URL set correctly?" % url, file=sys.stderr)
-
     if can_verify and not opt.no_repo_verify:
       rev = _Verify(dst, branch, opt.quiet)
     else:
       rev = 'refs/remotes/origin/%s^0' % branch
 
     _Checkout(dst, branch, rev, opt.quiet)
+
+    if not os.path.isfile(os.path.join(dst, 'repo')):
+      _print("warning: '%s' does not look like a git-repo repository, is "
+             "REPO_URL set correctly?" % url, file=sys.stderr)
+
   except CloneFailure:
     if opt.quiet:
       _print('fatal: repo init failed; run without --quiet to see why',
