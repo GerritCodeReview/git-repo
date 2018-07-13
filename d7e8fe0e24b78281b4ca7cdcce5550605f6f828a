@@ -22,6 +22,30 @@
       "revId": "d7e8fe0e24b78281b4ca7cdcce5550605f6f828a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d8937f9_cf73443b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2018-07-13T15:19:10Z",
+      "side": 1,
+      "message": "This isn\u0027t a bug in stable, only master:\n\nhttps://gerrit.googlesource.com/git-repo/+/27226e742d7e1a3d371531c19a3fdd91a4f9ab4a",
+      "parentUuid": "ca785d82_acab03eb",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 69
+      },
+      "revId": "d7e8fe0e24b78281b4ca7cdcce5550605f6f828a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
