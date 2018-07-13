@@ -34,6 +34,24 @@
       "revId": "51bdde34187a299f18c4605cbf406001ad471709",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b244e49a_12b883d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-07-13T15:18:27Z",
+      "side": 1,
+      "message": "To be clear, I\u0027m not trying to find out why it\u0027s a good change. I\u0027m trying to find out what the change does (or more precisely, intends to do).\n\nThis can be very helpful if it\u0027s found to cause a regression later, for example (which I don\u0027t expect, but it\u0027s just what we require for all commit messages). It\u0027s also useful for making the history usable by newcomers and distributors.",
+      "parentUuid": "767f52d2_6f6aff4a",
+      "revId": "51bdde34187a299f18c4605cbf406001ad471709",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
