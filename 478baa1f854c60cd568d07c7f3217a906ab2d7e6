@@ -16,6 +16,24 @@
       "revId": "478baa1f854c60cd568d07c7f3217a906ab2d7e6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71dd9d14_5b0324b4",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 367,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2018-07-13T14:14:57Z",
+      "side": 1,
+      "message": "Done. I didn\u0027t see a pattern between which is used when, so I thought you don\u0027t care.",
+      "parentUuid": "aeeec434_b4cff1c2",
+      "revId": "478baa1f854c60cd568d07c7f3217a906ab2d7e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
