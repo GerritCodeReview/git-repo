@@ -16,6 +16,24 @@
       "revId": "51bdde34187a299f18c4605cbf406001ad471709",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "767f52d2_6f6aff4a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2018-07-13T15:13:06Z",
+      "side": 1,
+      "message": "I\u0027ve slightly amended the (already quite verbose) commit message to hopefully make it even more clear why this is a good change.",
+      "parentUuid": "cd651ecf_a76bb33e",
+      "revId": "51bdde34187a299f18c4605cbf406001ad471709",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
