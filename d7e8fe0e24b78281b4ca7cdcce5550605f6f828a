@@ -70,6 +70,30 @@
       "revId": "d7e8fe0e24b78281b4ca7cdcce5550605f6f828a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "520e1ffc_29f96a46",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-07-13T15:20:31Z",
+      "side": 1,
+      "message": "Ah! Thanks for the missing context.\n\nCould the commit message mention that?",
+      "parentUuid": "868b138a_edc6926f",
+      "range": {
+        "startLine": 12,
+        "startChar": 13,
+        "endLine": 12,
+        "endChar": 69
+      },
+      "revId": "d7e8fe0e24b78281b4ca7cdcce5550605f6f828a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
