@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7415cc50_522faf76",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-07-20T01:29:36Z",
+      "side": 1,
+      "message": "i see what you\u0027re going for, but i think this is slightly ambiguous/unclear.  manifest_xml.py walks the parsed manifest nodes, and then for each node it performs the 1/2/3/4 steps below.  i.e. it does \"for nodes: for steps: ...\" rather than \"for steps: for nodes: ...\".\n\nhow about:\nSubsequently all nodes should be scanned in the order they appear in the file, and for each node, the following types are applied:",
+      "revId": "62cd89617f340d1f3d2875acd4770a80dad47a71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
