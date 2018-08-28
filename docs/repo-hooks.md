@@ -108,3 +108,45 @@ def main(project_list, worktree_list=None, **kwargs):
       kwargs: Leave this here for forward-compatibility.
     """
 ```
+
+### post-sync
+
+This hook runs after `repo sync`. It is used as a notification mechanism and has
+no effect on the result of the `repo sync` operation.
+
+The `post-sync.py` file should be defined like on this example:
+
+```py
+def main(project_revs, added_projects, deleted_projects, **kwargs):
+    """Main function invoked directly by repo.
+
+    We must use the name "main" as that is what repo requires.
+
+    Args:
+
+      On the all the parameters to this hook the projects are identified by a
+      string containing the path relative to the "repo root", being the
+      "repo root" the folder that containins the ".repo" folder.
+
+      project_revs: A dictionary of revision changes. The keys contain projects.
+          The values contain the old and new revisions. Notice that for projects
+          added on (after) the current "repo sync" call ".old" will equal to
+          "None".
+      added_projects: A list of projects that were added on (after) the current
+          "repo sync" call.
+      deleted_projects: A list of projects that were deleted on (after) the
+          current "repo sync" call.
+      kwargs: Leave this here for forward-compatibility.
+    """
+
+  # Implementation example
+  for project in added_projects:
+    print('added project: {}'.format(project))
+
+  for project in deleted_projects:
+    print('deleted project: {}'.format(project))
+
+  for project, revs in project_revs.items():
+    print('project: {}, old: {}, new: {}'.format(project, revs.old, revs.new))
+
+```
