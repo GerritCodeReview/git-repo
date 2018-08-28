@@ -1,0 +1,163 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ed0a47b_7b5c8667",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "space before the \"revision\"",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f915c00_b8b54031",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "two blank lines",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8da4f0e9_0783caf9",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "this should be above _project_hook_list, not below it",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3795d997_5042cdc9",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "no space after the \"\"\"",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd063fe8_96e78589",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "\"representing\"",
+      "range": {
+        "startLine": 90,
+        "startChar": 19,
+        "endLine": 90,
+        "endChar": 30
+      },
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5817ad90_32b23e36",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "no space before the (",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "485d876b_0b6e1507",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "there\u0027s no reason to use , here.  write it on two sep lines.",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95e28e1b_9e749ff0",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1398,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "no need for , here.  just write a series of assignments.\n\n revs.old \u003d revs.new \u003d head",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3757be25_da026eca",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 876,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-08-28T17:34:04Z",
+      "side": 1,
+      "message": "use single quotes\n\nuse \"error\", not \"ERROR\"",
+      "revId": "7594e163742b6987d2875f7b4a157b3f56b6cd91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
