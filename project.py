@@ -87,6 +87,10 @@ def sq(r):
 
 _project_hook_list = None
 
+class Change(object):
+  """ Simple class representic a change (e.g. can store SHAs)"""
+  def __init__ (self, old=None, new=None):
+    self.old, self.new = old, new
 
 def _ProjectHooks():
   """List the hooks present in the 'hooks' directory.
@@ -1320,7 +1324,7 @@ class Project(object):
       raise ManifestInvalidRevisionError('revision %s in %s not found' %
                                          (self.revisionExpr, self.name))
 
-  def Sync_LocalHalf(self, syncbuf, force_sync=False):
+  def Sync_LocalHalf(self, syncbuf, force_sync=False, revs=Change()):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
@@ -1332,6 +1336,7 @@ class Project(object):
     def _doff():
       self._FastForward(revid)
       self._CopyAndLinkFiles()
+      revs.new = revid
 
     head = self.work_git.GetHead()
     if head.startswith(R_HEADS):
@@ -1342,6 +1347,8 @@ class Project(object):
         head = None
     else:
       branch = None
+
+    revs.old, revs.new = head, head
 
     if branch is None or syncbuf.detach_head:
       # Currently on a detached HEAD.  The user is assumed to
@@ -1370,6 +1377,7 @@ class Project(object):
         syncbuf.fail(self, e)
         return
       self._CopyAndLinkFiles()
+      revs.new = revid
       return
 
     if head == revid:
@@ -1394,6 +1402,7 @@ class Project(object):
         syncbuf.fail(self, e)
         return
       self._CopyAndLinkFiles()
+      revs.new = revid
       return
 
     upstream_gain = self._revlist(not_rev(HEAD), revid)
@@ -1469,6 +1478,7 @@ class Project(object):
       def _dorebase():
         self._Rebase(upstream='%s^1' % last_mine, onto=revid)
         self._CopyAndLinkFiles()
+        revs.new = revid
       syncbuf.later2(self, _dorebase)
     elif local_changes:
       try:

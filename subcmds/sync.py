@@ -70,6 +70,8 @@ from git_refs import R_HEADS, HEAD
 import gitc_utils
 from project import Project
 from project import RemoteSpec
+from project import Change
+from project import RepoHook, HookError
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError, ManifestParseError
 from project import SyncBuffer
@@ -516,7 +518,7 @@ later is required to fix a server side protocol bug.
 
     return 0
 
-  def UpdateProjectList(self):
+  def UpdateProjectList(self, added=[], deleted=[]):
     new_project_paths = []
     for project in self.GetProjects(None, missing_ok=True):
       if project.relpath:
@@ -535,6 +537,7 @@ later is required to fix a server side protocol bug.
         if not path:
           continue
         if path not in new_project_paths:
+          deleted.append(path)
           # If the path has already been deleted, we don't need to do it
           gitdir = os.path.join(self.manifest.topdir, path, '.git')
           if os.path.exists(gitdir):
@@ -566,6 +569,7 @@ later is required to fix a server side protocol bug.
       fd.write('\n')
     finally:
       fd.close()
+    added += [x for x in new_project_paths if x not in old_project_paths]
     return 0
 
   def Execute(self, opt, args):
@@ -809,16 +813,21 @@ later is required to fix a server side protocol bug.
       # bail out now, we have no working tree
       return
 
-    if self.UpdateProjectList():
+    deleted_projects = []
+    added_projects = []
+    if self.UpdateProjectList(added_projects, deleted_projects):
       sys.exit(1)
 
     syncbuf = SyncBuffer(mp.config,
                          detach_head = opt.detach_head)
     pm = Progress('Syncing work tree', len(all_projects))
+    project_revs = {}
     for project in all_projects:
       pm.update()
       if project.worktree:
-        project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
+        revs = Change()
+        project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync, revs=revs)
+        project_revs[project.name] = revs
     pm.end()
     print(file=sys.stderr)
     if not syncbuf.Finish():
@@ -828,6 +837,20 @@ later is required to fix a server side protocol bug.
     # it now...
     if self.manifest.notice:
       print(self.manifest.notice)
+
+    for project in added_projects:
+      project_revs[project].old = None
+
+    hook = RepoHook('post-sync', self.manifest.repo_hooks_project,
+                    self.manifest.topdir,
+                    self.manifest.manifestProject.GetRemote('origin').url,
+                    abort_if_user_denies=True)
+    try:
+      hook.Run(True, project_revs=project_revs, added_projects=added_projects,
+               deleted_projects=deleted_projects)
+    except HookError as e:
+      print("ERROR: %s" % str(e), file=sys.stderr)
+      return
 
 def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = Wrapper()
