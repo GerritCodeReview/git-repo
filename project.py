@@ -84,6 +84,14 @@ def not_rev(r):
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
+
+class Change(object):
+  """ Simple class representing a change (e.g. can store SHAs)."""
+  def __init__(self, old=None, new=None):
+    self.old = old
+    self.new = new
+
+
 _project_hook_list = None
 
 
@@ -1363,7 +1371,8 @@ class Project(object):
       raise ManifestInvalidRevisionError('revision %s in %s not found' %
                                          (self.revisionExpr, self.name))
 
-  def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
+  def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False,
+                     revs=Change()):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
@@ -1375,6 +1384,7 @@ class Project(object):
     def _doff():
       self._FastForward(revid)
       self._CopyAndLinkFiles()
+      revs.new = revid
 
     def _dosubmodules():
       self._SyncSubmodules(quiet=True)
@@ -1388,6 +1398,9 @@ class Project(object):
         head = None
     else:
       branch = None
+
+    revs.old = head
+    revs.new = head
 
     if branch is None or syncbuf.detach_head:
       # Currently on a detached HEAD.  The user is assumed to
@@ -1418,6 +1431,7 @@ class Project(object):
         syncbuf.fail(self, e)
         return
       self._CopyAndLinkFiles()
+      revs.new = revid
       return
 
     if head == revid:
@@ -1444,6 +1458,7 @@ class Project(object):
         syncbuf.fail(self, e)
         return
       self._CopyAndLinkFiles()
+      revs.new = revid
       return
 
     upstream_gain = self._revlist(not_rev(HEAD), revid)
@@ -1523,6 +1538,7 @@ class Project(object):
 
       def _dorebase():
         self._Rebase(upstream='%s^1' % last_mine, onto=revid)
+        revs.new = revid
       syncbuf.later2(self, _dorebase)
       if submodules:
         syncbuf.later2(self, _dosubmodules)
@@ -1536,6 +1552,7 @@ class Project(object):
       except GitError as e:
         syncbuf.fail(self, e)
         return
+      revs.new = revid
     else:
       syncbuf.later1(self, _doff)
       if submodules:
