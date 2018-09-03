@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "8e6ad90b_4c353322",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1071136
+      },
+      "writtenOn": "2018-09-03T06:45:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1cc61c8_8ba08a1f",
+      "revId": "fa4567dcefebc08ef9c0e180bf2aaaffa397e7c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6a0f1d8c_335d0e61",
         "filename": "subcmds/sync.py",
         "patchSetId": 6
@@ -30,6 +48,24 @@
       "writtenOn": "2018-08-31T20:44:05Z",
       "side": 1,
       "message": "this True should be False",
+      "revId": "fa4567dcefebc08ef9c0e180bf2aaaffa397e7c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27aaea3c_a778e4d3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 1071136
+      },
+      "writtenOn": "2018-09-03T06:45:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a0f1d8c_335d0e61",
       "revId": "fa4567dcefebc08ef9c0e180bf2aaaffa397e7c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
