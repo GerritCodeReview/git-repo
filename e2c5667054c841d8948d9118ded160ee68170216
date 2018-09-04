@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "13531922_893f74e4",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-09-04T19:35:29Z",
+      "side": 1,
+      "message": "this could be clearer.  i think the keys are the \u003cproject\u003e path\u003d values right ?\n\nmaybe add an Examples section before the Args section so you can provide an example project_revs structure.\n\nthe |.old| and |.new| attributes might make sense to people who hack on repo internally, but for people implementing these hooks, they have no meaning.",
+      "revId": "e2c5667054c841d8948d9118ded160ee68170216",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d91450c4_5326185e",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-09-04T19:35:29Z",
+      "side": 1,
+      "message": "\"project relative paths\" here could also use some clarity.  see above.",
+      "revId": "e2c5667054c841d8948d9118ded160ee68170216",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0b1e73d6_ba38757c",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-09-04T19:35:29Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "e2c5667054c841d8948d9118ded160ee68170216",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e08cf9a_db6919a8",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-09-04T19:35:29Z",
+      "side": 1,
+      "message": "i think you edited this with vim or something ... the file seems to be missing a trailing newline",
+      "revId": "e2c5667054c841d8948d9118ded160ee68170216",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6379b5d7_2fe81875",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1375,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-09-04T19:35:29Z",
+      "side": 1,
+      "message": "i don\u0027t think this evaluates the way you expect.  this creates a Change object when the module is loaded, and that same object is used by default throughout the code.  you should change this to revs\u003dNone and then initialize it below:\n\n if revs is None:\n   revs \u003d Change()\n\nalso, calling it |revs| implies it\u0027s a multi-value item like a list or a tuple.  how about calling it |change| instead ?",
+      "revId": "e2c5667054c841d8948d9118ded160ee68170216",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
