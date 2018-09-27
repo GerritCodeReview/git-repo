@@ -446,7 +446,7 @@ class XmlManifest(object):
 
       local_dir = os.path.abspath(os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME))
       try:
-        for local_file in sorted(os.listdir(local_dir)):
+        for local_file in sorted(platform_utils.listdir(local_dir)):
           if local_file.endswith('.xml'):
             local = os.path.join(local_dir, local_file)
             nodes.append(self._ParseManifestXml(local, self.repodir))

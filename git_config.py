@@ -503,7 +503,7 @@ def close_ssh():
   d = ssh_sock(create=False)
   if d:
     try:
-      os.rmdir(os.path.dirname(d))
+      platform_utils.rmdir(os.path.dirname(d))
     except OSError:
       pass
 

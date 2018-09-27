@@ -103,7 +103,7 @@ def _ProjectHooks():
   if _project_hook_list is None:
     d = platform_utils.realpath(os.path.abspath(os.path.dirname(__file__)))
     d = os.path.join(d, 'hooks')
-    _project_hook_list = [os.path.join(d, x) for x in os.listdir(d)]
+    _project_hook_list = [os.path.join(d, x) for x in platform_utils.listdir(d)]
   return _project_hook_list
 
 
@@ -253,7 +253,7 @@ class _CopyFile(object):
           platform_utils.remove(dest)
         else:
           dest_dir = os.path.dirname(dest)
-          if not os.path.isdir(dest_dir):
+          if not platform_utils.isdir(dest_dir):
             os.makedirs(dest_dir)
         shutil.copy(src, dest)
         # make the file read-only
@@ -282,7 +282,7 @@ class _LinkFile(object):
           platform_utils.remove(absDest)
         else:
           dest_dir = os.path.dirname(absDest)
-          if not os.path.isdir(dest_dir):
+          if not platform_utils.isdir(dest_dir):
             os.makedirs(dest_dir)
         platform_utils.symlink(relSrc, absDest)
       except IOError:
@@ -302,7 +302,7 @@ class _LinkFile(object):
     else:
       # Entity doesn't exist assume there is a wild card
       absDestDir = self.abs_dest
-      if os.path.exists(absDestDir) and not os.path.isdir(absDestDir):
+      if os.path.exists(absDestDir) and not platform_utils.isdir(absDestDir):
         _error('Link error: src with wildcard, %s must be a directory',
                absDestDir)
       else:
@@ -750,7 +750,7 @@ class Project(object):
 
   @property
   def Exists(self):
-    return os.path.isdir(self.gitdir) and os.path.isdir(self.objdir)
+    return platform_utils.isdir(self.gitdir) and platform_utils.isdir(self.objdir)
 
   @property
   def CurrentBranch(self):
@@ -931,7 +931,7 @@ class Project(object):
       quiet:  If True then only print the project name.  Do not print
               the modified files, branch name, etc.
     """
-    if not os.path.isdir(self.worktree):
+    if not platform_utils.isdir(self.worktree):
       if output_redir is None:
         output_redir = sys.stdout
       print(file=output_redir)
@@ -2510,7 +2510,7 @@ class Project(object):
 
     to_copy = []
     if copy_all:
-      to_copy = os.listdir(gitdir)
+      to_copy = platform_utils.listdir(gitdir)
 
     dotgit = platform_utils.realpath(dotgit)
     for name in set(to_copy).union(to_symlink):
@@ -2529,7 +2529,7 @@ class Project(object):
           platform_utils.symlink(
               os.path.relpath(src, os.path.dirname(dst)), dst)
         elif copy_all and not platform_utils.islink(dst):
-          if os.path.isdir(src):
+          if platform_utils.isdir(src):
             shutil.copytree(src, dst)
           elif os.path.isfile(src):
             shutil.copy(src, dst)

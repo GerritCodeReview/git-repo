@@ -26,6 +26,7 @@ import itertools
 import os
 
 from color import Coloring
+import platform_utils
 
 class Status(PagedCommand):
   common = True
@@ -115,7 +116,7 @@ the following meanings:
     """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""
     status_header = ' --\t'
     for item in dirs:
-      if not os.path.isdir(item):
+      if not platform_utils.isdir(item):
         outstring.append(''.join([status_header, item]))
         continue
       if item in proj_dirs:
