@@ -41,6 +41,8 @@ CreateSymbolicLinkW.argtypes = (LPCWSTR,  # lpSymlinkFileName In
 # Symbolic link creation flags
 SYMBOLIC_LINK_FLAG_FILE = 0x00
 SYMBOLIC_LINK_FLAG_DIRECTORY = 0x01
+# symlink support for CreateSymbolicLink() starting with Windows 10 (1703, v10.0.14972)
+SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE = 0x02
 
 GetFileAttributesW = kernel32.GetFileAttributesW
 GetFileAttributesW.restype = DWORD
@@ -147,15 +149,21 @@ def _create_symlink(source, link_name, dwFlags):
   # On success, the function returns "1".
   # On error, the function returns some random value (e.g. 1280).
   # The best bet seems to use "GetLastError" and check for error/success.
-  CreateSymbolicLinkW(link_name, source, dwFlags)
+  CreateSymbolicLinkW(link_name, source, dwFlags | SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE)
   code = get_last_error()
   if code != ERROR_SUCCESS:
-    error_desc = FormatError(code).strip()
-    if code == ERROR_PRIVILEGE_NOT_HELD:
-      raise OSError(errno.EPERM, error_desc, link_name)
-    _raise_winerror(
-        code,
-        'Error creating symbolic link \"%s\"'.format(link_name))
+    # See https://github.com/golang/go/pull/24307/files#diff-b87bc12e4da2497308f9ef746086e4f0
+    # "the unprivileged create flag is unsupported below Windows 10 (1703, v10.0.14972).
+    # retry without it."
+    CreateSymbolicLinkW(link_name, source, dwFlags)
+    code = get_last_error()
+    if code != ERROR_SUCCESS:
+      error_desc = FormatError(code).strip()
+      if code == ERROR_PRIVILEGE_NOT_HELD:
+        raise OSError(errno.EPERM, error_desc, link_name)
+      _raise_winerror(
+          code,
+          'Error creating symbolic link \"%s\"'.format(link_name))
 
 
 def islink(path):
