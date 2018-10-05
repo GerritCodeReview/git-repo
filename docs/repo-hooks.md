@@ -24,7 +24,7 @@ repohooks project is updated and a hook is triggered.
 
 ## Manifest Settings
 
-For the full syntax, see the [repo manifest format](./manifest-format.txt).
+For the full syntax, see the [repo manifest format](./manifest-format.md).
 
 Here's a short example from
 [Android](https://android.googlesource.com/platform/manifest/+/master/default.xml).

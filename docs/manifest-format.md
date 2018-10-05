@@ -6,99 +6,103 @@ the directories that are visible and where they should be obtained
 from with git.
 
 The basic structure of a manifest is a bare Git repository holding
-a single 'default.xml' XML file in the top level directory.
+a single `default.xml` XML file in the top level directory.
 
 Manifests are inherently version controlled, since they are kept
 within a Git repository.  Updates to manifests are automatically
 obtained by clients during `repo sync`.
 
+[TOC]
+
 
 XML File Format
 ---------------
 
-A manifest XML file (e.g. 'default.xml') roughly conforms to the
+A manifest XML file (e.g. `default.xml`) roughly conforms to the
 following DTD:
 
-  <!DOCTYPE manifest [
-    <!ELEMENT manifest (notice?,
-                        remote*,
-                        default?,
-                        manifest-server?,
-                        remove-project*,
-                        project*,
-                        extend-project*,
-                        repo-hooks?,
-                        include*)>
+```xml
+<!DOCTYPE manifest [
+  <!ELEMENT manifest (notice?,
+                      remote*,
+                      default?,
+                      manifest-server?,
+                      remove-project*,
+                      project*,
+                      extend-project*,
+                      repo-hooks?,
+                      include*)>
 
-    <!ELEMENT notice (#PCDATA)>
+  <!ELEMENT notice (#PCDATA)>
 
-    <!ELEMENT remote EMPTY>
-    <!ATTLIST remote name         ID    #REQUIRED>
-    <!ATTLIST remote alias        CDATA #IMPLIED>
-    <!ATTLIST remote fetch        CDATA #REQUIRED>
-    <!ATTLIST remote pushurl      CDATA #IMPLIED>
-    <!ATTLIST remote review       CDATA #IMPLIED>
-    <!ATTLIST remote revision     CDATA #IMPLIED>
+  <!ELEMENT remote EMPTY>
+  <!ATTLIST remote name         ID    #REQUIRED>
+  <!ATTLIST remote alias        CDATA #IMPLIED>
+  <!ATTLIST remote fetch        CDATA #REQUIRED>
+  <!ATTLIST remote pushurl      CDATA #IMPLIED>
+  <!ATTLIST remote review       CDATA #IMPLIED>
+  <!ATTLIST remote revision     CDATA #IMPLIED>
 
-    <!ELEMENT default EMPTY>
-    <!ATTLIST default remote      IDREF #IMPLIED>
-    <!ATTLIST default revision    CDATA #IMPLIED>
-    <!ATTLIST default dest-branch CDATA #IMPLIED>
-    <!ATTLIST default upstream    CDATA #IMPLIED>
-    <!ATTLIST default sync-j      CDATA #IMPLIED>
-    <!ATTLIST default sync-c      CDATA #IMPLIED>
-    <!ATTLIST default sync-s      CDATA #IMPLIED>
-    <!ATTLIST default sync-tags   CDATA #IMPLIED>
+  <!ELEMENT default EMPTY>
+  <!ATTLIST default remote      IDREF #IMPLIED>
+  <!ATTLIST default revision    CDATA #IMPLIED>
+  <!ATTLIST default dest-branch CDATA #IMPLIED>
+  <!ATTLIST default upstream    CDATA #IMPLIED>
+  <!ATTLIST default sync-j      CDATA #IMPLIED>
+  <!ATTLIST default sync-c      CDATA #IMPLIED>
+  <!ATTLIST default sync-s      CDATA #IMPLIED>
+  <!ATTLIST default sync-tags   CDATA #IMPLIED>
 
-    <!ELEMENT manifest-server EMPTY>
-    <!ATTLIST manifest-server url CDATA #REQUIRED>
+  <!ELEMENT manifest-server EMPTY>
+  <!ATTLIST manifest-server url CDATA #REQUIRED>
 
-    <!ELEMENT project (annotation*,
-                       project*,
-                       copyfile*,
-                       linkfile*)>
-    <!ATTLIST project name        CDATA #REQUIRED>
-    <!ATTLIST project path        CDATA #IMPLIED>
-    <!ATTLIST project remote      IDREF #IMPLIED>
-    <!ATTLIST project revision    CDATA #IMPLIED>
-    <!ATTLIST project dest-branch CDATA #IMPLIED>
-    <!ATTLIST project groups      CDATA #IMPLIED>
-    <!ATTLIST project sync-c      CDATA #IMPLIED>
-    <!ATTLIST project sync-s      CDATA #IMPLIED>
-    <!ATTLIST default sync-tags   CDATA #IMPLIED>
-    <!ATTLIST project upstream CDATA #IMPLIED>
-    <!ATTLIST project clone-depth CDATA #IMPLIED>
-    <!ATTLIST project force-path CDATA #IMPLIED>
+  <!ELEMENT project (annotation*,
+                     project*,
+                     copyfile*,
+                     linkfile*)>
+  <!ATTLIST project name        CDATA #REQUIRED>
+  <!ATTLIST project path        CDATA #IMPLIED>
+  <!ATTLIST project remote      IDREF #IMPLIED>
+  <!ATTLIST project revision    CDATA #IMPLIED>
+  <!ATTLIST project dest-branch CDATA #IMPLIED>
+  <!ATTLIST project groups      CDATA #IMPLIED>
+  <!ATTLIST project sync-c      CDATA #IMPLIED>
+  <!ATTLIST project sync-s      CDATA #IMPLIED>
+  <!ATTLIST default sync-tags   CDATA #IMPLIED>
+  <!ATTLIST project upstream CDATA #IMPLIED>
+  <!ATTLIST project clone-depth CDATA #IMPLIED>
+  <!ATTLIST project force-path CDATA #IMPLIED>
 
-    <!ELEMENT annotation EMPTY>
-    <!ATTLIST annotation name  CDATA #REQUIRED>
-    <!ATTLIST annotation value CDATA #REQUIRED>
-    <!ATTLIST annotation keep  CDATA "true">
+  <!ELEMENT annotation EMPTY>
+  <!ATTLIST annotation name  CDATA #REQUIRED>
+  <!ATTLIST annotation value CDATA #REQUIRED>
+  <!ATTLIST annotation keep  CDATA "true">
 
-    <!ELEMENT copyfile EMPTY>
-    <!ATTLIST copyfile src  CDATA #REQUIRED>
-    <!ATTLIST copyfile dest CDATA #REQUIRED>
+  <!ELEMENT copyfile EMPTY>
+  <!ATTLIST copyfile src  CDATA #REQUIRED>
+  <!ATTLIST copyfile dest CDATA #REQUIRED>
 
-    <!ELEMENT linkfile EMPTY>
-    <!ATTLIST linkfile src CDATA #REQUIRED>
-    <!ATTLIST linkfile dest CDATA #REQUIRED>
+  <!ELEMENT linkfile EMPTY>
+  <!ATTLIST linkfile src CDATA #REQUIRED>
+  <!ATTLIST linkfile dest CDATA #REQUIRED>
 
-    <!ELEMENT extend-project EMPTY>
-    <!ATTLIST extend-project name CDATA #REQUIRED>
-    <!ATTLIST extend-project path CDATA #IMPLIED>
-    <!ATTLIST extend-project groups CDATA #IMPLIED>
-    <!ATTLIST extend-project revision CDATA #IMPLIED>
+  <!ELEMENT extend-project EMPTY>
+  <!ATTLIST extend-project name CDATA #REQUIRED>
+  <!ATTLIST extend-project path CDATA #IMPLIED>
+  <!ATTLIST extend-project groups CDATA #IMPLIED>
+  <!ATTLIST extend-project revision CDATA #IMPLIED>
 
-    <!ELEMENT remove-project EMPTY>
-    <!ATTLIST remove-project name  CDATA #REQUIRED>
+  <!ELEMENT remove-project EMPTY>
+  <!ATTLIST remove-project name  CDATA #REQUIRED>
 
-    <!ELEMENT repo-hooks EMPTY>
-    <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
-    <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
+  <!ELEMENT repo-hooks EMPTY>
+  <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
+  <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
 
-    <!ELEMENT include EMPTY>
-    <!ATTLIST include name CDATA #REQUIRED>
-  ]>
+  <!ELEMENT include EMPTY>
+  <!ATTLIST include name CDATA #REQUIRED>
+]>
+```
 
 A description of the elements and their attributes follows.
 
@@ -193,7 +197,7 @@ XML RPC service.
 
 The manifest server should implement the following RPC methods:
 
-  GetApprovedManifest(branch, target)
+    GetApprovedManifest(branch, target)
 
 Return a manifest in which each project is pegged to a known good revision
 for the current branch and target. This is used by repo sync when the
@@ -206,7 +210,7 @@ If one of those variables or both are not present, the program will call
 GetApprovedManifest without the target parameter and the manifest server
 should choose a reasonable default target.
 
-  GetManifest(tag)
+    GetManifest(tag)
 
 Return a manifest in which each project is pegged to the revision at
 the specified tag. This is used by repo sync when the --smart-tag option
@@ -227,7 +231,7 @@ Attribute `name`: A unique name for this project.  The project's
 name is appended onto its remote's fetch URL to generate the actual
 URL to configure the Git remote with.  The URL gets formed as:
 
-  ${remote_fetch}/${project_name}.git
+    ${remote_fetch}/${project_name}.git
 
 where ${remote_fetch} is the remote's fetch attribute and
 ${project_name} is the project's name attribute.  The suffix ".git"
@@ -326,7 +330,7 @@ Element copyfile
 
 Zero or more copyfile elements may be specified as children of a
 project element. Each element describes a src-dest pair of files;
-the "src" file will be copied to the "dest" place during 'repo sync'
+the "src" file will be copied to the "dest" place during `repo sync`
 command.
 "src" is project relative, "dest" is relative to the top of the tree.
 
@@ -366,18 +370,18 @@ files stored in `$TOP_DIR/.repo/local_manifests/*.xml`.
 
 For example:
 
-  $ ls .repo/local_manifests
-  local_manifest.xml
-  another_local_manifest.xml
+    $ ls .repo/local_manifests
+    local_manifest.xml
+    another_local_manifest.xml
 
-  $ cat .repo/local_manifests/local_manifest.xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <manifest>
-    <project path="manifest"
-             name="tools/manifest" />
-    <project path="platform-manifest"
-             name="platform/manifest" />
-  </manifest>
+    $ cat .repo/local_manifests/local_manifest.xml
+    <?xml version="1.0" encoding="UTF-8"?>
+    <manifest>
+      <project path="manifest"
+               name="tools/manifest" />
+      <project path="platform-manifest"
+               name="platform/manifest" />
+    </manifest>
 
 Users may add projects to the local manifest(s) prior to a `repo sync`
 invocation, instructing repo to automatically download and manage
