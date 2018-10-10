@@ -129,7 +129,7 @@ repo will make use of only the command line option.
 References
 ----------
 
-Gerrit Code Review:  http://code.google.com/p/gerrit/
+Gerrit Code Review:  https://www.gerritcodereview.com/
 
 """
 
