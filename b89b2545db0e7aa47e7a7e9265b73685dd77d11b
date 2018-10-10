@@ -16,6 +16,24 @@
       "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad8b9123_f33499be",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-10T05:12:33Z",
+      "side": 1,
+      "message": "afaik, there is no issue tracker for git-repo anymore much like there is no dedicated project\n\ni don\u0027t think it\u0027ll be a big deal to piggy back off the gerrit tracker by getting a dedicated \"repo\" or \"git-repo\" component there short of any other alternative\n\nor you want to leave it a link to the old read-only tracker ?",
+      "parentUuid": "ad18930f_488040fe",
+      "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
