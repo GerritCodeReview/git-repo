@@ -34,6 +34,24 @@
       "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ea496b57_7e842faa",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-10-10T05:17:58Z",
+      "side": 1,
+      "message": "repo issues definitely don\u0027t belong in the gerrit bug tracker. It\u0027s been an issue in the past that people use the \"report an issue\" link to report issues in projects that use gerrit instead of in gerrit itself, which wastes a lot of triaging time. Including repo bugs there too would muddy the waters even more, so I\u0027m pretty sure the project\u0027s owners won\u0027t accept it.\n\nMaybe the chromeos issue tracker could take on the repo project?\n\nIf not, then a link to the archived bugs is better than nothing, I suppose.",
+      "parentUuid": "ad8b9123_f33499be",
+      "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
