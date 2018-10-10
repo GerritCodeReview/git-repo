@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3fe9804e_ad9b3380",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-10T05:25:13Z",
+      "side": 1,
+      "message": "i was maintaining the existing style.  compare the TOC of the two:\n\n* https://gerrit.googlesource.com/git-repo/+/master/docs/manifest-format.md\n* https://gerrit.googlesource.com/git-repo/+/refs/changes/11/199311/1/docs/manifest-format.md\n\nif we think it should be nested, i can fix that while i\u0027m here.  guessing you want:\n\n* repo Manifest Format\n  * XML File Format\n    * Element manifest\n    * Element remote\n    * Element default\n    * Element manifest-server\n    * Element project\n    * Element extend-project\n    * Element annotation\n    * Element copyfile\n    * Element linkfile\n    * Element remove-project\n    * Element include\n  * Local Manifests",
+      "parentUuid": "42d78ad6_aa6b6639",
+      "revId": "99f9b894aa703e8c4c1ddf2d032a69d650ef4a56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ee95cbd1_c7fb5f7e",
         "filename": "docs/manifest-format.md",
         "patchSetId": 1
