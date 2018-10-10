@@ -67,8 +67,7 @@ class Branches(Command):
 
 Summarizes the currently available topic branches.
 
-Branch Display
---------------
+# Branch Display
 
 The branch display output by this command is organized into four
 columns of information; for example:

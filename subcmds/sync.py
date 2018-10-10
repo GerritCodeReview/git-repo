@@ -155,8 +155,7 @@ exist locally.
 The --prune option can be used to remove any refs that no longer
 exist on the remote.
 
-SSH Connections
----------------
+# SSH Connections
 
 If at least one project remote URL uses an SSH connection (ssh://,
 git+ssh://, or user@host:path syntax) repo will automatically
@@ -170,8 +169,7 @@ environment variable to 'ssh'.  For example:
   export GIT_SSH=ssh
   %prog
 
-Compatibility
-~~~~~~~~~~~~~
+# Compatibility
 
 This feature is automatically disabled on Windows, due to the lack
 of UNIX domain socket support.
