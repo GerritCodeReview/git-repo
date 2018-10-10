@@ -1,5 +1,4 @@
-repo Manifest Format
-====================
+# repo Manifest Format
 
 A repo manifest describes the structure of a repo client; that is
 the directories that are visible and where they should be obtained
@@ -15,8 +14,7 @@ obtained by clients during `repo sync`.
 [TOC]
 
 
-XML File Format
----------------
+## XML File Format
 
 A manifest XML file (e.g. `default.xml`) roughly conforms to the
 following DTD:
@@ -107,14 +105,12 @@ following DTD:
 A description of the elements and their attributes follows.
 
 
-Element manifest
-----------------
+## Element manifest
 
 The root element of the file.
 
 
-Element remote
---------------
+## Element remote
 
 One or more remote elements may be specified.  Each remote element
 specifies a Git URL shared by one or more projects and (optionally)
@@ -149,8 +145,7 @@ Attribute `revision`: Name of a Git branch (e.g. `master` or
 `refs/heads/master`). Remotes with their own revision will override
 the default revision.
 
-Element default
----------------
+## Element default
 
 At most one default element may be specified.  Its remote and
 revision attributes are used when a project element does not
@@ -188,8 +183,7 @@ branch (specified in the `revision` attribute) rather than
 the other ref tags.
 
 
-Element manifest-server
------------------------
+## Element manifest-server
 
 At most one manifest-server may be specified. The url attribute
 is used to specify the URL of a manifest server, which is an
@@ -217,8 +211,7 @@ the specified tag. This is used by repo sync when the --smart-tag option
 is given.
 
 
-Element project
----------------
+## Element project
 
 One or more project elements may be specified.  Each element
 describes a single Git repository to be cloned into the repo
@@ -295,8 +288,7 @@ rather than the `name` attribute.  This attribute only applies to the
 local mirrors syncing, it will be ignored when syncing the projects in a
 client working directory.
 
-Element extend-project
-----------------------
+## Element extend-project
 
 Modify the attributes of the named project.
 
@@ -314,8 +306,7 @@ belongs.  Same syntax as the corresponding element of `project`.
 Attribute `revision`: If specified, overrides the revision of the original
 project.  Same syntax as the corresponding element of `project`.
 
-Element annotation
-------------------
+## Element annotation
 
 Zero or more annotation elements may be specified as children of a
 project element. Each element describes a name-value pair that will be
@@ -325,8 +316,7 @@ prefixed with REPO__.  In addition, there is an optional attribute
 "false".  This attribute determines whether or not the annotation will
 be kept when exported with the manifest subcommand.
 
-Element copyfile
-----------------
+## Element copyfile
 
 Zero or more copyfile elements may be specified as children of a
 project element. Each element describes a src-dest pair of files;
@@ -334,14 +324,12 @@ the "src" file will be copied to the "dest" place during `repo sync`
 command.
 "src" is project relative, "dest" is relative to the top of the tree.
 
-Element linkfile
-----------------
+## Element linkfile
 
 It's just like copyfile and runs at the same time as copyfile but
 instead of copying it creates a symlink.
 
-Element remove-project
-----------------------
+## Element remove-project
 
 Deletes the named project from the internal manifest table, possibly
 allowing a subsequent project element in the same manifest file to
@@ -351,8 +339,7 @@ This element is mostly useful in a local manifest file, where
 the user can remove a project, and possibly replace it with their
 own definition.
 
-Element include
----------------
+## Element include
 
 This element provides the capability of including another manifest
 file into the originating manifest.  Normal rules apply for the
@@ -362,8 +349,7 @@ Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
 
 
-Local Manifests
-===============
+# Local Manifests
 
 Additional remotes and projects may be added through local manifest
 files stored in `$TOP_DIR/.repo/local_manifests/*.xml`.

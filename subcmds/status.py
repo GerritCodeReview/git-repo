@@ -49,8 +49,7 @@ includes deeper items.  For example, if dir/subdir/proj1 and
 dir/subdir/proj2 are repo projects, dir/subdir/proj3 will be shown
 if it is not known to repo.
 
-Status Display
---------------
+# Status Display
 
 The status display is organized into three columns of information,
 for example if the file 'subcmds/status.py' is modified in the

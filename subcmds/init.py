@@ -67,8 +67,7 @@ resumeable bundle file on a content delivery network. This
 may be necessary if there are problems with the local Python
 HTTP client or proxy configuration, but the Git binary works.
 
-Switching Manifest Branches
----------------------------
+# Switching Manifest Branches
 
 To switch to another manifest branch, `repo init -b otherbranch`
 may be used in an existing client.  However, as this only updates the

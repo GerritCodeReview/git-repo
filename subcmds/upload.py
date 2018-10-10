@@ -78,8 +78,7 @@ added to the respective list of users, and emails are sent to any
 new users.  Users passed as --reviewers must already be registered
 with the code review system, or the upload will fail.
 
-Configuration
--------------
+# Configuration
 
 review.URL.autoupload:
 
@@ -126,8 +125,7 @@ is set to "true" then repo will assume you always want the equivalent
 of the -t option to the repo command. If unset or set to "false" then
 repo will make use of only the command line option.
 
-References
-----------
+# References
 
 Gerrit Code Review:  http://code.google.com/p/gerrit/
 
