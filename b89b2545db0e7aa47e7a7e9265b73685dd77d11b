@@ -52,6 +52,24 @@
       "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bd984032_ca8ab704",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-10T05:19:27Z",
+      "side": 1,
+      "message": "Back when Gerrit\u0027s issue tracker migrated from Google Code to Monorail, I asked if there was also a plan to migrate repo\u0027s.  The answer was no. Later in that same discussion it was suggested to use the tracker in the mirror on github, but nothing happened.\n\nSee https://groups.google.com/d/msg/repo-discuss/4O0hDdCDYZE/uQ1CfB9tAAAJ",
+      "parentUuid": "ad8b9123_f33499be",
+      "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
