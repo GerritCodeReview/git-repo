@@ -16,6 +16,24 @@
       "revId": "3891b7519d35b6bac3e81744c846ca2ed0bd1be2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c39eb55_0dd4d390",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-10T04:53:14Z",
+      "side": 1,
+      "message": "can do.  will have to update the help code and existing help text though, so i\u0027ll do another CL.",
+      "parentUuid": "3d685104_61337eb2",
+      "revId": "3891b7519d35b6bac3e81744c846ca2ed0bd1be2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
