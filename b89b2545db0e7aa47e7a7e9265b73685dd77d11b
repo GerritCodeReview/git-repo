@@ -106,6 +106,24 @@
       "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "64cd199e_0505a7bc",
+        "filename": "README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-10-10T05:40:16Z",
+      "side": 1,
+      "message": "Oh! If you\u0027re offering to handle triage, then using the Gerrit tracker sounds good to me.\n\nI\u0027ll poke dborowitz and hanwen to find out what they think.",
+      "parentUuid": "6f352b3c_c01500d1",
+      "revId": "b89b2545db0e7aa47e7a7e9265b73685dd77d11b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
