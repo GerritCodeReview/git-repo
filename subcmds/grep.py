@@ -33,8 +33,7 @@ class Grep(PagedCommand):
   helpDescription = """
 Search for the specified patterns in all project files.
 
-Boolean Options
----------------
+# Boolean Options
 
 The following options can appear as often as necessary to express
 the pattern to locate:
@@ -47,8 +46,7 @@ in order to scan multiple trees.  If the same file matches in more
 than one tree, only the first result is reported, prefixed by the
 revision name it was found under.
 
-Examples
--------
+# Examples
 
 Look for a line that has '#define' and either 'MAX_PATH or 'PATH_MAX':
 
