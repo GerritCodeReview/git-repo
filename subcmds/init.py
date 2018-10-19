@@ -61,6 +61,10 @@ directory use as much data as possible from the local reference
 directory when fetching from the server. This will make the sync
 go a lot faster by reducing data traffic on the network.
 
+The --dissociate borrow objects from --reference only to reduce
+network transfer, and stop borrowing from them after first clone
+is made by making necessary local copies of borrowed objects.
+
 The --no-clone-bundle option disables any attempt to use
 $URL/clone.bundle to bootstrap a new Git repository from a
 resumeable bundle file on a content delivery network. This
@@ -103,6 +107,9 @@ to update the working directory files.
     g.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
+    g.add_option('--dissociate',
+                 dest='dissociate', action='store_true',
+                 help='dissociate from reference mirrors after clone')
     g.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
@@ -218,6 +225,9 @@ to update the working directory files.
 
     if opt.reference:
       m.config.SetString('repo.reference', opt.reference)
+
+    if opt.reference:
+      m.config.SetString('repo.dissociate', 'true')
 
     if opt.archive:
       if is_new:
