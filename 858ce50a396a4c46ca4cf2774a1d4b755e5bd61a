@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "19449601_79bbe1e2",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1313,
+      "author": {
+        "id": 1073560
+      },
+      "writtenOn": "2018-10-19T18:49:36Z",
+      "side": 1,
+      "message": "Done. Split it in two lines in same manner as in `_InitGitDir` function.",
+      "parentUuid": "9d04bf2d_275ab1d2",
+      "revId": "858ce50a396a4c46ca4cf2774a1d4b755e5bd61a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9d7d8537_734ffd5a",
         "filename": "subcmds/init.py",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2018-10-19T16:38:21Z",
       "side": 1,
       "message": "the grammar is off here",
+      "revId": "858ce50a396a4c46ca4cf2774a1d4b755e5bd61a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bc871b74_d4506337",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1073560
+      },
+      "writtenOn": "2018-10-19T18:49:36Z",
+      "side": 1,
+      "message": "I tried to fix it. Now it looks better?",
+      "parentUuid": "9d7d8537_734ffd5a",
       "revId": "858ce50a396a4c46ca4cf2774a1d4b755e5bd61a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
