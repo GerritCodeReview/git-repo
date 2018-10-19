@@ -1310,6 +1310,16 @@ class Project(object):
                               submodules=submodules)):
       return False
 
+    mp = self.manifest.manifestProject
+    dissociate = mp.config.GetBoolean('repo.dissociate')
+    if dissociate:
+      alternates_file = os.path.join(self.gitdir, 'objects/info/alternates')
+      if os.path.exists(alternates_file):
+        cmd = ['repack', '-a', '-d']
+        if GitCommand(self, cmd, bare=True).Wait() != 0:
+          return False
+        platform_utils.remove(alternates_file)
+
     if self.worktree:
       self._InitMRef()
     else:
