@@ -190,6 +190,9 @@ group.add_option('--mirror',
 group.add_option('--reference',
                  dest='reference',
                  help='location of mirror directory', metavar='DIR')
+group.add_option('--dissociate',
+                 dest='dissociate', action='store_true',
+                 help='dissociate from reference mirrors after clone')
 group.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
