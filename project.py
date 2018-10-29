@@ -1174,18 +1174,21 @@ class Project(object):
 
     ref_spec = '%s:refs/%s/%s' % (R_HEADS + branch.name, upload_type,
                                   dest_branch)
+
+    rp = []
     if auto_topic:
-      ref_spec = ref_spec + '/' + branch.name
+      rp = rp + ['topic=' % branch.name]
 
     if not url.startswith('ssh://'):
-      rp = ['r=%s' % p for p in people[0]] + \
+      rp = rp + ['r=%s' % p for p in people[0]] + \
            ['cc=%s' % p for p in people[1]]
       if private:
         rp = rp + ['private']
       if wip:
         rp = rp + ['wip']
-      if rp:
-        ref_spec = ref_spec + '%' + ','.join(rp)
+
+    if rp:
+      ref_spec = ref_spec + '%' + ','.join(rp)
     cmd.append(ref_spec)
 
     if GitCommand(self, cmd, bare=True).Wait() != 0:
