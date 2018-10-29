@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "86d92caf_36bbc11a",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1179,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-29T23:46:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure why it\u0027s like that, but fixing it (if it is indeed wrong) is not within the scope of this change.",
+      "parentUuid": "65cbe57e_f85d8ebe",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c15562cd_ed562b68",
         "filename": "project.py",
         "patchSetId": 1
@@ -59,6 +77,48 @@
     },
     {
       "key": {
+        "uuid": "4426cbb6_203b2a92",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-29T23:46:08Z",
+      "side": 1,
+      "message": "I was going to do that, but then the rest of the code uses this form.  See comment below.",
+      "parentUuid": "8a4dff94_128a2004",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "36024ec3_4be4aea9",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-29T23:46:08Z",
+      "side": 1,
+      "message": "I actually intended to use string formatting but forgot to add the %s.\n\nEither way, this is wrong.",
+      "parentUuid": "c15562cd_ed562b68",
+      "range": {
+        "startLine": 1180,
+        "startChar": 26,
+        "endLine": 1180,
+        "endChar": 27
+      },
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "db9a2fa2_f326ff38",
         "filename": "project.py",
         "patchSetId": 1
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "6cfd39e5_8edb9499",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-29T23:46:08Z",
+      "side": 1,
+      "message": "I agree, it would be cleaner, but I didn\u0027t want to add changes that were unrelated to the fix.  I\u0027d rather clean this up in a separate commit.\n\nI\u0027ll do that and then rebase this change on top of it.",
+      "parentUuid": "db9a2fa2_f326ff38",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5224fbdc_6a9102b8",
         "filename": "project.py",
         "patchSetId": 1
@@ -87,6 +165,24 @@
       "writtenOn": "2018-10-29T23:34:48Z",
       "side": 1,
       "message": "not a new issue, but i vaguely recall gerrit requiring private/wip flags being last.  probably worth a comment.",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a825878_d6c300ae",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1185,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-29T23:46:08Z",
+      "side": 1,
+      "message": "Never heard of that, but I\u0027ll check.",
+      "parentUuid": "5224fbdc_6a9102b8",
       "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
