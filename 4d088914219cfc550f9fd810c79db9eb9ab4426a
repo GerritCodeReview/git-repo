@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65cbe57e_f85d8ebe",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1179,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-29T23:34:48Z",
+      "side": 1,
+      "message": "why do we expose this for non-ssh, but block all the logic below for ssh ?  seems like, if the remote is gerrit, the transport shouldn\u0027t matter and we should be appending the % options all the time ?",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c15562cd_ed562b68",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-29T23:34:48Z",
+      "side": 1,
+      "message": "guessing you meant to use + here instead of %",
+      "range": {
+        "startLine": 1180,
+        "startChar": 26,
+        "endLine": 1180,
+        "endChar": 27
+      },
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a4dff94_128a2004",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-29T23:34:48Z",
+      "side": 1,
+      "message": "might it be cleaner to write one of:\n\n rp +\u003d [\u0027topic\u003d\u0027 + branch.name]\n rp.append(\u0027topic\u003d\u0027 + branch.name)\n\nsame for below (using .extend where appropriate)",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db9a2fa2_f326ff38",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-29T23:34:48Z",
+      "side": 1,
+      "message": "seems like this would be cleaner as two sep statements\n\n rp +\u003d [\u0027r\u003d%s\u0027 % p for p in people[0]]\n rp +\u003d [\u0027cc\u003d%s\u0027 % p for p in people[1]]",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5224fbdc_6a9102b8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1185,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-29T23:34:48Z",
+      "side": 1,
+      "message": "not a new issue, but i vaguely recall gerrit requiring private/wip flags being last.  probably worth a comment.",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
