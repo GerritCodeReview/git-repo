@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "b5ff6ec1_91ae2359",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1165,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-30T03:13:28Z",
+      "side": 1,
+      "message": "Options are getting set here for SSH.",
+      "range": {
+        "startLine": 1154,
+        "startChar": 4,
+        "endLine": 1165,
+        "endChar": 0
+      },
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "65cbe57e_f85d8ebe",
         "filename": "project.py",
         "patchSetId": 1
@@ -31,6 +54,24 @@
       "side": 1,
       "message": "I\u0027m not sure why it\u0027s like that, but fixing it (if it is indeed wrong) is not within the scope of this change.",
       "parentUuid": "65cbe57e_f85d8ebe",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c1cc5378_bb021944",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1179,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-10-30T03:13:28Z",
+      "side": 1,
+      "message": "Having looked at this a bit closer, it turns out that the options are being set differently for http and ssh (see L1154 above).  See 45d21685b93f80b67239849b2d2cfe6b217e335a for the context.\n\nThis means that the way I\u0027ve fixed it here will probably not work as expected for SSH pushes.\n\nI guess it also means that the WIP and private options will not work for SSH since they\u0027re only getting set in the HTTP case.",
+      "parentUuid": "86d92caf_36bbc11a",
       "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
