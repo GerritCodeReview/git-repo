@@ -153,6 +153,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-p', '--private',
                  action='store_true', dest='private', default=False,
                  help='If specified, upload as a private change.')
+    p.add_option('-s', '--silent',
+                 action='store_true', dest='silent', default=False,
+                 help='If specified, do not send email on upload.')
     p.add_option('-w', '--wip',
                  action='store_true', dest='wip', default=False,
                  help='If specified, upload as a work-in-progress change.')
@@ -391,6 +394,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                auto_topic=opt.auto_topic,
                                draft=opt.draft,
                                private=opt.private,
+                               silent=opt.silent,
                                wip=opt.wip,
                                dest_branch=destination,
                                validate_certs=opt.validate_certs,
