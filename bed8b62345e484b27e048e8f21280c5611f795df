@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e5169429_789a734b",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-31T22:52:21Z",
+      "side": 1,
+      "message": "docstring style says the first line should fit on one line, and more content should be in a sep paragraph.  like we have with walk below.",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec033f51_1da03d2b",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-31T22:52:21Z",
+      "side": 1,
+      "message": "the trailing \"\"\" should be on the next line",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a5828d90_19a1b9d5",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-31T22:52:21Z",
+      "side": 1,
+      "message": "the trailing \"\"\" should be on the next line",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "84f6bc9e_6061917c",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-31T22:52:21Z",
+      "side": 1,
+      "message": "should be split up better so first line is standalone",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d962270_cf6d361b",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-31T22:52:21Z",
+      "side": 1,
+      "message": "the trailing \"\"\" should be on the next line",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7064bbef_aa53865d",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-31T22:52:21Z",
+      "side": 1,
+      "message": "missing docstring",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60f1a672_cfb03d13",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-10-31T22:52:21Z",
+      "side": 1,
+      "message": "please don\u0027t use deprecated py2 syntax.  this should be:\n\n except error as err:\n\nthat said, where is \"error\" defined ?  there is no builtin that i\u0027m aware of, and there are no imports/globals, and there\u0027s no func args/locals above this point.  so does this code actually work ?",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
