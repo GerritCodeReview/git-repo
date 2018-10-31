@@ -176,6 +176,7 @@ class ReviewableBranch(object):
                       auto_topic=False,
                       draft=False,
                       private=False,
+                      notify=None,
                       wip=False,
                       dest_branch=None,
                       validate_certs=True,
@@ -185,6 +186,7 @@ class ReviewableBranch(object):
                                  auto_topic=auto_topic,
                                  draft=draft,
                                  private=private,
+                                 notify=notify,
                                  wip=wip,
                                  dest_branch=dest_branch,
                                  validate_certs=validate_certs,
@@ -1118,6 +1120,7 @@ class Project(object):
                       auto_topic=False,
                       draft=False,
                       private=False,
+                      notify=None,
                       wip=False,
                       dest_branch=None,
                       validate_certs=True,
@@ -1174,6 +1177,8 @@ class Project(object):
 
     opts = ['r=%s' % p for p in people[0]]
     opts += ['cc=%s' % p for p in people[1]]
+    if notify:
+      opts += ['notify=' + notify]
     if private:
       opts += ['private']
     if wip:
