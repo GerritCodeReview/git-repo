@@ -176,6 +176,7 @@ class ReviewableBranch(object):
                       auto_topic=False,
                       draft=False,
                       private=False,
+                      notify=None,
                       wip=False,
                       dest_branch=None,
                       validate_certs=True,
@@ -185,6 +186,7 @@ class ReviewableBranch(object):
                                  auto_topic=auto_topic,
                                  draft=draft,
                                  private=private,
+                                 notify=notify,
                                  wip=wip,
                                  dest_branch=dest_branch,
                                  validate_certs=validate_certs,
@@ -1118,6 +1120,7 @@ class Project(object):
                       auto_topic=False,
                       draft=False,
                       private=False,
+                      notify=None,
                       wip=False,
                       dest_branch=None,
                       validate_certs=True,
@@ -1178,6 +1181,8 @@ class Project(object):
       opts += ['private']
     if wip:
       opts += ['wip']
+    if notify:
+      opts += ['notify=' + notify]
     if opts:
       ref_spec = ref_spec + '%' + ','.join(opts)
     cmd.append(ref_spec)
