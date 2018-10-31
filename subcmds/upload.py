@@ -150,6 +150,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-d', '--draft',
                  action='store_true', dest='draft', default=False,
                  help='If specified, upload as a draft.')
+    p.add_option('--ne', '--no-emails',
+                 action='store_false', dest='notify', default=True,
+                 help='If specified, do not send emails on upload.')
     p.add_option('-p', '--private',
                  action='store_true', dest='private', default=False,
                  help='If specified, upload as a private change.')
@@ -391,6 +394,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                auto_topic=opt.auto_topic,
                                draft=opt.draft,
                                private=opt.private,
+                               notify=None if opt.notify else 'NONE',
                                wip=opt.wip,
                                dest_branch=destination,
                                validate_certs=opt.validate_certs,
