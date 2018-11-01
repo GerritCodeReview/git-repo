@@ -140,6 +140,24 @@
     },
     {
       "key": {
+        "uuid": "a9a98f8e_8368891c",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-01T03:58:19Z",
+      "side": 1,
+      "message": "imo even internal funcs need docstrings.  they can still be non-trivial even if they\u0027re internal-only which makes it hard to read/understand after the fact.\n\nin this case, a docstring just like \"\"\"Windows implementation of os.walk().\"\"\" would be sufficient as it\u0027s clear where to find details.",
+      "parentUuid": "49de2563_e3584f85",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "60f1a672_cfb03d13",
         "filename": "platform_utils.py",
         "patchSetId": 3
