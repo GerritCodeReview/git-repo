@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4a150420_4af78b6f",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-11-01T02:56:45Z",
+      "side": 1,
+      "message": "docstrings are pretty inconsistent throughout the project. I can\u0027t remember if I\u0027ve attempted to clean them up before.",
+      "parentUuid": "e5169429_789a734b",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ec033f51_1da03d2b",
         "filename": "platform_utils.py",
         "patchSetId": 3
@@ -104,6 +122,24 @@
     },
     {
       "key": {
+        "uuid": "49de2563_e3584f85",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-11-01T02:56:45Z",
+      "side": 1,
+      "message": "This is a private/internal method, so I wouldn\u0027t expect a docstring.",
+      "parentUuid": "7064bbef_aa53865d",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "60f1a672_cfb03d13",
         "filename": "platform_utils.py",
         "patchSetId": 3
@@ -118,6 +154,24 @@
       "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9955a13e_d731fa76",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-11-01T02:56:45Z",
+      "side": 1,
+      "message": "Fixed in https://gerrit-review.googlesource.com/c/git-repo/+/202490",
+      "parentUuid": "60f1a672_cfb03d13",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
