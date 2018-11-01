@@ -16,6 +16,24 @@
       "revId": "8291cd29654c25a91f2a5038b6b0fcd609105ff6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b4192888_01f91c37",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1014182
+      },
+      "writtenOn": "2018-11-01T22:28:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d4cb2910_76e81b1f",
+      "revId": "8291cd29654c25a91f2a5038b6b0fcd609105ff6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
