@@ -313,7 +313,7 @@ def walk(top, topdown=True, onerror=None, followlinks=False):
 def _walk_windows_impl(top, topdown, onerror, followlinks):
   try:
     names = listdir(top)
-  except error, err:
+  except Exception as err:
     if onerror is not None:
       onerror(err)
     return
