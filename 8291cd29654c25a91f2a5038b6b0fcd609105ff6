@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d4cb2910_76e81b1f",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-01T22:16:03Z",
+      "side": 1,
+      "message": "this should be:\n\n action\u003d\u0027store_false\u0027, dest\u003d\u0027emails\u0027, default\u003dTrue,\n\nor maybe dest\u003d\u0027notify\u0027\n\nthe point being that negative variables are hard to work with.  \"if not opt.email\" is trivial to digest vs \"if not opts.no_email\" ... you have to read that three times over.",
+      "revId": "8291cd29654c25a91f2a5038b6b0fcd609105ff6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
