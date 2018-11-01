@@ -158,6 +158,24 @@
     },
     {
       "key": {
+        "uuid": "3c248dd9_e3307dd3",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-11-01T04:52:02Z",
+      "side": 1,
+      "message": "Fair enough.  As I said in the comment above though, the whole project has inconsistent and missing docstrings throughout.  I don\u0027t have time now to clean them up.\n\nhttp://paste.openstack.org/show/733750/",
+      "parentUuid": "a9a98f8e_8368891c",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "60f1a672_cfb03d13",
         "filename": "platform_utils.py",
         "patchSetId": 3
