@@ -176,6 +176,24 @@
     },
     {
       "key": {
+        "uuid": "519e67d1_cf5db44c",
+        "filename": "platform_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-02T19:20:15Z",
+      "side": 1,
+      "message": "sure, it\u0027d be unreasonable to ask you to sort all that out",
+      "parentUuid": "3c248dd9_e3307dd3",
+      "revId": "bed8b62345e484b27e048e8f21280c5611f795df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "60f1a672_cfb03d13",
         "filename": "platform_utils.py",
         "patchSetId": 3
