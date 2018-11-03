@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ee7607ad_e4576600",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1189,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-03T21:38:13Z",
+      "side": 1,
+      "message": "there\u0027s no need for these to be sep strings",
+      "range": {
+        "startLine": 1189,
+        "startChar": 30,
+        "endLine": 1189,
+        "endChar": 46
+      },
+      "revId": "4cf65f20e5d75f7b0be5537ff0f765af05bb16c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
