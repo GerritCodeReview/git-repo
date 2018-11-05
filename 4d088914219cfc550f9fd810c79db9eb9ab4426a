@@ -78,6 +78,24 @@
     },
     {
       "key": {
+        "uuid": "081500b1_16d1bd09",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1179,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-11-05T21:25:33Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/git-repo/+/202970 should fix it. See the commit message there for caveats.",
+      "parentUuid": "c1cc5378_bb021944",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c15562cd_ed562b68",
         "filename": "project.py",
         "patchSetId": 1
