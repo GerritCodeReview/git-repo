@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7c088d0e_ea609886",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-05T21:31:44Z",
+      "side": 1,
+      "message": "since we\u0027re changing this line already, is it too much to change the syntax slightly ?\n\n opts +\u003d [\u0027wip\u0027]",
+      "revId": "ca810bca557d0eab01a344dfe1366139a49e6de4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b144cef_cbf573a9",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-05T21:31:44Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "ca810bca557d0eab01a344dfe1366139a49e6de4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
