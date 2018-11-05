@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "0e21ce26_b408b8e1",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-11-05T21:24:13Z",
+      "side": 1,
+      "message": "Oh, good catch. That means the notify option isn\u0027t being passed over ssh, which seems problematic.",
+      "parentUuid": "6c4c6590_acf2141f",
+      "range": {
+        "startLine": 1183,
+        "startChar": 4,
+        "endLine": 1183,
+        "endChar": 36
+      },
+      "revId": "29367e03e348bc8c9c09dcf9e41adb92aa3a2c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "58ca3a3e_b78cd1de",
         "filename": "project.py",
         "patchSetId": 6
