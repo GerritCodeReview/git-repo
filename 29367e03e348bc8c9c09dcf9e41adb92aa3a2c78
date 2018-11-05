@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6c4c6590_acf2141f",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-05T21:14:44Z",
+      "side": 1,
+      "message": "this came up recently, and David explained things here:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/201972",
+      "parentUuid": "a6836317_021757f8",
+      "range": {
+        "startLine": 1183,
+        "startChar": 4,
+        "endLine": 1183,
+        "endChar": 36
+      },
+      "revId": "29367e03e348bc8c9c09dcf9e41adb92aa3a2c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "58ca3a3e_b78cd1de",
         "filename": "project.py",
         "patchSetId": 6
