@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "a6836317_021757f8",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-11-05T20:59:54Z",
+      "side": 1,
+      "message": "not about this change: What\u0027s going on with this conditional?",
+      "range": {
+        "startLine": 1183,
+        "startChar": 4,
+        "endLine": 1183,
+        "endChar": 36
+      },
+      "revId": "29367e03e348bc8c9c09dcf9e41adb92aa3a2c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "58ca3a3e_b78cd1de",
         "filename": "project.py",
         "patchSetId": 6
