@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "70f58fb6_ced77f7d",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1014182
+      },
+      "writtenOn": "2018-11-05T21:30:15Z",
+      "side": 1,
+      "message": "it\u0027s the same for \u0027private\u0027 and \u0027wip\u0027, right?",
+      "parentUuid": "0e21ce26_b408b8e1",
+      "range": {
+        "startLine": 1183,
+        "startChar": 4,
+        "endLine": 1183,
+        "endChar": 36
+      },
+      "revId": "29367e03e348bc8c9c09dcf9e41adb92aa3a2c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "58ca3a3e_b78cd1de",
         "filename": "project.py",
         "patchSetId": 6
@@ -87,6 +111,24 @@
       "revId": "29367e03e348bc8c9c09dcf9e41adb92aa3a2c78",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f48f60a2_34cf44ba",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1189,
+      "author": {
+        "id": 1014182
+      },
+      "writtenOn": "2018-11-05T21:30:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58ca3a3e_b78cd1de",
+      "revId": "29367e03e348bc8c9c09dcf9e41adb92aa3a2c78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
