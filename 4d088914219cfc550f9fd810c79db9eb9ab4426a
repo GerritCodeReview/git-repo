@@ -213,6 +213,24 @@
     },
     {
       "key": {
+        "uuid": "cb4e9d24_ed8e5454",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-11-15T12:21:01Z",
+      "side": 1,
+      "message": "i was suggesting the style changes only because you were already modifying things, but if you want to do a style clean up first, that sounds good",
+      "parentUuid": "6cfd39e5_8edb9499",
+      "revId": "4d088914219cfc550f9fd810c79db9eb9ab4426a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5224fbdc_6a9102b8",
         "filename": "project.py",
         "patchSetId": 1
