@@ -130,6 +130,9 @@ without iterating through the remaining projects.
     p.add_option('-g', '--groups',
                  dest='groups',
                  help="Execute the command only on projects matching the specified groups")
+    p.add_option('-b', '--with-branches',
+                 dest='with_branches', action='store_true',
+                 help='Execute the command only on projects that have local branches')
     p.add_option('-c', '--command',
                  help='Command (and arguments) to execute',
                  dest='command',
@@ -221,11 +224,13 @@ without iterating through the remaining projects.
       self.manifest.Override(smart_sync_manifest_path)
 
     if opt.regex:
-      projects = self.FindProjects(args)
+      projects = self.FindProjects(args, with_branches=opt.with_branches)
     elif opt.inverse_regex:
-      projects = self.FindProjects(args, inverse=True)
+      projects = self.FindProjects(args, inverse=True,
+                                   with_branches=opt.with_branches)
     else:
-      projects = self.GetProjects(args, groups=opt.groups)
+      projects = self.GetProjects(args, groups=opt.groups,
+                                  with_branches=opt.with_branches)
 
     os.environ['REPO_COUNT'] = str(len(projects))
 

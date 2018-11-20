@@ -134,7 +134,7 @@ class Command(object):
     return project
 
   def GetProjects(self, args, manifest=None, groups='', missing_ok=False,
-                  submodules_ok=False):
+                  submodules_ok=False, with_branches=False):
     """A list of projects that match the arguments.
     """
     if not manifest:
@@ -195,15 +195,18 @@ class Command(object):
 
         result.extend(projects)
 
+    if with_branches:
+      result = filter(lambda project: project.GetBranches(), result)
+
     def _getpath(x):
       return x.relpath
     result.sort(key=_getpath)
     return result
 
-  def FindProjects(self, args, inverse=False):
+  def FindProjects(self, args, inverse=False, with_branches=False):
     result = []
     patterns = [re.compile(r'%s' % a, re.IGNORECASE) for a in args]
-    for project in self.GetProjects(''):
+    for project in self.GetProjects('', with_branches=with_branches):
       for pattern in patterns:
         match = pattern.search(project.name) or pattern.search(project.relpath)
         if not inverse and match:

@@ -91,6 +91,9 @@ the following meanings:
                  help="include objects in working directory outside of repo projects")
     p.add_option('-q', '--quiet', action='store_true',
                  help="only print the name of modified projects")
+    p.add_option('-b', '--with-branches',
+                 dest='with_branches', action='store_true',
+                 help='only include projects that have local branches')
 
   def _StatusHelper(self, project, clean_counter, sem, quiet):
     """Obtains the status for a specific project.
@@ -129,7 +132,7 @@ the following meanings:
       outstring.append(''.join([status_header, item, '/']))
 
   def Execute(self, opt, args):
-    all_projects = self.GetProjects(args)
+    all_projects = self.GetProjects(args, with_branches=opt.with_branches)
     counter = itertools.count()
 
     if opt.jobs == 1:
