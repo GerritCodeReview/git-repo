@@ -39,7 +39,7 @@ WORKER_BATCH_SIZE = 32
 
 # How many jobs to run in parallel by default?  This assumes the jobs are
 # largely I/O bound and do not hit the network.
-DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
+DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 30)
 
 
 class Command(object):
@@ -229,7 +229,7 @@ class Command(object):
       The |callback| function's results are returned.
     """
     try:
-      # NB: Multiprocessing is heavy, so don't spin it up for one job.
+      # NB: Multiprocessing is heavy, so don't spin it up for one job, or detach (cheap).
       if len(inputs) == 1 or jobs == 1:
         return callback(None, output, (func(x) for x in inputs))
       else:
