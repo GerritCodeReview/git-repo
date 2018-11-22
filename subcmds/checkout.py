@@ -22,22 +22,34 @@ class Checkout(Command):
   common = True
   helpSummary = "Checkout a branch for development"
   helpUsage = """
-%prog <branchname> [<project>...]
+%prog [-d] [<branchname>] [<project>...]
 """
   helpDescription = """
 The '%prog' command checks out an existing branch that was previously
 created by 'repo start'.
 
-The command is equivalent to:
+Without -d/--detach, the command is equivalent to:
 
   repo forall [<project>...] -c git checkout <branchname>
+
+except that projects that do not have the branch are skipped.
+
+With -d/--detach, checks out the branch in detached mode. <branchname> may be
+either a local branch (refs/heads/*) or a remote one (refs/remotes/*). If the
+branch is "" or unspecified, it defaults to the remote branch or revision in the
+manifest, which means it can be used to "un-checkout" local development branches.
 """
 
+  def _Options(self, p):
+    p.add_option('-d', '--detach',
+                 dest='detach_head', action='store_true',
+                 help='Make a detached checkout. May be used with remote branches.')
+
   def Execute(self, opt, args):
-    if not args:
+    nb = args[0] if args else None
+    if not nb and not opt.detach_head:
       self.Usage()
 
-    nb = args[0]
     err = []
     success = []
     all_projects = self.GetProjects(args[1:])
@@ -46,7 +58,8 @@ The command is equivalent to:
     for project in all_projects:
       pm.update()
 
-      status = project.CheckoutBranch(nb)
+      status = (project.CheckoutDetached(nb) if opt.detach_head else
+                project.CheckoutBranch(nb))
       if status is not None:
         if status:
           success.append(project)

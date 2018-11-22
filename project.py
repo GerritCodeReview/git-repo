@@ -38,7 +38,7 @@ from error import NoManifestException
 import platform_utils
 from trace import IsTrace, Trace
 
-from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
+from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_REMOTES, R_M
 
 from pyversion import is_python3
 if is_python3():
@@ -1552,6 +1552,36 @@ class Project(object):
       syncbuf.later1(self, _doff)
       if submodules:
         syncbuf.later1(self, _dosubmodules)
+
+  def CheckoutDetached(self, name=None):
+    """Check out a branch in detached state.
+
+        Args:
+          name: Name of branch. It is first searched for among the local branches
+              (refs/heads/*) and then the remotes (refs/remotes/*). Defaults to
+              the manifest revision.
+
+        Returns:
+          True if the checkout succeeded; False if it didn't; None if the branch
+          didn't exist.
+    """
+    all_refs = self.bare_ref.all
+
+    if name:
+      revid = all_refs.get(R_HEADS + name, all_refs.get(R_REMOTES + name, None))
+      if revid is None:
+        return None
+    else:
+      revid = self.GetRevisionId(all_refs)
+
+    head = self.work_git.GetHead()
+    cur_revid = all_refs.get(head, head)
+    if revid == cur_revid:
+      return True
+
+    return GitCommand(self, ['checkout', revid, '--'],
+                      capture_stdout=True,
+                      capture_stderr=True).Wait() == 0
 
   def AddCopyFile(self, src, dest, absdest):
     # dest should already be an absolute path, but src is project relative
