@@ -1415,9 +1415,12 @@ class Project(object):
           self._CopyAndLinkFiles()
           return
       else:
-        lost = self._revlist(not_rev(revid), HEAD)
-        if lost:
-          syncbuf.info(self, "discarding %d commits", len(lost))
+        try:
+          lost = self._revlist(not_rev(revid), HEAD)
+          if lost:
+            syncbuf.info(self, "discarding %d commits", len(lost))
+        except GitError:
+          pass
 
       try:
         self._Checkout(revid, quiet=True)
