@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0811a4d3_772a6434",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-12-10T23:54:16Z",
+      "side": 1,
+      "message": "This refers to a bug presumably on google\u0027s internal tracker.  Can you also create a public bug report?\n\n(@Jonathan: Did we reach a conclusion about where git-repo\u0027s issue tracker should live?)",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
