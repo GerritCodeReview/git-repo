@@ -2187,7 +2187,7 @@ class Project(object):
     cmd.append(bundle_dst)
     for f in remote.fetch:
       cmd.append(str(f))
-    cmd.append('refs/tags/*:refs/tags/*')
+    cmd.append('+refs/tags/*:refs/tags/*')
 
     ok = GitCommand(self, cmd, bare=True).Wait() == 0
     if os.path.exists(bundle_dst):

@@ -536,7 +536,7 @@ def _Fetch(url, local, src, quiet):
     err = None
   cmd.append(src)
   cmd.append('+refs/heads/*:refs/remotes/origin/*')
-  cmd.append('refs/tags/*:refs/tags/*')
+  cmd.append('+refs/tags/*:refs/tags/*')
 
   proc = subprocess.Popen(cmd, cwd=local, stderr=err)
   if err:
