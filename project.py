@@ -1172,10 +1172,10 @@ class Project(object):
 
     ref_spec = '%s:refs/%s/%s' % (R_HEADS + branch.name, upload_type,
                                   dest_branch)
-    if auto_topic:
-      ref_spec = ref_spec + '/' + branch.name
 
     opts = ['r=%s' % p for p in people[0]]
+    if auto_topic:
+      opts += ['topic=%s' % branch.name]
     opts += ['cc=%s' % p for p in people[1]]
     if notify:
       opts += ['notify=' + notify]
