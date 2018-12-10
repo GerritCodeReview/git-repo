@@ -22,6 +22,30 @@
       "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c649bfb_f07885fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-12-10T23:57:41Z",
+      "side": 1,
+      "message": "Good catch. If this weren\u0027t already submitted, I\u0027d suggest changing the line to \"Bug: b/120778183\", since that would make it unambiguous that this refers to http://issuetracker.google.com/issues/120778183.\n\nI don\u0027t believe we reached a conclusion about where to track issues, no. My preference would be \"wherever Mike Frysinger wants to track them\".",
+      "parentUuid": "0811a4d3_772a6434",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
