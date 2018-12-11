@@ -46,6 +46,30 @@
       "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07e74392_8abb6f1a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-12-11T00:19:58Z",
+      "side": 1,
+      "message": "\u003e that would make it unambiguous that this refers to http://issuetracker.google.com/issues/120778183.\n\nEven so, that isn\u0027t very useful for non-googlers.  The site is reachable, but I get \"access denied\".",
+      "parentUuid": "6c649bfb_f07885fa",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
