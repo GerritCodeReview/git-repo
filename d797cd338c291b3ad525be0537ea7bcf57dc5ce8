@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2bb8c0a8_95e66737",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-12-12T08:43:07Z",
+      "side": 1,
+      "message": "I don\u0027t know good wording for this, but this means closest tag in its history (in other words, the tag will always point to an ancestor of the named branch).",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 11
+      },
+      "revId": "d797cd338c291b3ad525be0537ea7bcf57dc5ce8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
