@@ -136,6 +136,11 @@ directories if they have previously been linked to a different
 object direcotry. WARNING: This may cause data to be lost since
 refs may be removed when overwriting.
 
+The --force-remove-dirty option can be used to remove previously used
+projects with uncommitted changes. WARNING: This may cause data to be
+lost since uncommitted changes may be removed with projects that no longer
+exist in the manifest.
+
 The --no-clone-bundle option disables any attempt to use
 $URL/clone.bundle to bootstrap a new Git repository from a
 resumeable bundle file on a content delivery network. This
@@ -197,6 +202,11 @@ later is required to fix a server side protocol bug.
                  help="overwrite an existing git directory if it needs to "
                       "point to a different object directory. WARNING: this "
                       "may cause loss of data")
+    p.add_option('--force-remove-dirty',
+                 dest='force_remove_dirty', action='store_true',
+                 help="force remove projects with uncommitted modifications if "
+                      "projects no longer exist in the manifest. "
+                      "WARNING: this may cause loss of data")
     p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
@@ -525,7 +535,7 @@ later is required to fix a server side protocol bug.
 
     return 0
 
-  def UpdateProjectList(self):
+  def UpdateProjectList(self, opt):
     new_project_paths = []
     for project in self.GetProjects(None, missing_ok=True):
       if project.relpath:
@@ -559,7 +569,12 @@ later is required to fix a server side protocol bug.
                            revisionId = None,
                            groups = None)
 
-            if project.IsDirty():
+            if project.IsDirty() and opt.force_remove_dirty:
+              print('WARNING: Removing dirty project "%s": uncommitted changes '
+                    'erased' % project.relpath, file=sys.stderr)
+              self._DeleteProject(project.worktree)
+              return 0
+            elif project.IsDirty():
               print('error: Cannot remove project "%s": uncommitted changes '
                     'are present' % project.relpath, file=sys.stderr)
               print('       commit changes, then run sync again',
@@ -827,7 +842,7 @@ later is required to fix a server side protocol bug.
       # bail out now, we have no working tree
       return
 
-    if self.UpdateProjectList():
+    if self.UpdateProjectList(opt):
       sys.exit(1)
 
     syncbuf = SyncBuffer(mp.config,
