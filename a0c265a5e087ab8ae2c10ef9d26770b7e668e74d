@@ -16,6 +16,24 @@
       "revId": "a0c265a5e087ab8ae2c10ef9d26770b7e668e74d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dea6151_e5e3fbb2",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1076590
+      },
+      "writtenOn": "2018-12-19T19:06:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "412703b0_a2130c4d",
+      "revId": "a0c265a5e087ab8ae2c10ef9d26770b7e668e74d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
