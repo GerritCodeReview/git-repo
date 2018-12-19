@@ -113,7 +113,7 @@ repodir = '.repo'                # name of repo's private directory
 S_repo = 'repo'                  # special repo repository
 S_manifests = 'manifests'        # special manifest repository
 REPO_MAIN = S_repo + '/main.py'  # main script
-MIN_PYTHON_VERSION = (2, 6)      # minimum supported python version
+MIN_PYTHON_VERSION = (2, 7)      # minimum supported python version
 GITC_CONFIG_FILE = '/gitc/.config'
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 
