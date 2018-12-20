@@ -164,7 +164,8 @@ home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 
 extra_args = []
-init_optparse = optparse.OptionParser(usage="repo init -u url [options]")
+init_optparse = optparse.OptionParser(usage="repo init -u url [options]",
+                                      conflict_handler="resolve")
 
 # Logging
 group = init_optparse.add_option_group('Logging options')
