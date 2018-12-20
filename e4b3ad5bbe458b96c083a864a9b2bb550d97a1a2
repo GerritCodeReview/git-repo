@@ -102,6 +102,24 @@
     },
     {
       "key": {
+        "uuid": "3773d6a2_250211ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1075609
+      },
+      "writtenOn": "2018-12-20T19:49:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adf97093_c80652af",
+      "revId": "e4b3ad5bbe458b96c083a864a9b2bb550d97a1a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d75b264a_eb91ee5c",
         "filename": "repo",
         "patchSetId": 1
