@@ -23,7 +23,7 @@ REPO_REV = 'stable'
 # limitations under the License.
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 24)
+VERSION = (1, 25)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1, 2)
@@ -183,7 +183,7 @@ group.add_option('-b', '--manifest-branch',
 group.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='initial manifest file', metavar='NAME.xml')
-group.add_option('-c', '--current-branch',
+group.add_option('--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current manifest branch from server')
 group.add_option('--mirror',
