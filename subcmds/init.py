@@ -95,7 +95,7 @@ to update the working directory files.
     g.add_option('-b', '--manifest-branch',
                  dest='manifest_branch',
                  help='manifest branch or revision', metavar='REVISION')
-    g.add_option('-c', '--current-branch',
+    g.add_option('--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current manifest branch from server')
     g.add_option('-m', '--manifest-name',
