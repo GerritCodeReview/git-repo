@@ -65,7 +65,8 @@ class Command(object):
         usage = self.helpUsage.strip().replace('%prog', me)
       except AttributeError:
         usage = 'repo %s' % self.NAME
-      self._optparse = optparse.OptionParser(usage=usage)
+      self._optparse = optparse.OptionParser(usage=usage,
+                                             conflict_handler="resolve")
       self._Options(self._optparse)
     return self._optparse
 
