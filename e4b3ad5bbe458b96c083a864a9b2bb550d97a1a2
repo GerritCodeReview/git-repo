@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "53d1d4b2_2845bddf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2018-12-20T06:01:43Z",
+      "side": 1,
+      "message": "If a bug is referenced please use a public issue tracker.\n\nDo we have a decision on where to track git-repo bugs?",
+      "parentUuid": "1689f36f_dc545ba3",
+      "revId": "e4b3ad5bbe458b96c083a864a9b2bb550d97a1a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d75b264a_eb91ee5c",
         "filename": "repo",
         "patchSetId": 1
