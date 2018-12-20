@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "f290b79d_6885ba58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-12-20T06:23:08Z",
+      "side": 1,
+      "message": "nit: this should be in the present tense, since it\u0027s describing the status quo before the patch (i.e., s/conflicted/conflicts/).",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 22
+      },
+      "revId": "e4b3ad5bbe458b96c083a864a9b2bb550d97a1a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1689f36f_dc545ba3",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
