@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "03139ba9_d6fcd525",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1075609
+      },
+      "writtenOn": "2018-12-20T09:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f290b79d_6885ba58",
+      "range": {
+        "startLine": 9,
+        "startChar": 12,
+        "endLine": 9,
+        "endChar": 22
+      },
+      "revId": "e4b3ad5bbe458b96c083a864a9b2bb550d97a1a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1689f36f_dc545ba3",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -60,6 +84,24 @@
     },
     {
       "key": {
+        "uuid": "adf97093_c80652af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1075609
+      },
+      "writtenOn": "2018-12-20T09:07:43Z",
+      "side": 1,
+      "message": "Looks like the discussed comment link isn\u0027t setup in gerrit yet.\n\nhttps://bugs.chromium.org/p/gerrit/issues/detail?id\u003d10200",
+      "parentUuid": "53d1d4b2_2845bddf",
+      "revId": "e4b3ad5bbe458b96c083a864a9b2bb550d97a1a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "d75b264a_eb91ee5c",
         "filename": "repo",
         "patchSetId": 1
@@ -74,6 +116,24 @@
       "revId": "e4b3ad5bbe458b96c083a864a9b2bb550d97a1a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "693d1500_0d251503",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1075609
+      },
+      "writtenOn": "2018-12-20T09:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d75b264a_eb91ee5c",
+      "revId": "e4b3ad5bbe458b96c083a864a9b2bb550d97a1a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
