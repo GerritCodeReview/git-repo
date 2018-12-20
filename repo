@@ -183,7 +183,7 @@ group.add_option('-b', '--manifest-branch',
 group.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='initial manifest file', metavar='NAME.xml')
-group.add_option('-c', '--current-branch',
+group.add_option('--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current manifest branch from server')
 group.add_option('--mirror',
