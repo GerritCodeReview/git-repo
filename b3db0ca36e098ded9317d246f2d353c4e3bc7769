@@ -16,6 +16,24 @@
       "revId": "b3db0ca36e098ded9317d246f2d353c4e3bc7769",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "75e84d9d_8b3fb7db",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1076745
+      },
+      "writtenOn": "2018-12-21T23:24:03Z",
+      "side": 1,
+      "message": "I believe it should be in the log if remove was happened. Just to have some proofs.",
+      "parentUuid": "4e9875ec_565878ea",
+      "revId": "b3db0ca36e098ded9317d246f2d353c4e3bc7769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
