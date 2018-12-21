@@ -34,6 +34,24 @@
       "revId": "b3db0ca36e098ded9317d246f2d353c4e3bc7769",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "93d54f7b_b96d2f1a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T23:32:51Z",
+      "side": 1,
+      "message": "i\u0027m suggesting only deleting the second line.  keeping the first line (\"WARNING: Removing ...\") makes sense.",
+      "parentUuid": "75e84d9d_8b3fb7db",
+      "revId": "b3db0ca36e098ded9317d246f2d353c4e3bc7769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
