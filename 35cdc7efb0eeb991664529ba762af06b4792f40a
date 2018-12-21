@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b199f38_d1450f80",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "\"projects\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ba0dcb9e_2d27323f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "\"Forcefully\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 7
+      },
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2aba7cee_13774bce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "\"projects\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 64,
+        "endLine": 10,
+        "endChar": 71
+      },
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e47d5f91_2c4ab41a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "\"previously\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 49,
+        "endLine": 10,
+        "endChar": 58
+      },
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "475f7b56_f932ada2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "\"projects\"",
+      "range": {
+        "startLine": 12,
+        "startChar": 40,
+        "endLine": 12,
+        "endChar": 47
+      },
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b8c3797_1cbf434e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "\"previously\"",
+      "range": {
+        "startLine": 139,
+        "startChar": 47,
+        "endLine": 139,
+        "endChar": 56
+      },
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "462a4c6b_13a138da",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "\"projects\"",
+      "range": {
+        "startLine": 141,
+        "startChar": 40,
+        "endLine": 141,
+        "endChar": 47
+      },
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "db892530_234a7cb6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T22:39:50Z",
+      "side": 1,
+      "message": "i don\u0027t think this error message is useful anymore",
+      "revId": "35cdc7efb0eeb991664529ba762af06b4792f40a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
