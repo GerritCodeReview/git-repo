@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e9875ec_565878ea",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 575,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2018-12-21T23:17:55Z",
+      "side": 1,
+      "message": "by the time this message is printed, it\u0027s already too late isn\u0027t it ?  we\u0027ve punted the repo and there\u0027s nothing left for them to commit.  so shouldn\u0027t we just delete this line entirely ?",
+      "revId": "b3db0ca36e098ded9317d246f2d353c4e3bc7769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
