@@ -246,7 +246,9 @@ later is required to fix a server side protocol bug.
                  help="projects to fetch simultaneously (default %d)" % self.jobs)
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
-                 help='temporary manifest to use for this sync', metavar='NAME.xml')
+                 help='temporary manifest to use for this sync. The path is '
+                 'relative to the manifest project directory (' +
+                 self.manifest.manifestProject.worktree + ').', metavar='NAME.xml')
     p.add_option('--clone-bundle', action='store_true',
                  help='enable use of /clone.bundle on HTTP/HTTPS')
     p.add_option('--no-clone-bundle', dest='clone_bundle', action='store_false',
