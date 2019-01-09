@@ -16,6 +16,24 @@
       "revId": "62cd89617f340d1f3d2875acd4770a80dad47a71",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8755486_6055d27d",
+        "filename": "docs/manifest-format.txt",
+        "patchSetId": 3
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-01-09T02:32:44Z",
+      "side": 1,
+      "message": "ping",
+      "parentUuid": "7415cc50_522faf76",
+      "revId": "62cd89617f340d1f3d2875acd4770a80dad47a71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
