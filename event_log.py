@@ -51,8 +51,19 @@ class EventLog(object):
   def __init__(self):
     """Initializes the event log."""
     self._log = []
-    self._next_id = _EventIdGenerator()
+    self._eid = multiprocessing.Value('i', 1)
     self._parent = None
+
+  def _next_id(self):
+    """Returns locally unique id that is multi-process safe.
+
+    Returns:
+      A unique, to this instance of the class, integer id.
+    """
+    with self._eid.get_lock():
+      val = self._eid.value
+      self._eid.value += 1
+    return val
 
   def Add(self, name, task_name, start, finish=None, success=None,
           try_count=1, kind='RepoOp'):
@@ -71,7 +82,7 @@ class EventLog(object):
       A dictionary of the event added to the log.
     """
     event = {
-        'id': (kind, next(self._next_id)),
+        'id': (kind, self._next_id()),
         'name': name,
         'task_name': task_name,
         'start_time': start,
@@ -160,18 +171,3 @@ class EventLog(object):
       for e in self._log:
         json.dump(e, f, sort_keys=True)
         f.write('\n')
-
-
-def _EventIdGenerator():
-  """Returns multi-process safe iterator that generates locally unique id.
-
-  Yields:
-    A unique, to this invocation of the program, integer id.
-  """
-  eid = multiprocessing.Value('i', 1)
-
-  while True:
-    with eid.get_lock():
-      val = eid.value
-      eid.value += 1
-    yield val
