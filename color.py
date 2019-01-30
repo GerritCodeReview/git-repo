@@ -182,7 +182,7 @@ class Coloring(object):
       return f
     else:
       def f(fmt):
-        return fmt
+        return fmt.encode('utf-8')
       return f
 
   def _parse(self, opt, fg, bg, attr):
