@@ -52,6 +52,24 @@
       "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "130bea4a_2750191e",
+        "filename": "docs/python-support.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-01-31T05:37:09Z",
+      "side": 1,
+      "message": "that stance sgtm ... it\u0027s not leaving people completely in the cold, and the 1.13 branch is up to date in 2019.  so hopefully 2019+2 years will be enough to let py2 users go quietly into the nite.",
+      "parentUuid": "bb8520c1_deb193fc",
+      "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
