@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eff9085c_413ad907",
+        "filename": "docs/python-support.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2019-01-31T05:15:29Z",
+      "side": 1,
+      "message": "This would make it harder to remove deprecated features from Gerrit\u0027s options accepted at push time (since the changes to adapt would have to be made on both branches), so I\u0027m not looking forward to it.\n\nCan you say a little about the difficulty involved in making the codebase work with both Python 2 and Python 3? Also, what obstacles are there to simply requiring Python 3? Even in Red Hat systems there is EPEL.",
+      "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
