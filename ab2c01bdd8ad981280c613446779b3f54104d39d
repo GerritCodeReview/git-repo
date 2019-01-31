@@ -16,6 +16,24 @@
       "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b76b585_3699e604",
+        "filename": "docs/python-support.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-01-31T05:26:01Z",
+      "side": 1,
+      "message": "the current repo release is over 2 years old, so staying in sync doesn\u0027t seem like that big of a problem ?\n\nmy intentions aren\u0027t for the py2 branch to keep in sync with newer Gerrit features.  it\u0027s purely a \"this is frozen in time, much like your distro choice, so it\u0027s best effort\".  so i don\u0027t think we should worry about it falling out of sync.\n\nwrt jumping straight to python3.6, my pessimistic experience is that no matter what we think is reasonable, someone is going to come out of the wood work and complain.  so the python2 branch allows us to punt them over.",
+      "parentUuid": "eff9085c_413ad907",
+      "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
