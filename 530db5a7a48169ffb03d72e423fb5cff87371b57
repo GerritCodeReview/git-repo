@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f0124b3_dfd654ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-01-31T00:38:05Z",
+      "side": 1,
+      "message": "replace this with the full URL https://crbug.com/gerrit/10418 ?",
+      "range": {
+        "startLine": 9,
+        "startChar": 5,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "530db5a7a48169ffb03d72e423fb5cff87371b57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ad8aa4e_ebcbc0c5",
+        "filename": "docs/python-support.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-01-31T00:38:05Z",
+      "side": 1,
+      "message": "require",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 8
+      },
+      "revId": "530db5a7a48169ffb03d72e423fb5cff87371b57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
