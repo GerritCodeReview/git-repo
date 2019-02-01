@@ -70,6 +70,24 @@
       "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e3452bd_15439531",
+        "filename": "docs/python-support.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-02-01T08:06:33Z",
+      "side": 1,
+      "message": "i\u0027ve wordsmithed it a bit.  see if it is clearer now.",
+      "parentUuid": "130bea4a_2750191e",
+      "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
