@@ -88,6 +88,24 @@
       "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1917704c_3d847463",
+        "filename": "docs/python-support.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2019-02-01T08:12:23Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "2e3452bd_15439531",
+      "revId": "ab2c01bdd8ad981280c613446779b3f54104d39d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
