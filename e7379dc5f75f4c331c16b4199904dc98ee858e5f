@@ -16,6 +16,24 @@
       "revId": "e7379dc5f75f4c331c16b4199904dc98ee858e5f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e892ffdb_7e3be6cc",
+        "filename": "docs/python-support.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-02-05T21:53:55Z",
+      "side": 1,
+      "message": "you want me to highlight macOS here ?  can you provide some links i can refer to ?\n\ni rarely touch macOS anymore, so i don\u0027t keep up with things like brew anymore.",
+      "parentUuid": "bdf70613_3a602d07",
+      "revId": "e7379dc5f75f4c331c16b4199904dc98ee858e5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
