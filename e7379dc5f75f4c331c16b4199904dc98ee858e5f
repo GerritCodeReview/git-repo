@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bdf70613_3a602d07",
+        "filename": "docs/python-support.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2019-02-05T08:34:23Z",
+      "side": 1,
+      "message": "This includes the latest Mac installs as far as I can tell too, which only have python 2.7 :(\n\nThough it\u0027s probably more feasible to get it through brew/port than with the LTS/corp systems. Android hasn\u0027t been requiring that yet.",
+      "revId": "e7379dc5f75f4c331c16b4199904dc98ee858e5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
