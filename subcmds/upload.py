@@ -150,6 +150,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-d', '--draft',
                  action='store_true', dest='draft', default=False,
                  help='If specified, upload as a draft.')
+    p.add_option('--heads',
+                 action='store_true', dest='heads', default=False,
+                 help='If specified, upload to heads.')
     p.add_option('--ne', '--no-emails',
                  action='store_false', dest='notify', default=True,
                  help='If specified, do not send emails on upload.')
@@ -211,7 +214,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
       destination = opt.dest_branch or project.dest_branch or project.revisionExpr
       print('Upload project %s/ to remote branch %s%s:' %
-            (project.relpath, destination, ' (draft)' if opt.draft else ''))
+            (project.relpath, destination,
+             ' (draft)' if opt.draft else ' (heads) ' if opt.heads else ''))
       print('  branch %s (%2d commit%s, %s):' % (
                     name,
                     len(commit_list),
@@ -393,6 +397,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         branch.UploadForReview(people,
                                auto_topic=opt.auto_topic,
                                draft=opt.draft,
+                               heads=opt.heads,
                                private=opt.private,
                                notify=None if opt.notify else 'NONE',
                                wip=opt.wip,

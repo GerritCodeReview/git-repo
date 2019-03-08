@@ -175,6 +175,7 @@ class ReviewableBranch(object):
   def UploadForReview(self, people,
                       auto_topic=False,
                       draft=False,
+                      heads=False,
                       private=False,
                       notify=None,
                       wip=False,
@@ -185,6 +186,7 @@ class ReviewableBranch(object):
                                  people,
                                  auto_topic=auto_topic,
                                  draft=draft,
+                                 heads=heads,
                                  private=private,
                                  notify=notify,
                                  wip=wip,
@@ -1119,6 +1121,7 @@ class Project(object):
                       people=([], []),
                       auto_topic=False,
                       draft=False,
+                      heads=False,
                       private=False,
                       notify=None,
                       wip=False,
@@ -1169,6 +1172,8 @@ class Project(object):
     upload_type = 'for'
     if draft:
       upload_type = 'drafts'
+    if heads:
+      upload_type = 'heads'
 
     ref_spec = '%s:refs/%s/%s' % (R_HEADS + branch.name, upload_type,
                                   dest_branch)
