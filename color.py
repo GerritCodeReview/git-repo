@@ -135,7 +135,7 @@ class Coloring(object):
     return self._on
 
   def write(self, fmt, *args):
-    self._out.write(fmt % args)
+    self._out.write(fmt % args if args else fmt)
 
   def flush(self):
     self._out.flush()
@@ -164,13 +164,13 @@ class Coloring(object):
       c = self._parse(opt, fg, bg, attr)
 
       def f(fmt, *args):
-        output = fmt % args
+        output = fmt % args if args else fmt
         return ''.join([c, output, RESET])
       return f
     else:
 
       def f(fmt, *args):
-        return fmt % args
+        return fmt % args if args else fmt
       return f
 
   def nofmt_colorer(self, opt=None, fg=None, bg=None, attr=None):
