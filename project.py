@@ -1807,8 +1807,8 @@ class Project(object):
         submodules.append((sub_rev, sub_path, sub_url))
       return submodules
 
-    re_path = re.compile(r'^submodule\.([^.]+)\.path=(.*)$')
-    re_url = re.compile(r'^submodule\.([^.]+)\.url=(.*)$')
+    re_path = re.compile(r'^submodule\.(.+)\.path=(.*)$')
+    re_url = re.compile(r'^submodule\.(.+)\.url=(.*)$')
 
     def parse_gitmodules(gitdir, rev):
       cmd = ['cat-file', 'blob', '%s:.gitmodules' % rev]
