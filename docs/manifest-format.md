@@ -66,7 +66,7 @@ following DTD:
   <!ATTLIST project groups      CDATA #IMPLIED>
   <!ATTLIST project sync-c      CDATA #IMPLIED>
   <!ATTLIST project sync-s      CDATA #IMPLIED>
-  <!ATTLIST default sync-tags   CDATA #IMPLIED>
+  <!ATTLIST project sync-tags   CDATA #IMPLIED>
   <!ATTLIST project upstream CDATA #IMPLIED>
   <!ATTLIST project clone-depth CDATA #IMPLIED>
   <!ATTLIST project force-path CDATA #IMPLIED>
