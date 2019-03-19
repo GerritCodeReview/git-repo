@@ -94,6 +94,30 @@
       "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9d511be_b12f6b40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-03-19T01:56:18Z",
+      "side": 1,
+      "message": "and we have a public crbug.com/932651 which basically wants the same thing\n\nfollow up CL: https://gerrit-review.googlesource.com/c/218398",
+      "parentUuid": "6a2f1558_b5e43181",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
