@@ -1306,7 +1306,7 @@ class Project(object):
         not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                               current_branch_only=current_branch_only,
                               no_tags=no_tags, prune=prune, depth=depth,
-                              submodules=submodules)):
+                              submodules=submodules, force_sync=force_sync)):
       return False
 
     mp = self.manifest.manifestProject
@@ -1955,7 +1955,8 @@ class Project(object):
                    no_tags=False,
                    prune=False,
                    depth=None,
-                   submodules=False):
+                   submodules=False,
+                   force_sync=False):
 
     is_sha1 = False
     tag_name = None
@@ -2067,6 +2068,9 @@ class Project(object):
       cmd.append('--no-tags')
     else:
       cmd.append('--tags')
+
+    if force_sync:
+      cmd.append('--force')
 
     if prune:
       cmd.append('--prune')
