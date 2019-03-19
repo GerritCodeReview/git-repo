@@ -70,6 +70,30 @@
       "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6a2f1558_b5e43181",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-03-19T01:54:51Z",
+      "side": 1,
+      "message": "for reference, the bug isn\u0027t interesting at all.  it\u0027s pretty much this.  i\u0027m not saying that makes it ok to use private b/ refs, just letting you know there\u0027s no sekrets here ;).\n\nhere\u0027s a copy \u0026 paste of the content:\n\n\u003e --initial report--\n\u003e Date: 10-12-2018 09:48\n\u003e Component: Android \u003e Android OS \u0026 Apps \u003e Build\n\u003e Status: New\n\u003e Type: Process\n\u003e Priority: P2\n\u003e Severity: S3\n\u003e Title: Stop clobbering repo tags\n\u003e\n\u003e When I `repo sync` to build support library, I frequently see error messages that look like:\n\u003e\n\u003e From https://android.googlesource.com/platform/manifest\n\u003e  ! [rejected]        android-vts-9.0_r5 -\u003e android-vts-9.0_r5  (would clobber existing tag)\n\u003e\n\u003e To fix this every developer has to manually delete the git tag from their manifest repo and re sync again. Can you please stop clobbering git tags so we don\u0027t have to manually do this ?\n\n\u003e --followup--\n\u003e Date: 10-12-2018 11:39\n\u003e From: delphij@\n\u003e\n\u003e I think it\u0027s related to a recent git behavior change that prevents clobbering existing tag:\n\u003e\n\u003e %%%%%\n\u003e  * \"git push\" into refs/tags/* hierarchy is rejected without getting\n\u003e    forced, but \"git fetch\" (misguidedly) used the \"fast forwarding\"\n\u003e    rule used for the refs/heads/* hierarchy; this has been corrected,\n\u003e    which means some fetches of tags that did not fail with older\n\u003e    version of Git will fail without \"--force\" with this version.\n\u003e %%%%%\n\u003e\n\u003e Upstream code change: https://github.com/git/git/commit/0bc8d71b99e91c9e90b519073b639a5066119591#diff-07f3b3cf16a56e95990c64bdef634199\n\u003e\n\u003e I have created a git-repo change to allow this ( https://gerrit-review.googlesource.com/c/git-repo/+/207031 ).",
+      "parentUuid": "07e74392_8abb6f1a",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 14
+      },
+      "revId": "6e53844f1edd3c9a3898f0af74fcc8da04b7de48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
