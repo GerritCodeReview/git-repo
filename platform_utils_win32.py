@@ -17,7 +17,7 @@ import errno
 
 from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
 from ctypes import c_buffer
-from ctypes.wintypes import BOOL, LPCWSTR, DWORD, HANDLE, POINTER, c_ubyte
+from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE, POINTER, c_ubyte
 from ctypes.wintypes import WCHAR, USHORT, LPVOID, Structure, Union, ULONG
 from ctypes.wintypes import byref
 
@@ -33,7 +33,7 @@ ERROR_PRIVILEGE_NOT_HELD = 1314
 
 # Win32 API entry points
 CreateSymbolicLinkW = kernel32.CreateSymbolicLinkW
-CreateSymbolicLinkW.restype = BOOL
+CreateSymbolicLinkW.restype = BOOLEAN
 CreateSymbolicLinkW.argtypes = (LPCWSTR,  # lpSymlinkFileName In
                                 LPCWSTR,  # lpTargetFileName In
                                 DWORD)    # dwFlags In
@@ -145,19 +145,12 @@ def create_dirsymlink(source, link_name):
 
 
 def _create_symlink(source, link_name, dwFlags):
-  # Note: Win32 documentation for CreateSymbolicLink is incorrect.
-  # On success, the function returns "1".
-  # On error, the function returns some random value (e.g. 1280).
-  # The best bet seems to use "GetLastError" and check for error/success.
-  CreateSymbolicLinkW(link_name, source, dwFlags | SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE)
-  code = get_last_error()
-  if code != ERROR_SUCCESS:
+  if not CreateSymbolicLinkW(link_name, source, dwFlags | SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE):
     # See https://github.com/golang/go/pull/24307/files#diff-b87bc12e4da2497308f9ef746086e4f0
     # "the unprivileged create flag is unsupported below Windows 10 (1703, v10.0.14972).
     # retry without it."
-    CreateSymbolicLinkW(link_name, source, dwFlags)
-    code = get_last_error()
-    if code != ERROR_SUCCESS:
+    if not CreateSymbolicLinkW(link_name, source, dwFlags):
+      code = get_last_error()
       error_desc = FormatError(code).strip()
       if code == ERROR_PRIVILEGE_NOT_HELD:
         raise OSError(errno.EPERM, error_desc, link_name)
