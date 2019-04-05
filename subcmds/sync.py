@@ -550,7 +550,8 @@ later is required to fix a server side protocol bug.
         old_project_paths = fd.read().split('\n')
       finally:
         fd.close()
-      for path in old_project_paths:
+      # In reversed order, so subfolders are deleted before parent folder.
+      for path in sorted(old_project_paths, reverse=True):
         if not path:
           continue
         if path not in new_project_paths:
