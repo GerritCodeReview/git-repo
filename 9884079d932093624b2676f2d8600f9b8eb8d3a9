@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c281e72_c9bd364c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2019-04-17T17:43:33Z",
+      "side": 1,
+      "message": "usage nit: this sounds awkward. How about something like the following?\n\n Avoid that by using the non-formatting printer for headtext, which\n does not require any formatting so there is not need to try to\n expand \"%\" sequences.",
+      "range": {
+        "startLine": 18,
+        "startChar": 61,
+        "endLine": 19,
+        "endChar": 5
+      },
+      "revId": "9884079d932093624b2676f2d8600f9b8eb8d3a9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
