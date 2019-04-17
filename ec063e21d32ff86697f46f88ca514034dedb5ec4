@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "9c40617f_e91c7e08",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2019-04-17T16:31:17Z",
+      "side": 1,
+      "message": "Can this use nofmt_printer?",
+      "range": {
+        "startLine": 48,
+        "startChar": 29,
+        "endLine": 48,
+        "endChar": 36
+      },
+      "revId": "ec063e21d32ff86697f46f88ca514034dedb5ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0cafd650_fbf25e6f",
         "filename": "subcmds/info.py",
         "patchSetId": 1
@@ -16,6 +39,24 @@
       "revId": "ec063e21d32ff86697f46f88ca514034dedb5ec4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfa0e55e_c944e919",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2019-04-17T16:31:17Z",
+      "side": 1,
+      "message": "see my other comment instead.",
+      "parentUuid": "0cafd650_fbf25e6f",
+      "revId": "ec063e21d32ff86697f46f88ca514034dedb5ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
