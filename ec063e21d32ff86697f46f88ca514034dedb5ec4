@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f16d2a99_13cccf04",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2019-04-17T17:11:42Z",
+      "side": 1,
+      "message": "Good idea, will do that.",
+      "parentUuid": "9c40617f_e91c7e08",
+      "range": {
+        "startLine": 48,
+        "startChar": 29,
+        "endLine": 48,
+        "endChar": 36
+      },
+      "revId": "ec063e21d32ff86697f46f88ca514034dedb5ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0cafd650_fbf25e6f",
         "filename": "subcmds/info.py",
         "patchSetId": 1
