@@ -60,13 +60,13 @@ class Info(PagedCommand):
 
     self.heading("Manifest branch: ")
     if self.manifest.default.revisionExpr:
-        self.headtext(self.manifest.default.revisionExpr)
+        self.headtext("%s", self.manifest.default.revisionExpr)
     self.out.nl()
     self.heading("Manifest merge branch: ")
-    self.headtext(mergeBranch)
+    self.headtext("%s", mergeBranch)
     self.out.nl()
     self.heading("Manifest groups: ")
-    self.headtext(manifestGroups)
+    self.headtext("%s", manifestGroups)
     self.out.nl()
 
     self.printSeparator()
@@ -88,15 +88,15 @@ class Info(PagedCommand):
 
     for p in projs:
       self.heading("Project: ")
-      self.headtext(p.name)
+      self.headtext("%s", p.name)
       self.out.nl()
 
       self.heading("Mount path: ")
-      self.headtext(p.worktree)
+      self.headtext("%s", p.worktree)
       self.out.nl()
 
       self.heading("Current revision: ")
-      self.headtext(p.revisionExpr)
+      self.headtext("%s", p.revisionExpr)
       self.out.nl()
 
       localBranches = p.GetBranches().keys()
@@ -181,7 +181,7 @@ class Info(PagedCommand):
       if project != branch.project:
         project = branch.project
         self.out.nl()
-        self.headtext(project.relpath)
+        self.headtext("%s", project.relpath)
         self.out.nl()
 
       commits = branch.commits
