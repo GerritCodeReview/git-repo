@@ -1226,7 +1226,8 @@ class Project(object):
 
     self.revisionId = revisionId
 
-  def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
+  def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False,
+                     no_checkout=False):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
@@ -1237,7 +1238,9 @@ class Project(object):
                    (self.name, self.name))
       return
 
-    self._InitWorkTree(force_sync=force_sync, submodules=submodules)
+    self._InitWorkTree(force_sync=force_sync, submodules=submodules,
+                       no_checkout=no_checkout)
+
     all_refs = self.bare_ref.all
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
@@ -1255,7 +1258,10 @@ class Project(object):
         return
 
     def _doff():
-      self._FastForward(revid)
+      if no_checkout:
+        self._Reset(revid)
+      else:
+        self._FastForward(revid)
       self._CopyAndLinkFiles()
 
     def _dosubmodules():
@@ -1293,7 +1299,7 @@ class Project(object):
           syncbuf.info(self, "discarding %d commits", len(lost))
 
       try:
-        self._Checkout(revid, quiet=True)
+        self._Checkout(revid, quiet=True, no_checkout=no_checkout)
         if submodules:
           self._SyncSubmodules(quiet=True)
       except GitError as e:
@@ -1319,7 +1325,7 @@ class Project(object):
                    "leaving %s; does not track upstream",
                    branch.name)
       try:
-        self._Checkout(revid, quiet=True)
+        self._Checkout(revid, quiet=True, no_checkout=no_checkout)
         if submodules:
           self._SyncSubmodules(quiet=True)
       except GitError as e:
@@ -2376,8 +2382,8 @@ class Project(object):
     except OSError:
       return False
 
-  def _Checkout(self, rev, quiet=False):
-    cmd = ['checkout']
+  def _Checkout(self, rev, quiet=False, no_checkout=False):
+    cmd = ['reset'] if no_checkout else ['checkout']
     if quiet:
       cmd.append('-q')
     cmd.append(rev)
@@ -2436,6 +2442,11 @@ class Project(object):
     cmd.append(upstream)
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s rebase %s ' % (self.name, upstream))
+
+  def _Reset(self, head):
+    cmd = ['reset', head]
+    if GitCommand(self, cmd).Wait() != 0:
+      raise GitError('%s reset %s ' % (self.name, head))
 
   def _FastForward(self, head, ffonly=False):
     cmd = ['merge', '--no-stat', head]
@@ -2746,6 +2757,9 @@ class Project(object):
 
     # Rewrite the internal state files to use relative paths between the
     # checkouts & worktrees.
+
+  def _InitWorkTree(self, force_sync=False, submodules=False,
+                    no_checkout=False):
     dotgit = os.path.join(self.worktree, '.git')
     with open(dotgit, 'r') as fp:
       # Figure out the checkout->worktree path.
@@ -2767,7 +2781,8 @@ class Project(object):
 
     self._InitMRef()
 
-  def _InitWorkTree(self, force_sync=False, submodules=False):
+  def _InitWorkTree(self, force_sync=False, submodules=False,
+                    no_checkout=False):
     realdotgit = os.path.join(self.worktree, '.git')
     tmpdotgit = realdotgit + '.tmp'
     init_dotgit = not os.path.exists(realdotgit)
@@ -2803,8 +2818,8 @@ class Project(object):
       platform_utils.rename(tmpdotgit, realdotgit)
 
       # Finish checking out the worktree.
-      cmd = ['read-tree', '--reset', '-u']
-      cmd.append('-v')
+      cmd = ['read-tree', '--reset']
+      cmd += [] if no_checkout else ['-u', '-v']
       cmd.append(HEAD)
       if GitCommand(self, cmd).Wait() != 0:
         raise GitError('Cannot initialize work tree for ' + self.name)
