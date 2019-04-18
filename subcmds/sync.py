@@ -209,6 +209,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-n', '--network-only',
                  dest='network_only', action='store_true',
                  help="fetch only, don't update working tree")
+    p.add_option('--no-checkout',
+                 dest='checkout_head_only', action='store_true',
+                 help="fetch and init worktree, don't checkout projects")
     p.add_option('-d', '--detach',
                  dest='detach_head', action='store_true',
                  help='detach projects back to manifest revision')
@@ -523,13 +526,14 @@ later is required to fix a server side protocol bug.
 
     return all_projects
 
-  def _CheckoutOne(self, detach_head, force_sync, project):
+  def _CheckoutOne(self, detach_head, force_sync, checkout, project):
     """Checkout work tree for one project
 
     Args:
       detach_head: Whether to leave a detached HEAD.
       force_sync: Force checking out of the repo.
       project: Project object for the project to checkout.
+      checkout: Update the worktree and the HEAD pointer
 
     Returns:
       Whether the fetch was successful.
@@ -539,7 +543,8 @@ later is required to fix a server side protocol bug.
                          detach_head=detach_head)
     success = False
     try:
-      project.Sync_LocalHalf(syncbuf, force_sync=force_sync)
+      project.Sync_LocalHalf(
+         syncbuf, force_sync=force_sync, checkout=checkout)
       success = syncbuf.Finish()
     except GitError as e:
       print('error.GitError: Cannot checkout %s: %s' %
@@ -585,7 +590,8 @@ later is required to fix a server side protocol bug.
 
     return self.ExecuteInParallel(
         opt.jobs_checkout if opt.jobs_checkout else self.jobs,
-        functools.partial(self._CheckoutOne, opt.detach_head, opt.force_sync),
+        functools.partial(
+           self._CheckoutOne, opt.detach_head, opt.force_sync, not opt.checkout_head_only),
         all_projects,
         callback=_ProcessResults,
         output=Progress('Checking out', len(all_projects), quiet=opt.quiet)) and not err_results
