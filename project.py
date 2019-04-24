@@ -2700,6 +2700,8 @@ class Project(object):
         out = p.process.stdout.read()
         r = {}
         if out:
+          if is_python3():
+            out = out.decode('utf-8')
           out = iter(out[:-1].split('\0'))
           while out:
             try:
