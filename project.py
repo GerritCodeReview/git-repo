@@ -2689,6 +2689,7 @@ class Project(object):
     def DiffZ(self, name, *args):
       cmd = [name]
       cmd.append('-z')
+      cmd.append('--ignore-submodules')
       cmd.extend(args)
       p = GitCommand(self._project,
                      cmd,
