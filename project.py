@@ -2590,7 +2590,7 @@ class Project(object):
         cmd.append('-v')
         cmd.append(HEAD)
         if GitCommand(self, cmd).Wait() != 0:
-          raise GitError("cannot initialize work tree")
+          raise GitError("cannot initialize work tree for " + self.name)
 
         if submodules:
           self._SyncSubmodules(quiet=True)
