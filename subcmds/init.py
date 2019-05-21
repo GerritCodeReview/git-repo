@@ -197,6 +197,8 @@ to update the working directory files.
       else:
         m.PreSync()
 
+    self._ConfigureDepth(opt)
+
     if opt.manifest_url:
       r = m.GetRemote(m.remote.name)
       r.url = opt.manifest_url
@@ -428,7 +430,5 @@ to update the working directory files.
       if opt.config_name or self._ShouldConfigureUser():
         self._ConfigureUser()
       self._ConfigureColor()
-
-    self._ConfigureDepth(opt)
 
     self._DisplayResult()
