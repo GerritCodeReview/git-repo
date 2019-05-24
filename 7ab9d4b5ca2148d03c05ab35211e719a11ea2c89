@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a608ce73_8014ce7e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-05-24T10:04:58Z",
+      "side": 1,
+      "message": "This doesn\u0027t get linked properly.  The recent convention is to add a full URL link to the issue, i.e.:\n\n Bug: https://crbug.com/gerrit/10911",
+      "range": {
+        "startLine": 26,
+        "startChar": 5,
+        "endLine": 26,
+        "endChar": 16
+      },
+      "revId": "7ab9d4b5ca2148d03c05ab35211e719a11ea2c89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
