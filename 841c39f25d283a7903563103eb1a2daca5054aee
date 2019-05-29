@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "453ba81d_a69b112f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-05-29T18:23:34Z",
+      "side": 1,
+      "message": "the commit message should really explain *why* you\u0027re doing things, not just *what*.  i can see the \"what\" by looking at the diff.",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4874111e_3cd2006b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-05-29T18:23:34Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1c67ebf6_b47dbca1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-05-29T18:23:34Z",
+      "side": 1,
+      "message": "no blank line between tags",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "daea4043_eb103076",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-05-29T18:23:34Z",
+      "side": 1,
+      "message": "i know the code wasn\u0027t great beforehand, but since you\u0027re changing all these lines, can you properly line wrap them to 80 cols ?",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
