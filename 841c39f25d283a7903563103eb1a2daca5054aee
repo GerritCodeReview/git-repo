@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6b925d62_a18f195f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1074193
+      },
+      "writtenOn": "2019-05-30T17:36:41Z",
+      "side": 1,
+      "message": "Rewrote the commit message with error logs from unpatched and patched repo instances.",
+      "parentUuid": "453ba81d_a69b112f",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4874111e_3cd2006b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dec0ff6f_1149f54e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1074193
+      },
+      "writtenOn": "2019-05-30T17:36:41Z",
+      "side": 1,
+      "message": "Removed that part.",
+      "parentUuid": "4874111e_3cd2006b",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "eaa578d4_60f18f46",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1074193
+      },
+      "writtenOn": "2019-05-30T17:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c67ebf6_b47dbca1",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "daea4043_eb103076",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1889f80e_acc785d9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1074193
+      },
+      "writtenOn": "2019-05-30T17:36:41Z",
+      "side": 1,
+      "message": "Wrapped",
+      "parentUuid": "daea4043_eb103076",
+      "revId": "841c39f25d283a7903563103eb1a2daca5054aee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
