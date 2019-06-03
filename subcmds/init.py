@@ -115,6 +115,13 @@ to update the working directory files.
     g.add_option('--depth', type='int', default=None,
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
+    g.add_option('--partial-clone', action='store_true',
+                 dest='partial_clone',
+                 help='perform partial clone (https://git-scm.com/'
+                 'docs/gitrepository-layout#_code_partialclone_code)')
+    g.add_option('--clone-filter', action='store', default='blob:none',
+                 dest='clone_filter',
+                 help='filter for use with --partial-clone')
     g.add_option('--archive',
                  dest='archive', action='store_true',
                  help='checkout an archive instead of a git repository for '
@@ -253,13 +260,25 @@ to update the working directory files.
               'in another location.', file=sys.stderr)
         sys.exit(1)
 
+    if opt.partial_clone:
+      if opt.mirror:
+        print('fatal: --mirror and --partial-clone are mutually exclusive',
+              file=sys.stderr)
+        sys.exit(1)
+      m.config.SetString('repo.partialclone', 'true')
+      if opt.clone_filter:
+        m.config.SetString('repo.clonefilter', opt.clone_filter)
+    else:
+      opt.clone_filter = None
+
     if opt.submodules:
       m.config.SetString('repo.submodules', 'true')
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet,
         clone_bundle=not opt.no_clone_bundle,
         current_branch_only=opt.current_branch_only,
-        no_tags=opt.no_tags, submodules=opt.submodules):
+        no_tags=opt.no_tags, submodules=opt.submodules,
+        clone_filter=opt.clone_filter):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 

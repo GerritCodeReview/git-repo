@@ -414,6 +414,12 @@ class XmlManifest(object):
     return self._manifest_server
 
   @property
+  def CloneFilter(self):
+    if self.manifestProject.config.GetBoolean('repo.partialclone'):
+      return self.manifestProject.config.GetString('repo.clonefilter')
+    return None
+
+  @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
