@@ -1226,7 +1226,8 @@ class Project(object):
                        archive=False,
                        optimized_fetch=False,
                        prune=False,
-                       submodules=False):
+                       submodules=False,
+                       partial_clone=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1309,7 +1310,8 @@ class Project(object):
         not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
                               current_branch_only=current_branch_only,
                               no_tags=no_tags, prune=prune, depth=depth,
-                              submodules=submodules, force_sync=force_sync)):
+                              submodules=submodules, force_sync=force_sync,
+                              partial_clone=partial_clone)):
       return False
 
     mp = self.manifest.manifestProject
@@ -1959,7 +1961,8 @@ class Project(object):
                    prune=False,
                    depth=None,
                    submodules=False,
-                   force_sync=False):
+                   force_sync=False,
+                   partial_clone=False):
 
     is_sha1 = False
     tag_name = None
@@ -2049,6 +2052,10 @@ class Project(object):
         alt_dir = None
 
     cmd = ['fetch']
+
+    if partial_clone and git_require((2, 19, 0), fail=True, msg='partial clones'):
+        cmd.append('--filter=blob:none')
+        self.config.SetString('extensions.partialclone', self.remote.name)
 
     if depth:
       cmd.append('--depth=%s' % depth)
@@ -2150,12 +2157,12 @@ class Project(object):
           return self._RemoteFetch(name=name,
                                    current_branch_only=current_branch_only,
                                    initial=False, quiet=quiet, alt_dir=alt_dir,
-                                   depth=None)
+                                   depth=None, partial_clone=partial_clone)
         else:
           # Avoid infinite recursion: sync all branches with depth set to None
           return self._RemoteFetch(name=name, current_branch_only=False,
                                    initial=False, quiet=quiet, alt_dir=alt_dir,
-                                   depth=None)
+                                   depth=None, partial_clone=partial_clone)
 
     return ok
 
