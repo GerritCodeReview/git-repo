@@ -414,6 +414,10 @@ class XmlManifest(object):
     return self._manifest_server
 
   @property
+  def IsPartialClone(self):
+    return self.manifestProject.config.GetBoolean('repo.partialclone')
+
+  @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
