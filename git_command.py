@@ -98,13 +98,15 @@ class _GitCall(object):
     return fun
 git = _GitCall()
 
-def git_require(min_version, fail=False):
+def git_require(min_version, fail=False, msg=''):
   git_version = git.version_tuple()
   if min_version <= git_version:
     return True
   if fail:
     need = '.'.join(map(str, min_version))
-    print('fatal: git %s or later required' % need, file=sys.stderr)
+    if msg:
+      msg = ' for ' + msg
+    print('fatal: git %s or later required%s' % (need, msg), file=sys.stderr)
     sys.exit(1)
   return False
 
