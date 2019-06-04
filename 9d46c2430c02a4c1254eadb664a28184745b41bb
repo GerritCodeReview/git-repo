@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e529116_bbe73fc1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-04T01:17:58Z",
+      "side": 1,
+      "message": "it\u0027s not entirely obvious that the last few lines of these two codepaths are the same.  how about:\n\n path \u003d None\n\n # Look for a manifest by path in the filesystem (including the cwd).\n if not load_local_manifests:\n   local_path \u003d os.path.abspath(name)\n   if os.path.isfile(local_path):\n     path \u003d local_path\n\n # Look for manifests by name from the manifests repo.\n if path is None:\n   path \u003d os.path.join(self.manifestProject.worktree, name)\n   if not os.path.isfile(path):\n     raise ManifestParseError(\u0027manifest %s not found\u0027 % name)",
+      "revId": "9d46c2430c02a4c1254eadb664a28184745b41bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "987c86d1_4b98e6c7",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-04T01:17:58Z",
+      "side": 1,
+      "message": "since it\u0027s a kwarg, you\u0027ll want to write load_local_manifests\u003dFalse",
+      "revId": "9d46c2430c02a4c1254eadb664a28184745b41bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
