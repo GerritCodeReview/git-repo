@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f67bc6db_08c5fe2f",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-12T22:15:37Z",
+      "side": 1,
+      "message": "i\u0027ll use \"most recent tag\" as that\u0027s the phrasing `man git-describe` uses",
+      "parentUuid": "2bb8c0a8_95e66737",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 11
+      },
+      "revId": "d797cd338c291b3ad525be0537ea7bcf57dc5ce8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b879c789_b3555306",
         "filename": "docs/release-process.md",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2018-12-12T09:01:53Z",
       "side": 1,
       "message": "This doesn\u0027t match the identifier used below (L161).\n\nShould this be mentioned here?  The document is public, but the link is not available for non-googlers.",
+      "range": {
+        "startLine": 100,
+        "startChar": 52,
+        "endLine": 100,
+        "endChar": 67
+      },
+      "revId": "d797cd338c291b3ad525be0537ea7bcf57dc5ce8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9f7776b_27f221f2",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-12T22:15:37Z",
+      "side": 1,
+      "message": "i\u0027ve fixed the linkage\n\ni\u0027m not happy about referring to an internal-Google-only document and normally i\u0027d avoid doing so.  the reason i\u0027m adding it here is because it describes the internal-Google-only process of accessing the restricted official \"Repo Maintainer\" GPG key.  even internally the document is restricted to a few Googlers (the few people who have access to the official key).\n\nso basically, since this document is for how to create releases, and us few Googlers need to be able to access the official keys to create official releases for the world, i thought it important to link to that here.\n\nwdyt ?",
+      "parentUuid": "b879c789_b3555306",
       "range": {
         "startLine": 100,
         "startChar": 52,
