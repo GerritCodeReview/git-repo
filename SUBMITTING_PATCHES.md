@@ -1,3 +1,5 @@
+[TOC]
+
 # Short Version
 
  - Make small logical changes.
@@ -62,6 +64,17 @@ followed.
 If there are many occurrences of the same warning that cannot be
 avoided without going against the Google style guide, these may be
 suppressed in the included `.flake8` file.
+
+
+## Running tests
+
+There is a [`./run_tests`][./run_tests] helper script for quickly invoking all
+of our unittests.  The coverage isn't great currently, but it should still be
+run for all commits.
+
+Adding more unittests for changes you make would be greatly appreciated :).
+Check out the [tests/][./tests/] subdirectory for more details.
+
 
 ## Check the license
 
