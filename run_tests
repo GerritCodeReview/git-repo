@@ -1,0 +1,54 @@
+#!/usr/bin/python
+# -*- coding:utf-8 -*-
+# Copyright 2019 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Wrapper to run pytest with the right settings."""
+
+from __future__ import print_function
+
+import errno
+import os
+import subprocess
+import sys
+
+
+def run_pytest(cmd, argv):
+  """Run the unittests via |cmd|."""
+  try:
+    subprocess.check_call([cmd] + argv)
+    return 0
+  except OSError as e:
+    if e.errno == errno.ENOENT:
+      print('%s: unable to run `%s`: %s' % (__file__, cmd, e), file=sys.stderr)
+      print('%s: Try installing pytest: sudo apt-get install python-pytest' %
+            (__file__,), file=sys.stderr)
+      return 1
+    else:
+      raise
+
+
+def main(argv):
+  """The main entry."""
+  # Add the repo tree to PYTHONPATH as the tests expect to be able to import
+  # modules directly.
+  topdir = os.path.dirname(os.path.realpath(__file__))
+  pythonpath = os.environ.get('PYTHONPATH', '')
+  os.environ['PYTHONPATH'] = '%s:%s' % (topdir, pythonpath)
+
+  return run_pytest('pytest', argv)
+
+
+if __name__ == '__main__':
+  sys.exit(main(sys.argv[1:]))

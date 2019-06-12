@@ -1,3 +1,5 @@
+[TOC]
+
 # Short Version
 
  - Make small logical changes.
@@ -52,16 +54,28 @@ Run `flake8` on changes modules:
 
     flake8 file.py
 
-Note that repo generally follows [Google's python style guide]
-(https://google.github.io/styleguide/pyguide.html) rather than [PEP 8]
-(https://www.python.org/dev/peps/pep-0008/), so it's possible that
-the output of `flake8` will be quite noisy. It's not mandatory to
-avoid all warnings, but at least the maximum line length should be
-followed.
+Note that repo generally follows [Google's python style guide] rather than
+[PEP 8], so it's possible that the output of `flake8` will be quite noisy.
+It's not mandatory to avoid all warnings, but at least the maximum line
+length should be followed.
 
 If there are many occurrences of the same warning that cannot be
 avoided without going against the Google style guide, these may be
 suppressed in the included `.flake8` file.
+
+[Google's python style guide]: https://google.github.io/styleguide/pyguide.html
+[PEP 8]: https://www.python.org/dev/peps/pep-0008/
+
+
+## Running tests
+
+There is a [`./run_tests`](./run_tests) helper script for quickly invoking all
+of our unittests.  The coverage isn't great currently, but it should still be
+run for all commits.
+
+Adding more unittests for changes you make would be greatly appreciated :).
+Check out the [tests/](./tests/) subdirectory for more details.
+
 
 ## Check the license
 
