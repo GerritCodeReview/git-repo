@@ -436,7 +436,7 @@ later is required to fix a server side protocol bug.
         bare_git.gc('--auto')
       return
 
-    config = {'pack.threads': cpu_count / jobs if cpu_count > jobs else 1}
+    config = {'pack.threads': cpu_count // jobs if cpu_count > jobs else 1}
 
     threads = set()
     sem = _threading.Semaphore(jobs)
@@ -598,7 +598,7 @@ later is required to fix a server side protocol bug.
       self.jobs = opt.jobs
     if self.jobs > 1:
       soft_limit, _ = _rlimit_nofile()
-      self.jobs = min(self.jobs, (soft_limit - 5) / 3)
+      self.jobs = min(self.jobs, (soft_limit - 5) // 3)
 
     if opt.network_only and opt.detach_head:
       print('error: cannot combine -n and -d', file=sys.stderr)
