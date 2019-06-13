@@ -23,11 +23,6 @@ from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
 
-from pyversion import is_python3
-if not is_python3():
-  input = raw_input  # noqa: F821
-else:
-  unicode = str
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 

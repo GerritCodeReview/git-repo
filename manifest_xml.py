@@ -17,15 +17,7 @@ import os
 import re
 import sys
 import xml.dom.minidom
-
-from pyversion import is_python3
-if is_python3():
-  import urllib.parse
-else:
-  import imp
-  import urlparse
-  urllib = imp.new_module('urllib')
-  urllib.parse = urlparse
+import urllib.parse
 
 import gitc_utils
 from git_config import GitConfig, IsId

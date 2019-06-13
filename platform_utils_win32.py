@@ -14,18 +14,10 @@
 
 import errno
 
-from pyversion import is_python3
 from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
-from ctypes import c_buffer
+from ctypes import c_buffer, c_ubyte, Structure, Union, byref
 from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE
-from ctypes.wintypes import WCHAR, USHORT, LPVOID, ULONG
-if is_python3():
-  from ctypes import c_ubyte, Structure, Union, byref
-  from ctypes.wintypes import LPDWORD
-else:
-  # For legacy Python2 different imports are needed.
-  from ctypes.wintypes import POINTER, c_ubyte, Structure, Union, byref
-  LPDWORD = POINTER(DWORD)
+from ctypes.wintypes import WCHAR, USHORT, LPVOID, ULONG, LPDWORD
 
 kernel32 = WinDLL('kernel32', use_last_error=True)
 
@@ -202,24 +194,13 @@ def readlink(path):
         'Error reading symbolic link \"%s\"'.format(path))
   rdb = REPARSE_DATA_BUFFER.from_buffer(target_buffer)
   if rdb.ReparseTag == IO_REPARSE_TAG_SYMLINK:
-    return _preserve_encoding(path, rdb.SymbolicLinkReparseBuffer.PrintName)
+    return rdb.SymbolicLinkReparseBuffer.PrintName
   elif rdb.ReparseTag == IO_REPARSE_TAG_MOUNT_POINT:
-    return _preserve_encoding(path, rdb.MountPointReparseBuffer.PrintName)
+    return rdb.MountPointReparseBuffer.PrintName
   # Unsupported reparse point type
   _raise_winerror(
       ERROR_NOT_SUPPORTED,
       'Error reading symbolic link \"%s\"'.format(path))
-
-
-def _preserve_encoding(source, target):
-  """Ensures target is the same string type (i.e. unicode or str) as source."""
-
-  if is_python3():
-    return target
-
-  if isinstance(source, unicode):  # noqa: F821
-    return unicode(target)  # noqa: F821
-  return str(target)
 
 
 def _raise_winerror(code, error_desc):

@@ -17,15 +17,7 @@ import os
 import platform
 import re
 import sys
-
-from pyversion import is_python3
-if is_python3():
-  import urllib.parse
-else:
-  import imp
-  import urlparse
-  urllib = imp.new_module('urllib')
-  urllib.parse = urlparse
+import urllib.parse
 
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand

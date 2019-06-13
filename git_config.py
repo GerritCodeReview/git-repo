@@ -14,6 +14,7 @@
 
 import contextlib
 import errno
+from http.client import HTTPException
 import json
 import os
 import re
@@ -26,25 +27,12 @@ try:
 except ImportError:
   import dummy_threading as _threading
 import time
-
-from pyversion import is_python3
-if is_python3():
-  import urllib.request
-  import urllib.error
-else:
-  import urllib2
-  import imp
-  urllib = imp.new_module('urllib')
-  urllib.request = urllib2
-  urllib.error = urllib2
+import urllib.error
+import urllib.request
 
 from error import GitError, UploadError
 import platform_utils
 from repo_trace import Trace
-if is_python3():
-  from http.client import HTTPException
-else:
-  from httplib import HTTPException
 
 from git_command import GitCommand
 from git_command import ssh_sock
@@ -341,8 +329,6 @@ class GitConfig(object):
     d = self._do('--null', '--list')
     if d is None:
       return c
-    if not is_python3():
-      d = d.decode('utf-8')
     for line in d.rstrip('\0').split('\0'):
       if '\n' in line:
         key, val = line.split('\n', 1)
