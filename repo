@@ -10,6 +10,62 @@ copy of repo in the checkout.
 
 from __future__ import print_function
 
+# Re-exec into Python 3 asap to avoid version checking throughout the file.
+import os
+import platform
+import sys
+
+
+def exec_command(cmd):
+  """Execute |cmd| or return None on failure."""
+  try:
+    if platform.system() == 'Windows':
+      ret = subprocess.call(cmd)
+      sys.exit(ret)
+    else:
+      os.execvp(cmd[0], cmd)
+  except:
+    pass
+
+
+def check_python_version():
+  """Make sure the active Python version is recent enough."""
+  def reexec(prog):
+    exec_command([prog] + sys.argv)
+
+  MIN_PYTHON_VERSION = (3, 6)
+
+  ver = sys.version_info
+  major = ver.major
+  minor = ver.minor
+
+  # Abort on very old Python 2 versions.
+  if (major, minor) < (2, 7):
+    print('repo: error: Your Python version is too old. '
+          'Please use Python {}.{} or newer instead.'.format(
+              *MIN_PYTHON_VERSION), file=sys.stderr)
+    sys.exit(1)
+
+  # Try to re-exec the generic Python 3 wrapper from Python 2.7.
+  if major < 3:
+    # If this fails, we'll retry below.
+    reexec('python3')
+
+  # Try to re-exec the version specific Python 3 if needed.
+  if (major, minor) < MIN_PYTHON_VERSION:
+    # Python makes releases ~once a year, so try our min version +10 to help
+    # bridge the gap.  This is the fallback anyways so perf isn't critical.
+    min_major, min_minor = MIN_PYTHON_VERSION
+    for inc in range(0, 10):
+      reexec('python{}.{}'.format(min_major, min_minor + inc))
+    print('repo: error: Unable to run "python3". '
+          'Please install Python {}.{} or newer.'.format(
+              *MIN_PYTHON_VERSION), file=sys.stderr)
+    sys.exit(1)
+
+check_python_version()
+
+
 # repo default configuration
 #
 import os
@@ -123,7 +179,6 @@ repodir = '.repo'                # name of repo's private directory
 S_repo = 'repo'                  # special repo repository
 S_manifests = 'manifests'        # special manifest repository
 REPO_MAIN = S_repo + '/main.py'  # main script
-MIN_PYTHON_VERSION = (2, 7)      # minimum supported python version
 GITC_CONFIG_FILE = '/gitc/.config'
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 
@@ -137,28 +192,9 @@ import shutil
 import stat
 import subprocess
 import sys
+import urllib.request
+import urllib.error
 
-if sys.version_info[0] == 3:
-  import urllib.request
-  import urllib.error
-else:
-  import imp
-  import urllib2
-  urllib = imp.new_module('urllib')
-  urllib.request = urllib2
-  urllib.error = urllib2
-
-
-# Python version check
-ver = sys.version_info
-if (ver[0], ver[1]) < MIN_PYTHON_VERSION:
-  print('error: Python version {} unsupported.\n'
-        'Please use Python {}.{} instead.'.format(
-            sys.version.split(' ')[0],
-            MIN_PYTHON_VERSION[0],
-            MIN_PYTHON_VERSION[1],
-        ), file=sys.stderr)
-  sys.exit(1)
 
 home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
@@ -926,15 +962,9 @@ def main(orig_args):
         '--']
   me.extend(orig_args)
   me.extend(extra_args)
-  try:
-    if platform.system() == "Windows":
-      sys.exit(subprocess.call(me))
-    else:
-      os.execv(sys.executable, me)
-  except OSError as e:
-    print("fatal: unable to start %s" % repo_main, file=sys.stderr)
-    print("fatal: %s" % e, file=sys.stderr)
-    sys.exit(148)
+  exec_command(me)
+  print("fatal: unable to start %s" % repo_main, file=sys.stderr)
+  sys.exit(148)
 
 
 if __name__ == '__main__':
