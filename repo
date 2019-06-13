@@ -901,8 +901,4 @@ def main(orig_args):
 
 
 if __name__ == '__main__':
-  if ver[0] == 3:
-    print('warning: Python 3 support is currently experimental. YMMV.\n'
-          'Please use Python 2.7 instead.',
-          file=sys.stderr)
   main(sys.argv[1:])
