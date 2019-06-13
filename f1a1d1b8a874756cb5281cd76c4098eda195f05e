@@ -22,6 +22,30 @@
       "revId": "f1a1d1b8a874756cb5281cd76c4098eda195f05e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65e090b3_65147fe4",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 905,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-13T13:38:28Z",
+      "side": 1,
+      "message": "i had CL:227756 before this one which deleted the message, but i\u0027ve flipped that now.  thanks!",
+      "parentUuid": "8140edf6_bc522422",
+      "range": {
+        "startLine": 905,
+        "startChar": 4,
+        "endLine": 905,
+        "endChar": 10
+      },
+      "revId": "f1a1d1b8a874756cb5281cd76c4098eda195f05e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
