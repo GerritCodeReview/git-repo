@@ -58,7 +58,7 @@ It is equivalent to "git branch -D <branchname>".
       pm.update()
 
       if opt.all:
-        branches = project.GetBranches().keys()
+        branches = list(project.GetBranches().keys())
       else:
         branches = [nb]
 
