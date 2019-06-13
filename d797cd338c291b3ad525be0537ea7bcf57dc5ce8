@@ -117,6 +117,30 @@
       "revId": "d797cd338c291b3ad525be0537ea7bcf57dc5ce8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0dae1122_1ecacc56",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-13T03:19:42Z",
+      "side": 1,
+      "message": "i\u0027ve moved this to a note block and added some clarification.  ptal.",
+      "parentUuid": "8b74b779_6f3f5374",
+      "range": {
+        "startLine": 100,
+        "startChar": 52,
+        "endLine": 100,
+        "endChar": 67
+      },
+      "revId": "d797cd338c291b3ad525be0537ea7bcf57dc5ce8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
