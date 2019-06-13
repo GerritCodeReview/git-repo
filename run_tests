@@ -47,7 +47,8 @@ def main(argv):
   pythonpath = os.environ.get('PYTHONPATH', '')
   os.environ['PYTHONPATH'] = '%s:%s' % (topdir, pythonpath)
 
-  return run_pytest('pytest', argv)
+  # Run through Python 2 & Python 3 versions to make sure things work.
+  return run_pytest('pytest', argv) | run_pytest('pytest-3', argv)
 
 
 if __name__ == '__main__':
