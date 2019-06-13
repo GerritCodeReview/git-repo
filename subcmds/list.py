@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 #
 # Copyright (C) 2011 The Android Open Source Project
 #
