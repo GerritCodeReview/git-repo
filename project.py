@@ -25,6 +25,7 @@ import sys
 import tarfile
 import tempfile
 import time
+import urllib.parse
 
 from color import Coloring
 from git_command import GitCommand, git_require
@@ -38,16 +39,6 @@ import progress
 from repo_trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M, R_WORKTREE_M
-
-from pyversion import is_python3
-if is_python3():
-  import urllib.parse
-else:
-  import imp
-  import urlparse
-  urllib = imp.new_module('urllib')
-  urllib.parse = urlparse
-  input = raw_input  # noqa: F821
 
 
 # Maximum sleep time allowed during retries.

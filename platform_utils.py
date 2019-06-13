@@ -15,16 +15,10 @@
 import errno
 import os
 import platform
+from queue import Queue
 import select
 import shutil
 import stat
-
-from pyversion import is_python3
-if is_python3():
-  from queue import Queue
-else:
-  from Queue import Queue
-
 from threading import Thread
 
 

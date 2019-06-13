@@ -19,19 +19,10 @@ import re
 import subprocess
 import sys
 import traceback
+import urllib.parse
 
 from error import HookError
 from git_refs import HEAD
-
-from pyversion import is_python3
-if is_python3():
-  import urllib.parse
-else:
-  import imp
-  import urlparse
-  urllib = imp.new_module('urllib')
-  urllib.parse = urlparse
-  input = raw_input  # noqa: F821
 
 
 class RepoHook(object):
