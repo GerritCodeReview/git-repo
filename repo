@@ -776,8 +776,8 @@ The most commonly used repo commands are:
       """  help      Display detailed help on a command
 
 For access to the full online help, install repo ("repo init").
-""", file=sys.stderr)
-  sys.exit(1)
+""")
+  sys.exit(0)
 
 
 def _Help(args):
