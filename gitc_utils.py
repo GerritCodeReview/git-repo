@@ -58,8 +58,8 @@ def _set_project_revisions(projects):
       sys.exit(1)
     revisionExpr = gitcmd.stdout.split('\t')[0]
     if not revisionExpr:
-      raise(ManifestParseError('Invalid SHA-1 revision project %s (%s)' %
-                               (proj.remote.url, proj.revisionExpr)))
+      raise ManifestParseError('Invalid SHA-1 revision project %s (%s)' %
+                               (proj.remote.url, proj.revisionExpr))
     proj.revisionExpr = revisionExpr
 
 def _manifest_groups(manifest):
@@ -87,7 +87,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
   print('Generating GITC Manifest by fetching revision SHAs for each '
         'project.')
   if paths is None:
-    paths = manifest.paths.keys()
+    paths = list(manifest.paths.keys())
 
   groups = [x for x in re.split(r'[,\s]+', _manifest_groups(manifest)) if x]
 
@@ -96,7 +96,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
   projects = [p for p in projects if p.MatchesGroups(groups)]
 
   if gitc_manifest is not None:
-    for path, proj in manifest.paths.iteritems():
+    for path, proj in manifest.paths.items():
       if not proj.MatchesGroups(groups):
         continue
 
@@ -124,7 +124,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
     index += NUM_BATCH_RETRIEVE_REVISIONID
 
   if gitc_manifest is not None:
-    for path, proj in gitc_manifest.paths.iteritems():
+    for path, proj in gitc_manifest.paths.items():
       if proj.old_revision and path in paths:
         # If we updated a project that has been started, keep the old-revision
         # updated.
@@ -133,7 +133,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
         repo_proj.revisionExpr = None
 
   # Convert URLs from relative to absolute.
-  for _name, remote in manifest.remotes.iteritems():
+  for _name, remote in manifest.remotes.items():
     remote.fetchUrl = remote.resolvedFetchUrl
 
   # Save the manifest.

@@ -99,7 +99,7 @@ class Info(PagedCommand):
       self.headtext(p.revisionExpr)
       self.out.nl()
 
-      localBranches = p.GetBranches().keys()
+      localBranches = list(p.GetBranches().keys())
       self.heading("Local Branches: ")
       self.redtext(str(len(localBranches)))
       if len(localBranches) > 0:
