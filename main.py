@@ -15,6 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""The repo tool.
+
+People shouldn't run this directly; instead, they should use the `repo` wrapper
+which takes care of execing this entry point.
+"""
+
 from __future__ import print_function
 import getpass
 import imp

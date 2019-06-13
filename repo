@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+"""Repo launcher.
+
+This is a standalone tool that people may copy to anywhere in their system.
+It is used to get an initial repo client checkout, and after that it runs the
+copy of repo in the checkout.
+"""
+
 from __future__ import print_function
 
 # repo default configuration
