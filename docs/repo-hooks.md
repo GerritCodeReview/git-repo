@@ -83,6 +83,26 @@ then check it directly.  Hooks should not normally modify the active git repo
 the user.  Although user interaction is discouraged in the common case, it can
 be useful when deploying automatic fixes.
 
+### Shebang Handling
+
+If the hook is written against a specific version of Python (either 2 or 3),
+the script can declare that explicitly.  Repo will then attempt to execute it
+under the right version of Python regardless of the version repo itself might
+be executing under.
+
+Here are the shebangs that are recognized.
+
+* `#!/usr/bin/env python` & `#!/usr/bin/python`: The hook is compatible with
+  Python 2 & Python 3.  For maximum compatibility, these are recommended.
+* `#!/usr/bin/env python2` & `#!/usr/bin/python2`: The hook requires Python 2.
+  Version specific names like `python2.7` are also recognized.
+* `#!/usr/bin/env python3` & `#!/usr/bin/python3`: The hook requires Python 3.
+  Version specific names like `python3.6` are also recognized.
+
+If no shebang is detected, or does not match the forms above, we assume that the
+hook is compatible with both Python 2 & Python 3 as if `#!/usr/bin/python` was
+used.
+
 ## Hooks
 
 Here are all the points available for hooking.

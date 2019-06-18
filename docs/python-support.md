@@ -28,5 +28,20 @@ The master branch will require Python 3.6 at a minimum.
 If the system has an older version of Python 3, then users will have to select
 the legacy Python 2 branch instead.
 
+### repo hooks
 
+Projects that use [repo hooks] run on independent schedules.
+They might migrate to Python 3 earlier or later than us.
+To support them, we'll probe the shebang of the hook script and if we find an
+interpreter in there that indicates a different version than repo is currently
+running under, we'll attempt to reexec ourselves under that.
+
+For example, a hook with a header like `#!/usr/bin/python2` will have repo
+execute `/usr/bin/python2` directly before executing the hooks if repo is
+currently running Python 3.
+
+For more details, consult the [repo hooks] documentation.
+
+
+[repo hooks]: ./repo-hooks.md
 [repo launcher]: ../repo
