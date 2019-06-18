@@ -18,6 +18,7 @@ from __future__ import print_function
 import errno
 import filecmp
 import glob
+import json
 import os
 import random
 import re
@@ -544,6 +545,105 @@ class RepoHook(object):
         prompt % (self._GetMustVerb(), self._script_fullpath),
         'Scripts have changed since %s was allowed.' % (self._hook_type,))
 
+  @staticmethod
+  def _ExtractInterpFromShebang(data):
+    """Extract the interpreter used in the shebang.
+
+    Try to locate the interpreter the script is using (ignoring `env`).
+
+    Args:
+      data: The file content of the script.
+
+    Returns:
+      The basename of the main script interpreter, or None if a shebang is not
+      used or could not be parsed out.
+    """
+    firstline = data.splitlines()[:1]
+    if not firstline:
+      return None
+
+    # The format here can be tricky.
+    shebang = firstline[0].strip()
+    m = re.match(r'^#!\s*([^\s]+)(?:\s+([^\s]+))?', shebang)
+    if not m:
+      return None
+
+    # If the using `env`, find the target program.
+    interp = m.group(1)
+    if os.path.basename(interp) == 'env':
+      interp = m.group(2)
+
+    return interp
+
+  def _ExecuteHookViaReexec(self, interp, context, **kwargs):
+    """Execute the hook script through |interp|.
+
+    Note: Support for this feature should be dropped ~Jun 2021.
+
+    Args:
+      interp: The Python program to run.
+      context: Basic Python context to execute the hook inside.
+      kwargs: Arbitrary arguments to pass to the hook script.
+
+    Raises:
+      HookError: When the hooks failed for any reason.
+    """
+    # This logic needs to be kept in sync with _ExecuteHookViaImport below.
+    script = """
+import json, os, sys
+path = '''%(path)s'''
+kwargs = json.loads('''%(kwargs)s''')
+context = json.loads('''%(context)s''')
+sys.path.insert(0, os.path.dirname(path))
+data = open(path).read()
+exec(compile(data, path, 'exec'), context)
+context['main'](**kwargs)
+""" % {
+        'path': self._script_fullpath,
+        'kwargs': json.dumps(kwargs),
+        'context': json.dumps(context),
+    }
+
+    # We pass the script via stdin to avoid OS argv limits.  It also makes
+    # unhandled exception tracebacks less verbose/confusing for users.
+    cmd = [interp, '-c', 'import sys; exec(sys.stdin.read())']
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    proc.communicate(input=script.encode('utf-8'))
+    if proc.returncode:
+      raise HookError('Failed to run %s hook.' % (self._hook_type,))
+
+  def _ExecuteHookViaImport(self, data, context, **kwargs):
+    """Execute the hook code in |data| directly.
+
+    Args:
+      data: The code of the hook to execute.
+      context: Basic Python context to execute the hook inside.
+      kwargs: Arbitrary arguments to pass to the hook script.
+
+    Raises:
+      HookError: When the hooks failed for any reason.
+    """
+    # Exec, storing global context in the context dict.  We catch exceptions
+    # and convert to a HookError w/ just the failing traceback.
+    try:
+      exec(compile(data, self._script_fullpath, 'exec'), context)
+    except Exception:
+      raise HookError('%s\nFailed to import %s hook; see traceback above.' %
+                      (traceback.format_exc(), self._hook_type))
+
+    # Running the script should have defined a main() function.
+    if 'main' not in context:
+      raise HookError('Missing main() in: "%s"' % self._script_fullpath)
+
+    # Call the main function in the hook.  If the hook should cause the
+    # build to fail, it will raise an Exception.  We'll catch that convert
+    # to a HookError w/ just the failing traceback.
+    try:
+      context['main'](**kwargs)
+    except Exception:
+      raise HookError('%s\nFailed to run main() for %s hook; see traceback '
+                      'above.' % (traceback.format_exc(), self._hook_type))
+
   def _ExecuteHook(self, **kwargs):
     """Actually execute the given hook.
 
@@ -568,19 +668,8 @@ class RepoHook(object):
       # hooks can't import repo files.
       sys.path = [os.path.dirname(self._script_fullpath)] + sys.path[1:]
 
-      # Exec, storing global context in the context dict.  We catch exceptions
-      # and  convert to a HookError w/ just the failing traceback.
+      # Initial global context for the hook to run within.
       context = {'__file__': self._script_fullpath}
-      try:
-        exec(compile(open(self._script_fullpath).read(),
-                     self._script_fullpath, 'exec'), context)
-      except Exception:
-        raise HookError('%s\nFailed to import %s hook; see traceback above.' %
-                        (traceback.format_exc(), self._hook_type))
-
-      # Running the script should have defined a main() function.
-      if 'main' not in context:
-        raise HookError('Missing main() in: "%s"' % self._script_fullpath)
 
       # Add 'hook_should_take_kwargs' to the arguments to be passed to main.
       # We don't actually want hooks to define their main with this argument--
@@ -592,15 +681,31 @@ class RepoHook(object):
       kwargs = kwargs.copy()
       kwargs['hook_should_take_kwargs'] = True
 
-      # Call the main function in the hook.  If the hook should cause the
-      # build to fail, it will raise an Exception.  We'll catch that convert
-      # to a HookError w/ just the failing traceback.
-      try:
-        context['main'](**kwargs)
-      except Exception:
-        raise HookError('%s\nFailed to run main() for %s hook; see traceback '
-                        'above.' % (traceback.format_exc(),
-                                    self._hook_type))
+      # See what version of python the hook has been written against.
+      data = open(self._script_fullpath).read()
+      interp = self._ExtractInterpFromShebang(data)
+      reexec = False
+      if interp:
+        prog = os.path.basename(interp)
+        if prog.startswith('python2') and sys.version_info.major != 2:
+          reexec = True
+        elif prog.startswith('python3') and sys.version_info.major == 2:
+          reexec = True
+
+      # Attempt to execute the hooks through the requested version of Python.
+      if reexec:
+        try:
+          self._ExecuteHookViaReexec(interp, context, **kwargs)
+        except OSError as e:
+          if e.errno == errno.ENOENT:
+            # We couldn't find the interpreter, so fallback to importing.
+            reexec = False
+          else:
+            raise
+
+      # Run the hook by importing directly.
+      if not reexec:
+        self._ExecuteHookViaImport(data, context, **kwargs)
     finally:
       # Restore sys.path and CWD.
       sys.path = orig_syspath
