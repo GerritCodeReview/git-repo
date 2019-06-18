@@ -744,6 +744,7 @@ later is required to fix a server side protocol bug.
       start = time.time()
       success = mp.Sync_NetworkHalf(quiet=opt.quiet,
                                     current_branch_only=opt.current_branch_only,
+                                    force_sync=opt.force_sync,
                                     no_tags=opt.no_tags,
                                     optimized_fetch=opt.optimized_fetch,
                                     submodules=self.manifest.HasSubmodules)
