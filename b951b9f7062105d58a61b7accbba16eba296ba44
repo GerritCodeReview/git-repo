@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "55ecc5b5_762da72e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-18T16:52:58Z",
+      "side": 1,
+      "message": "what does #2 mean ?\n\nwhat is \"the first patch\" ?\n\nplease describe in the commit message the scenarios in which this change is necessary/matters",
+      "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
