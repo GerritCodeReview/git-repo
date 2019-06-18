@@ -780,6 +780,7 @@ later is required to fix a server side protocol bug.
       start = time.time()
       success = mp.Sync_NetworkHalf(quiet=opt.quiet, verbose=opt.verbose,
                                     current_branch_only=opt.current_branch_only,
+                                    force_sync=opt.force_sync,
                                     tags=opt.tags,
                                     optimized_fetch=opt.optimized_fetch,
                                     retry_fetches=opt.retry_fetches,
