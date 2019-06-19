@@ -16,6 +16,47 @@
       "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5489c24b_456bf409",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1085043
+      },
+      "writtenOn": "2019-06-19T07:12:08Z",
+      "side": 1,
+      "message": "hello Mike ,\n\nthe first patch has been already merged\nhttps://gerrit-review.googlesource.com/c/git-repo/+/218398\n\nsync: respect --force-sync when fetching updates\n    \n    If a tag is rewritten on the server (which is bad), trying to recover\n    locally with `repo sync --force-sync` doesn\u0027t actually work.  People\n    have to manually delete things themselves to fix syncing.  While tags\n    should never be rewritten in practice, allow users to easily recover\n    from broken servers.\n    \n    We updated some of these code paths already (see commit 6e53844f1edd3\n    \"Allow clobbering of existing tags from remote.\"), but the incremental\n    update flow was missed.\n    \n    Bug: b/120778183\n    Bug: chromium:932651\n    Test: delete local tag \u0026 recreate to diff commit, then check\n          `repo sync` \u0026 `repo sync --force-sync` behavior\n    Change-Id: I3648f7d2526732c06016b691a9a36c003157618d\n\nShould i push again the commit ?",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 10
+      },
+      "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5708dd3_fc34835d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1085043
+      },
+      "writtenOn": "2019-06-19T07:12:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55ecc5b5_762da72e",
+      "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
