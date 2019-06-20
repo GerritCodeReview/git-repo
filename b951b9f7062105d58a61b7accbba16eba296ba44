@@ -57,6 +57,30 @@
       "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "22bea97e_748c6660",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-20T14:28:55Z",
+      "side": 1,
+      "message": "yes, we need an updated commit message.  you might want to check out this documentation:\nhttps://chris.beams.io/posts/git-commit/",
+      "parentUuid": "5489c24b_456bf409",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 10
+      },
+      "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
