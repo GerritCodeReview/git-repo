@@ -88,6 +88,41 @@ def sq(r):
 
 _project_hook_list = None
 
+def copy_file(abssrc, absdest):
+  # copy file if it does not exist or is out of date
+  if not os.path.exists(absdest) or not filecmp.cmp(abssrc, absdest):
+    try:
+      # remove existing file first, since it might be read-only
+      if os.path.exists(absdest):
+        platform_utils.remove(absdest)
+      else:
+        dest_dir = os.path.dirname(absdest)
+        if not platform_utils.isdir(dest_dir):
+          os.makedirs(dest_dir)
+      shutil.copy(abssrc, absdest)
+      # make the file read-only
+      mode = os.stat(absdest)[stat.ST_MODE]
+      mode = mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
+      os.chmod(absdest, mode)
+    except IOError:
+      _error('Cannot copy file %s to %s', abssrc, absdest)
+
+def link_file(ln_src, absDest):
+  # link file if it does not exist or is out of date
+  if (not platform_utils.islink(absDest) or
+      platform_utils.readlink(absDest) != ln_src):
+    try:
+      # remove existing file first, since it might be read-only
+      if os.path.lexists(absDest):
+        platform_utils.remove(absDest)
+      else:
+        dest_dir = os.path.dirname(absDest)
+        if not platform_utils.isdir(dest_dir):
+          os.makedirs(dest_dir)
+      platform_utils.symlink(ln_src, absDest)
+    except IOError:
+      _error('Cannot link file %s to %s', ln_src, absDest)
+
 
 def _ProjectHooks():
   """List the hooks present in the 'hooks' directory.
@@ -240,57 +275,24 @@ class _Annotation(object):
 
 class _CopyFile(object):
 
-  def __init__(self, src, dest, abssrc, absdest):
-    self.src = src
-    self.dest = dest
+  def __init__(self, abssrc, absdest):
     self.abs_src = abssrc
     self.abs_dest = absdest
 
   def _Copy(self):
-    src = self.abs_src
-    dest = self.abs_dest
-    # copy file if it does not exist or is out of date
-    if not os.path.exists(dest) or not filecmp.cmp(src, dest):
-      try:
-        # remove existing file first, since it might be read-only
-        if os.path.exists(dest):
-          platform_utils.remove(dest)
-        else:
-          dest_dir = os.path.dirname(dest)
-          if not platform_utils.isdir(dest_dir):
-            os.makedirs(dest_dir)
-        shutil.copy(src, dest)
-        # make the file read-only
-        mode = os.stat(dest)[stat.ST_MODE]
-        mode = mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
-        os.chmod(dest, mode)
-      except IOError:
-        _error('Cannot copy file %s to %s', src, dest)
+    copy_file(self.abs_src, self.abs_dest)
 
 
 class _LinkFile(object):
 
-  def __init__(self, git_worktree, src, dest, relsrc, absdest):
+  def __init__(self, git_worktree, src, absdest, is_abs_src):
     self.git_worktree = git_worktree
     self.src = src
-    self.dest = dest
-    self.src_rel_to_dest = relsrc
     self.abs_dest = absdest
+    self.is_abs_src = is_abs_src
 
-  def __linkIt(self, relSrc, absDest):
-    # link file if it does not exist or is out of date
-    if not platform_utils.islink(absDest) or (platform_utils.readlink(absDest) != relSrc):
-      try:
-        # remove existing file first, since it might be read-only
-        if os.path.lexists(absDest):
-          platform_utils.remove(absDest)
-        else:
-          dest_dir = os.path.dirname(absDest)
-          if not platform_utils.isdir(dest_dir):
-            os.makedirs(dest_dir)
-        platform_utils.symlink(relSrc, absDest)
-      except IOError:
-        _error('Cannot link file %s to %s', relSrc, absDest)
+  def __linkIt(self, ln_src, absDest):
+    link_file(ln_src, absDest)
 
   def _Link(self):
     """Link the self.rel_src_to_dest and self.abs_dest. Handles wild cards
@@ -301,8 +303,14 @@ class _LinkFile(object):
     # is not the root of the repo
     absSrc = os.path.join(self.git_worktree, self.src)
     if os.path.exists(absSrc):
+      # dest should already be an absolute path, but src is project relative
+      # make src relative path to dest
+      if self.is_abs_src:
+        ln_src = absSrc
+      else:
+        ln_src = os.path.relpath(absSrc, os.path.dirname(self.abs_dest))
       # Entity exists so just a simple one to one link operation
-      self.__linkIt(self.src_rel_to_dest, self.abs_dest)
+      self.__linkIt(ln_src, self.abs_dest)
     else:
       # Entity doesn't exist assume there is a wild card
       absDestDir = self.abs_dest
@@ -314,7 +322,10 @@ class _LinkFile(object):
         for absSrcFile in absSrcFiles:
           # Create a releative path from source dir to destination dir
           absSrcDir = os.path.dirname(absSrcFile)
-          relSrcDir = os.path.relpath(absSrcDir, absDestDir)
+          if self.is_abs_src:
+            ln_src_dir = absSrcDir
+          else:
+            ln_src_dir = os.path.relpath(absSrcDir, absDestDir)
 
           # Get the source file name
           srcFile = os.path.basename(absSrcFile)
@@ -322,8 +333,8 @@ class _LinkFile(object):
           # Now form the final full paths to srcFile. They will be
           # absolute for the desintaiton and relative for the srouce.
           absDest = os.path.join(absDestDir, srcFile)
-          relSrc = os.path.join(relSrcDir, srcFile)
-          self.__linkIt(relSrc, absDest)
+          ln_src = os.path.join(ln_src_dir, srcFile)
+          self.__linkIt(ln_src, absDest)
 
 
 class RemoteSpec(object):
@@ -642,11 +653,11 @@ class RepoHook(object):
 
 class Project(object):
   # These objects can be shared between several working trees.
-  shareable_files = ['description', 'info']
+  shareable_files = ['description']
   shareable_dirs = ['hooks', 'objects', 'rr-cache', 'svn']
   # These objects can only be used by a single working tree.
   working_tree_files = ['config', 'packed-refs', 'shallow']
-  working_tree_dirs = ['logs', 'refs']
+  working_tree_dirs = ['logs', 'refs', 'info']
 
   def __init__(self,
                manifest,
@@ -1557,14 +1568,10 @@ class Project(object):
     # dest should already be an absolute path, but src is project relative
     # make src an absolute path
     abssrc = os.path.join(self.worktree, src)
-    self.copyfiles.append(_CopyFile(src, dest, abssrc, absdest))
+    self.copyfiles.append(_CopyFile(abssrc, absdest))
 
-  def AddLinkFile(self, src, dest, absdest):
-    # dest should already be an absolute path, but src is project relative
-    # make src relative path to dest
-    absdestdir = os.path.dirname(absdest)
-    relsrc = os.path.relpath(os.path.join(self.worktree, src), absdestdir)
-    self.linkfiles.append(_LinkFile(self.worktree, src, dest, relsrc, absdest))
+  def AddLinkFile(self, src, dest, absdest, is_abs_src=False):
+    self.linkfiles.append(_LinkFile(self.worktree, src, absdest, is_abs_src))
 
   def AddAnnotation(self, name, value, keep):
     self.annotations.append(_Annotation(name, value, keep))

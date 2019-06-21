@@ -29,7 +29,8 @@ following DTD:
                       project*,
                       extend-project*,
                       repo-hooks?,
-                      include*)>
+                      include*,
+                      copy-link?)>
 
   <!ELEMENT notice (#PCDATA)>
 
@@ -83,6 +84,7 @@ following DTD:
   <!ELEMENT linkfile EMPTY>
   <!ATTLIST linkfile src CDATA #REQUIRED>
   <!ATTLIST linkfile dest CDATA #REQUIRED>
+  <!ATTLIST linkfile absolute CDATA #IMPLIED>
 
   <!ELEMENT extend-project EMPTY>
   <!ATTLIST extend-project name CDATA #REQUIRED>
@@ -99,6 +101,18 @@ following DTD:
 
   <!ELEMENT include EMPTY>
   <!ATTLIST include name CDATA #REQUIRED>
+
+  <!ELEMENT copy-link (copyfile*,
+                       linkfile*)>
+
+  <!ELEMENT copyfile EMPTY>
+  <!ATTLIST copyfile src  CDATA #REQUIRED>
+  <!ATTLIST copyfile dest CDATA #REQUIRED>
+
+  <!ELEMENT linkfile EMPTY>
+  <!ATTLIST linkfile src CDATA #REQUIRED>
+  <!ATTLIST linkfile dest CDATA #REQUIRED>
+  <!ATTLIST linkfile absolute CDATA #IMPLIED>
 ]>
 ```
 
@@ -329,6 +343,9 @@ command.
 It's just like copyfile and runs at the same time as copyfile but
 instead of copying it creates a symlink.
 
+Attribute `absolute`: if set to yes/true, absolute path of src is
+used to create the symlink.
+
 ### Element remove-project
 
 Deletes the named project from the internal manifest table, possibly
@@ -348,6 +365,25 @@ target manifest to include - it must be a usable manifest on its own.
 Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
 
+### Element copy-link
+
+This element can be used to copy or link files independent of project
+elements. The copy or link operation is performed after fetching of repo.
+Unlike copyfile/linkfile in project element which happens after checkout,
+copy_link is performed after fetching of repo.
+
+Git sparse-checkout can be supported using copy_link. For instance, by
+copying sparse-checkout configurations from manifests repo to git's info
+directory of repo's projects (.repo/projects/.../info/):
+
+```xml
+<copy-link>
+ <copyfile src="manifests/.../sco-proj-a.txt"
+           dest="projects/proj-a.git/info/sparse-checkout"/>
+ <copyfile src="manifests/.../sco-proj-b.txt"
+           dest="projects/proj-b.git/info/sparse-checkout"/>
+ </copy-link>
+```
 
 ## Local Manifests
 
