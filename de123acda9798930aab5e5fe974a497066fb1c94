@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d06ee5ea_e86a057b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1024846
+      },
+      "writtenOn": "2019-06-21T15:32:00Z",
+      "side": 1,
+      "message": "It might help to devide all these propositions in independent commits. I do not see any breaking changes but it\u0027s still quite big as this.\n\nFor the \u0027copy_link\u0027 element, I\u0027m not sure what the purpose is? What is the advantage over the existing copyfile/linkfile \u0027commands\u0027 supported by \u003cproject/\u003e ?",
+      "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
