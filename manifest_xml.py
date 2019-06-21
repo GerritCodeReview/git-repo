@@ -34,7 +34,7 @@ import gitc_utils
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 import platform_utils
-from project import RemoteSpec, Project, MetaProject
+from project import RemoteSpec, Project, MetaProject, copy_file, link_file
 from error import ManifestParseError, ManifestInvalidRevisionError
 
 MANIFEST_FILE_NAME = 'manifest.xml'
@@ -126,6 +126,24 @@ class _XmlRemote(object):
                       orig_name=self.name,
                       fetchUrl=self.fetchUrl)
 
+class _CopyFile(object):
+
+  def __init__(self, abssrc, absdest):
+    self.abs_src = abssrc
+    self.abs_dest = absdest
+
+  def _Copy(self):
+    copy_file(self.abs_src, self.abs_dest)
+
+class _LinkFile(object):
+
+  def __init__(self, ln_src, absdest):
+    self.ln_src = ln_src
+    self.abs_dest = absdest
+
+  def _Link(self):
+    link_file(self.ln_src, self.abs_dest)
+
 class XmlManifest(object):
   """manages the repo configuration file"""
 
@@ -137,6 +155,8 @@ class XmlManifest(object):
     self.localManifestWarning = False
     self.isGitcClient = False
     self._load_local_manifests = True
+    self.copyfiles = []
+    self.linkfiles = []
 
     self.repoProject = MetaProject(self, 'repo',
       gitdir   = os.path.join(repodir, 'repo/.git'),
@@ -643,6 +663,24 @@ class XmlManifest(object):
         if self._repo_hooks_project and (self._repo_hooks_project.name == name):
           self._repo_hooks_project = None
 
+    if not self.IsMirror:
+      for node in itertools.chain(*node_list):
+        if node.nodeName == 'copy-link':
+          for n in node.childNodes:
+            if n.nodeName == 'copyfile' or n.nodeName == 'linkfile':
+              src = self._reqatt(n, 'src')
+              dest = self._reqatt(n, 'dest')
+              abssrc = os.path.join(self.repodir, src)
+              absdest = os.path.join(self.repodir, dest)
+              if n.nodeName == 'copyfile':
+                self.copyfiles.append(_CopyFile(abssrc, absdest))
+              else:
+                absdestdir = os.path.dirname(absdest)
+                v = n.getAttribute('abs')
+                is_abs_src = True if (v and int(v)==1) else False
+                ln_src = abssrc if is_abs_src else os.path.relpath(abssrc, absdestdir)
+                self.linkfiles.append(_LinkFile(ln_src, absdest))
+
 
   def _AddMetaProjectMirror(self, m):
     name = None
@@ -951,7 +989,9 @@ class XmlManifest(object):
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree
-      project.AddLinkFile(src, dest, os.path.join(self.topdir, dest))
+      v = node.getAttribute('abs')
+      is_abs_src = True if (v and int(v)==1) else False
+      project.AddLinkFile(src, dest, os.path.join(self.topdir, dest), is_abs_src)
 
   def _ParseAnnotation(self, project, node):
     name = self._reqatt(node, 'name')
