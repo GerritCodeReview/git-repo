@@ -29,7 +29,8 @@ following DTD:
                       project*,
                       extend-project*,
                       repo-hooks?,
-                      include*)>
+                      include*,
+                      copy-link?)>
 
   <!ELEMENT notice (#PCDATA)>
 
@@ -83,6 +84,7 @@ following DTD:
   <!ELEMENT linkfile EMPTY>
   <!ATTLIST linkfile src CDATA #REQUIRED>
   <!ATTLIST linkfile dest CDATA #REQUIRED>
+  <!ATTLIST linkfile abs CDATA #IMPLIED>
 
   <!ELEMENT extend-project EMPTY>
   <!ATTLIST extend-project name CDATA #REQUIRED>
@@ -99,6 +101,18 @@ following DTD:
 
   <!ELEMENT include EMPTY>
   <!ATTLIST include name CDATA #REQUIRED>
+
+  <!ELEMENT copy-link (copyfile*,
+                       linkfile*)>
+
+  <!ELEMENT copyfile EMPTY>
+  <!ATTLIST copyfile src  CDATA #REQUIRED>
+  <!ATTLIST copyfile dest CDATA #REQUIRED>
+
+  <!ELEMENT linkfile EMPTY>
+  <!ATTLIST linkfile src CDATA #REQUIRED>
+  <!ATTLIST linkfile dest CDATA #REQUIRED>
+  <!ATTLIST linkfile abs CDATA #IMPLIED>
 ]>
 ```
 
@@ -327,7 +341,8 @@ command.
 ### Element linkfile
 
 It's just like copyfile and runs at the same time as copyfile but
-instead of copying it creates a symlink.
+instead of copying it creates a symlink. When the "abs" is set to
+value 1, absolute path of src is used in the created symlink.
 
 ### Element remove-project
 
@@ -347,6 +362,11 @@ target manifest to include - it must be a usable manifest on its own.
 
 Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
+
+### Element copy-link
+
+This element can be used to copy or link files independent of project
+elements. The copy or link operation is performed after fetching of repo.
 
 
 ## Local Manifests
