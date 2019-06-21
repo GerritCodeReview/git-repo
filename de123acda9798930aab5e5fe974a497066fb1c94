@@ -16,6 +16,40 @@
       "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "142af34a_5682185a",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-21T21:19:55Z",
+      "side": 1,
+      "message": "spell out \"absolute\" and use true/false instead of 1/0",
+      "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1fa6bbaa_4fd65b68",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-21T21:19:55Z",
+      "side": 1,
+      "message": "only one blank line",
+      "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
