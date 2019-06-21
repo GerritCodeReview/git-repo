@@ -413,6 +413,10 @@ later is required to fix a server side protocol bug.
 
     if not self.manifest.IsArchive:
       self._GCProjects(projects)
+    for copyfile in self.manifest.copyfiles:
+      copyfile._Copy()
+    for linkfile in self.manifest.linkfiles:
+      linkfile._Link()
 
     return fetched
 
