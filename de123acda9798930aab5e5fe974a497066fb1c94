@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5de09e71_eb2277fb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1063032
+      },
+      "writtenOn": "2019-06-22T05:01:52Z",
+      "side": 1,
+      "message": "The actual # of LOC is smaller because link_file \u0026 copy_file are moved for better code reuse. With the purpose clarified (sparse-checkout), the changes here should be relevant to support sparse-checkout.\n\nThe change has been renamed to make clear the purpose.",
+      "parentUuid": "d06ee5ea_e86a057b",
+      "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "142af34a_5682185a",
         "filename": "docs/manifest-format.md",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2019-06-21T21:19:55Z",
       "side": 1,
       "message": "spell out \"absolute\" and use true/false instead of 1/0",
+      "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f1b1b6e_dcd0d762",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1063032
+      },
+      "writtenOn": "2019-06-22T05:01:52Z",
+      "side": 1,
+      "message": "src \u0026 dest are used so I followed the practice to use abs.\nAnyways, I have renamed abs as absolute.",
+      "parentUuid": "142af34a_5682185a",
       "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -50,6 +86,24 @@
       "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4915e4a8_13f8e7d0",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1063032
+      },
+      "writtenOn": "2019-06-22T05:01:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "1fa6bbaa_4fd65b68",
+      "revId": "de123acda9798930aab5e5fe974a497066fb1c94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
