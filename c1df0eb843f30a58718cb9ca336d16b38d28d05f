@@ -1,0 +1,305 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74c70397_d0ae2fce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "please list how you tested this",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "058165de_d560559e",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "\"perform a partial clone\"\n\nalthough there\u0027s no real details here as to what a \"partial clone\" is.  we could point people to gitrepository-layout as that\u0027s the only place i can find in the git man pages that mentions it in any level of detail.",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0ff7be5c_5d90f1aa",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "use file\u003dsys.stderr like all our other errors",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "355c93e0_8c28c3fe",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "wrap long lines",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f574dcf4_7360604f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "missing docstring update",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9d8c40a_2d184cb7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "omit the underscore after Checkout",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7c86324_2dda75e4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e03bdbe5_ac1881f4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79289123_0717b5af",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "no space after the (",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf8b0fa4_63c34af1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "no spaces around the \u003d",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09136418_3f32cef2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "don\u0027t use \\",
+      "range": {
+        "startLine": 493,
+        "startChar": 51,
+        "endLine": 493,
+        "endChar": 52
+      },
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dfdc4bb_4160455b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "use the format instead:\n\n ... %s: %s: %s\u0027",
+      "range": {
+        "startLine": 493,
+        "startChar": 38,
+        "endLine": 493,
+        "endChar": 49
+      },
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e52fbdda_807fdde7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "indent is incorrect -- align with the ( above",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c51f8ce2_67de9268",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 506,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "missing docstring",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7917025a_25862d0c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "this should note why you can\u0027t use multiple jobs with partial clones",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13548ff7_5de9ec84",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "no spaces around \u003d to func calls",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a64d5576_a6e924fd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-06-28T22:38:00Z",
+      "side": 1,
+      "message": "useless return -\u003e delete",
+      "revId": "c1df0eb843f30a58718cb9ca336d16b38d28d05f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
