@@ -583,7 +583,7 @@ def _DownloadBundle(url, local, quiet):
         print('Get %s' % url, file=sys.stderr)
       while True:
         buf = r.read(8192)
-        if buf == '':
+        if not buf:
           return True
         dest.write(buf)
     finally:

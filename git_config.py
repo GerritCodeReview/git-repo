@@ -657,13 +657,14 @@ class Remote(object):
               info = urllib.request.urlopen(info_url, context=context).read()
           else:
               info = urllib.request.urlopen(info_url).read()
-          if info == 'NOT_AVAILABLE' or '<' in info:
+          if info == b'NOT_AVAILABLE' or b'<' in info:
             # If `info` contains '<', we assume the server gave us some sort
             # of HTML response back, like maybe a login page.
             #
             # Assume HTTP if SSH is not enabled or ssh_info doesn't look right.
             self._review_url = http_url
           else:
+            info = info.decode('utf-8')
             host, port = info.split()
             self._review_url = self._SshReviewUrl(userEmail, host, port)
         except urllib.error.HTTPError as e:
