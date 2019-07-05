@@ -514,7 +514,7 @@ class XmlManifest(object):
           raise
         except Exception as e:
           raise ManifestParseError(
-              "failed parsing included manifest %s: %s", (name, e))
+              "failed parsing included manifest %s: %s" % (name, e))
       else:
         nodes.append(node)
     return nodes
