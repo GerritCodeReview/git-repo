@@ -105,7 +105,7 @@ following <command>.
 
 Example: to list projects:
 
-  %prog% forall -c 'echo $REPO_PROJECT'
+  %prog -c 'echo $REPO_PROJECT'
 
 Notice that $REPO_PROJECT is quoted to ensure it is expanded in
 the context of running <command> instead of in the calling shell.
