@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import re
 import unittest
 
 import git_command
@@ -43,3 +44,15 @@ class GitCallUnitTest(unittest.TestCase):
     self.assertLess(ver, (9999, 9999, 9999))
 
     self.assertNotEqual('', ver.full)
+
+
+class RepoUserAgentUnitTest(unittest.TestCase):
+  """Tests the RepoUserAgent function."""
+
+  def test_smoke(self):
+    """Make sure it returns something useful."""
+    ua = git_command.RepoUserAgent()
+    # We can't dive too deep because of OS/tool differences, but we can check
+    # the general form.
+    m = re.match(r'^git-repo/[^ ]+ ([^ ]+) git/[^ ]+ Python/[0-9.]+', ua)
+    self.assertIsNotNone(m)

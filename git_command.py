@@ -98,6 +98,52 @@ class _GitCall(object):
     return fun
 git = _GitCall()
 
+
+_user_agent = None
+
+def RepoUserAgent():
+  """Return a User-Agent string suitable for HTTP-like services.
+
+  We follow the style as documented here:
+  https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/User-Agent
+  """
+  global _user_agent
+
+  if _user_agent is None:
+    py_version = sys.version_info
+
+    os_name = sys.platform
+    if os_name == 'linux2':
+      os_name = 'Linux'
+    elif os_name == 'win32':
+      os_name = 'Win32'
+    elif os_name == 'cygwin':
+      os_name = 'Cygwin'
+    elif os_name == 'darwin':
+      os_name = 'Darwin'
+
+    p = GitCommand(
+        None, ['describe', 'HEAD'],
+        cwd=os.path.dirname(__file__),
+        capture_stdout=True)
+    if p.Wait() == 0:
+      repo_version = p.stdout
+      if repo_version and repo_version[-1] == '\n':
+        repo_version = repo_version[0:-1]
+      if repo_version and repo_version[0] == 'v':
+        repo_version = repo_version[1:]
+    else:
+      repo_version = 'unknown'
+
+    _user_agent = 'git-repo/%s (%s) git/%s Python/%d.%d.%d' % (
+        repo_version,
+        os_name,
+        git.version_tuple().full,
+        py_version.major, py_version.minor, py_version.micro)
+
+  return _user_agent
+
+
 def git_require(min_version, fail=False):
   git_version = git.version_tuple()
   if min_version <= git_version:
