@@ -41,5 +41,5 @@ class Version(Command, MirrorSafeCommand):
       print('repo launcher version %s' % Version.wrapper_version)
       print('       (from %s)' % Version.wrapper_path)
 
-    print(git.version().strip())
+    print('git %s' % git.version_tuple().full)
     print('Python %s' % sys.version)
