@@ -383,7 +383,11 @@ def _Init(args, gitc_init=False):
 GitVersion = collections.namedtuple(
     'GitVersion', ('major', 'minor', 'micro', 'full'))
 
-def ParseGitVersion(ver_str):
+def ParseGitVersion(ver_str=None):
+  if ver_str is None:
+    # Load the version ourselves.
+    ver_str = _GetGitVersion()
+
   if not ver_str.startswith('git version '):
     return None
 
@@ -396,10 +400,10 @@ def ParseGitVersion(ver_str):
     else:
       to_tuple.append(0)
   to_tuple.append(full_version)
-  return GitVersion(to_tuple)
+  return GitVersion(*to_tuple)
 
 
-def _CheckGitVersion():
+def _GetGitVersion():
   cmd = [GIT, '--version']
   try:
     proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
@@ -410,13 +414,20 @@ def _CheckGitVersion():
     print(file=sys.stderr)
     print('Please make sure %s is installed and in your path.' % GIT,
           file=sys.stderr)
-    raise CloneFailure()
+    raise
 
   ver_str = proc.stdout.read().strip()
   proc.stdout.close()
   proc.wait()
+  return ver_str.decode('utf-8')
 
-  ver_act = ParseGitVersion(ver_str)
+
+def _CheckGitVersion():
+  try:
+    ver_act = ParseGitVersion()
+  except OSError:
+    raise CloneFailure()
+
   if ver_act is None:
     print('error: "%s" unsupported' % ver_str, file=sys.stderr)
     raise CloneFailure()
