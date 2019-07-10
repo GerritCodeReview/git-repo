@@ -68,3 +68,11 @@ class UserAgentUnitTest(unittest.TestCase):
     # the general form.
     m = re.match(r'^git-repo/[^ ]+ ([^ ]+) git/[^ ]+ Python/[0-9.]+', ua)
     self.assertIsNotNone(m)
+
+  def test_smoke_git(self):
+    """Make sure git UA returns something useful."""
+    ua = git_command.user_agent.git
+    # We can't dive too deep because of OS/tool differences, but we can check
+    # the general form.
+    m = re.match(r'^git/[^ ]+ ([^ ]+) git-repo/[^ ]+', ua)
+    self.assertIsNotNone(m)
