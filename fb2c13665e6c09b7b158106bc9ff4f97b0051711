@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1909f7d5_dd5dfd1e",
+        "filename": "git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-07-10T23:35:59Z",
+      "side": 1,
+      "message": "Is it OK to lose the explicit \"cwd \u003d\" here?",
+      "range": {
+        "startLine": 127,
+        "startChar": 8,
+        "endLine": 127,
+        "endChar": 34
+      },
+      "revId": "fb2c13665e6c09b7b158106bc9ff4f97b0051711",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5dd4a578_2995cf51",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-07-10T23:35:59Z",
+      "side": 1,
+      "message": "\"because of\"",
+      "range": {
+        "startLine": 55,
+        "startChar": 29,
+        "endLine": 55,
+        "endChar": 36
+      },
+      "revId": "fb2c13665e6c09b7b158106bc9ff4f97b0051711",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
