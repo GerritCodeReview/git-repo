@@ -317,7 +317,7 @@ def _UserAgent():
     _user_agent = 'git-repo/%s (%s) git/%s Python/%d.%d.%d' % (
       repo_version,
       os_name,
-      '.'.join(map(str, git.version_tuple())),
+      git.version_tuple().full,
       py_version[0], py_version[1], py_version[2])
   return _user_agent
 
