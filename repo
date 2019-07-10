@@ -121,6 +121,7 @@ GITC_CONFIG_FILE = '/gitc/.config'
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 
 
+import collections
 import errno
 import optparse
 import platform
@@ -377,18 +378,25 @@ def _Init(args, gitc_init=False):
     raise
 
 
+# The git version info broken down into components for easy analysis.
+# Similar to Python's sys.version_info.
+GitVersion = collections.namedtuple(
+    'GitVersion', ('major', 'minor', 'micro', 'full'))
+
 def ParseGitVersion(ver_str):
   if not ver_str.startswith('git version '):
     return None
 
-  num_ver_str = ver_str[len('git version '):].strip().split('-')[0]
+  full_version = ver_str[len('git version '):].strip()
+  num_ver_str = full_version.split('-')[0]
   to_tuple = []
   for num_str in num_ver_str.split('.')[:3]:
     if num_str.isdigit():
       to_tuple.append(int(num_str))
     else:
       to_tuple.append(0)
-  return tuple(to_tuple)
+  to_tuple.append(full_version)
+  return GitVersion(*to_tuple)
 
 
 def _CheckGitVersion():
