@@ -134,6 +134,7 @@ class UserAgent(object):
 
   _os = None
   _repo_ua = None
+  _git_ua = None
 
   @property
   def os(self):
@@ -164,6 +165,17 @@ class UserAgent(object):
           py_version.major, py_version.minor, py_version.micro)
 
     return self._repo_ua
+
+  @property
+  def git(self):
+    """The UA when running git."""
+    if self._git_ua is None:
+      self._git_ua = 'git/%s (%s) git-repo/%s' % (
+          git.version_tuple().full,
+          self.os,
+          RepoSourceVersion())
+
+    return self._git_ua
 
 user_agent = UserAgent()
 
@@ -214,6 +226,7 @@ class GitCommand(object):
     if 'GIT_ALLOW_PROTOCOL' not in env:
       _setenv(env, 'GIT_ALLOW_PROTOCOL',
               'file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc')
+    _setenv(env, 'GIT_HTTP_USER_AGENT', user_agent.git)
 
     if project:
       if not cwd:
