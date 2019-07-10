@@ -40,7 +40,7 @@ except ImportError:
 from color import SetDefaultColoring
 import event_log
 from trace import SetTrace
-from git_command import git, GitCommand
+from git_command import git, GitCommand, RepoUserAgent
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
@@ -228,10 +228,6 @@ class _Repo(object):
     return result
 
 
-def _MyRepoPath():
-  return os.path.dirname(__file__)
-
-
 def _CheckWrapperVersion(ver, repo_path):
   if not repo_path:
     repo_path = '~/bin/repo'
@@ -283,51 +279,13 @@ def _PruneOptions(argv, opt):
       continue
     i += 1
 
-_user_agent = None
-
-def _UserAgent():
-  global _user_agent
-
-  if _user_agent is None:
-    py_version = sys.version_info
-
-    os_name = sys.platform
-    if os_name == 'linux2':
-      os_name = 'Linux'
-    elif os_name == 'win32':
-      os_name = 'Win32'
-    elif os_name == 'cygwin':
-      os_name = 'Cygwin'
-    elif os_name == 'darwin':
-      os_name = 'Darwin'
-
-    p = GitCommand(
-      None, ['describe', 'HEAD'],
-      cwd = _MyRepoPath(),
-      capture_stdout = True)
-    if p.Wait() == 0:
-      repo_version = p.stdout
-      if len(repo_version) > 0 and repo_version[-1] == '\n':
-        repo_version = repo_version[0:-1]
-      if len(repo_version) > 0 and repo_version[0] == 'v':
-        repo_version = repo_version[1:]
-    else:
-      repo_version = 'unknown'
-
-    _user_agent = 'git-repo/%s (%s) git/%s Python/%d.%d.%d' % (
-      repo_version,
-      os_name,
-      git.version_tuple().full,
-      py_version[0], py_version[1], py_version[2])
-  return _user_agent
-
 class _UserAgentHandler(urllib.request.BaseHandler):
   def http_request(self, req):
-    req.add_header('User-Agent', _UserAgent())
+    req.add_header('User-Agent', RepoUserAgent())
     return req
 
   def https_request(self, req):
-    req.add_header('User-Agent', _UserAgent())
+    req.add_header('User-Agent', RepoUserAgent())
     return req
 
 def _AddPasswordFromUserInput(handler, msg, req):
