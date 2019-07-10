@@ -80,22 +80,12 @@ def terminate_ssh_clients():
 _git_version = None
 
 class _GitCall(object):
-  def version(self):
-    p = GitCommand(None, ['--version'], capture_stdout=True)
-    if p.Wait() == 0:
-      if hasattr(p.stdout, 'decode'):
-        return p.stdout.decode('utf-8')
-      else:
-        return p.stdout
-    return None
-
   def version_tuple(self):
     global _git_version
     if _git_version is None:
-      ver_str = git.version()
-      _git_version = Wrapper().ParseGitVersion(ver_str)
+      _git_version = Wrapper().ParseGitVersion()
       if _git_version is None:
-        print('fatal: "%s" unsupported' % ver_str, file=sys.stderr)
+        print('fatal: unable to detect git version', file=sys.stderr)
         sys.exit(1)
     return _git_version
 
