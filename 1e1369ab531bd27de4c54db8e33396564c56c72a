@@ -22,6 +22,30 @@
       "revId": "1e1369ab531bd27de4c54db8e33396564c56c72a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27066ded_f4ccb246",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-10T23:47:43Z",
+      "side": 1,
+      "message": "sounds like you DTRT :D",
+      "parentUuid": "afd8e1c2_12a84124",
+      "range": {
+        "startLine": 13,
+        "startChar": 64,
+        "endLine": 13,
+        "endChar": 68
+      },
+      "revId": "1e1369ab531bd27de4c54db8e33396564c56c72a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
