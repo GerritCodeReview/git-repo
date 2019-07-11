@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "703c4c95_cd63a9a3",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-11T00:36:45Z",
+      "side": 1,
+      "message": "ah crap ... i fixed this locally but squashed into the wrong CL.  need to use *to_tuple here.",
+      "revId": "c202a5f63f89f53b4c4d42b3b0ef6e6625a8c777",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
