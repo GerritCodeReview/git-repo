@@ -15,7 +15,12 @@
 # limitations under the License.
 
 from __future__ import print_function
-import imp
+try:
+   from importlib.machinery import SourceFileLoader
+   _loader = lambda *args: SourceFileLoader(*args).load_module()
+except ImportError:
+   import imp
+   _loader = lambda *args: imp.load_source(*args)
 import os
 
 
@@ -26,5 +31,5 @@ _wrapper_module = None
 def Wrapper():
   global _wrapper_module
   if not _wrapper_module:
-    _wrapper_module = imp.load_source('wrapper', WrapperPath())
+    _wrapper_module = _loader('wrapper', WrapperPath())
   return _wrapper_module
