@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "53c046a6_1b755090",
+        "filename": "run_tests",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-07-11T03:45:12Z",
+      "side": 1,
+      "message": "Nit: This is platform specific. I\u0027d prefer to replace this line with something like \"Please ensure that pytest is installed and on the current path\"",
+      "range": {
+        "startLine": 35,
+        "startChar": 40,
+        "endLine": 35,
+        "endChar": 74
+      },
+      "revId": "510a98704b507af6cdc41a369e65401437d98f8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
