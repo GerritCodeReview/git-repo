@@ -70,6 +70,30 @@
       "revId": "e1dd6b62de78a177c2d0b42f4eabd9e1d4662489",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fb4b0724_ae605fce",
+        "filename": "run_tests",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-11T06:08:01Z",
+      "side": 1,
+      "message": "i\u0027ve been actively avoiding trying to get into anything like virtual envs\n\ni guess i\u0027ll just keep this one local as part of my overall development of keeping the two versions going.  the python community never fully adopted a standard, and it\u0027s long past the point where one can be retrofitted.",
+      "parentUuid": "c206d552_d16629f0",
+      "range": {
+        "startLine": 51,
+        "startChar": 50,
+        "endLine": 51,
+        "endChar": 58
+      },
+      "revId": "e1dd6b62de78a177c2d0b42f4eabd9e1d4662489",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
