@@ -34,6 +34,24 @@
       "revId": "7b871f274ead26ce9fc876ba6096620871a474fa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a5f7816a_c45e0fae",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2061,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T17:54:51Z",
+      "side": 1,
+      "message": "that\u0027s perfectly reasonable.  how about we add an optional msg\u003d to git_require so you can pass that in ?\n\n git_require((2, 19, 0), fail\u003dTrue, msg\u003d\u0027partial clones\u0027)\n\nthen we\u0027d do something like:\n\n def git_require(min_version, fail\u003dFalse, msg\u003d\u0027\u0027):\n   ...\n   if msg:\n     msg \u003d \u0027 for \u0027 + msg\n   print(\u0027fatal: git %s or later required%s\u0027 % (need, msg), file\u003dsys.stderr)\n\nthen the user would see:\n\n fatal: git 2.19.0 or later required for partial clones",
+      "parentUuid": "381df3c0_b27cdd1e",
+      "revId": "7b871f274ead26ce9fc876ba6096620871a474fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
