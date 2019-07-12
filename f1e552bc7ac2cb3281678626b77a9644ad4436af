@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5e50292d_9749603d",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 2056,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T18:20:21Z",
+      "side": 1,
+      "message": "line is too long ;)\n\nthat said, with fail\u003dTrue, there\u0027s no need to check the result.  it\u0027d be easier to read with:\n\n if partial_clone:\n   git_require(...)\n   cmd.......",
+      "revId": "f1e552bc7ac2cb3281678626b77a9644ad4436af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
