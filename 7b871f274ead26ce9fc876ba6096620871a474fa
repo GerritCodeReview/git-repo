@@ -16,6 +16,24 @@
       "revId": "7b871f274ead26ce9fc876ba6096620871a474fa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "381df3c0_b27cdd1e",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2061,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2019-07-12T17:52:25Z",
+      "side": 1,
+      "message": "The main concern was that by using fail\u003dTrue, it won\u0027t tell the user why a specific version was required (but I think the difference is subtle practically).",
+      "parentUuid": "77c47406_7c8ffd67",
+      "revId": "7b871f274ead26ce9fc876ba6096620871a474fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
