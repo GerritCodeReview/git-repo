@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7ebf3106_822d79b8",
+        "filename": "repo",
+        "patchSetId": 10
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T23:52:05Z",
+      "side": 1,
+      "message": "you can add to the end of the help string:\n\n  (default: %(default)s)",
+      "revId": "ad4a408398bc5e8e106da2f7ccdc8d1825dd71fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7a3aa895_26836cb9",
+        "filename": "subcmds/init.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T23:52:05Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "ad4a408398bc5e8e106da2f7ccdc8d1825dd71fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9750bfe_33d16ae0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T23:52:05Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "ad4a408398bc5e8e106da2f7ccdc8d1825dd71fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
