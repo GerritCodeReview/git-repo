@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab7878fe_642ace60",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2056,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "non-fatal git_require should be reserved for scenarios when we can do something equivalent, or with optional things that aren\u0027t critical to functionality.  in this case, if someone requested a partial clone explicitly, but their tools don\u0027t support it, it should trigger an error.",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86afce27_b9c5a481",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "can you line wrap this ?",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "86d734ee_67d788e8",
+        "filename": "subcmds/init.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "line wrap here too ?",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "626e6e87_03843cb6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "omit this.  i know above isn\u0027t, but we don\u0027t need it in new code.",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be590814_105e572f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "\"perform a partial\"\n\nperiod at the end of sentences",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1ed9aa0_3f8df08c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bff14fe9_88f29bf0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "delete this ... shouldn\u0027t be necessary, and we shouldn\u0027t be writing to stderr when there aren\u0027t errors\n\ni know this is a hold over from the old code, but lets drop it",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e098275_614341dd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-12T05:45:52Z",
+      "side": 1,
+      "message": "you called pm.end above already",
+      "revId": "ff48fd79bd8fdbf8919508603350ba971584acf0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
