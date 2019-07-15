@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "396301e1_70856808",
+        "filename": "repo",
+        "patchSetId": 10
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2019-07-15T17:39:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ebf3106_822d79b8",
+      "revId": "ad4a408398bc5e8e106da2f7ccdc8d1825dd71fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7a3aa895_26836cb9",
         "filename": "subcmds/init.py",
         "patchSetId": 10
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "e50c392f_302d27b5",
+        "filename": "subcmds/init.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2019-07-15T17:39:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a3aa895_26836cb9",
+      "revId": "ad4a408398bc5e8e106da2f7ccdc8d1825dd71fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d9750bfe_33d16ae0",
         "filename": "subcmds/sync.py",
         "patchSetId": 10
@@ -50,6 +86,24 @@
       "revId": "ad4a408398bc5e8e106da2f7ccdc8d1825dd71fb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e36b63c6_8569c483",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2019-07-15T17:39:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d9750bfe_33d16ae0",
+      "revId": "ad4a408398bc5e8e106da2f7ccdc8d1825dd71fb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
