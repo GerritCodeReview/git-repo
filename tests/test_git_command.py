@@ -14,6 +14,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Unittests for the git_command.py module."""
+
+from __future__ import print_function
+
 import unittest
 
 import git_command
