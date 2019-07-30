@@ -40,6 +40,9 @@ revision specified in the manifest.
     p.add_option('--all',
                  dest='all', action='store_true',
                  help='begin branch in all projects')
+    p.add_option('-h', '--head',
+                 dest='on_head', action='store_true',
+                 help='start branch pointing to HEAD instead of upstream')
 
   def Execute(self, opt, args):
     if not args:
@@ -107,7 +110,7 @@ revision specified in the manifest.
         else:
           branch_merge = self.manifest.default.revisionExpr
 
-      if not project.StartBranch(nb, branch_merge=branch_merge):
+      if not project.StartBranch(nb, branch_merge=branch_merge, on_head=opt.on_head):
         err.append(project)
     pm.end()
 

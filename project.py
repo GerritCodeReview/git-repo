@@ -1695,7 +1695,7 @@ class Project(object):
 
 # Branch Management ##
 
-  def StartBranch(self, name, branch_merge=''):
+  def StartBranch(self, name, branch_merge='', on_head=False):
     """Create a new branch off the manifest's revision.
     """
     if not branch_merge:
@@ -1716,7 +1716,10 @@ class Project(object):
     branch.merge = branch_merge
     if not branch.merge.startswith('refs/') and not ID_RE.match(branch_merge):
       branch.merge = R_HEADS + branch_merge
+
     revid = self.GetRevisionId(all_refs)
+    if on_head:
+      revid = head
 
     if head.startswith(R_HEADS):
       try:
