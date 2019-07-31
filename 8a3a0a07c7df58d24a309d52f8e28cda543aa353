@@ -22,6 +22,30 @@
       "revId": "8a3a0a07c7df58d24a309d52f8e28cda543aa353",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc908d51_32626694",
+        "filename": "subcmds/start.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1086928
+      },
+      "writtenOn": "2019-07-31T02:59:34Z",
+      "side": 1,
+      "message": "I was trying to match `git checkout -b`, but wasn\u0027t sure what long option form would make sense and start with b. --branch doesn\u0027t make sense because this command is all about branches.",
+      "parentUuid": "72b446db_8278979d",
+      "range": {
+        "startLine": 43,
+        "startChar": 17,
+        "endLine": 43,
+        "endChar": 32
+      },
+      "revId": "8a3a0a07c7df58d24a309d52f8e28cda543aa353",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
