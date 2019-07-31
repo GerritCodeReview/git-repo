@@ -322,12 +322,22 @@ Zero or more copyfile elements may be specified as children of a
 project element. Each element describes a src-dest pair of files;
 the "src" file will be copied to the "dest" place during `repo sync`
 command.
+
 "src" is project relative, "dest" is relative to the top of the tree.
+Copying from or to paths outside of the tree is not allowed.
+
+"src" and "dest" must be files.  Directories or symlinks are not allowed.
+Intermediate paths must not be symlinks either.
 
 ### Element linkfile
 
 It's just like copyfile and runs at the same time as copyfile but
 instead of copying it creates a symlink.
+
+The symlink is created at "dest" (relative to the top of the tree) and
+points to the path specified by "src".
+
+"src" may not point outside of the repo client.
 
 ### Element remove-project
 
