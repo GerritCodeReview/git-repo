@@ -87,6 +87,24 @@
       "revId": "1126c4ed862e7cb6768deb41629d418d2257d3f5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acabc6f9_8b2ff5fd",
+        "filename": "wrapper.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-07-31T06:30:57Z",
+      "side": 1,
+      "message": "Sorry about that.  Fixed in https://gerrit-review.googlesource.com/c/git-repo/+/232792",
+      "parentUuid": "6a4f4799_e3b98ef1",
+      "revId": "1126c4ed862e7cb6768deb41629d418d2257d3f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
