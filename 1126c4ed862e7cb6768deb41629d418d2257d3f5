@@ -70,6 +70,23 @@
       "revId": "1126c4ed862e7cb6768deb41629d418d2257d3f5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6a4f4799_e3b98ef1",
+        "filename": "wrapper.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-07-31T05:00:26Z",
+      "side": 1,
+      "message": "indent is incorrect ... should be 2 space instead of 3",
+      "revId": "1126c4ed862e7cb6768deb41629d418d2257d3f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
