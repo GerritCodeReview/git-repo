@@ -16,11 +16,11 @@
 
 from __future__ import print_function
 try:
-   from importlib.machinery import SourceFileLoader
-   _loader = lambda *args: SourceFileLoader(*args).load_module()
+  from importlib.machinery import SourceFileLoader
+  _loader = lambda *args: SourceFileLoader(*args).load_module()
 except ImportError:
-   import imp
-   _loader = lambda *args: imp.load_source(*args)
+  import imp
+  _loader = lambda *args: imp.load_source(*args)
 import os
 
 
