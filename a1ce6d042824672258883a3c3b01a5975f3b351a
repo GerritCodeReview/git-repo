@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b261d2a2_8047598e",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-07-31T23:47:15Z",
+      "side": 1,
+      "message": "\"outside of the tree\" for consistency with L327?",
+      "range": {
+        "startLine": 340,
+        "startChar": 20,
+        "endLine": 340,
+        "endChar": 47
+      },
+      "revId": "a1ce6d042824672258883a3c3b01a5975f3b351a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
