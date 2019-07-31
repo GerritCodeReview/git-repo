@@ -88,7 +88,7 @@ Displays detailed usage information about a command.
 "See 'repo help <command>' for more information on a specific command.\n"
 "See 'repo help --all' for a complete list of recognized commands.")
 
-  def _PrintCommandHelp(self, cmd):
+  def _PrintCommandHelp(self, cmd, header_prefix=''):
     class _Out(Coloring):
       def __init__(self, gc):
         Coloring.__init__(self, gc, 'help')
@@ -106,7 +106,7 @@ Displays detailed usage information about a command.
 
         self.nl()
 
-        self.heading('%s', heading)
+        self.heading('%s%s', header_prefix, heading)
         self.nl()
         self.nl()
 
@@ -124,7 +124,7 @@ Displays detailed usage information about a command.
 
           m = asciidoc_hdr.match(para)
           if m:
-            self.heading(m.group(1))
+            self.heading('%s%s', header_prefix, m.group(1))
             self.nl()
             self.nl()
             continue
@@ -138,14 +138,25 @@ Displays detailed usage information about a command.
     cmd.OptionParser.print_help()
     out._PrintSection('Description', 'helpDescription')
 
+  def _PrintAllCommandHelp(self):
+    for name in sorted(self.commands):
+      cmd = self.commands[name]
+      cmd.manifest = self.manifest
+      self._PrintCommandHelp(cmd, header_prefix='[%s] ' % (name,))
+
   def _Options(self, p):
     p.add_option('-a', '--all',
                  dest='show_all', action='store_true',
                  help='show the complete list of commands')
+    p.add_option('--help-all',
+                 dest='show_all_help', action='store_true',
+                 help='show the --help of all commands')
 
   def Execute(self, opt, args):
     if len(args) == 0:
-      if opt.show_all:
+      if opt.show_all_help:
+        self._PrintAllCommandHelp()
+      elif opt.show_all:
         self._PrintAllCommands()
       else:
         self._PrintCommonCommands()
