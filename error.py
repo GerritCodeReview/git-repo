@@ -22,6 +22,10 @@ class ManifestInvalidRevisionError(Exception):
   """The revision value in a project is incorrect.
   """
 
+class ManifestInvalidPathError(Exception):
+  """A path used in <copyfile> or <linkfile> is incorrect.
+  """
+
 class NoManifestException(Exception):
   """The required manifest does not exist.
   """

@@ -35,7 +35,8 @@ from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 import platform_utils
 from project import RemoteSpec, Project, MetaProject
-from error import ManifestParseError, ManifestInvalidRevisionError
+from error import (ManifestParseError, ManifestInvalidPathError,
+                   ManifestInvalidRevisionError)
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
@@ -943,12 +944,51 @@ class XmlManifest(object):
       worktree = os.path.join(parent.worktree, path).replace('\\', '/')
     return relpath, worktree, gitdir, objdir
 
+  @staticmethod
+  def _ValidateCopyFilePaths(src, dest):
+    """Verify |path| is relative and doesn't point above |top| (itself).
+
+    We only verify the content of the path independent of any filesystem state
+    as we won't have a checkout available to compare to.  i.e. This is for
+    parsing validation purposes only.
+
+    We'll do full/live sanity checking before we do the actual filesystem
+    modifications in _CopyFile/_LinkFile/etc...
+    """
+    def bad_path(path):
+      norm = os.path.normpath(path)
+      return norm == '..' or norm.startswith('../') or norm.startswith('/')
+
+    if bad_path(dest):
+      raise ManifestInvalidPathError(
+          '<copyfile> "dest" must be inside repo client: %s' % (dest,))
+
+    if bad_path(src):
+      raise ManifestInvalidPathError(
+          '<copyfile> "src" must be inside project tree: %s' % (src,))
+
+  @staticmethod
+  def _ValidateLinkFilePaths(src, dest):
+    normdest = os.path.normpath(dest)
+    if (normdest == '..' or normdest.startswith('../') or
+        normdest.startswith('/')):
+      raise ManifestInvalidPathError(
+          '<linkfile> "dest" must be inside repo client: %s' % (dest,))
+
+    normsrc = os.path.normpath(src)
+    relsrc = os.path.relpath(normsrc, start=os.path.dirname(normdest))
+    if relsrc == '..' or relsrc.startswith('../'):
+      raise ManifestInvalidPathError(
+          '<linkfile> "src" must point inside repo client: %s' % (src,))
+
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
     dest = self._reqatt(node, 'dest')
     if not self.IsMirror:
       # src is project relative;
-      # dest is relative to the top of the tree
+      # dest is relative to the top of the tree.
+      # We only validate paths if we actually plan to process them.
+      self._ValidateCopyFilePaths(src, dest)
       project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
 
   def _ParseLinkFile(self, project, node):
@@ -956,7 +996,9 @@ class XmlManifest(object):
     dest = self._reqatt(node, 'dest')
     if not self.IsMirror:
       # src is project relative;
-      # dest is relative to the top of the tree
+      # dest is relative to the top of the tree.
+      # We only validate paths if we actually plan to process them.
+      self._ValidateLinkFilePaths(src, dest)
       project.AddLinkFile(src, dest, os.path.join(self.topdir, dest))
 
   def _ParseAnnotation(self, project, node):
