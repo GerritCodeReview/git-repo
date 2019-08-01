@@ -35,7 +35,8 @@ from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 import platform_utils
 from project import RemoteSpec, Project, MetaProject
-from error import ManifestParseError, ManifestInvalidRevisionError
+from error import (ManifestParseError, ManifestInvalidPathError,
+                   ManifestInvalidRevisionError)
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
@@ -943,12 +944,78 @@ class XmlManifest(object):
       worktree = os.path.join(parent.worktree, path).replace('\\', '/')
     return relpath, worktree, gitdir, objdir
 
+  @staticmethod
+  def _CheckLocalPath(path):
+    """Verify |path| is reasonable for use in <copyfile> & <linkfile>."""
+    # We don't really need to reject '.' here, but there shouldn't really be a
+    # need to ever use it, so no need to accept it either.
+    for part in set(path.split(os.path.sep)):
+      if part in {'.', '..', '.git'} or part.startswith('.repo'):
+        return 'bad component: %s' % (part,)
+
+    norm = os.path.normpath(path)
+    if norm == '..' or norm.startswith('../') or norm.startswith('/'):
+      return 'path cannot be outside'
+
+  @classmethod
+  def _ValidateCopyFilePaths(cls, src, dest):
+    """Verify |src| & |dest| are reasonable for <copyfile>.
+
+    We verify the path independent of any filesystem state as we won't have a
+    checkout available to compare to.  i.e. This is for parsing validation
+    purposes only.
+
+    We'll do full/live sanity checking before we do the actual filesystem
+    modifications in _CopyFile/_LinkFile/etc...
+    """
+    # |dest| is the file we write to relative to the top of the repo client
+    # checkout.
+    msg = cls._CheckLocalPath(dest)
+    if msg:
+      raise ManifestInvalidPathError(
+          '<copyfile> invalid "dest": %s: %s' % (dest, msg))
+
+    # |src| is the file we read from to relative to the top of the git project
+    # checkout.
+    msg = cls._CheckLocalPath(src)
+    if msg:
+      raise ManifestInvalidPathError(
+          '<copyfile> invalid "src": %s: %s' % (src, msg))
+
+  @classmethod
+  def _ValidateLinkFilePaths(cls, src, dest):
+    """Verify |src| & |dest| are reasonable for <linkfile>.
+
+    We verify the path independent of any filesystem state as we won't have a
+    checkout available to compare to.  i.e. This is for parsing validation
+    purposes only.
+
+    We'll do full/live sanity checking before we do the actual filesystem
+    modifications in _CopyFile/_LinkFile/etc...
+    """
+    # |dest| is the symlink we create relative to the top of the repo client
+    # checkout.
+    msg = cls._CheckLocalPath(dest)
+    if msg:
+      raise ManifestInvalidPathError(
+          '<linkfile> invalid "dest": %s: %s' % (dest, msg))
+
+    # |src| is the target of the symlink.
+    normsrc = os.path.normpath(src)
+    normdest = os.path.normpath(dest)
+    relsrc = os.path.relpath(normsrc, start=os.path.dirname(normdest))
+    if relsrc == '..' or relsrc.startswith('../'):
+      raise ManifestInvalidPathError(
+          '<linkfile> "src" must point inside repo client: %s' % (src,))
+
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
     dest = self._reqatt(node, 'dest')
     if not self.IsMirror:
       # src is project relative;
-      # dest is relative to the top of the tree
+      # dest is relative to the top of the tree.
+      # We only validate paths if we actually plan to process them.
+      self._ValidateCopyFilePaths(src, dest)
       project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
 
   def _ParseLinkFile(self, project, node):
@@ -956,7 +1023,9 @@ class XmlManifest(object):
     dest = self._reqatt(node, 'dest')
     if not self.IsMirror:
       # src is project relative;
-      # dest is relative to the top of the tree
+      # dest is relative to the top of the tree.
+      # We only validate paths if we actually plan to process them.
+      self._ValidateLinkFilePaths(src, dest)
       project.AddLinkFile(src, dest, os.path.join(self.topdir, dest))
 
   def _ParseAnnotation(self, project, node):
