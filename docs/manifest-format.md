@@ -330,6 +330,8 @@ client is not allowed.
 "src" and "dest" must be files.  Directories or symlinks are not allowed.
 Intermediate paths must not be symlinks either.
 
+Parent directories of "dest" will be automatically created if missing.
+
 ### Element linkfile
 
 It's just like copyfile and runs at the same time as copyfile but
@@ -337,6 +339,8 @@ instead of copying it creates a symlink.
 
 The symlink is created at "dest" (relative to the top of the tree) and
 points to the path specified by "src".
+
+Parent directories of "dest" will be automatically created if missing.
 
 The symlink target may be a file or directory, but it may not point outside
 of the repo client.
