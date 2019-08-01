@@ -22,6 +22,30 @@
       "revId": "a1ce6d042824672258883a3c3b01a5975f3b351a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "223a07e9_3974357d",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-01T03:28:15Z",
+      "side": 1,
+      "message": "i was trying to standardize on \"repo client\" as that seems to be the preferred terminology in general to refer to the entire checkout (vs a single git/project checkout).",
+      "parentUuid": "b261d2a2_8047598e",
+      "range": {
+        "startLine": 340,
+        "startChar": 20,
+        "endLine": 340,
+        "endChar": 47
+      },
+      "revId": "a1ce6d042824672258883a3c3b01a5975f3b351a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
