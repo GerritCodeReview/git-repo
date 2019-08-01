@@ -35,7 +35,8 @@ from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 import platform_utils
 from project import RemoteSpec, Project, MetaProject
-from error import ManifestParseError, ManifestInvalidRevisionError
+from error import (ManifestParseError, ManifestInvalidPathError,
+                   ManifestInvalidRevisionError)
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
@@ -943,12 +944,88 @@ class XmlManifest(object):
       worktree = os.path.join(parent.worktree, path).replace('\\', '/')
     return relpath, worktree, gitdir, objdir
 
+  @staticmethod
+  def _CheckLocalPath(path, symlink=False):
+    """Verify |path| is reasonable for use in <copyfile> & <linkfile>."""
+    if '~' in path:
+      return '~ not allowed (due to 8.3 filenames on Windows filesystems)'
+
+    # Some filesystems (like Apple's HFS+) try to normalize Unicode codepoints
+    # which means there are alternative names for ".git".  Reject paths with
+    # these in it as there shouldn't be any reasonable need for them here.
+    # The set of codepoints here was cribbed from jgit's implementation:
+    # https://eclipse.googlesource.com/jgit/jgit/+/9110037e3e9461ff4dac22fee84ef3694ed57648/org.eclipse.jgit/src/org/eclipse/jgit/lib/ObjectChecker.java#884
+    BAD_CODEPOINTS = {
+        u'\u200C',  # ZERO WIDTH NON-JOINER
+        u'\u200D',  # ZERO WIDTH JOINER
+        u'\u200E',  # LEFT-TO-RIGHT MARK
+        u'\u200F',  # RIGHT-TO-LEFT MARK
+        u'\u202A',  # LEFT-TO-RIGHT EMBEDDING
+        u'\u202B',  # RIGHT-TO-LEFT EMBEDDING
+        u'\u202C',  # POP DIRECTIONAL FORMATTING
+        u'\u202D',  # LEFT-TO-RIGHT OVERRIDE
+        u'\u202E',  # RIGHT-TO-LEFT OVERRIDE
+        u'\u206A',  # INHIBIT SYMMETRIC SWAPPING
+        u'\u206B',  # ACTIVATE SYMMETRIC SWAPPING
+        u'\u206C',  # INHIBIT ARABIC FORM SHAPING
+        u'\u206D',  # ACTIVATE ARABIC FORM SHAPING
+        u'\u206E',  # NATIONAL DIGIT SHAPES
+        u'\u206F',  # NOMINAL DIGIT SHAPES
+        u'\uFEFF',  # ZERO WIDTH NO-BREAK SPACE
+    }
+    if BAD_CODEPOINTS & set(path):
+      # This message is more expansive than reality, but should be fine.
+      return 'Unicode combining characters not allowed'
+
+    # Assume paths might be used on case-insensitive filesystems.
+    path = path.lower()
+
+    # We don't really need to reject '.' here, but there shouldn't really be a
+    # need to ever use it, so no need to accept it either.
+    for part in set(path.split(os.path.sep)):
+      if part in {'.', '..', '.git'} or part.startswith('.repo'):
+        return 'bad component: %s' % (part,)
+
+    if not symlink and path.endswith(os.path.sep):
+      return 'dirs not allowed'
+
+    norm = os.path.normpath(path)
+    if norm == '..' or norm.startswith('../') or norm.startswith(os.path.sep):
+      return 'path cannot be outside'
+
+  @classmethod
+  def _ValidateFilePaths(cls, element, src, dest):
+    """Verify |src| & |dest| are reasonable for <copyfile> & <linkfile>.
+
+    We verify the path independent of any filesystem state as we won't have a
+    checkout available to compare to.  i.e. This is for parsing validation
+    purposes only.
+
+    We'll do full/live sanity checking before we do the actual filesystem
+    modifications in _CopyFile/_LinkFile/etc...
+    """
+    # |dest| is the file we write to or symlink we create.
+    # It is relative to the top of the repo client checkout.
+    msg = cls._CheckLocalPath(dest)
+    if msg:
+      raise ManifestInvalidPathError(
+          '<%s> invalid "dest": %s: %s' % (element, dest, msg))
+
+    # |src| is the file we read from or path we point to for symlinks.
+    # It is relative to the top of the git project checkout.
+    msg = cls._CheckLocalPath(src, symlink=element == 'linkfile')
+    if msg:
+      raise ManifestInvalidPathError(
+          '<%s> invalid "src": %s: %s' % (element, src, msg))
+
   def _ParseCopyFile(self, project, node):
     src = self._reqatt(node, 'src')
     dest = self._reqatt(node, 'dest')
     if not self.IsMirror:
       # src is project relative;
-      # dest is relative to the top of the tree
+      # dest is relative to the top of the tree.
+      # We only validate paths if we actually plan to process them.
+      self._ValidateFilePaths('copyfile', src, dest)
       project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
 
   def _ParseLinkFile(self, project, node):
@@ -956,7 +1033,9 @@ class XmlManifest(object):
     dest = self._reqatt(node, 'dest')
     if not self.IsMirror:
       # src is project relative;
-      # dest is relative to the top of the tree
+      # dest is relative to the top of the tree.
+      # We only validate paths if we actually plan to process them.
+      self._ValidateFilePaths('linkfile', src, dest)
       project.AddLinkFile(src, dest, os.path.join(self.topdir, dest))
 
   def _ParseAnnotation(self, project, node):

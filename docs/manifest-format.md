@@ -338,7 +338,7 @@ It's just like copyfile and runs at the same time as copyfile but
 instead of copying it creates a symlink.
 
 The symlink is created at "dest" (relative to the top of the tree) and
-points to the path specified by "src".
+points to the path specified by "src" which is a path in the project.
 
 Parent directories of "dest" will be automatically created if missing.
 
