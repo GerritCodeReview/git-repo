@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "18f2e7ce_9e981dbe",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1663,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-02T20:18:35Z",
+      "side": 0,
+      "message": "a lot of the code shuffle here is just delaying the expansion of paths to the CopyFile \u0026 LinkFile classes.  basically we change their APIs from accepting the fully computed paths to the same 4 basic components (the src/dest from the manifest.xml, and the absolute paths to the git \u0026 repo checkouts).  that allows them to walk/expand them.\n\nlooking at just the CopyFile changes in this regard is probably easier as it\u0027s less complicated overall than LinkFile.",
+      "revId": "8d7f1255d7590772de118fa585f8be58526800ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
