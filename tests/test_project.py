@@ -18,8 +18,12 @@
 
 from __future__ import print_function
 
+import os
+import shutil
+import tempfile
 import unittest
 
+import error
 import project
 
 
@@ -60,3 +64,206 @@ class RepoHookShebang(unittest.TestCase):
     for shebang, interp in DATA:
       self.assertEqual(project.RepoHook._ExtractInterpFromShebang(shebang),
                        interp)
+
+
+class CopyLinkTestCase(unittest.TestCase):
+  """TestCase for stub repo client checkouts.
+
+  It'll have a layout like:
+    tempdir/          # self.tempdir
+      checkout/       # self.topdir
+        git-project/  # self.worktree
+
+  Attributes:
+    tempdir: A dedicated temporary directory.
+    worktree: The top of the repo client checkout.
+    topdir: The top of a project checkout.
+  """
+
+  def setUp(self):
+    self.tempdir = tempfile.mkdtemp(prefix='repo_tests')
+    self.topdir = os.path.join(self.tempdir, 'checkout')
+    self.worktree = os.path.join(self.topdir, 'git-project')
+    os.makedirs(self.topdir)
+    os.makedirs(self.worktree)
+
+  def tearDown(self):
+    shutil.rmtree(self.tempdir, ignore_errors=True)
+
+  @staticmethod
+  def touch(path):
+    with open(path, 'w') as f:
+      pass
+
+  def assertExists(self, path, msg=None):
+    """Make sure |path| exists."""
+    if os.path.exists(path):
+      return
+
+    if msg is None:
+      msg = ['path is missing: %s' % path]
+      while path != '/':
+        path = os.path.dirname(path)
+        if not path:
+          # If we're given something like "foo", abort once we get to "".
+          break
+        result = os.path.exists(path)
+        msg.append('\tos.path.exists(%s): %s' % (path, result))
+        if result:
+          msg.append('\tcontents: %r' % os.listdir(path))
+          break
+      msg = '\n'.join(msg)
+
+    raise self.failureException(msg)
+
+
+class CopyFile(CopyLinkTestCase):
+  """Check _CopyFile handling."""
+
+  def CopyFile(self, src, dest):
+    return project._CopyFile(self.worktree, src, self.topdir, dest)
+
+  def test_basic(self):
+    """Basic test of copying a file from a project to the toplevel."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    cf = self.CopyFile('foo.txt', 'foo')
+    cf._Copy()
+    self.assertExists(os.path.join(self.topdir, 'foo'))
+
+  def test_src_subdir(self):
+    """Copy a file from a subdir of a project."""
+    src = os.path.join(self.worktree, 'bar', 'foo.txt')
+    os.makedirs(os.path.dirname(src))
+    self.touch(src)
+    cf = self.CopyFile('bar/foo.txt', 'foo')
+    cf._Copy()
+    self.assertExists(os.path.join(self.topdir, 'foo'))
+
+  def test_dest_subdir(self):
+    """Copy a file to a subdir of a checkout."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    cf = self.CopyFile('foo.txt', 'sub/dir/foo/bar')
+    self.assertFalse(os.path.exists(os.path.join(self.topdir, 'sub')))
+    cf._Copy()
+    self.assertExists(os.path.join(self.topdir, 'sub', 'dir', 'foo', 'bar'))
+
+  def test_update(self):
+    """Make sure changed files get copied again."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    dest = os.path.join(self.topdir, 'bar')
+    with open(src, 'w') as f:
+      f.write('1st')
+    cf = self.CopyFile('foo.txt', 'bar')
+    cf._Copy()
+    self.assertExists(dest)
+    with open(dest) as f:
+      self.assertEqual(f.read(), '1st')
+
+    with open(src, 'w') as f:
+      f.write('2nd!')
+    cf._Copy()
+    with open(dest) as f:
+      self.assertEqual(f.read(), '2nd!')
+
+  def test_src_block_symlink(self):
+    """Do not allow reading from a symlinked path."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    sym = os.path.join(self.worktree, 'sym')
+    self.touch(src)
+    os.symlink('foo.txt', sym)
+    self.assertExists(sym)
+    cf = self.CopyFile('sym', 'foo')
+    self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
+
+  def test_src_block_symlink_traversal(self):
+    """Do not allow reading through a symlink dir."""
+    src = os.path.join(self.worktree, 'bar', 'passwd')
+    os.symlink('/etc', os.path.join(self.worktree, 'bar'))
+    self.assertExists(src)
+    cf = self.CopyFile('bar/foo.txt', 'foo')
+    self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
+
+  def test_src_block_dir(self):
+    """Do not allow copying from a directory."""
+    src = os.path.join(self.worktree, 'dir')
+    os.makedirs(src)
+    cf = self.CopyFile('dir', 'foo')
+    self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
+
+  def test_dest_block_symlink(self):
+    """Do not allow writing to a symlink."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    os.symlink('dest', os.path.join(self.topdir, 'sym'))
+    cf = self.CopyFile('foo.txt', 'sym')
+    self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
+
+  def test_dest_block_symlink_traversal(self):
+    """Do not allow writing through a symlink dir."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    os.symlink('/tmp', os.path.join(self.topdir, 'sym'))
+    cf = self.CopyFile('foo.txt', 'sym/foo.txt')
+    self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
+
+  def test_src_block_dir(self):
+    """Do not allow copying to a directory."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    os.makedirs(os.path.join(self.topdir, 'dir'))
+    cf = self.CopyFile('foo.txt', 'dir')
+    self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
+
+
+class LinkFile(CopyLinkTestCase):
+  """Check _LinkFile handling."""
+
+  def LinkFile(self, src, dest):
+    return project._LinkFile(self.worktree, src, self.topdir, dest)
+
+  def test_basic(self):
+    """Basic test of linking a file from a project into the toplevel."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    lf = self.LinkFile('foo.txt', 'foo')
+    lf._Link()
+    dest = os.path.join(self.topdir, 'foo')
+    self.assertExists(dest)
+    self.assertTrue(os.path.islink(dest))
+    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+
+  def test_src_subdir(self):
+    """Link to a file in a subdir of a project."""
+    src = os.path.join(self.worktree, 'bar', 'foo.txt')
+    os.makedirs(os.path.dirname(src))
+    self.touch(src)
+    lf = self.LinkFile('bar/foo.txt', 'foo')
+    lf._Link()
+    self.assertExists(os.path.join(self.topdir, 'foo'))
+
+  def test_dest_subdir(self):
+    """Link a file to a subdir of a checkout."""
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    lf = self.LinkFile('foo.txt', 'sub/dir/foo/bar')
+    self.assertFalse(os.path.exists(os.path.join(self.topdir, 'sub')))
+    lf._Link()
+    self.assertExists(os.path.join(self.topdir, 'sub', 'dir', 'foo', 'bar'))
+
+  def test_update(self):
+    """Make sure changed targets get updated."""
+    dest = os.path.join(self.topdir, 'sym')
+
+    src = os.path.join(self.worktree, 'foo.txt')
+    self.touch(src)
+    lf = self.LinkFile('foo.txt', 'sym')
+    lf._Link()
+    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+
+    # Point the symlink somewhere else.
+    os.unlink(dest)
+    os.symlink('/', dest)
+    lf._Link()
+    self.assertEqual('git-project/foo.txt', os.readlink(dest))
