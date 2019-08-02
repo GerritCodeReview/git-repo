@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ab17d11d_6fa88170",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2019-08-02T04:19:56Z",
+      "side": 1,
+      "message": "I wondered if we need to support dotfiles as dest at all, but a quick search tells me we do --- e.g. some people use .clang-format as dest.\n\n\"Helpful\" filesystems that do case folding (NTFS, HFS+) and Unicode normalization (HFS+) mean there are more paths we should check. See https://eclipse.googlesource.com/jgit/jgit/+/9110037e3e9461ff4dac22fee84ef3694ed57648/org.eclipse.jgit/src/org/eclipse/jgit/lib/ObjectChecker.java#828 for details.\n\nI hoped for a moment that we wouldn\u0027t have to worry about 8.3 clashes on Windows because this happens before the sync, but that\u0027s only true on *first* sync. So we\u0027d need to check for those, too.\n\nForgive my Python ignorance: is there an easier way? E.g. for each leading component in path:\n* if os.path.exists says it already exists, use os.path.samefile to see whether it\u0027s the same inode as \".git\" or \".repo\"\n* if os.path.exists says it doesn\u0027t already exist, create the directory or file. Use os.path.exists to determine whether we\u0027ve accidentally created a \".git\" dir or file or \".repo\" dir.",
+      "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd4ae81f_5b97b5c9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2019-08-02T04:19:56Z",
+      "side": 1,
+      "message": "Ah, is this referring to the check I mentioned above?",
+      "range": {
+        "startLine": 968,
+        "startChar": 13,
+        "endLine": 968,
+        "endChar": 38
+      },
+      "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
