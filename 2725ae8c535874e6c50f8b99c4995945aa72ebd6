@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "3a7a29ef_bdb4ae16",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-02T18:35:11Z",
+      "side": 1,
+      "message": "ok, i\u0027ve kicked out ~ now too",
+      "parentUuid": "171a97af_20cac6f5",
+      "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dd4ae81f_5b97b5c9",
         "filename": "manifest_xml.py",
         "patchSetId": 2
