@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a7de7738_5cd8d15c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-02T05:07:16Z",
+      "side": 1,
+      "message": "thanks, forgot about case-insensitive filesystems.  i\u0027ll normalize everything to lowercase before checking.\n\ni wasn\u0027t aware some filesystems did Unicode normalization.  i kind of understand why they did it (don\u0027t want to confuse users), but still seems dumb.  the func in git is enough to declare it was a bad idea:\nhttps://eclipse.googlesource.com/jgit/jgit/+/9110037e3e9461ff4dac22fee84ef3694ed57648/org.eclipse.jgit/src/org/eclipse/jgit/lib/ObjectChecker.java#884\n\nshall we just ban any attempt to use those combining characters at all here ?  i can\u0027t think of a scenario where those would reasonably show up.  that would allow us to keep our code a bit simple (we declare a set of bad codepoints, and then see if any of them are in the manifest setting).",
+      "parentUuid": "ab17d11d_6fa88170",
+      "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "dd4ae81f_5b97b5c9",
         "filename": "manifest_xml.py",
         "patchSetId": 2
