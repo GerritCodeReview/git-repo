@@ -36,7 +36,7 @@ from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, \
     ID_RE
 from error import GitError, HookError, UploadError, DownloadError
-from error import ManifestInvalidRevisionError
+from error import ManifestInvalidRevisionError, ManifestInvalidPathError
 from error import NoManifestException
 import platform_utils
 import progress
@@ -261,17 +261,70 @@ class _Annotation(object):
     self.keep = keep
 
 
-class _CopyFile(object):
+def _SafeExpandPath(base, subpath, skipfinal=False):
+  """Make sure |subpath| is completely safe under |base|.
 
-  def __init__(self, src, dest, abssrc, absdest):
+  We make sure no intermediate symlinks are traversed, and that the final path
+  is not a special file (e.g. not a socket or fifo).
+
+  NB: We rely on a number of paths already being filtered out while parsing the
+  manifest.  See the validation logic in manifest_xml.py for more details.
+  """
+  components = subpath.split(os.path.sep)
+  if skipfinal:
+    # Whether the caller handles the final component itself.
+    finalpart = components.pop()
+
+  path = base
+  for part in components:
+    if part in {'.', '..'}:
+      raise ManifestInvalidPathError(
+          '%s: "%s" not allowed in paths' % (subpath, part))
+
+    path = os.path.join(path, part)
+    if platform_utils.islink(path):
+      raise ManifestInvalidPathError(
+          '%s: traversing symlinks not allow' % (path,))
+
+    if os.path.exists(path):
+      if not os.path.isfile(path) and not platform_utils.isdir(path):
+        raise ManifestInvalidPathError(
+            '%s: only regular files & directories allowed' % (path,))
+
+  if skipfinal:
+    path = os.path.join(path, finalpart)
+
+  return path
+
+
+class _CopyFile(object):
+  """Container for <copyfile> manifest element."""
+
+  def __init__(self, git_worktree, src, topdir, dest):
+    """Register a <copyfile> request.
+
+    Args:
+      git_worktree: Absolute path to the git project checkout.
+      src: Relative path under |git_worktree| of file to read.
+      topdir: Absolute path to the top of the repo client checkout.
+      dest: Relative path under |topdir| of file to write.
+    """
+    self.git_worktree = git_worktree
+    self.topdir = topdir
     self.src = src
     self.dest = dest
-    self.abs_src = abssrc
-    self.abs_dest = absdest
 
   def _Copy(self):
-    src = self.abs_src
-    dest = self.abs_dest
+    src = _SafeExpandPath(self.git_worktree, self.src)
+    dest = _SafeExpandPath(self.topdir, self.dest)
+
+    if platform_utils.isdir(src):
+      raise ManifestInvalidPathError(
+          '%s: copying from directory not supported' % (self.src,))
+    if platform_utils.isdir(dest):
+      raise ManifestInvalidPathError(
+          '%s: copying to directory not allowed' % (self.dest,))
+
     # copy file if it does not exist or is out of date
     if not os.path.exists(dest) or not filecmp.cmp(src, dest):
       try:
@@ -292,13 +345,21 @@ class _CopyFile(object):
 
 
 class _LinkFile(object):
+  """Container for <linkfile> manifest element."""
 
-  def __init__(self, git_worktree, src, dest, relsrc, absdest):
+  def __init__(self, git_worktree, src, topdir, dest):
+    """Register a <linkfile> request.
+
+    Args:
+      git_worktree: Absolute path to the git project checkout.
+      src: Target of symlink relative to path under |git_worktree|.
+      topdir: Absolute path to the top of the repo client checkout.
+      dest: Relative path under |topdir| of symlink to create.
+    """
     self.git_worktree = git_worktree
+    self.topdir = topdir
     self.src = src
     self.dest = dest
-    self.src_rel_to_dest = relsrc
-    self.abs_dest = absdest
 
   def __linkIt(self, relSrc, absDest):
     # link file if it does not exist or is out of date
@@ -316,35 +377,37 @@ class _LinkFile(object):
         _error('Cannot link file %s to %s', relSrc, absDest)
 
   def _Link(self):
-    """Link the self.rel_src_to_dest and self.abs_dest. Handles wild cards
-    on the src linking all of the files in the source in to the destination
-    directory.
+    """Link the self.src & self.dest paths.
+
+    Handles wild cards on the src linking all of the files in the source in to
+    the destination directory.
     """
-    # We use the absSrc to handle the situation where the current directory
-    # is not the root of the repo
-    absSrc = os.path.join(self.git_worktree, self.src)
-    if os.path.exists(absSrc):
-      # Entity exists so just a simple one to one link operation
-      self.__linkIt(self.src_rel_to_dest, self.abs_dest)
+    src = _SafeExpandPath(self.git_worktree, self.src)
+
+    if os.path.exists(src):
+      # Entity exists so just a simple one to one link operation.
+      dest = _SafeExpandPath(self.topdir, self.dest, skipfinal=True)
+      # dest & src are absolute paths at this point.  Make sure the target of
+      # the symlink is relative in the context of the repo client checkout.
+      relpath = os.path.relpath(src, os.path.dirname(dest))
+      self.__linkIt(relpath, dest)
     else:
+      dest = _SafeExpandPath(self.topdir, self.dest)
       # Entity doesn't exist assume there is a wild card
-      absDestDir = self.abs_dest
-      if os.path.exists(absDestDir) and not platform_utils.isdir(absDestDir):
-        _error('Link error: src with wildcard, %s must be a directory',
-               absDestDir)
+      if os.path.exists(dest) and not platform_utils.isdir(dest):
+        _error('Link error: src with wildcard, %s must be a directory', dest)
       else:
-        absSrcFiles = glob.glob(absSrc)
-        for absSrcFile in absSrcFiles:
+        for absSrcFile in glob.glob(src):
           # Create a releative path from source dir to destination dir
           absSrcDir = os.path.dirname(absSrcFile)
-          relSrcDir = os.path.relpath(absSrcDir, absDestDir)
+          relSrcDir = os.path.relpath(absSrcDir, dest)
 
           # Get the source file name
           srcFile = os.path.basename(absSrcFile)
 
           # Now form the final full paths to srcFile. They will be
           # absolute for the desintaiton and relative for the srouce.
-          absDest = os.path.join(absDestDir, srcFile)
+          absDest = os.path.join(dest, srcFile)
           relSrc = os.path.join(relSrcDir, srcFile)
           self.__linkIt(relSrc, absDest)
 
@@ -1712,18 +1775,25 @@ class Project(object):
       if submodules:
         syncbuf.later1(self, _dosubmodules)
 
-  def AddCopyFile(self, src, dest, absdest):
-    # dest should already be an absolute path, but src is project relative
-    # make src an absolute path
-    abssrc = os.path.join(self.worktree, src)
-    self.copyfiles.append(_CopyFile(src, dest, abssrc, absdest))
+  def AddCopyFile(self, src, dest, topdir):
+    """Mark |src| for copying to |dest| (relative to |topdir|).
 
-  def AddLinkFile(self, src, dest, absdest):
-    # dest should already be an absolute path, but src is project relative
-    # make src relative path to dest
-    absdestdir = os.path.dirname(absdest)
-    relsrc = os.path.relpath(os.path.join(self.worktree, src), absdestdir)
-    self.linkfiles.append(_LinkFile(self.worktree, src, dest, relsrc, absdest))
+    No filesystem changes occur here.  Actual copying happens later on.
+
+    Paths should have basic validation run on them before being queued.
+    Further checking will be handled when the actual copy happens.
+    """
+    self.copyfiles.append(_CopyFile(self.worktree, src, topdir, dest))
+
+  def AddLinkFile(self, src, dest, topdir):
+    """Mark |dest| to create a symlink (relative to |topdir|) pointing to |src|.
+
+    No filesystem changes occur here.  Actual linking happens later on.
+
+    Paths should have basic validation run on them before being queued.
+    Further checking will be handled when the actual link happens.
+    """
+    self.linkfiles.append(_LinkFile(self.worktree, src, topdir, dest))
 
   def AddAnnotation(self, name, value, keep):
     self.annotations.append(_Annotation(name, value, keep))

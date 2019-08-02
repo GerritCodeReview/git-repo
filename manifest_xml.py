@@ -1026,7 +1026,7 @@ class XmlManifest(object):
       # dest is relative to the top of the tree.
       # We only validate paths if we actually plan to process them.
       self._ValidateFilePaths('copyfile', src, dest)
-      project.AddCopyFile(src, dest, os.path.join(self.topdir, dest))
+      project.AddCopyFile(src, dest, self.topdir)
 
   def _ParseLinkFile(self, project, node):
     src = self._reqatt(node, 'src')
@@ -1036,7 +1036,7 @@ class XmlManifest(object):
       # dest is relative to the top of the tree.
       # We only validate paths if we actually plan to process them.
       self._ValidateFilePaths('linkfile', src, dest)
-      project.AddLinkFile(src, dest, os.path.join(self.topdir, dest))
+      project.AddLinkFile(src, dest, self.topdir)
 
   def _ParseAnnotation(self, project, node):
     name = self._reqatt(node, 'name')
