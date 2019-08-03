@@ -1141,6 +1141,8 @@ class Project(object):
                    capture_stderr=True)
     has_diff = False
     for line in p.process.stdout:
+      if not hasattr(line, 'encode'):
+        line = line.decode()
       if not has_diff:
         out.nl()
         out.project('project %s/' % self.relpath)
@@ -1595,7 +1597,7 @@ class Project(object):
     last_mine = None
     cnt_mine = 0
     for commit in local_changes:
-      commit_id, committer_email = commit.decode('utf-8').split(' ', 1)
+      commit_id, committer_email = commit.split(' ', 1)
       if committer_email == self.UserEmail:
         last_mine = commit_id
         cnt_mine += 1
@@ -2406,10 +2408,7 @@ class Project(object):
     cmd = ['ls-remote', self.remote.name, refs]
     p = GitCommand(self, cmd, capture_stdout=True)
     if p.Wait() == 0:
-      if hasattr(p.stdout, 'decode'):
-        return p.stdout.decode('utf-8')
-      else:
-        return p.stdout
+      return p.stdout
     return None
 
   def _Revert(self, rev):
@@ -2820,6 +2819,8 @@ class Project(object):
                      capture_stderr=True)
       try:
         out = p.process.stdout.read()
+        if not hasattr(out, 'encode'):
+          out = out.decode()
         r = {}
         if out:
           out = iter(out[:-1].split('\0'))
@@ -2979,10 +2980,6 @@ class Project(object):
           raise GitError('%s %s: %s' %
                          (self._project.name, name, p.stderr))
         r = p.stdout
-        try:
-          r = r.decode('utf-8')
-        except AttributeError:
-          pass
         if r.endswith('\n') and r.index('\n') == len(r) - 1:
           return r[:-1]
         return r
