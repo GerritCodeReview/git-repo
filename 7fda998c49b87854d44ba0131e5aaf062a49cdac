@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5a4e287a_9959d3c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-06T21:21:49Z",
+      "side": 1,
+      "message": "\"sparse\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 32,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b520968b_705ce770",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-06T21:21:49Z",
+      "side": 1,
+      "message": "i don\u0027t understand what this means.  what is \"absolute path of src\" ?\n\nif you rebase onto latest master, you\u0027ll see i\u0027ve expanded the documentation of both these elements.",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "821f1e28_286e7241",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-06T21:21:49Z",
+      "side": 1,
+      "message": "why does this need a dedicated element ?  can\u0027t \u003ccopyfile\u003e \u0026 \u003clinkfile\u003e simply be children of \u003cmanifest\u003e ?  that would make it clear that they aren\u0027t tied to a specific \u003cproject\u003e element.",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b1f0480_d69ce847",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-06T21:21:49Z",
+      "side": 1,
+      "message": "you\u0027re trying to use \u003ccopyfile\u003e to clobber state under .repo/.  we\u0027re in the process of banning that entirely per https://crbug.com/gerrit/11218.",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
