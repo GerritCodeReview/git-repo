@@ -73,6 +73,21 @@ branch but need to incorporate new upstream changes "underneath" them.
             file=sys.stderr)
       return 1
 
+    # Setup the common git rebase args that we use for all projects.
+    common_args = ['rebase']
+    if opt.whitespace:
+      common_args.append('--whitespace=%s' % opt.whitespace)
+    if opt.quiet:
+      common_args.append('--quiet')
+    if opt.force_rebase:
+      common_args.append('--force-rebase')
+    if opt.no_ff:
+      common_args.append('--no-ff')
+    if opt.autosquash:
+      common_args.append('--autosquash')
+    if opt.interactive:
+      common_args.append('-i')
+
     for project in all_projects:
       cb = project.CurrentBranch
       if not cb:
@@ -92,26 +107,7 @@ branch but need to incorporate new upstream changes "underneath" them.
         # ignore branches without remotes
         continue
 
-      args = ["rebase"]
-
-      if opt.whitespace:
-        args.append('--whitespace=%s' % opt.whitespace)
-
-      if opt.quiet:
-        args.append('--quiet')
-
-      if opt.force_rebase:
-        args.append('--force-rebase')
-
-      if opt.no_ff:
-        args.append('--no-ff')
-
-      if opt.autosquash:
-        args.append('--autosquash')
-
-      if opt.interactive:
-        args.append("-i")
-
+      args = common_args[:]
       if opt.onto_manifest:
         args.append('--onto')
         args.append(project.revisionExpr)
