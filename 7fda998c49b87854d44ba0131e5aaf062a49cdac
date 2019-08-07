@@ -60,6 +60,24 @@
     },
     {
       "key": {
+        "uuid": "db1391e7_4ca85479",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-07T06:01:21Z",
+      "side": 1,
+      "message": "we\u0027re in the process of banning the ability to create symlinks that point outside of the repo client checkout.  it seems like this feature would go against that, so we wouldn\u0027t accept it :/.",
+      "parentUuid": "abd6ff90_5a08813b",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "821f1e28_286e7241",
         "filename": "docs/manifest-format.md",
         "patchSetId": 6
@@ -124,6 +142,24 @@
       "side": 1,
       "message": "do you mean git-repo will prohibit changes into .repo/xxx.git/info/sparse-checkout ?\nIn that case, do you have suggestions to support sparse-checkout?\nI think copying sparse-checkout files from manifests repository is quite convenient \u0026 flexible.",
       "parentUuid": "6b1f0480_d69ce847",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da8b60c1_929651c5",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-07T06:01:21Z",
+      "side": 1,
+      "message": "yes, we absolutely want to prevent the manifest from being able to modify any content under .repo/.  even ignoring that, i don\u0027t think we want to encourage users mucking around the internal .repo/ state.  it\u0027s not documented anywhere, and we don\u0027t guarantee we\u0027ll never change the layout in there.  in fact, we\u0027ve changed it multiple times over the years.",
+      "parentUuid": "60e0d430_5ce5b581",
       "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
