@@ -42,6 +42,24 @@
     },
     {
       "key": {
+        "uuid": "abd6ff90_5a08813b",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 346,
+      "author": {
+        "id": 1063032
+      },
+      "writtenOn": "2019-08-07T04:27:22Z",
+      "side": 1,
+      "message": "For example,\nabsolute path of src \u003d /home/user/proj1/orig\nrelative path of src \u003d proj1/orig",
+      "parentUuid": "b520968b_705ce770",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "821f1e28_286e7241",
         "filename": "docs/manifest-format.md",
         "patchSetId": 6
@@ -59,6 +77,24 @@
     },
     {
       "key": {
+        "uuid": "eca56be8_57939e30",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1063032
+      },
+      "writtenOn": "2019-08-07T04:27:22Z",
+      "side": 1,
+      "message": "You are right. copy-link can be removed if we proceed here.",
+      "parentUuid": "821f1e28_286e7241",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6b1f0480_d69ce847",
         "filename": "docs/manifest-format.md",
         "patchSetId": 6
@@ -70,6 +106,24 @@
       "writtenOn": "2019-08-06T21:21:49Z",
       "side": 1,
       "message": "you\u0027re trying to use \u003ccopyfile\u003e to clobber state under .repo/.  we\u0027re in the process of banning that entirely per https://crbug.com/gerrit/11218.",
+      "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60e0d430_5ce5b581",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1063032
+      },
+      "writtenOn": "2019-08-07T04:27:22Z",
+      "side": 1,
+      "message": "do you mean git-repo will prohibit changes into .repo/xxx.git/info/sparse-checkout ?\nIn that case, do you have suggestions to support sparse-checkout?\nI think copying sparse-checkout files from manifests repository is quite convenient \u0026 flexible.",
+      "parentUuid": "6b1f0480_d69ce847",
       "revId": "7fda998c49b87854d44ba0131e5aaf062a49cdac",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
