@@ -436,9 +436,7 @@ later is required to fix a server side protocol bug.
           _CheckoutOne docstring for details.
     """
     try:
-      success = self._CheckoutOne(opt, project, *args, **kwargs)
-      if not success:
-        sys.exit(1)
+      return self._CheckoutOne(opt, project, *args, **kwargs)
     finally:
       sem.release()
 
