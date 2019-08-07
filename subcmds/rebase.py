@@ -71,7 +71,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       if len(args) == 1:
         print('note: project %s is mapped to more than one path' % (args[0],),
             file=sys.stderr)
-      return -1
+      return 1
 
     for project in all_projects:
       cb = project.CurrentBranch
@@ -79,7 +79,7 @@ branch but need to incorporate new upstream changes "underneath" them.
         if one_project:
           print("error: project %s has a detached HEAD" % project.relpath,
                 file=sys.stderr)
-          return -1
+          return 1
         # ignore branches with detatched HEADs
         continue
 
@@ -88,7 +88,7 @@ branch but need to incorporate new upstream changes "underneath" them.
         if one_project:
           print("error: project %s does not track any remote branches"
                 % project.relpath, file=sys.stderr)
-          return -1
+          return 1
         # ignore branches without remotes
         continue
 
@@ -131,13 +131,13 @@ branch but need to incorporate new upstream changes "underneath" them.
           stash_args = ["stash"]
 
           if GitCommand(project, stash_args).Wait() != 0:
-            return -1
+            return 1
 
       if GitCommand(project, args).Wait() != 0:
-        return -1
+        return 1
 
       if needs_stash:
         stash_args.append('pop')
         stash_args.append('--quiet')
         if GitCommand(project, stash_args).Wait() != 0:
-          return -1
+          return 1

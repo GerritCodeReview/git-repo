@@ -635,7 +635,7 @@ later is required to fix a server side protocol bug.
       print('Failed to remove %s (%s)' % (os.path.join(path, '.git'), str(e)), file=sys.stderr)
       print('error: Failed to delete obsolete path %s' % path, file=sys.stderr)
       print('       remove manually, then run sync again', file=sys.stderr)
-      return -1
+      return 1
 
     # Delete everything under the worktree, except for directories that contain
     # another git project
@@ -669,7 +669,7 @@ later is required to fix a server side protocol bug.
     if failed:
       print('error: Failed to delete obsolete path %s' % path, file=sys.stderr)
       print('       remove manually, then run sync again', file=sys.stderr)
-      return -1
+      return 1
 
     # Try deleting parent dirs if they are empty
     project_dir = path
@@ -726,9 +726,9 @@ later is required to fix a server side protocol bug.
                     'are present' % project.relpath, file=sys.stderr)
               print('       commit changes, then run sync again',
                     file=sys.stderr)
-              return -1
+              return 1
             elif self._DeleteProject(project.worktree):
-              return -1
+              return 1
 
     new_project_paths.sort()
     fd = open(file_path, 'w')
