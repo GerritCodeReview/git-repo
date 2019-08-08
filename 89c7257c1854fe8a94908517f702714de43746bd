@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "53d8da8f_7dbf7a43",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-08-08T05:01:05Z",
+      "side": 1,
+      "message": "I\u0027m not sure why Gerrit is showing L730 as changed.",
+      "revId": "89c7257c1854fe8a94908517f702714de43746bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
