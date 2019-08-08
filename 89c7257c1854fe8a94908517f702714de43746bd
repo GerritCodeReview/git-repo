@@ -16,6 +16,24 @@
       "revId": "89c7257c1854fe8a94908517f702714de43746bd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14349dfa_b1989f24",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 730,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-08T05:07:27Z",
+      "side": 1,
+      "message": "gitiles\u0027s algorithm at least shows it unchanged:\nhttps://gerrit.googlesource.com/git-repo/+/89c7257c1854fe8a94908517f702714de43746bd%5E%21/#F1\n\n*shrug*",
+      "parentUuid": "53d8da8f_7dbf7a43",
+      "revId": "89c7257c1854fe8a94908517f702714de43746bd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
