@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7698092a_447c5c5e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-22T18:30:34Z",
+      "side": 1,
+      "message": "for public context since the bug isn\u0027t secret, the report is:\n\n\u003e Cannot sync a local mirror of AOSP\n\u003e\n\u003e Following the instructions here: https://source.android.com/setup/build/downloading#using-a-local-mirror\n\u003e \n\u003e I am unable to sync a local mirror of AOSP.\n\u003e \n\u003e I see lots of:\n\u003e \n\u003e From persistent-https://android.git.corp.google.com/platform/external/libppp\n ! [rejected]        android-4.4_r0.7 -\u003e android-4.4_r0.7  (would clobber existing tag)\n ! [rejected]        android-4.4_r0.8 -\u003e android-4.4_r0.8  (would clobber existing tag)\n ! [rejected]        android-4.4_r0.9 -\u003e android-4.4_r0.9  (would clobber existing tag)\n ! [rejected]        android-4.4_r1   -\u003e android-4.4_r1  (would clobber existing tag)",
+      "revId": "6263a5e14bd7ff0365317553e8399528d4c77cb8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
