@@ -2201,6 +2201,8 @@ class Project(object):
     if not current_branch_only:
       # Fetch whole repo
       spec.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
+      if not (no_tags or depth):
+        spec.append(str((u'+refs/tags/*:') + remote.ToLocal('refs/tags/*')))
     elif tag_name is not None:
       spec.append('tag')
       spec.append(tag_name)
