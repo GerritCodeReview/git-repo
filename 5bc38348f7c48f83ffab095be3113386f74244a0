@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4b326664_b9cf3faf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-22T18:20:46Z",
+      "side": 1,
+      "message": "assuming this is a b/ can you add that prefix ?",
+      "revId": "5bc38348f7c48f83ffab095be3113386f74244a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "941be46c_714240a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-22T18:20:46Z",
+      "side": 1,
+      "message": "we don\u0027t use these tags in this repo and i don\u0027t think any bug tool is watching this repo either",
+      "revId": "5bc38348f7c48f83ffab095be3113386f74244a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
