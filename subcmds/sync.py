@@ -315,9 +315,6 @@ later is required to fix a server side protocol bug.
     # We'll set to true once we've locked the lock.
     did_lock = False
 
-    if not opt.quiet:
-      print('Fetching project %s' % project.name)
-
     # Encapsulate everything in a try/except/finally so that:
     # - We always set err_event in the case of an exception.
     # - We always make sure we unlock the lock if we locked it.
@@ -350,7 +347,7 @@ later is required to fix a server side protocol bug.
             raise _FetchError()
 
         fetched.add(project.gitdir)
-        pm.update()
+        pm.update(msg=project.name)
       except _FetchError:
         pass
       except Exception as e:
@@ -371,7 +368,6 @@ later is required to fix a server side protocol bug.
     fetched = set()
     lock = _threading.Lock()
     pm = Progress('Fetching projects', len(projects),
-                  print_newline=not(opt.quiet),
                   always_print_percentage=opt.quiet)
 
     objdir_project_map = dict()
@@ -461,9 +457,6 @@ later is required to fix a server side protocol bug.
     # We'll set to true once we've locked the lock.
     did_lock = False
 
-    if not opt.quiet:
-      print('Checking out project %s' % project.name)
-
     # Encapsulate everything in a try/except/finally so that:
     # - We always set err_event in the case of an exception.
     # - We always make sure we unlock the lock if we locked it.
@@ -474,11 +467,11 @@ later is required to fix a server side protocol bug.
     try:
       try:
         project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
-        success = syncbuf.Finish()
 
         # Lock around all the rest of the code, since printing, updating a set
         # and Progress.update() are not thread safe.
         lock.acquire()
+        success = syncbuf.Finish()
         did_lock = True
 
         if not success:
@@ -487,7 +480,7 @@ later is required to fix a server side protocol bug.
                 file=sys.stderr)
           raise _CheckoutError()
 
-        pm.update()
+        pm.update(msg=project.name)
       except _CheckoutError:
         pass
       except Exception as e:
@@ -527,7 +520,7 @@ later is required to fix a server side protocol bug.
       syncjobs = 1
 
     lock = _threading.Lock()
-    pm = Progress('Syncing work tree', len(all_projects))
+    pm = Progress('Checking out projects', len(all_projects))
 
     threads = set()
     sem = _threading.Semaphore(syncjobs)

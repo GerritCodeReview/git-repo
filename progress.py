@@ -39,7 +39,7 @@ class Progress(object):
     self._print_newline = print_newline
     self._always_print_percentage = always_print_percentage
 
-  def update(self, inc=1):
+  def update(self, inc=1, msg=''):
     self._done += inc
 
     if _NOT_TTY or IsTrace():
@@ -62,12 +62,13 @@ class Progress(object):
 
       if self._lastp != p or self._always_print_percentage:
         self._lastp = p
-        sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s)%s' % (
+        sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s)%s%s%s' % (
           CSI_ERASE_LINE,
           self._title,
           p,
           self._done, self._units,
           self._total, self._units,
+          ' ' if msg else '', msg,
           "\n" if self._print_newline else ""))
         sys.stderr.flush()
 
