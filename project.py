@@ -3113,6 +3113,11 @@ class SyncBuffer(object):
     return True
 
   def _PrintMessages(self):
+    if self._messages or self._failures:
+      if os.isatty(2):
+        self.out.write('\x1b[2K')
+      self.out.write('\r')
+
     for m in self._messages:
       m.Print(self)
     for m in self._failures:
