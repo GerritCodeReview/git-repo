@@ -21,6 +21,11 @@ from repo_trace import IsTrace
 
 _NOT_TTY = not os.isatty(2)
 
+# This will erase all content in the current line (wherever the cursor is).
+# It does not move the cursor, so this is usually followed by \r to move to
+# column 0.
+CSI_ERASE_LINE = '\x1b[2K'
+
 class Progress(object):
   def __init__(self, title, total=0, units='', print_newline=False,
                always_print_percentage=False):
@@ -47,7 +52,8 @@ class Progress(object):
         return
 
     if self._total <= 0:
-      sys.stderr.write('\r%s: %d, ' % (
+      sys.stderr.write('%s\r%s: %d,' % (
+        CSI_ERASE_LINE,
         self._title,
         self._done))
       sys.stderr.flush()
@@ -56,7 +62,8 @@ class Progress(object):
 
       if self._lastp != p or self._always_print_percentage:
         self._lastp = p
-        sys.stderr.write('\r%s: %3d%% (%d%s/%d%s)%s' % (
+        sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s)%s' % (
+          CSI_ERASE_LINE,
           self._title,
           p,
           self._done, self._units,
@@ -69,13 +76,15 @@ class Progress(object):
       return
 
     if self._total <= 0:
-      sys.stderr.write('\r%s: %d, done.  \n' % (
+      sys.stderr.write('%s\r%s: %d, done.\n' % (
+        CSI_ERASE_LINE,
         self._title,
         self._done))
       sys.stderr.flush()
     else:
       p = (100 * self._done) / self._total
-      sys.stderr.write('\r%s: %3d%% (%d%s/%d%s), done.  \n' % (
+      sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s), done.\n' % (
+        CSI_ERASE_LINE,
         self._title,
         p,
         self._done, self._units,
