@@ -132,8 +132,8 @@ from the user's .netrc file.
 if the manifest server specified in the manifest file already includes
 credentials.
 
-The -f/--force-broken option can be used to proceed with syncing
-other projects if a project sync fails.
+By default, all projects will be synced. The --fail-fast option can be used
+to halt syncing as soon as possible when the the first project fails to sync.
 
 The --force-sync option can be used to overwrite existing git
 directories if they have previously been linked to a different
@@ -199,8 +199,10 @@ later is required to fix a server side protocol bug.
       self.jobs = 1
 
     p.add_option('-f', '--force-broken',
-                 dest='force_broken', action='store_true',
-                 help="continue sync even if a project fails to sync")
+                 help='obsolete option (to be deleted in the future)')
+    p.add_option('--fail-fast',
+                 dest='fail_fast', action='store_true',
+                 help='stop syncing after first error is hit')
     p.add_option('--force-sync',
                  dest='force_sync', action='store_true',
                  help="overwrite an existing git directory if it needs to "
@@ -284,7 +286,7 @@ later is required to fix a server side protocol bug.
     try:
         for project in projects:
           success = self._FetchHelper(opt, project, *args, **kwargs)
-          if not success and not opt.force_broken:
+          if not success and opt.fail_fast:
             break
     finally:
         sem.release()
@@ -343,10 +345,7 @@ later is required to fix a server side protocol bug.
           print('error: Cannot fetch %s from %s'
                 % (project.name, project.remote.url),
                 file=sys.stderr)
-          if opt.force_broken:
-            print('warn: --force-broken, continuing to sync',
-                  file=sys.stderr)
-          else:
+          if opt.fail_fast:
             raise _FetchError()
 
         fetched.add(project.gitdir)
@@ -384,7 +383,7 @@ later is required to fix a server side protocol bug.
     for project_list in objdir_project_map.values():
       # Check for any errors before running any more tasks.
       # ...we'll let existing threads finish, though.
-      if err_event.isSet() and not opt.force_broken:
+      if err_event.isSet() and opt.fail_fast:
         break
 
       sem.acquire()
@@ -410,7 +409,7 @@ later is required to fix a server side protocol bug.
       t.join()
 
     # If we saw an error, exit with code 1 so that other scripts can check.
-    if err_event.isSet() and not opt.force_broken:
+    if err_event.isSet() and opt.fail_fast:
       print('\nerror: Exited sync due to fetch errors', file=sys.stderr)
       sys.exit(1)
 
@@ -532,7 +531,7 @@ later is required to fix a server side protocol bug.
     for project in all_projects:
       # Check for any errors before running any more tasks.
       # ...we'll let existing threads finish, though.
-      if err_event.isSet() and not opt.force_broken:
+      if err_event.isSet() and opt.fail_fast:
         break
 
       sem.acquire()
@@ -746,6 +745,9 @@ later is required to fix a server side protocol bug.
       soft_limit, _ = _rlimit_nofile()
       self.jobs = min(self.jobs, (soft_limit - 5) // 3)
 
+    if opt.force_broken:
+      print('warning: -f/--force-broken is now the default behavior, and the '
+            'options are deprecated', file=sys.stderr)
     if opt.network_only and opt.detach_head:
       print('error: cannot combine -n and -d', file=sys.stderr)
       sys.exit(1)
