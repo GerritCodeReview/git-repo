@@ -177,10 +177,11 @@ without iterating through the remaining projects.
       'worktree': project.worktree,
     }
 
-  def Execute(self, opt, args):
+  def ValidateOptions(self, opt, args):
     if not opt.command:
       self.Usage()
 
+  def Execute(self, opt, args):
     cmd = [opt.command[0]]
 
     shell = True

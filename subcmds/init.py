@@ -436,18 +436,17 @@ to update the working directory files.
       print('   rm -r %s/.repo' % self.manifest.topdir)
       print('and try again.')
 
-  def Execute(self, opt, args):
-    git_require(MIN_GIT_VERSION, fail=True)
-
+  def ValidateOptions(self, opt, args):
     if opt.reference:
       opt.reference = os.path.expanduser(opt.reference)
 
     # Check this here, else manifest will be tagged "not new" and init won't be
     # possible anymore without removing the .repo/manifests directory.
     if opt.archive and opt.mirror:
-      print('fatal: --mirror and --archive cannot be used together.',
-            file=sys.stderr)
-      sys.exit(1)
+      self.OptionParser.error('--mirror and --archive cannot be used together.')
+
+  def Execute(self, opt, args):
+    git_require(MIN_GIT_VERSION, fail=True)
 
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)

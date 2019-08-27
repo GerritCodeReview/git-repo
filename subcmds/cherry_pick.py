@@ -37,10 +37,11 @@ change id will be added.
   def _Options(self, p):
     pass
 
-  def Execute(self, opt, args):
+  def ValidateOptions(self, opt, args):
     if len(args) != 1:
       self.Usage()
 
+  def Execute(self, opt, args):
     reference = args[0]
 
     p = GitCommand(None,

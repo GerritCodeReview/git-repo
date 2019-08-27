@@ -738,36 +738,30 @@ later is required to fix a server side protocol bug.
       fd.close()
     return 0
 
+  def ValidateOptions(self, opt, args):
+    if opt.force_broken:
+      print('warning: -f/--force-broken is now the default behavior, and the '
+            'options are deprecated', file=sys.stderr)
+    if opt.network_only and opt.detach_head:
+      self.OptionParser.error('cannot combine -n and -d')
+    if opt.network_only and opt.local_only:
+      self.OptionParser.error('cannot combine -n and -l')
+    if opt.manifest_name and opt.smart_sync:
+      self.OptionParser.error('cannot combine -m and -s')
+    if opt.manifest_name and opt.smart_tag:
+      self.OptionParser.error('cannot combine -m and -t')
+    if opt.manifest_server_username or opt.manifest_server_password:
+      if not (opt.smart_sync or opt.smart_tag):
+        self.OptionParser.error('-u and -p may only be combined with -s or -t')
+      if None in [opt.manifest_server_username, opt.manifest_server_password]:
+        self.OptionParser.error('both -u and -p must be given')
+
   def Execute(self, opt, args):
     if opt.jobs:
       self.jobs = opt.jobs
     if self.jobs > 1:
       soft_limit, _ = _rlimit_nofile()
       self.jobs = min(self.jobs, (soft_limit - 5) // 3)
-
-    if opt.force_broken:
-      print('warning: -f/--force-broken is now the default behavior, and the '
-            'options are deprecated', file=sys.stderr)
-    if opt.network_only and opt.detach_head:
-      print('error: cannot combine -n and -d', file=sys.stderr)
-      sys.exit(1)
-    if opt.network_only and opt.local_only:
-      print('error: cannot combine -n and -l', file=sys.stderr)
-      sys.exit(1)
-    if opt.manifest_name and opt.smart_sync:
-      print('error: cannot combine -m and -s', file=sys.stderr)
-      sys.exit(1)
-    if opt.manifest_name and opt.smart_tag:
-      print('error: cannot combine -m and -t', file=sys.stderr)
-      sys.exit(1)
-    if opt.manifest_server_username or opt.manifest_server_password:
-      if not (opt.smart_sync or opt.smart_tag):
-        print('error: -u and -p may only be combined with -s or -t',
-              file=sys.stderr)
-        sys.exit(1)
-      if None in [opt.manifest_server_username, opt.manifest_server_password]:
-        print('error: both -u and -p must be given', file=sys.stderr)
-        sys.exit(1)
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
