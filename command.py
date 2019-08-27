@@ -98,6 +98,13 @@ class Command(object):
     self.OptionParser.print_usage()
     sys.exit(1)
 
+  def ValidateOptions(self, opt, args):
+    """Validate the user options & arguments before executing.
+
+    This is meant to help break the code up into logical steps.
+    Commands should use self.OptionParser.error to display errors.
+    """
+
   def Execute(self, opt, args):
     """Perform the action, after option parsing is complete.
     """

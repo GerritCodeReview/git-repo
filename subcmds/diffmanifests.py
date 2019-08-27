@@ -176,10 +176,11 @@ synced and their revisions won't be found.
             self.printText(log)
             self.out.nl()
 
-  def Execute(self, opt, args):
+  def ValidateOptions(self, opt, args):
     if not args or len(args) > 2:
-      self.Usage()
+      self.OptionParser.error('missing manifests to diff')
 
+  def Execute(self, opt, args):
     self.out = _Coloring(self.manifest.globalConfig)
     self.printText = self.out.nofmt_printer('text')
     if opt.color:
