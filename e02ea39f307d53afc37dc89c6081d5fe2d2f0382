@@ -22,6 +22,30 @@
       "revId": "e02ea39f307d53afc37dc89c6081d5fe2d2f0382",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "081318e1_d633a969",
+        "filename": "subcmds/start.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-27T06:22:00Z",
+      "side": 1,
+      "message": "--head would override the --rev setting.  imo that\u0027s OK as i\u0027m more of a fan of later options clobbering earlier ones rather than declaring things as conflicting.\n\nfor example, \"--rev abcde --rev HEAD\" would result in revision\u003dHEAD, so why would we allow that but ban \"--rev abcde --head\" ?\n\ni\u0027m also not a fan of opts that may only be specified once on the cli :).",
+      "parentUuid": "a3dd59b2_e76a0d54",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 0
+      },
+      "revId": "e02ea39f307d53afc37dc89c6081d5fe2d2f0382",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
