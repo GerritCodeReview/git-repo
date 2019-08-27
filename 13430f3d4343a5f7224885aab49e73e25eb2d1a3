@@ -22,6 +22,30 @@
       "revId": "13430f3d4343a5f7224885aab49e73e25eb2d1a3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50b12079_7cdc804f",
+        "filename": "subcmds/help.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-27T06:24:38Z",
+      "side": 1,
+      "message": "the comma makes it a tuple.  a personal habit of mine to make sure we pass a tuple to %.  if name were a list/tuple itself, then bad things would happen.\n\nin many cases like this, it\u0027s basically guaranteed that name will be a str, so the parens/comma/tuple is a bit forced.",
+      "parentUuid": "987b3618_439d61db",
+      "range": {
+        "startLine": 145,
+        "startChar": 63,
+        "endLine": 145,
+        "endChar": 64
+      },
+      "revId": "13430f3d4343a5f7224885aab49e73e25eb2d1a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
