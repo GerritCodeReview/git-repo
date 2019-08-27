@@ -836,6 +836,33 @@ later is required to fix a server side protocol bug.
 
     return manifest_name
 
+  def _UpdateManifestProject(self, opt, mp, manifest_name):
+    """Fetch & update the local manifest project."""
+    if not opt.local_only:
+      start = time.time()
+      success = mp.Sync_NetworkHalf(quiet=opt.quiet,
+                                    current_branch_only=opt.current_branch_only,
+                                    no_tags=opt.no_tags,
+                                    optimized_fetch=opt.optimized_fetch,
+                                    submodules=self.manifest.HasSubmodules,
+                                    clone_filter=self.manifest.CloneFilter)
+      finish = time.time()
+      self.event_log.AddSync(mp, event_log.TASK_SYNC_NETWORK,
+                             start, finish, success)
+
+    if mp.HasChanges:
+      syncbuf = SyncBuffer(mp.config)
+      start = time.time()
+      mp.Sync_LocalHalf(syncbuf, submodules=self.manifest.HasSubmodules)
+      clean = syncbuf.Finish()
+      self.event_log.AddSync(mp, event_log.TASK_SYNC_LOCAL,
+                             start, time.time(), clean)
+      if not clean:
+        sys.exit(1)
+      self._ReloadManifest(opt.manifest_name)
+      if opt.jobs is None:
+        self.jobs = self.manifest.default.sync_j
+
   def ValidateOptions(self, opt, args):
     if opt.force_broken:
       print('warning: -f/--force-broken is now the default behavior, and the '
@@ -887,30 +914,7 @@ later is required to fix a server side protocol bug.
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
-    if not opt.local_only:
-      start = time.time()
-      success = mp.Sync_NetworkHalf(quiet=opt.quiet,
-                                    current_branch_only=opt.current_branch_only,
-                                    no_tags=opt.no_tags,
-                                    optimized_fetch=opt.optimized_fetch,
-                                    submodules=self.manifest.HasSubmodules,
-                                    clone_filter=self.manifest.CloneFilter)
-      finish = time.time()
-      self.event_log.AddSync(mp, event_log.TASK_SYNC_NETWORK,
-                             start, finish, success)
-
-    if mp.HasChanges:
-      syncbuf = SyncBuffer(mp.config)
-      start = time.time()
-      mp.Sync_LocalHalf(syncbuf, submodules=self.manifest.HasSubmodules)
-      clean = syncbuf.Finish()
-      self.event_log.AddSync(mp, event_log.TASK_SYNC_LOCAL,
-                             start, time.time(), clean)
-      if not clean:
-        sys.exit(1)
-      self._ReloadManifest(manifest_name)
-      if opt.jobs is None:
-        self.jobs = self.manifest.default.sync_j
+    self._UpdateManifestProject(opt, mp, manifest_name)
 
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
