@@ -45,7 +45,7 @@ except ImportError:
 
 from color import SetDefaultColoring
 import event_log
-from trace import SetTrace
+from repo_trace import SetTrace
 from git_command import git, GitCommand
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
@@ -84,7 +84,7 @@ global_options.add_option('--color',
                           help='control color usage: auto, always, never')
 global_options.add_option('--trace',
                           dest='trace', action='store_true',
-                          help='trace git command execution')
+                          help='trace git command execution (REPO_TRACE=1)')
 global_options.add_option('--time',
                           dest='time', action='store_true',
                           help='time repo command execution')

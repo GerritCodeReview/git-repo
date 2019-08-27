@@ -14,15 +14,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+"""Logic for tracing repo interactions.
+
+Activated via `repo --trace ...` or `REPO_TRACE=1 repo ...`.
+"""
+
 from __future__ import print_function
 import sys
 import os
+
+# Env var to implicitly turn on tracing.
 REPO_TRACE = 'REPO_TRACE'
 
-try:
-  _TRACE = os.environ[REPO_TRACE] == '1'
-except KeyError:
-  _TRACE = False
+_TRACE = os.environ.get(REPO_TRACE) == '1'
 
 def IsTrace():
   return _TRACE

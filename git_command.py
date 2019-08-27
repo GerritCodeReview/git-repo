@@ -23,7 +23,7 @@ from signal import SIGTERM
 
 from error import GitError
 import platform_utils
-from trace import REPO_TRACE, IsTrace, Trace
+from repo_trace import REPO_TRACE, IsTrace, Trace
 from wrapper import Wrapper
 
 GIT = 'git'
