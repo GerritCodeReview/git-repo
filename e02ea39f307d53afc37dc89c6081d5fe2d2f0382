@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a3dd59b2_e76a0d54",
+        "filename": "subcmds/start.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-08-27T01:58:45Z",
+      "side": 1,
+      "message": "What happens if a user does something like:\n\n --rev abcde --head\n\n?",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 0
+      },
+      "revId": "e02ea39f307d53afc37dc89c6081d5fe2d2f0382",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
