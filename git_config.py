@@ -44,7 +44,7 @@ else:
 from signal import SIGTERM
 from error import GitError, UploadError
 import platform_utils
-from trace import Trace
+from repo_trace import Trace
 if is_python3():
   from http.client import HTTPException
 else:

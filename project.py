@@ -39,7 +39,7 @@ from error import GitError, HookError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
 import platform_utils
-from trace import IsTrace, Trace
+from repo_trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M
 
