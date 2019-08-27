@@ -188,6 +188,7 @@ class _Repo(object):
     cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
     cmd.event_log.SetParent(cmd_event)
     try:
+      cmd.ValidateOptions(copts, cargs)
       result = cmd.Execute(copts, cargs)
     except (DownloadError, ManifestInvalidRevisionError,
         NoManifestException) as e:

@@ -34,10 +34,11 @@ The command is equivalent to:
   repo forall [<project>...] -c git checkout <branchname>
 """
 
-  def Execute(self, opt, args):
+  def ValidateOptions(self, opt, args):
     if not args:
       self.Usage()
 
+  def Execute(self, opt, args):
     nb = args[0]
     err = []
     success = []

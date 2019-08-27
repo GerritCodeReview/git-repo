@@ -37,19 +37,19 @@ It is equivalent to "git branch -D <branchname>".
                  dest='all', action='store_true',
                  help='delete all branches in all projects')
 
-  def Execute(self, opt, args):
+  def ValidateOptions(self, opt, args):
     if not opt.all and not args:
       self.Usage()
 
     if not opt.all:
       nb = args[0]
       if not git.check_ref_format('heads/%s' % nb):
-        print("error: '%s' is not a valid name" % nb, file=sys.stderr)
-        sys.exit(1)
+        self.OptionParser.error("'%s' is not a valid branch name" % nb)
     else:
-      args.insert(0,None)
-      nb = "'All local branches'"
+      args.insert(0, "'All local branches'")
 
+  def Execute(self, opt, args):
+    nb = args[0]
     err = defaultdict(list)
     success = defaultdict(list)
     all_projects = self.GetProjects(args[1:])
