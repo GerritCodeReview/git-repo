@@ -738,6 +738,103 @@ later is required to fix a server side protocol bug.
       fd.close()
     return 0
 
+  def _SmartSyncSetup(self, opt, smart_sync_manifest_path):
+    if not self.manifest.manifest_server:
+      print('error: cannot smart sync: no manifest server defined in '
+            'manifest', file=sys.stderr)
+      sys.exit(1)
+
+    manifest_server = self.manifest.manifest_server
+    if not opt.quiet:
+      print('Using manifest server %s' % manifest_server)
+
+    if not '@' in manifest_server:
+      username = None
+      password = None
+      if opt.manifest_server_username and opt.manifest_server_password:
+        username = opt.manifest_server_username
+        password = opt.manifest_server_password
+      else:
+        try:
+          info = netrc.netrc()
+        except IOError:
+          # .netrc file does not exist or could not be opened
+          pass
+        else:
+          try:
+            parse_result = urllib.parse.urlparse(manifest_server)
+            if parse_result.hostname:
+              auth = info.authenticators(parse_result.hostname)
+              if auth:
+                username, _account, password = auth
+              else:
+                print('No credentials found for %s in .netrc'
+                      % parse_result.hostname, file=sys.stderr)
+          except netrc.NetrcParseError as e:
+            print('Error parsing .netrc file: %s' % e, file=sys.stderr)
+
+      if (username and password):
+        manifest_server = manifest_server.replace('://', '://%s:%s@' %
+                                                  (username, password),
+                                                  1)
+
+    transport = PersistentTransport(manifest_server)
+    if manifest_server.startswith('persistent-'):
+      manifest_server = manifest_server[len('persistent-'):]
+
+    try:
+      server = xmlrpc.client.Server(manifest_server, transport=transport)
+      if opt.smart_sync:
+        p = self.manifest.manifestProject
+        b = p.GetBranch(p.CurrentBranch)
+        branch = b.merge
+        if branch.startswith(R_HEADS):
+          branch = branch[len(R_HEADS):]
+
+        env = os.environ.copy()
+        if 'SYNC_TARGET' in env:
+          target = env['SYNC_TARGET']
+          [success, manifest_str] = server.GetApprovedManifest(branch, target)
+        elif 'TARGET_PRODUCT' in env and 'TARGET_BUILD_VARIANT' in env:
+          target = '%s-%s' % (env['TARGET_PRODUCT'],
+                              env['TARGET_BUILD_VARIANT'])
+          [success, manifest_str] = server.GetApprovedManifest(branch, target)
+        else:
+          [success, manifest_str] = server.GetApprovedManifest(branch)
+      else:
+        assert(opt.smart_tag)
+        [success, manifest_str] = server.GetManifest(opt.smart_tag)
+
+      if success:
+        manifest_name = os.path.basename(smart_sync_manifest_path)
+        try:
+          f = open(smart_sync_manifest_path, 'w')
+          try:
+            f.write(manifest_str)
+          finally:
+            f.close()
+        except IOError as e:
+          print('error: cannot write manifest to %s:\n%s'
+                % (smart_sync_manifest_path, e),
+                file=sys.stderr)
+          sys.exit(1)
+        self._ReloadManifest(manifest_name)
+      else:
+        print('error: manifest server RPC call failed: %s' %
+              manifest_str, file=sys.stderr)
+        sys.exit(1)
+    except (socket.error, IOError, xmlrpc.client.Fault) as e:
+      print('error: cannot connect to manifest server %s:\n%s'
+            % (self.manifest.manifest_server, e), file=sys.stderr)
+      sys.exit(1)
+    except xmlrpc.client.ProtocolError as e:
+      print('error: cannot connect to manifest server %s:\n%d %s'
+            % (self.manifest.manifest_server, e.errcode, e.errmsg),
+            file=sys.stderr)
+      sys.exit(1)
+
+    return manifest_name
+
   def ValidateOptions(self, opt, args):
     if opt.force_broken:
       print('warning: -f/--force-broken is now the default behavior, and the '
@@ -767,105 +864,12 @@ later is required to fix a server side protocol bug.
       self.manifest.Override(opt.manifest_name)
 
     manifest_name = opt.manifest_name
-    smart_sync_manifest_name = "smart_sync_override.xml"
     smart_sync_manifest_path = os.path.join(
-      self.manifest.manifestProject.worktree, smart_sync_manifest_name)
+      self.manifest.manifestProject.worktree, 'smart_sync_override.xml')
 
     if opt.smart_sync or opt.smart_tag:
-      if not self.manifest.manifest_server:
-        print('error: cannot smart sync: no manifest server defined in '
-              'manifest', file=sys.stderr)
-        sys.exit(1)
-
-      manifest_server = self.manifest.manifest_server
-      if not opt.quiet:
-        print('Using manifest server %s' % manifest_server)
-
-      if not '@' in manifest_server:
-        username = None
-        password = None
-        if opt.manifest_server_username and opt.manifest_server_password:
-          username = opt.manifest_server_username
-          password = opt.manifest_server_password
-        else:
-          try:
-            info = netrc.netrc()
-          except IOError:
-            # .netrc file does not exist or could not be opened
-            pass
-          else:
-            try:
-              parse_result = urllib.parse.urlparse(manifest_server)
-              if parse_result.hostname:
-                auth = info.authenticators(parse_result.hostname)
-                if auth:
-                  username, _account, password = auth
-                else:
-                  print('No credentials found for %s in .netrc'
-                        % parse_result.hostname, file=sys.stderr)
-            except netrc.NetrcParseError as e:
-              print('Error parsing .netrc file: %s' % e, file=sys.stderr)
-
-        if (username and password):
-          manifest_server = manifest_server.replace('://', '://%s:%s@' %
-                                                    (username, password),
-                                                    1)
-
-      transport = PersistentTransport(manifest_server)
-      if manifest_server.startswith('persistent-'):
-        manifest_server = manifest_server[len('persistent-'):]
-
-      try:
-        server = xmlrpc.client.Server(manifest_server, transport=transport)
-        if opt.smart_sync:
-          p = self.manifest.manifestProject
-          b = p.GetBranch(p.CurrentBranch)
-          branch = b.merge
-          if branch.startswith(R_HEADS):
-            branch = branch[len(R_HEADS):]
-
-          env = os.environ.copy()
-          if 'SYNC_TARGET' in env:
-            target = env['SYNC_TARGET']
-            [success, manifest_str] = server.GetApprovedManifest(branch, target)
-          elif 'TARGET_PRODUCT' in env and 'TARGET_BUILD_VARIANT' in env:
-            target = '%s-%s' % (env['TARGET_PRODUCT'],
-                                env['TARGET_BUILD_VARIANT'])
-            [success, manifest_str] = server.GetApprovedManifest(branch, target)
-          else:
-            [success, manifest_str] = server.GetApprovedManifest(branch)
-        else:
-          assert(opt.smart_tag)
-          [success, manifest_str] = server.GetManifest(opt.smart_tag)
-
-        if success:
-          manifest_name = smart_sync_manifest_name
-          try:
-            f = open(smart_sync_manifest_path, 'w')
-            try:
-              f.write(manifest_str)
-            finally:
-              f.close()
-          except IOError as e:
-            print('error: cannot write manifest to %s:\n%s'
-                  % (smart_sync_manifest_path, e),
-                  file=sys.stderr)
-            sys.exit(1)
-          self._ReloadManifest(manifest_name)
-        else:
-          print('error: manifest server RPC call failed: %s' %
-                manifest_str, file=sys.stderr)
-          sys.exit(1)
-      except (socket.error, IOError, xmlrpc.client.Fault) as e:
-        print('error: cannot connect to manifest server %s:\n%s'
-              % (self.manifest.manifest_server, e), file=sys.stderr)
-        sys.exit(1)
-      except xmlrpc.client.ProtocolError as e:
-        print('error: cannot connect to manifest server %s:\n%d %s'
-              % (self.manifest.manifest_server, e.errcode, e.errmsg),
-              file=sys.stderr)
-        sys.exit(1)
-    else:  # Not smart sync or smart tag mode
+      manifest_name = self._SmartSyncSetup(opt, smart_sync_manifest_path)
+    else:
       if os.path.isfile(smart_sync_manifest_path):
         try:
           platform_utils.remove(smart_sync_manifest_path)
