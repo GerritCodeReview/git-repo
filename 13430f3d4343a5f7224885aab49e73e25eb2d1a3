@@ -46,6 +46,30 @@
       "revId": "13430f3d4343a5f7224885aab49e73e25eb2d1a3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d6294ab_50ca80c0",
+        "filename": "subcmds/help.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-08-27T06:31:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "50b12079_7cdc804f",
+      "range": {
+        "startLine": 145,
+        "startChar": 63,
+        "endLine": 145,
+        "endChar": 64
+      },
+      "revId": "13430f3d4343a5f7224885aab49e73e25eb2d1a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
