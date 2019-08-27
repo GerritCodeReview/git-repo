@@ -70,6 +70,30 @@
       "revId": "e02ea39f307d53afc37dc89c6081d5fe2d2f0382",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee00cee1_39bac5ac",
+        "filename": "subcmds/start.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-08-27T06:45:05Z",
+      "side": 1,
+      "message": "\"--rev HEAD --rev abcde\" \u003d\u003d \"--head --rev abcde\".  if it makes it easier to think about, basically anytime you see --head, just replace it with \"--rev head\".  they\u0027ll be exactly equiv.",
+      "parentUuid": "2884dc0b_11154bce",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 0
+      },
+      "revId": "e02ea39f307d53afc37dc89c6081d5fe2d2f0382",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
