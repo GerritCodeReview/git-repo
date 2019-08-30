@@ -199,6 +199,7 @@ later is required to fix a server side protocol bug.
       self.jobs = 1
 
     p.add_option('-f', '--force-broken',
+                 dest='force_broken', action='store_true',
                  help='obsolete option (to be deleted in the future)')
     p.add_option('--fail-fast',
                  dest='fail_fast', action='store_true',
