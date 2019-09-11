@@ -443,7 +443,7 @@ def _CheckGitVersion():
     raise CloneFailure()
 
   if ver_act is None:
-    print('error: "%s" unsupported' % ver_str, file=sys.stderr)
+    print('fatal: unable to detect git version', file=sys.stderr)
     raise CloneFailure()
 
   if ver_act < MIN_GIT_VERSION:
