@@ -505,7 +505,7 @@ def SetupGnuPG(quiet):
       print(file=sys.stderr)
     return False
 
-  proc.stdin.write(MAINTAINER_KEYS)
+  proc.stdin.write(MAINTAINER_KEYS.encode('utf-8'))
   proc.stdin.close()
 
   if proc.wait() != 0:
@@ -584,6 +584,7 @@ def _DownloadBundle(url, local, quiet):
       cwd=local,
       stdout=subprocess.PIPE)
   for line in proc.stdout:
+    line = line.decode('utf-8')
     m = re.compile(r'^url\.(.*)\.insteadof (.*)$').match(line)
     if m:
       new_url = m.group(1)
@@ -676,7 +677,7 @@ def _Verify(cwd, branch, quiet):
                           stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE,
                           cwd=cwd)
-  cur = proc.stdout.read().strip()
+  cur = proc.stdout.read().strip().decode('utf-8')
   proc.stdout.close()
 
   proc.stderr.read()
@@ -708,10 +709,10 @@ def _Verify(cwd, branch, quiet):
                           stderr=subprocess.PIPE,
                           cwd=cwd,
                           env=env)
-  out = proc.stdout.read()
+  out = proc.stdout.read().decode('utf-8')
   proc.stdout.close()
 
-  err = proc.stderr.read()
+  err = proc.stderr.read().decode('utf-8')
   proc.stderr.close()
 
   if proc.wait() != 0:
@@ -861,7 +862,7 @@ def _SetDefaultsTo(gitdir):
                            'HEAD'],
                           stdout=subprocess.PIPE,
                           stderr=subprocess.PIPE)
-  REPO_REV = proc.stdout.read().strip()
+  REPO_REV = proc.stdout.read().strip().decode('utf-8')
   proc.stdout.close()
 
   proc.stderr.read()
