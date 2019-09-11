@@ -51,11 +51,16 @@ class Prune(PagedCommand):
         out.project('project %s/' % project.relpath)
         out.nl()
 
-      commits = branch.commits
-      date = branch.date
-      print('%s %-33s (%2d commit%s, %s)' % (
+      print('%s %-33s ' % (
             branch.name == project.CurrentBranch and '*' or ' ',
-            branch.name,
+            branch.name), end='')
+
+      if not branch.base_exists:
+        print('(ignoring: tracking branch is gone: %s)' % (branch.base,))
+      else:
+        commits = branch.commits
+        date = branch.date
+        print('(%2d commit%s, %s)' % (
             len(commits),
             len(commits) != 1 and 's' or ' ',
             date))
