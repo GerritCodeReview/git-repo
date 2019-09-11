@@ -134,6 +134,7 @@ class DownloadedChange(object):
 
 class ReviewableBranch(object):
   _commit_cache = None
+  _base_exists = None
 
   def __init__(self, project, branch, base):
     self.project = project
@@ -147,14 +148,19 @@ class ReviewableBranch(object):
   @property
   def commits(self):
     if self._commit_cache is None:
-      self._commit_cache = self.project.bare_git.rev_list('--abbrev=8',
-                                                          '--abbrev-commit',
-                                                          '--pretty=oneline',
-                                                          '--reverse',
-                                                          '--date-order',
-                                                          not_rev(self.base),
-                                                          R_HEADS + self.name,
-                                                          '--')
+      args = ('--abbrev=8', '--abbrev-commit', '--pretty=oneline', '--reverse',
+              '--date-order', not_rev(self.base), R_HEADS + self.name, '--')
+      try:
+        self._commit_cache = self.project.bare_git.rev_list(*args)
+      except GitError:
+        # We weren't able to probe the commits for this branch.  Was it tracking
+        # a branch that no longer exists?  If so, return no commits.  Otherwise,
+        # rethrow the error as we don't know what's going on.
+        if self.base_exists:
+          raise
+
+        self._commit_cache = []
+
     return self._commit_cache
 
   @property
@@ -172,6 +178,23 @@ class ReviewableBranch(object):
                                      '-n', '1',
                                      R_HEADS + self.name,
                                      '--')
+
+  @property
+  def base_exists(self):
+    """Whether the branch we're tracking exists.
+
+    Normally it should, but sometimes branches we track can get deleted.
+    """
+    if self._base_exists is None:
+      try:
+        self.project.bare_git.rev_parse('--verify', not_rev(self.base))
+        # If we're still here, the base branch exists.
+        self._base_exists = True
+      except GitError:
+        # If we failed to verify, the base branch doesn't exist.
+        self._base_exists = False
+
+    return self._base_exists
 
   def UploadForReview(self, people,
                       auto_topic=False,
