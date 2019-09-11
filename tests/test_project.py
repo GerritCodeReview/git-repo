@@ -18,9 +18,28 @@
 
 from __future__ import print_function
 
+import contextlib
+import os
+import shutil
+import subprocess
+import tempfile
 import unittest
 
+import git_config
 import project
+
+
+@contextlib.contextmanager
+def TempGitTree():
+  """Create a new empty git checkout for testing."""
+  # TODO(vapier): Convert this to tempfile.TemporaryDirectory once we drop
+  # Python 2 support entirely.
+  try:
+    tempdir = tempfile.mkdtemp(prefix='repo-tests')
+    subprocess.check_call(['git', 'init'], cwd=tempdir)
+    yield tempdir
+  finally:
+    shutil.rmtree(tempdir)
 
 
 class RepoHookShebang(unittest.TestCase):
@@ -60,3 +79,56 @@ class RepoHookShebang(unittest.TestCase):
     for shebang, interp in DATA:
       self.assertEqual(project.RepoHook._ExtractInterpFromShebang(shebang),
                        interp)
+
+
+class FakeProject(object):
+  """A fake for Project for basic functionality."""
+
+  def __init__(self, worktree):
+    self.worktree = worktree
+    self.gitdir = os.path.join(worktree, '.git')
+    self.name = 'fakeproject'
+    self.work_git = project.Project._GitGetByExec(self, bare=False, gitdir=self.gitdir)
+    self.bare_git = project.Project._GitGetByExec(self, bare=True, gitdir=self.gitdir)
+    self.config = git_config.GitConfig.ForRepository(gitdir=self.gitdir)
+
+
+class ReviewableBranchTests(unittest.TestCase):
+  """Check ReviewableBranch behavior."""
+
+  def test_smoke(self):
+    """A quick run through everything."""
+    with TempGitTree() as tempdir:
+      fakeproj = FakeProject(tempdir)
+
+      # Generate some commits.
+      with open(os.path.join(tempdir, 'readme'), 'w') as fp:
+        fp.write('txt')
+      fakeproj.work_git.add('readme')
+      fakeproj.work_git.commit('-mAdd file')
+      fakeproj.work_git.checkout('-b', 'work')
+      fakeproj.work_git.rm('-f', 'readme')
+      fakeproj.work_git.commit('-mDel file')
+
+      # Start off with the normal details.
+      rb = project.ReviewableBranch(
+          fakeproj, fakeproj.config.GetBranch('work'), 'master')
+      self.assertEqual('work', rb.name)
+      self.assertEqual(1, len(rb.commits))
+      self.assertIn('Del file', rb.commits[0])
+      d = rb.unabbrev_commits
+      self.assertEqual(1, len(d))
+      short, long = next(iter(d.items()))
+      self.assertTrue(long.startswith(short))
+      self.assertTrue(rb.base_exists)
+      # Hard to assert anything useful about this.
+      self.assertTrue(rb.date)
+
+      # Now delete the tracking branch!
+      fakeproj.work_git.branch('-D', 'master')
+      rb = project.ReviewableBranch(
+          fakeproj, fakeproj.config.GetBranch('work'), 'master')
+      self.assertEqual(0, len(rb.commits))
+      self.assertFalse(rb.base_exists)
+      # Hard to assert anything useful about this.
+      self.assertTrue(rb.date)
