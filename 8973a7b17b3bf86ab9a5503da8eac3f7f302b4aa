@@ -22,6 +22,30 @@
       "revId": "8973a7b17b3bf86ab9a5503da8eac3f7f302b4aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "95676f3c_9a1620ed",
+        "filename": "progress.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-09-12T22:06:15Z",
+      "side": 1,
+      "message": "i\u0027ve added a module constant for this.  i\u0027m on the fence about doing more as we don\u0027t currently have any other terminal logic (except for the color module).  lmkwyt.",
+      "parentUuid": "44d3f737_005bbdfd",
+      "range": {
+        "startLine": 50,
+        "startChar": 24,
+        "endLine": 50,
+        "endChar": 32
+      },
+      "revId": "8973a7b17b3bf86ab9a5503da8eac3f7f302b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
