@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "44d3f737_005bbdfd",
+        "filename": "progress.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-09-12T04:16:27Z",
+      "side": 1,
+      "message": "optional: encapsulate this in a utility method so that it doesn\u0027t need to be repeated in all places.",
+      "range": {
+        "startLine": 50,
+        "startChar": 24,
+        "endLine": 50,
+        "endChar": 32
+      },
+      "revId": "8973a7b17b3bf86ab9a5503da8eac3f7f302b4aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
