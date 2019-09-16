@@ -2186,12 +2186,15 @@ class Project(object):
       cmd.append('--update-head-ok')
     cmd.append(name)
 
+    spec = []
+
     # If using depth then we should not get all the tags since they may
     # be outside of the depth.
     if no_tags or depth:
       cmd.append('--no-tags')
     else:
       cmd.append('--tags')
+      spec.append(str((u'+refs/tags/*:') + remote.ToLocal('refs/tags/*')))
 
     if force_sync:
       cmd.append('--force')
@@ -2202,12 +2205,9 @@ class Project(object):
     if submodules:
       cmd.append('--recurse-submodules=on-demand')
 
-    spec = []
     if not current_branch_only:
       # Fetch whole repo
       spec.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
-      if not (no_tags or depth):
-        spec.append(str((u'+refs/tags/*:') + remote.ToLocal('refs/tags/*')))
     elif tag_name is not None:
       spec.append('tag')
       spec.append(tag_name)
