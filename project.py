@@ -1568,6 +1568,17 @@ class Project(object):
       self._CopyAndLinkFiles()
       return
 
+    # See if we can fast forward merge.  This can happen if our branch isn't in
+    # the exact same state as we last uploaded.
+    try:
+      self.work_git.merge('--ff-only')
+      syncbuf.info(self,
+                   'branch %s has been synced to latest %s' %
+                   (branch.name, branch.LocalMerge))
+      return
+    except GitError:
+      pass
+
     upstream_gain = self._revlist(not_rev(HEAD), revid)
     pub = self.WasPublished(branch.name, all_refs)
     if pub:
