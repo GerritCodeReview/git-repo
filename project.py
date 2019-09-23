@@ -1586,7 +1586,16 @@ class Project(object):
       return
 
     upstream_gain = self._revlist(not_rev(HEAD), revid)
-    pub = self.WasPublished(branch.name, all_refs)
+
+    # See if we can perform a fast forward merge.  This can happen if our
+    # branch isn't in the exact same state as we last published.
+    try:
+      self.work_git.merge_base('--is-ancestor', HEAD, revid)
+      # Skip the published logic.
+      pub = False
+    except GitError:
+      pub = self.WasPublished(branch.name, all_refs)
+
     if pub:
       not_merged = self._revlist(not_rev(revid), pub)
       if not_merged:
