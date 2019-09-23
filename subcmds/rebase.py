@@ -17,8 +17,17 @@
 from __future__ import print_function
 import sys
 
+from color import Coloring
 from command import Command
 from git_command import GitCommand
+
+
+class RebaseColoring(Coloring):
+  def __init__(self, config):
+    Coloring.__init__(self, config, 'rebase')
+    self.project = self.printer('project', attr='bold')
+    self.fail = self.printer('fail', fg='red')
+
 
 class Rebase(Command):
   common = True
@@ -91,6 +100,10 @@ branch but need to incorporate new upstream changes "underneath" them.
     if opt.interactive:
       common_args.append('-i')
 
+    config = self.manifest.manifestProject.config
+    out = RebaseColoring(config)
+    out.redirect(sys.stdout)
+
     ret = 0
     for project in all_projects:
       if ret and opt.fail_fast:
@@ -121,8 +134,10 @@ branch but need to incorporate new upstream changes "underneath" them.
 
       args.append(upbranch.LocalMerge)
 
-      print('# %s: rebasing %s -> %s'
-            % (project.relpath, cb, upbranch.LocalMerge), file=sys.stderr)
+      out.project('project %s: rebasing %s -> %s',
+                  project.relpath, cb, upbranch.LocalMerge)
+      out.nl()
+      out.flush()
 
       needs_stash = False
       if opt.auto_stash:
@@ -148,5 +163,7 @@ branch but need to incorporate new upstream changes "underneath" them.
           ret += 1
 
     if ret:
-      print('error: %i projects had errors' % (ret,), file=sys.stderr)
+      out.fail('%i projects had errors', ret)
+      out.nl()
+
     return ret
