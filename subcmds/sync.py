@@ -364,7 +364,7 @@ later is required to fix a server side protocol bug.
 
     return success
 
-  def _Fetch(self, projects, opt):
+  def _Fetch(self, projects, opt, err_event):
     fetched = set()
     lock = _threading.Lock()
     pm = Progress('Fetching projects', len(projects),
@@ -376,7 +376,6 @@ later is required to fix a server side protocol bug.
 
     threads = set()
     sem = _threading.Semaphore(self.jobs)
-    err_event = _threading.Event()
     for project_list in objdir_project_map.values():
       # Check for any errors before running any more tasks.
       # ...we'll let existing threads finish, though.
@@ -405,16 +404,11 @@ later is required to fix a server side protocol bug.
     for t in threads:
       t.join()
 
-    # If we saw an error, exit with code 1 so that other scripts can check.
-    if err_event.isSet() and opt.fail_fast:
-      print('\nerror: Exited sync due to fetch errors', file=sys.stderr)
-      sys.exit(1)
-
     pm.end()
     self._fetch_times.Save()
 
     if not self.manifest.IsArchive:
-      self._GCProjects(projects)
+      self._GCProjects(projects, opt, err_event)
 
     return fetched
 
@@ -500,12 +494,16 @@ later is required to fix a server side protocol bug.
 
     return success
 
-  def _Checkout(self, all_projects, opt):
+  def _Checkout(self, all_projects, opt, err_event, err_results):
     """Checkout projects listed in all_projects
 
     Args:
       all_projects: List of all projects that should be checked out.
       opt: Program options returned from optparse.  See _Options().
+      err_event: We'll set this event in the case of an error (after printing
+          out info about the error).
+      err_results: A list of strings, paths to git repos where checkout
+          failed.
     """
 
     # Perform checkouts in multiple threads when we are using partial clone.
@@ -524,8 +522,6 @@ later is required to fix a server side protocol bug.
 
     threads = set()
     sem = _threading.Semaphore(syncjobs)
-    err_event = _threading.Event()
-    err_results = []
 
     for project in all_projects:
       # Check for any errors before running any more tasks.
@@ -556,15 +552,8 @@ later is required to fix a server side protocol bug.
       t.join()
 
     pm.end()
-    # If we saw an error, exit with code 1 so that other scripts can check.
-    if err_event.isSet():
-      print('\nerror: Exited sync due to checkout errors', file=sys.stderr)
-      if err_results:
-        print('Failing repos:\n%s' % '\n'.join(err_results),
-              file=sys.stderr)
-      sys.exit(1)
 
-  def _GCProjects(self, projects):
+  def _GCProjects(self, projects, opt, err_event):
     gc_gitdirs = {}
     for project in projects:
       if len(project.manifest.GetProjectsWithName(project.name)) > 1:
@@ -588,7 +577,6 @@ later is required to fix a server side protocol bug.
 
     threads = set()
     sem = _threading.Semaphore(jobs)
-    err_event = _threading.Event()
 
     def GC(bare_git):
       try:
@@ -603,7 +591,7 @@ later is required to fix a server side protocol bug.
         sem.release()
 
     for bare_git in gc_gitdirs.values():
-      if err_event.isSet():
+      if err_event.isSet() and opt.fail_fast:
         break
       sem.acquire()
       t = _threading.Thread(target=GC, args=(bare_git,))
@@ -613,10 +601,6 @@ later is required to fix a server side protocol bug.
 
     for t in threads:
       t.join()
-
-    if err_event.isSet():
-      print('\nerror: Exited sync due to gc errors', file=sys.stderr)
-      sys.exit(1)
 
   def _ReloadManifest(self, manifest_name=None):
     if manifest_name:
@@ -898,6 +882,8 @@ later is required to fix a server side protocol bug.
           print('error: failed to remove existing smart sync override manifest: %s' %
                 e, file=sys.stderr)
 
+    err_event = _threading.Event()
+
     rp = self.manifest.repoProject
     rp.PreSync()
 
@@ -948,6 +934,10 @@ later is required to fix a server side protocol bug.
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
 
+    err_network_sync = False
+    err_update_projects = False
+    err_checkout = False
+
     self._fetch_times = _FetchTimes(self.manifest)
     if not opt.local_only:
       to_fetch = []
@@ -957,10 +947,14 @@ later is required to fix a server side protocol bug.
       to_fetch.extend(all_projects)
       to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
-      fetched = self._Fetch(to_fetch, opt)
+      fetched = self._Fetch(to_fetch, opt, err_event)
+
       _PostRepoFetch(rp, opt.no_repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
+        if err_event.isSet():
+          print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
+          sys.exit(1)
         return
 
       # Iteratively fetch missing and/or nested unregistered submodules
@@ -982,21 +976,55 @@ later is required to fix a server side protocol bug.
         if previously_missing_set == missing_set:
           break
         previously_missing_set = missing_set
-        fetched.update(self._Fetch(missing, opt))
+        fetched.update(self._Fetch(missing, opt, err_event))
+
+      # If we saw an error, exit with code 1 so that other scripts can check.
+      if err_event.isSet():
+        err_network_sync = True
+        if opt.fail_fast:
+          print('\nerror: Exited sync due to fetch errors.\n'
+                'Local checkouts *not* updated. Resolve network issues & '
+                'retry.\n'
+                '`repo sync -l` will update some local checkouts.',
+                file=sys.stderr)
+          sys.exit(1)
 
     if self.manifest.IsMirror or self.manifest.IsArchive:
       # bail out now, we have no working tree
       return
 
     if self.UpdateProjectList(opt):
-      sys.exit(1)
+      err_event.set()
+      err_update_projects = True
+      if opt.fail_fast:
+        print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
+        sys.exit(1)
 
-    self._Checkout(all_projects, opt)
+    err_results = []
+    self._Checkout(all_projects, opt, err_event, err_results)
+    if err_event.isSet():
+      err_checkout = True
+      # NB: We don't exit here because this is the last step.
 
     # If there's a notice that's supposed to print at the end of the sync, print
     # it now...
     if self.manifest.notice:
       print(self.manifest.notice)
+
+    # If we saw an error, exit with code 1 so that other scripts can check.
+    if err_event.isSet():
+      print('\nerror: Unable to fully sync the tree.', file=sys.stderr)
+      if err_network_sync:
+        print('error: Downloading network changes failed.', file=sys.stderr)
+      if err_update_projects:
+        print('error: Updating local project lists failed.', file=sys.stderr)
+      if err_checkout:
+        print('error: Checking out local projects failed.', file=sys.stderr)
+        if err_results:
+          print('Failing repos:\n%s' % '\n'.join(err_results), file=sys.stderr)
+      print('Try re-running with "-j1 --fail-fast" to exit at the first error.',
+            file=sys.stderr)
+      sys.exit(1)
 
 def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = Wrapper()
