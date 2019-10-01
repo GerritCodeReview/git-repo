@@ -230,6 +230,7 @@ class DiffColoring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, 'diff')
     self.project = self.printer('header', attr='bold')
+    self.fail = self.printer('fail', fg='red')
 
 
 class _Annotation(object):
@@ -1136,10 +1137,18 @@ class Project(object):
       cmd.append('--src-prefix=a/%s/' % self.relpath)
       cmd.append('--dst-prefix=b/%s/' % self.relpath)
     cmd.append('--')
-    p = GitCommand(self,
-                   cmd,
-                   capture_stdout=True,
-                   capture_stderr=True)
+    try:
+      p = GitCommand(self,
+                     cmd,
+                     capture_stdout=True,
+                     capture_stderr=True)
+    except GitError as e:
+      out.nl()
+      out.project('project %s/' % self.relpath)
+      out.nl()
+      out.fail(str(e))
+      out.nl()
+      return False
     has_diff = False
     for line in p.process.stdout:
       if not hasattr(line, 'encode'):
@@ -1150,7 +1159,7 @@ class Project(object):
         out.nl()
         has_diff = True
       print(line[:-1])
-    p.Wait()
+    return p.Wait() == 0
 
 
 # Publish / Upload ##
