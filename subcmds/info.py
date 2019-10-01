@@ -16,7 +16,6 @@
 
 from command import PagedCommand
 from color import Coloring
-from error import NoSuchProjectError
 from git_refs import R_M
 
 class _Coloring(Coloring):
@@ -82,10 +81,8 @@ class Info(PagedCommand):
     self.out.nl()
 
   def printDiffInfo(self, args):
-    try:
-      projs = self.GetProjects(args)
-    except NoSuchProjectError:
-      return
+    # We let exceptions bubble up to main as they'll be well structured.
+    projs = self.GetProjects(args)
 
     for p in projs:
       self.heading("Project: ")
