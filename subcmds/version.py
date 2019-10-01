@@ -17,7 +17,7 @@
 from __future__ import print_function
 import sys
 from command import Command, MirrorSafeCommand
-from git_command import git
+from git_command import git, RepoSourceVersion, user_agent
 from git_refs import HEAD
 
 class Version(Command, MirrorSafeCommand):
@@ -34,12 +34,20 @@ class Version(Command, MirrorSafeCommand):
     rp = self.manifest.repoProject
     rem = rp.GetRemote(rp.remote.name)
 
-    print('repo version %s' % rp.work_git.describe(HEAD))
+    # These might not be the same.  Report them both.
+    src_ver = RepoSourceVersion()
+    rp_ver = rp.bare_git.describe(HEAD)
+    print('repo version %s' % rp_ver)
     print('       (from %s)' % rem.url)
 
     if Version.wrapper_path is not None:
       print('repo launcher version %s' % Version.wrapper_version)
       print('       (from %s)' % Version.wrapper_path)
 
+      if src_ver != rp_ver:
+        print('       (currently at %s)' % src_ver)
+
+    print('repo User-Agent %s' % user_agent.repo)
     print('git %s' % git.version_tuple().full)
+    print('git User-Agent %s' % user_agent.git)
     print('Python %s' % sys.version)
