@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "71d59cae_47ab654a",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-10-01T05:43:47Z",
+      "side": 1,
+      "message": "this code was the same, just fixed the indentation",
+      "revId": "00ec12f3ef2d96d1804701ba45b500511e6999b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
