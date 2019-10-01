@@ -94,13 +94,19 @@ class Info(PagedCommand):
       self.out.nl()
 
       self.heading("Current revision: ")
-      self.headtext(p.revisionExpr)
+      self.headtext(p.GetRevisionId())
       self.out.nl()
+
+      currentBranch = p.CurrentBranch
+      if currentBranch:
+        self.heading('Current branch: ')
+        self.headtext(currentBranch)
+        self.out.nl()
 
       localBranches = list(p.GetBranches().keys())
       self.heading("Local Branches: ")
       self.redtext(str(len(localBranches)))
-      if len(localBranches) > 0:
+      if localBranches:
         self.text(" [")
         self.text(", ".join(localBranches))
         self.text("]")
