@@ -46,7 +46,7 @@ except ImportError:
 from color import SetDefaultColoring
 import event_log
 from repo_trace import SetTrace
-from git_command import git, GitCommand, RepoUserAgent
+from git_command import git, GitCommand, user_agent
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
@@ -297,11 +297,11 @@ def _PruneOptions(argv, opt):
 
 class _UserAgentHandler(urllib.request.BaseHandler):
   def http_request(self, req):
-    req.add_header('User-Agent', RepoUserAgent())
+    req.add_header('User-Agent', user_agent.repo)
     return req
 
   def https_request(self, req):
-    req.add_header('User-Agent', RepoUserAgent())
+    req.add_header('User-Agent', user_agent.repo)
     return req
 
 def _AddPasswordFromUserInput(handler, msg, req):
