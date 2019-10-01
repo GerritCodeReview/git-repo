@@ -866,10 +866,17 @@ class Project(object):
   @property
   def CurrentBranch(self):
     """Obtain the name of the currently checked out branch.
-       The branch name omits the 'refs/heads/' prefix.
-       None is returned if the project is on a detached HEAD.
+
+    The branch name omits the 'refs/heads/' prefix.
+    None is returned if the project is on a detached HEAD, or if the work_git is
+    otheriwse inaccessible (e.g. an incomplete sync).
     """
-    b = self.work_git.GetHead()
+    try:
+      b = self.work_git.GetHead()
+    except NoManifestException:
+      # If the local checkout is in a bad state, don't barf.  Let the callers
+      # process this like the head is unreadable.
+      return None
     if b.startswith(R_HEADS):
       return b[len(R_HEADS):]
     return None
