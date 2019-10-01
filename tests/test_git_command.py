@@ -50,12 +50,20 @@ class GitCallUnitTest(unittest.TestCase):
     self.assertNotEqual('', ver.full)
 
 
-class RepoUserAgentUnitTest(unittest.TestCase):
-  """Tests the RepoUserAgent function."""
+class UserAgentUnitTest(unittest.TestCase):
+  """Tests the UserAgent function."""
 
-  def test_smoke(self):
-    """Make sure it returns something useful."""
-    ua = git_command.RepoUserAgent()
+  def test_smoke_os(self):
+    """Make sure UA OS setting returns something useful."""
+    os_name = git_command.user_agent.os
+    # We can't dive too deep because of OS/tool differences, but we can check
+    # the general form.
+    m = re.match(r'^[^ ]+$', os_name)
+    self.assertIsNotNone(m)
+
+  def test_smoke_repo(self):
+    """Make sure repo UA returns something useful."""
+    ua = git_command.user_agent.repo
     # We can't dive too deep because of OS/tool differences, but we can check
     # the general form.
     m = re.match(r'^git-repo/[^ ]+ ([^ ]+) git/[^ ]+ Python/[0-9.]+', ua)
