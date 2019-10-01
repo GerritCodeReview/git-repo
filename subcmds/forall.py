@@ -323,10 +323,10 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     cwd = project['worktree']
 
   if not os.path.exists(cwd):
-    if (opt.project_header and opt.verbose) \
-    or not opt.project_header:
+    if ((opt.project_header and opt.verbose)
+        or not opt.project_header):
       print('skipping %s/' % project['relpath'], file=sys.stderr)
-    return
+    return 1
 
   if opt.project_header:
     stdin = subprocess.PIPE
