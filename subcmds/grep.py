@@ -15,15 +15,19 @@
 # limitations under the License.
 
 from __future__ import print_function
+
 import sys
+
 from color import Coloring
 from command import PagedCommand
+from error import GitError
 from git_command import git_require, GitCommand
 
 class GrepColoring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, 'grep')
     self.project = self.printer('project', attr='bold')
+    self.fail = self.printer('fail', fg='red')
 
 class Grep(PagedCommand):
   common = True
@@ -184,15 +188,25 @@ contain a line that matches both expressions:
       cmd_argv.extend(opt.revision)
     cmd_argv.append('--')
 
+    git_failed = False
     bad_rev = False
     have_match = False
 
     for project in projects:
-      p = GitCommand(project,
-                     cmd_argv,
-                     bare = False,
-                     capture_stdout = True,
-                     capture_stderr = True)
+      try:
+        p = GitCommand(project,
+                       cmd_argv,
+                       bare=False,
+                       capture_stdout=True,
+                       capture_stderr=True)
+      except GitError as e:
+        git_failed = True
+        out.project('--- project %s ---' % project.relpath)
+        out.nl()
+        out.fail('%s', str(e))
+        out.nl()
+        continue
+
       if p.Wait() != 0:
         # no results
         #
@@ -202,7 +216,7 @@ contain a line that matches both expressions:
           else:
             out.project('--- project %s ---' % project.relpath)
             out.nl()
-            out.write("%s", p.stderr)
+            out.fail('%s', p.stderr.strip())
             out.nl()
         continue
       have_match = True
@@ -231,7 +245,9 @@ contain a line that matches both expressions:
         for line in r:
           print(line)
 
-    if have_match:
+    if git_failed:
+      sys.exit(1)
+    elif have_match:
       sys.exit(0)
     elif have_rev and bad_rev:
       for r in opt.revision:
