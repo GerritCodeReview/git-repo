@@ -175,7 +175,10 @@ class Command(object):
       self._ResetPathToProjectMap(all_projects_list)
 
       for arg in args:
-        projects = manifest.GetProjectsWithName(arg)
+        # We have to filter by manifest groups in case the requested project is
+        # checked out multiple times or differently based on them.
+        projects = [project for project in manifest.GetProjectsWithName(arg)
+                    if project.MatchesGroups(groups)]
 
         if not projects:
           path = os.path.abspath(arg).replace('\\', '/')
@@ -200,7 +203,7 @@ class Command(object):
 
         for project in projects:
           if not missing_ok and not project.Exists:
-            raise NoSuchProjectError(arg)
+            raise NoSuchProjectError('%s (%s)' % (arg, project.relpath))
           if not project.MatchesGroups(groups):
             raise InvalidProjectGroupsError(arg)
 
