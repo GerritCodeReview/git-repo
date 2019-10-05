@@ -23,7 +23,6 @@ which takes care of execing this entry point.
 
 from __future__ import print_function
 import getpass
-import imp
 import netrc
 import optparse
 import os
@@ -34,6 +33,7 @@ from pyversion import is_python3
 if is_python3():
   import urllib.request
 else:
+  import imp
   import urllib2
   urllib = imp.new_module('urllib')
   urllib.request = urllib2
