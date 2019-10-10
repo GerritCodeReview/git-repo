@@ -7,9 +7,9 @@ their old LTS/corp systems and have little power to change the system.
 
 ## Summary
 
-* Python 3.6 (released Dec 2016) is required by default starting with repo-1.14.
+* Python 3.6 (released Dec 2016) is required by default starting with repo-2.x.
 * Older versions of Python (e.g. v2.7) may use the legacy feature-frozen branch
-  based on repo-1.13.
+  based on repo-1.x.
 
 ## Overview
 
