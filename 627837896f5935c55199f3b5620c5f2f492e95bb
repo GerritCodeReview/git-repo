@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bbc8d7aa_9bec8989",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-10-11T00:06:54Z",
+      "side": 1,
+      "message": "I don\u0027t think anyone really knows any more.  If you know, I suspect you\u0027re the only one :)",
+      "range": {
+        "startLine": 17,
+        "startChar": 47,
+        "endLine": 18,
+        "endChar": 50
+      },
+      "revId": "627837896f5935c55199f3b5620c5f2f492e95bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
