@@ -103,6 +103,10 @@ class Info(PagedCommand):
         self.headtext(currentBranch)
         self.out.nl()
 
+      self.heading("Manifest revision: ")
+      self.headtext(p.revisionExpr)
+      self.out.nl()
+
       localBranches = list(p.GetBranches().keys())
       self.heading("Local Branches: ")
       self.redtext(str(len(localBranches)))
