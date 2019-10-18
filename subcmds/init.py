@@ -73,6 +73,9 @@ resumeable bundle file on a content delivery network. This
 may be necessary if there are problems with the local Python
 HTTP client or proxy configuration, but the Git binary works.
 
+The -c/--current-branch option can be used to only fetch objects that
+are on the branch specified by -b/--manifest-branch.
+
 # Switching Manifest Branches
 
 To switch to another manifest branch, `repo init -b otherbranch`
