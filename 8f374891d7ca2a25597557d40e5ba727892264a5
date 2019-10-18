@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17fde77d_40d85055",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-10-18T11:43:56Z",
+      "side": 1,
+      "message": "Side note: the --current-branch option is not documented here.  Should be fixed in a separate change though.",
+      "revId": "8f374891d7ca2a25597557d40e5ba727892264a5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
