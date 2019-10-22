@@ -139,6 +139,9 @@ without iterating through the remaining projects.
     p.add_option('-e', '--abort-on-errors',
                  dest='abort_on_errors', action='store_true',
                  help='Abort if a command exits unsuccessfully')
+    p.add_option('--ignore-missing', action='store_true',
+                 help='Silently skip & do not exit non-zero due missing '
+                      'checkouts')
 
     g = p.add_option_group('Output')
     g.add_option('-p',
@@ -323,6 +326,10 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     cwd = project['worktree']
 
   if not os.path.exists(cwd):
+    # Allow the user to silently ignore missing checkouts so they can run on
+    # partial checkouts (good for infra recovery tools).
+    if opt.ignore_missing:
+      return 0
     if ((opt.project_header and opt.verbose)
         or not opt.project_header):
       print('skipping %s/' % project['relpath'], file=sys.stderr)
