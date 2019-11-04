@@ -113,10 +113,13 @@ class _XmlRemote(object):
       url = urllib.parse.urljoin(manifestUrl, url)
     return url
 
-  def ToRemoteSpec(self, projectName):
+  def ToRemoteSpec(self, projectName, namespace=None):
     fetchUrl = self.resolvedFetchUrl.rstrip('/')
     url = fetchUrl + '/' + projectName
-    remoteName = self.name
+    if not namespace or not namespace._parent:
+      remoteName = self.name
+    else:
+      remoteName = self.name + "@" + namespace._name
     if self.remoteAlias:
       remoteName = self.remoteAlias
     return RemoteSpec(remoteName,
@@ -186,10 +189,10 @@ class XmlManifest(object):
     except OSError as e:
       raise ManifestParseError('cannot link manifest %s: %s' % (name, str(e)))
 
-  def _RemoteToXml(self, r, doc, root):
+  def _RemoteToXml(self, key, r, doc, root):
     e = doc.createElement('remote')
     root.appendChild(e)
-    e.setAttribute('name', r.name)
+    e.setAttribute('name', key)
     e.setAttribute('fetch', r.fetchUrl)
     if r.pushUrl is not None:
       e.setAttribute('pushurl', r.pushUrl)
@@ -229,7 +232,7 @@ class XmlManifest(object):
     d = self.default
 
     for r in sorted(self.remotes):
-      self._RemoteToXml(self.remotes[r], doc, root)
+      self._RemoteToXml(r, self.remotes[r], doc, root)
     if self.remotes:
       root.appendChild(doc.createTextNode(''))
 
@@ -292,9 +295,10 @@ class XmlManifest(object):
       remoteName = None
       if d.remote:
         remoteName = d.remote.name
-      if not d.remote or p.remote.orig_name != remoteName:
-        remoteName = p.remote.orig_name
-        e.setAttribute('remote', remoteName)
+      if not d.remote \
+              or p.remote.orig_name != remoteName \
+              or p.remote.name != remoteName:
+        e.setAttribute('remote', p.remote.name)
       if peg_rev:
         if self.IsMirror:
           value = p.bare_git.rev_parse(p.revisionExpr + '^0')
@@ -441,6 +445,7 @@ class XmlManifest(object):
     self._notice = None
     self.branch = None
     self._manifest_server = None
+    self._namespaces = {}
 
   def _Load(self):
     if not self._loaded:
@@ -452,7 +457,8 @@ class XmlManifest(object):
 
       nodes = []
       nodes.append(self._ParseManifestXml(self.manifestFile,
-                                          self.manifestProject.worktree))
+                                          self.manifestProject.worktree,
+                                          None))
 
       if self._load_local_manifests:
         local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
@@ -463,7 +469,7 @@ class XmlManifest(object):
                   'in `%s` instead' % (LOCAL_MANIFEST_NAME,
                   os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
                   file=sys.stderr)
-          nodes.append(self._ParseManifestXml(local, self.repodir))
+          nodes.append(self._ParseManifestXml(local, self.repodir, None))
 
         local_dir = os.path.abspath(os.path.join(self.repodir,
                                     LOCAL_MANIFESTS_DIR_NAME))
@@ -471,7 +477,7 @@ class XmlManifest(object):
           for local_file in sorted(platform_utils.listdir(local_dir)):
             if local_file.endswith('.xml'):
               local = os.path.join(local_dir, local_file)
-              nodes.append(self._ParseManifestXml(local, self.repodir))
+              nodes.append(self._ParseManifestXml(local, self.repodir, None))
         except OSError:
           pass
 
@@ -489,7 +495,7 @@ class XmlManifest(object):
 
       self._loaded = True
 
-  def _ParseManifestXml(self, path, include_root):
+  def _ParseManifestXml(self, path, include_root, parent_namespace):
     try:
       root = xml.dom.minidom.parse(path)
     except (OSError, xml.parsers.expat.ExpatError) as e:
@@ -504,6 +510,10 @@ class XmlManifest(object):
     else:
       raise ManifestParseError("no <manifest> in %s" % (path,))
 
+    ns_name = path[len(include_root) + 1:]
+    namespace = _ManifestNamespace(parent_namespace, ns_name)
+    self._namespaces[ns_name] = namespace
+
     nodes = []
     for node in manifest.childNodes:
       if node.nodeName == 'include':
@@ -513,7 +523,7 @@ class XmlManifest(object):
           raise ManifestParseError("include %s doesn't exist or isn't a file"
               % (name,))
         try:
-          nodes.extend(self._ParseManifestXml(fp, include_root))
+          nodes.extend(self._ParseManifestXml(fp, include_root, namespace))
         # should isolate this to the exact exception, but that's
         # tricky.  actual parsing implementation may vary.
         except (KeyboardInterrupt, RuntimeError, SystemExit):
@@ -522,35 +532,36 @@ class XmlManifest(object):
           raise ManifestParseError(
               "failed parsing included manifest %s: %s" % (name, e))
       else:
-        nodes.append(node)
+        nodes.append({'node': node, 'ns': ns_name})
     return nodes
 
   def _ParseManifest(self, node_list):
-    for node in itertools.chain(*node_list):
+    for m in itertools.chain(*node_list):
+      node = m['node']
       if node.nodeName == 'remote':
+        ns = self._namespaces[m['ns']]
         remote = self._ParseRemote(node)
-        if remote:
-          if remote.name in self._remotes:
-            if remote != self._remotes[remote.name]:
-              raise ManifestParseError(
-                  'remote %s already exists with different attributes' %
-                  (remote.name))
-          else:
+        added = ns._add_remote(remote)
+        if added is True:
+          if ns._parent is None:
             self._remotes[remote.name] = remote
+          else:
+            self._remotes[remote.name + '@' + ns._name] = remote
 
-    for node in itertools.chain(*node_list):
+    for m in itertools.chain(*node_list):
+      node = m['node']
       if node.nodeName == 'default':
-        new_default = self._ParseDefault(node)
+        ns = self._namespaces[m['ns']]
+        new_default = self._ParseDefault(node, ns)
         if self._default is None:
           self._default = new_default
-        elif new_default != self._default:
-          raise ManifestParseError('duplicate default in %s' %
-                                   (self.manifestFile))
+        ns._add_default(new_default)
 
     if self._default is None:
       self._default = _Default()
 
-    for node in itertools.chain(*node_list):
+    for m in itertools.chain(*node_list):
+      node = m['node']
       if node.nodeName == 'notice':
         if self._notice is not None:
           raise ManifestParseError(
@@ -558,7 +569,8 @@ class XmlManifest(object):
               (self.manifestFile))
         self._notice = self._ParseNotice(node)
 
-    for node in itertools.chain(*node_list):
+    for m in itertools.chain(*node_list):
+      node = m['node']
       if node.nodeName == 'manifest-server':
         url = self._reqatt(node, 'url')
         if self._manifest_server is not None:
@@ -567,25 +579,37 @@ class XmlManifest(object):
               (self.manifestFile))
         self._manifest_server = url
 
-    def recursively_add_projects(project):
+    def recursively_add_projects(project, namespace):
       projects = self._projects.setdefault(project.name, [])
       if project.relpath is None:
         raise ManifestParseError(
             'missing path for %s in %s' %
             (project.name, self.manifestFile))
-      if project.relpath in self._paths:
-        raise ManifestParseError(
-            'duplicate path %s in %s' %
-            (project.relpath, self.manifestFile))
-      self._paths[project.relpath] = project
-      projects.append(project)
-      for subproject in project.subprojects:
-        recursively_add_projects(subproject)
 
-    for node in itertools.chain(*node_list):
+      duplicate = False
+      if project.relpath in self._paths:
+        for p in projects:
+          if p == project:
+            duplicate = True
+            break
+        if not duplicate:
+          raise ManifestParseError(
+              'duplicate path %s in [%s, %s]' %
+              (project.relpath,
+               namespace._name,
+               self._paths[project.relpath].namespace_name))
+      if not duplicate:
+        self._paths[project.relpath] = project
+        projects.append(project)
+      for subproject in project.subprojects:
+        recursively_add_projects(subproject, namespace)
+
+    for m in itertools.chain(*node_list):
+      node = m['node']
       if node.nodeName == 'project':
-        project = self._ParseProject(node)
-        recursively_add_projects(project)
+        ns = self._namespaces[m['ns']]
+        project = self._ParseProject(node, ns)
+        recursively_add_projects(project, ns)
       if node.nodeName == 'extend-project':
         name = self._reqatt(node, 'name')
 
@@ -676,7 +700,8 @@ class XmlManifest(object):
     if name not in self._projects:
       m.PreSync()
       gitdir = os.path.join(self.topdir, '%s.git' % name)
-      project = Project(manifest = self,
+      project = Project(namespace_name = "",
+                        manifest = self,
                         name = name,
                         remote = remote.ToRemoteSpec(name),
                         gitdir = gitdir,
@@ -709,12 +734,16 @@ class XmlManifest(object):
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
     return _XmlRemote(name, alias, fetch, pushUrl, manifestUrl, review, revision)
 
-  def _ParseDefault(self, node):
+  def _ParseDefault(self, node, namespace):
     """
     reads a <default> element from the manifest file
     """
     d = _Default()
-    d.remote = self._get_remote(node)
+    name = node.getAttribute('remote')
+    if not name:
+      d.remote = None
+    else:
+      _, d.remote = namespace._get_remote(name)
     d.revisionExpr = node.getAttribute('revision')
     if d.revisionExpr == '':
       d.revisionExpr = None
@@ -792,7 +821,7 @@ class XmlManifest(object):
   def _UnjoinName(self, parent_name, name):
     return os.path.relpath(name, parent_name)
 
-  def _ParseProject(self, node, parent = None, **extra_proj_attrs):
+  def _ParseProject(self, node, namespace, parent=None, **extra_proj_attrs):
     """
     reads a <project> element from the manifest file
     """
@@ -800,16 +829,22 @@ class XmlManifest(object):
     if parent:
       name = self._JoinName(parent.name, name)
 
-    remote = self._get_remote(node)
-    if remote is None:
-      remote = self._default.remote
+    _, d = namespace._get_default()
+    remote_name = node.getAttribute('remote')
+    if not remote_name:
+      remote_name = d.remote.name
+    if not remote_name:
+      raise ManifestParseError("no remote attribute for project %s within %s" %
+            (name, self.manifestFile))
+
+    remote_namespace, remote = namespace._get_remote(remote_name)
     if remote is None:
       raise ManifestParseError("no remote for project %s within %s" %
             (name, self.manifestFile))
 
     revisionExpr = node.getAttribute('revision') or remote.revision
     if not revisionExpr:
-      revisionExpr = self._default.revisionExpr
+      revisionExpr = d.revisionExpr
     if not revisionExpr:
       raise ManifestParseError("no revision for project %s within %s" %
             (name, self.manifestFile))
@@ -835,13 +870,13 @@ class XmlManifest(object):
 
     sync_s = node.getAttribute('sync-s')
     if not sync_s:
-      sync_s = self._default.sync_s
+      sync_s = d.sync_s
     else:
       sync_s = sync_s.lower() in ("yes", "true", "1")
 
     sync_tags = node.getAttribute('sync-tags')
     if not sync_tags:
-      sync_tags = self._default.sync_tags
+      sync_tags = d.sync_tags
     else:
       sync_tags = sync_tags.lower() in ("yes", "true", "1")
 
@@ -855,9 +890,9 @@ class XmlManifest(object):
         raise ManifestParseError('invalid clone-depth %s in %s' %
                                  (clone_depth, self.manifestFile))
 
-    dest_branch = node.getAttribute('dest-branch') or self._default.destBranchExpr
+    dest_branch = node.getAttribute('dest-branch') or d.destBranchExpr
 
-    upstream = node.getAttribute('upstream') or self._default.upstreamExpr
+    upstream = node.getAttribute('upstream') or d.upstreamExpr
 
     groups = ''
     if node.hasAttribute('groups'):
@@ -877,9 +912,10 @@ class XmlManifest(object):
       if node.getAttribute('force-path').lower() in ("yes", "true", "1"):
         gitdir = os.path.join(self.topdir, '%s.git' % path)
 
-    project = Project(manifest = self,
+    project = Project(namespace_name = namespace._name,
+                      manifest = self,
                       name = name,
-                      remote = remote.ToRemoteSpec(name),
+                      remote = remote.ToRemoteSpec(name, self._namespaces[remote_namespace]),
                       gitdir = gitdir,
                       objdir = objdir,
                       worktree = worktree,
@@ -905,7 +941,7 @@ class XmlManifest(object):
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
-        project.subprojects.append(self._ParseProject(n, parent = project))
+        project.subprojects.append(self._ParseProject(n, namespace._name, parent = project))
 
     return project
 
@@ -1027,6 +1063,61 @@ class XmlManifest(object):
 
     return diff
 
+class _ManifestNamespace(object):
+  """manages the remote and default nodes with namespace"""
+
+  def __init__(self, parent, name):
+    self._parent = parent
+    self._name = name
+    self._remotes = {}
+    self._default = None
+
+  def _add_remote(self, remote):
+    if remote is None:
+      return False
+    name = remote.name
+    ns, v = self._get_remote(name)
+    if v is None:
+      self._remotes[name] = remote
+      return True
+    if v != remote:
+      if self._name != ns:
+        self._remotes[name] = remote
+        return True
+      else:
+        raise ManifestParseError(
+            'remote %s already exists with different attributes in %s' %
+            (remote.name, self._name))
+    return False
+
+  def _get_remote(self, name):
+    ns_name = self._name
+    v = self._remotes.get(name)
+    if not v:
+      if self._parent is not None:
+        ns_name, v = self._parent._get_remote(name)
+    return ns_name, v
+
+  def _add_default(self, default):
+    if default is None:
+      return
+    ns, d = self._get_default()
+    if d is None:
+      self._default = default
+      return
+    if d != default:
+      if self._name != ns:
+        self._default = default
+      else:
+        raise ManifestParseError('duplicate default in %s' % (self._name))
+
+  def _get_default(self):
+    ns_name = self._name
+    d = self._default
+    if not d:
+      if self._parent is not None:
+          ns_name, d = self._parent._get_default()
+    return ns_name, d
 
 class GitcManifest(XmlManifest):
 
@@ -1039,10 +1130,10 @@ class GitcManifest(XmlManifest):
                                         gitc_client_name)
     self.manifestFile = os.path.join(self.gitc_client_dir, '.manifest')
 
-  def _ParseProject(self, node, parent = None):
+  def _ParseProject(self, node, namespace, parent=None):
     """Override _ParseProject and add support for GITC specific attributes."""
     return super(GitcManifest, self)._ParseProject(
-        node, parent=parent, old_revision=node.getAttribute('old-revision'))
+        node, namespace, parent=parent, old_revision=node.getAttribute('old-revision'))
 
   def _output_manifest_project_extras(self, p, e):
     """Output GITC Specific Project attributes"""

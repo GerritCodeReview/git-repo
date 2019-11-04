@@ -706,6 +706,7 @@ later is required to fix a server side protocol bug.
           gitdir = os.path.join(self.manifest.topdir, path, '.git')
           if os.path.exists(gitdir):
             project = Project(
+                           namespace_name = "",
                            manifest = self.manifest,
                            name = path,
                            remote = RemoteSpec('origin'),
