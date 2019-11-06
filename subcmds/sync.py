@@ -440,7 +440,7 @@ later is required to fix a server side protocol bug.
     finally:
       sem.release()
 
-  def _CheckoutOne(self, opt, project, lock, pm, err_event):
+  def _CheckoutOne(self, opt, project, lock, pm, err_event, err_results):
     """Checkout work tree for one project
 
     Args:
@@ -452,6 +452,8 @@ later is required to fix a server side protocol bug.
           lock held).
       err_event: We'll set this event in the case of an error (after printing
           out info about the error).
+      err_results: A list of strings, paths to git repos where checkout
+          failed.
 
     Returns:
       Whether the fetch was successful.
@@ -496,6 +498,8 @@ later is required to fix a server side protocol bug.
         raise
     finally:
       if did_lock:
+        if not success:
+          err_results.append(project.relpath)
         lock.release()
       finish = time.time()
       self.event_log.AddSync(project, event_log.TASK_SYNC_LOCAL,
@@ -528,6 +532,7 @@ later is required to fix a server side protocol bug.
     threads = set()
     sem = _threading.Semaphore(syncjobs)
     err_event = _threading.Event()
+    err_results = []
 
     for project in all_projects:
       # Check for any errors before running any more tasks.
@@ -542,7 +547,8 @@ later is required to fix a server side protocol bug.
                       project=project,
                       lock=lock,
                       pm=pm,
-                      err_event=err_event)
+                      err_event=err_event,
+                      err_results=err_results)
         if syncjobs > 1:
           t = _threading.Thread(target=self._CheckoutWorker,
                                 kwargs=kwargs)
@@ -560,6 +566,9 @@ later is required to fix a server side protocol bug.
     # If we saw an error, exit with code 1 so that other scripts can check.
     if err_event.isSet():
       print('\nerror: Exited sync due to checkout errors', file=sys.stderr)
+      if err_results:
+        print('Failing repos:\n%s' % '\n'.join(err_results),
+              file=sys.stderr)
       sys.exit(1)
 
   def _GCProjects(self, projects):
