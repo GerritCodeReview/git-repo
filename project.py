@@ -2706,41 +2706,45 @@ class Project(object):
           raise
 
   def _InitWorkTree(self, force_sync=False, submodules=False):
-    dotgit = os.path.join(self.worktree, '.git')
-    init_dotgit = not os.path.exists(dotgit)
+    realdotgit = os.path.join(self.worktree, '.git')
+    tmpdotgit = realdotgit + '.tmp'
+    init_dotgit = not os.path.exists(realdotgit)
+    if init_dotgit:
+      dotgit = tmpdotgit
+      platform_utils.rmtree(tmpdotgit, ignore_errors=True)
+      os.makedirs(tmpdotgit)
+      self._ReferenceGitDir(self.gitdir, tmpdotgit, share_refs=True,
+                            copy_all=False)
+    else:
+      dotgit = realdotgit
+
     try:
-      if init_dotgit:
-        os.makedirs(dotgit)
-        self._ReferenceGitDir(self.gitdir, dotgit, share_refs=True,
-                              copy_all=False)
+      self._CheckDirReference(self.gitdir, dotgit, share_refs=True)
+    except GitError as e:
+      if force_sync and not init_dotgit:
+        try:
+          platform_utils.rmtree(dotgit)
+          return self._InitWorkTree(force_sync=False, submodules=submodules)
+        except:
+          raise e
+      raise e
 
-      try:
-        self._CheckDirReference(self.gitdir, dotgit, share_refs=True)
-      except GitError as e:
-        if force_sync:
-          try:
-            platform_utils.rmtree(dotgit)
-            return self._InitWorkTree(force_sync=False, submodules=submodules)
-          except:
-            raise e
-        raise e
+    if init_dotgit:
+      _lwrite(os.path.join(tmpdotgit, HEAD), '%s\n' % self.GetRevisionId())
 
-      if init_dotgit:
-        _lwrite(os.path.join(dotgit, HEAD), '%s\n' % self.GetRevisionId())
+      # Now that the .git dir is fully set up, move it to its final home.
+      platform_utils.rename(tmpdotgit, realdotgit)
 
-        cmd = ['read-tree', '--reset', '-u']
-        cmd.append('-v')
-        cmd.append(HEAD)
-        if GitCommand(self, cmd).Wait() != 0:
-          raise GitError("cannot initialize work tree for " + self.name)
+      # Finish checking out the worktree.
+      cmd = ['read-tree', '--reset', '-u']
+      cmd.append('-v')
+      cmd.append(HEAD)
+      if GitCommand(self, cmd).Wait() != 0:
+        raise GitError('Cannot initialize work tree for ' + self.name)
 
-        if submodules:
-          self._SyncSubmodules(quiet=True)
-        self._CopyAndLinkFiles()
-    except Exception:
-      if init_dotgit:
-        platform_utils.rmtree(dotgit)
-      raise
+      if submodules:
+        self._SyncSubmodules(quiet=True)
+      self._CopyAndLinkFiles()
 
   def _get_symlink_error_message(self):
     if platform_utils.isWindows():

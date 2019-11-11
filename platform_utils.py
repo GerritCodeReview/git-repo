@@ -241,14 +241,15 @@ def _makelongpath(path):
     return path
 
 
-def rmtree(path):
+def rmtree(path, ignore_errors=False):
   """shutil.rmtree(path) wrapper with support for long paths on Windows.
 
   Availability: Unix, Windows."""
+  onerror = None
   if isWindows():
-    shutil.rmtree(_makelongpath(path), onerror=handle_rmtree_error)
-  else:
-    shutil.rmtree(path)
+    path = _makelongpath(path)
+    onerror = handle_rmtree_error
+  shutil.rmtree(path, ignore_errors=ignore_errors, onerror=onerror)
 
 
 def handle_rmtree_error(function, path, excinfo):
