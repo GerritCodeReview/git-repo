@@ -106,11 +106,8 @@ least one of these before using this command.""", file=sys.stderr)
         raise EditorError('editor failed with exit status %d: %s %s'
           % (rc, editor, path))
 
-      fd2 = open(path)
-      try:
+      with open(path) as fd2:
         return fd2.read()
-      finally:
-        fd2.close()
     finally:
       if fd:
         os.close(fd)

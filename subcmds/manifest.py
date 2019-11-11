@@ -40,10 +40,9 @@ in a Git repository for use during future 'repo init' invocations.
     helptext = self._helpDescription + '\n'
     r = os.path.dirname(__file__)
     r = os.path.dirname(r)
-    fd = open(os.path.join(r, 'docs', 'manifest-format.md'))
-    for line in fd:
-      helptext += line
-    fd.close()
+    with open(os.path.join(r, 'docs', 'manifest-format.md')) as fd:
+      for line in fd:
+        helptext += line
     return helptext
 
   def _Options(self, p):

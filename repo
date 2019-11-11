@@ -513,9 +513,8 @@ def SetupGnuPG(quiet):
     sys.exit(1)
   print()
 
-  fd = open(os.path.join(home_dot_repo, 'keyring-version'), 'w')
-  fd.write('.'.join(map(str, KEYRING_VERSION)) + '\n')
-  fd.close()
+  with open(os.path.join(home_dot_repo, 'keyring-version'), 'w') as fd:
+    fd.write('.'.join(map(str, KEYRING_VERSION)) + '\n')
   return True
 
 

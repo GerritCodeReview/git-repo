@@ -276,22 +276,16 @@ class GitConfig(object):
       return None
     try:
       Trace(': parsing %s', self.file)
-      fd = open(self._json)
-      try:
+      with open(self._json) as fd:
         return json.load(fd)
-      finally:
-        fd.close()
     except (IOError, ValueError):
       platform_utils.remove(self._json)
       return None
 
   def _SaveJson(self, cache):
     try:
-      fd = open(self._json, 'w')
-      try:
+      with open(self._json, 'w') as fd:
         json.dump(cache, fd, indent=2)
-      finally:
-        fd.close()
     except (IOError, TypeError):
       if os.path.exists(self._json):
         platform_utils.remove(self._json)
@@ -773,15 +767,12 @@ class Branch(object):
       self._Set('merge', self.merge)
 
     else:
-      fd = open(self._config.file, 'a')
-      try:
+      with open(self._config.file, 'a') as fd:
         fd.write('[branch "%s"]\n' % self.name)
         if self.remote:
           fd.write('\tremote = %s\n' % self.remote.name)
         if self.merge:
           fd.write('\tmerge = %s\n' % self.merge)
-      finally:
-        fd.close()
 
   def _Set(self, key, value):
     key = 'branch.%s.%s' % (self.name, key)
