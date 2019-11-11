@@ -692,11 +692,8 @@ later is required to fix a server side protocol bug.
     old_project_paths = []
 
     if os.path.exists(file_path):
-      fd = open(file_path, 'r')
-      try:
+      with open(file_path, 'r') as fd:
         old_project_paths = fd.read().split('\n')
-      finally:
-        fd.close()
       # In reversed order, so subfolders are deleted before parent folder.
       for path in sorted(old_project_paths, reverse=True):
         if not path:
@@ -731,12 +728,9 @@ later is required to fix a server side protocol bug.
               return 1
 
     new_project_paths.sort()
-    fd = open(file_path, 'w')
-    try:
+    with open(file_path, 'w') as fd:
       fd.write('\n'.join(new_project_paths))
       fd.write('\n')
-    finally:
-      fd.close()
     return 0
 
   def _SmartSyncSetup(self, opt, smart_sync_manifest_path):
@@ -809,11 +803,8 @@ later is required to fix a server side protocol bug.
       if success:
         manifest_name = os.path.basename(smart_sync_manifest_path)
         try:
-          f = open(smart_sync_manifest_path, 'w')
-          try:
+          with open(smart_sync_manifest_path, 'w') as f:
             f.write(manifest_str)
-          finally:
-            f.close()
         except IOError as e:
           print('error: cannot write manifest to %s:\n%s'
                 % (smart_sync_manifest_path, e),
@@ -1102,11 +1093,8 @@ class _FetchTimes(object):
   def _Load(self):
     if self._times is None:
       try:
-        f = open(self._path)
-        try:
+        with open(self._path) as f:
           self._times = json.load(f)
-        finally:
-          f.close()
       except (IOError, ValueError):
         try:
           platform_utils.remove(self._path)
@@ -1126,11 +1114,8 @@ class _FetchTimes(object):
       del self._times[name]
 
     try:
-      f = open(self._path, 'w')
-      try:
+      with open(self._path, 'w') as f:
         json.dump(self._times, f, indent=2)
-      finally:
-        f.close()
     except (IOError, TypeError):
       try:
         platform_utils.remove(self._path)

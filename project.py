@@ -58,11 +58,8 @@ else:
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
-  fd = open(lock, 'w')
-  try:
+  with open(lock, 'w') as fd:
     fd.write(content)
-  finally:
-    fd.close()
 
   try:
     platform_utils.rename(lock, path)
@@ -1393,12 +1390,9 @@ class Project(object):
     if is_new:
       alt = os.path.join(self.gitdir, 'objects/info/alternates')
       try:
-        fd = open(alt)
-        try:
+        with open(alt) as fd:
           # This works for both absolute and relative alternate directories.
           alt_dir = os.path.join(self.objdir, 'objects', fd.readline().rstrip())
-        finally:
-          fd.close()
       except IOError:
         alt_dir = None
     else:
@@ -2893,13 +2887,10 @@ class Project(object):
       else:
         path = os.path.join(self._project.worktree, '.git', HEAD)
       try:
-        fd = open(path)
+        with open(path) as fd:
+          line = fd.readline()
       except IOError as e:
         raise NoManifestException(path, str(e))
-      try:
-        line = fd.readline()
-      finally:
-        fd.close()
       try:
         line = line.decode()
       except AttributeError:
