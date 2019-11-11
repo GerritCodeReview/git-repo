@@ -1505,6 +1505,13 @@ class Project(object):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
     """
+    if not os.path.exists(self.gitdir):
+      syncbuf.fail(self,
+                   'Cannot checkout %s due to missing network sync; Run '
+                   '`repo sync -n %s` first.' %
+                   (self.name, self.name))
+      return
+
     self._InitWorkTree(force_sync=force_sync, submodules=submodules)
     all_refs = self.bare_ref.all
     self.CleanPublishedCache(all_refs)
