@@ -1,0 +1,327 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ecae8b36_dd6703ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "can you fix your git settings so your name shows up correctly ?  you\u0027ll prob want to run `git config --global --set user.name \"\u003cyour name\u003e\"`.",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ad247a9_ba88492a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "you can drop this.  we don\u0027t use s-o-b tags.",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f4309b3a_c23c5c18",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "\"Check\" and period at the end",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "68200349_46814bd1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "use single quotes",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "46b54f4f_14c58484",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "use parens rather than \\ to span multiple lines",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f5cedec_73267268",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "fix the comment style here too",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "485611a4_e4f451ad",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "use single quotes",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71e3930b_64a1646c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "this parent walking logic seems to be pretty common.  can we come up with a way to avoid copying \u0026 pasting this same idiom everywhere ?",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3796c894_e7209abf",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "lets avoid 1 letter variable names when possible, especially when their scope is not limited\n\nhere you can use |defaults|",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c1f6d1e_272e4aa5",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "use single quotes",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "972db125_737b6421",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "line is too long -- please wrap",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb9bc164_ed1dc1bd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1077,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "two blank lines",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "294e7fc6_9924f20a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "\"Manages\"",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00d9bfb7_19f357ab",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "two blank lines",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79e5102d_989f156d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "line is too long",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67205f44_a72b2da1",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "two blank lines",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "007c10fd_acd805df",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "no need for \\ in these funcs",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "01ddc0ec_09588606",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3182,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "single quotes",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2556f86a_c0240ee7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T23:33:21Z",
+      "side": 1,
+      "message": "single quotes",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
