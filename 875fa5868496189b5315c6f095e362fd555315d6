@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c50ab88c_a3268ab7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T09:36:10Z",
+      "side": 1,
+      "message": "i\u0027d been experimenting with more fundamental error/output capturing.  lets name it just |err_results| instead so we have more flexibility in what it contains.  i don\u0027t think it makes a big diff at this point.",
+      "revId": "875fa5868496189b5315c6f095e362fd555315d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9273919_ea097da6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T09:36:10Z",
+      "side": 1,
+      "message": "no need for \"_list\" suffix on the name\n\ncapitalize \"A\"",
+      "revId": "875fa5868496189b5315c6f095e362fd555315d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "381777f2_e63139d9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T09:36:10Z",
+      "side": 1,
+      "message": "delete this blank line",
+      "revId": "875fa5868496189b5315c6f095e362fd555315d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8d1e2ca_dade7fb6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-12T09:36:10Z",
+      "side": 1,
+      "message": "drop the leading \u0026 trailing \\n here",
+      "revId": "875fa5868496189b5315c6f095e362fd555315d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
