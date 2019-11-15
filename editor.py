@@ -68,11 +68,14 @@ least one of these before using this command.""", file=sys.stderr)
   def EditString(cls, data):
     """Opens an editor to edit the given content.
 
-       Args:
-         data        : the text to edit
+    Args:
+      data: The text to edit.
 
-      Returns:
-        new value of edited text; None if editing did not succeed
+    Returns:
+      New value of edited text.
+
+    Raises:
+      EditorError: The editor failed to run.
     """
     editor = cls._GetEditor()
     if editor == ':':
@@ -80,7 +83,7 @@ least one of these before using this command.""", file=sys.stderr)
 
     fd, path = tempfile.mkstemp()
     try:
-      os.write(fd, data)
+      os.write(fd, data.encode('utf-8'))
       os.close(fd)
       fd = None
 
@@ -106,8 +109,8 @@ least one of these before using this command.""", file=sys.stderr)
         raise EditorError('editor failed with exit status %d: %s %s'
           % (rc, editor, path))
 
-      with open(path) as fd2:
-        return fd2.read()
+      with open(path, mode='rb') as fd2:
+        return fd2.read().decode('utf-8')
     finally:
       if fd:
         os.close(fd)
