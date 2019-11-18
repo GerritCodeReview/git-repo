@@ -14,3 +14,22 @@ that you can put anywhere in your path.
 * [repo Manifest Format](./docs/manifest-format.md)
 * [repo Hooks](./docs/repo-hooks.md)
 * [Submitting patches](./SUBMITTING_PATCHES.md)
+
+## Install
+
+Many distros include repo, so you might be able to install from there.
+```sh
+# Debian/Ubuntu.
+$ sudo apt-get install repo
+
+# Gentoo.
+$ sudo emerge dev-vcs/repo
+```
+
+You can install it manually as well as it's a single script.
+```sh
+$ mkdir -p ~/.bin
+$ PATH="${HOME}/.bin:${PATH}"
+$ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/.bin/repo
+$ chmod a+rx ~/.bin/repo
+```
