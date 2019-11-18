@@ -344,6 +344,12 @@ class RemoteSpec(object):
     self.orig_name = orig_name
     self.fetchUrl = fetchUrl
 
+  def __eq__(self, other):
+    return self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return self.__dict__ != other.__dict__
+
 
 class RepoHook(object):
 
@@ -753,6 +759,7 @@ class Project(object):
   working_tree_dirs = ['logs', 'refs']
 
   def __init__(self,
+               namespace_name,
                manifest,
                name,
                remote,
@@ -777,6 +784,8 @@ class Project(object):
     """Init a Project object.
 
     Args:
+      namespace_name: The manifest namespace name, which is also the
+                      manifest file name.
       manifest: The XmlManifest object.
       name: The `name` attribute of manifest.xml's project element.
       remote: RemoteSpec object specifying its remote's properties.
@@ -800,6 +809,7 @@ class Project(object):
                        fetch from the remote if the sha1 is not present locally.
       old_revision: saved git commit id for open GITC projects.
     """
+    self.namespace_name = namespace_name
     self.manifest = manifest
     self.name = name
     self.remote = remote
@@ -851,6 +861,18 @@ class Project(object):
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
     self.enabled_repo_hooks = []
+
+  def __eq__(self, other):
+    return (self.work_git == other.work_git
+        and self.bare_git == other.bare_git
+        and self.remote == other.remote
+        and self.revisionExpr == other.revisionExpr)
+
+  def __ne__(self, other):
+    return (self.work_git != other.work_git
+        or self.bare_git != other.bare_git
+        or self.remote != other.remote
+        or self.revisionExpr != other.revisionExpr)
 
   @property
   def Derived(self):
@@ -2036,7 +2058,8 @@ class Project(object):
                           pushUrl=self.remote.pushUrl,
                           review=self.remote.review,
                           revision=self.remote.revision)
-      subproject = Project(manifest=self.manifest,
+      subproject = Project(namespace_name=self.namespace_name,
+                           manifest=self.manifest,
                            name=name,
                            remote=remote,
                            gitdir=gitdir,
@@ -2817,6 +2840,12 @@ class Project(object):
       self._bare = bare
       self._gitdir = gitdir
 
+    def __eq__(self, other):
+      return self._gitdir == other._gitdir
+
+    def __ne__(self, other):
+      return self._gitdir != other._gitdir
+
     def LsOthers(self):
       p = GitCommand(self._project,
                      ['ls-files',
@@ -3153,6 +3182,7 @@ class MetaProject(Project):
 
   def __init__(self, manifest, name, gitdir, worktree):
     Project.__init__(self,
+                     namespace_name='',
                      manifest=manifest,
                      name=name,
                      gitdir=gitdir,
