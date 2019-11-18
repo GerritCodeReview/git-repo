@@ -1,0 +1,17 @@
+{
+  "core.repositoryformatversion": [
+    "0"
+  ], 
+  "core.bare": [
+    "true"
+  ], 
+  "core.filemode": [
+    "true"
+  ], 
+  "remote.origin.url": [
+    "../manifests.git"
+  ], 
+  "remote.origin.fetch": [
+    "+refs/heads/*:refs/remotes/origin/*"
+  ]
+}
