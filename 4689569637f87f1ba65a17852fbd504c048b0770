@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "034dc480_76c44d81",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "Thanks，will do.",
+      "parentUuid": "ecae8b36_dd6703ef",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8ad247a9_ba88492a",
         "filename": "/COMMIT_MSG",
         "patchSetId": 5
@@ -33,6 +51,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2ffa32f0_5fa73a8e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do",
+      "parentUuid": "8ad247a9_ba88492a",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "0decd658_c56574b3",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "f4309b3a_c23c5c18",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68200349_46814bd1",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -67,6 +121,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97b56706_e870ecd4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "68200349_46814bd1",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -87,6 +159,24 @@
     },
     {
       "key": {
+        "uuid": "43d1ab09_b8fd82f9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "46b54f4f_14c58484",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9f5cedec_73267268",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -101,6 +191,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d75fd52e_62eb8f74",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "9f5cedec_73267268",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -121,6 +229,24 @@
     },
     {
       "key": {
+        "uuid": "5e1987c8_88a45660",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do",
+      "parentUuid": "485611a4_e4f451ad",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "71e3930b_64a1646c",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -135,6 +261,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad3b3403_37e84245",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 758,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "thanks, will do.",
+      "parentUuid": "71e3930b_64a1646c",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -155,6 +299,24 @@
     },
     {
       "key": {
+        "uuid": "108066d1_94894e99",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "nice advice, will do.\nhere I will use default_node, because it is a single object.",
+      "parentUuid": "3796c894_e7209abf",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c1f6d1e_272e4aa5",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -169,6 +331,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c9012fa_9ab52df3",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do",
+      "parentUuid": "5c1f6d1e_272e4aa5",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -189,6 +369,24 @@
     },
     {
       "key": {
+        "uuid": "0c33b0a7_83162da6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 956,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "972db125_737b6421",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cb9bc164_ed1dc1bd",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -203,6 +401,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3a76036_1128fcbf",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1077,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "cb9bc164_ed1dc1bd",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -223,6 +439,24 @@
     },
     {
       "key": {
+        "uuid": "8c2c807e_7ad23479",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1079,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "294e7fc6_9924f20a",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "00d9bfb7_19f357ab",
         "filename": "manifest_xml.py",
         "patchSetId": 5
@@ -237,6 +471,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9c121725_c81762c1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "00d9bfb7_19f357ab",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -257,6 +509,24 @@
     },
     {
       "key": {
+        "uuid": "cae29da6_d5cc9d25",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1148,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "79e5102d_989f156d",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "67205f44_a72b2da1",
         "filename": "project.py",
         "patchSetId": 5
@@ -271,6 +541,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8457fb65_2a948c3f",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do.",
+      "parentUuid": "67205f44_a72b2da1",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -291,6 +579,24 @@
     },
     {
       "key": {
+        "uuid": "2564ec8d_95d84943",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 868,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will remove the suffix \u0027\\\u0027s",
+      "parentUuid": "007c10fd_acd805df",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "01ddc0ec_09588606",
         "filename": "project.py",
         "patchSetId": 5
@@ -308,6 +614,24 @@
     },
     {
       "key": {
+        "uuid": "3f3a579a_a18be04b",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3182,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do",
+      "parentUuid": "01ddc0ec_09588606",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2556f86a_c0240ee7",
         "filename": "subcmds/sync.py",
         "patchSetId": 5
@@ -322,6 +646,24 @@
       "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67c69af9_a1af2359",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 709,
+      "author": {
+        "id": 1091123
+      },
+      "writtenOn": "2019-11-19T01:24:39Z",
+      "side": 1,
+      "message": "will do",
+      "parentUuid": "2556f86a_c0240ee7",
+      "revId": "4689569637f87f1ba65a17852fbd504c048b0770",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
