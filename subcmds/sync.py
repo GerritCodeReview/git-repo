@@ -217,6 +217,10 @@ later is required to fix a server side protocol bug.
     p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
+    p.add_option('--skip-update',
+                 dest='mp_update', action='store_false', default='true',
+                 help="update from server, but skip manifest update, "
+                      "meaning keep local version as is")
     p.add_option('-n', '--network-only',
                  dest='network_only', action='store_true',
                  help="fetch only, don't update working tree")
@@ -907,7 +911,10 @@ later is required to fix a server side protocol bug.
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
-    self._UpdateManifestProject(opt, mp, manifest_name)
+    if not opt.mp_update:
+      print('Skipping update of local manifest project.')
+    else:
+      self._UpdateManifestProject(opt, mp, manifest_name)
 
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
