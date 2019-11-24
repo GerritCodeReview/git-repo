@@ -22,6 +22,30 @@
       "revId": "cd059f273479d7a83846d16a4858cae1ed650bc3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8e26539_5c2b7154",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-24T18:49:13Z",
+      "side": 1,
+      "message": "Kuang-che: can you file a bug at http://crbug.com/gerrit/new and past the relevant details into that ?  i don\u0027t see any secret info at b/141968538 at least.",
+      "parentUuid": "1a6ee8b6_e558772d",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 29
+      },
+      "revId": "cd059f273479d7a83846d16a4858cae1ed650bc3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
