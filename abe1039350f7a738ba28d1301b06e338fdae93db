@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6ffb8af_dca8e16f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-25T20:11:41Z",
+      "side": 1,
+      "message": "we like to avoid negative variables when possible (i know there\u0027s preexisting bad logic in the tree).  so write instead:\n\n dest\u003d\u0027mp_update\u0027, action\u003d\u0027store_false\u0027 default\u003dTrue,\n\nthen below you can use opt.mp_update",
+      "revId": "abe1039350f7a738ba28d1301b06e338fdae93db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9660df47_518e554b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 915,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-11-25T20:11:41Z",
+      "side": 1,
+      "message": "prefer the phrasing:\n\n print(\u0027Skipping update of local manifest project.\u0027)",
+      "revId": "abe1039350f7a738ba28d1301b06e338fdae93db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
