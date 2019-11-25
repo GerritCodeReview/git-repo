@@ -2235,16 +2235,6 @@ class Project(object):
       cmd.append('--update-head-ok')
     cmd.append(name)
 
-    spec = []
-
-    # If using depth then we should not get all the tags since they may
-    # be outside of the depth.
-    if no_tags or depth:
-      cmd.append('--no-tags')
-    else:
-      cmd.append('--tags')
-      spec.append(str((u'+refs/tags/*:') + remote.ToLocal('refs/tags/*')))
-
     if force_sync:
       cmd.append('--force')
 
@@ -2254,6 +2244,7 @@ class Project(object):
     if submodules:
       cmd.append('--recurse-submodules=on-demand')
 
+    spec = []
     if not current_branch_only:
       # Fetch whole repo
       spec.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
@@ -2261,19 +2252,33 @@ class Project(object):
       spec.append('tag')
       spec.append(tag_name)
 
-    if not self.manifest.IsMirror:
-      branch = self.revisionExpr
-      if is_sha1 and depth and git_require((1, 8, 3)):
-        # Shallow checkout of a specific commit, fetch from that commit and not
-        # the heads only as the commit might be deeper in the history.
-        spec.append(branch)
-      else:
-        if is_sha1:
-          branch = self.upstream
-        if branch is not None and branch.strip():
-          if not branch.startswith('refs/'):
-            branch = R_HEADS + branch
-          spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
+    branch = self.revisionExpr
+    if (not self.manifest.IsMirror and is_sha1 and depth
+        and git_require((1, 8, 3))):
+      # Shallow checkout of a specific commit, fetch from that commit and not
+      # the heads only as the commit might be deeper in the history.
+      spec.append(branch)
+    else:
+      if is_sha1:
+        branch = self.upstream
+      if branch is not None and branch.strip():
+        if not branch.startswith('refs/'):
+          branch = R_HEADS + branch
+        spec.append(str((u'+%s:' % branch) + remote.ToLocal(branch)))
+
+    # If mirroring repo and we cannot deduce the tag or branch to fetch, fetch
+    # whole repo.
+    if self.manifest.IsMirror and not spec:
+      spec.append(str((u'+refs/heads/*:') + remote.ToLocal('refs/heads/*')))
+
+    # If using depth then we should not get all the tags since they may
+    # be outside of the depth.
+    if no_tags or depth:
+      cmd.append('--no-tags')
+    else:
+      cmd.append('--tags')
+      spec.append(str((u'+refs/tags/*:') + remote.ToLocal('refs/tags/*')))
+
     cmd.extend(spec)
 
     ok = False
