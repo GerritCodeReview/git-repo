@@ -27,6 +27,7 @@ import netrc
 import optparse
 import os
 import sys
+import textwrap
 import time
 
 from pyversion import is_python3
@@ -71,8 +72,10 @@ if not is_python3():
   input = raw_input
 
 global_options = optparse.OptionParser(
-                 usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]"
-                 )
+    usage='repo [-p|--paginate|--no-pager] COMMAND [ARGS]',
+    add_help_option=False)
+global_options.add_option('-h', '--help', action='store_true',
+                          help='show this help message and exit')
 global_options.add_option('-p', '--paginate',
                           dest='pager', action='store_true',
                           help='display command output in the pager')
@@ -122,6 +125,14 @@ class _Repo(object):
       name = 'help'
       argv = []
     gopts, _gargs = global_options.parse_args(glob)
+
+    if gopts.help:
+      global_options.print_help()
+      commands = ' '.join(sorted(self.commands))
+      wrapped_commands = textwrap.wrap(commands, width=77)
+      print('\nAvailable commands:\n  %s' % ('\n  '.join(wrapped_commands),))
+      print('\nRun `repo help <command>` for command-specific details.')
+      global_options.exit()
 
     return (name, gopts, argv)
 
