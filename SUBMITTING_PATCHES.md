@@ -69,10 +69,38 @@ suppressed in the included `.flake8` file.
 
 ## Running tests
 
-There is a [`./run_tests`](./run_tests) helper script for quickly invoking all
-of our unittests.  The coverage isn't great currently, but it should still be
-run for all commits.
+We use [pytest](https://pytest.org/) and [tox](https://tox.readthedocs.io/) for
+running tests.  You should make sure to install those first.
 
+To run the full suite against all supported Python versions, simply execute:
+```sh
+$ tox -p auto
+```
+
+We have [`./run_tests`](./run_tests) which is a simple wrapper around `pytest`:
+```sh
+# Run the full suite against the default Python version.
+$ ./run_tests
+# List each test as it runs.
+$ ./run_tests -v
+
+# Run a specific unittest module (and all tests in it).
+$ ./run_tests tests/test_git_command.py
+
+# Run a specific testsuite in a specific unittest module.
+$ ./run_tests tests/test_editor.py::EditString
+
+# Run a single test.
+$ ./run_tests tests/test_editor.py::EditString::test_cat_editor
+
+# List all available tests.
+$ ./run_tests --collect-only
+
+# Run a single test using substring match.
+$ ./run_tests -k test_cat_editor
+```
+
+The coverage isn't great currently, but it should still be run for all commits.
 Adding more unittests for changes you make would be greatly appreciated :).
 Check out the [tests/](./tests/) subdirectory for more details.
 
