@@ -1,0 +1,6 @@
+graft docs hooks tests
+include *.py
+include LICENSE
+include git_ssh
+include repo
+include run_tests
