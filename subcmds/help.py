@@ -33,11 +33,8 @@ class Help(PagedCommand, MirrorSafeCommand):
 Displays detailed usage information about a command.
 """
 
-  def _PrintAllCommands(self):
-    print('usage: repo COMMAND [ARGS]')
-    print('The complete list of recognized repo commands are:')
-    commandNames = list(sorted(self.commands))
-
+  def _PrintCommands(self, commandNames):
+    """Helper to display |commandNames| summaries."""
     maxlen = 0
     for name in commandNames:
       maxlen = max(maxlen, len(name))
@@ -50,6 +47,12 @@ Displays detailed usage information about a command.
       except AttributeError:
         summary = ''
       print(fmt % (name, summary))
+
+  def _PrintAllCommands(self):
+    print('usage: repo COMMAND [ARGS]')
+    print('The complete list of recognized repo commands are:')
+    commandNames = list(sorted(self.commands))
+    self._PrintCommands(commandNames)
     print("See 'repo help <command>' for more information on a "
           'specific command.')
 
@@ -71,19 +74,8 @@ Displays detailed usage information about a command.
     commandNames = list(sorted([name
                     for name, command in self.commands.items()
                     if command.common and gitc_supported(command)]))
+    self._PrintCommands(commandNames)
 
-    maxlen = 0
-    for name in commandNames:
-      maxlen = max(maxlen, len(name))
-    fmt = '  %%-%ds  %%s' % maxlen
-
-    for name in commandNames:
-      command = self.commands[name]
-      try:
-        summary = command.helpSummary.strip()
-      except AttributeError:
-        summary = ''
-      print(fmt % (name, summary))
     print(
 "See 'repo help <command>' for more information on a specific command.\n"
 "See 'repo help --all' for a complete list of recognized commands.")
