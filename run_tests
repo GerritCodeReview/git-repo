@@ -27,14 +27,13 @@ import sys
 def run_pytest(cmd, argv):
   """Run the unittests via |cmd|."""
   try:
-    subprocess.check_call([cmd] + argv)
-    return 0
+    return subprocess.call([cmd] + argv)
   except OSError as e:
     if e.errno == errno.ENOENT:
       print('%s: unable to run `%s`: %s' % (__file__, cmd, e), file=sys.stderr)
       print('%s: Try installing pytest: sudo apt-get install python-pytest' %
             (__file__,), file=sys.stderr)
-      return 1
+      return 127
     else:
       raise
 
