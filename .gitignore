@@ -1,6 +1,8 @@
 *.egg-info/
+*.log
 *.pyc
 __pycache__
 /dist
 .repopickle_*
 /repoc
+/.tox
