@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2eb98701_00854e76",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-12-03T00:39:09Z",
+      "side": 1,
+      "message": "`repo help \u003ccommand\u003e` ?",
+      "range": {
+        "startLine": 134,
+        "startChar": 18,
+        "endLine": 134,
+        "endChar": 27
+      },
+      "revId": "44f6829153b1d9956cc791d4a22171aba52a832e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b8da95b_3b82f21e",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-12-03T00:39:09Z",
+      "side": 1,
+      "message": "Add a newline before this?",
+      "range": {
+        "startLine": 134,
+        "startChar": 13,
+        "endLine": 134,
+        "endChar": 16
+      },
+      "revId": "44f6829153b1d9956cc791d4a22171aba52a832e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
