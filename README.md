@@ -14,6 +14,7 @@ that you can put anywhere in your path.
 * [repo Manifest Format](./docs/manifest-format.md)
 * [repo Hooks](./docs/repo-hooks.md)
 * [Submitting patches](./SUBMITTING_PATCHES.md)
+* [Microsoft Windows Details](./docs/windows.md)
 
 ## Install
 
