@@ -310,8 +310,6 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
   def setenv(name, val):
     if val is None:
       val = ''
-    if hasattr(val, 'encode'):
-      val = val.encode()
     env[name] = val
 
   setenv('REPO_PROJECT', project['name'])

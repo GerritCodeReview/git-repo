@@ -214,10 +214,6 @@ def git_require(min_version, fail=False, msg=''):
   return False
 
 
-def _setenv(env, name, value):
-  env[name] = value.encode()
-
-
 class GitCommand(object):
   def __init__(self,
                project,
@@ -237,21 +233,21 @@ class GitCommand(object):
     self.tee = {'stdout': not capture_stdout, 'stderr': not capture_stderr}
 
     if disable_editor:
-      _setenv(env, 'GIT_EDITOR', ':')
+      env['GIT_EDITOR'] = ':'
     if ssh_proxy:
-      _setenv(env, 'REPO_SSH_SOCK', ssh_sock())
-      _setenv(env, 'GIT_SSH', _ssh_proxy())
-      _setenv(env, 'GIT_SSH_VARIANT', 'ssh')
+      env['REPO_SSH_SOCK'] = ssh_sock()
+      env['GIT_SSH'] = _ssh_proxy()
+      env['GIT_SSH_VARIANT'] = 'ssh'
     if 'http_proxy' in env and 'darwin' == sys.platform:
       s = "'http.proxy=%s'" % (env['http_proxy'],)
       p = env.get('GIT_CONFIG_PARAMETERS')
       if p is not None:
         s = p + ' ' + s
-      _setenv(env, 'GIT_CONFIG_PARAMETERS', s)
+      env['GIT_CONFIG_PARAMETERS'] = s
     if 'GIT_ALLOW_PROTOCOL' not in env:
-      _setenv(env, 'GIT_ALLOW_PROTOCOL',
-              'file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc')
-    _setenv(env, 'GIT_HTTP_USER_AGENT', user_agent.git)
+      env['GIT_ALLOW_PROTOCOL'] = (
+          'file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc')
+    env['GIT_HTTP_USER_AGENT'] = user_agent.git
 
     if project:
       if not cwd:
@@ -262,7 +258,7 @@ class GitCommand(object):
     command = [GIT]
     if bare:
       if gitdir:
-        _setenv(env, GIT_DIR, gitdir)
+        env[GIT_DIR] = gitdir
       cwd = None
     command.append(cmdv[0])
     # Need to use the --progress flag for fetch/clone so output will be
