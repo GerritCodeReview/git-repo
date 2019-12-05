@@ -788,13 +788,13 @@ later is required to fix a server side protocol bug.
         if branch.startswith(R_HEADS):
           branch = branch[len(R_HEADS):]
 
-        env = os.environ.copy()
-        if 'SYNC_TARGET' in env:
-          target = env['SYNC_TARGET']
+        if 'SYNC_TARGET' in os.environ:
+          target = platform_utils.getenv('SYNC_TARGET')
           [success, manifest_str] = server.GetApprovedManifest(branch, target)
-        elif 'TARGET_PRODUCT' in env and 'TARGET_BUILD_VARIANT' in env:
-          target = '%s-%s' % (env['TARGET_PRODUCT'],
-                              env['TARGET_BUILD_VARIANT'])
+        elif ('TARGET_PRODUCT' in os.environ and
+              'TARGET_BUILD_VARIANT' in os.environ):
+          target = '%s-%s' % (platform_utils.getenv('TARGET_PRODUCT'),
+                              platform_utils.getenv('TARGET_BUILD_VARIANT'))
           [success, manifest_str] = server.GetApprovedManifest(branch, target)
         else:
           [success, manifest_str] = server.GetApprovedManifest(branch)
@@ -1049,8 +1049,8 @@ def _VerifyTag(project):
     return False
 
   env = os.environ.copy()
-  env['GIT_DIR'] = project.gitdir.encode()
-  env['GNUPGHOME'] = gpg_dir.encode()
+  platform_utils.putenv('GIT_DIR', project.gitdir, env)
+  platform_utils.putenv('GNUPGHOME', gpg_dir, env)
 
   cmd = [GIT, 'tag', '-v', cur]
   proc = subprocess.Popen(cmd,
