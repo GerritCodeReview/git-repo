@@ -414,3 +414,77 @@ def realpath(path):
     return result
   else:
     return os.path.realpath(path)
+
+
+def putenv(key, value, env=None):
+  """Set the |key| env var to |value| in |env|.
+
+  Different Python & OS versions have different environ behavior wrt accepted
+  types & encoding.  Provide consistent string behavior.
+
+  NB: If you know |key| and |value| are pure ASCII strings (i.e. not unicode
+  under Python 2), you may access os.environ directly.  But if the contents of
+  |key| or |value| might contain UTF-8 content, you must use this API.
+
+  Args:
+    key: The env var name as a string.
+    value: The value as a string.
+    env: The environment to set in (defaults to os.environ).
+  """
+  if env is None:
+    env = os.environ
+
+  # Here's the support table:
+  #          |    *NIX      |         Windows           |
+  # Python 2 | ASCII string | str or bytes, not unicode |
+  # Python 3 | str or bytes | string only               |
+  #
+  # Windows uses strings natively in its environment all the time.  But it
+  # doesn't allow unicode strings under Python 2, so we have to encode.
+  #
+  # Python 2 on *NIX is funky in that it always lowers to ASCII, so we have to
+  # manually encode to avoid errors regardless of unicode or str.
+  #
+  # Python 3 on Windows & *NIX will accept strings.  *NIX will also accept bytes
+  # but Windows will not.  Which is why this API only accepts strings!
+  if is_python3():
+    if not isinstance(key, str):
+      raise TypeError('Env key must be a string, not %s' % type(key))
+    if not isinstance(value, str):
+      raise TypeError('Env (%s) value must be a string, not %r' %
+                      (key, value))
+  else:
+    key = key.encode()
+    value = value.encode()
+
+  env[key] = value
+
+
+def getenv(key, default=None, env=None):
+  """Return the |key| env var as a string.
+
+  Different Python & OS versions have different environ behavior wrt accepted
+  types & encoding.  Provide consistent string behavior.
+
+  Args:
+    key: The env var name as a string.
+    default: The default value to use if |key| is not in |env|.
+    env: The environment to read from (defaults to os.environ).
+
+  Returns:
+    The value of the env var as a string.
+  """
+  if env is None:
+    env = os.environ
+
+  ret = env.get(key, default)
+
+  # See putenv above for gory portability details.
+  if is_python3():
+    if isinstance(ret, bytes):
+      ret = ret.encode('utf-8')
+  else:
+    if isinstance(ret, str):
+      ret = ret.encode('utf-8')
+
+  return ret
