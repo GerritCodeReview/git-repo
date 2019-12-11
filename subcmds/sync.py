@@ -568,8 +568,10 @@ later is required to fix a server side protocol bug.
     gc_gitdirs = {}
     for project in projects:
       if len(project.manifest.GetProjectsWithName(project.name)) > 1:
-        print('Shared project %s found, disabling pruning.' % project.name)
+        print('Shared project %s found, disabling pruning and auto packing.' %
+              project.name)
         project.bare_git.config('--replace-all', 'gc.pruneExpire', 'never')
+        project.bare_git.config('--replace-all', 'gc.auto', '0')
       gc_gitdirs[project.gitdir] = project.bare_git
 
     has_dash_c = git_require((1, 7, 2))
