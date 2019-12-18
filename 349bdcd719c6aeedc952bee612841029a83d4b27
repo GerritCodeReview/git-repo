@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34bfb1eb_c65b0c4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-12-18T05:22:17Z",
+      "side": 1,
+      "message": "would help to mention that select() has a limit of FD_SETSIZE which poll() does not",
+      "revId": "349bdcd719c6aeedc952bee612841029a83d4b27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d4db8e6_75eed29d",
+        "filename": "platform_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-12-18T05:22:17Z",
+      "side": 1,
+      "message": "lets use _poll \u0026 _fd_to_streams since we don\u0027t want callers to access them",
+      "revId": "349bdcd719c6aeedc952bee612841029a83d4b27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8deca51d_eb7c76b9",
+        "filename": "platform_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2019-12-18T05:22:17Z",
+      "side": 1,
+      "message": "use _ for events since we don\u0027t use it",
+      "revId": "349bdcd719c6aeedc952bee612841029a83d4b27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
