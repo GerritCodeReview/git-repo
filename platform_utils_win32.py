@@ -19,13 +19,18 @@ import errno
 from pyversion import is_python3
 from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
 from ctypes import c_buffer
-from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE, POINTER, c_ubyte
-from ctypes.wintypes import WCHAR, USHORT, LPVOID, Structure, Union, ULONG
-from ctypes.wintypes import byref
+from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE
+from ctypes.wintypes import WCHAR, USHORT, LPVOID, ULONG
+if is_python3():
+  from ctypes import c_ubyte, Structure, Union, byref
+  from ctypes.wintypes import LPDWORD
+else:
+  # For legacy Python2 different imports are needed.
+  from ctypes.wintypes import POINTER, c_ubyte, Structure, Union, byref
+  LPDWORD = POINTER(DWORD)
 
 kernel32 = WinDLL('kernel32', use_last_error=True)
 
-LPDWORD = POINTER(DWORD)
 UCHAR = c_ubyte
 
 # Win32 error codes
