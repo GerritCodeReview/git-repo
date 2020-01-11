@@ -17,10 +17,9 @@
 import errno
 
 from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
-from ctypes import c_buffer
-from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE, POINTER, c_ubyte
-from ctypes.wintypes import WCHAR, USHORT, LPVOID, Structure, Union, ULONG
-from ctypes.wintypes import byref
+from ctypes import c_buffer, POINTER, c_ubyte, Structure, Union, byref
+from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE
+from ctypes.wintypes import WCHAR, USHORT, LPVOID, ULONG
 
 kernel32 = WinDLL('kernel32', use_last_error=True)
 
@@ -208,8 +207,8 @@ def readlink(path):
 
 def _preserve_encoding(source, target):
   """Ensures target is the same string type (i.e. unicode or str) as source."""
-  if isinstance(source, unicode):
-    return unicode(target)
+  if isinstance(source, str):
+    return str(target)
   return str(target)
 
 
