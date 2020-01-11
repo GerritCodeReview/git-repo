@@ -192,7 +192,10 @@ def git_require(min_version, fail=False, msg=''):
   return False
 
 def _setenv(env, name, value):
-  env[name] = value.encode()
+  if not isinstance(value, str):
+    env[name] = value.encode()
+  else:
+    env[name] = value
 
 class GitCommand(object):
   def __init__(self,
