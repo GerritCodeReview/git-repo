@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eebf643e_670383d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-01-13T13:50:02Z",
+      "side": 1,
+      "message": "support and encode?",
+      "range": {
+        "startLine": 7,
+        "startChar": 20,
+        "endLine": 10,
+        "endChar": 53
+      },
+      "revId": "659b92820ff941563b755fe47ec319bb45531453",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "35d9fa7d_d4e069ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-01-13T13:50:02Z",
+      "side": 1,
+      "message": "nitpick I guess, move the comma?",
+      "range": {
+        "startLine": 14,
+        "startChar": 18,
+        "endLine": 14,
+        "endChar": 22
+      },
+      "revId": "659b92820ff941563b755fe47ec319bb45531453",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
