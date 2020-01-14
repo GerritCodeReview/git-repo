@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3a402191_826b4056",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1094383
+      },
+      "writtenOn": "2020-01-14T10:52:36Z",
+      "side": 0,
+      "message": "\u0027%s%s\u0027 % (u\u00271\u0027, \u00272\u0027) - the string will be implicitly cast to unicode.\n\nscript:  [\u0027# Uncomment the branches to upload:\u0027, \u0027#\u0027, u\u0027# project nauphone-dialer/:\u0027, u\u0027#  branch ** ( 4 commits, Tue Jan 14 13:32:41 2020 +0500) to remote branch master:\u0027, ...\n\nbranch.name - \u003ctype \u0027unicode\u0027\u003e\ndestination (project.revisionExpr) - \u003ctype \u0027unicode\u0027\u003e",
+      "revId": "6da17751ca4e3b90834ca763f448ddc39b32651b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
