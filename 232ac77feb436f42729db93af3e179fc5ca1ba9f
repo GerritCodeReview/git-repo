@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4fa47b0_a7b2f7f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2020-01-14T09:42:19Z",
+      "side": 1,
+      "message": "Add footer:\n\n  Bug: Issue 10418",
+      "revId": "232ac77feb436f42729db93af3e179fc5ca1ba9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
