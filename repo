@@ -366,15 +366,18 @@ def _Init(args, gitc_init=False):
 
   _CheckGitVersion()
   try:
-    if NeedSetupGnuPG():
-      can_verify = SetupGnuPG(opt.quiet)
+    if opt.no_repo_verify:
+      do_verify = False
     else:
-      can_verify = True
+      if NeedSetupGnuPG():
+        do_verify = SetupGnuPG(opt.quiet)
+      else:
+        do_verify = True
 
     dst = os.path.abspath(os.path.join(repodir, S_repo))
     _Clone(url, dst, opt.quiet, not opt.no_clone_bundle)
 
-    if can_verify and not opt.no_repo_verify:
+    if do_verify:
       rev = _Verify(dst, branch, opt.quiet)
     else:
       rev = 'refs/remotes/origin/%s^0' % branch
