@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "552e43b7_83d5ec55",
+        "filename": "platform_utils.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1094845
+      },
+      "writtenOn": "2020-01-24T16:57:51Z",
+      "side": 1,
+      "message": "With Python 3.8.1 PyCharm warns: Unresolved attribute reference \u0027encode\u0027 for class \u0027bytes\u0027. With Python 2.7.17 it doesn\u0027t but this code can run only on Python 3.",
+      "revId": "69ed87dc1ebf0329891904c597cd8f1578a05e4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
