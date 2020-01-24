@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b79a2287_6176d34f",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-01-24T20:41:03Z",
+      "side": 1,
+      "message": "you forgot to import this at the top ;)",
+      "revId": "e2738fdacca70292429b2a8d5d7033445e046732",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3a927ec_361a2c7f",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-01-24T20:41:03Z",
+      "side": 1,
+      "message": "delete this once you keep the docstring above",
+      "revId": "e2738fdacca70292429b2a8d5d7033445e046732",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
