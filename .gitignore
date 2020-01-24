@@ -6,3 +6,6 @@ __pycache__
 .repopickle_*
 /repoc
 /.tox
+
+# PyCharm stuff
+/.idea/

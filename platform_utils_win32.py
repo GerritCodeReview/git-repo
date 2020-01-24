@@ -17,14 +17,12 @@
 import errno
 
 from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
-from ctypes import c_buffer
-from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE, POINTER, c_ubyte
-from ctypes.wintypes import WCHAR, USHORT, LPVOID, Structure, Union, ULONG
-from ctypes.wintypes import byref
+from ctypes import c_ubyte, c_buffer, byref, Structure, Union
+from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE, LPDWORD
+from ctypes.wintypes import WCHAR, USHORT, LPVOID, ULONG
 
 kernel32 = WinDLL('kernel32', use_last_error=True)
 
-LPDWORD = POINTER(DWORD)
 UCHAR = c_ubyte
 
 # Win32 error codes
@@ -194,23 +192,16 @@ def readlink(path):
   if not io_result:
     _raise_winerror(
         get_last_error(),
-        'Error reading symblic link \"%s\"'.format(path))
+        'Error reading symbolic link \"%s\"'.format(path))
   rdb = REPARSE_DATA_BUFFER.from_buffer(target_buffer)
   if rdb.ReparseTag == IO_REPARSE_TAG_SYMLINK:
-    return _preserve_encoding(path, rdb.SymbolicLinkReparseBuffer.PrintName)
+    return str(rdb.SymbolicLinkReparseBuffer.PrintName)
   elif rdb.ReparseTag == IO_REPARSE_TAG_MOUNT_POINT:
-    return _preserve_encoding(path, rdb.MountPointReparseBuffer.PrintName)
+    return str(rdb.MountPointReparseBuffer.PrintName)
   # Unsupported reparse point type
   _raise_winerror(
       ERROR_NOT_SUPPORTED,
       'Error reading symblic link \"%s\"'.format(path))
-
-
-def _preserve_encoding(source, target):
-  """Ensures target is the same string type (i.e. unicode or str) as source."""
-  if isinstance(source, unicode):
-    return unicode(target)
-  return str(target)
 
 
 def _raise_winerror(code, error_desc):
