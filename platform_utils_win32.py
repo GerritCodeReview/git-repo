@@ -16,6 +16,7 @@
 
 import errno
 
+from pyversion import is_python3
 from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
 from ctypes import c_buffer
 from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE, POINTER, c_ubyte
@@ -208,6 +209,10 @@ def readlink(path):
 
 def _preserve_encoding(source, target):
   """Ensures target is the same string type (i.e. unicode or str) as source."""
+
+  if is_python3():
+    return target
+
   if isinstance(source, unicode):
     return unicode(target)
   return str(target)
