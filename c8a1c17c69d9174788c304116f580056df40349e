@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "844c187f_f6b54d40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-01-24T21:10:23Z",
+      "side": 1,
+      "message": "i was going to do it for you, but Gerrit isn\u0027t letting me here.  can you use this commit message:\n\n platform_utils_win32: Make _preserve_encoding compatible with Python 3\n\n Bug: https://crbug.com/gerrit/12145\n Change-Id: I01d1ef96ff7b474f55ed42ecc13bd5943006d3b5",
+      "revId": "c8a1c17c69d9174788c304116f580056df40349e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
