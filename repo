@@ -131,6 +131,11 @@ if not REPO_URL:
 REPO_REV = os.environ.get('REPO_REV')
 if not REPO_REV:
   REPO_REV = 'stable'
+REPO_NRV = os.environ.get('REPO_NRV')
+if not REPO_NRV:
+  REPO_VERIFY = True
+else:
+  REPO_VERIFY = False
 
 # increment this whenever we make important changes to this script
 VERSION = (2, 5)
@@ -334,7 +339,7 @@ def GetParser(gitc_init=False):
                    help=optparse.SUPPRESS_HELP)
   group.add_option('--no-repo-verify',
                    dest='repo_verify', default=True, action='store_false',
-                   help='do not verify repo source code')
+                   help='do not verify repo source code ($REPO_NRV)')
 
   # Other.
   group = parser.add_option_group('Other options')
@@ -477,7 +482,7 @@ def check_repo_verify(repo_verify, quiet=False):
   return True
 
 
-def check_repo_rev(dst, rev, repo_verify=True, quiet=False):
+def check_repo_rev(dst, rev, repo_verify=REPO_VERIFY, quiet=False):
   """Check that |rev| is valid."""
   do_verify = check_repo_verify(repo_verify, quiet=quiet)
   remote_ref, local_rev = resolve_repo_rev(dst, rev)
