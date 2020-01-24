@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ce7600ee_d7d64349",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-01-24T14:52:42Z",
+      "side": 1,
+      "message": "put a period at the end",
+      "revId": "366c7c86fdcacfc2887ac26b84c1c11bbb64e993",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
