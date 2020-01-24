@@ -207,7 +207,10 @@ def readlink(path):
 
 
 def _preserve_encoding(source, target):
-  """Ensures target is the same string type (i.e. unicode or str) as source."""
+  if is_python3():
+    return target
+
+  """In Python 2 ensures target is the same string type (i.e. unicode or str) as source."""
   if isinstance(source, unicode):
     return unicode(target)
   return str(target)
