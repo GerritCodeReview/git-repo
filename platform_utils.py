@@ -80,7 +80,7 @@ class FileDescriptorStreams(object):
     """
     raise NotImplementedError
 
-  def _create_stream(fd, dest, std_name):
+  def _create_stream(self, fd, dest, std_name):
     """ Creates a new stream wrapping an existing file descriptor.
     """
     raise NotImplementedError
