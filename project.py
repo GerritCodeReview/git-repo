@@ -1065,7 +1065,7 @@ class Project(object):
     """Prints the status of the repository to stdout.
 
     Args:
-      output: If specified, redirect the output to this object.
+      output_redir: If specified, redirect the output to this object.
       quiet:  If True then only print the project name.  Do not print
               the modified files, branch name, etc.
     """
