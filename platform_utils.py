@@ -90,11 +90,6 @@ class _FileDescriptorStreamsNonBlocking(FileDescriptorStreams):
   """ Implementation of FileDescriptorStreams for platforms that support
   non blocking I/O.
   """
-  def __init__(self):
-    super(_FileDescriptorStreamsNonBlocking, self).__init__()
-    self._poll = select.poll()
-    self._fd_to_stream = {}
-
   class Stream(object):
     """ Encapsulates a file descriptor """
     def __init__(self, fd, dest, std_name):
@@ -118,18 +113,11 @@ class _FileDescriptorStreamsNonBlocking(FileDescriptorStreams):
       self.fd.close()
 
   def _create_stream(self, fd, dest, std_name):
-    stream = self.Stream(fd, dest, std_name)
-    self._fd_to_stream[stream.fileno()] = stream
-    self._poll.register(stream, select.POLLIN)
-    return stream
-
-  def remove(self, stream):
-    self._poll.unregister(stream)
-    del self._fd_to_stream[stream.fileno()]
-    super(_FileDescriptorStreamsNonBlocking, self).remove(stream)
+    return self.Stream(fd, dest, std_name)
 
   def select(self):
-    return [self._fd_to_stream[fd] for fd, _ in self._poll.poll()]
+    ready_streams, _, _ = select.select(self.streams, [], [])
+    return ready_streams
 
 
 class _FileDescriptorStreamsThreads(FileDescriptorStreams):
