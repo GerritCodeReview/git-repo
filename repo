@@ -123,7 +123,8 @@ repodir = '.repo'                # name of repo's private directory
 S_repo = 'repo'                  # special repo repository
 S_manifests = 'manifests'        # special manifest repository
 REPO_MAIN = S_repo + '/main.py'  # main script
-MIN_PYTHON_VERSION = (2, 7)      # minimum supported python version
+MIN_PYTHON_VERSION_HARD = (2, 7) # minimum supported python version we require
+MIN_PYTHON_VERSION_SOFT = (3, 6) # minimum supported python version we warn
 GITC_CONFIG_FILE = '/gitc/.config'
 GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 
@@ -150,15 +151,20 @@ else:
 
 
 # Python version check
-ver = sys.version_info
-if (ver[0], ver[1]) < MIN_PYTHON_VERSION:
-  print('error: Python version {} unsupported.\n'
-        'Please use Python {}.{} instead.'.format(
+if sys.version_info < MIN_PYTHON_VERSION_SOFT:
+  print('warning: Python version {} no longer supported; '
+        'Please use Python {}.{}+ instead.'.format(
             sys.version.split(' ')[0],
-            MIN_PYTHON_VERSION[0],
-            MIN_PYTHON_VERSION[1],
+            MIN_PYTHON_VERSION_SOFT[0],
+            MIN_PYTHON_VERSION_SOFT[1],
         ), file=sys.stderr)
-  sys.exit(1)
+  if sys.version_info < MIN_PYTHON_VERSION_HARD:
+    print('error: Python {}.{}+ required.'.format(
+            MIN_PYTHON_VERSION_HARD[0],
+            MIN_PYTHON_VERSION_HARD[1],
+        ), file=sys.stderr)
+    sys.exit(1)
+
 
 home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
