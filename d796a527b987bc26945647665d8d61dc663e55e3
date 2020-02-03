@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "77896b12_fc61ae1b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-03T22:52:17Z",
+      "side": 1,
+      "message": "i mentioned earlier that we\u0027d want --no-manifest-update so we stick with existing repo CLI conventions.  being consistent is more important for UX than one-off deviations.\n\n\"--no-update\" would be too generic.  `repo sync` is designed to process all local git checkouts, so in that context, \"--no-update\" would imply something global.  that\u0027s why we\u0027d have the more verbose --no-manifest-update to make it clear we\u0027re scoping to the manifest repo only.\n\nwe do allow for some shorter/terser long opts if people really want it.  so you could write:\n\n p.add_option(\u0027--no-manifest-update\u0027, \u0027--no-mp-up\u0027,",
+      "revId": "d796a527b987bc26945647665d8d61dc663e55e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7028d93_67b076d7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-03T22:52:17Z",
+      "side": 1,
+      "message": "how about the help text:\n\n use the existing manifest checkout as-is (i.e. do not update to the latest revision)",
+      "revId": "d796a527b987bc26945647665d8d61dc663e55e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b3cb5c04_c8e6f583",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-03T22:52:17Z",
+      "side": 1,
+      "message": "using single quotes with strings",
+      "revId": "d796a527b987bc26945647665d8d61dc663e55e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
