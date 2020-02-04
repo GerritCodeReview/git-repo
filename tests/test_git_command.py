@@ -35,7 +35,7 @@ class GitCallUnitTest(unittest.TestCase):
     # We don't dive too deep into the values here to avoid having to update
     # whenever git versions change.  We do check relative to this min version
     # as this is what `repo` itself requires via MIN_GIT_VERSION.
-    MIN_GIT_VERSION = (1, 7, 2)
+    MIN_GIT_VERSION = (2, 10, 2)
     self.assertTrue(isinstance(ver.major, int))
     self.assertTrue(isinstance(ver.minor, int))
     self.assertTrue(isinstance(ver.micro, int))
