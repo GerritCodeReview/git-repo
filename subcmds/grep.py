@@ -21,7 +21,7 @@ import sys
 from color import Coloring
 from command import PagedCommand
 from error import GitError
-from git_command import git_require, GitCommand
+from git_command import GitCommand
 
 class GrepColoring(Coloring):
   def __init__(self, config):
@@ -161,7 +161,7 @@ contain a line that matches both expressions:
     out = GrepColoring(self.manifest.manifestProject.config)
 
     cmd_argv = ['grep']
-    if out.is_on and git_require((1, 6, 3)):
+    if out.is_on:
       cmd_argv.append('--color')
     cmd_argv.extend(getattr(opt, 'cmd_argv', []))
 

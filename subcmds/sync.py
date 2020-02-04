@@ -65,7 +65,7 @@ except ImportError:
   multiprocessing = None
 
 import event_log
-from git_command import GIT, git_require
+from git_command import GIT
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import gitc_utils
@@ -572,8 +572,7 @@ later is required to fix a server side protocol bug.
         project.bare_git.config('--replace-all', 'gc.pruneExpire', 'never')
       gc_gitdirs[project.gitdir] = project.bare_git
 
-    has_dash_c = git_require((1, 7, 2))
-    if multiprocessing and has_dash_c:
+    if multiprocessing:
       cpu_count = multiprocessing.cpu_count()
     else:
       cpu_count = 1
