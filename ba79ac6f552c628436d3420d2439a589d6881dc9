@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d5a73592_97feca7c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-04T05:22:17Z",
+      "side": 1,
+      "message": "Add a reference to https://crbug.com/gerrit/12229",
+      "revId": "ba79ac6f552c628436d3420d2439a589d6881dc9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
