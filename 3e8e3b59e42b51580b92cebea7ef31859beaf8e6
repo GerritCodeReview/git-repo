@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3aebe1ea_36756249",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 1077381
+      },
+      "writtenOn": "2020-02-04T14:22:06Z",
+      "side": 1,
+      "message": "Does this change mean that it no longer mirror default branch even default branch exists?",
+      "range": {
+        "startLine": 2255,
+        "startChar": 4,
+        "endLine": 2255,
+        "endChar": 10
+      },
+      "revId": "3e8e3b59e42b51580b92cebea7ef31859beaf8e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
