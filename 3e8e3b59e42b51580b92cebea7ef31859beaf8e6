@@ -22,6 +22,30 @@
       "revId": "3e8e3b59e42b51580b92cebea7ef31859beaf8e6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d1c2f377_5a971274",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2020-02-04T16:42:42Z",
+      "side": 1,
+      "message": "Only if \u0027-c\u0027 is used, and default revision is branch.\n\nIf default revision is tag this still works due to the code above this.",
+      "parentUuid": "3aebe1ea_36756249",
+      "range": {
+        "startLine": 2255,
+        "startChar": 4,
+        "endLine": 2255,
+        "endChar": 10
+      },
+      "revId": "3e8e3b59e42b51580b92cebea7ef31859beaf8e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
