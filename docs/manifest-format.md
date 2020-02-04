@@ -89,6 +89,7 @@ following DTD:
   <!ATTLIST extend-project path CDATA #IMPLIED>
   <!ATTLIST extend-project groups CDATA #IMPLIED>
   <!ATTLIST extend-project revision CDATA #IMPLIED>
+  <!ATTLIST extend-project remote CDATA #IMPLIED>
 
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name  CDATA #REQUIRED>
@@ -304,6 +305,9 @@ Attribute `groups`: List of additional groups to which this project
 belongs.  Same syntax as the corresponding element of `project`.
 
 Attribute `revision`: If specified, overrides the revision of the original
+project.  Same syntax as the corresponding element of `project`.
+
+Attribute `remote`: If specified, overrides the remote of the original
 project.  Same syntax as the corresponding element of `project`.
 
 ### Element annotation
