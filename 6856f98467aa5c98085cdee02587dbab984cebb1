@@ -16,6 +16,24 @@
       "revId": "6856f98467aa5c98085cdee02587dbab984cebb1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eae52b21_a9d829da",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-04T21:45:54Z",
+      "side": 1,
+      "message": "we have https://crbug.com/gerrit/12274 to track now, so lets keep the conversation there",
+      "parentUuid": "e1134ee7_c1625866",
+      "revId": "6856f98467aa5c98085cdee02587dbab984cebb1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
