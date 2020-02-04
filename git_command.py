@@ -28,7 +28,8 @@ from repo_trace import REPO_TRACE, IsTrace, Trace
 from wrapper import Wrapper
 
 GIT = 'git'
-MIN_GIT_VERSION = (1, 5, 4)
+# Should keep in sync with the "repo" launcher file.
+MIN_GIT_VERSION = (2, 10, 2)
 GIT_DIR = 'GIT_DIR'
 
 LAST_GITDIR = None
