@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e1134ee7_c1625866",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2020-02-04T11:39:13Z",
+      "side": 1,
+      "message": "This change breaks mirrors with multiple different projects / remotes each with different revisions.\n\nIt tries to fetch the default revision here for all projects, but not all projects might contain that.",
+      "revId": "6856f98467aa5c98085cdee02587dbab984cebb1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
