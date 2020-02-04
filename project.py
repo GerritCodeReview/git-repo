@@ -2252,7 +2252,10 @@ class Project(object):
       spec.append('tag')
       spec.append(tag_name)
 
-    branch = self.revisionExpr
+    if (self.manifest.IsMirror and not current_branch_only):
+      branch = None
+    else:
+      branch = self.revisionExpr
     if (not self.manifest.IsMirror and is_sha1 and depth
         and git_require((1, 8, 3))):
       # Shallow checkout of a specific commit, fetch from that commit and not
