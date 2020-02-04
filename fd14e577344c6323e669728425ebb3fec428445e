@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "d9190af6_bf33cc3b",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2255,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-04T20:32:58Z",
+      "side": 1,
+      "message": "you don\u0027t need the parens here.  we use them only when they wrap lines (like below) or the logical combinations require them.  neither applies here.",
+      "revId": "fd14e577344c6323e669728425ebb3fec428445e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ccb5c61_39c7061f",
         "filename": "project.py",
         "patchSetId": 3
