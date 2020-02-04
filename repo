@@ -86,7 +86,7 @@ TACbBS+Up3RpfYVfd63c1cDdlru13pQAn3NQy/SN858MkxN+zym86UBgOad2
 """
 
 GIT = 'git'                      # our git command
-MIN_GIT_VERSION = (1, 7, 2)      # minimum supported git version
+MIN_GIT_VERSION = (2, 10, 2)     # minimum supported git version
 repodir = '.repo'                # name of repo's private directory
 S_repo = 'repo'                  # special repo repository
 S_manifests = 'manifests'        # special manifest repository
