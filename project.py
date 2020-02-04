@@ -2252,12 +2252,13 @@ class Project(object):
       spec.append('tag')
       spec.append(tag_name)
 
-    branch = self.revisionExpr
-    if (not self.manifest.IsMirror and is_sha1 and depth
-        and git_require((1, 8, 3))):
-      # Shallow checkout of a specific commit, fetch from that commit and not
-      # the heads only as the commit might be deeper in the history.
-      spec.append(branch)
+    branch = None
+    if not self.manifest.IsMirror:
+      branch = self.revisionExpr
+      if is_sha1 and depth and git_require((1, 8, 3)):
+        # Shallow checkout of a specific commit, fetch from that commit and not
+        # the heads only as the commit might be deeper in the history.
+        spec.append(branch)
     else:
       if is_sha1:
         branch = self.upstream
