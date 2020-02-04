@@ -580,8 +580,7 @@ later is required to fix a server side protocol bug.
           project.config.SetString('gc.pruneExpire', 'never')
       gc_gitdirs[project.gitdir] = project.bare_git
 
-    has_dash_c = git_require((1, 7, 2))
-    if multiprocessing and has_dash_c:
+    if multiprocessing:
       cpu_count = multiprocessing.cpu_count()
     else:
       cpu_count = 1
