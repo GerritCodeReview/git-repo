@@ -2340,8 +2340,7 @@ class Project(object):
       branch = None
     else:
       branch = self.revisionExpr
-    if (not self.manifest.IsMirror and is_sha1 and depth
-        and git_require((1, 8, 3))):
+    if not self.manifest.IsMirror and is_sha1 and depth:
       # Shallow checkout of a specific commit, fetch from that commit and not
       # the heads only as the commit might be deeper in the history.
       spec.append(branch)
@@ -3111,9 +3110,6 @@ class Project(object):
           raise TypeError('%s() got an unexpected keyword argument %r'
                           % (name, k))
         if config is not None:
-          if not git_require((1, 7, 2)):
-            raise ValueError('cannot set config on command line for %s()'
-                             % name)
           for k, v in config.items():
             cmdv.append('-c')
             cmdv.append('%s=%s' % (k, v))

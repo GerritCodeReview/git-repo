@@ -65,7 +65,7 @@ except ImportError:
   multiprocessing = None
 
 import event_log
-from git_command import GIT, git_require
+from git_command import GIT
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import gitc_utils
@@ -564,16 +564,11 @@ later is required to fix a server side protocol bug.
       if len(project.manifest.GetProjectsWithName(project.name)) > 1:
         print('%s: Shared project %s found, disabling pruning.' %
               (project.relpath, project.name))
-        if git_require((2, 7, 0)):
-          project.config.SetString('core.repositoryFormatVersion', '1')
-          project.config.SetString('extensions.preciousObjects', 'true')
-        else:
-          # This isn't perfect, but it's the best we can do with old git.
-          project.config.SetString('gc.pruneExpire', 'never')
+        project.config.SetString('core.repositoryFormatVersion', '1')
+        project.config.SetString('extensions.preciousObjects', 'true')
       gc_gitdirs[project.gitdir] = project.bare_git
 
-    has_dash_c = git_require((1, 7, 2))
-    if multiprocessing and has_dash_c:
+    if multiprocessing:
       cpu_count = multiprocessing.cpu_count()
     else:
       cpu_count = 1
