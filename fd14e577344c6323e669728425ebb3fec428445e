@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ccb5c61_39c7061f",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2256,
+      "author": {
+        "id": 1011922
+      },
+      "writtenOn": "2020-02-04T16:52:22Z",
+      "side": 1,
+      "message": "This preserves the behaviour before commit \"Fix repo mirror with --current-branch\" for the normal mirror sync use case, unless \"--current-branch\" is used in which case it keeps the behaviour of that commit.",
+      "revId": "fd14e577344c6323e669728425ebb3fec428445e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
