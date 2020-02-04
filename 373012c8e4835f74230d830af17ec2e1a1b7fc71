@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e525fc9_3d0d2794",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-04T20:37:48Z",
+      "side": 1,
+      "message": "delete this blank line",
+      "revId": "373012c8e4835f74230d830af17ec2e1a1b7fc71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
