@@ -81,7 +81,7 @@ manifest, a subsequent `repo sync` (or `repo sync -d`) is necessary
 to update the working directory files.
 """
 
-  def _Options(self, p):
+  def _Options(self, p, gitc_init=False):
     # Logging
     g = p.add_option_group('Logging options')
     g.add_option('-q', '--quiet',
@@ -96,7 +96,12 @@ to update the working directory files.
     g.add_option('-b', '--manifest-branch',
                  dest='manifest_branch',
                  help='manifest branch or revision', metavar='REVISION')
-    g.add_option('-c', '--current-branch',
+    cbr_opts = ['--current-branch']
+    # The gitc-init subcommand allocates -c itself, but a lot of init users
+    # want -c, so try to satisfy both as best we can.
+    if gitc_init:
+      cbr_opts += ['-c']
+    g.add_option(*cbr_opts,
                  dest='current_branch_only', action='store_true',
                  help='fetch only current manifest branch from server')
     g.add_option('-m', '--manifest-name',
