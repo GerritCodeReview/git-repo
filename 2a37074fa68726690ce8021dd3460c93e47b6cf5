@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "74bf1739_f2cb4800",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-05T20:24:14Z",
+      "side": 1,
+      "message": "you\u0027ll want to add a tag here like:\n\n Bug: https://crbug.com/gerrit/11685",
+      "revId": "2a37074fa68726690ce8021dd3460c93e47b6cf5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "376e814a_754097ef",
+        "filename": "tests/fixtures/manifests.git/description",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-05T20:24:14Z",
+      "side": 1,
+      "message": "trim this file.  or maybe add a short desc explaining its purpose.",
+      "revId": "2a37074fa68726690ce8021dd3460c93e47b6cf5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b44df52b_ff731835",
+        "filename": "tests/fixtures/manifests.git/info/exclude",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-05T20:24:14Z",
+      "side": 1,
+      "message": "trim this file",
+      "revId": "2a37074fa68726690ce8021dd3460c93e47b6cf5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
