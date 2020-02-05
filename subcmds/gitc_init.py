@@ -50,7 +50,7 @@ use for this GITC client.
 """
 
   def _Options(self, p):
-    super(GitcInit, self)._Options(p)
+    super(GitcInit, self)._Options(p, gitc_init=True)
     g = p.add_option_group('GITC options')
     g.add_option('-f', '--manifest-file',
                  dest='manifest_file',
