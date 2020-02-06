@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "42d32609_d2eb41ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-06T18:41:27Z",
+      "side": 1,
+      "message": "`repo forall -c` works fine.  it\u0027s only a problem when using -p.  you should mention that here.",
+      "revId": "c4a8e06b26d8fd44880d7fe1c710914c54f6d886",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

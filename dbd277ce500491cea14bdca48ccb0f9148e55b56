@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8244e503_e545261c",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-06T18:41:27Z",
+      "side": 0,
+      "message": "just put .decode(\u0027utf-8\u0027) here",
+      "revId": "dbd277ce500491cea14bdca48ccb0f9148e55b56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
