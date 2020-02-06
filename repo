@@ -199,88 +199,71 @@ gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 extra_args = []
 init_optparse = optparse.OptionParser(usage="repo init -u url [options]")
 
-# Logging
-group = init_optparse.add_option_group('Logging options')
-group.add_option('-q', '--quiet',
-                 dest="quiet", action="store_true", default=False,
-                 help="be quiet")
+def _InitParser():
+  """Setup the init subcommand parser."""
+  # Logging.
+  group = init_optparse.add_option_group('Logging options')
+  group.add_option('-q', '--quiet',
+                   action='store_true', default=False,
+                   help='be quiet')
 
-# Manifest
-group = init_optparse.add_option_group('Manifest options')
-group.add_option('-u', '--manifest-url',
-                 dest='manifest_url',
-                 help='manifest repository location', metavar='URL')
-group.add_option('-b', '--manifest-branch',
-                 dest='manifest_branch',
-                 help='manifest branch or revision', metavar='REVISION')
-group.add_option('-m', '--manifest-name',
-                 dest='manifest_name',
-                 help='initial manifest file', metavar='NAME.xml')
-group.add_option('--current-branch',
-                 dest='current_branch_only', action='store_true',
-                 help='fetch only current manifest branch from server')
-group.add_option('--mirror',
-                 dest='mirror', action='store_true',
-                 help='create a replica of the remote repositories '
-                      'rather than a client working directory')
-group.add_option('--reference',
-                 dest='reference',
-                 help='location of mirror directory', metavar='DIR')
-group.add_option('--dissociate',
-                 dest='dissociate', action='store_true',
-                 help='dissociate from reference mirrors after clone')
-group.add_option('--depth', type='int', default=None,
-                 dest='depth',
-                 help='create a shallow clone with given depth; see git clone')
-group.add_option('--partial-clone', action='store_true',
-                 dest='partial_clone',
-                 help='perform partial clone (https://git-scm.com/'
-                 'docs/gitrepository-layout#_code_partialclone_code)')
-group.add_option('--clone-filter', action='store', default='blob:none',
-                 dest='clone_filter',
-                 help='filter for use with --partial-clone [default: %default]')
-group.add_option('--archive',
-                 dest='archive', action='store_true',
-                 help='checkout an archive instead of a git repository for '
-                      'each project. See git archive.')
-group.add_option('--submodules',
-                 dest='submodules', action='store_true',
-                 help='sync any submodules associated with the manifest repo')
-group.add_option('-g', '--groups',
-                 dest='groups', default='default',
-                 help='restrict manifest projects to ones with specified '
-                      'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
-                 metavar='GROUP')
-group.add_option('-p', '--platform',
-                 dest='platform', default="auto",
-                 help='restrict manifest projects to ones with a specified '
-                      'platform group [auto|all|none|linux|darwin|...]',
-                 metavar='PLATFORM')
-group.add_option('--no-clone-bundle',
-                 dest='no_clone_bundle', action='store_true',
-                 help='disable use of /clone.bundle on HTTP/HTTPS')
-group.add_option('--no-tags',
-                 dest='no_tags', action='store_true',
-                 help="don't fetch tags in the manifest")
+  # Manifest.
+  group = init_optparse.add_option_group('Manifest options')
+  group.add_option('-u', '--manifest-url',
+                   help='manifest repository location', metavar='URL')
+  group.add_option('-b', '--manifest-branch',
+                   help='manifest branch or revision', metavar='REVISION')
+  group.add_option('-m', '--manifest-name',
+                   help='initial manifest file', metavar='NAME.xml')
+  group.add_option('--current-branch',
+                   dest='current_branch_only', action='store_true',
+                   help='fetch only current manifest branch from server')
+  group.add_option('--mirror', action='store_true',
+                   help='create a replica of the remote repositories '
+                        'rather than a client working directory')
+  group.add_option('--reference',
+                   help='location of mirror directory', metavar='DIR')
+  group.add_option('--dissociate', action='store_true',
+                   help='dissociate from reference mirrors after clone')
+  group.add_option('--depth', type='int', default=None,
+                   help='create a shallow clone with given depth; see git clone')
+  group.add_option('--partial-clone', action='store_true',
+                   help='perform partial clone (https://git-scm.com/'
+                        'docs/gitrepository-layout#_code_partialclone_code)')
+  group.add_option('--clone-filter', action='store', default='blob:none',
+                   help='filter for use with --partial-clone [default: %default]')
+  group.add_option('--archive', action='store_true',
+                   help='checkout an archive instead of a git repository for '
+                        'each project. See git archive.')
+  group.add_option('--submodules', action='store_true',
+                   help='sync any submodules associated with the manifest repo')
+  group.add_option('-g', '--groups', default='default',
+                   help='restrict manifest projects to ones with specified '
+                        'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
+                   metavar='GROUP')
+  group.add_option('-p', '--platform', default='auto',
+                   help='restrict manifest projects to ones with a specified '
+                        'platform group [auto|all|none|linux|darwin|...]',
+                   metavar='PLATFORM')
+  group.add_option('--no-clone-bundle', action='store_true',
+                   help='disable use of /clone.bundle on HTTP/HTTPS')
+  group.add_option('--no-tags', action='store_true',
+                   help="don't fetch tags in the manifest")
 
+  # Tool.
+  group = init_optparse.add_option_group('repo Version options')
+  group.add_option('--repo-url',
+                   help='repo repository location ($REPO_URL)', metavar='URL')
+  group.add_option('--repo-branch',
+                   help='repo branch or revision ($REPO_REV)', metavar='REVISION')
+  group.add_option('--no-repo-verify', action='store_true',
+                   help='do not verify repo source code')
 
-# Tool
-group = init_optparse.add_option_group('repo Version options')
-group.add_option('--repo-url',
-                 dest='repo_url',
-                 help='repo repository location ($REPO_URL)', metavar='URL')
-group.add_option('--repo-branch',
-                 dest='repo_branch',
-                 help='repo branch or revision ($REPO_REV)', metavar='REVISION')
-group.add_option('--no-repo-verify',
-                 dest='no_repo_verify', action='store_true',
-                 help='do not verify repo source code')
-
-# Other
-group = init_optparse.add_option_group('Other options')
-group.add_option('--config-name',
-                 dest='config_name', action="store_true", default=False,
-                 help='Always prompt for name/e-mail')
+  # Other.
+  group = init_optparse.add_option_group('Other options')
+  group.add_option('--config-name',
+                   action='store_true', default=False,
+                   help='Always prompt for name/e-mail')
 
 
 def _GitcInitOptions(init_optparse_arg):
@@ -926,6 +909,7 @@ def main(orig_args):
           'command from the corresponding client under /gitc/',
           file=sys.stderr)
     sys.exit(1)
+  _InitParser()
   if not repo_main:
     if opt.help:
       _Usage()
