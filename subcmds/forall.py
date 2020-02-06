@@ -374,7 +374,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
 
         if not opt.verbose:
           if s.std_name == 'stderr':
-            errbuf += buf
+            errbuf += buf.decode()
             continue
 
         if empty and out:
@@ -394,7 +394,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
             errbuf = ''
           empty = False
 
-        s.dest.write(buf)
+        s.dest.write(buf.decode())
         s.dest.flush()
 
   r = p.wait()
