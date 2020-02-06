@@ -94,7 +94,9 @@ import os
 REPO_URL = os.environ.get('REPO_URL', None)
 if not REPO_URL:
   REPO_URL = 'https://gerrit.googlesource.com/git-repo'
-REPO_REV = 'stable'
+REPO_REV = os.environ.get('REPO_REV')
+if not REPO_REV:
+  REPO_REV = 'stable'
 
 # Copyright (C) 2008 Google Inc.
 #
@@ -266,10 +268,10 @@ group.add_option('--no-tags',
 group = init_optparse.add_option_group('repo Version options')
 group.add_option('--repo-url',
                  dest='repo_url',
-                 help='repo repository location', metavar='URL')
+                 help='repo repository location ($REPO_URL)', metavar='URL')
 group.add_option('--repo-branch',
                  dest='repo_branch',
-                 help='repo branch or revision', metavar='REVISION')
+                 help='repo branch or revision ($REPO_REV)', metavar='REVISION')
 group.add_option('--no-repo-verify',
                  dest='no_repo_verify', action='store_true',
                  help='do not verify repo source code')
