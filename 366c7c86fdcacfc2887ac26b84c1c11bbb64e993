@@ -16,6 +16,24 @@
       "revId": "366c7c86fdcacfc2887ac26b84c1c11bbb64e993",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5eb260e9_52a41eca",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-02-06T10:52:38Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ce7600ee_d7d64349",
+      "revId": "366c7c86fdcacfc2887ac26b84c1c11bbb64e993",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
