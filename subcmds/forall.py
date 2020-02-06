@@ -366,7 +366,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     while not s_in.is_done:
       in_ready = s_in.select()
       for s in in_ready:
-        buf = s.read()
+        buf = s.read().decode()
         if not buf:
           s.close()
           s_in.remove(s)
