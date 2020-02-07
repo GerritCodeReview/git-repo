@@ -16,6 +16,24 @@
       "revId": "dbd277ce500491cea14bdca48ccb0f9148e55b56",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a17688cd_a3330e33",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 1033217
+      },
+      "writtenOn": "2020-02-07T12:14:53Z",
+      "side": 0,
+      "message": "When I do this change, I\u0027m getting:\n\nAttributeError: \u0027str\u0027 object has no attribute \u0027decode\u0027",
+      "parentUuid": "8244e503_e545261c",
+      "revId": "dbd277ce500491cea14bdca48ccb0f9148e55b56",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
