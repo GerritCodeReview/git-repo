@@ -99,7 +99,7 @@ to update the working directory files.
     cbr_opts = ['--current-branch']
     # The gitc-init subcommand allocates -c itself, but a lot of init users
     # want -c, so try to satisfy both as best we can.
-    if gitc_init:
+    if not gitc_init:
       cbr_opts += ['-c']
     g.add_option(*cbr_opts,
                  dest='current_branch_only', action='store_true',
