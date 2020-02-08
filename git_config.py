@@ -528,7 +528,7 @@ def GetUrlCookieFile(url, quiet):
         cookiefile = None
         proxy = None
         for line in p.stdout:
-          line = line.strip()
+          line = line.strip().decode('utf-8')
           if line.startswith(cookieprefix):
             cookiefile = os.path.expanduser(line[len(cookieprefix):])
           if line.startswith(proxyprefix):
@@ -540,7 +540,7 @@ def GetUrlCookieFile(url, quiet):
       finally:
         p.stdin.close()
         if p.wait():
-          err_msg = p.stderr.read()
+          err_msg = p.stderr.read().decode('utf-8')
           if ' -print_config' in err_msg:
             pass  # Persistent proxy doesn't support -print_config.
           elif not quiet:
