@@ -565,7 +565,8 @@ later is required to fix a server side protocol bug.
     gc_gitdirs = {}
     for project in projects:
       # Make sure pruning never kicks in with shared projects.
-      if len(project.manifest.GetProjectsWithName(project.name)) > 1:
+      if (not project.use_git_worktrees and
+          len(project.manifest.GetProjectsWithName(project.name)) > 1):
         print('%s: Shared project %s found, disabling pruning.' %
               (project.relpath, project.name))
         if git_require((2, 7, 0)):
