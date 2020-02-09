@@ -102,6 +102,11 @@ support, see the [manifest-format.md] file.
     respective servers ...
 *   `subprojects/`: Like `projects/`, but for git submodules.
 *   `subproject-objects/`: Like `project-objects/`, but for git submodules.
+*   `worktrees/`: Bare checkouts of every project synced by the manifest.  The
+    filesystem layout matches the `<project name=...` setting in the manifest
+    (i.e. the path on the remote server).
+
+    This is used when git worktrees are enabled.
 
 ### Settings
 
@@ -121,6 +126,7 @@ User controlled settings are initialized when running `repo init`.
 | repo.partialclone | `--partial-clone`         | Create [partial git clones] |
 | repo.reference    | `--reference`             | Reference repo client checkout |
 | repo.submodules   | `--submodules`            | Sync git submodules |
+| repo.worktree     | `--worktree`              | Use `git worktree` for checkouts |
 | user.email        | `--config-name`           | User's e-mail address; Copied into `.git/config` when checking out a new project |
 | user.name         | `--config-name`           | User's name; Copied into `.git/config` when checking out a new project |
 
