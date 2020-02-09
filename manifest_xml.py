@@ -146,9 +146,17 @@ class XmlManifest(object):
                                    gitdir=os.path.join(repodir, 'repo/.git'),
                                    worktree=os.path.join(repodir, 'repo'))
 
-    self.manifestProject = MetaProject(self, 'manifests',
-                                       gitdir=os.path.join(repodir, 'manifests.git'),
-                                       worktree=os.path.join(repodir, 'manifests'))
+    mp = MetaProject(self, 'manifests',
+                     gitdir=os.path.join(repodir, 'manifests.git'),
+                     worktree=os.path.join(repodir, 'manifests'))
+    self.manifestProject = mp
+
+    # This is a bit hacky, but we're in a chicken & egg situation: all the
+    # normal repo settings live in the manifestProject which we just setup
+    # above, so we couldn't easily query before that.  We assume Project()
+    # init doesn't care if this changes afterwards.
+    if mp.config.GetBoolean('repo.worktree'):
+      mp.use_git_worktrees = True
 
     self._Unload()
 
@@ -426,6 +434,10 @@ class XmlManifest(object):
   @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
+
+  @property
+  def UseGitWorktrees(self):
+    return self.manifestProject.config.GetBoolean('repo.worktree')
 
   @property
   def IsArchive(self):
@@ -873,8 +885,10 @@ class XmlManifest(object):
     groups = self._ParseGroups(groups)
 
     if parent is None:
-      relpath, worktree, gitdir, objdir = self.GetProjectPaths(name, path)
+      relpath, worktree, gitdir, objdir, use_git_worktrees = \
+          self.GetProjectPaths(name, path)
     else:
+      use_git_worktrees = False
       relpath, worktree, gitdir, objdir = \
           self.GetSubprojectPaths(parent, name, path)
 
@@ -903,6 +917,7 @@ class XmlManifest(object):
                       upstream=upstream,
                       parent=parent,
                       dest_branch=dest_branch,
+                      use_git_worktrees=use_git_worktrees,
                       **extra_proj_attrs)
 
     for n in node.childNodes:
@@ -918,6 +933,7 @@ class XmlManifest(object):
     return project
 
   def GetProjectPaths(self, name, path):
+    use_git_worktrees = False
     relpath = path
     if self.IsMirror:
       worktree = None
@@ -926,8 +942,15 @@ class XmlManifest(object):
     else:
       worktree = os.path.join(self.topdir, path).replace('\\', '/')
       gitdir = os.path.join(self.repodir, 'projects', '%s.git' % path)
-      objdir = os.path.join(self.repodir, 'project-objects', '%s.git' % name)
-    return relpath, worktree, gitdir, objdir
+      # We allow people to mix git worktrees & non-git worktrees for now.
+      # This allows for in situ migration of repo clients.
+      if os.path.exists(gitdir) or not self.UseGitWorktrees:
+        objdir = os.path.join(self.repodir, 'project-objects', '%s.git' % name)
+      else:
+        use_git_worktrees = True
+        gitdir = os.path.join(self.repodir, 'worktrees', '%s.git' % name)
+        objdir = gitdir
+    return relpath, worktree, gitdir, objdir, use_git_worktrees
 
   def GetProjectsWithName(self, name):
     return self._projects.get(name, [])
