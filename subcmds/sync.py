@@ -560,7 +560,8 @@ later is required to fix a server side protocol bug.
   def _GCProjects(self, projects, opt, err_event):
     gc_gitdirs = {}
     for project in projects:
-      if len(project.manifest.GetProjectsWithName(project.name)) > 1:
+      if (not project.use_git_worktrees and
+          len(project.manifest.GetProjectsWithName(project.name)) > 1):
         print('Shared project %s found, disabling pruning.' % project.name)
         project.bare_git.config('--replace-all', 'gc.pruneExpire', 'never')
       gc_gitdirs[project.gitdir] = project.bare_git
