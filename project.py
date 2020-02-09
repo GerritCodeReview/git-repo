@@ -2468,7 +2468,7 @@ class Project(object):
         platform_utils.remove(tmpPath)
     with GetUrlCookieFile(srcUrl, quiet) as (cookiefile, proxy):
       if cookiefile:
-        cmd += ['--cookie', cookiefile, '--cookie-jar', cookiefile]
+        cmd += ['--cookie', cookiefile]
       if proxy:
         cmd += ['--proxy', proxy]
       elif 'http_proxy' in os.environ and 'darwin' == sys.platform:
