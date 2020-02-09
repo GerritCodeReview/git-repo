@@ -261,6 +261,8 @@ def _InitParser():
   group.add_option('--clone-filter', action='store', default='blob:none',
                    help='filter for use with --partial-clone '
                         '[default: %default]')
+  group.add_option('--worktree', action='store_true',
+                   help=optparse.SUPPRESS_HELP)
   group.add_option('--archive', action='store_true',
                    help='checkout an archive instead of a git repository for '
                         'each project. See git archive.')
