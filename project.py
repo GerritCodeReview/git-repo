@@ -856,6 +856,7 @@ class Project(object):
                clone_depth=None,
                upstream=None,
                parent=None,
+               use_git_worktrees=False,
                is_derived=False,
                dest_branch=None,
                optimized_fetch=False,
@@ -879,6 +880,7 @@ class Project(object):
       sync_tags: The `sync-tags` attribute of manifest.xml's project element.
       upstream: The `upstream` attribute of manifest.xml's project element.
       parent: The parent Project object.
+      use_git_worktrees: Whether to use `git worktree` for this project.
       is_derived: False if the project was explicitly defined in the manifest;
                   True if the project is a discovered submodule.
       dest_branch: The branch to which to push changes for review by default.
@@ -913,6 +915,7 @@ class Project(object):
     self.clone_depth = clone_depth
     self.upstream = upstream
     self.parent = parent
+    self.use_git_worktrees = use_git_worktrees
     self.is_derived = is_derived
     self.optimized_fetch = optimized_fetch
     self.subprojects = []
@@ -1862,15 +1865,19 @@ class Project(object):
       except KeyError:
         head = None
     if revid and head and revid == head:
-      ref = os.path.join(self.gitdir, R_HEADS + name)
-      try:
-        os.makedirs(os.path.dirname(ref))
-      except OSError:
-        pass
-      _lwrite(ref, '%s\n' % revid)
-      _lwrite(self.GetHeadPath(), 'ref: %s%s\n' % (R_HEADS, name))
-      branch.Save()
-      return True
+      if self.use_git_worktrees:
+        self.work_git.update_ref(HEAD, revid)
+        branch.Save()
+      else:
+        ref = os.path.join(self.gitdir, R_HEADS + name)
+        try:
+          os.makedirs(os.path.dirname(ref))
+        except OSError:
+          pass
+        _lwrite(ref, '%s\n' % revid)
+        _lwrite(self.GetHeadPath(), 'ref: %s%s\n' % (R_HEADS, name))
+        branch.Save()
+        return True
 
     if GitCommand(self,
                   ['checkout', '-b', branch.name, revid],
@@ -2602,6 +2609,11 @@ class Project(object):
         os.makedirs(self.objdir)
         self.bare_objdir.init()
 
+        # Enable per-worktree config file support if possible.  This is more a
+        # nice-to-have feature for users rather than a hard requirement.
+        if self.use_git_worktrees and git_require((2, 19, 0)):
+          self.config.SetString('extensions.worktreeConfig', 'true')
+
       # If we have a separate directory to hold refs, initialize it as well.
       if self.objdir != self.gitdir:
         if init_git_dir:
@@ -2825,11 +2837,46 @@ class Project(object):
         else:
           raise
 
+  def _InitGitWorktree(self):
+    """Init the project using git worktrees."""
+    dotgit = os.path.join(self.worktree, '.git')
+    # We don't have direct control over the worktree namespace.  Since the
+    # default is to use the basename, we'll create a name using the checkout.
+    # This also provides a temp path to help with interruptions.
+    worktree_name = self.relpath.replace(os.path.sep, '_')
+    temp_path = os.path.join(os.path.dirname(self.worktree), worktree_name)
+    platform_utils.rmtree(temp_path, ignore_errors=True)
+    self.bare_git.worktree('prune')
+    self.bare_git.worktree('add', '-ff', '--checkout', '--detach', '--lock',
+                           temp_path, self.GetRevisionId())
+    if worktree_name != self.relpath:
+      self.bare_git.worktree('move', '-ff', worktree_name, self.worktree)
+
+    # Rewrite the internal state files to use relative paths between the
+    # checkouts & worktrees.
+    with open(dotgit, 'r') as fp:
+      # Figure out the checkout->worktree path.
+      setting = fp.read()
+      assert setting.startswith('gitdir:')
+      git_worktree_path = setting.split(':', 1)[1].strip()
+    # Use relative path from checkout->worktree.
+    with open(dotgit, 'w') as fp:
+      print('gitdir:', os.path.relpath(git_worktree_path, self.worktree),
+            file=fp)
+    # Use relative path from worktree->checkout.
+    with open(os.path.join(git_worktree_path, 'gitdir'), 'w') as fp:
+      print(os.path.relpath(dotgit, git_worktree_path), file=fp)
+
   def _InitWorkTree(self, force_sync=False, submodules=False):
     realdotgit = os.path.join(self.worktree, '.git')
     tmpdotgit = realdotgit + '.tmp'
     init_dotgit = not os.path.exists(realdotgit)
     if init_dotgit:
+      if self.use_git_worktrees:
+        self._InitGitWorkTree()
+        self._CopyAndLinkFiles()
+        return
+
       dotgit = tmpdotgit
       platform_utils.rmtree(tmpdotgit, ignore_errors=True)
       os.makedirs(tmpdotgit)
