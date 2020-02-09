@@ -819,6 +819,7 @@ def _FindRepo():
 
 class _Options(object):
   help = False
+  version = False
 
 
 def _ParseArguments(args):
@@ -830,7 +831,8 @@ def _ParseArguments(args):
     a = args[i]
     if a == '-h' or a == '--help':
       opt.help = True
-
+    elif a == '--version':
+      opt.version = True
     elif not a.startswith('-'):
       cmd = a
       arg = args[i + 1:]
@@ -875,6 +877,16 @@ def _Help(args):
   else:
     _Usage()
   sys.exit(1)
+
+
+def _Version():
+  """Show version information."""
+  print('<repo not installed>')
+  print('repo launcher version %s' % ('.'.join(str(x) for x in VERSION),))
+  print('       (from %s)' % (__file__,))
+  print('git %s' % (ParseGitVersion().full,))
+  print('Python %s' % sys.version)
+  sys.exit(0)
 
 
 def _NotInstalled():
@@ -953,6 +965,8 @@ def main(orig_args):
       _Usage()
     if cmd == 'help':
       _Help(args)
+    if opt.version or cmd == 'version':
+      _Version()
     if not cmd:
       _NotInstalled()
     if cmd == 'init' or cmd == 'gitc-init':

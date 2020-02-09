@@ -26,6 +26,14 @@ from pyversion import is_python3
 import wrapper
 
 
+if is_python3():
+  from unittest import mock
+  from io import StringIO
+else:
+  import mock
+  from StringIO import StringIO
+
+
 def fixture(*paths):
   """Return a path relative to tests/fixtures.
   """
@@ -47,6 +55,16 @@ class RepoWrapperTestCase(unittest.TestCase):
 class RepoWrapperUnitTest(RepoWrapperTestCase):
   """Tests helper functions in the repo wrapper
   """
+
+  def test_version(self):
+    """Make sure _Version works."""
+    with self.assertRaises(SystemExit) as e:
+      with mock.patch('sys.stdout', new_callable=StringIO) as stdout:
+        with mock.patch('sys.stderr', new_callable=StringIO) as stderr:
+          self.wrapper._Version()
+    self.assertEqual(0, e.exception.code)
+    self.assertEqual('', stderr.getvalue())
+    self.assertIn('repo launcher version', stdout.getvalue())
 
   def test_get_gitc_manifest_dir_no_gitc(self):
     """
