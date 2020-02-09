@@ -15,6 +15,8 @@
 # limitations under the License.
 
 from __future__ import print_function
+
+import optparse
 import os
 import platform
 import re
@@ -128,6 +130,10 @@ to update the working directory files.
     g.add_option('--clone-filter', action='store', default='blob:none',
                  dest='clone_filter',
                  help='filter for use with --partial-clone [default: %default]')
+    # TODO(vapier): Expose option with real help text once this has been in the
+    # wild for a while w/out significant bug reports.  Goal is by ~Sep 2020.
+    g.add_option('--worktree', action='store_true',
+                 help=optparse.SUPPRESS_HELP)
     g.add_option('--archive',
                  dest='archive', action='store_true',
                  help='checkout an archive instead of a git repository for '
@@ -245,6 +251,20 @@ to update the working directory files.
 
     if opt.dissociate:
       m.config.SetString('repo.dissociate', 'true')
+
+    if opt.worktree:
+      if opt.mirror:
+        print('fatal: --mirror and --worktree are incompatible',
+              file=sys.stderr)
+        sys.exit(1)
+      if opt.submodules:
+        print('fatal: --submodules and --worktree are incompatible',
+              file=sys.stderr)
+        sys.exit(1)
+      m.config.SetString('repo.worktree', 'true')
+      if is_new:
+        m.use_git_worktrees = True
+      print('warning: --worktree is experimental!', file=sys.stderr)
 
     if opt.archive:
       if is_new:
@@ -458,6 +478,10 @@ to update the working directory files.
             'version of git to maintain support.'
             % ('.'.join(str(x) for x in MIN_GIT_VERSION_SOFT),),
             file=sys.stderr)
+
+    if opt.worktree:
+      # Older versions of git supported worktree, but had dangerous gc bugs.
+      git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
 
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
