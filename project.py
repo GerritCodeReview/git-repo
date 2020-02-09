@@ -1817,6 +1817,18 @@ class Project(object):
 
 # Branch Management ##
 
+  def GetHeadPath(self):
+    """Return the full path to the HEAD ref."""
+    dotgit = os.path.join(self.worktree, '.git')
+    if os.path.isfile(dotgit):
+      # Git worktrees use a "gitdir:" syntax to point to the scratch space.
+      with open(dotgit) as fp:
+        setting = fp.read()
+        assert setting.startswith('gitdir:')
+        gitdir = setting.split(':', 1)[1].strip()
+      dotgit = os.path.join(self.worktree, gitdir)
+    return os.path.join(dotgit, HEAD)
+
   def StartBranch(self, name, branch_merge='', revision=None):
     """Create a new branch off the manifest's revision.
     """
@@ -1856,8 +1868,7 @@ class Project(object):
       except OSError:
         pass
       _lwrite(ref, '%s\n' % revid)
-      _lwrite(os.path.join(self.worktree, '.git', HEAD),
-              'ref: %s%s\n' % (R_HEADS, name))
+      _lwrite(self.GetHeadPath(), 'ref: %s%s\n' % (R_HEADS, name))
       branch.Save()
       return True
 
@@ -1904,8 +1915,7 @@ class Project(object):
       # Same revision; just update HEAD to point to the new
       # target branch, but otherwise take no other action.
       #
-      _lwrite(os.path.join(self.worktree, '.git', HEAD),
-              'ref: %s%s\n' % (R_HEADS, name))
+      _lwrite(self.GetHeadPath(), 'ref: %s%s\n' % (R_HEADS, name))
       return True
 
     return GitCommand(self,
@@ -1938,8 +1948,7 @@ class Project(object):
 
       revid = self.GetRevisionId(all_refs)
       if head == revid:
-        _lwrite(os.path.join(self.worktree, '.git', HEAD),
-                '%s\n' % revid)
+        _lwrite(self.GetHeadPath(), '%s\n' % revid)
       else:
         self._Checkout(revid, quiet=True)
 
@@ -3002,7 +3011,7 @@ class Project(object):
       if self._bare:
         path = os.path.join(self._project.gitdir, HEAD)
       else:
-        path = os.path.join(self._project.worktree, '.git', HEAD)
+        path = self._project.GetHeadPath()
       try:
         with open(path) as fd:
           line = fd.readline()
