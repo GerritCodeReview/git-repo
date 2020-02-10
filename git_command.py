@@ -26,6 +26,7 @@ from git_refs import HEAD
 import platform_utils
 from repo_trace import REPO_TRACE, IsTrace, Trace
 from wrapper import Wrapper
+from pyversion import is_python3
 
 GIT = 'git'
 # Should keep in sync with the "repo" launcher file.
@@ -193,7 +194,10 @@ def git_require(min_version, fail=False, msg=''):
   return False
 
 def _setenv(env, name, value):
-  env[name] = value.encode()
+  if is_python3():
+    env[name] = value
+  else:
+    env[name] = value.encode()
 
 class GitCommand(object):
   def __init__(self,
