@@ -255,27 +255,41 @@ class _Repo(object):
     return result
 
 
-def _CheckWrapperVersion(ver, repo_path):
+def _CheckWrapperVersion(ver_str, repo_path):
+  """Verify the repo launcher is new enough for this checkout.
+
+  Args:
+    ver_str: The version string passed from the repo launcher when it ran us.
+    repo_path: The path to the repo launcher that loaded us.
+  """
+  # Refuse to work with really old wrapper versions.  We don't test these,
+  # so might as well require a somewhat recent sane version.
+  # v1.15 of the repo launcher was released in ~Mar 2012.
+  MIN_REPO_VERSION = (1, 15)
+  min_str = '.'.join(str(x) for x in MIN_REPO_VERSION)
+
   if not repo_path:
     repo_path = '~/bin/repo'
 
-  if not ver:
+  if not ver_str:
     print('no --wrapper-version argument', file=sys.stderr)
     sys.exit(1)
 
+  # Pull out the version of the repo launcher we know about to compare.
   exp = Wrapper().VERSION
-  ver = tuple(map(int, ver.split('.')))
-  if len(ver) == 1:
-    ver = (0, ver[0])
+  ver = tuple(map(int, ver_str.split('.')))
 
   exp_str = '.'.join(map(str, exp))
-  if exp[0] > ver[0] or ver < (0, 4):
+  if ver < MIN_REPO_VERSION:
     print("""
-!!! A new repo command (%5s) is available.    !!!
-!!! You must upgrade before you can continue:   !!!
+repo: error:
+!!! Your version of repo %s is too old.
+!!! We need at least version %s.
+!!! A new repo command (%s) is available.
+!!! You must upgrade before you can continue:
 
     cp %s %s
-""" % (exp_str, WrapperPath(), repo_path), file=sys.stderr)
+""" % (ver_str, min_str, exp_str, WrapperPath(), repo_path), file=sys.stderr)
     sys.exit(1)
 
   if exp > ver:
