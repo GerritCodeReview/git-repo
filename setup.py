@@ -35,7 +35,7 @@ with open(os.path.join(TOPDIR, 'README.md')) as fp:
 # https://packaging.python.org/tutorials/packaging-projects/
 setuptools.setup(
     name='repo',
-    version='1.13.8',
+    version='2.1',
     maintainer='Various',
     maintainer_email='repo-discuss@googlegroups.com',
     description='Repo helps manage many Git repositories',
