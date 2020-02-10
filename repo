@@ -79,7 +79,9 @@ def check_python_version():
       print('repo: error: Python 3 version is too old; '
             'Please use Python {}.{} or newer.'.format(*MIN_PYTHON_VERSION),
             file=sys.stderr)
-      sys.exit(1)
+      # TODO(vapier): Make this a hard failure again by end of 2020.  There are
+      # some people with python->python3.5 out there still.
+      #sys.exit(1)
 
 
 if __name__ == '__main__':
