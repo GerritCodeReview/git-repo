@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8df213f1_5b13eda2",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-10T19:56:21Z",
+      "side": 1,
+      "message": "i liked keeping it an error, but it prob will confuse",
+      "parentUuid": "d66cf010_2808e771",
+      "range": {
+        "startLine": 79,
+        "startChar": 19,
+        "endLine": 79,
+        "endChar": 24
+      },
+      "revId": "5e8ad8ab7e689192f05295ed5e7af6f03a149d53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "043998bd_eb1e1589",
         "filename": "repo",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-10T19:52:14Z",
       "side": 1,
       "message": "Do you have more details (e.g. distro to name so it\u0027s easy to check on it again later)?",
+      "range": {
+        "startLine": 83,
+        "startChar": 8,
+        "endLine": 83,
+        "endChar": 19
+      },
+      "revId": "5e8ad8ab7e689192f05295ed5e7af6f03a149d53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7bcbd47b_c6dc37e3",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-10T19:56:21Z",
+      "side": 1,
+      "message": "i don\u0027t.  the single report i got turned out to be failing in a different way.",
+      "parentUuid": "043998bd_eb1e1589",
       "range": {
         "startLine": 83,
         "startChar": 8,
