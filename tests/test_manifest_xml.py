@@ -49,6 +49,8 @@ class ManifestValidateFilePaths(unittest.TestCase):
     # We allow symlinks to end in a slash since we allow them to point to dirs
     # in general.  Technically the slash isn't necessary.
     check('foo/', 'bar')
+    # We allow a single '.' to get a reference to the project itself.
+    check('.', 'bar')
 
   def test_bad_paths(self):
     """Make sure bad paths (src & dest) are rejected."""

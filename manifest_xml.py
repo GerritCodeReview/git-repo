@@ -985,11 +985,13 @@ class XmlManifest(object):
     # Assume paths might be used on case-insensitive filesystems.
     path = path.lower()
 
-    # We don't really need to reject '.' here, but there shouldn't really be a
-    # need to ever use it, so no need to accept it either.
-    for part in set(path.split(os.path.sep)):
-      if part in {'.', '..', '.git'} or part.startswith('.repo'):
-        return 'bad component: %s' % (part,)
+    # Some people use src="." to create stable links to projects.  Lets allow
+    # that but reject all other uses of "." to keep things simple.
+    parts = path.split(os.path.sep)
+    if parts != ['.']:
+      for part in set(parts):
+        if part in {'.', '..', '.git'} or part.startswith('.repo'):
+          return 'bad component: %s' % (part,)
 
     if not symlink and path.endswith(os.path.sep):
       return 'dirs not allowed'
