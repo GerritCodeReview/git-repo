@@ -35,7 +35,7 @@ if not REPO_REV:
 # limitations under the License.
 
 # increment this whenever we make important changes to this script
-VERSION = (1, 26)
+VERSION = (1, 27)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (1, 2)
