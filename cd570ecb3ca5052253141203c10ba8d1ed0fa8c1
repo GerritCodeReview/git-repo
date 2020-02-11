@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4743060f_c992ad08",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2020-02-11T17:13:28Z",
+      "side": 1,
+      "message": "Should there be a log here indicating potentially self-damaging behaviour?\n\nIs there any value of setting pruneExpire still?",
+      "revId": "cd570ecb3ca5052253141203c10ba8d1ed0fa8c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
