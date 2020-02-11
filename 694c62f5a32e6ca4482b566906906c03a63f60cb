@@ -34,6 +34,24 @@
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "78059027_4bdf22f6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-11T21:55:10Z",
+      "side": 1,
+      "message": "here\u0027s example output in case it helps:\n\n src/third_party/coreboot: Shared project chromiumos/third_party/coreboot found, disabling pruning.\n src/third_party/coreboot: WARNING: shared projects are unreliable when using old versions of git; please upgrade to git-2.7.0+.\n src/third_party/coreboot-zork: Shared project chromiumos/third_party/coreboot found, disabling pruning.\n src/third_party/coreboot-zork: WARNING: shared projects are unreliable when using old versions of git; please upgrade to git-2.7.0+.\n\ni debated only issuing the warning once and omitting the project entirely, but i figured this way users would know which local projects to watch out for.  having the remote project name isn\u0027t that useful to most people as they won\u0027t really know how to lookup \"what local git repos are cloning from the remote chromiumos/third_party/coreboot project\".",
+      "parentUuid": "30a952b6_bff4c6e8",
+      "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
