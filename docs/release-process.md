@@ -161,7 +161,91 @@ You can create a short changelog using the command:
 $ git log --format="%h (%aN) %s" --no-merges origin/stable..$r
 ```
 
+## Project References
 
+Here's a table showing the relationship of major tools, their EOL dates, and
+their status in Ubuntu & Debian.
+Those distros tend to be good indicators of how long we need to support things.
+
+Things in bold indicate stuff to take note of, but does not guarantee that we
+still support them.
+Things in italics are things we used to care about but probably don't anymore.
+
+|   Date   |     EOL      | [Git][rel-g] | [Python][rel-p] | [Ubuntu][rel-u] / [Debian][rel-d] | Git | Python |
+|:--------:|:------------:|--------------|-----------------|-----------------------------------|-----|--------|
+| Oct 2008 | *Oct 2013*   |              | 2.6.0           | *10.04 Lucid* - 10.10 Maverick / *Squeeze* |
+| Dec 2008 | *Feb 2009*   |              | 3.0.0           |
+| Feb 2009 | *Mar 2012*   |              |                 | Debian 5 Lenny       | 1.5.6.5 | 2.5.2 |
+| Jun 2009 | *Jun 2016*   |              | 3.1.0           | *10.04 Lucid* - 10.10 Maverick / *Squeeze* |
+| Feb 2010 | *Oct 2012*   | 1.7.0        |                 | *10.04 Lucid* - *12.04 Precise* - 12.10 Quantal |
+| Apr 2010 | *Apr 2015*   |              |                 | *10.04 Lucid*        | 1.7.0.4  | 2.6.5 3.1.2  |
+| Jul 2010 | *Dec 2019*   |              | **2.7.0**       | 11.04 Natty - **<current>** |
+| Oct 2010 |              |              |                 | 10.10 Maverick       | 1.7.1    | 2.6.6 3.1.3  |
+| Feb 2011 | *Feb 2016*   |              |                 | Debian 6 Squeeze     | 1.7.2.5  | 2.6.6 3.1.3  |
+| Apr 2011 |              |              |                 | 11.04 Natty          | 1.7.4    | 2.7.1 3.2.0  |
+| Oct 2011 | *Feb 2016*   |              | 3.2.0           | 11.04 Natty - 12.10 Quantal |
+| Oct 2011 |              |              |                 | 11.10 Ocelot         | 1.7.5.4  | 2.7.2 3.2.2  |
+| Apr 2012 | *Apr 2019*   |              |                 | *12.04 Precise*      | 1.7.9.5  | 2.7.3 3.2.3  |
+| Sep 2012 | *Sep 2017*   |              | 3.3.0           | 13.04 Raring - 13.10 Saucy |
+| Oct 2012 | *Dec 2014*   | 1.8.0        |                 | 13.04 Raring - 13.10 Saucy |
+| Oct 2012 |              |              |                 | 12.10 Quantal        | 1.7.10.4 | 2.7.3 3.2.3  |
+| Apr 2013 |              |              |                 | 13.04 Raring         | 1.8.1.2  | 2.7.4 3.3.1  |
+| May 2013 | *May 2018*   |              |                 | Debian 7 Wheezy      | 1.7.10.4 | 2.7.3 3.2.3  |
+| Oct 2013 |              |              |                 | 13.10 Saucy          | 1.8.3.2  | 2.7.5 3.3.2  |
+| Feb 2014 | *Dec 2014*   | **1.9.0**    |                 | **14.04 Trusty** |
+| Mar 2014 | *Mar 2019*   |              | **3.4.0**       | **14.04 Trusty** - 15.10 Wily / **Jessie** |
+| Apr 2014 | **Apr 2022** |              |                 | **14.04 Trusty**     | 1.9.1    | 2.7.5 3.4.0  |
+| May 2014 | *Dec 2014*   | 2.0.0        |
+| Aug 2014 | *Dec 2014*   | **2.1.0**    |                 | 14.10 Utopic - 15.04 Vivid / **Jessie** |
+| Oct 2014 |              |              |                 | 14.10 Utopic         | 2.1.0    | 2.7.8 3.4.2  |
+| Nov 2014 | *Sep 2015*   | 2.2.0        |
+| Feb 2015 | *Sep 2015*   | 2.3.0        |
+| Apr 2015 | *May 2017*   | 2.4.0        |
+| Apr 2015 | **Jun 2020** |              |                 | **Debian 8 Jessie**  | 2.1.4    | 2.7.9 3.4.2  |
+| Apr 2015 |              |              |                 | 15.04 Vivid          | 2.1.4    | 2.7.9 3.4.3  |
+| Jul 2015 | *May 2017*   | 2.5.0        |                 | 15.10 Wily |
+| Sep 2015 | *May 2017*   | 2.6.0        |
+| Sep 2015 | **Sep 2020** |              | **3.5.0**       | **16.04 Xenial** - 17.04 Zesty / **Stretch** |
+| Oct 2015 |              |              |                 | 15.10 Wily           | 2.5.0    | 2.7.9 3.4.3  |
+| Jan 2016 | *Jul 2017*   | **2.7.0**    |                 | **16.04 Xenial** |
+| Mar 2016 | *Jul 2017*   | 2.8.0        |
+| Apr 2016 | **Apr 2024** |              |                 | **16.04 Xenial**     | 2.7.4    | 2.7.11 3.5.1 |
+| Jun 2016 | *Jul 2017*   | 2.9.0        |                 | 16.10 Yakkety |
+| Sep 2016 | *Sep 2017*   | 2.10.0       |
+| Oct 2016 |              |              |                 | 16.10 Yakkety        | 2.9.3    | 2.7.11 3.5.1 |
+| Nov 2016 | *Sep 2017*   | **2.11.0**   |                 | 17.04 Zesty / **Stretch** |
+| Dec 2016 | **Dec 2021** |              | **3.6.0**       | 17.10 Artful - **18.04 Bionic** - 18.10 Cosmic |
+| Feb 2017 | *Sep 2017*   | 2.12.0       |
+| Apr 2017 |              |              |                 | 17.04 Zesty          | 2.11.0   | 2.7.13 3.5.3 |
+| May 2017 | *May 2018*   | 2.13.0       |
+| Jun 2017 | **Jun 2022** |              |                 | **Debian 9 Stretch** | 2.11.0   | 2.7.13 3.5.3 |
+| Aug 2017 | *Dec 2019*   | 2.14.0       |                 | 17.10 Artful |
+| Oct 2017 | *Dec 2019*   | 2.15.0       |
+| Oct 2017 |              |              |                 | 17.10 Artful         | 2.14.1   | 2.7.14 3.6.3 |
+| Jan 2018 | *Dec 2019*   | 2.16.0       |
+| Apr 2018 | *Dec 2019*   | 2.17.0       |                 | **18.04 Bionic**     |
+| Apr 2018 | **Apr 2028** |              |                 | **18.04 Bionic**     | 2.17.0   | 2.7.15 3.6.5 |
+| Jun 2018 | *Dec 2019*   | 2.18.0       |
+| Jun 2018 | **Jun 2023** |              | 3.7.0           | 19.04 Disco - **20.04 Focal** / **Buster** |
+| Sep 2018 | *Dec 2019*   | 2.19.0       |                 | 18.10 Cosmic |
+| Oct 2018 |              |              |                 | 18.10 Cosmic         | 2.19.1   | 2.7.15 3.6.6 |
+| Dec 2018 | *Dec 2019*   | **2.20.0**   |                 | 19.04 Disco / **Buster** |
+| Feb 2019 | *Dec 2019*   | 2.21.0       |
+| Apr 2019 |              |              |                 | 19.04 Disco          | 2.20.1   | 2.7.16 3.7.3 |
+| Jun 2019 |              | 2.22.0       |
+| Jul 2019 | **Jul 2024** |              |                 | **Debian 10 Buster** | 2.20.1   | 2.7.16 3.7.3 |
+| Aug 2019 |              | 2.23.0       |
+| Oct 2019 | **Oct 2024** |              | 3.8.0           |
+| Oct 2019 |              |              |                 | 19.10 Eoan           | 2.20.1   | 2.7.17 3.7.5 |
+| Nov 2019 |              | 2.24.0       |
+| Jan 2020 |              | 2.25.0       |                 | **20.04 Focal** |
+| Apr 2020 | **Apr 2030** |              |                 | **20.04 Focal**      | 2.25.0   | 2.7.17 3.7.5 |
+
+
+[rel-d]: https://en.wikipedia.org/wiki/Debian_version_history
+[rel-g]: https://en.wikipedia.org/wiki/Git#Releases
+[rel-p]: https://en.wikipedia.org/wiki/History_of_Python#Table_of_versions
+[rel-u]: https://en.wikipedia.org/wiki/Ubuntu_version_history#Table_of_versions
 [example announcement]: https://groups.google.com/d/topic/repo-discuss/UGBNismWo1M/discussion
 [repo-discuss@googlegroups.com]: https://groups.google.com/forum/#!forum/repo-discuss
 [go/repo-release]: https://goto.google.com/repo-release
