@@ -16,6 +16,24 @@
       "revId": "cd570ecb3ca5052253141203c10ba8d1ed0fa8c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3651c31c_bc485b18",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-11T17:54:45Z",
+      "side": 1,
+      "message": "this version of repo doesn\u0027t require git-2.7, so when using older versions, there is no choice\n\ni can have repo issue a warning in the process",
+      "parentUuid": "4743060f_c992ad08",
+      "revId": "cd570ecb3ca5052253141203c10ba8d1ed0fa8c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
