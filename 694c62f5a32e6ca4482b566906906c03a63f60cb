@@ -70,6 +70,24 @@
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "16c48f14_22bebb99",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-11T22:04:26Z",
+      "side": 1,
+      "message": "i wordsmithed the output on both a few times which caused the % to wrap at one point and i didn\u0027t put it back.  it\u0027s one aspect i don\u0027t notice/keep track of too much.\n\ni can put it back, or i can just submit it and avoid resetting the CR bits ;)",
+      "parentUuid": "9e95598a_5fc69d55",
+      "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
