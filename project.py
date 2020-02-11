@@ -2073,7 +2073,7 @@ class Project(object):
       gitmodules_lines = []
       fd, temp_gitmodules_path = tempfile.mkstemp()
       try:
-        os.write(fd, p.stdout)
+        os.write(fd, p.stdout.encode('utf-8'))
         os.close(fd)
         cmd = ['config', '--file', temp_gitmodules_path, '--list']
         p = GitCommand(None, cmd, capture_stdout=True, capture_stderr=True,
