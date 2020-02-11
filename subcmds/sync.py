@@ -560,9 +560,20 @@ later is required to fix a server side protocol bug.
   def _GCProjects(self, projects, opt, err_event):
     gc_gitdirs = {}
     for project in projects:
+      # Make sure pruning never kicks in with shared projects.
       if len(project.manifest.GetProjectsWithName(project.name)) > 1:
-        print('Shared project %s found, disabling pruning.' % project.name)
-        project.bare_git.config('--replace-all', 'gc.pruneExpire', 'never')
+        print('%s: Shared project %s found, disabling pruning.' %
+              (project.relpath, project.name))
+        if git_require((2, 7, 0)):
+          project.config.SetString('core.repositoryFormatVersion', '1')
+          project.config.SetString('extensions.preciousObjects', 'true')
+        else:
+          # This isn't perfect, but it's the best we can do with old git.
+          print('%s: WARNING: shared projects are unreliable when using old '
+                'versions of git; please upgrade to git-2.7.0+.'
+                % (project.relpath,),
+                file=sys.stderr)
+          project.config.SetString('gc.pruneExpire', 'never')
       gc_gitdirs[project.gitdir] = project.bare_git
 
     has_dash_c = git_require((1, 7, 2))
