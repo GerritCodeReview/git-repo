@@ -559,10 +559,15 @@ later is required to fix a server side protocol bug.
 
   def _GCProjects(self, projects, opt, err_event):
     gc_gitdirs = {}
+    shared_projects = set()
     for project in projects:
-      if len(project.manifest.GetProjectsWithName(project.name)) > 1:
+      # Make sure pruning never kicks in with shared projects.
+      if (project.name not in shared_projects and
+          len(project.manifest.GetProjectsWithName(project.name)) > 1):
+        shared_projects.add(project.name)
         print('Shared project %s found, disabling pruning.' % project.name)
-        project.bare_git.config('--replace-all', 'gc.pruneExpire', 'never')
+        project.config.SetString('core.repositoryFormatVersion', '1')
+        project.config.SetString('extensions.preciousObjects', 'true')
       gc_gitdirs[project.gitdir] = project.bare_git
 
     has_dash_c = git_require((1, 7, 2))
