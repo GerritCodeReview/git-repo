@@ -19,8 +19,10 @@
 from __future__ import print_function
 
 import os
+import re
 import unittest
 
+from pyversion import is_python3
 import wrapper
 
 
@@ -30,15 +32,21 @@ def fixture(*paths):
   return os.path.join(os.path.dirname(__file__), 'fixtures', *paths)
 
 
-class RepoWrapperUnitTest(unittest.TestCase):
-  """Tests helper functions in the repo wrapper
-  """
+class RepoWrapperTestCase(unittest.TestCase):
+  """TestCase for the wrapper module."""
 
   def setUp(self):
-    """Load the wrapper module every time
-    """
+    """Load the wrapper module every time."""
     wrapper._wrapper_module = None
     self.wrapper = wrapper.Wrapper()
+
+    if not is_python3():
+      self.assertRegex = self.assertRegexpMatches
+
+
+class RepoWrapperUnitTest(RepoWrapperTestCase):
+  """Tests helper functions in the repo wrapper
+  """
 
   def test_get_gitc_manifest_dir_no_gitc(self):
     """
@@ -78,6 +86,38 @@ class RepoWrapperUnitTest(unittest.TestCase):
     self.assertEqual(self.wrapper.gitc_parse_clientdir('/test/usr/local/google/gitc/test/extra'), 'test')
     self.assertEqual(self.wrapper.gitc_parse_clientdir('/gitc/manifest-rw/'), None)
     self.assertEqual(self.wrapper.gitc_parse_clientdir('/test/usr/local/google/gitc/'), None)
+
+
+class SetGitTrace2ParentSid(RepoWrapperTestCase):
+  """Check SetGitTrace2ParentSid behavior."""
+
+  KEY = 'GIT_TRACE2_PARENT_SID'
+  VALID_FORMAT = re.compile(r'^repo-[0-9]{8}T[0-9]{6}Z-P[0-9a-f]{8}$')
+
+  def test_first_set(self):
+    """Test env var not yet set."""
+    env = {}
+    self.wrapper.SetGitTrace2ParentSid(env)
+    self.assertIn(self.KEY, env)
+    value = env[self.KEY]
+    self.assertRegex(value, self.VALID_FORMAT)
+
+  def test_append(self):
+    """Test env var is appended."""
+    env = {self.KEY: 'pfx'}
+    self.wrapper.SetGitTrace2ParentSid(env)
+    self.assertIn(self.KEY, env)
+    value = env[self.KEY]
+    self.assertTrue(value.startswith('pfx/'))
+    self.assertRegex(value[4:], self.VALID_FORMAT)
+
+  def test_global_context(self):
+    """Check os.environ gets updated by default."""
+    os.environ.pop(self.KEY, None)
+    self.wrapper.SetGitTrace2ParentSid()
+    self.assertIn(self.KEY, os.environ)
+    value = os.environ[self.KEY]
+    self.assertRegex(value, self.VALID_FORMAT)
 
 
 if __name__ == '__main__':
