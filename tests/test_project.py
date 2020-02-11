@@ -314,6 +314,14 @@ class LinkFile(CopyLinkTestCase):
     lf._Link()
     self.assertExists(os.path.join(self.topdir, 'foo'))
 
+  def test_src_self(self):
+    """Link to the project itself."""
+    dest = os.path.join(self.topdir, 'foo', 'bar')
+    lf = self.LinkFile('.', 'foo/bar')
+    lf._Link()
+    self.assertExists(dest)
+    self.assertEqual('../git-project', os.readlink(dest))
+
   def test_dest_subdir(self):
     """Link a file to a subdir of a checkout."""
     src = os.path.join(self.worktree, 'foo.txt')
@@ -322,6 +330,21 @@ class LinkFile(CopyLinkTestCase):
     self.assertFalse(os.path.exists(os.path.join(self.topdir, 'sub')))
     lf._Link()
     self.assertExists(os.path.join(self.topdir, 'sub', 'dir', 'foo', 'bar'))
+
+  def test_src_block_relative(self):
+    """Do not allow relative symlinks."""
+    BAD_SOURCES = (
+        './',
+        '..',
+        '../',
+        'foo/.',
+        'foo/./bar',
+        'foo/..',
+        'foo/../foo',
+    )
+    for src in BAD_SOURCES:
+      lf = self.LinkFile(src, 'foo')
+      self.assertRaises(error.ManifestInvalidPathError, lf._Link)
 
   def test_update(self):
     """Make sure changed targets get updated."""

@@ -382,7 +382,12 @@ class _LinkFile(object):
     Handles wild cards on the src linking all of the files in the source in to
     the destination directory.
     """
-    src = _SafeExpandPath(self.git_worktree, self.src)
+    # Some people use src="." to create stable links to projects.  Lets allow
+    # that but reject all other uses of "." to keep things simple.
+    if self.src == '.':
+      src = self.git_worktree
+    else:
+      src = _SafeExpandPath(self.git_worktree, self.src)
 
     if os.path.exists(src):
       # Entity exists so just a simple one to one link operation.
