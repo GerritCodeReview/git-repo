@@ -52,6 +52,24 @@
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e95598a_5fc69d55",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2020-02-11T22:01:38Z",
+      "side": 1,
+      "message": "Sorry, I meant this totally as nit-picking the coding style.\n\nOne is:\n... %\n(xyz)\n\nOne is:\n...\n% (xyz,)",
+      "parentUuid": "78059027_4bdf22f6",
+      "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
