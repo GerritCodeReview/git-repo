@@ -16,6 +16,24 @@
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "30a952b6_bff4c6e8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-11T21:49:54Z",
+      "side": 1,
+      "message": "having the project name (path on the remote server) doesn\u0027t seem useful here.  but prefixing the messages with the local path to keep them identified does.",
+      "parentUuid": "94837a06_03bec195",
+      "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
