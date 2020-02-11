@@ -28,8 +28,17 @@ from repo_trace import REPO_TRACE, IsTrace, Trace
 from wrapper import Wrapper
 
 GIT = 'git'
-# Should keep in sync with the "repo" launcher file.
-MIN_GIT_VERSION = (2, 10, 2)
+# NB: These do not need to be kept in sync with the repo launcher script.
+# These may be much newer as it allows the repo launcher to roll between
+# different repo releases while source versions might require a newer git.
+#
+# The soft version is when we start warning users that the version is old and
+# we'll be dropping support for it.  We'll refuse to work with versions older
+# than the hard version.
+#
+# git-1.7 is in (EOL) Ubuntu Precise.  git-1.9 is in Ubuntu Trusty.
+MIN_GIT_VERSION_SOFT = (1, 9, 1)
+MIN_GIT_VERSION_HARD = (1, 7, 2)
 GIT_DIR = 'GIT_DIR'
 
 LAST_GITDIR = None
