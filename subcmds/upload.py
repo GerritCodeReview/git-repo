@@ -169,6 +169,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                  metavar='BRANCH',
                  help='Submit for review on this target branch.')
 
+    p.add_option('--no-cert-checks',
+                 dest='validate_certs', action='store_false', default=True,
+                 help='Disable verifying ssl certs (unsafe).')
+
     # Options relating to upload hook.  Note that verify and no-verify are NOT
     # opposites of each other, which is why they store to different locations.
     # We are using them to match 'git commit' syntax.
@@ -185,15 +189,16 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     #   Never run upload hooks, but upload anyway (AKA bypass hooks).
     # - no-verify=True, verify=True:
     #   Invalid
-    p.add_option('--no-cert-checks',
-                 dest='validate_certs', action='store_false', default=True,
-                 help='Disable verifying ssl certs (unsafe).')
-    p.add_option('--no-verify',
+    g = p.add_option_group('Upload hooks')
+    g.add_option('--no-verify',
                  dest='bypass_hooks', action='store_true',
                  help='Do not run the upload hook.')
-    p.add_option('--verify',
+    g.add_option('--verify',
                  dest='allow_all_hooks', action='store_true',
                  help='Run the upload hook without prompting.')
+    g.add_option('--ignore-hooks',
+                 dest='ignore_hooks', action='store_true',
+                 help='Do not abort uploading if upload hooks fail.')
 
   def _SingleBranch(self, opt, branch, people):
     project = branch.project
@@ -488,12 +493,24 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                       abort_if_user_denies=True)
       pending_proj_names = [project.name for (project, available) in pending]
       pending_worktrees = [project.worktree for (project, available) in pending]
+      passed = True
       try:
         hook.Run(opt.allow_all_hooks, project_list=pending_proj_names,
                  worktree_list=pending_worktrees)
+      except SystemExit:
+        passed = False
+        if not opt.ignore_hooks:
+          raise
       except HookError as e:
+        passed = False
         print("ERROR: %s" % str(e), file=sys.stderr)
-        return
+
+      if not passed:
+        if opt.ignore_hooks:
+          print('\nWARNING: pre-upload hooks failed, but uploading anyways.',
+                file=sys.stderr)
+        else:
+          return
 
     if opt.reviewers:
       reviewers = _SplitEmails(opt.reviewers)
