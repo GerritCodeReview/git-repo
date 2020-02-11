@@ -34,7 +34,7 @@ from command import InteractiveCommand, MirrorSafeCommand
 from error import ManifestParseError
 from project import SyncBuffer
 from git_config import GitConfig
-from git_command import git_require, MIN_GIT_VERSION
+from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
 import platform_utils
 
 class Init(InteractiveCommand, MirrorSafeCommand):
@@ -451,7 +451,13 @@ to update the working directory files.
       self.OptionParser.error('--mirror and --archive cannot be used together.')
 
   def Execute(self, opt, args):
-    git_require(MIN_GIT_VERSION, fail=True)
+    git_require(MIN_GIT_VERSION_HARD, fail=True)
+    if not git_require(MIN_GIT_VERSION_SOFT):
+      print('repo: warning: git-%s+ will soon be required; please upgrade your '
+            'version of git to maintain support.'
+            % ('.'.join(str(x) for x in MIN_GIT_VERSION_SOFT),),
+            file=sys.stderr)
+    return
 
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
