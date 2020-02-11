@@ -34,6 +34,24 @@
       "revId": "cd570ecb3ca5052253141203c10ba8d1ed0fa8c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c4bdf8a_f6a8c9e0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1038187
+      },
+      "writtenOn": "2020-02-11T18:26:15Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s what I meant.  Something to prod people to upgrading.",
+      "parentUuid": "3651c31c_bc485b18",
+      "revId": "cd570ecb3ca5052253141203c10ba8d1ed0fa8c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
