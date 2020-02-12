@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "60a22f9e_a4237a0c",
+        "filename": "subcmds/start.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T05:40:21Z",
+      "side": 1,
+      "message": "easier answer here is to delete the , as it\u0027s not needed with []",
+      "revId": "fca1c9b75909b6de8155ee562d869ed6d7e67495",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

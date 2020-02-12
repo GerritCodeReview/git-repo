@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aeb8b7e3_a9e6de50",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T05:40:21Z",
+      "side": 0,
+      "message": "i would have said the alignment here was wrong ... should be aligned to the [ above",
+      "revId": "69a7f76e244c4c1fab049ffcb5320908ab5caa0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
