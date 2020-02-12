@@ -1047,6 +1047,9 @@ later is required to fix a server side protocol bug.
             file=sys.stderr)
       sys.exit(1)
 
+    if not opt.quiet:
+      print('repo sync has finished successfully.')
+
 
 def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = Wrapper()
