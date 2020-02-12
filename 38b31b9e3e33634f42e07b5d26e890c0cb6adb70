@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7e8b804d_86a29503",
+        "filename": ".flake8",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T07:19:46Z",
+      "side": 1,
+      "message": "pylint used to force people to use codenames like this, but they changed to supporting human readable things like \"line-too-long\".  i guess flake8 never made that transition ?",
+      "revId": "38b31b9e3e33634f42e07b5d26e890c0cb6adb70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
