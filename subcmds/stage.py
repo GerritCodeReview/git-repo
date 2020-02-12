@@ -21,12 +21,14 @@ from color import Coloring
 from command import InteractiveCommand
 from git_command import GitCommand
 
+
 class _ProjectList(Coloring):
   def __init__(self, gc):
     Coloring.__init__(self, gc, 'interactive')
     self.prompt = self.printer('prompt', fg='blue', attr='bold')
     self.header = self.printer('header', attr='bold')
     self.help = self.printer('help', fg='red', attr='bold')
+
 
 class Stage(InteractiveCommand):
   common = True
@@ -104,6 +106,7 @@ The '%prog' command stages files to prepare the next commit.
         _AddI(projects[0])
         continue
     print('Bye.')
+
 
 def _AddI(project):
   p = GitCommand(project, ['add', '--interactive'], bare=False)

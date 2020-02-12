@@ -23,6 +23,7 @@ from color import Coloring
 from command import PagedCommand, MirrorSafeCommand, GitcAvailableCommand, GitcClientCommand
 import gitc_utils
 
+
 class Help(PagedCommand, MirrorSafeCommand):
   common = False
   helpSummary = "Display detailed help on a command"

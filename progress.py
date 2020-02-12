@@ -26,6 +26,7 @@ _NOT_TTY = not os.isatty(2)
 # column 0.
 CSI_ERASE_LINE = '\x1b[2K'
 
+
 class Progress(object):
   def __init__(self, title, total=0, units='', print_newline=False,
                always_print_percentage=False):

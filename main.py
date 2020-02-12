@@ -101,6 +101,7 @@ global_options.add_option('--event-log',
                           dest='event_log', action='store',
                           help='filename of event log to append timeline to')
 
+
 class _Repo(object):
   def __init__(self, repodir):
     self.repodir = repodir
@@ -300,10 +301,12 @@ repo: error:
     cp %s %s
 """ % (exp_str, WrapperPath(), repo_path), file=sys.stderr)
 
+
 def _CheckRepoDir(repo_dir):
   if not repo_dir:
     print('no --repo-dir argument', file=sys.stderr)
     sys.exit(1)
+
 
 def _PruneOptions(argv, opt):
   i = 0
@@ -320,6 +323,7 @@ def _PruneOptions(argv, opt):
       continue
     i += 1
 
+
 class _UserAgentHandler(urllib.request.BaseHandler):
   def http_request(self, req):
     req.add_header('User-Agent', user_agent.repo)
@@ -328,6 +332,7 @@ class _UserAgentHandler(urllib.request.BaseHandler):
   def https_request(self, req):
     req.add_header('User-Agent', user_agent.repo)
     return req
+
 
 def _AddPasswordFromUserInput(handler, msg, req):
   # If repo could not find auth info from netrc, try to get it from user input
@@ -342,6 +347,7 @@ def _AddPasswordFromUserInput(handler, msg, req):
       return
     handler.passwd.add_password(None, url, user, password)
 
+
 class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
@@ -351,6 +357,7 @@ class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
   def http_error_auth_reqed(self, authreq, host, req, headers):
     try:
       old_add_header = req.add_header
+
       def _add_header(name, val):
         val = val.replace('\n', '')
         old_add_header(name, val)
@@ -365,6 +372,7 @@ class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
         self.retried = 0
       raise
 
+
 class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
@@ -374,6 +382,7 @@ class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
   def http_error_auth_reqed(self, auth_header, host, req, headers):
     try:
       old_add_header = req.add_header
+
       def _add_header(name, val):
         val = val.replace('\n', '')
         old_add_header(name, val)
@@ -387,6 +396,7 @@ class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
       elif getattr(self, 'retried', None):
         self.retried = 0
       raise
+
 
 class _KerberosAuthHandler(urllib.request.BaseHandler):
   def __init__(self):
@@ -468,6 +478,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
       kerberos.authGSSClientClean(self.context)
       self.context = None
 
+
 def init_http():
   handlers = [_UserAgentHandler()]
 
@@ -494,6 +505,7 @@ def init_http():
     handlers.append(urllib.request.HTTPHandler(debuglevel=1))
     handlers.append(urllib.request.HTTPSHandler(debuglevel=1))
   urllib.request.install_opener(urllib.request.build_opener(*handlers))
+
 
 def _Main(argv):
   result = 0
@@ -550,6 +562,7 @@ def _Main(argv):
 
   TerminatePager()
   sys.exit(result)
+
 
 if __name__ == '__main__':
   _Main(sys.argv[1:])

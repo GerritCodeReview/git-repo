@@ -14,21 +14,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 class ManifestParseError(Exception):
   """Failed to parse the manifest file.
   """
+
 
 class ManifestInvalidRevisionError(Exception):
   """The revision value in a project is incorrect.
   """
 
+
 class ManifestInvalidPathError(Exception):
   """A path used in <copyfile> or <linkfile> is incorrect.
   """
 
+
 class NoManifestException(Exception):
   """The required manifest does not exist.
   """
+
   def __init__(self, path, reason):
     super(NoManifestException, self).__init__()
     self.path = path
@@ -37,9 +42,11 @@ class NoManifestException(Exception):
   def __str__(self):
     return self.reason
 
+
 class EditorError(Exception):
   """Unspecified error from the user's text editor.
   """
+
   def __init__(self, reason):
     super(EditorError, self).__init__()
     self.reason = reason
@@ -47,9 +54,11 @@ class EditorError(Exception):
   def __str__(self):
     return self.reason
 
+
 class GitError(Exception):
   """Unspecified internal error from git.
   """
+
   def __init__(self, command):
     super(GitError, self).__init__()
     self.command = command
@@ -57,9 +66,11 @@ class GitError(Exception):
   def __str__(self):
     return self.command
 
+
 class UploadError(Exception):
   """A bundle upload to Gerrit did not succeed.
   """
+
   def __init__(self, reason):
     super(UploadError, self).__init__()
     self.reason = reason
@@ -67,9 +78,11 @@ class UploadError(Exception):
   def __str__(self):
     return self.reason
 
+
 class DownloadError(Exception):
   """Cannot download a repository.
   """
+
   def __init__(self, reason):
     super(DownloadError, self).__init__()
     self.reason = reason
@@ -77,9 +90,11 @@ class DownloadError(Exception):
   def __str__(self):
     return self.reason
 
+
 class NoSuchProjectError(Exception):
   """A specified project does not exist in the work tree.
   """
+
   def __init__(self, name=None):
     super(NoSuchProjectError, self).__init__()
     self.name = name
@@ -93,6 +108,7 @@ class NoSuchProjectError(Exception):
 class InvalidProjectGroupsError(Exception):
   """A specified project is not suitable for the specified groups
   """
+
   def __init__(self, name=None):
     super(InvalidProjectGroupsError, self).__init__()
     self.name = name
@@ -102,14 +118,17 @@ class InvalidProjectGroupsError(Exception):
       return 'in current directory'
     return self.name
 
+
 class RepoChangedException(Exception):
   """Thrown if 'repo sync' results in repo updating its internal
      repo or manifest repositories.  In this special case we must
      use exec to re-execute repo with the new code and manifest.
   """
+
   def __init__(self, extra_args=None):
     super(RepoChangedException, self).__init__()
     self.extra_args = extra_args or []
+
 
 class HookError(Exception):
   """Thrown if a 'repo-hook' could not be run.

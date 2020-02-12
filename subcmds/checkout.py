@@ -19,6 +19,7 @@ import sys
 from command import Command
 from progress import Progress
 
+
 class Checkout(Command):
   common = True
   helpSummary = "Checkout a branch for development"

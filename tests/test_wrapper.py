@@ -23,14 +23,17 @@ import unittest
 
 import wrapper
 
+
 def fixture(*paths):
   """Return a path relative to tests/fixtures.
   """
   return os.path.join(os.path.dirname(__file__), 'fixtures', *paths)
 
+
 class RepoWrapperUnitTest(unittest.TestCase):
   """Tests helper functions in the repo wrapper
   """
+
   def setUp(self):
     """Load the wrapper module every time
     """
@@ -75,6 +78,7 @@ class RepoWrapperUnitTest(unittest.TestCase):
     self.assertEqual(self.wrapper.gitc_parse_clientdir('/test/usr/local/google/gitc/test/extra'), 'test')
     self.assertEqual(self.wrapper.gitc_parse_clientdir('/gitc/manifest-rw/'), None)
     self.assertEqual(self.wrapper.gitc_parse_clientdir('/test/usr/local/google/gitc/'), None)
+
 
 if __name__ == '__main__':
   unittest.main()
