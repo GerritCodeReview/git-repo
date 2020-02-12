@@ -48,6 +48,7 @@ _ssh_proxy_path = None
 _ssh_sock_path = None
 _ssh_clients = []
 
+
 def ssh_sock(create=True):
   global _ssh_sock_path
   if _ssh_sock_path is None:
@@ -61,6 +62,7 @@ def ssh_sock(create=True):
         'master-%r@%h:%p')
   return _ssh_sock_path
 
+
 def _ssh_proxy():
   global _ssh_proxy_path
   if _ssh_proxy_path is None:
@@ -69,14 +71,17 @@ def _ssh_proxy():
         'git_ssh')
   return _ssh_proxy_path
 
+
 def _add_ssh_client(p):
   _ssh_clients.append(p)
+
 
 def _remove_ssh_client(p):
   try:
     _ssh_clients.remove(p)
   except ValueError:
     pass
+
 
 def terminate_ssh_clients():
   global _ssh_clients
@@ -88,7 +93,9 @@ def terminate_ssh_clients():
       pass
   _ssh_clients = []
 
+
 _git_version = None
+
 
 class _GitCall(object):
   def version_tuple(self):
@@ -102,11 +109,14 @@ class _GitCall(object):
 
   def __getattr__(self, name):
     name = name.replace('_', '-')
+
     def fun(*cmdv):
       command = [name]
       command.extend(cmdv)
       return GitCommand(None, command).Wait() == 0
     return fun
+
+
 git = _GitCall()
 
 
@@ -187,7 +197,9 @@ class UserAgent(object):
 
     return self._git_ua
 
+
 user_agent = UserAgent()
+
 
 def git_require(min_version, fail=False, msg=''):
   git_version = git.version_tuple()
@@ -201,8 +213,10 @@ def git_require(min_version, fail=False, msg=''):
     sys.exit(1)
   return False
 
+
 def _setenv(env, name, value):
   env[name] = value.encode()
+
 
 class GitCommand(object):
   def __init__(self,

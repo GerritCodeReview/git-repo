@@ -18,6 +18,7 @@ from __future__ import print_function
 
 from command import Command, MirrorSafeCommand
 
+
 class List(Command, MirrorSafeCommand):
   common = True
   helpSummary = "List projects and their associated directories"

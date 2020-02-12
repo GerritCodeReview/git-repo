@@ -24,6 +24,7 @@ from pyversion import is_python3
 if not is_python3():
   input = raw_input
 
+
 class GitcDelete(Command, GitcClientCommand):
   common = True
   visible_everywhere = False

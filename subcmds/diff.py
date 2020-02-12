@@ -16,6 +16,7 @@
 
 from command import PagedCommand
 
+
 class Diff(PagedCommand):
   common = True
   helpSummary = "Show changes between commit and working tree"

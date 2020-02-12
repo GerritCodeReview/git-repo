@@ -18,9 +18,11 @@ from color import Coloring
 from command import PagedCommand
 from manifest_xml import XmlManifest
 
+
 class _Coloring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, "status")
+
 
 class Diffmanifests(PagedCommand):
   """ A command to see logs in projects represented by manifests

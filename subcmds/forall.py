@@ -277,6 +277,7 @@ without iterating through the remaining projects.
         return
       yield [mirror, opt, cmd, shell, cnt, config, project]
 
+
 class WorkerKeyboardInterrupt(Exception):
   """ Keyboard interrupt exception for worker processes. """
   pass
@@ -284,6 +285,7 @@ class WorkerKeyboardInterrupt(Exception):
 
 def InitWorker():
   signal.signal(signal.SIGINT, signal.SIG_IGN)
+
 
 def DoWorkWrapper(args):
   """ A wrapper around the DoWork() method.
@@ -303,6 +305,7 @@ def DoWorkWrapper(args):
 
 def DoWork(project, mirror, opt, cmd, shell, cnt, config):
   env = os.environ.copy()
+
   def setenv(name, val):
     if val is None:
       val = ''

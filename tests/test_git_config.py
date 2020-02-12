@@ -23,14 +23,17 @@ import unittest
 
 import git_config
 
+
 def fixture(*paths):
   """Return a path relative to test/fixtures.
   """
   return os.path.join(os.path.dirname(__file__), 'fixtures', *paths)
 
+
 class GitConfigUnitTest(unittest.TestCase):
   """Tests the GitConfig class.
   """
+
   def setUp(self):
     """Create a GitConfig object using the test.gitconfig fixture.
     """
@@ -67,6 +70,7 @@ class GitConfigUnitTest(unittest.TestCase):
     config = git_config.GitConfig(config_fixture)
     val = config.GetString('empty')
     self.assertEqual(val, None)
+
 
 if __name__ == '__main__':
   unittest.main()

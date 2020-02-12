@@ -85,6 +85,7 @@ def not_rev(r):
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
+
 _project_hook_list = None
 
 
@@ -1256,9 +1257,7 @@ class Project(object):
       print(line[:-1])
     return p.Wait() == 0
 
-
 # Publish / Upload ##
-
   def WasPublished(self, branch, all_refs=None):
     """Was the branch published (uploaded) for code review?
        If so, returns the SHA-1 hash of the last published
@@ -1410,9 +1409,7 @@ class Project(object):
                             R_HEADS + branch.name,
                             message=msg)
 
-
 # Sync ##
-
   def _ExtractArchive(self, tarpath, path=None):
     """Extract the given tar on its current location
 
@@ -1819,9 +1816,7 @@ class Project(object):
                             patch_id,
                             self.bare_git.rev_parse('FETCH_HEAD'))
 
-
 # Branch Management ##
-
   def GetHeadPath(self):
     """Return the full path to the HEAD ref."""
     dotgit = os.path.join(self.worktree, '.git')
@@ -2019,9 +2014,7 @@ class Project(object):
         kept.append(ReviewableBranch(self, branch, base))
     return kept
 
-
 # Submodule Management ##
-
   def GetRegisteredSubprojects(self):
     result = []
 
@@ -2171,7 +2164,6 @@ class Project(object):
       result.append(subproject)
       result.extend(subproject.GetDerivedSubprojects())
     return result
-
 
 # Direct Git Commands ##
   def _CheckForImmutableRevision(self):

@@ -28,12 +28,15 @@ REPO_TRACE = 'REPO_TRACE'
 
 _TRACE = os.environ.get(REPO_TRACE) == '1'
 
+
 def IsTrace():
   return _TRACE
+
 
 def SetTrace():
   global _TRACE
   _TRACE = True
+
 
 def Trace(fmt, *args):
   if IsTrace():
