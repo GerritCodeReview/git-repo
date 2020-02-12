@@ -93,7 +93,7 @@ If no project is specified try to use current directory as a project.
         continue
 
       if len(dl.commits) > 1:
-        print('[%s] %d/%d depends on %d unmerged changes:' \
+        print('[%s] %d/%d depends on %d unmerged changes:'
               % (project.name, change_id, ps_id, len(dl.commits)),
               file=sys.stderr)
         for c in dl.commits:
@@ -102,7 +102,7 @@ If no project is specified try to use current directory as a project.
         try:
           project._CherryPick(dl.commit)
         except GitError:
-          print('[%s] Could not complete the cherry-pick of %s' \
+          print('[%s] Could not complete the cherry-pick of %s'
                 % (project.name, dl.commit), file=sys.stderr)
           sys.exit(1)
 

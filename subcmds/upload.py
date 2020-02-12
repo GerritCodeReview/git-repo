@@ -422,8 +422,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
           else:
             fmt = '\n       (%s)'
           print(('[FAILED] %-15s %-15s' + fmt) % (
-                 branch.project.relpath + '/', \
-                 branch.name, \
+                 branch.project.relpath + '/',
+                 branch.name,
                  str(branch.error)),
                  file=sys.stderr)
       print()
