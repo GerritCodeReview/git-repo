@@ -72,8 +72,8 @@ Displays detailed usage information about a command.
       return False
 
     commandNames = list(sorted([name
-                    for name, command in self.commands.items()
-                    if command.common and gitc_supported(command)]))
+                                for name, command in self.commands.items()
+                                if command.common and gitc_supported(command)]))
     self._PrintCommands(commandNames)
 
     print(

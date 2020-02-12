@@ -104,10 +104,10 @@ least one of these before using this command.""", file=sys.stderr)
         rc = subprocess.Popen(args, shell=shell).wait()
       except OSError as e:
         raise EditorError('editor failed, %s: %s %s'
-          % (str(e), editor, path))
+                          % (str(e), editor, path))
       if rc != 0:
         raise EditorError('editor failed with exit status %d: %s %s'
-          % (rc, editor, path))
+                          % (rc, editor, path))
 
       with open(path, mode='rb') as fd2:
         return fd2.read().decode('utf-8')

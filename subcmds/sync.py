@@ -356,7 +356,7 @@ later is required to fix a server side protocol bug.
         pass
       except Exception as e:
         print('error: Cannot fetch %s (%s: %s)'
-            % (project.name, type(e).__name__, str(e)), file=sys.stderr)
+              % (project.name, type(e).__name__, str(e)), file=sys.stderr)
         err_event.set()
         raise
     finally:

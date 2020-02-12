@@ -188,7 +188,7 @@ class _Repo(object):
       copts = cmd.ReadEnvironmentOptions(copts)
     except NoManifestException as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
-        file=sys.stderr)
+            file=sys.stderr)
       print('error: manifest missing or unreadable -- please run init',
             file=sys.stderr)
       return 1
@@ -211,9 +211,9 @@ class _Repo(object):
       cmd.ValidateOptions(copts, cargs)
       result = cmd.Execute(copts, cargs)
     except (DownloadError, ManifestInvalidRevisionError,
-        NoManifestException) as e:
+            NoManifestException) as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
-        file=sys.stderr)
+            file=sys.stderr)
       if isinstance(e, NoManifestException):
         print('error: manifest missing or unreadable -- please run init',
               file=sys.stderr)
@@ -406,7 +406,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
 
       if self.retried > 3:
         raise urllib.request.HTTPError(req.get_full_url(), 401,
-          "Negotiate auth failed", headers, None)
+                                       "Negotiate auth failed", headers, None)
       else:
         self.retried += 1
 

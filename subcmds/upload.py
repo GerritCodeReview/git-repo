@@ -425,7 +425,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                  branch.project.relpath + '/',
                  branch.name,
                  str(branch.error)),
-                 file=sys.stderr)
+                file=sys.stderr)
       print()
 
     for branch in todo:
@@ -433,7 +433,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         print('[OK    ] %-15s %s' % (
                branch.project.relpath + '/',
                branch.name),
-               file=sys.stderr)
+              file=sys.stderr)
 
     if have_errors:
       sys.exit(1)

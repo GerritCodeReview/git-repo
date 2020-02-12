@@ -430,8 +430,8 @@ def _open_ssh(host, port=None):
 
     # We will make two calls to ssh; this is the common part of both calls.
     command_base = ['ssh',
-                     '-o', 'ControlPath %s' % ssh_sock(),
-                     host]
+                    '-o', 'ControlPath %s' % ssh_sock(),
+                    host]
     if port is not None:
       command_base[1:1] = ['-p', str(port)]
 
@@ -465,7 +465,7 @@ def _open_ssh(host, port=None):
     except Exception as e:
       _ssh_master = False
       print('\nwarn: cannot enable ssh control master for %s:%s\n%s'
-             % (host, port, str(e)), file=sys.stderr)
+            % (host, port, str(e)), file=sys.stderr)
       return False
 
     time.sleep(1)
@@ -583,7 +583,7 @@ class Remote(object):
     self.review = self._Get('review')
     self.projectname = self._Get('projectname')
     self.fetch = list(map(RefSpec.FromString,
-                      self._Get('fetch', all_keys=True)))
+                          self._Get('fetch', all_keys=True)))
     self._review_url = None
 
   def _InsteadOf(self):

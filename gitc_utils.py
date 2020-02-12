@@ -52,7 +52,7 @@ def _set_project_revisions(projects):
                                        project.remote.url,
                                        project.revisionExpr],
                                       capture_stdout=True, cwd='/tmp'))
-      for project in projects if not git_config.IsId(project.revisionExpr)]
+                     for project in projects if not git_config.IsId(project.revisionExpr)]
   for proj, gitcmd in project_gitcmds:
     if gitcmd.Wait():
       print('FATAL: Failed to retrieve revisionExpr for %s' % proj)

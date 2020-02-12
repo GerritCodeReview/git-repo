@@ -253,7 +253,7 @@ without iterating through the remaining projects.
     except Exception as e:
       # Catch any other exceptions raised
       print('Got an error, terminating the pool: %s: %s' %
-              (type(e).__name__, e),
+            (type(e).__name__, e),
             file=sys.stderr)
       pool.terminate()
       rc = rc or getattr(e, 'errno', 1)
@@ -268,7 +268,7 @@ without iterating through the remaining projects.
         project = self._SerializeProject(p)
       except Exception as e:
         print('Project list error on project %s: %s: %s' %
-                (p.name, type(e).__name__, e),
+              (p.name, type(e).__name__, e),
               file=sys.stderr)
         return
       except KeyboardInterrupt:
@@ -331,7 +331,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     if opt.ignore_missing:
       return 0
     if ((opt.project_header and opt.verbose)
-        or not opt.project_header):
+            or not opt.project_header):
       print('skipping %s/' % project['relpath'], file=sys.stderr)
     return 1
 
