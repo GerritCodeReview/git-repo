@@ -16,6 +16,24 @@
       "revId": "38b31b9e3e33634f42e07b5d26e890c0cb6adb70",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "da955467_b3878e06",
+        "filename": ".flake8",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-12T07:29:13Z",
+      "side": 1,
+      "message": "Not as far as I can see. It looks like we could, however, add comments here to clarify what we\u0027re ignoring.  See [1]\n\n[1] https://flake8.pycqa.org/en/latest/user/configuration.html",
+      "parentUuid": "7e8b804d_86a29503",
+      "revId": "38b31b9e3e33634f42e07b5d26e890c0cb6adb70",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
