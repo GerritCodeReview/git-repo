@@ -558,7 +558,7 @@ def SetupGnuPG(quiet):
     proc = subprocess.Popen(cmd,
                             env=env,
                             stdin=subprocess.PIPE)
-  except OSError as e:
+  except OSError:
     if not quiet:
       print('warning: gpg (GnuPG) is not available.', file=sys.stderr)
       print('warning: Installing it is strongly encouraged.', file=sys.stderr)
