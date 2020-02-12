@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04409944_7f76595c",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1261,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T05:37:36Z",
+      "side": 1,
+      "message": "i think the checker is getting confused by our misuse of comment blocks like this",
+      "revId": "233071c4e569d5c74bb323fd941cb6a7fd446c48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a130360e_2837f70f",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2182,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T05:37:36Z",
+      "side": 1,
+      "message": "i would have expected this to be 2 blank lines like all the other changes above",
+      "revId": "233071c4e569d5c74bb323fd941cb6a7fd446c48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
