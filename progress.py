@@ -53,9 +53,9 @@ class Progress(object):
 
     if self._total <= 0:
       sys.stderr.write('%s\r%s: %d,' % (
-        CSI_ERASE_LINE,
-        self._title,
-        self._done))
+          CSI_ERASE_LINE,
+          self._title,
+          self._done))
       sys.stderr.flush()
     else:
       p = (100 * self._done) / self._total
@@ -63,13 +63,13 @@ class Progress(object):
       if self._lastp != p or self._always_print_percentage:
         self._lastp = p
         sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s)%s%s%s' % (
-          CSI_ERASE_LINE,
-          self._title,
-          p,
-          self._done, self._units,
-          self._total, self._units,
-          ' ' if msg else '', msg,
-          "\n" if self._print_newline else ""))
+            CSI_ERASE_LINE,
+            self._title,
+            p,
+            self._done, self._units,
+            self._total, self._units,
+            ' ' if msg else '', msg,
+            "\n" if self._print_newline else ""))
         sys.stderr.flush()
 
   def end(self):
@@ -78,16 +78,16 @@ class Progress(object):
 
     if self._total <= 0:
       sys.stderr.write('%s\r%s: %d, done.\n' % (
-        CSI_ERASE_LINE,
-        self._title,
-        self._done))
+          CSI_ERASE_LINE,
+          self._title,
+          self._done))
       sys.stderr.flush()
     else:
       p = (100 * self._done) / self._total
       sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s), done.\n' % (
-        CSI_ERASE_LINE,
-        self._title,
-        p,
-        self._done, self._units,
-        self._total, self._units))
+          CSI_ERASE_LINE,
+          self._title,
+          p,
+          self._done, self._units,
+          self._total, self._units))
       sys.stderr.flush()

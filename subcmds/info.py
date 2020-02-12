@@ -195,11 +195,11 @@ class Info(PagedCommand):
       commits = branch.commits
       date = branch.date
       self.text('%s %-33s (%2d commit%s, %s)' % (
-        branch.name == project.CurrentBranch and '*' or ' ',
-        branch.name,
-        len(commits),
-        len(commits) != 1 and 's' or '',
-        date))
+          branch.name == project.CurrentBranch and '*' or ' ',
+          branch.name,
+          len(commits),
+          len(commits) != 1 and 's' or '',
+          date))
       self.out.nl()
 
       for commit in commits:

@@ -95,5 +95,5 @@ It is equivalent to "git branch -D <branchname>".
           result = "all project"
         else:
           result = "%s" % (
-            ('\n' + ' ' * width + '| ').join(p.relpath for p in success[br]))
+              ('\n' + ' ' * width + '| ').join(p.relpath for p in success[br]))
         print("%s%s| %s\n" % (br, ' ' * (width - len(br)), result), file=sys.stderr)

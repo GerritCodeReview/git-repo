@@ -57,16 +57,16 @@ def ssh_sock(create=True):
     if not os.path.exists(tmp_dir):
       tmp_dir = tempfile.gettempdir()
     _ssh_sock_path = os.path.join(
-      tempfile.mkdtemp('', 'ssh-', tmp_dir),
-      'master-%r@%h:%p')
+        tempfile.mkdtemp('', 'ssh-', tmp_dir),
+        'master-%r@%h:%p')
   return _ssh_sock_path
 
 def _ssh_proxy():
   global _ssh_proxy_path
   if _ssh_proxy_path is None:
     _ssh_proxy_path = os.path.join(
-      os.path.dirname(__file__),
-      'git_ssh')
+        os.path.dirname(__file__),
+        'git_ssh')
   return _ssh_proxy_path
 
 def _add_ssh_client(p):
