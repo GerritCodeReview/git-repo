@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c82762fb_35578dbd",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2763,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2020-02-12T04:48:57Z",
+      "side": 1,
+      "message": "Does it make sense to try and share more of this with the _ReferenceGitDir code?",
+      "revId": "a3882154317a27fb67c423bd966385ea31e22115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
