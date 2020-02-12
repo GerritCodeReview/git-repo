@@ -204,7 +204,7 @@ class Info(PagedCommand):
 
       for commit in commits:
         split = commit.split()
-        self.text('{0:38}{1} '.format('','-'))
+        self.text('{0:38}{1} '.format('', '-'))
         self.sha(split[0] + " ")
         self.text(" ".join(split[1:]))
         self.out.nl()

@@ -224,7 +224,7 @@ class XmlManifest(object):
     if self.notice:
       notice_element = root.appendChild(doc.createElement('notice'))
       notice_lines = self.notice.splitlines()
-      indented_notice = ('\n'.join(" "*4 + line for line in notice_lines))[4:]
+      indented_notice = ('\n'.join(" " * 4 + line for line in notice_lines))[4:]
       notice_element.appendChild(doc.createTextNode(indented_notice))
 
     d = self.default
@@ -855,7 +855,7 @@ class XmlManifest(object):
     if clone_depth:
       try:
         clone_depth = int(clone_depth)
-        if  clone_depth <= 0:
+        if clone_depth <= 0:
           raise ValueError()
       except ValueError:
         raise ManifestParseError('invalid clone-depth %s in %s' %

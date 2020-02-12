@@ -75,7 +75,7 @@ def _key(name):
   parts = name.split('.')
   if len(parts) < 2:
     return name.lower()
-  parts[ 0] = parts[ 0].lower()
+  parts[0] = parts[0].lower()
   parts[-1] = parts[-1].lower()
   return '.'.join(parts)
 
@@ -430,7 +430,7 @@ def _open_ssh(host, port=None):
 
     # We will make two calls to ssh; this is the common part of both calls.
     command_base = ['ssh',
-                     '-o','ControlPath %s' % ssh_sock(),
+                     '-o', 'ControlPath %s' % ssh_sock(),
                      host]
     if port is not None:
       command_base[1:1] = ['-p', str(port)]
@@ -439,13 +439,13 @@ def _open_ssh(host, port=None):
     # ...but before actually starting a master, we'll double-check.  This can
     # be important because we can't tell that that 'git@myhost.com' is the same
     # as 'myhost.com' where "User git" is setup in the user's ~/.ssh/config file.
-    check_command = command_base + ['-O','check']
+    check_command = command_base + ['-O', 'check']
     try:
       Trace(': %s', ' '.join(check_command))
       check_process = subprocess.Popen(check_command,
                                        stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE)
-      check_process.communicate() # read output, but ignore it...
+      check_process.communicate()  # read output, but ignore it...
       isnt_running = check_process.wait()
 
       if not isnt_running:
@@ -467,7 +467,7 @@ def _open_ssh(host, port=None):
     except Exception as e:
       _ssh_master = False
       print('\nwarn: cannot enable ssh control master for %s:%s\n%s'
-             % (host,port, str(e)), file=sys.stderr)
+             % (host, port, str(e)), file=sys.stderr)
       return False
 
     time.sleep(1)

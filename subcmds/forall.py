@@ -195,7 +195,7 @@ without iterating through the remaining projects.
       cmd.append(cmd[0])
     cmd.extend(opt.command[1:])
 
-    if  opt.project_header \
+    if opt.project_header \
     and not shell \
     and cmd[0] == 'git':
       # If this is a direct git command that can enable colorized
