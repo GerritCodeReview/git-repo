@@ -458,9 +458,7 @@ def _open_ssh(host, port=None):
       # to the log there.
       pass
 
-    command = command_base[:1] + \
-              ['-M', '-N'] + \
-              command_base[1:]
+    command = command_base[:1] + ['-M', '-N'] + command_base[1:]
     try:
       Trace(': %s', ' '.join(command))
       p = subprocess.Popen(command)
