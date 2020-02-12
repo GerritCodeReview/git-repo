@@ -208,14 +208,14 @@ class GitCommand(object):
   def __init__(self,
                project,
                cmdv,
-               bare = False,
-               provide_stdin = False,
-               capture_stdout = False,
-               capture_stderr = False,
-               disable_editor = False,
-               ssh_proxy = False,
-               cwd = None,
-               gitdir = None):
+               bare=False,
+               provide_stdin=False,
+               capture_stdout=False,
+               capture_stderr=False,
+               disable_editor=False,
+               ssh_proxy=False,
+               cwd=None,
+               gitdir=None):
     env = self._GetBasicEnv()
 
     # If we are not capturing std* then need to print it.
@@ -295,11 +295,11 @@ class GitCommand(object):
 
     try:
       p = subprocess.Popen(command,
-                           cwd = cwd,
-                           env = env,
-                           stdin = stdin,
-                           stdout = stdout,
-                           stderr = stderr)
+                           cwd=cwd,
+                           env=env,
+                           stdin=stdin,
+                           stdout=stdout,
+                           stderr=stderr)
     except Exception as e:
       raise GitError('%s: %s' % (command[1], e))
 

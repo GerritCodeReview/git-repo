@@ -85,13 +85,13 @@ class GitConfig(object):
   @classmethod
   def ForUser(cls):
     if cls._ForUser is None:
-      cls._ForUser = cls(configfile = os.path.expanduser('~/.gitconfig'))
+      cls._ForUser = cls(configfile=os.path.expanduser('~/.gitconfig'))
     return cls._ForUser
 
   @classmethod
   def ForRepository(cls, gitdir, defaults=None):
-    return cls(configfile = os.path.join(gitdir, 'config'),
-               defaults = defaults)
+    return cls(configfile=os.path.join(gitdir, 'config'),
+               defaults=defaults)
 
   def __init__(self, configfile, defaults=None, jsonFile=None):
     self.file = configfile
@@ -107,13 +107,13 @@ class GitConfig(object):
         os.path.dirname(self.file),
         '.repo_' + os.path.basename(self.file) + '.json')
 
-  def Has(self, name, include_defaults = True):
+  def Has(self, name, include_defaults=True):
     """Return true if this configuration file has the key.
     """
     if _key(name) in self._cache:
       return True
     if include_defaults and self.defaults:
-      return self.defaults.Has(name, include_defaults = True)
+      return self.defaults.Has(name, include_defaults=True)
     return False
 
   def GetBoolean(self, name):
@@ -142,7 +142,7 @@ class GitConfig(object):
       v = self._cache[_key(name)]
     except KeyError:
       if self.defaults:
-        return self.defaults.GetString(name, all_keys = all_keys)
+        return self.defaults.GetString(name, all_keys=all_keys)
       v = []
 
     if not all_keys:
@@ -153,7 +153,7 @@ class GitConfig(object):
     r = []
     r.extend(v)
     if self.defaults:
-      r.extend(self.defaults.GetString(name, all_keys = True))
+      r.extend(self.defaults.GetString(name, all_keys=True))
     return r
 
   def SetString(self, name, value):
@@ -217,7 +217,7 @@ class GitConfig(object):
     """
     return self._sections.get(section, set())
 
-  def HasSection(self, section, subsection = ''):
+  def HasSection(self, section, subsection=''):
     """Does at least one key in section.subsection exist?
     """
     try:
@@ -323,8 +323,8 @@ class GitConfig(object):
 
     p = GitCommand(None,
                    command,
-                   capture_stdout = True,
-                   capture_stderr = True)
+                   capture_stdout=True,
+                   capture_stderr=True)
     if p.Wait() == 0:
       return p.stdout
     else:
@@ -731,7 +731,7 @@ class Remote(object):
 
   def _Get(self, key, all_keys=False):
     key = 'remote.%s.%s' % (self.name, key)
-    return self._config.GetString(key, all_keys = all_keys)
+    return self._config.GetString(key, all_keys=all_keys)
 
 
 class Branch(object):
@@ -780,4 +780,4 @@ class Branch(object):
 
   def _Get(self, key, all_keys=False):
     key = 'branch.%s.%s' % (self.name, key)
-    return self._config.GetString(key, all_keys = all_keys)
+    return self._config.GetString(key, all_keys=all_keys)
