@@ -744,7 +744,7 @@ later is required to fix a server side protocol bug.
     if not opt.quiet:
       print('Using manifest server %s' % manifest_server)
 
-    if not '@' in manifest_server:
+    if '@' not in manifest_server:
       username = None
       password = None
       if opt.manifest_server_username and opt.manifest_server_password:

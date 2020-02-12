@@ -1093,7 +1093,7 @@ class XmlManifest(object):
     diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
 
     for proj in fromKeys:
-      if not proj in toKeys:
+      if proj not in toKeys:
         diff['removed'].append(fromProjects[proj])
       else:
         fromProj = fromProjects[proj]
