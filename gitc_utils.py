@@ -104,11 +104,11 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
       if not proj.upstream and not git_config.IsId(proj.revisionExpr):
         proj.upstream = proj.revisionExpr
 
-      if not path in gitc_manifest.paths:
+      if path not in gitc_manifest.paths:
         # Any new projects need their first revision, even if we weren't asked
         # for them.
         projects.append(proj)
-      elif not path in paths:
+      elif path not in paths:
         # And copy revisions from the previous manifest if we're not updating
         # them now.
         gitc_proj = gitc_manifest.paths[path]
