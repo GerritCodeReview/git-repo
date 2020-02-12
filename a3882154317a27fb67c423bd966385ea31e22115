@@ -16,6 +16,24 @@
       "revId": "a3882154317a27fb67c423bd966385ea31e22115",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6772b8c0_f8673562",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2763,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T04:53:36Z",
+      "side": 1,
+      "message": "i thought about that a bit but opted not to as it wasn\u0027t clear i\u0027d be able to factor out enough to be worth it\n\n_ReferenceGitDir assumes it gets to initialize things so it omits existence checks.  this code path needs to take care of checking the state of both and reconciling differences only when it\u0027s reasonable.",
+      "parentUuid": "c82762fb_35578dbd",
+      "revId": "a3882154317a27fb67c423bd966385ea31e22115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
