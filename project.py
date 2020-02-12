@@ -2760,9 +2760,31 @@ class Project(object):
       symlink_dirs += self.working_tree_dirs
     to_symlink = symlink_files + symlink_dirs
     for name in set(to_symlink):
-      dst = platform_utils.realpath(os.path.join(destdir, name))
+      # Try to self-heal a bit in simple cases.
+      dst_path = os.path.join(destdir, name)
+      src_path = os.path.join(srcdir, name)
+
+      if name in self.working_tree_dirs:
+        # If the dir is missing under .repo/projects/, create it.
+        if not os.path.exists(src_path):
+          os.makedirs(src_path)
+
+      elif name in self.working_tree_files:
+        # If it's a file under the checkout .git/ and the .repo/projects/ has
+        # nothing, move the file under the .repo/projects/ tree.
+        if not os.path.exists(src_path) and os.path.isfile(dst_path):
+          platform_utils.rename(dst_path, src_path)
+
+      # If the path exists under the .repo/projects/ and there's no symlink
+      # under the checkout .git/, recreate the symlink.
+      if name in self.working_tree_dirs or name in self.working_tree_files:
+        if os.path.exists(src_path) and not os.path.exists(dst_path):
+          platform_utils.symlink(
+              os.path.relpath(src_path, os.path.dirname(dst_path)), dst_path)
+
+      dst = platform_utils.realpath(dst_path)
       if os.path.lexists(dst):
-        src = platform_utils.realpath(os.path.join(srcdir, name))
+        src = platform_utils.realpath(src_path)
         # Fail if the links are pointing to the wrong place
         if src != dst:
           _error('%s is different in %s vs %s', name, destdir, srcdir)
