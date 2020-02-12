@@ -16,6 +16,24 @@
       "revId": "69a7f76e244c4c1fab049ffcb5320908ab5caa0b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7ba176b3_b73ec420",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-12T05:44:58Z",
+      "side": 0,
+      "message": "The alignment issues are reported with separate warnings. In this case:\n\n E127 continuation line over-indented for visual indent",
+      "parentUuid": "aeb8b7e3_a9e6de50",
+      "revId": "69a7f76e244c4c1fab049ffcb5320908ab5caa0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
