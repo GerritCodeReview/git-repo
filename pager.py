@@ -36,7 +36,7 @@ def RunPager(globalConfig):
     return
 
   if platform_utils.isWindows():
-    _PipePager(pager);
+    _PipePager(pager)
   else:
     _ForkPager(pager)
 
@@ -47,7 +47,7 @@ def TerminatePager():
     sys.stdout.flush()
     sys.stderr.flush()
     pager_process.stdin.close()
-    pager_process.wait();
+    pager_process.wait()
     pager_process = None
     # Restore initial stdout/err in case there is more output in this process
     # after shutting down the pager process
