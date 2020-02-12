@@ -16,6 +16,24 @@
       "revId": "4d83bd69529c751635190ae21f523a9dc6918861",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29bb492c_31608fb1",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-12T06:36:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dc53af94_81fae546",
+      "revId": "4d83bd69529c751635190ae21f523a9dc6918861",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

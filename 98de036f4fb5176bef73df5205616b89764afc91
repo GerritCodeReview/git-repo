@@ -16,6 +16,24 @@
       "revId": "98de036f4fb5176bef73df5205616b89764afc91",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b41e96f_66119d57",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-12T06:36:15Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "3358948b_684346da",
+      "revId": "98de036f4fb5176bef73df5205616b89764afc91",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
