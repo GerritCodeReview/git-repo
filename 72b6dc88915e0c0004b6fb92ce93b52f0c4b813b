@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c122135_78b88afc",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-12T23:19:05Z",
+      "side": 1,
+      "message": "There\u0027s another one here; was this intentionally omitted?",
+      "range": {
+        "startLine": 597,
+        "startChar": 2,
+        "endLine": 597,
+        "endChar": 8
+      },
+      "revId": "72b6dc88915e0c0004b6fb92ce93b52f0c4b813b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
