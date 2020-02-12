@@ -158,7 +158,7 @@ is shown, then the branch appears in all projects.
           for b in i.projects:
             have.add(b.project)
           for p in projects:
-            if not p in have:
+            if p not in have:
               paths.append(p.relpath)
 
         s = ' %s %s' % (in_type, ', '.join(paths))
