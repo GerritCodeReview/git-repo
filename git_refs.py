@@ -18,12 +18,12 @@ import os
 from repo_trace import Trace
 import platform_utils
 
-HEAD      = 'HEAD'
+HEAD = 'HEAD'
 R_CHANGES = 'refs/changes/'
-R_HEADS   = 'refs/heads/'
-R_TAGS    = 'refs/tags/'
-R_PUB     = 'refs/published/'
-R_M       = 'refs/remotes/m/'
+R_HEADS = 'refs/heads/'
+R_TAGS = 'refs/tags/'
+R_PUB = 'refs/published/'
+R_M = 'refs/remotes/m/'
 
 
 class GitRefs(object):

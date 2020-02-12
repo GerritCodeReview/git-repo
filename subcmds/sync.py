@@ -217,7 +217,7 @@ later is required to fix a server side protocol bug.
     p.add_option('-l', '--local-only',
                  dest='local_only', action='store_true',
                  help="only update working tree, don't fetch")
-    p.add_option('--no-manifest-update','--nmu',
+    p.add_option('--no-manifest-update', '--nmu',
                  dest='mp_update', action='store_false', default='true',
                  help='use the existing manifest checkout as-is. '
                       '(do not update to the latest revision)')
@@ -1136,7 +1136,7 @@ class _FetchTimes(object):
     old = self._times.get(name, t)
     self._seen.add(name)
     a = self._ALPHA
-    self._times[name] = (a*t) + ((1-a) * old)
+    self._times[name] = (a * t) + ((1 - a) * old)
 
   def _Load(self):
     if self._times is None:
@@ -1208,7 +1208,7 @@ class PersistentTransport(xmlrpc.client.Transport):
       if proxy:
         proxyhandler = urllib.request.ProxyHandler({
             "http": proxy,
-            "https": proxy })
+            "https": proxy})
 
       opener = urllib.request.build_opener(
           urllib.request.HTTPCookieProcessor(cookiejar),
