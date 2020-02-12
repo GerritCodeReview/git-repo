@@ -163,7 +163,7 @@ class CopyLinkTestCase(unittest.TestCase):
 
   @staticmethod
   def touch(path):
-    with open(path, 'w') as f:
+    with open(path, 'w'):
       pass
 
   def assertExists(self, path, msg=None):
