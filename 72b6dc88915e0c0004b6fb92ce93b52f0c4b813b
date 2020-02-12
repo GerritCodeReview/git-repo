@@ -22,6 +22,30 @@
       "revId": "72b6dc88915e0c0004b6fb92ce93b52f0c4b813b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55004c4e_ab265546",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 597,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T23:26:55Z",
+      "side": 1,
+      "message": "partly.  i wanted to get the updated repo launcher out with a fix for the regression i introduced w/out thinking too hard about this line of code.  this one has been here since Sep 2011 :).\n\ni can post a followup CL.",
+      "parentUuid": "2c122135_78b88afc",
+      "range": {
+        "startLine": 597,
+        "startChar": 2,
+        "endLine": 597,
+        "endChar": 8
+      },
+      "revId": "72b6dc88915e0c0004b6fb92ce93b52f0c4b813b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
