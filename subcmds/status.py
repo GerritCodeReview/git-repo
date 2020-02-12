@@ -126,8 +126,8 @@ the following meanings:
         continue
       if item in proj_dirs_parents:
         self._FindOrphans(glob.glob('%s/.*' % item) +
-            glob.glob('%s/*' % item),
-            proj_dirs, proj_dirs_parents, outstring)
+                          glob.glob('%s/*' % item),
+                          proj_dirs, proj_dirs_parents, outstring)
         continue
       outstring.append(''.join([status_header, item, '/']))
 
@@ -179,8 +179,8 @@ the following meanings:
 
         outstring = []
         self._FindOrphans(glob.glob('.*') +
-            glob.glob('*'),
-            proj_dirs, proj_dirs_parents, outstring)
+                          glob.glob('*'),
+                          proj_dirs, proj_dirs_parents, outstring)
 
         if outstring:
           output = StatusColoring(self.manifest.globalConfig)

@@ -140,12 +140,12 @@ class XmlManifest(object):
     self._load_local_manifests = True
 
     self.repoProject = MetaProject(self, 'repo',
-      gitdir=os.path.join(repodir, 'repo/.git'),
-      worktree=os.path.join(repodir, 'repo'))
+                                   gitdir=os.path.join(repodir, 'repo/.git'),
+                                   worktree=os.path.join(repodir, 'repo'))
 
     self.manifestProject = MetaProject(self, 'manifests',
-      gitdir=os.path.join(repodir, 'manifests.git'),
-      worktree=os.path.join(repodir, 'manifests'))
+                                       gitdir=os.path.join(repodir, 'manifests.git'),
+                                       worktree=os.path.join(repodir, 'manifests'))
 
     self._Unload()
 
@@ -462,12 +462,12 @@ class XmlManifest(object):
             self.localManifestWarning = True
             print('warning: %s is deprecated; put local manifests '
                   'in `%s` instead' % (LOCAL_MANIFEST_NAME,
-                  os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
+                                       os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
                   file=sys.stderr)
           nodes.append(self._ParseManifestXml(local, self.repodir))
 
         local_dir = os.path.abspath(os.path.join(self.repodir,
-                                    LOCAL_MANIFESTS_DIR_NAME))
+                                                 LOCAL_MANIFESTS_DIR_NAME))
         try:
           for local_file in sorted(platform_utils.listdir(local_dir)):
             if local_file.endswith('.xml'):
@@ -512,7 +512,7 @@ class XmlManifest(object):
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
           raise ManifestParseError("include %s doesn't exist or isn't a file"
-              % (name,))
+                                   % (name,))
         try:
           nodes.extend(self._ParseManifestXml(fp, include_root))
         # should isolate this to the exact exception, but that's
@@ -811,21 +811,21 @@ class XmlManifest(object):
       remote = self._default.remote
     if remote is None:
       raise ManifestParseError("no remote for project %s within %s" %
-            (name, self.manifestFile))
+                               (name, self.manifestFile))
 
     revisionExpr = node.getAttribute('revision') or remote.revision
     if not revisionExpr:
       revisionExpr = self._default.revisionExpr
     if not revisionExpr:
       raise ManifestParseError("no revision for project %s within %s" %
-            (name, self.manifestFile))
+                               (name, self.manifestFile))
 
     path = node.getAttribute('path')
     if not path:
       path = name
     if path.startswith('/'):
       raise ManifestParseError("project %s path cannot be absolute in %s" %
-            (name, self.manifestFile))
+                               (name, self.manifestFile))
 
     rebase = node.getAttribute('rebase')
     if not rebase:
@@ -1054,7 +1054,7 @@ class XmlManifest(object):
       keep = "true"
     if keep != "true" and keep != "false":
       raise ManifestParseError('optional "keep" attribute must be '
-            '"true" or "false"')
+                               '"true" or "false"')
     project.AddAnnotation(name, value, keep)
 
   def _get_remote(self, node):
@@ -1065,7 +1065,7 @@ class XmlManifest(object):
     v = self._remotes.get(name)
     if not v:
       raise ManifestParseError("remote %s not defined in %s" %
-            (name, self.manifestFile))
+                               (name, self.manifestFile))
     return v
 
   def _reqatt(self, node, attname):
@@ -1075,7 +1075,7 @@ class XmlManifest(object):
     v = node.getAttribute(attname)
     if not v:
       raise ManifestParseError("no %s in <%s> within %s" %
-            (attname, node.nodeName, self.manifestFile))
+                               (attname, node.nodeName, self.manifestFile))
     return v
 
   def projectsDiff(self, manifest):

@@ -104,8 +104,8 @@ class GitConfig(object):
     self._json = jsonFile
     if self._json is None:
       self._json = os.path.join(
-        os.path.dirname(self.file),
-        '.repo_' + os.path.basename(self.file) + '.json')
+          os.path.dirname(self.file),
+          '.repo_' + os.path.basename(self.file) + '.json')
 
   def Has(self, name, include_defaults=True):
     """Return true if this configuration file has the key.
@@ -269,7 +269,7 @@ class GitConfig(object):
   def _ReadJson(self):
     try:
       if os.path.getmtime(self._json) \
-      <= os.path.getmtime(self.file):
+              <= os.path.getmtime(self.file):
         platform_utils.remove(self._json)
         return None
     except OSError:
@@ -422,16 +422,16 @@ def _open_ssh(host, port=None):
       return True
 
     if not _ssh_master \
-    or 'GIT_SSH' in os.environ \
-    or sys.platform in ('win32', 'cygwin'):
+            or 'GIT_SSH' in os.environ \
+            or sys.platform in ('win32', 'cygwin'):
       # failed earlier, or cygwin ssh can't do this
       #
       return False
 
     # We will make two calls to ssh; this is the common part of both calls.
     command_base = ['ssh',
-                     '-o', 'ControlPath %s' % ssh_sock(),
-                     host]
+                    '-o', 'ControlPath %s' % ssh_sock(),
+                    host]
     if port is not None:
       command_base[1:1] = ['-p', str(port)]
 
@@ -465,7 +465,7 @@ def _open_ssh(host, port=None):
     except Exception as e:
       _ssh_master = False
       print('\nwarn: cannot enable ssh control master for %s:%s\n%s'
-             % (host, port, str(e)), file=sys.stderr)
+            % (host, port, str(e)), file=sys.stderr)
       return False
 
     time.sleep(1)
@@ -583,7 +583,7 @@ class Remote(object):
     self.review = self._Get('review')
     self.projectname = self._Get('projectname')
     self.fetch = list(map(RefSpec.FromString,
-                      self._Get('fetch', all_keys=True)))
+                          self._Get('fetch', all_keys=True)))
     self._review_url = None
 
   def _InsteadOf(self):
@@ -598,7 +598,7 @@ class Remote(object):
 
       for insteadOf in insteadOfList:
         if self.url.startswith(insteadOf) \
-        and len(insteadOf) > len(longest):
+                and len(insteadOf) > len(longest):
           longest = insteadOf
           longestUrl = url
 

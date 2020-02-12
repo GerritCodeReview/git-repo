@@ -188,7 +188,7 @@ class _Repo(object):
       copts = cmd.ReadEnvironmentOptions(copts)
     except NoManifestException as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
-        file=sys.stderr)
+            file=sys.stderr)
       print('error: manifest missing or unreadable -- please run init',
             file=sys.stderr)
       return 1
@@ -211,9 +211,9 @@ class _Repo(object):
       cmd.ValidateOptions(copts, cargs)
       result = cmd.Execute(copts, cargs)
     except (DownloadError, ManifestInvalidRevisionError,
-        NoManifestException) as e:
+            NoManifestException) as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
-        file=sys.stderr)
+            file=sys.stderr)
       if isinstance(e, NoManifestException):
         print('error: manifest missing or unreadable -- please run init',
               file=sys.stderr)
@@ -346,7 +346,7 @@ class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
     return urllib.request.HTTPBasicAuthHandler.http_error_401(
-      self, req, fp, code, msg, headers)
+        self, req, fp, code, msg, headers)
 
   def http_error_auth_reqed(self, authreq, host, req, headers):
     try:
@@ -356,7 +356,7 @@ class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
         old_add_header(name, val)
       req.add_header = _add_header
       return urllib.request.AbstractBasicAuthHandler.http_error_auth_reqed(
-        self, authreq, host, req, headers)
+          self, authreq, host, req, headers)
     except:
       reset = getattr(self, 'reset_retry_count', None)
       if reset is not None:
@@ -369,7 +369,7 @@ class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
   def http_error_401(self, req, fp, code, msg, headers):
     _AddPasswordFromUserInput(self, msg, req)
     return urllib.request.HTTPDigestAuthHandler.http_error_401(
-      self, req, fp, code, msg, headers)
+        self, req, fp, code, msg, headers)
 
   def http_error_auth_reqed(self, auth_header, host, req, headers):
     try:
@@ -379,7 +379,7 @@ class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
         old_add_header(name, val)
       req.add_header = _add_header
       return urllib.request.AbstractDigestAuthHandler.http_error_auth_reqed(
-        self, auth_header, host, req, headers)
+          self, auth_header, host, req, headers)
     except:
       reset = getattr(self, 'reset_retry_count', None)
       if reset is not None:
@@ -406,7 +406,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
 
       if self.retried > 3:
         raise urllib.request.HTTPError(req.get_full_url(), 401,
-          "Negotiate auth failed", headers, None)
+                                       "Negotiate auth failed", headers, None)
       else:
         self.retried += 1
 

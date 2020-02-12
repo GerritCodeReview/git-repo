@@ -223,7 +223,7 @@ to update the working directory files.
     platformize = lambda x: 'platform-' + x
     if opt.platform == 'auto':
       if (not opt.mirror and
-          not m.config.GetString('repo.mirror') == 'true'):
+              not m.config.GetString('repo.mirror') == 'true'):
         groups.append(platformize(platform.system().lower()))
     elif opt.platform == 'all':
       groups.extend(map(platformize, all_platforms))
@@ -280,10 +280,10 @@ to update the working directory files.
       m.config.SetString('repo.submodules', 'true')
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet,
-        clone_bundle=not opt.no_clone_bundle,
-        current_branch_only=opt.current_branch_only,
-        no_tags=opt.no_tags, submodules=opt.submodules,
-        clone_filter=opt.clone_filter):
+                              clone_bundle=not opt.no_clone_bundle,
+                              current_branch_only=opt.current_branch_only,
+                              no_tags=opt.no_tags, submodules=opt.submodules,
+                              clone_filter=opt.clone_filter):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 

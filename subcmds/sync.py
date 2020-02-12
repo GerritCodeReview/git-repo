@@ -327,14 +327,14 @@ later is required to fix a server side protocol bug.
     try:
       try:
         success = project.Sync_NetworkHalf(
-          quiet=opt.quiet,
-          current_branch_only=opt.current_branch_only,
-          force_sync=opt.force_sync,
-          clone_bundle=not opt.no_clone_bundle,
-          no_tags=opt.no_tags, archive=self.manifest.IsArchive,
-          optimized_fetch=opt.optimized_fetch,
-          prune=opt.prune,
-          clone_filter=clone_filter)
+            quiet=opt.quiet,
+            current_branch_only=opt.current_branch_only,
+            force_sync=opt.force_sync,
+            clone_bundle=not opt.no_clone_bundle,
+            no_tags=opt.no_tags, archive=self.manifest.IsArchive,
+            optimized_fetch=opt.optimized_fetch,
+            prune=opt.prune,
+            clone_filter=clone_filter)
         self._fetch_times.Set(project, time.time() - start)
 
         # Lock around all the rest of the code, since printing, updating a set
@@ -356,7 +356,7 @@ later is required to fix a server side protocol bug.
         pass
       except Exception as e:
         print('error: Cannot fetch %s (%s: %s)'
-            % (project.name, type(e).__name__, str(e)), file=sys.stderr)
+              % (project.name, type(e).__name__, str(e)), file=sys.stderr)
         err_event.set()
         raise
     finally:
@@ -704,16 +704,16 @@ later is required to fix a server side protocol bug.
           gitdir = os.path.join(self.manifest.topdir, path, '.git')
           if os.path.exists(gitdir):
             project = Project(
-                           manifest=self.manifest,
-                           name=path,
-                           remote=RemoteSpec('origin'),
-                           gitdir=gitdir,
-                           objdir=gitdir,
-                           worktree=os.path.join(self.manifest.topdir, path),
-                           relpath=path,
-                           revisionExpr='HEAD',
-                           revisionId=None,
-                           groups=None)
+                manifest=self.manifest,
+                name=path,
+                remote=RemoteSpec('origin'),
+                gitdir=gitdir,
+                objdir=gitdir,
+                worktree=os.path.join(self.manifest.topdir, path),
+                relpath=path,
+                revisionExpr='HEAD',
+                revisionId=None,
+                groups=None)
 
             if project.IsDirty() and opt.force_remove_dirty:
               print('WARNING: Removing dirty project "%s": uncommitted changes '
@@ -885,7 +885,7 @@ later is required to fix a server side protocol bug.
 
     manifest_name = opt.manifest_name
     smart_sync_manifest_path = os.path.join(
-      self.manifest.manifestProject.worktree, 'smart_sync_override.xml')
+        self.manifest.manifestProject.worktree, 'smart_sync_override.xml')
 
     if opt.smart_sync or opt.smart_tag:
       manifest_name = self._SmartSyncSetup(opt, smart_sync_manifest_path)

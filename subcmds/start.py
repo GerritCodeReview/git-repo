@@ -113,7 +113,7 @@ revision specified in the manifest.
           branch_merge = self.manifest.default.revisionExpr
 
       if not project.StartBranch(
-          nb, branch_merge=branch_merge, revision=opt.revision):
+              nb, branch_merge=branch_merge, revision=opt.revision):
         err.append(project)
     pm.end()
 

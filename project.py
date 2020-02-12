@@ -2341,7 +2341,7 @@ class Project(object):
     else:
       branch = self.revisionExpr
     if (not self.manifest.IsMirror and is_sha1 and depth
-        and git_require((1, 8, 3))):
+            and git_require((1, 8, 3))):
       # Shallow checkout of a specific commit, fetch from that commit and not
       # the heads only as the commit might be deeper in the history.
       spec.append(branch)

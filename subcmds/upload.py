@@ -218,10 +218,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
       print('Upload project %s/ to remote branch %s%s:' %
             (project.relpath, destination, ' (draft)' if opt.draft else ''))
       print('  branch %s (%2d commit%s, %s):' % (
-                    name,
-                    len(commit_list),
-                    len(commit_list) != 1 and 's' or '',
-                    date))
+          name,
+          len(commit_list),
+          len(commit_list) != 1 and 's' or '',
+          date))
       for commit in commit_list:
         print('         %s' % commit)
 
@@ -422,18 +422,18 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
           else:
             fmt = '\n       (%s)'
           print(('[FAILED] %-15s %-15s' + fmt) % (
-                 branch.project.relpath + '/',
-                 branch.name,
-                 str(branch.error)),
-                 file=sys.stderr)
+              branch.project.relpath + '/',
+              branch.name,
+              str(branch.error)),
+              file=sys.stderr)
       print()
 
     for branch in todo:
       if branch.uploaded:
         print('[OK    ] %-15s %s' % (
-               branch.project.relpath + '/',
-               branch.name),
-               file=sys.stderr)
+            branch.project.relpath + '/',
+            branch.name),
+            file=sys.stderr)
 
     if have_errors:
       sys.exit(1)

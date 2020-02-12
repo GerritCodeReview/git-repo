@@ -28,10 +28,10 @@ from command import Command, MirrorSafeCommand
 import platform_utils
 
 _CAN_COLOR = [
-  'branch',
-  'diff',
-  'grep',
-  'log',
+    'branch',
+    'diff',
+    'grep',
+    'log',
 ]
 
 
@@ -170,14 +170,14 @@ without iterating through the remaining projects.
     else:
       lrev = None
     return {
-      'name': project.name,
-      'relpath': project.relpath,
-      'remote_name': project.remote.name,
-      'lrev': lrev,
-      'rrev': project.revisionExpr,
-      'annotations': dict((a.name, a.value) for a in project.annotations),
-      'gitdir': project.gitdir,
-      'worktree': project.worktree,
+        'name': project.name,
+        'relpath': project.relpath,
+        'remote_name': project.remote.name,
+        'lrev': lrev,
+        'rrev': project.revisionExpr,
+        'annotations': dict((a.name, a.value) for a in project.annotations),
+        'gitdir': project.gitdir,
+        'worktree': project.worktree,
     }
 
   def ValidateOptions(self, opt, args):
@@ -196,8 +196,8 @@ without iterating through the remaining projects.
     cmd.extend(opt.command[1:])
 
     if opt.project_header \
-    and not shell \
-    and cmd[0] == 'git':
+            and not shell \
+            and cmd[0] == 'git':
       # If this is a direct git command that can enable colorized
       # output and the user prefers coloring, add --color into the
       # command line because we are going to wrap the command into
@@ -220,7 +220,7 @@ without iterating through the remaining projects.
 
     smart_sync_manifest_name = "smart_sync_override.xml"
     smart_sync_manifest_path = os.path.join(
-      self.manifest.manifestProject.worktree, smart_sync_manifest_name)
+        self.manifest.manifestProject.worktree, smart_sync_manifest_name)
 
     if os.path.isfile(smart_sync_manifest_path):
       self.manifest.Override(smart_sync_manifest_path)
@@ -238,8 +238,8 @@ without iterating through the remaining projects.
     try:
       config = self.manifest.manifestProject.config
       results_it = pool.imap(
-         DoWorkWrapper,
-         self.ProjectArgs(projects, mirror, opt, cmd, shell, config))
+          DoWorkWrapper,
+          self.ProjectArgs(projects, mirror, opt, cmd, shell, config))
       pool.close()
       for r in results_it:
         rc = rc or r
@@ -253,7 +253,7 @@ without iterating through the remaining projects.
     except Exception as e:
       # Catch any other exceptions raised
       print('Got an error, terminating the pool: %s: %s' %
-              (type(e).__name__, e),
+            (type(e).__name__, e),
             file=sys.stderr)
       pool.terminate()
       rc = rc or getattr(e, 'errno', 1)
@@ -268,7 +268,7 @@ without iterating through the remaining projects.
         project = self._SerializeProject(p)
       except Exception as e:
         print('Project list error on project %s: %s: %s' %
-                (p.name, type(e).__name__, e),
+              (p.name, type(e).__name__, e),
               file=sys.stderr)
         return
       except KeyboardInterrupt:
@@ -331,7 +331,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     if opt.ignore_missing:
       return 0
     if ((opt.project_header and opt.verbose)
-        or not opt.project_header):
+            or not opt.project_header):
       print('skipping %s/' % project['relpath'], file=sys.stderr)
     return 1
 
