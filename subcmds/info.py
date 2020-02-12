@@ -122,7 +122,7 @@ class Info(PagedCommand):
       self.printSeparator()
 
   def findRemoteLocalDiff(self, project):
-    #Fetch all the latest commits
+    # Fetch all the latest commits
     if not self.opt.local:
       project.Sync_NetworkHalf(quiet=True, current_branch_only=True)
 
