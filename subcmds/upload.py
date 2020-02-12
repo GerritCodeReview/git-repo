@@ -326,12 +326,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
     key = 'review.%s.autoreviewer' % project.GetBranch(name).remote.review
     raw_list = project.config.GetString(key)
-    if not raw_list is None:
+    if raw_list is not None:
       people[0].extend([entry.strip() for entry in raw_list.split(',')])
 
     key = 'review.%s.autocopy' % project.GetBranch(name).remote.review
     raw_list = project.config.GetString(key)
-    if not raw_list is None and len(people[0]) > 0:
+    if raw_list is not None and len(people[0]) > 0:
       people[1].extend([entry.strip() for entry in raw_list.split(',')])
 
   def _FindGerritChange(self, branch):
