@@ -47,7 +47,7 @@ except ImportError:
 from color import SetDefaultColoring
 import event_log
 from repo_trace import SetTrace
-from git_command import git, GitCommand, user_agent
+from git_command import user_agent
 from git_config import init_ssh, close_ssh
 from command import InteractiveCommand
 from command import MirrorSafeCommand
