@@ -441,14 +441,14 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
   def _GetMergeBranch(self, project):
     p = GitCommand(project,
                    ['rev-parse', '--abbrev-ref', 'HEAD'],
-                   capture_stdout = True,
-                   capture_stderr = True)
+                   capture_stdout=True,
+                   capture_stderr=True)
     p.Wait()
     local_branch = p.stdout.strip()
     p = GitCommand(project,
                    ['config', '--get', 'branch.%s.merge' % local_branch],
-                   capture_stdout = True,
-                   capture_stderr = True)
+                   capture_stdout=True,
+                   capture_stderr=True)
     p.Wait()
     merge_branch = p.stdout.strip()
     return merge_branch
