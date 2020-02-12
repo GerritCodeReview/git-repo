@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e559e8a3_de5c9564",
+        "filename": "subcmds/info.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T04:14:03Z",
+      "side": 1,
+      "message": "should put a period at the end too of sentences ;)",
+      "revId": "b9873a488e838208d3cbe36cbc64b727f6320cac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
