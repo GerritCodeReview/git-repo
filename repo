@@ -17,8 +17,29 @@ import subprocess
 import sys
 
 
+# Keep basic logic in sync with repo_trace.py.
+class Trace(object):
+  """Trace helper logic."""
+
+  REPO_TRACE = 'REPO_TRACE'
+
+  def __init__(self):
+    self.set(os.environ.get(self.REPO_TRACE) == '1')
+
+  def set(self, value):
+    self.enabled = bool(value)
+
+  def print(self, *args, **kwargs):
+    if self.enabled:
+      print(*args, **kwargs)
+
+
+trace = Trace()
+
+
 def exec_command(cmd):
   """Execute |cmd| or return None on failure."""
+  trace.print(':', ' '.join(cmd))
   try:
     if platform.system() == 'Windows':
       ret = subprocess.call(cmd)
@@ -309,6 +330,7 @@ def run_command(cmd, **kwargs):
     stdout = stdout.decode('utf-8')
   if stderr is not None:
     stderr = stderr.decode('utf-8')
+  trace.print(':', ' '.join(cmd))
   ret = RunResult(proc.returncode, stdout, stderr)
 
   # If things failed, print useful debugging output.
@@ -809,6 +831,8 @@ def _ParseArguments(args):
       opt.help = True
     elif a == '--version':
       opt.version = True
+    elif a == '--trace':
+      trace.set(True)
     elif not a.startswith('-'):
       cmd = a
       arg = args[i + 1:]
