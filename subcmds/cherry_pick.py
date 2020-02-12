@@ -46,8 +46,8 @@ change id will be added.
 
     p = GitCommand(None,
                    ['rev-parse', '--verify', reference],
-                   capture_stdout = True,
-                   capture_stderr = True)
+                   capture_stdout=True,
+                   capture_stderr=True)
     if p.Wait() != 0:
       print(p.stderr, file=sys.stderr)
       sys.exit(1)
@@ -61,8 +61,8 @@ change id will be added.
 
     p = GitCommand(None,
                    ['cherry-pick', sha1],
-                   capture_stdout = True,
-                   capture_stderr = True)
+                   capture_stdout=True,
+                   capture_stderr=True)
     status = p.Wait()
 
     print(p.stdout, file=sys.stdout)
@@ -74,9 +74,9 @@ change id will be added.
       new_msg = self._Reformat(old_msg, sha1)
 
       p = GitCommand(None, ['commit', '--amend', '-F', '-'],
-                     provide_stdin = True,
-                     capture_stdout = True,
-                     capture_stderr = True)
+                     provide_stdin=True,
+                     capture_stdout=True,
+                     capture_stderr=True)
       p.stdin.write(new_msg)
       p.stdin.close()
       if p.Wait() != 0:
