@@ -2619,7 +2619,7 @@ class Project(object):
                                                   (self.worktree)):
                 platform_utils.rmtree(platform_utils.realpath(self.worktree))
               return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
-            except:
+            except Exception:
               raise e
           raise e
 
@@ -2864,7 +2864,7 @@ class Project(object):
         try:
           platform_utils.rmtree(dotgit)
           return self._InitWorkTree(force_sync=False, submodules=submodules)
-        except:
+        except Exception:
           raise e
       raise e
 

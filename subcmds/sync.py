@@ -603,7 +603,7 @@ later is required to fix a server side protocol bug.
           bare_git.gc('--auto', config=config)
         except GitError:
           err_event.set()
-        except:
+        except Exception:
           err_event.set()
           raise
       finally:
