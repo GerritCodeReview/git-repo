@@ -364,7 +364,7 @@ class _BasicAuthHandler(urllib.request.HTTPBasicAuthHandler):
       req.add_header = _add_header
       return urllib.request.AbstractBasicAuthHandler.http_error_auth_reqed(
           self, authreq, host, req, headers)
-    except:
+    except Exception:
       reset = getattr(self, 'reset_retry_count', None)
       if reset is not None:
         reset()
@@ -389,7 +389,7 @@ class _DigestAuthHandler(urllib.request.HTTPDigestAuthHandler):
       req.add_header = _add_header
       return urllib.request.AbstractDigestAuthHandler.http_error_auth_reqed(
           self, auth_header, host, req, headers)
-    except:
+    except Exception:
       reset = getattr(self, 'reset_retry_count', None)
       if reset is not None:
         reset()
@@ -432,7 +432,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
         return response
     except kerberos.GSSError:
       return None
-    except:
+    except Exception:
       self.reset_retry_count()
       raise
     finally:
