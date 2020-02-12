@@ -98,7 +98,7 @@ change id will be added.
 
   def _StripHeader(self, commit_msg):
     lines = commit_msg.splitlines()
-    return "\n".join(lines[lines.index("")+1:])
+    return "\n".join(lines[lines.index("") + 1:])
 
   def _Reformat(self, old_msg, sha1):
     new_msg = []

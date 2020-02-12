@@ -24,7 +24,7 @@ class BranchColoring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, 'branch')
     self.current = self.printer('current', fg='green')
-    self.local   = self.printer('local')
+    self.local = self.printer('local')
     self.notinproject = self.printer('notinproject', fg='red')
 
 
@@ -172,11 +172,11 @@ is shown, then the branch appears in all projects.
           fmt = out.current if i.IsCurrent else out.write
           for p in paths:
             out.nl()
-            fmt(width*' ' + '          %s' % p)
+            fmt(width * ' ' + '          %s' % p)
           fmt = out.write
           for p in non_cur_paths:
             out.nl()
-            fmt(width*' ' + '          %s' % p)
+            fmt(width * ' ' + '          %s' % p)
       else:
         out.write(' in all projects')
       out.nl()

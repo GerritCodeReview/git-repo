@@ -139,7 +139,7 @@ class EventLog(object):
     Returns:
       A dictionary of the event added to the log.
     """
-    event['status'] =  self.GetStatusString(success)
+    event['status'] = self.GetStatusString(success)
     event['finish_time'] = finish
     return event
 

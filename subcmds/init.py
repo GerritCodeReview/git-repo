@@ -350,7 +350,7 @@ to update the working directory files.
 
     while True:
       print()
-      name  = self._Prompt('Your Name', mp.UserName)
+      name = self._Prompt('Your Name', mp.UserName)
       email = self._Prompt('Your Email', mp.UserEmail)
 
       print()

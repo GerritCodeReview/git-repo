@@ -126,7 +126,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
   index = 0
   while index < len(projects):
     _set_project_revisions(
-        projects[index:(index+NUM_BATCH_RETRIEVE_REVISIONID)])
+        projects[index:(index + NUM_BATCH_RETRIEVE_REVISIONID)])
     index += NUM_BATCH_RETRIEVE_REVISIONID
 
   if gitc_manifest is not None:

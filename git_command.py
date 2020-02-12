@@ -108,7 +108,7 @@ class _GitCall(object):
     return _git_version
 
   def __getattr__(self, name):
-    name = name.replace('_','-')
+    name = name.replace('_', '-')
 
     def fun(*cmdv):
       command = [name]
