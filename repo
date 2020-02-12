@@ -285,6 +285,49 @@ def _GitcInitOptions(init_optparse_arg):
                help='The name of the gitc_client instance to create or modify.')
 
 
+# This is a poor replacement for subprocess.run until we require Python 3.6+.
+RunResult = collections.namedtuple(
+    'RunResult', ('returncode', 'stdout', 'stderr'))
+
+
+class RunError(Exception):
+  """Error when running a command failed."""
+
+
+def run_command(cmd, **kwargs):
+  """Run |cmd| and return its output."""
+  check = kwargs.pop('check', False)
+  if kwargs.pop('capture_output', False):
+    kwargs.setdefault('stdout', subprocess.PIPE)
+    kwargs.setdefault('stderr', subprocess.PIPE)
+  cmd_input = kwargs.pop('input', None)
+
+  # Run & package the results.
+  proc = subprocess.Popen(cmd, **kwargs)
+  (stdout, stderr) = proc.communicate(input=cmd_input)
+  if stdout is not None:
+    stdout = stdout.decode('utf-8')
+  if stderr is not None:
+    stderr = stderr.decode('utf-8')
+  ret = RunResult(proc.returncode, stdout, stderr)
+
+  # If things failed, print useful debugging output.
+  if check and ret.returncode:
+    print('repo: error: "%s" failed with exit status %s' %
+          (cmd[0], ret.returncode), file=sys.stderr)
+    print('  cwd: %s\n  cmd: %r' %
+          (kwargs.get('cwd', os.getcwd()), cmd), file=sys.stderr)
+    def _print_output(name, output):
+      if output:
+        print('  %s:\n  >> %s' % (name, '\n  >> '.join(output.splitlines())),
+              file=sys.stderr)
+    _print_output('stdout', ret.stdout)
+    _print_output('stderr', ret.stderr)
+    raise RunError(ret)
+
+  return ret
+
+
 _gitc_manifest_dir = None
 
 
@@ -420,6 +463,24 @@ def _Init(args, gitc_init=False):
     raise
 
 
+def run_git(*args, **kwargs):
+  """Run git and return execution details."""
+  kwargs.setdefault('capture_output', True)
+  kwargs.setdefault('check', True)
+  try:
+    return run_command([GIT] + list(args), **kwargs)
+  except OSError as e:
+    print(file=sys.stderr)
+    print('repo: error: "%s" is not available' % GIT, file=sys.stderr)
+    print('repo: error: %s' % e, file=sys.stderr)
+    print(file=sys.stderr)
+    print('Please make sure %s is installed and in your path.' % GIT,
+          file=sys.stderr)
+    sys.exit(1)
+  except RunError:
+    raise CloneFailure()
+
+
 # The git version info broken down into components for easy analysis.
 # Similar to Python's sys.version_info.
 GitVersion = collections.namedtuple(
@@ -429,7 +490,7 @@ GitVersion = collections.namedtuple(
 def ParseGitVersion(ver_str=None):
   if ver_str is None:
     # Load the version ourselves.
-    ver_str = _GetGitVersion()
+    ver_str = run_git('--version').stdout
 
   if not ver_str.startswith('git version '):
     return None
@@ -446,31 +507,8 @@ def ParseGitVersion(ver_str=None):
   return GitVersion(*to_tuple)
 
 
-def _GetGitVersion():
-  cmd = [GIT, '--version']
-  try:
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE)
-  except OSError as e:
-    print(file=sys.stderr)
-    print("fatal: '%s' is not available" % GIT, file=sys.stderr)
-    print('fatal: %s' % e, file=sys.stderr)
-    print(file=sys.stderr)
-    print('Please make sure %s is installed and in your path.' % GIT,
-          file=sys.stderr)
-    raise
-
-  ver_str = proc.stdout.read().strip()
-  proc.stdout.close()
-  proc.wait()
-  return ver_str.decode('utf-8')
-
-
 def _CheckGitVersion():
-  try:
-    ver_act = ParseGitVersion()
-  except OSError:
-    raise CloneFailure()
-
+  ver_act = ParseGitVersion()
   if ver_act is None:
     print('fatal: unable to detect git version', file=sys.stderr)
     raise CloneFailure()
@@ -554,9 +592,9 @@ def SetupGnuPG(quiet):
 
   cmd = ['gpg', '--import']
   try:
-    proc = subprocess.Popen(cmd,
-                            env=env,
-                            stdin=subprocess.PIPE)
+    ret = run_command(cmd, env=env, stdin=subprocess.PIPE,
+                      capture_output=quiet,
+                      input=MAINTAINER_KEYS.encode('utf-8'))
   except OSError:
     if not quiet:
       print('warning: gpg (GnuPG) is not available.', file=sys.stderr)
@@ -564,25 +602,18 @@ def SetupGnuPG(quiet):
       print(file=sys.stderr)
     return False
 
-  proc.stdin.write(MAINTAINER_KEYS.encode('utf-8'))
-  proc.stdin.close()
-
-  if proc.wait() != 0:
-    print('fatal: registering repo maintainer keys failed', file=sys.stderr)
-    sys.exit(1)
-  print()
+  if not quiet:
+    print()
 
   with open(os.path.join(home_dot_repo, 'keyring-version'), 'w') as fd:
     fd.write('.'.join(map(str, KEYRING_VERSION)) + '\n')
   return True
 
 
-def _SetConfig(local, name, value):
+def _SetConfig(cwd, name, value):
   """Set a git configuration option to the specified value.
   """
-  cmd = [GIT, 'config', name, value]
-  if subprocess.Popen(cmd, cwd=local).wait() != 0:
-    raise CloneFailure()
+  run_git('config', name, value, cwd=cwd)
 
 
 def _InitHttp():
@@ -610,11 +641,11 @@ def _InitHttp():
   urllib.request.install_opener(urllib.request.build_opener(*handlers))
 
 
-def _Fetch(url, local, src, quiet):
+def _Fetch(url, cwd, src, quiet):
   if not quiet:
     print('Get %s' % url, file=sys.stderr)
 
-  cmd = [GIT, 'fetch']
+  cmd = ['fetch']
   if quiet:
     cmd.append('--quiet')
     err = subprocess.PIPE
@@ -623,26 +654,17 @@ def _Fetch(url, local, src, quiet):
   cmd.append(src)
   cmd.append('+refs/heads/*:refs/remotes/origin/*')
   cmd.append('+refs/tags/*:refs/tags/*')
-
-  proc = subprocess.Popen(cmd, cwd=local, stderr=err)
-  if err:
-    proc.stderr.read()
-    proc.stderr.close()
-  if proc.wait() != 0:
-    raise CloneFailure()
+  run_git(*cmd, stderr=err, cwd=cwd)
 
 
-def _DownloadBundle(url, local, quiet):
+def _DownloadBundle(url, cwd, quiet):
   if not url.endswith('/'):
     url += '/'
   url += 'clone.bundle'
 
-  proc = subprocess.Popen(
-      [GIT, 'config', '--get-regexp', 'url.*.insteadof'],
-      cwd=local,
-      stdout=subprocess.PIPE)
-  for line in proc.stdout:
-    line = line.decode('utf-8')
+  ret = run_git('config', '--get-regexp', 'url.*.insteadof', cwd=cwd,
+                check=False)
+  for line in ret.stdout.splitlines():
     m = re.compile(r'^url\.(.*)\.insteadof (.*)$').match(line)
     if m:
       new_url = m.group(1)
@@ -650,13 +672,11 @@ def _DownloadBundle(url, local, quiet):
       if url.startswith(old_url):
         url = new_url + url[len(old_url):]
         break
-  proc.stdout.close()
-  proc.wait()
 
   if not url.startswith('http:') and not url.startswith('https:'):
     return False
 
-  dest = open(os.path.join(local, '.git', 'clone.bundle'), 'w+b')
+  dest = open(os.path.join(cwd, '.git', 'clone.bundle'), 'w+b')
   try:
     try:
       r = urllib.request.urlopen(url)
@@ -684,67 +704,45 @@ def _DownloadBundle(url, local, quiet):
     dest.close()
 
 
-def _ImportBundle(local):
-  path = os.path.join(local, '.git', 'clone.bundle')
+def _ImportBundle(cwd):
+  path = os.path.join(cwd, '.git', 'clone.bundle')
   try:
-    _Fetch(local, local, path, True)
+    _Fetch(cwd, cwd, path, True)
   finally:
     os.remove(path)
 
 
-def _Clone(url, local, quiet, clone_bundle):
+def _Clone(url, cwd, quiet, clone_bundle):
   """Clones a git repository to a new subdirectory of repodir
   """
   try:
-    os.mkdir(local)
+    os.mkdir(cwd)
   except OSError as e:
-    print('fatal: cannot make %s directory: %s' % (local, e.strerror),
+    print('fatal: cannot make %s directory: %s' % (cwd, e.strerror),
           file=sys.stderr)
     raise CloneFailure()
 
-  cmd = [GIT, 'init', '--quiet']
-  try:
-    proc = subprocess.Popen(cmd, cwd=local)
-  except OSError as e:
-    print(file=sys.stderr)
-    print("fatal: '%s' is not available" % GIT, file=sys.stderr)
-    print('fatal: %s' % e, file=sys.stderr)
-    print(file=sys.stderr)
-    print('Please make sure %s is installed and in your path.' % GIT,
-          file=sys.stderr)
-    raise CloneFailure()
-  if proc.wait() != 0:
-    print('fatal: could not create %s' % local, file=sys.stderr)
-    raise CloneFailure()
+  run_git('init', '--quiet', cwd=cwd)
 
   _InitHttp()
-  _SetConfig(local, 'remote.origin.url', url)
-  _SetConfig(local,
+  _SetConfig(cwd, 'remote.origin.url', url)
+  _SetConfig(cwd,
              'remote.origin.fetch',
              '+refs/heads/*:refs/remotes/origin/*')
-  if clone_bundle and _DownloadBundle(url, local, quiet):
-    _ImportBundle(local)
-  _Fetch(url, local, 'origin', quiet)
+  if clone_bundle and _DownloadBundle(url, cwd, quiet):
+    _ImportBundle(cwd)
+  _Fetch(url, cwd, 'origin', quiet)
 
 
 def _Verify(cwd, branch, quiet):
   """Verify the branch has been signed by a tag.
   """
-  cmd = [GIT, 'describe', 'origin/%s' % branch]
-  proc = subprocess.Popen(cmd,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE,
-                          cwd=cwd)
-  cur = proc.stdout.read().strip().decode('utf-8')
-  proc.stdout.close()
-
-  proc.stderr.read()
-  proc.stderr.close()
-
-  if proc.wait() != 0 or not cur:
-    print(file=sys.stderr)
+  try:
+    ret = run_git('describe', 'origin/%s' % branch, cwd=cwd)
+    cur = ret.stdout.strip()
+  except CloneFailure:
     print("fatal: branch '%s' has not been signed" % branch, file=sys.stderr)
-    raise CloneFailure()
+    raise
 
   m = re.compile(r'^(.*)-[0-9]{1,}-g[0-9a-f]{1,}$').match(cur)
   if m:
@@ -757,48 +755,25 @@ def _Verify(cwd, branch, quiet):
 
   env = os.environ.copy()
   _setenv('GNUPGHOME', gpg_dir, env)
-
-  cmd = [GIT, 'tag', '-v', cur]
-  proc = subprocess.Popen(cmd,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE,
-                          cwd=cwd,
-                          env=env)
-  out = proc.stdout.read().decode('utf-8')
-  proc.stdout.close()
-
-  err = proc.stderr.read().decode('utf-8')
-  proc.stderr.close()
-
-  if proc.wait() != 0:
-    print(file=sys.stderr)
-    print(out, file=sys.stderr)
-    print(err, file=sys.stderr)
-    print(file=sys.stderr)
-    raise CloneFailure()
+  run_git('tag', '-v', cur, cwd=cwd, env=env)
   return '%s^0' % cur
 
 
 def _Checkout(cwd, branch, rev, quiet):
   """Checkout an upstream branch into the repository and track it.
   """
-  cmd = [GIT, 'update-ref', 'refs/heads/default', rev]
-  if subprocess.Popen(cmd, cwd=cwd).wait() != 0:
-    raise CloneFailure()
+  run_git('update-ref', 'refs/heads/default', rev, cwd=cwd)
 
   _SetConfig(cwd, 'branch.default.remote', 'origin')
   _SetConfig(cwd, 'branch.default.merge', 'refs/heads/%s' % branch)
 
-  cmd = [GIT, 'symbolic-ref', 'HEAD', 'refs/heads/default']
-  if subprocess.Popen(cmd, cwd=cwd).wait() != 0:
-    raise CloneFailure()
+  run_git('symbolic-ref', 'HEAD', 'refs/heads/default', cwd=cwd)
 
-  cmd = [GIT, 'read-tree', '--reset', '-u']
+  cmd = ['read-tree', '--reset', '-u']
   if not quiet:
     cmd.append('-v')
   cmd.append('HEAD')
-  if subprocess.Popen(cmd, cwd=cwd).wait() != 0:
-    raise CloneFailure()
+  run_git(*cmd, cwd=cwd)
 
 
 def _FindRepo():
@@ -923,19 +898,10 @@ def _SetDefaultsTo(gitdir):
   global REPO_REV
 
   REPO_URL = gitdir
-  proc = subprocess.Popen([GIT,
-                           '--git-dir=%s' % gitdir,
-                           'symbolic-ref',
-                           'HEAD'],
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE)
-  REPO_REV = proc.stdout.read().strip().decode('utf-8')
-  proc.stdout.close()
-
-  proc.stderr.read()
-  proc.stderr.close()
-
-  if proc.wait() != 0:
+  try:
+    ret = run_git('--git-dir=%s' % gitdir, 'symbolic-ref', 'HEAD')
+    REPO_REV = ret.stdout.strip()
+  except CloneFailure:
     print('fatal: %s has no current branch' % gitdir, file=sys.stderr)
     sys.exit(1)
 
