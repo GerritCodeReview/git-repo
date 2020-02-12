@@ -274,8 +274,7 @@ class GitConfig(object):
 
   def _ReadJson(self):
     try:
-      if os.path.getmtime(self._json) \
-              <= os.path.getmtime(self.file):
+      if os.path.getmtime(self._json) <= os.path.getmtime(self.file):
         platform_utils.remove(self._json)
         return None
     except OSError:
@@ -429,9 +428,9 @@ def _open_ssh(host, port=None):
     if key in _master_keys:
       return True
 
-    if not _ssh_master \
-            or 'GIT_SSH' in os.environ \
-            or sys.platform in ('win32', 'cygwin'):
+    if (not _ssh_master
+            or 'GIT_SSH' in os.environ
+            or sys.platform in ('win32', 'cygwin')):
       # failed earlier, or cygwin ssh can't do this
       #
       return False
@@ -612,8 +611,8 @@ class Remote(object):
       insteadOfList = globCfg.GetString(key, all_keys=True)
 
       for insteadOf in insteadOfList:
-        if self.url.startswith(insteadOf) \
-                and len(insteadOf) > len(longest):
+        if (self.url.startswith(insteadOf)
+                and len(insteadOf) > len(longest)):
           longest = insteadOf
           longestUrl = url
 
