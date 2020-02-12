@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bb196650_20616a2b",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-12T02:31:55Z",
+      "side": 1,
+      "message": "the pythonic style doesn\u0027t use len() for non-zero checks\n\n if raw_list is not None and people[0]:\n\nup to you if you want to do that here",
+      "revId": "dbe5438cd7eae2b31db814f050785a5bfa06b645",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
