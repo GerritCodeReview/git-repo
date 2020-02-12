@@ -396,8 +396,8 @@ later is required to fix a server side protocol bug.
                     err_event=err_event,
                     clone_filter=self.manifest.CloneFilter)
       if self.jobs > 1:
-        t = _threading.Thread(target = self._FetchProjectList,
-                              kwargs = kwargs)
+        t = _threading.Thread(target=self._FetchProjectList,
+                              kwargs=kwargs)
         # Ensure that Ctrl-C will not freeze the repo process.
         t.daemon = True
         threads.add(t)
@@ -704,16 +704,16 @@ later is required to fix a server side protocol bug.
           gitdir = os.path.join(self.manifest.topdir, path, '.git')
           if os.path.exists(gitdir):
             project = Project(
-                           manifest = self.manifest,
-                           name = path,
-                           remote = RemoteSpec('origin'),
-                           gitdir = gitdir,
-                           objdir = gitdir,
-                           worktree = os.path.join(self.manifest.topdir, path),
-                           relpath = path,
-                           revisionExpr = 'HEAD',
-                           revisionId = None,
-                           groups = None)
+                           manifest=self.manifest,
+                           name=path,
+                           remote=RemoteSpec('origin'),
+                           gitdir=gitdir,
+                           objdir=gitdir,
+                           worktree=os.path.join(self.manifest.topdir, path),
+                           relpath=path,
+                           revisionExpr='HEAD',
+                           revisionId=None,
+                           groups=None)
 
             if project.IsDirty() and opt.force_remove_dirty:
               print('WARNING: Removing dirty project "%s": uncommitted changes '
@@ -1100,9 +1100,9 @@ def _VerifyTag(project):
 
   cmd = [GIT, 'tag', '-v', cur]
   proc = subprocess.Popen(cmd,
-                          stdout = subprocess.PIPE,
-                          stderr = subprocess.PIPE,
-                          env = env)
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.PIPE,
+                          env=env)
   out = proc.stdout.read()
   proc.stdout.close()
 

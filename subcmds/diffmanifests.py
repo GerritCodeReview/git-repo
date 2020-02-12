@@ -184,10 +184,10 @@ synced and their revisions won't be found.
     self.out = _Coloring(self.manifest.globalConfig)
     self.printText = self.out.nofmt_printer('text')
     if opt.color:
-      self.printProject = self.out.nofmt_printer('project', attr = 'bold')
-      self.printAdded = self.out.nofmt_printer('green', fg = 'green', attr = 'bold')
-      self.printRemoved = self.out.nofmt_printer('red', fg = 'red', attr = 'bold')
-      self.printRevision = self.out.nofmt_printer('revision', fg = 'yellow')
+      self.printProject = self.out.nofmt_printer('project', attr='bold')
+      self.printAdded = self.out.nofmt_printer('green', fg='green', attr='bold')
+      self.printRemoved = self.out.nofmt_printer('red', fg='red', attr='bold')
+      self.printRevision = self.out.nofmt_printer('revision', fg='yellow')
     else:
       self.printProject = self.printAdded = self.printRemoved = self.printRevision = self.printText
 

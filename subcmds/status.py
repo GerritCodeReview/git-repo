@@ -170,8 +170,8 @@ the following meanings:
       class StatusColoring(Coloring):
         def __init__(self, config):
           Coloring.__init__(self, config, 'status')
-          self.project = self.printer('header', attr = 'bold')
-          self.untracked = self.printer('untracked', fg = 'red')
+          self.project = self.printer('header', attr='bold')
+          self.untracked = self.printer('untracked', fg='red')
 
       orig_path = os.getcwd()
       try:

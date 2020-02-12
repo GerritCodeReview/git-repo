@@ -140,12 +140,12 @@ class XmlManifest(object):
     self._load_local_manifests = True
 
     self.repoProject = MetaProject(self, 'repo',
-      gitdir   = os.path.join(repodir, 'repo/.git'),
-      worktree = os.path.join(repodir, 'repo'))
+      gitdir=os.path.join(repodir, 'repo/.git'),
+      worktree=os.path.join(repodir, 'repo'))
 
     self.manifestProject = MetaProject(self, 'manifests',
-      gitdir   = os.path.join(repodir, 'manifests.git'),
-      worktree = os.path.join(repodir, 'manifests'))
+      gitdir=os.path.join(repodir, 'manifests.git'),
+      worktree=os.path.join(repodir, 'manifests'))
 
     self._Unload()
 
@@ -682,15 +682,15 @@ class XmlManifest(object):
     if name not in self._projects:
       m.PreSync()
       gitdir = os.path.join(self.topdir, '%s.git' % name)
-      project = Project(manifest = self,
-                        name = name,
-                        remote = remote.ToRemoteSpec(name),
-                        gitdir = gitdir,
-                        objdir = gitdir,
-                        worktree = None,
-                        relpath = name or None,
-                        revisionExpr = m.revisionExpr,
-                        revisionId = None)
+      project = Project(manifest=self,
+                        name=name,
+                        remote=remote.ToRemoteSpec(name),
+                        gitdir=gitdir,
+                        objdir=gitdir,
+                        worktree=None,
+                        relpath=name or None,
+                        revisionExpr=m.revisionExpr,
+                        revisionId=None)
       self._projects[project.name] = [project]
       self._paths[project.relpath] = project
 
@@ -798,7 +798,7 @@ class XmlManifest(object):
   def _UnjoinName(self, parent_name, name):
     return os.path.relpath(name, parent_name)
 
-  def _ParseProject(self, node, parent = None, **extra_proj_attrs):
+  def _ParseProject(self, node, parent=None, **extra_proj_attrs):
     """
     reads a <project> element from the manifest file
     """
@@ -883,24 +883,24 @@ class XmlManifest(object):
       if node.getAttribute('force-path').lower() in ("yes", "true", "1"):
         gitdir = os.path.join(self.topdir, '%s.git' % path)
 
-    project = Project(manifest = self,
-                      name = name,
-                      remote = remote.ToRemoteSpec(name),
-                      gitdir = gitdir,
-                      objdir = objdir,
-                      worktree = worktree,
-                      relpath = relpath,
-                      revisionExpr = revisionExpr,
-                      revisionId = None,
-                      rebase = rebase,
-                      groups = groups,
-                      sync_c = sync_c,
-                      sync_s = sync_s,
-                      sync_tags = sync_tags,
-                      clone_depth = clone_depth,
-                      upstream = upstream,
-                      parent = parent,
-                      dest_branch = dest_branch,
+    project = Project(manifest=self,
+                      name=name,
+                      remote=remote.ToRemoteSpec(name),
+                      gitdir=gitdir,
+                      objdir=objdir,
+                      worktree=worktree,
+                      relpath=relpath,
+                      revisionExpr=revisionExpr,
+                      revisionId=None,
+                      rebase=rebase,
+                      groups=groups,
+                      sync_c=sync_c,
+                      sync_s=sync_s,
+                      sync_tags=sync_tags,
+                      clone_depth=clone_depth,
+                      upstream=upstream,
+                      parent=parent,
+                      dest_branch=dest_branch,
                       **extra_proj_attrs)
 
     for n in node.childNodes:
@@ -911,7 +911,7 @@ class XmlManifest(object):
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
-        project.subprojects.append(self._ParseProject(n, parent = project))
+        project.subprojects.append(self._ParseProject(n, parent=project))
 
     return project
 
@@ -1125,7 +1125,7 @@ class GitcManifest(XmlManifest):
                                         gitc_client_name)
     self.manifestFile = os.path.join(self.gitc_client_dir, '.manifest')
 
-  def _ParseProject(self, node, parent = None):
+  def _ParseProject(self, node, parent=None):
     """Override _ParseProject and add support for GITC specific attributes."""
     return super(GitcManifest, self)._ParseProject(
         node, parent=parent, old_revision=node.getAttribute('old-revision'))
