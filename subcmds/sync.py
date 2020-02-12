@@ -1265,4 +1265,3 @@ class PersistentTransport(xmlrpc.client.Transport):
 
   def close(self):
     pass
-

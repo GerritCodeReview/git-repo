@@ -1134,4 +1134,3 @@ class GitcManifest(XmlManifest):
     """Output GITC Specific Project attributes"""
     if p.old_revision:
       e.setAttribute('old-revision', str(p.old_revision))
-
