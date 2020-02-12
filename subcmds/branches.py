@@ -19,12 +19,14 @@ import sys
 from color import Coloring
 from command import Command
 
+
 class BranchColoring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, 'branch')
     self.current = self.printer('current', fg='green')
     self.local = self.printer('local')
     self.notinproject = self.printer('notinproject', fg='red')
+
 
 class BranchInfo(object):
   def __init__(self, name):

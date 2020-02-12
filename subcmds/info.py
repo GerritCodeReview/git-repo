@@ -18,9 +18,11 @@ from command import PagedCommand
 from color import Coloring
 from git_refs import R_M
 
+
 class _Coloring(Coloring):
   def __init__(self, config):
     Coloring.__init__(self, config, "status")
+
 
 class Info(PagedCommand):
   common = True
@@ -40,7 +42,6 @@ class Info(PagedCommand):
     p.add_option('-l', '--local-only',
                  dest="local", action="store_true",
                  help="Disable all remote operations")
-
 
   def Execute(self, opt, args):
     self.out = _Coloring(self.manifest.globalConfig)

@@ -31,6 +31,7 @@ import os
 from color import Coloring
 import platform_utils
 
+
 class Status(PagedCommand):
   common = True
   helpSummary = "Show the working tree status"

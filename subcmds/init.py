@@ -37,6 +37,7 @@ from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
 import platform_utils
 
+
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
   helpSummary = "Initialize repo in the current directory"
