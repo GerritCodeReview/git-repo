@@ -123,9 +123,9 @@ class Command(object):
     project = None
     if os.path.exists(path):
       oldpath = None
-      while path and \
-            path != oldpath and \
-            path != manifest.topdir:
+      while (path and
+             path != oldpath and
+             path != manifest.topdir):
         try:
           project = self._by_path[path]
           break
