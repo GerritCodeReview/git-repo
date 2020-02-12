@@ -205,6 +205,7 @@ gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 extra_args = []
 init_optparse = optparse.OptionParser(usage="repo init -u url [options]")
 
+
 def _InitParser():
   """Setup the init subcommand parser."""
   # Logging.
@@ -283,6 +284,7 @@ def _GitcInitOptions(init_optparse_arg):
   g.add_option('-c', '--gitc-client',
                dest='gitc_client',
                help='The name of the gitc_client instance to create or modify.')
+
 
 _gitc_manifest_dir = None
 
@@ -423,6 +425,7 @@ def _Init(args, gitc_init=False):
 # Similar to Python's sys.version_info.
 GitVersion = collections.namedtuple(
     'GitVersion', ('major', 'minor', 'micro', 'full'))
+
 
 def ParseGitVersion(ver_str=None):
   if ver_str is None:
