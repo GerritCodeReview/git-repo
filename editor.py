@@ -24,6 +24,7 @@ import tempfile
 from error import EditorError
 import platform_utils
 
+
 class Editor(object):
   """Manages the user's preferred text editor."""
 

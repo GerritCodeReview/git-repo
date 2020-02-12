@@ -33,6 +33,7 @@ else:
 
 UNUSUAL_COMMIT_THRESHOLD = 5
 
+
 def _ConfirmManyUploads(multiple_branches=False):
   if multiple_branches:
     print('ATTENTION: One or more branches has an unusually high number '
@@ -44,16 +45,19 @@ def _ConfirmManyUploads(multiple_branches=False):
   answer = input("If you are sure you intend to do this, type 'yes': ").strip()
   return answer == "yes"
 
+
 def _die(fmt, *args):
   msg = fmt % args
   print('error: %s' % msg, file=sys.stderr)
   sys.exit(1)
+
 
 def _SplitEmails(values):
   result = []
   for value in values:
     result.extend([s.strip() for s in value.split(',')])
   return result
+
 
 class Upload(InteractiveCommand):
   common = True

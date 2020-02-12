@@ -25,6 +25,7 @@ import gitc_utils
 from progress import Progress
 from project import SyncBuffer
 
+
 class Start(Command):
   common = True
   helpSummary = "Start a new branch for development"
