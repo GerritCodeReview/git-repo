@@ -59,17 +59,22 @@ ID_RE = re.compile(r'^[0-9a-f]{40}$')
 
 REVIEW_CACHE = dict()
 
+
 def IsChange(rev):
   return rev.startswith(R_CHANGES)
+
 
 def IsId(rev):
   return ID_RE.match(rev)
 
+
 def IsTag(rev):
   return rev.startswith(R_TAGS)
 
+
 def IsImmutable(rev):
     return IsChange(rev) or IsId(rev) or IsTag(rev)
+
 
 def _key(name):
   parts = name.split('.')
@@ -78,6 +83,7 @@ def _key(name):
   parts[ 0] = parts[ 0].lower()
   parts[-1] = parts[-1].lower()
   return '.'.join(parts)
+
 
 class GitConfig(object):
   _ForUser = None
@@ -392,6 +398,7 @@ _master_keys = set()
 _ssh_master = True
 _master_keys_lock = None
 
+
 def init_ssh():
   """Should be called once at the start of repo to init ssh master handling.
 
@@ -400,6 +407,7 @@ def init_ssh():
   global _master_keys_lock
   assert _master_keys_lock is None, "Should only call init_ssh once"
   _master_keys_lock = _threading.Lock()
+
 
 def _open_ssh(host, port=None):
   global _ssh_master
@@ -481,6 +489,7 @@ def _open_ssh(host, port=None):
   finally:
     _master_keys_lock.release()
 
+
 def close_ssh():
   global _master_keys_lock
 
@@ -505,14 +514,17 @@ def close_ssh():
   # We're done with the lock, so we can delete it.
   _master_keys_lock = None
 
+
 URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
 URI_ALL = re.compile(r'^([a-z][a-z+-]*)://([^@/]*@?[^/]*)/')
+
 
 def GetSchemeFromUrl(url):
   m = URI_ALL.match(url)
   if m:
     return m.group(1)
   return None
+
 
 @contextlib.contextmanager
 def GetUrlCookieFile(url, quiet):
@@ -554,6 +566,7 @@ def GetUrlCookieFile(url, quiet):
     cookiefile = os.path.expanduser(cookiefile)
   yield cookiefile, None
 
+
 def _preconnect(url):
   m = URI_ALL.match(url)
   if m:
@@ -574,9 +587,11 @@ def _preconnect(url):
 
   return False
 
+
 class Remote(object):
   """Configuration options related to a remote.
   """
+
   def __init__(self, config, name):
     self._config = config
     self.name = name
@@ -737,6 +752,7 @@ class Remote(object):
 class Branch(object):
   """Configuration options related to a single branch.
   """
+
   def __init__(self, config, name):
     self._config = config
     self.name = name

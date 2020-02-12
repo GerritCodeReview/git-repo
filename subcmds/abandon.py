@@ -21,6 +21,7 @@ from collections import defaultdict
 from git_command import git
 from progress import Progress
 
+
 class Abandon(Command):
   common = True
   helpSummary = "Permanently abandon a development branch"
@@ -32,6 +33,7 @@ deleting it (and all its history) from your local repository.
 
 It is equivalent to "git branch -D <branchname>".
 """
+
   def _Options(self, p):
     p.add_option('--all',
                  dest='all', action='store_true',

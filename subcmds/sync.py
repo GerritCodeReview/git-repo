@@ -53,6 +53,7 @@ except ImportError:
 
 try:
   import resource
+
   def _rlimit_nofile():
     return resource.getrlimit(resource.RLIMIT_NOFILE)
 except ImportError:
@@ -81,12 +82,15 @@ from manifest_xml import GitcManifest
 
 _ONE_DAY_S = 24 * 60 * 60
 
+
 class _FetchError(Exception):
   """Internal error thrown in _FetchHelper() when we don't want stack trace."""
   pass
 
+
 class _CheckoutError(Exception):
   """Internal error thrown in _CheckoutOne() when we don't want stack trace."""
+
 
 class Sync(Command, MirrorSafeCommand):
   jobs = 1
@@ -1044,6 +1048,7 @@ later is required to fix a server side protocol bug.
             file=sys.stderr)
       sys.exit(1)
 
+
 def _PostRepoUpgrade(manifest, quiet=False):
   wrapper = Wrapper()
   if wrapper.NeedSetupGnuPG():
@@ -1051,6 +1056,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
   for project in manifest.projects:
     if project.Exists:
       project.PostRepoUpgrade()
+
 
 def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
   if rp.HasChanges:
@@ -1069,6 +1075,7 @@ def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
     if verbose:
       print('repo version %s is current' % rp.work_git.describe(HEAD),
             file=sys.stderr)
+
 
 def _VerifyTag(project):
   gpg_dir = os.path.expanduser('~/.repoconfig/gnupg')
@@ -1174,6 +1181,8 @@ class _FetchTimes(object):
 # and supporting persistent-http[s]. It cannot change hosts from
 # request to request like the normal transport, the real url
 # is passed during initialization.
+
+
 class PersistentTransport(xmlrpc.client.Transport):
   def __init__(self, orig_host):
     self.orig_host = orig_host

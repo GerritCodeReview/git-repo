@@ -56,6 +56,7 @@ urllib.parse.uses_netloc.extend([
     'sso',
     'rpc'])
 
+
 class _Default(object):
   """Project defaults within the manifest."""
 
@@ -73,6 +74,7 @@ class _Default(object):
 
   def __ne__(self, other):
     return self.__dict__ != other.__dict__
+
 
 class _XmlRemote(object):
   def __init__(self,
@@ -126,6 +128,7 @@ class _XmlRemote(object):
                       review=self.reviewUrl,
                       orig_name=self.name,
                       fetchUrl=self.fetchUrl)
+
 
 class XmlManifest(object):
   """manages the repo configuration file"""
@@ -654,7 +657,6 @@ class XmlManifest(object):
         # the repo-hooks element too.
         if self._repo_hooks_project and (self._repo_hooks_project.name == name):
           self._repo_hooks_project = None
-
 
   def _AddMetaProjectMirror(self, m):
     name = None

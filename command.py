@@ -236,6 +236,7 @@ class InteractiveCommand(Command):
   """Command which requires user interaction on the tty and
      must not run within a pager, even if the user asks to.
   """
+
   def WantPager(self, _opt):
     return False
 
@@ -244,6 +245,7 @@ class PagedCommand(Command):
   """Command which defaults to output in a pager, as its
      display tends to be larger than one screen full.
   """
+
   def WantPager(self, _opt):
     return True
 

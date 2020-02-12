@@ -23,6 +23,7 @@ from error import GitError
 
 CHANGE_RE = re.compile(r'^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$')
 
+
 class Download(Command):
   common = True
   helpSummary = "Download and checkout a change"

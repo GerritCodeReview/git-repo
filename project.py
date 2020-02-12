@@ -85,6 +85,7 @@ def not_rev(r):
 def sq(r):
   return "'" + r.replace("'", "'\''") + "'"
 
+
 _project_hook_list = None
 
 
@@ -1259,6 +1260,7 @@ class Project(object):
 
 # Publish / Upload ##
 
+
   def WasPublished(self, branch, all_refs=None):
     """Was the branch published (uploaded) for code review?
        If so, returns the SHA-1 hash of the last published
@@ -1412,6 +1414,7 @@ class Project(object):
 
 
 # Sync ##
+
 
   def _ExtractArchive(self, tarpath, path=None):
     """Extract the given tar on its current location
@@ -1822,6 +1825,7 @@ class Project(object):
 
 # Branch Management ##
 
+
   def GetHeadPath(self):
     """Return the full path to the HEAD ref."""
     dotgit = os.path.join(self.worktree, '.git')
@@ -2022,6 +2026,7 @@ class Project(object):
 
 # Submodule Management ##
 
+
   def GetRegisteredSubprojects(self):
     result = []
 
@@ -2174,6 +2179,7 @@ class Project(object):
 
 
 # Direct Git Commands ##
+
   def _CheckForImmutableRevision(self):
     try:
       # if revision (sha or tag) is not present then following function

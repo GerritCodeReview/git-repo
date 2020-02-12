@@ -20,6 +20,7 @@ import sys
 
 from command import PagedCommand
 
+
 class Manifest(PagedCommand):
   common = False
   helpSummary = "Manifest inspection utility"

@@ -84,6 +84,7 @@ def _Color(fg=None, bg=None, attr=None):
     code = ''
   return code
 
+
 DEFAULT = None
 
 

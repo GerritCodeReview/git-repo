@@ -18,6 +18,7 @@ from __future__ import print_function
 from color import Coloring
 from command import PagedCommand
 
+
 class Prune(PagedCommand):
   common = True
   helpSummary = "Prune (delete) already merged topics"
