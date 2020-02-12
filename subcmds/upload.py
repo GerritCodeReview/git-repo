@@ -137,13 +137,13 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                  dest='auto_topic', action='store_true',
                  help='Send local branch name to Gerrit Code Review')
     p.add_option('--re', '--reviewers',
-                 type='string',  action='append', dest='reviewers',
+                 type='string', action='append', dest='reviewers',
                  help='Request reviews from these people.')
     p.add_option('--cc',
-                 type='string',  action='append', dest='cc',
+                 type='string', action='append', dest='cc',
                  help='Also send email to these email addresses.')
     p.add_option('--br',
-                 type='string',  action='store', dest='branch',
+                 type='string', action='store', dest='branch',
                  help='Branch to upload.')
     p.add_option('--cbr', '--current-branch',
                  dest='current_branch', action='store_true',
