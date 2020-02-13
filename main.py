@@ -286,7 +286,7 @@ def _CheckWrapperVersion(ver_str, repo_path):
 repo: error:
 !!! Your version of repo %s is too old.
 !!! We need at least version %s.
-!!! A new repo command (%s) is available.
+!!! A new version of repo (%s) is available.
 !!! You must upgrade before you can continue:
 
     cp %s %s
@@ -295,7 +295,7 @@ repo: error:
 
   if exp > ver:
     print("""
-... A new repo command (%5s) is available.
+... A new version of repo (%5s) is available.
 ... You should upgrade soon:
 
     cp %s %s
