@@ -1472,7 +1472,7 @@ class Project(object):
     if is_new:
       self._InitGitDir(force_sync=force_sync)
     else:
-      self._UpdateHooks()
+      self._UpdateHooks(quiet=quiet)
     self._InitRemote()
 
     if is_new:
@@ -2669,11 +2669,11 @@ class Project(object):
         platform_utils.rmtree(self.gitdir)
       raise
 
-  def _UpdateHooks(self):
+  def _UpdateHooks(self, quiet=False):
     if os.path.exists(self.gitdir):
-      self._InitHooks()
+      self._InitHooks(quiet=quiet)
 
-  def _InitHooks(self):
+  def _InitHooks(self, quiet=False):
     hooks = platform_utils.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
@@ -2696,8 +2696,9 @@ class Project(object):
         if filecmp.cmp(stock_hook, dst, shallow=False):
           platform_utils.remove(dst)
         else:
-          _warn("%s: Not replacing locally modified %s hook",
-                self.relpath, name)
+          if not quiet:
+            _warn("%s: Not replacing locally modified %s hook",
+                  self.relpath, name)
           continue
       try:
         platform_utils.symlink(
