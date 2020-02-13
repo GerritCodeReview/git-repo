@@ -295,7 +295,7 @@ repo: error:
 
   if exp > ver:
     print("""
-... A new version of repo (%5s) is available.
+... A new version of repo (%s) is available.
 ... You should upgrade soon:
 
     cp %s %s
