@@ -1470,9 +1470,9 @@ class Project(object):
     if is_new is None:
       is_new = not self.Exists
     if is_new:
-      self._InitGitDir(force_sync=force_sync)
+      self._InitGitDir(force_sync=force_sync, quiet=quiet)
     else:
-      self._UpdateHooks()
+      self._UpdateHooks(quiet=quiet)
     self._InitRemote()
 
     if is_new:
@@ -2590,7 +2590,7 @@ class Project(object):
     if GitCommand(self, cmd).Wait() != 0:
       raise GitError('%s merge %s ' % (self.name, head))
 
-  def _InitGitDir(self, mirror_git=None, force_sync=False):
+  def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
     init_git_dir = not os.path.exists(self.gitdir)
     init_obj_dir = not os.path.exists(self.objdir)
     try:
@@ -2618,7 +2618,8 @@ class Project(object):
               if self.worktree and os.path.exists(platform_utils.realpath
                                                   (self.worktree)):
                 platform_utils.rmtree(platform_utils.realpath(self.worktree))
-              return self._InitGitDir(mirror_git=mirror_git, force_sync=False)
+              return self._InitGitDir(mirror_git=mirror_git, force_sync=False,
+                                      quiet=quiet)
             except Exception:
               raise e
           raise e
@@ -2650,7 +2651,7 @@ class Project(object):
             _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
                     os.path.join(ref_dir, 'objects') + '\n')
 
-        self._UpdateHooks()
+        self._UpdateHooks(quiet=quiet)
 
         m = self.manifest.manifestProject.config
         for key in ['user.name', 'user.email']:
@@ -2669,11 +2670,11 @@ class Project(object):
         platform_utils.rmtree(self.gitdir)
       raise
 
-  def _UpdateHooks(self):
+  def _UpdateHooks(self, quiet=False):
     if os.path.exists(self.gitdir):
-      self._InitHooks()
+      self._InitHooks(quiet=quiet)
 
-  def _InitHooks(self):
+  def _InitHooks(self, quiet=False):
     hooks = platform_utils.realpath(self._gitdir_path('hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
@@ -2696,8 +2697,9 @@ class Project(object):
         if filecmp.cmp(stock_hook, dst, shallow=False):
           platform_utils.remove(dst)
         else:
-          _warn("%s: Not replacing locally modified %s hook",
-                self.relpath, name)
+          if not quiet:
+            _warn("%s: Not replacing locally modified %s hook",
+                  self.relpath, name)
           continue
       try:
         platform_utils.symlink(
