@@ -688,7 +688,15 @@ context = json.loads('''%(context)s''')
 sys.path.insert(0, os.path.dirname(path))
 data = open(path).read()
 exec(compile(data, path, 'exec'), context)
-context['main'](**kwargs)
+ret = context['main'](**kwargs)
+if ret is None or ret is True:
+  status = 0
+elif ret is False:
+  status = 50
+elif not instance(ret, int):
+  raise Exception('Unknown hook return type %r' % (ret,))
+else:
+  status = 50 if ret else 0
 """ % {
         'path': self._script_fullpath,
         'kwargs': json.dumps(kwargs),
@@ -697,11 +705,12 @@ context['main'](**kwargs)
 
     # We pass the script via stdin to avoid OS argv limits.  It also makes
     # unhandled exception tracebacks less verbose/confusing for users.
-    cmd = [interp, '-c', 'import sys; exec(sys.stdin.read())']
+    cmd = [interp, '-c', 'import sys; exec(sys.stdin.read()); sys.exit(status)']
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     proc.communicate(input=script.encode('utf-8'))
-    if proc.returncode:
+    if proc.returncode and proc.returncode != 50:
       raise HookError('Failed to run %s hook.' % (self._hook_type,))
+    return proc.returncode == 0
 
   def _ExecuteHookViaImport(self, data, context, **kwargs):
     """Execute the hook code in |data| directly.
@@ -730,10 +739,20 @@ context['main'](**kwargs)
     # build to fail, it will raise an Exception.  We'll catch that convert
     # to a HookError w/ just the failing traceback.
     try:
-      context['main'](**kwargs)
+      ret = context['main'](**kwargs)
     except Exception:
       raise HookError('%s\nFailed to run main() for %s hook; see traceback '
                       'above.' % (traceback.format_exc(), self._hook_type))
+
+    # We have to check bools before isinstance(int) as bools subclass ints.
+    if ret is None or ret is True:
+      return True
+    elif ret is False:
+      return False
+    elif not isinstance(ret, int):
+      raise HookError('Unknown hook return type %r' % (ret,))
+    else:
+      return ret == 0
 
   def _ExecuteHook(self, **kwargs):
     """Actually execute the given hook.
@@ -786,17 +805,14 @@ context['main'](**kwargs)
       # Attempt to execute the hooks through the requested version of Python.
       if reexec:
         try:
-          self._ExecuteHookViaReexec(interp, context, **kwargs)
+          return self._ExecuteHookViaReexec(interp, context, **kwargs)
         except OSError as e:
-          if e.errno == errno.ENOENT:
-            # We couldn't find the interpreter, so fallback to importing.
-            reexec = False
-          else:
+          if e.errno != errno.ENOENT:
             raise
+          # We couldn't find the interpreter, so fallback to importing.
 
       # Run the hook by importing directly.
-      if not reexec:
-        self._ExecuteHookViaImport(data, context, **kwargs)
+      return self._ExecuteHookViaImport(data, context, **kwargs)
     finally:
       # Restore sys.path and CWD.
       sys.path = orig_syspath
