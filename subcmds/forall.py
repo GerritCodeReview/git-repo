@@ -127,7 +127,8 @@ without iterating through the remaining projects.
                  help="Execute the command only on projects matching regex or wildcard expression")
     p.add_option('-i', '--inverse-regex',
                  dest='inverse_regex', action='store_true',
-                 help="Execute the command only on projects not matching regex or wildcard expression")
+                 help="Execute the command only on projects not matching regex or "
+                      "wildcard expression")
     p.add_option('-g', '--groups',
                  dest='groups',
                  help="Execute the command only on projects matching the specified groups")

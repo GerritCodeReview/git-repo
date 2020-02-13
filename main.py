@@ -229,7 +229,8 @@ class _Repo(object):
       if e.name:
         print('error: project group must be enabled for project %s' % e.name, file=sys.stderr)
       else:
-        print('error: project group must be enabled for the project in the current directory', file=sys.stderr)
+        print('error: project group must be enabled for the project in the current directory',
+              file=sys.stderr)
       result = 1
     except SystemExit as e:
       if e.code:

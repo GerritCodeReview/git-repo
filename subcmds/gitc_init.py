@@ -62,7 +62,8 @@ use for this GITC client.
   def Execute(self, opt, args):
     gitc_client = gitc_utils.parse_clientdir(os.getcwd())
     if not gitc_client or (opt.gitc_client and gitc_client != opt.gitc_client):
-      print('fatal: Please update your repo command. See go/gitc for instructions.', file=sys.stderr)
+      print('fatal: Please update your repo command. See go/gitc for instructions.',
+            file=sys.stderr)
       sys.exit(1)
     self.client_dir = os.path.join(gitc_utils.get_gitc_manifest_dir(),
                                    gitc_client)
