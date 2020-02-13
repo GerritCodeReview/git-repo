@@ -55,9 +55,14 @@ Run `flake8` on changes modules:
     flake8 file.py
 
 Note that repo generally follows [Google's python style guide] rather than
-[PEP 8], so it's possible that the output of `flake8` will be quite noisy.
-It's not mandatory to avoid all warnings, but at least the maximum line
-length should be followed.
+[PEP 8], with a couple of notable exceptions:
+
+* Indentation is at 2 columns rather than 4
+* The maximum line length is 100 columns rather than 80
+
+It's possible that the output of `flake8` will be quite noisy, so it's not
+mandatory to avoid all warnings, but at least the maximum line length
+should be followed.
 
 If there are many occurrences of the same warning that cannot be
 avoided without going against the Google style guide, these may be
