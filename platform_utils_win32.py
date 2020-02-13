@@ -152,7 +152,8 @@ def create_dirsymlink(source, link_name):
 
 
 def _create_symlink(source, link_name, dwFlags):
-  if not CreateSymbolicLinkW(link_name, source, dwFlags | SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE):
+  if not CreateSymbolicLinkW(link_name, source,
+                             dwFlags | SYMBOLIC_LINK_FLAG_ALLOW_UNPRIVILEGED_CREATE):
     # See https://github.com/golang/go/pull/24307/files#diff-b87bc12e4da2497308f9ef746086e4f0
     # "the unprivileged create flag is unsupported below Windows 10 (1703, v10.0.14972).
     # retry without it."
