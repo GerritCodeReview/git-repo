@@ -339,10 +339,12 @@ def run_command(cmd, **kwargs):
           (cmd[0], ret.returncode), file=sys.stderr)
     print('  cwd: %s\n  cmd: %r' %
           (kwargs.get('cwd', os.getcwd()), cmd), file=sys.stderr)
+
     def _print_output(name, output):
       if output:
         print('  %s:\n  >> %s' % (name, '\n  >> '.join(output.splitlines())),
               file=sys.stderr)
+
     _print_output('stdout', ret.stdout)
     _print_output('stderr', ret.stderr)
     raise RunError(ret)
@@ -614,9 +616,9 @@ def SetupGnuPG(quiet):
 
   cmd = ['gpg', '--import']
   try:
-    ret = run_command(cmd, env=env, stdin=subprocess.PIPE,
-                      capture_output=quiet,
-                      input=MAINTAINER_KEYS.encode('utf-8'))
+    run_command(cmd, env=env, stdin=subprocess.PIPE,
+                capture_output=quiet,
+                input=MAINTAINER_KEYS.encode('utf-8'))
   except OSError:
     if not quiet:
       print('warning: gpg (GnuPG) is not available.', file=sys.stderr)
