@@ -46,6 +46,30 @@
       "revId": "fc4cb3a40dab481f207644a05661be569da5b9c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71d0f482_c8b83f50",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-14T05:45:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4899b559_4da31a2c",
+      "range": {
+        "startLine": 908,
+        "startChar": 18,
+        "endLine": 908,
+        "endChar": 40
+      },
+      "revId": "fc4cb3a40dab481f207644a05661be569da5b9c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
