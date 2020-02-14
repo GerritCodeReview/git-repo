@@ -22,6 +22,30 @@
       "revId": "fc4cb3a40dab481f207644a05661be569da5b9c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4899b559_4da31a2c",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-14T05:33:32Z",
+      "side": 1,
+      "message": "{} like this creates a set.  it was added in Python 2.7.\n\npersonal habit that i tend to create sets when i want set operations (like \"in\" here).",
+      "parentUuid": "f06788cf_184c2aeb",
+      "range": {
+        "startLine": 908,
+        "startChar": 18,
+        "endLine": 908,
+        "endChar": 40
+      },
+      "revId": "fc4cb3a40dab481f207644a05661be569da5b9c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
