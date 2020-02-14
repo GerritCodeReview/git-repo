@@ -17,10 +17,10 @@
 from __future__ import print_function
 try:
   from importlib.machinery import SourceFileLoader
-  _loader = lambda *args: SourceFileLoader(*args).load_module()
+  _loader = lambda *args: SourceFileLoader(*args).load_module()  # noqa: E731
 except ImportError:
   import imp
-  _loader = lambda *args: imp.load_source(*args)
+  _loader = lambda *args: imp.load_source(*args)  # noqa: E731
 import os
 
 
