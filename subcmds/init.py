@@ -219,9 +219,11 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
+    def platformize(name):
+        return 'platform-' + name
+
     groups = re.split(r'[,\s]+', opt.groups)
     all_platforms = ['linux', 'darwin', 'windows']
-    platformize = lambda x: 'platform-' + x
     if opt.platform == 'auto':
       if (not opt.mirror and
               not m.config.GetString('repo.mirror') == 'true'):
