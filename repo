@@ -253,26 +253,37 @@ home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 
 extra_args = []
-init_optparse = optparse.OptionParser(usage="repo init -u url [options]")
 
 
-def _InitParser():
-  """Setup the init subcommand parser."""
+def GetParser(gitc_init=False):
+  """Setup the CLI parser."""
+  if gitc_init:
+    usage = 'repo gitc-init -u url -c client [options]'
+  else:
+    usage = 'repo init -u url [options]'
+
+  parser = optparse.OptionParser(usage=usage)
+
   # Logging.
-  group = init_optparse.add_option_group('Logging options')
+  group = parser.add_option_group('Logging options')
   group.add_option('-q', '--quiet',
                    action='store_true', default=False,
                    help='be quiet')
 
   # Manifest.
-  group = init_optparse.add_option_group('Manifest options')
+  group = parser.add_option_group('Manifest options')
   group.add_option('-u', '--manifest-url',
                    help='manifest repository location', metavar='URL')
   group.add_option('-b', '--manifest-branch',
                    help='manifest branch or revision', metavar='REVISION')
   group.add_option('-m', '--manifest-name',
                    help='initial manifest file', metavar='NAME.xml')
-  group.add_option('--current-branch',
+  cbr_opts = ['--current-branch']
+  # The gitc-init subcommand allocates -c itself, but a lot of init users
+  # want -c, so try to satisfy both as best we can.
+  if not gitc_init:
+    cbr_opts += ['-c']
+  group.add_option(*cbr_opts,
                    dest='current_branch_only', action='store_true',
                    help='fetch only current manifest branch from server')
   group.add_option('--mirror', action='store_true',
@@ -310,7 +321,7 @@ def _InitParser():
                    help="don't fetch tags in the manifest")
 
   # Tool.
-  group = init_optparse.add_option_group('repo Version options')
+  group = parser.add_option_group('repo Version options')
   group.add_option('--repo-url', metavar='URL',
                    help='repo repository location ($REPO_URL)')
   group.add_option('--repo-branch', metavar='REVISION',
@@ -319,21 +330,20 @@ def _InitParser():
                    help='do not verify repo source code')
 
   # Other.
-  group = init_optparse.add_option_group('Other options')
+  group = parser.add_option_group('Other options')
   group.add_option('--config-name',
                    action='store_true', default=False,
                    help='Always prompt for name/e-mail')
 
+  # gitc-init specific settings.
+  if gitc_init:
+    group = parser.add_option_group('GITC options')
+    group.add_option('-f', '--manifest-file',
+                     help='Optional manifest file to use for this GITC client.')
+    group.add_option('-c', '--gitc-client',
+                     help='Name of the gitc_client instance to create or modify.')
 
-def _GitcInitOptions(init_optparse_arg):
-  init_optparse_arg.set_usage("repo gitc-init -u url -c client [options]")
-  g = init_optparse_arg.add_option_group('GITC options')
-  g.add_option('-f', '--manifest-file',
-               dest='manifest_file',
-               help='Optional manifest file to use for this GITC client.')
-  g.add_option('-c', '--gitc-client',
-               dest='gitc_client',
-               help='The name of the gitc_client instance to create or modify.')
+  return parser
 
 
 # This is a poor replacement for subprocess.run until we require Python 3.6+.
@@ -432,11 +442,10 @@ class CloneFailure(Exception):
 def _Init(args, gitc_init=False):
   """Installs repo by cloning it over the network.
   """
-  if gitc_init:
-    _GitcInitOptions(init_optparse)
-  opt, args = init_optparse.parse_args(args)
+  parser = GetParser(gitc_init=gitc_init)
+  opt, args = parser.parse_args(args)
   if args:
-    init_optparse.print_usage()
+    parser.print_usage()
     sys.exit(1)
 
   url = opt.repo_url
@@ -896,12 +905,9 @@ For access to the full online help, install repo ("repo init").
 
 def _Help(args):
   if args:
-    if args[0] == 'init':
-      init_optparse.print_help()
-      sys.exit(0)
-    elif args[0] == 'gitc-init':
-      _GitcInitOptions(init_optparse)
-      init_optparse.print_help()
+    if args[0] in {'init', 'gitc-init'}:
+      parser = GetParser(gitc_init=args[0] == 'gitc-init')
+      parser.print_help()
       sys.exit(0)
     else:
       print("error: '%s' is not a bootstrap command.\n"
@@ -983,7 +989,6 @@ def main(orig_args):
           'command from the corresponding client under /gitc/',
           file=sys.stderr)
     sys.exit(1)
-  _InitParser()
   if not repo_main:
     if opt.help:
       _Usage()
