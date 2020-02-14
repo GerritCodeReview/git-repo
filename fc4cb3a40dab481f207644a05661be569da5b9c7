@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f06788cf_184c2aeb",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-14T05:31:11Z",
+      "side": 1,
+      "message": "Maybe a feature of python that I\u0027m not aware of, but why {} instead of [] ?",
+      "range": {
+        "startLine": 908,
+        "startChar": 18,
+        "endLine": 908,
+        "endChar": 40
+      },
+      "revId": "fc4cb3a40dab481f207644a05661be569da5b9c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
