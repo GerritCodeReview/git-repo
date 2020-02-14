@@ -641,13 +641,19 @@ def SetupGnuPG(quiet):
             file=sys.stderr)
       sys.exit(1)
 
-  env = os.environ.copy()
-  _setenv('GNUPGHOME', gpg_dir, env)
-
-  cmd = ['gpg', '--import']
+  if not quiet:
+    print('repo: Updating release signing keys to keyset ver %s' %
+          ('.'.join(str(x) for x in KEYRING_VERSION),))
+  # NB: We use --homedir (and cwd below) because some environments (Windows) do
+  # not correctly handle full native paths.  We avoid the issue by changing to
+  # the right dir with cwd=gpg_dir before executing gpg, and then telling gpg to
+  # use the cwd (.) as its homedir which leaves the path resolution logic to it.
+  cmd = ['gpg', '--homedir', '.', '--import']
   try:
-    run_command(cmd, env=env, stdin=subprocess.PIPE,
-                capture_output=quiet,
+    # gpg can be pretty chatty.  Always capture the output and if something goes
+    # wrong, the builtin check failure will dump stdout & stderr for debugging.
+    run_command(cmd, stdin=subprocess.PIPE, capture_output=True,
+                cwd=gpg_dir, check=True,
                 input=MAINTAINER_KEYS.encode('utf-8'))
   except OSError:
     if not quiet:
@@ -655,9 +661,6 @@ def SetupGnuPG(quiet):
       print('warning: Installing it is strongly encouraged.', file=sys.stderr)
       print(file=sys.stderr)
     return False
-
-  if not quiet:
-    print()
 
   with open(os.path.join(home_dot_repo, 'keyring-version'), 'w') as fd:
     fd.write('.'.join(map(str, KEYRING_VERSION)) + '\n')
