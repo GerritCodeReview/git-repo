@@ -4,7 +4,7 @@
 
  - Make small logical changes.
  - Provide a meaningful commit message.
- - Check for coding errors and style nits with pyflakes and flake8
+ - Check for coding errors and style nits with flake8
  - Make sure all code is under the Apache License, 2.0.
  - Publish your changes for review.
  - Make corrections if requested.
@@ -38,39 +38,30 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 
 
-## Check for coding errors and style nits with pyflakes and flake8
+## Check for coding errors and style violations with flake8
 
-### Coding errors
-
-Run `pyflakes` on changed modules:
-
-    pyflakes file.py
-
-Ideally there should be no new errors or warnings introduced.
-
-### Style violations
-
-Run `flake8` on changes modules:
+Run `flake8` on changed modules:
 
     flake8 file.py
 
-Note that repo generally follows [Google's python style guide] rather than
+Note that repo generally follows [Google's Python Style Guide] rather than
 [PEP 8], with a couple of notable exceptions:
 
 * Indentation is at 2 columns rather than 4
 * The maximum line length is 100 columns rather than 80
 
-It's possible that the output of `flake8` will be quite noisy, so it's not
-mandatory to avoid all warnings, but at least the maximum line length
-should be followed.
+There should be no new errors or warnings introduced.
 
-If there are many occurrences of the same warning that cannot be
-avoided without going against the Google style guide, these may be
-suppressed in the included `.flake8` file.
+Warnings that cannot be avoided without going against the Google Style Guide
+may be suppressed inline individally using a `# noqa` comment as described
+in the [flake8 documentation].
 
-[Google's python style guide]: https://google.github.io/styleguide/pyguide.html
+If there are many occurrences of the same warning, these may be suppressed for
+the entire project in the included `.flake8` file.
+
+[Google's Python Style Guide]: https://google.github.io/styleguide/pyguide.html
 [PEP 8]: https://www.python.org/dev/peps/pep-0008/
-
+[flake8 documentation]: http://flake8.pycqa.org/en/3.1.1/user/ignoring-errors.html#in-line-ignoring-errors
 
 ## Running tests
 
