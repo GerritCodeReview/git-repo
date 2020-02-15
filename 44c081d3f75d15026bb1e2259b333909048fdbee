@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "32dcfc2f_b2ad0419",
+        "filename": "SUBMITTING_PATCHES.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-15T19:34:52Z",
+      "side": 1,
+      "message": "should be a period at the end",
+      "revId": "44c081d3f75d15026bb1e2259b333909048fdbee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa5fe7fd_a30d1a0f",
+        "filename": "SUBMITTING_PATCHES.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-15T19:34:52Z",
+      "side": 1,
+      "message": "https://",
+      "revId": "44c081d3f75d15026bb1e2259b333909048fdbee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
