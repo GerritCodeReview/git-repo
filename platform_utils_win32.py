@@ -219,8 +219,8 @@ def _preserve_encoding(source, target):
   if is_python3():
     return target
 
-  if isinstance(source, unicode):
-    return unicode(target)
+  if isinstance(source, unicode):  # noqa: F821
+    return unicode(target)  # noqa: F821
   return str(target)
 
 
