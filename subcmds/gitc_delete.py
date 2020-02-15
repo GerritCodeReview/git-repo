@@ -22,7 +22,7 @@ import platform_utils
 
 from pyversion import is_python3
 if not is_python3():
-  input = raw_input
+  input = raw_input  # noqa: F821
 
 
 class GitcDelete(Command, GitcClientCommand):

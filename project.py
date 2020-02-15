@@ -52,7 +52,7 @@ else:
   import urlparse
   urllib = imp.new_module('urllib')
   urllib.parse = urlparse
-  input = raw_input
+  input = raw_input  # noqa: F821
 
 
 def _lwrite(path, content):

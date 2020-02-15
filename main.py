@@ -69,7 +69,7 @@ from wrapper import WrapperPath, Wrapper
 from subcmds import all_commands
 
 if not is_python3():
-  input = raw_input
+  input = raw_input  # noqa: F821
 
 global_options = optparse.OptionParser(
     usage='repo [-p|--paginate|--no-pager] COMMAND [ARGS]',
