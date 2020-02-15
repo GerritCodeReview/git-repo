@@ -363,15 +363,23 @@ def run_command(cmd, **kwargs):
     kwargs.setdefault('stderr', subprocess.PIPE)
   cmd_input = kwargs.pop('input', None)
 
+  def decode(output):
+    """Decode |output| to text."""
+    if output is None:
+      return output
+    try:
+      return output.decode('utf-8')
+    except UnicodeError:
+      print('repo: warning: Invalid UTF-8 output:\ncmd: %r\n%r' % (cmd, output),
+            file=sys.stderr)
+      # TODO(vapier): Once we require Python 3, use 'backslashreplace'.
+      return output.decode('utf-8', 'replace')
+
   # Run & package the results.
   proc = subprocess.Popen(cmd, **kwargs)
   (stdout, stderr) = proc.communicate(input=cmd_input)
-  if stdout is not None:
-    stdout = stdout.decode('utf-8')
-  if stderr is not None:
-    stderr = stderr.decode('utf-8')
   trace.print(':', ' '.join(cmd))
-  ret = RunResult(proc.returncode, stdout, stderr)
+  ret = RunResult(proc.returncode, decode(stdout), decode(stderr))
 
   # If things failed, print useful debugging output.
   if check and ret.returncode:
