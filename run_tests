@@ -42,9 +42,11 @@ def main(argv):
   """The main entry."""
   # Add the repo tree to PYTHONPATH as the tests expect to be able to import
   # modules directly.
-  topdir = os.path.dirname(os.path.realpath(__file__))
-  pythonpath = os.environ.get('PYTHONPATH', '')
-  os.environ['PYTHONPATH'] = '%s:%s' % (topdir, pythonpath)
+  pythonpath = os.path.dirname(os.path.realpath(__file__))
+  oldpythonpath = os.environ.get('PYTHONPATH', None)
+  if oldpythonpath is not None:
+    pythonpath += os.pathsep + oldpythonpath
+  os.environ['PYTHONPATH'] = pythonpath
 
   return run_pytest('pytest', argv)
 
