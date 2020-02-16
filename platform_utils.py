@@ -179,7 +179,7 @@ class _FileDescriptorStreamsThreads(FileDescriptorStreams):
       for line in iter(self.fd.readline, b''):
         self.queue.put(_FileDescriptorStreamsThreads.QueueItem(self, line))
       self.fd.close()
-      self.queue.put(_FileDescriptorStreamsThreads.QueueItem(self, None))
+      self.queue.put(_FileDescriptorStreamsThreads.QueueItem(self, b''))
 
 
 def symlink(source, link_name):
