@@ -71,6 +71,34 @@ from subcmds import all_commands
 if not is_python3():
   input = raw_input  # noqa: F821
 
+# NB: These do not need to be kept in sync with the repo launcher script.
+# These may be much newer as it allows the repo launcher to roll between
+# different repo releases while source versions might require a newer python.
+#
+# The soft version is when we start warning users that the version is old and
+# we'll be dropping support for it.  We'll refuse to work with versions older
+# than the hard version.
+#
+# python-3.6 is in Ubuntu Bionic.
+MIN_PYTHON_VERSION_SOFT = (3, 6)
+MIN_PYTHON_VERSION_HARD = (3, 4)
+
+if sys.version_info.major < 3:
+  print('repo: warning: Python 2 is no longer supported; '
+        'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_SOFT),
+        file=sys.stderr)
+else:
+  if sys.version_info < MIN_PYTHON_VERSION_HARD:
+    print('repo: error: Python 3 version is too old; '
+          'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_SOFT),
+          file=sys.stderr)
+    sys.exit(1)
+  elif sys.version_info < MIN_PYTHON_VERSION_SOFT:
+    print('repo: warning: your Python 3 version is no longer supported; '
+          'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_SOFT),
+          file=sys.stderr)
+
+
 global_options = optparse.OptionParser(
     usage='repo [-p|--paginate|--no-pager] COMMAND [ARGS]',
     add_help_option=False)
