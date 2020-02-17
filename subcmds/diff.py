@@ -29,10 +29,6 @@ to the Unix 'patch' command.
 """
 
   def _Options(self, p):
-    def cmd(option, opt_str, value, parser):
-      setattr(parser.values, option.dest, list(parser.rargs))
-      while parser.rargs:
-        del parser.rargs[0]
     p.add_option('-u', '--absolute',
                  dest='absolute', action='store_true',
                  help='Paths are relative to the repository root')
