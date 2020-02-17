@@ -2362,7 +2362,8 @@ class Project(object):
 
     ok = False
     for _i in range(2):
-      gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy)
+      gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy,
+                          merge_output=True, capture_stdout=True)
       ret = gitcmd.Wait()
       if ret == 0:
         ok = True
@@ -2385,6 +2386,7 @@ class Project(object):
       elif ret < 0:
         # Git died with a signal, exit immediately
         break
+      print('%s:\n%s' % (self.name, gitcmd.stdout), file=sys.stderr)
       time.sleep(random.randint(30, 45))
 
     if initial:
