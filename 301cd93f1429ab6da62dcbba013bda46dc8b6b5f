@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b601c879_d9dc2ed2",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2358,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-17T23:53:47Z",
+      "side": 1,
+      "message": "Assuming this is interpreted as:\n\n if (not tags) or depth",
+      "revId": "301cd93f1429ab6da62dcbba013bda46dc8b6b5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ccf7c06c_53bccc8a",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-17T23:53:47Z",
+      "side": 1,
+      "message": "\"if not\" ?",
+      "range": {
+        "startLine": 511,
+        "startChar": 4,
+        "endLine": 511,
+        "endChar": 7
+      },
+      "revId": "301cd93f1429ab6da62dcbba013bda46dc8b6b5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e8683215_27734c31",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1074,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-17T23:53:47Z",
+      "side": 1,
+      "message": "Also here assuming this is interpreted as:\n\n if (not repo_verify) or _VerifyTag(rp):",
+      "revId": "301cd93f1429ab6da62dcbba013bda46dc8b6b5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
