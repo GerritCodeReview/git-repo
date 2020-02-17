@@ -234,9 +234,12 @@ later is required to fix a server side protocol bug.
     p.add_option('-c', '--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current branch from server')
+    p.add_option('-v', '--verbose',
+                 dest='output_mode', action='store_true',
+                 help='show all sync output')
     p.add_option('-q', '--quiet',
-                 dest='quiet', action='store_true',
-                 help='be more quiet')
+                 dest='output_mode', action='store_false',
+                 help='only show errors')
     p.add_option('-j', '--jobs',
                  dest='jobs', action='store', type='int',
                  help="projects to fetch simultaneously (default %d)" % self.jobs)
@@ -332,6 +335,7 @@ later is required to fix a server side protocol bug.
       try:
         success = project.Sync_NetworkHalf(
             quiet=opt.quiet,
+            verbose=opt.verbose,
             current_branch_only=opt.current_branch_only,
             force_sync=opt.force_sync,
             clone_bundle=not opt.no_clone_bundle,
@@ -835,7 +839,7 @@ later is required to fix a server side protocol bug.
     """Fetch & update the local manifest project."""
     if not opt.local_only:
       start = time.time()
-      success = mp.Sync_NetworkHalf(quiet=opt.quiet,
+      success = mp.Sync_NetworkHalf(quiet=opt.quiet, verbose=opt.verbose,
                                     current_branch_only=opt.current_branch_only,
                                     no_tags=opt.no_tags,
                                     optimized_fetch=opt.optimized_fetch,
@@ -882,6 +886,9 @@ later is required to fix a server side protocol bug.
     if self.jobs > 1:
       soft_limit, _ = _rlimit_nofile()
       self.jobs = min(self.jobs, (soft_limit - 5) // 3)
+
+    opt.quiet = opt.output_mode is False
+    opt.verbose = opt.output_mode is True
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)
