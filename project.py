@@ -1427,6 +1427,7 @@ class Project(object):
 
   def Sync_NetworkHalf(self,
                        quiet=False,
+                       verbose=False,
                        is_new=None,
                        current_branch_only=False,
                        force_sync=False,
@@ -1509,16 +1510,17 @@ class Project(object):
     else:
       depth = self.manifest.manifestProject.config.GetString('repo.depth')
 
-    need_to_fetch = not (optimized_fetch and
-                         (ID_RE.match(self.revisionExpr) and
-                          self._CheckForImmutableRevision()))
-    if (need_to_fetch and
-        not self._RemoteFetch(initial=is_new, quiet=quiet, alt_dir=alt_dir,
-                              current_branch_only=current_branch_only,
-                              no_tags=no_tags, prune=prune, depth=depth,
-                              submodules=submodules, force_sync=force_sync,
-                              clone_filter=clone_filter)):
-      return False
+    # See if we can skip the network fetch entirely.
+    if not (optimized_fetch and
+            (ID_RE.match(self.revisionExpr) and
+             self._CheckForImmutableRevision())):
+      if not self._RemoteFetch(
+          initial=is_new, quiet=quiet, verbose=verbose, alt_dir=alt_dir,
+          current_branch_only=current_branch_only,
+          no_tags=no_tags, prune=prune, depth=depth,
+          submodules=submodules, force_sync=force_sync,
+          clone_filter=clone_filter):
+        return False
 
     mp = self.manifest.manifestProject
     dissociate = mp.config.GetBoolean('repo.dissociate')
@@ -2193,6 +2195,7 @@ class Project(object):
                    current_branch_only=False,
                    initial=False,
                    quiet=False,
+                   verbose=False,
                    alt_dir=None,
                    no_tags=False,
                    prune=False,
@@ -2223,7 +2226,7 @@ class Project(object):
 
       if is_sha1 or tag_name is not None:
         if self._CheckForImmutableRevision():
-          if not quiet:
+          if verbose:
             print('Skipped fetching project %s (already have persistent ref)'
                   % self.name)
           return True
@@ -2400,17 +2403,13 @@ class Project(object):
       # got what we wanted, else trigger a second run of all
       # refs.
       if not self._CheckForImmutableRevision():
-        if current_branch_only and depth:
-          # Sync the current branch only with depth set to None
-          return self._RemoteFetch(name=name,
-                                   current_branch_only=current_branch_only,
-                                   initial=False, quiet=quiet, alt_dir=alt_dir,
-                                   depth=None, clone_filter=clone_filter)
-        else:
-          # Avoid infinite recursion: sync all branches with depth set to None
-          return self._RemoteFetch(name=name, current_branch_only=False,
-                                   initial=False, quiet=quiet, alt_dir=alt_dir,
-                                   depth=None, clone_filter=clone_filter)
+        # Sync the current branch only with depth set to None.
+        # We always pass depth=None down to avoid infinite recursion.
+        return self._RemoteFetch(
+            name=name, quiet=quiet, verbose=verbose,
+            current_branch_only=current_branch_only and depth,
+            initial=False, alt_dir=alt_dir,
+            depth=None, clone_filter=clone_filter)
 
     return ok
 
