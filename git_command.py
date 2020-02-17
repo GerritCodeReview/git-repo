@@ -226,6 +226,7 @@ class GitCommand(object):
                provide_stdin=False,
                capture_stdout=False,
                capture_stderr=False,
+               merge_output=False,
                disable_editor=False,
                ssh_proxy=False,
                cwd=None,
@@ -277,7 +278,7 @@ class GitCommand(object):
       stdin = None
 
     stdout = subprocess.PIPE
-    stderr = subprocess.PIPE
+    stderr = subprocess.STDOUT if merge_output else subprocess.PIPE
 
     if IsTrace():
       global LAST_CWD
@@ -305,6 +306,8 @@ class GitCommand(object):
         dbg += ' 1>|'
       if stderr == subprocess.PIPE:
         dbg += ' 2>|'
+      elif stderr == subprocess.STDOUT:
+        dbg += ' 2>&1'
       Trace('%s', dbg)
 
     try:
@@ -352,7 +355,8 @@ class GitCommand(object):
     p = self.process
     s_in = platform_utils.FileDescriptorStreams.create()
     s_in.add(p.stdout, sys.stdout, 'stdout')
-    s_in.add(p.stderr, sys.stderr, 'stderr')
+    if p.stderr is not None:
+      s_in.add(p.stderr, sys.stderr, 'stderr')
     self.stdout = ''
     self.stderr = ''
 
