@@ -53,7 +53,7 @@ branch but need to incorporate new upstream changes "underneath" them.
                  dest='force_rebase', action='store_true',
                  help='Pass --force-rebase to git rebase')
     p.add_option('--no-ff',
-                 dest='no_ff', action='store_true',
+                 dest='ff', default=True, action='store_false',
                  help='Pass --no-ff to git rebase')
     p.add_option('-q', '--quiet',
                  dest='quiet', action='store_true',
@@ -93,7 +93,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       common_args.append('--quiet')
     if opt.force_rebase:
       common_args.append('--force-rebase')
-    if opt.no_ff:
+    if not opt.ff:
       common_args.append('--no-ff')
     if opt.autosquash:
       common_args.append('--autosquash')
