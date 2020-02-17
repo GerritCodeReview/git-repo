@@ -146,10 +146,10 @@ to update the working directory files.
                       'platform group [auto|all|none|linux|darwin|...]',
                  metavar='PLATFORM')
     g.add_option('--no-clone-bundle',
-                 dest='no_clone_bundle', action='store_true',
+                 dest='clone_bundle', default=True, action='store_false',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
     g.add_option('--no-tags',
-                 dest='no_tags', action='store_true',
+                 dest='tags', default=True, action='store_false',
                  help="don't fetch tags in the manifest")
 
     # Tool
@@ -161,7 +161,7 @@ to update the working directory files.
                  dest='repo_branch',
                  help='repo branch or revision', metavar='REVISION')
     g.add_option('--no-repo-verify',
-                 dest='no_repo_verify', action='store_true',
+                 dest='repo_verify', default=True, action='store_false',
                  help='do not verify repo source code')
 
     # Other
@@ -281,9 +281,9 @@ to update the working directory files.
       m.config.SetString('repo.submodules', 'true')
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet,
-                              clone_bundle=not opt.no_clone_bundle,
+                              clone_bundle=opt.clone_bundle,
                               current_branch_only=opt.current_branch_only,
-                              no_tags=opt.no_tags, submodules=opt.submodules,
+                              tags=opt.tags, submodules=opt.submodules,
                               clone_filter=opt.clone_filter):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)

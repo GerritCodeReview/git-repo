@@ -247,7 +247,7 @@ later is required to fix a server side protocol bug.
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
     p.add_option('--no-clone-bundle',
-                 dest='no_clone_bundle', action='store_true',
+                 dest='clone_bundle', default=True, action='store_false',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
     p.add_option('-u', '--manifest-server-username', action='store',
                  dest='manifest_server_username',
@@ -259,7 +259,7 @@ later is required to fix a server side protocol bug.
                  dest='fetch_submodules', action='store_true',
                  help='fetch submodules from server')
     p.add_option('--no-tags',
-                 dest='no_tags', action='store_true',
+                 dest='tags', default=True, action='store_false',
                  help="don't fetch tags")
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
@@ -276,7 +276,7 @@ later is required to fix a server side protocol bug.
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
-                 dest='no_repo_verify', action='store_true',
+                 dest='repo_verify', default=True, action='store_false',
                  help='do not verify repo source code')
     g.add_option('--repo-upgraded',
                  dest='repo_upgraded', action='store_true',
@@ -338,8 +338,8 @@ later is required to fix a server side protocol bug.
             verbose=opt.verbose,
             current_branch_only=opt.current_branch_only,
             force_sync=opt.force_sync,
-            clone_bundle=not opt.no_clone_bundle,
-            no_tags=opt.no_tags, archive=self.manifest.IsArchive,
+            clone_bundle=opt.clone_bundle,
+            tags=opt.tags, archive=self.manifest.IsArchive,
             optimized_fetch=opt.optimized_fetch,
             prune=opt.prune,
             clone_filter=clone_filter)
@@ -841,7 +841,7 @@ later is required to fix a server side protocol bug.
       start = time.time()
       success = mp.Sync_NetworkHalf(quiet=opt.quiet, verbose=opt.verbose,
                                     current_branch_only=opt.current_branch_only,
-                                    no_tags=opt.no_tags,
+                                    tags=opt.tags,
                                     optimized_fetch=opt.optimized_fetch,
                                     submodules=self.manifest.HasSubmodules,
                                     clone_filter=self.manifest.CloneFilter)
@@ -977,7 +977,7 @@ later is required to fix a server side protocol bug.
 
       fetched = self._Fetch(to_fetch, opt, err_event)
 
-      _PostRepoFetch(rp, opt.no_repo_verify)
+      _PostRepoFetch(rp, opt.repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
         if err_event.isSet():
@@ -1067,11 +1067,11 @@ def _PostRepoUpgrade(manifest, quiet=False):
       project.PostRepoUpgrade()
 
 
-def _PostRepoFetch(rp, no_repo_verify=False, verbose=False):
+def _PostRepoFetch(rp, repo_verify=True, verbose=False):
   if rp.HasChanges:
     print('info: A new version of repo is available', file=sys.stderr)
     print(file=sys.stderr)
-    if no_repo_verify or _VerifyTag(rp):
+    if not repo_verify or _VerifyTag(rp):
       syncbuf = SyncBuffer(rp.config)
       rp.Sync_LocalHalf(syncbuf)
       if not syncbuf.Finish():
