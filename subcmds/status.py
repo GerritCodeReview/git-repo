@@ -16,17 +16,16 @@
 
 from __future__ import print_function
 
+import glob
+import itertools
+import os
+
 from command import PagedCommand
 
 try:
   import threading as _threading
 except ImportError:
   import dummy_threading as _threading
-
-import glob
-
-import itertools
-import os
 
 from color import Coloring
 import platform_utils

@@ -15,9 +15,11 @@
 # limitations under the License.
 
 from __future__ import print_function
-import sys
-from command import Command
+
 from collections import defaultdict
+import sys
+
+from command import Command
 from git_command import git
 from progress import Progress
 

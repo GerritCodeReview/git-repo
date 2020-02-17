@@ -21,6 +21,7 @@ import errno
 import json
 import os
 import re
+import signal
 import ssl
 import subprocess
 import sys
@@ -41,7 +42,6 @@ else:
   urllib.request = urllib2
   urllib.error = urllib2
 
-from signal import SIGTERM
 from error import GitError, UploadError
 import platform_utils
 from repo_trace import Trace
@@ -494,7 +494,7 @@ def close_ssh():
 
   for p in _master_processes:
     try:
-      os.kill(p.pid, SIGTERM)
+      os.kill(p.pid, signal.SIGTERM)
       p.wait()
     except OSError:
       pass
