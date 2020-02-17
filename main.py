@@ -80,7 +80,7 @@ global_options.add_option('-p', '--paginate',
                           dest='pager', action='store_true',
                           help='display command output in the pager')
 global_options.add_option('--no-pager',
-                          dest='no_pager', action='store_true',
+                          dest='pager', default=True, action='store_false',
                           help='disable the pager')
 global_options.add_option('--color',
                           choices=('auto', 'always', 'never'), default=None,
@@ -194,7 +194,7 @@ class _Repo(object):
             file=sys.stderr)
       return 1
 
-    if not gopts.no_pager and not isinstance(cmd, InteractiveCommand):
+    if gopts.pager and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig
       if gopts.pager:
         use_pager = True

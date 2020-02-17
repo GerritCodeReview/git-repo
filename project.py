@@ -1432,7 +1432,7 @@ class Project(object):
                        current_branch_only=False,
                        force_sync=False,
                        clone_bundle=True,
-                       no_tags=False,
+                       tags=True,
                        archive=False,
                        optimized_fetch=False,
                        prune=False,
@@ -1501,9 +1501,9 @@ class Project(object):
       elif self.manifest.default.sync_c:
         current_branch_only = True
 
-    if not no_tags:
+    if tags:
       if not self.sync_tags:
-        no_tags = True
+        tags = True
 
     if self.clone_depth:
       depth = self.clone_depth
@@ -1517,7 +1517,7 @@ class Project(object):
       if not self._RemoteFetch(
           initial=is_new, quiet=quiet, verbose=verbose, alt_dir=alt_dir,
           current_branch_only=current_branch_only,
-          no_tags=no_tags, prune=prune, depth=depth,
+          tags=tags, prune=prune, depth=depth,
           submodules=submodules, force_sync=force_sync,
           clone_filter=clone_filter):
         return False
@@ -2197,7 +2197,7 @@ class Project(object):
                    quiet=False,
                    verbose=False,
                    alt_dir=None,
-                   no_tags=False,
+                   tags=True,
                    prune=False,
                    depth=None,
                    submodules=False,
@@ -2355,7 +2355,7 @@ class Project(object):
 
     # If using depth then we should not get all the tags since they may
     # be outside of the depth.
-    if no_tags or depth:
+    if not tags or depth:
       cmd.append('--no-tags')
     else:
       cmd.append('--tags')

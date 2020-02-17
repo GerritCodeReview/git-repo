@@ -315,9 +315,11 @@ def GetParser(gitc_init=False):
                    help='restrict manifest projects to ones with a specified '
                         'platform group [auto|all|none|linux|darwin|...]',
                    metavar='PLATFORM')
-  group.add_option('--no-clone-bundle', action='store_true',
+  group.add_option('--no-clone-bundle',
+                   dest='clone_bundle', default=True, action='store_false',
                    help='disable use of /clone.bundle on HTTP/HTTPS')
-  group.add_option('--no-tags', action='store_true',
+  group.add_option('--no-tags',
+                   dest='tags', default=True, action='store_false',
                    help="don't fetch tags in the manifest")
 
   # Tool.
@@ -326,7 +328,8 @@ def GetParser(gitc_init=False):
                    help='repo repository location ($REPO_URL)')
   group.add_option('--repo-branch', metavar='REVISION',
                    help='repo branch or revision ($REPO_REV)')
-  group.add_option('--no-repo-verify', action='store_true',
+  group.add_option('--no-repo-verify',
+                   dest='repo_verify', default=True, action='store_false',
                    help='do not verify repo source code')
 
   # Other.
@@ -505,7 +508,7 @@ def _Init(args, gitc_init=False):
 
   _CheckGitVersion()
   try:
-    if opt.no_repo_verify:
+    if opt.repo_verify:
       do_verify = False
     else:
       if NeedSetupGnuPG():
@@ -514,7 +517,7 @@ def _Init(args, gitc_init=False):
         do_verify = True
 
     dst = os.path.abspath(os.path.join(repodir, S_repo))
-    _Clone(url, dst, opt.quiet, not opt.no_clone_bundle)
+    _Clone(url, dst, opt.quiet, opt.clone_bundle)
 
     if do_verify:
       rev = _Verify(dst, branch, opt.quiet)
