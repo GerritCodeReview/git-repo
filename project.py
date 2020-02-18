@@ -1515,11 +1515,11 @@ class Project(object):
             (ID_RE.match(self.revisionExpr) and
              self._CheckForImmutableRevision())):
       if not self._RemoteFetch(
-          initial=is_new, quiet=quiet, verbose=verbose, alt_dir=alt_dir,
-          current_branch_only=current_branch_only,
-          no_tags=no_tags, prune=prune, depth=depth,
-          submodules=submodules, force_sync=force_sync,
-          clone_filter=clone_filter):
+              initial=is_new, quiet=quiet, verbose=verbose, alt_dir=alt_dir,
+              current_branch_only=current_branch_only,
+              no_tags=no_tags, prune=prune, depth=depth,
+              submodules=submodules, force_sync=force_sync,
+              clone_filter=clone_filter):
         return False
 
     mp = self.manifest.manifestProject
