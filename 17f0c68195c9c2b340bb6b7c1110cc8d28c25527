@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "613c93d6_16e9d745",
+        "filename": "git_command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-18T19:44:00Z",
+      "side": 1,
+      "message": "add docstrings to each of these new funcs.  they can be one-line descriptions if you don\u0027t want to write up a full spec :).",
+      "revId": "17f0c68195c9c2b340bb6b7c1110cc8d28c25527",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5f14090_e4ea20da",
+        "filename": "git_command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-18T19:44:00Z",
+      "side": 1,
+      "message": "i think this would be better written as a regex.  something like:\n\n m \u003d re.match(r\u0027^OpenSSH_([0-9.]+)p1\u0027, version)\n if m:\n   ver \u003d tuple(int(x) for x in m.group(1).split(\u0027.\u0027))",
+      "revId": "17f0c68195c9c2b340bb6b7c1110cc8d28c25527",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "409292d1_0c057989",
+        "filename": "git_command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-18T19:44:00Z",
+      "side": 1,
+      "message": "only need two space indent on this block",
+      "revId": "17f0c68195c9c2b340bb6b7c1110cc8d28c25527",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
