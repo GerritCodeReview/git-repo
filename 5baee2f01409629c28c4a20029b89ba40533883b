@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4bffd196_4db1db9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-18T19:11:49Z",
+      "side": 1,
+      "message": "looks like jrn@ opened a public bug, so you\u0027ll want to change this to:\n\n Bug: https://crbug.com/gerrit/12370",
+      "revId": "5baee2f01409629c28c4a20029b89ba40533883b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
