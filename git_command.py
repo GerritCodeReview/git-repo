@@ -16,6 +16,7 @@
 
 from __future__ import print_function
 import os
+import re
 import sys
 import subprocess
 import tempfile
@@ -47,6 +48,35 @@ LAST_CWD = None
 _ssh_proxy_path = None
 _ssh_sock_path = None
 _ssh_clients = []
+_ssh_version = None
+
+
+def _run_ssh_version():
+  """run ssh -V to display the version number"""
+  return subprocess.check_output(['ssh', '-V'], stderr=subprocess.STDOUT).decode()
+
+
+def _parse_ssh_version(ver_str=None):
+  """parse a ssh version string into a tuple"""
+  if ver_str is None:
+    ver_str = _run_ssh_version()
+  m = re.match(r'^OpenSSH_([0-9.]+)(p[0-9]+)?\s', ver_str)
+  if m:
+    return tuple(int(x) for x in m.group(1).split('.'))
+  else:
+    return ()
+
+
+def ssh_version():
+  """return ssh version as a tuple"""
+  global _ssh_version
+  if _ssh_version is None:
+    try:
+      _ssh_version = _parse_ssh_version()
+    except subprocess.CalledProcessError:
+      print('fatal: unable to detect ssh version', file=sys.stderr)
+      sys.exit(1)
+  return _ssh_version
 
 
 def ssh_sock(create=True):
@@ -57,9 +87,13 @@ def ssh_sock(create=True):
     tmp_dir = '/tmp'
     if not os.path.exists(tmp_dir):
       tmp_dir = tempfile.gettempdir()
+    if ssh_version() < (6, 7):
+      tokens = '%r@%h:%p'
+    else:
+      tokens = '%C'  # hash of %l%h%p%r
     _ssh_sock_path = os.path.join(
         tempfile.mkdtemp('', 'ssh-', tmp_dir),
-        'master-%r@%h:%p')
+        'master-' + tokens)
   return _ssh_sock_path
 
 
