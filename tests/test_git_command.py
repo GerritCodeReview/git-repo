@@ -30,6 +30,21 @@ import git_command
 import wrapper
 
 
+class SSHUnitTest(unittest.TestCase):
+  """Tests the ssh functions."""
+
+  def test_ssh_version(self):
+    """Check ssh_version() handling."""
+    ver = git_command._parse_ssh_version('Unknown\n')
+    self.assertEqual(ver, ())
+    ver = git_command._parse_ssh_version('OpenSSH_1.0\n')
+    self.assertEqual(ver, (1, 0))
+    ver = git_command._parse_ssh_version('OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.13, OpenSSL 1.0.1f 6 Jan 2014\n')
+    self.assertEqual(ver, (6, 6, 1))
+    ver = git_command._parse_ssh_version('OpenSSH_7.6p1 Ubuntu-4ubuntu0.3, OpenSSL 1.0.2n  7 Dec 2017\n')
+    self.assertEqual(ver, (7, 6))
+
+
 class GitCallUnitTest(unittest.TestCase):
   """Tests the _GitCall class (via git_command.git)."""
 
