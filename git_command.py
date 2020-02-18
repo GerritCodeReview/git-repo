@@ -59,7 +59,7 @@ def ssh_sock(create=True):
       tmp_dir = tempfile.gettempdir()
     _ssh_sock_path = os.path.join(
         tempfile.mkdtemp('', 'ssh-', tmp_dir),
-        'master-%r@%h:%p')
+        'master-%C')  # %C = hash of %l%h%p%r
   return _ssh_sock_path
 
 
