@@ -1202,7 +1202,7 @@ class PersistentTransport(xmlrpc.client.Transport):
       # Since we're only using them for HTTP, copy the file temporarily,
       # stripping those prefixes away.
       if cookiefile:
-        tmpcookiefile = tempfile.NamedTemporaryFile()
+        tmpcookiefile = tempfile.NamedTemporaryFile(mode='w')
         tmpcookiefile.write("# HTTP Cookie File")
         try:
           with open(cookiefile) as f:
