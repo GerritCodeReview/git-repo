@@ -47,6 +47,39 @@ LAST_CWD = None
 _ssh_proxy_path = None
 _ssh_sock_path = None
 _ssh_clients = []
+_ssh_version = None
+
+
+def _run_ssh_version():
+  # "OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.13, OpenSSL 1.0.1f 6 Jan 2014\n"
+  return subprocess.check_output(['ssh', '-V'], stderr=subprocess.STDOUT)
+
+
+def _parse_ssh_version(ver_str=None):
+  if ver_str is None:
+    ver_str = _run_ssh_version()
+  version = ver_str.split(' ')[0]
+  to_tuple = []
+  if '_' in version:
+    name, ver_str = version.split('_')
+    num_ver_str = ver_str.split('p')[0]
+    for num_str in num_ver_str.split('.')[:3]:
+      if num_str.isdigit():
+        to_tuple.append(int(num_str))
+      else:
+        to_tuple.append(0)
+  return tuple(to_tuple)
+
+
+def ssh_version():
+  global _ssh_version
+  if _ssh_version is None:
+    try:
+      _ssh_version = _parse_ssh_version()
+    except subprocess.CalledProcessError:
+      print('fatal: unable to detect ssh version', file=sys.stderr)
+      sys.exit(1)
+  return _ssh_version
 
 
 def ssh_sock(create=True):
@@ -57,9 +90,13 @@ def ssh_sock(create=True):
     tmp_dir = '/tmp'
     if not os.path.exists(tmp_dir):
       tmp_dir = tempfile.gettempdir()
+    if ssh_version() < (6, 7):
+      tokens = '%r@%h:%p'
+    else:
+      tokens = '%C'  # hash of %l%h%p%r
     _ssh_sock_path = os.path.join(
         tempfile.mkdtemp('', 'ssh-', tmp_dir),
-        'master-%r@%h:%p')
+        'master-' + tokens)
   return _ssh_sock_path
 
 
