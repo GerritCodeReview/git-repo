@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "43162b21_5f54d174",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2358,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-18T00:15:44Z",
+      "side": 1,
+      "message": "correct\n\n $ python\n\u003e\u003e\u003e not False or True\nTrue\n\u003e\u003e\u003e not True or True\nTrue\n\u003e\u003e\u003e not False or False\nTrue\n\u003e\u003e\u003e not True or False\nFalse",
+      "parentUuid": "b601c879_d9dc2ed2",
+      "revId": "301cd93f1429ab6da62dcbba013bda46dc8b6b5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ccf7c06c_53bccc8a",
         "filename": "repo",
         "patchSetId": 1
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "19093bbf_aff35a7a",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-18T00:15:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ccf7c06c_53bccc8a",
+      "range": {
+        "startLine": 511,
+        "startChar": 4,
+        "endLine": 511,
+        "endChar": 7
+      },
+      "revId": "301cd93f1429ab6da62dcbba013bda46dc8b6b5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e8683215_27734c31",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -56,6 +98,24 @@
       "revId": "301cd93f1429ab6da62dcbba013bda46dc8b6b5f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8d82979d_8af525bc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1074,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-18T00:15:44Z",
+      "side": 1,
+      "message": "correct",
+      "parentUuid": "e8683215_27734c31",
+      "revId": "301cd93f1429ab6da62dcbba013bda46dc8b6b5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
