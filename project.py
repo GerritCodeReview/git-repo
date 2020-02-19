@@ -198,6 +198,7 @@ class ReviewableBranch(object):
     return self._base_exists
 
   def UploadForReview(self, people,
+                      dryrun=False,
                       auto_topic=False,
                       hashtags=(),
                       draft=False,
@@ -207,8 +208,9 @@ class ReviewableBranch(object):
                       dest_branch=None,
                       validate_certs=True,
                       push_options=None):
-    self.project.UploadForReview(self.name,
-                                 people,
+    self.project.UploadForReview(branch=self.name,
+                                 people=people,
+                                 dryrun=dryrun,
                                  auto_topic=auto_topic,
                                  hashtags=hashtags,
                                  draft=draft,
@@ -1332,6 +1334,7 @@ class Project(object):
 
   def UploadForReview(self, branch=None,
                       people=([], []),
+                      dryrun=False,
                       auto_topic=False,
                       hashtags=(),
                       draft=False,
@@ -1369,6 +1372,8 @@ class Project(object):
     if url is None:
       raise UploadError('review not configured')
     cmd = ['push']
+    if dryrun:
+      cmd.append('-n')
 
     if url.startswith('ssh://'):
       cmd.append('--receive-pack=gerrit receive-pack')
