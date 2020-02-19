@@ -13,6 +13,7 @@ from __future__ import print_function
 import datetime
 import os
 import platform
+import shlex
 import subprocess
 import sys
 
@@ -693,6 +694,24 @@ def _SetConfig(cwd, name, value):
   run_git('config', name, value, cwd=cwd)
 
 
+def _GetRepoConfig(name):
+  """Read a repo configuration option."""
+  config = os.path.join(home_dot_repo, 'config')
+  if not os.path.exists(config):
+    return None
+
+  cmd = ['config', '--file', config, '--get', name]
+  ret = run_git(*cmd, check=False)
+  if ret.returncode == 0:
+    return ret.stdout
+  elif ret.returncode == 1:
+    return None
+  else:
+    print('repo: error: git %s failed:\n%s' % (' '.join(cmd), ret.stderr),
+          file=sys.stderr)
+    raise RunError()
+
+
 def _InitHttp():
   handlers = []
 
@@ -876,6 +895,25 @@ class _Options(object):
   version = False
 
 
+def _ExpandAlias(name):
+  """Look up user registered aliases."""
+  # We don't resolve aliases for existing subcommands.  This matches git.
+  if name in {'gitc-init', 'help', 'init'}:
+    return name, []
+
+  alias = _GetRepoConfig('alias.%s' % (name,))
+  if alias is None:
+    return name, []
+
+  args = alias.strip().split(' ', 1)
+  name = args[0]
+  if len(args) == 2:
+    args = shlex.split(args[1])
+  else:
+    args = []
+  return name, args
+
+
 def _ParseArguments(args):
   cmd = None
   opt = _Options()
@@ -1004,6 +1042,11 @@ def main(orig_args):
           file=sys.stderr)
     sys.exit(1)
   if not repo_main:
+    # Only expand aliases here since we'll be parsing the CLI ourselves.
+    # If we had repo_main, alias expansion would happen in main.py.
+    cmd, alias_args = _ExpandAlias(cmd)
+    args = alias_args + args
+
     if opt.help:
       _Usage()
     if cmd == 'help':
