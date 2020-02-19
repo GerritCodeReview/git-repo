@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e4075f37_5e76f6f8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2443,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-19T08:01:33Z",
+      "side": 1,
+      "message": "as a follow up it would be good to fix these to use explicit assignments, i.e.\n\n quiet\u003dquiet, verbose\u003dverbose",
+      "range": {
+        "startLine": 2442,
+        "startChar": 72,
+        "endLine": 2443,
+        "endChar": 44
+      },
+      "revId": "be5ff456b3255fa875c28a02a582b846caf927b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
