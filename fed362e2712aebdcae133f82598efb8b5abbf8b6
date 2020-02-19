@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7db09465_3865d8b0",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1373,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-19T08:10:17Z",
+      "side": 1,
+      "message": "below we use cmd.append",
+      "range": {
+        "startLine": 1373,
+        "startChar": 10,
+        "endLine": 1373,
+        "endChar": 13
+      },
+      "revId": "fed362e2712aebdcae133f82598efb8b5abbf8b6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
