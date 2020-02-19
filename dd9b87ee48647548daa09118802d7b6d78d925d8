@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eb52bb66_98bb1fa3",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2204,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T23:07:50Z",
+      "side": 1,
+      "message": "stale comment?",
+      "revId": "dd9b87ee48647548daa09118802d7b6d78d925d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
