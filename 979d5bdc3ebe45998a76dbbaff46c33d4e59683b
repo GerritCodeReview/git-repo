@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7b3688ef_d1248506",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T20:00:32Z",
+      "side": 1,
+      "message": "These can (and sometimes do) have directory/file conflicts. Or do you mean that it uses the `name` setting with a `.git` suffix? An example here would help.",
+      "range": {
+        "startLine": 106,
+        "startChar": 22,
+        "endLine": 106,
+        "endChar": 61
+      },
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89581a5c_b08b8920",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T20:00:32Z",
+      "side": 1,
+      "message": "not about this change: this should be changed to use the `git update-ref` tool. Otherwise, it won\u0027t continue to work with future changes to ref storage (e.g. reftable).",
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c5bbf40_c6b29855",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2633,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T20:00:32Z",
+      "side": 1,
+      "message": "Do we ensure repositoryFormatVersion is \u003e\u003d 1 somewhere in preparation for this?",
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5ab9c33f_b7cd34c9",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2670,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T20:00:32Z",
+      "side": 1,
+      "message": "Ah, good --- this answers my question from the docs. So it can be answered by a doc change.",
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dd7a5564_3615870e",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2894,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T20:00:32Z",
+      "side": 1,
+      "message": "Why is this necessary? Is this working around a bug in Git? Can you file a bug (at crbug.com/git/new) describing the interface you\u0027d need to avoid this?",
+      "range": {
+        "startLine": 2894,
+        "startChar": 6,
+        "endLine": 2894,
+        "endChar": 38
+      },
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab8936df_4c8bc737",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T20:00:32Z",
+      "side": 1,
+      "message": "Should this use `git worktree remove` instead?",
+      "range": {
+        "startLine": 644,
+        "startChar": 6,
+        "endLine": 644,
+        "endChar": 63
+      },
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
