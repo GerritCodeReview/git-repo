@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "75d9aad5_3eaaf839",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1891,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T21:04:38Z",
+      "side": 0,
+      "message": "This part is `git symbolic-ref HEAD refs/heads/${name}`",
+      "revId": "7ff80afdf66e8a00745300c0375d98f2ba8887b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
