@@ -576,8 +576,7 @@ later is required to fix a server side protocol bug.
         print('%s: Shared project %s found, disabling pruning.' %
               (project.relpath, project.name))
         if git_require((2, 7, 0)):
-          project.config.SetString('core.repositoryFormatVersion', '1')
-          project.config.SetString('extensions.preciousObjects', 'true')
+          project.EnableRepositoryExtension('preciousObjects')
         else:
           # This isn't perfect, but it's the best we can do with old git.
           print('%s: WARNING: shared projects are unreliable when using old '

@@ -2186,6 +2186,24 @@ class Project(object):
     return result
 
 # Direct Git Commands ##
+  def EnableRepositoryExtension(self, key, value='true', version=1):
+    """Enable git repository extension |key| with |value|.
+
+    Args:
+      key: The extension to enabled.  Omit the "extensions." prefix.
+      value: The value to use for the extension.
+      version: The minimum git repository version needed.
+    """
+    # Make sure the git repo version is new enough already.
+    found_version = self.config.GetInt('core.repositoryFormatVersion')
+    if found_version is None:
+      found_version = 0
+    if found_version < version:
+      self.config.SetString('core.repositoryFormatVersion', str(version))
+
+    # Enable the extension!
+    self.config.SetString('extensions.%s' % (key,), value)
+
   def _CheckForImmutableRevision(self):
     try:
       # if revision (sha or tag) is not present then following function
@@ -2314,7 +2332,7 @@ class Project(object):
     if clone_filter:
       git_require((2, 19, 0), fail=True, msg='partial clones')
       cmd.append('--filter=%s' % clone_filter)
-      self.config.SetString('extensions.partialclone', self.remote.name)
+      self.EnableRepositoryExtension('partialclone', self.remote.name)
 
     if depth:
       cmd.append('--depth=%s' % depth)
@@ -2630,7 +2648,7 @@ class Project(object):
         # Enable per-worktree config file support if possible.  This is more a
         # nice-to-have feature for users rather than a hard requirement.
         if self.use_git_worktrees and git_require((2, 19, 0)):
-          self.config.SetString('extensions.worktreeConfig', 'true')
+          self.EnableRepositoryExtension('worktreeConfig')
 
       # If we have a separate directory to hold refs, initialize it as well.
       if self.objdir != self.gitdir:
