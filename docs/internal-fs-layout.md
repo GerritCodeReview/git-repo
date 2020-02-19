@@ -187,12 +187,15 @@ The `[branch]` settings are updated by `repo start` and `git branch`.
 Repo will create & maintain a few files in the user's home directory.
 
 *   `.repoconfig/`: Repo's per-user directory for all random config files/state.
+*   `.repoconfig/config`: Per-user settings using [git-config] file format.
 *   `.repoconfig/keyring-version`: Cache file for checking if the gnupg subdir
     has all the same keys as the repo launcher.  Used to avoid running gpg
     constantly as that can be quite slow.
 *   `.repoconfig/gnupg/`: GnuPG's internal state directory used when repo needs
     to run `gpg`.  This provides isolation from the user's normal `~/.gnupg/`.
 
+*   `.repoconfig/.repo_config.json`: JSON cache of the `.repoconfig/config`
+    file for repo to read/process quickly.
 *   `.repo_.gitconfig.json`: JSON cache of the `.gitconfig` file for repo to
     read/process quickly.
 
