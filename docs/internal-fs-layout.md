@@ -172,6 +172,7 @@ The `[branch]` settings are updated by `repo start` and `git branch`.
 | review.\<url\>.autocopy       | upload        | Automatically add to `--cc=<value>` |
 | review.\<url\>.autoreviewer   | upload        | Automatically add to `--reviewers=<value>` |
 | review.\<url\>.autoupload     | upload        | Automatically answer "yes" or "no" to all prompts |
+| review.\<url\>.uploadhashtags | upload        | Automatically add to `--hashtags=<value>` |
 | review.\<url\>.uploadtopic    | upload        | Default [topic] to use |
 | review.\<url\>.username       | upload        | Override username with `ssh://` review URIs |
 | remote.\<remote\>.fetch       | sync          | Set of refs to fetch |
