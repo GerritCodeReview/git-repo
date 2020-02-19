@@ -222,7 +222,7 @@ class _Repo(object):
             file=sys.stderr)
       return 1
 
-    if gopts.pager and not isinstance(cmd, InteractiveCommand):
+    if gopts.pager is not False and not isinstance(cmd, InteractiveCommand):
       config = cmd.manifest.globalConfig
       if gopts.pager:
         use_pager = True
