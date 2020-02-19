@@ -184,6 +184,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-n', '--dry-run',
                  dest='dryrun', default=False, action='store_true',
                  help='Do everything except actually upload the CL.')
+    p.add_option('-y', '--yes',
+                 default=False, action='store_true',
+                 help='Answer yes to all safe prompts.')
     p.add_option('--no-cert-checks',
                  dest='validate_certs', action='store_false', default=True,
                  help='Disable verifying ssl certs (unsafe).')
@@ -244,8 +247,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
       print('to %s (y/N)? ' % remote.review, end='')
       # TODO: When we require Python 3, use flush=True w/print above.
       sys.stdout.flush()
-      answer = sys.stdin.readline().strip().lower()
-      answer = answer in ('y', 'yes', '1', 'true', 't')
+      if opt.yes:
+        print('<--yes>')
+        answer = True
+      else:
+        answer = sys.stdin.readline().strip().lower()
+        answer = answer in ('y', 'yes', '1', 'true', 't')
 
     if answer:
       if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
@@ -384,7 +391,11 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             print('Continue uploading? (y/N) ', end='')
             # TODO: When we require Python 3, use flush=True w/print above.
             sys.stdout.flush()
-            a = sys.stdin.readline().strip().lower()
+            if opt.yes:
+              print('<--yes>')
+              a = 'yes'
+            else:
+              a = sys.stdin.readline().strip().lower()
             if a not in ('y', 'yes', 't', 'true', 'on'):
               print("skipping upload", file=sys.stderr)
               branch.uploaded = False
