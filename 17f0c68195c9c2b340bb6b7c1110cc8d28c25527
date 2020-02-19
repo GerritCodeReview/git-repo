@@ -50,6 +50,24 @@
       "revId": "17f0c68195c9c2b340bb6b7c1110cc8d28c25527",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8026fa62_e32e0aa5",
+        "filename": "git_command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1096090
+      },
+      "writtenOn": "2020-02-19T09:36:08Z",
+      "side": 1,
+      "message": "Fixed! pep8 didn\u0027t really like 2",
+      "parentUuid": "409292d1_0c057989",
+      "revId": "17f0c68195c9c2b340bb6b7c1110cc8d28c25527",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
