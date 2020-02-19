@@ -103,7 +103,7 @@ support, see the [manifest-format.md] file.
 *   `subprojects/`: Like `projects/`, but for git submodules.
 *   `subproject-objects/`: Like `project-objects/`, but for git submodules.
 
-### Settings
+### Global settings
 
 The `.repo/manifests.git/config` file is used to track settings for the entire
 repo client checkout.
@@ -126,6 +126,62 @@ User controlled settings are initialized when running `repo init`.
 
 [partial git clones]: https://git-scm.com/docs/gitrepository-layout#_code_partialclone_code
 
+### Repo hooks settings
+
+For more details on this feature, see the [repo-hooks docs](./repo-hooks.md).
+We'll just discuss the internal configuration settings.
+These are stored in the registered `<repo-hooks>` project itself, so if the
+manifest switches to a different project, the settings will not be copied.
+
+For example, if our manifest had the following entries, we would store settings
+under `.repo/projects/src/repohooks.git/config` (which would be reachable via
+`git --git-dir=src/repohooks/.git config`).
+```xml
+  <project path="src/repohooks" name="chromiumos/repohooks" ... />
+  <repo-hooks in-project="chromiumos/repohooks" ... />
+```
+
+| Setting                            | Use/Meaning |
+|------------------------------------|-------------|
+| repo.hooks.<hook>.approvedmanifest | User approval for secure manifest sources (e.g. https://) |
+| repo.hooks.<hook>.approvedhash     | User approval for insecure manifest sources (e.g. http://) |
+
+For example, `<hook>` could be `pre-upload`, so the `.git/config` setting might
+look something like:
+```ini
+[repo "hooks.pre-upload"]
+	approvedmanifest = https://chromium.googlesource.com/chromiumos/manifest
+```
+
+## Per-project settings
+
+These settings are somewhat meant to be tweaked by the user on a per-project
+basis (e.g. `git config` in a checked out source repo).
+
+Where possible, we re-use standard git settings to avoid confusion, and we
+refrain from documenting those, so see [git-config] documentation instead.
+
+See `repo help upload` for documentation on `[review]` settings.
+
+The `[remote]` settings are automatically populated/updated from the manifest.
+
+The `[branch]` settings are updated by `repo start` and `git branch`.
+
+| Setting                     | Subcommands   | Use/Meaning |
+|-----------------------------|---------------|-------------|
+| review.<url>.autocopy       | upload        | Automatically add to `--cc=<value>` |
+| review.<url>.autoreviewer   | upload        | Automatically add to `--reviewers=<value>` |
+| review.<url>.autoupload     | upload        | Automatically answer "yes" or "no" to all prompts |
+| review.<url>.uploadtopic    | upload        | Default [topic] to use |
+| review.<url>.username       | upload        | Override username with `ssh://` review URIs |
+| remote.<remote>.fetch       | <network>     | Set of refs that `repo sync` fetches |
+| remote.<remote>.projectname | <network>     | The name of the project as it exists in Gerrit review |
+| remote.<remote>.pushurl     | upload        | The base URI for pushing CLs |
+| remote.<remote>.review      | upload        | The URI of the Gerrit review server |
+| remote.<remote>.url         | <network>     | The URI of the git project to fetch |
+| branch.<branch>.merge       | sync & upload | The branch to merge & upload & track |
+| branch.<branch>.remote      | sync & upload | The remote to track |
+
 ## ~/ dotconfig layout
 
 Repo will create & maintain a few files in the user's home directory.
@@ -141,5 +197,7 @@ Repo will create & maintain a few files in the user's home directory.
     read/process quickly.
 
 
+[git-config]: https://git-scm.com/docs/git-config
 [manifest-format.md]: ./manifest-format.md
 [local manifests]: ./manifest-format.md#Local-Manifests
+[topic]: https://gerrit-review.googlesource.com/Documentation/intro-user.html#topics
