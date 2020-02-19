@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8ed093d9_71ea2e50",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-19T05:21:19Z",
+      "side": 1,
+      "message": "Be aware that this change in behavior could potentially break any users that are not expecting an error status in this case.",
+      "revId": "5fcb6cf3659d860f6eb175f73d3216e50198a580",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
