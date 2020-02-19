@@ -16,6 +16,24 @@
       "revId": "5fcb6cf3659d860f6eb175f73d3216e50198a580",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6eaf5c8_2804d95f",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-19T05:46:38Z",
+      "side": 1,
+      "message": "right ... i couldn\u0027t see always exiting 0 as desirable.  i expect this to be less possibly disruptive because `repo upload` is more commonly an interactive subcommand.  of course, only time will tell based on user feedback.",
+      "parentUuid": "8ed093d9_71ea2e50",
+      "revId": "5fcb6cf3659d860f6eb175f73d3216e50198a580",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
