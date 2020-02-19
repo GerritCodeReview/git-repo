@@ -23,6 +23,10 @@ It is always safe to re-run `repo init` in existing repo client checkouts.
 For example, if you want to change the manifest branch, you can simply run
 `repo init --manifest-branch=<new name>` and repo will take care of the rest.
 
+*   `config`: Per-repo client checkout settings using [git-config] file format.
+*   `.repo_config.json`: JSON cache of the `config` file for repo to
+    read/process quickly.
+
 ### repo/ state
 
 *   `repo/`: A git checkout of the repo project.  This is how `repo` re-execs
@@ -187,12 +191,15 @@ The `[branch]` settings are updated by `repo start` and `git branch`.
 Repo will create & maintain a few files in the user's home directory.
 
 *   `.repoconfig/`: Repo's per-user directory for all random config files/state.
+*   `.repoconfig/config`: Per-user settings using [git-config] file format.
 *   `.repoconfig/keyring-version`: Cache file for checking if the gnupg subdir
     has all the same keys as the repo launcher.  Used to avoid running gpg
     constantly as that can be quite slow.
 *   `.repoconfig/gnupg/`: GnuPG's internal state directory used when repo needs
     to run `gpg`.  This provides isolation from the user's normal `~/.gnupg/`.
 
+*   `.repoconfig/.repo_config.json`: JSON cache of the `.repoconfig/config`
+    file for repo to read/process quickly.
 *   `.repo_.gitconfig.json`: JSON cache of the `.gitconfig` file for repo to
     read/process quickly.
 

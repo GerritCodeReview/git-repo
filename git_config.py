@@ -88,10 +88,12 @@ def _key(name):
 class GitConfig(object):
   _ForUser = None
 
+  _USER_CONFIG = '~/.gitconfig'
+
   @classmethod
   def ForUser(cls):
     if cls._ForUser is None:
-      cls._ForUser = cls(configfile=os.path.expanduser('~/.gitconfig'))
+      cls._ForUser = cls(configfile=os.path.expanduser(cls._USER_CONFIG))
     return cls._ForUser
 
   @classmethod
@@ -334,6 +336,12 @@ class GitConfig(object):
       return p.stdout
     else:
       GitError('git config %s: %s' % (str(args), p.stderr))
+
+
+class RepoConfig(GitConfig):
+  """User settings for repo itself."""
+
+  _USER_CONFIG = '~/.repoconfig/config'
 
 
 class RefSpec(object):
