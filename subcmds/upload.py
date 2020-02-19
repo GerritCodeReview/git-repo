@@ -172,6 +172,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                  type='string', action='store', dest='dest_branch',
                  metavar='BRANCH',
                  help='Submit for review on this target branch.')
+    p.add_option('-n', '--dry-run',
+                 dest='dryrun', default=False, action='store_true',
+                 help='Do everything except actually upload the CL.')
     p.add_option('--no-cert-checks',
                  dest='validate_certs', action='store_false', default=True,
                  help='Disable verifying ssl certs (unsafe).')
@@ -400,6 +403,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             continue
 
         branch.UploadForReview(people,
+                               dryrun=opt.dryrun,
                                auto_topic=opt.auto_topic,
                                draft=opt.draft,
                                private=opt.private,
