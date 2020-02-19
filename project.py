@@ -2314,6 +2314,7 @@ class Project(object):
     if clone_filter:
       git_require((2, 19, 0), fail=True, msg='partial clones')
       cmd.append('--filter=%s' % clone_filter)
+      self.config.SetString('core.repositoryFormatVersion', '1')
       self.config.SetString('extensions.partialclone', self.remote.name)
 
     if depth:
@@ -2630,6 +2631,7 @@ class Project(object):
         # Enable per-worktree config file support if possible.  This is more a
         # nice-to-have feature for users rather than a hard requirement.
         if self.use_git_worktrees and git_require((2, 19, 0)):
+          self.config.SetString('core.repositoryFormatVersion', '1')
           self.config.SetString('extensions.worktreeConfig', 'true')
 
       # If we have a separate directory to hold refs, initialize it as well.
