@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17c4b2fd_66d2cd22",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2317,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-19T21:02:35Z",
+      "side": 1,
+      "message": "Can this go in a helper? E.g. (untested)\n\n def _EnableRepositoryExtension(self, key, value\u003d\u0027true\u0027):\n   ver \u003d int(self.config.GetString(\u0027core.repositoryformatversion\u0027))\n   if ver \u003c 1:\n     self.config.SetString(\u0027core.repositoryformatversion\u0027, \u00271\u0027)\n\n   self.config.SetString(\u0027extensions.\u0027+key, value)",
+      "revId": "3b5188d0e2022c77e8e4e6c0e8cd3df0b84df372",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
