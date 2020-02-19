@@ -92,19 +92,23 @@ support, see the [manifest-format.md] file.
     Some git state is further split out under `project-objects/`.
 *   `project-objects/`: Git objects that are safe to share across multiple
     git checkouts.  The filesystem layout matches the `<project name=...`
-    setting in the manifest (i.e. the path on the remote server).  This allows
-    for multiple checkouts of the same remote git repo to share their objects.
-    For example, you could have different branches of `foo/bar.git` checked
-    out to `foo/bar-master`, `foo/bar-release`, etc...  There will be multiple
-    trees under `projects/` for each one, but only one under `project-objects/`.
+    setting in the manifest (i.e. the path on the remote server) with a `.git`
+    suffix.  This allows for multiple checkouts of the same remote git repo to
+    share their objects.  For example, you could have different branches of
+    `foo/bar.git` checked out to `foo/bar-master`, `foo/bar-release`, etc...
+    There will be multiple trees under `projects/` for each one, but only one
+    under `project-objects/`.
 
-    This can run into problems if different remotes use the same path on their
-    respective servers ...
+    This layout is designed to allow people to sync against different remotes
+    (e.g. a local mirror & a public review server) while avoiding duplicating
+    the content.  However, this can run into problems if different remotes use
+    the same path on their respective servers.  Best to avoid that.
 *   `subprojects/`: Like `projects/`, but for git submodules.
 *   `subproject-objects/`: Like `project-objects/`, but for git submodules.
 *   `worktrees/`: Bare checkouts of every project synced by the manifest.  The
     filesystem layout matches the `<project name=...` setting in the manifest
-    (i.e. the path on the remote server).
+    (i.e. the path on the remote server) with a `.git` suffix.  This has the
+    same advantages as the `project-objects/` layout above.
 
     This is used when git worktrees are enabled.
 
