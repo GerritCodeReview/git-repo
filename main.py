@@ -26,6 +26,7 @@ import getpass
 import netrc
 import optparse
 import os
+import shlex
 import sys
 import textwrap
 import time
@@ -48,7 +49,7 @@ from color import SetDefaultColoring
 import event_log
 from repo_trace import SetTrace
 from git_command import user_agent
-from git_config import init_ssh, close_ssh
+from git_config import init_ssh, close_ssh, RepoConfig
 from command import InteractiveCommand
 from command import MirrorSafeCommand
 from command import GitcAvailableCommand, GitcClientCommand
@@ -155,6 +156,9 @@ class _Repo(object):
       argv = []
     gopts, _gargs = global_options.parse_args(glob)
 
+    name, alias_args = self._ExpandAlias(name)
+    argv = alias_args + argv
+
     if gopts.help:
       global_options.print_help()
       commands = ' '.join(sorted(self.commands))
@@ -164,6 +168,27 @@ class _Repo(object):
       global_options.exit()
 
     return (name, gopts, argv)
+
+  def _ExpandAlias(self, name):
+    """Look up user registered aliases."""
+    # We don't resolve aliases for existing subcommands.  This matches git.
+    if name in self.commands:
+      return name, []
+
+    key = 'alias.%s' % (name,)
+    alias = RepoConfig.ForRepository(self.repodir).GetString(key)
+    if alias is None:
+      alias = RepoConfig.ForUser().GetString(key)
+    if alias is None:
+      return name, []
+
+    args = alias.strip().split(' ', 1)
+    name = args[0]
+    if len(args) == 2:
+      args = shlex.split(args[1])
+    else:
+      args = []
+    return name, args
 
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
