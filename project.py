@@ -199,6 +199,7 @@ class ReviewableBranch(object):
 
   def UploadForReview(self, people,
                       auto_topic=False,
+                      hashtags=(),
                       draft=False,
                       private=False,
                       notify=None,
@@ -209,6 +210,7 @@ class ReviewableBranch(object):
     self.project.UploadForReview(self.name,
                                  people,
                                  auto_topic=auto_topic,
+                                 hashtags=hashtags,
                                  draft=draft,
                                  private=private,
                                  notify=notify,
@@ -1331,6 +1333,7 @@ class Project(object):
   def UploadForReview(self, branch=None,
                       people=([], []),
                       auto_topic=False,
+                      hashtags=(),
                       draft=False,
                       private=False,
                       notify=None,
@@ -1388,6 +1391,7 @@ class Project(object):
     opts = []
     if auto_topic:
       opts += ['topic=' + branch.name]
+    opts += ['t=%s' % p for p in hashtags]
 
     opts += ['r=%s' % p for p in people[0]]
     opts += ['cc=%s' % p for p in people[1]]

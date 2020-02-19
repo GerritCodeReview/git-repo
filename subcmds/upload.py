@@ -130,6 +130,12 @@ is set to "true" then repo will assume you always want the equivalent
 of the -t option to the repo command. If unset or set to "false" then
 repo will make use of only the command line option.
 
+review.URL.uploadhashtags:
+
+To add hashtags whenever uploading a commit, you can set a per-project
+or global Git option to do so. The value of review.URL.uploadhashtags
+will be used as comma delimited hashtags like the --hashtags option.
+
 # References
 
 Gerrit Code Review:  https://www.gerritcodereview.com/
@@ -140,6 +146,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-t',
                  dest='auto_topic', action='store_true',
                  help='Send local branch name to Gerrit Code Review')
+    p.add_option('--hashtag', '--ht',
+                 dest='hashtags', action='append', default=[],
+                 help='Add hashtags (comma delimited) to the review.')
     p.add_option('--re', '--reviewers',
                  type='string', action='append', dest='reviewers',
                  help='Request reviews from these people.')
@@ -384,6 +393,20 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
           key = 'review.%s.uploadtopic' % branch.project.remote.review
           opt.auto_topic = branch.project.config.GetBoolean(key)
 
+        # Check if hashtags should be included.
+        def _ExpandHashtag(value):
+          """Split |value| up into comma delimited tags."""
+          if not value:
+            return
+          for tag in value.split(','):
+            tag = tag.strip()
+            if tag:
+              yield tag
+        key = 'review.%s.uploadhashtags' % branch.project.remote.review
+        hashtags = set(_ExpandHashtag(branch.project.config.GetString(key)))
+        for tag in opt.hashtags:
+          hashtags.update(_ExpandHashtag(tag))
+
         destination = opt.dest_branch or branch.project.dest_branch
 
         # Make sure our local branch is not setup to track a different remote branch
@@ -401,6 +424,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
         branch.UploadForReview(people,
                                auto_topic=opt.auto_topic,
+                               hashtags=hashtags,
                                draft=opt.draft,
                                private=opt.private,
                                notify=None if opt.notify else 'NONE',
