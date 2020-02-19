@@ -149,6 +149,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--hashtag', '--ht',
                  dest='hashtags', action='append', default=[],
                  help='Add hashtags (comma delimited) to the review.')
+    p.add_option('--hashtag-branch', '--htb',
+                 action='store_true',
+                 help='Add local branch name as a hashtag.')
     p.add_option('--re', '--reviewers',
                  type='string', action='append', dest='reviewers',
                  help='Request reviews from these people.')
@@ -420,6 +423,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         hashtags = set(_ExpandHashtag(branch.project.config.GetString(key)))
         for tag in opt.hashtags:
           hashtags.update(_ExpandHashtag(tag))
+        if opt.hashtag_branch:
+          hashtags.add(branch.name)
 
         destination = opt.dest_branch or branch.project.dest_branch
 
