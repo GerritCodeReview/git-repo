@@ -486,8 +486,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         pending.append((project, avail))
 
     if not pending:
-      print("no branches ready for upload", file=sys.stderr)
-      return
+      if branch is None:
+        print('repo: error: no branches ready for upload', file=sys.stderr)
+      else:
+        print('repo: error: no branches named "%s" ready for upload' %
+              (branch,), file=sys.stderr)
+      return 1
 
     if not opt.bypass_hooks:
       hook = RepoHook('pre-upload', self.manifest.repo_hooks_project,
