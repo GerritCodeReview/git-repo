@@ -16,6 +16,24 @@
       "revId": "0d0d681da99f1dfaab43affa8ccbddf84cd3694c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63d9db4c_4f15043a",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-19T18:03:41Z",
+      "side": 1,
+      "message": "my goal is to delete python2 logic this year from the codebase :).  we\u0027ve already started messaging on go/repo-discuss that anyone stuck on python2 should use the repo-1 launcher+branch, and the launcher+main module have been generating warnings whenever you run `repo` that python2 is deprecated and will stop working entirely.\n\nso if i get any reports from people that this breaks in a certain situation when using python2, my answer (conveniently) is to upgrade their python3 because python2 is already EOL and no one supports it.",
+      "parentUuid": "9d4d9c9c_47dba3ae",
+      "revId": "0d0d681da99f1dfaab43affa8ccbddf84cd3694c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
