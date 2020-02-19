@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9d4d9c9c_47dba3ae",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1091587
+      },
+      "writtenOn": "2020-02-19T16:38:45Z",
+      "side": 1,
+      "message": "It may be useful to include some explanation and support table (like the CL description has) inside this file even though there may not be one perfect location/file to put that in...but at least if it\u0027s in the source somewhere it may be helpful to anyone who stumbles into any old python2/Windows issues related to this change.",
+      "revId": "0d0d681da99f1dfaab43affa8ccbddf84cd3694c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
