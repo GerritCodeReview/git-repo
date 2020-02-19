@@ -1487,9 +1487,9 @@ class Project(object):
     else:
       alt_dir = None
 
-    if clone_bundle \
-            and alt_dir is None \
-            and self._ApplyCloneBundle(initial=is_new, quiet=quiet):
+    if (clone_bundle
+            and alt_dir is None
+            and self._ApplyCloneBundle(initial=is_new, quiet=quiet, verbose=verbose)):
       is_new = False
 
     if not current_branch_only:
@@ -2415,7 +2415,7 @@ class Project(object):
 
     return ok
 
-  def _ApplyCloneBundle(self, initial=False, quiet=False):
+  def _ApplyCloneBundle(self, initial=False, quiet=False, verbose=False):
     if initial and \
         (self.manifest.manifestProject.config.GetString('repo.depth') or
          self.clone_depth):
@@ -2439,7 +2439,8 @@ class Project(object):
       return False
 
     if not exist_dst:
-      exist_dst = self._FetchBundle(bundle_url, bundle_tmp, bundle_dst, quiet)
+      exist_dst = self._FetchBundle(bundle_url, bundle_tmp, bundle_dst, quiet,
+                                    verbose)
     if not exist_dst:
       return False
 
@@ -2460,13 +2461,13 @@ class Project(object):
       platform_utils.remove(bundle_tmp)
     return ok
 
-  def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet):
+  def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet, verbose):
     if os.path.exists(dstPath):
       platform_utils.remove(dstPath)
 
     cmd = ['curl', '--fail', '--output', tmpPath, '--netrc', '--location']
     if quiet:
-      cmd += ['--silent']
+      cmd += ['--silent', '--show-error']
     if os.path.exists(tmpPath):
       size = os.stat(tmpPath).st_size
       if size >= 1024:
@@ -2488,12 +2489,17 @@ class Project(object):
 
       if IsTrace():
         Trace('%s', ' '.join(cmd))
+      if verbose:
+        print('%s: Downloading bundle: %s' % (self.name, srcUrl))
+      stdout = None if verbose else subprocess.PIPE
+      stderr = None if verbose else subprocess.STDOUT
       try:
-        proc = subprocess.Popen(cmd)
+        proc = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
       except OSError:
         return False
 
-      curlret = proc.wait()
+      (output, _) = proc.communicate()
+      curlret = proc.returncode
 
       if curlret == 22:
         # From curl man page:
@@ -2504,6 +2510,8 @@ class Project(object):
           print("Server does not provide clone.bundle; ignoring.",
                 file=sys.stderr)
         return False
+      elif curlret and not verbose and output:
+        print('%s' % output, file=sys.stderr)
 
     if os.path.exists(tmpPath):
       if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
