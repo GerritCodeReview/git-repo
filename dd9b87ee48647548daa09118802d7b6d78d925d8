@@ -16,6 +16,24 @@
       "revId": "dd9b87ee48647548daa09118802d7b6d78d925d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d099ee01_7085eacc",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2204,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-19T23:10:18Z",
+      "side": 1,
+      "message": "you\u0027re a stale comment",
+      "parentUuid": "eb52bb66_98bb1fa3",
+      "revId": "dd9b87ee48647548daa09118802d7b6d78d925d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
