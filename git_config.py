@@ -122,6 +122,43 @@ class GitConfig(object):
       return self.defaults.Has(name, include_defaults=True)
     return False
 
+  def GetInt(self, name):
+    """Returns an integer from the configuration file.
+
+    This follows the git config syntax.
+
+    Args:
+      name: The key to lookup.
+
+    Returns:
+      None if the value was not defined, or is not a boolean.
+      Otherwise, the number itself.
+    """
+    v = self.GetString(name)
+    if v is None:
+      return None
+    v = v.strip()
+
+    mult = 1
+    if v.endswith('k'):
+      v = v[:-1]
+      mult = 1024
+    elif v.endswith('m'):
+      v = v[:-1]
+      mult = 1024 * 1024
+    elif v.endswith('g'):
+      v = v[:-1]
+      mult = 1024 * 1024 * 1024
+
+    base = 10
+    if v.startswith('0x'):
+      base = 16
+
+    try:
+      return int(v, base=base) * mult
+    except ValueError:
+      return None
+
   def GetBoolean(self, name):
     """Returns a boolean from the configuration file.
        None : The value was not defined, or is not a boolean.
