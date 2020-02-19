@@ -1994,19 +1994,11 @@ class Project(object):
       except KeyError:
         head = None
     if revid and head and revid == head:
-      if self.use_git_worktrees:
-        self.work_git.update_ref(HEAD, revid)
-        branch.Save()
-      else:
-        ref = os.path.join(self.gitdir, R_HEADS + name)
-        try:
-          os.makedirs(os.path.dirname(ref))
-        except OSError:
-          pass
-        _lwrite(ref, '%s\n' % revid)
-        _lwrite(self.GetHeadPath(), 'ref: %s%s\n' % (R_HEADS, name))
-        branch.Save()
-        return True
+      ref = R_HEADS + name
+      self.work_git.update_ref(ref, revid)
+      self.work_git.symbolic_ref(HEAD, ref)
+      branch.Save()
+      return True
 
     if GitCommand(self,
                   ['checkout', '-b', branch.name, revid],
