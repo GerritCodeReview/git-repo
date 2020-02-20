@@ -571,7 +571,7 @@ later is required to fix a server side protocol bug.
     for project in projects:
       # Make sure pruning never kicks in with shared projects.
       if (not project.use_git_worktrees and
-          len(project.manifest.GetProjectsWithName(project.name)) > 1):
+              len(project.manifest.GetProjectsWithName(project.name)) > 1):
         print('%s: Shared project %s found, disabling pruning.' %
               (project.relpath, project.name))
         if git_require((2, 7, 0)):
@@ -665,8 +665,8 @@ later is required to fix a server side protocol bug.
                 revisionId=None,
                 groups=None)
             if not project.DeleteWorktree(
-                quiet=opt.quiet,
-                force=opt.force_remove_dirty):
+                    quiet=opt.quiet,
+                    force=opt.force_remove_dirty):
               return 1
 
     new_project_paths.sort()
