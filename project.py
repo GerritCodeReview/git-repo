@@ -275,7 +275,12 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
   NB: We rely on a number of paths already being filtered out while parsing the
   manifest.  See the validation logic in manifest_xml.py for more details.
   """
-  components = subpath.split(os.path.sep)
+  # Split up the path by its components.  We can't use os.path.sep exclusively
+  # as some platforms (like Windows) will convert / to \ and that bypasses all
+  # our constructed logic here.  Especially since manifest authors only use
+  # / in their paths.
+  resep = re.compile(r'[/%s]' % re.escape(os.path.sep))
+  components = resep.split(subpath)
   if skipfinal:
     # Whether the caller handles the final component itself.
     finalpart = components.pop()
