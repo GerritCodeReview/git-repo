@@ -303,7 +303,7 @@ class LinkFile(CopyLinkTestCase):
     dest = os.path.join(self.topdir, 'foo')
     self.assertExists(dest)
     self.assertTrue(os.path.islink(dest))
-    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+    self.assertEqual(os.path.join('git-project', 'foo.txt'), os.readlink(dest))
 
   def test_src_subdir(self):
     """Link to a file in a subdir of a project."""
@@ -320,7 +320,7 @@ class LinkFile(CopyLinkTestCase):
     lf = self.LinkFile('.', 'foo/bar')
     lf._Link()
     self.assertExists(dest)
-    self.assertEqual('../git-project', os.readlink(dest))
+    self.assertEqual(os.path.join('..', 'git-project'), os.readlink(dest))
 
   def test_dest_subdir(self):
     """Link a file to a subdir of a checkout."""
@@ -354,10 +354,10 @@ class LinkFile(CopyLinkTestCase):
     self.touch(src)
     lf = self.LinkFile('foo.txt', 'sym')
     lf._Link()
-    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+    self.assertEqual(os.path.join('git-project', 'foo.txt'), os.readlink(dest))
 
     # Point the symlink somewhere else.
     os.unlink(dest)
     os.symlink('/', dest)
     lf._Link()
-    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+    self.assertEqual(os.path.join('git-project', 'foo.txt'), os.readlink(dest))

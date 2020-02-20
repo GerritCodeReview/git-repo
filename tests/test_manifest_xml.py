@@ -18,6 +18,7 @@
 
 from __future__ import print_function
 
+import os
 import unittest
 
 import error
@@ -78,6 +79,11 @@ class ManifestValidateFilePaths(unittest.TestCase):
         # Block Unicode characters that get normalized out by filesystems.
         u'foo\u200Cbar',
     )
+    # Make sure platforms that use path separators (e.g. Windows) are also
+    # rejected properly.
+    if os.path.sep != '/':
+      PATHS += tuple(x.replace('/', os.path.sep) for x in PATHS)
+
     for path in PATHS:
       self.assertRaises(
           error.ManifestInvalidPathError, self.check_both, path, 'a')
