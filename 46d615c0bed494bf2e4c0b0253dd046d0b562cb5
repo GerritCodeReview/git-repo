@@ -22,6 +22,30 @@
       "revId": "46d615c0bed494bf2e4c0b0253dd046d0b562cb5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3ebd2717_e0c0de8a",
+        "filename": "sign-launcher.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T22:08:06Z",
+      "side": 1,
+      "message": "err yeah.  i managed to copy this license from literally the only file in the tree that lists Google as the copyright holder instead of the ~60 other ones that use Android.  lemme fix that.",
+      "parentUuid": "79fa0554_c3c7dcc4",
+      "range": {
+        "startLine": 2,
+        "startChar": 28,
+        "endLine": 2,
+        "endChar": 31
+      },
+      "revId": "46d615c0bed494bf2e4c0b0253dd046d0b562cb5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
