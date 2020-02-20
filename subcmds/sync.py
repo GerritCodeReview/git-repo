@@ -16,7 +16,6 @@
 
 from __future__ import print_function
 
-import errno
 import json
 import netrc
 from optparse import SUPPRESS_HELP
@@ -633,74 +632,6 @@ later is required to fix a server side protocol bug.
     else:
       self.manifest._Unload()
 
-  def _DeleteProject(self, path):
-    print('Deleting obsolete path %s' % path, file=sys.stderr)
-
-    # Delete the .git directory first, so we're less likely to have a partially
-    # working git repository around. There shouldn't be any git projects here,
-    # so rmtree works.
-    dotgit = os.path.join(path, '.git')
-    # Try to remove plain files first in case of git worktrees.  If this fails
-    # for any reason, we'll fall back to rmtree, and that'll display errors if
-    # it can't remove things either.
-    try:
-      platform_utils.remove(dotgit)
-    except OSError:
-      pass
-    try:
-      platform_utils.rmtree(dotgit)
-    except OSError as e:
-      if e.errno != errno.ENOENT:
-        print('error: %s: %s' % (dotgit, str(e)), file=sys.stderr)
-        print('error: %s: Failed to delete obsolete path; remove manually, then '
-              'run sync again' % (path,), file=sys.stderr)
-        return 1
-
-    # Delete everything under the worktree, except for directories that contain
-    # another git project
-    dirs_to_remove = []
-    failed = False
-    for root, dirs, files in platform_utils.walk(path):
-      for f in files:
-        try:
-          platform_utils.remove(os.path.join(root, f))
-        except OSError as e:
-          print('Failed to remove %s (%s)' % (os.path.join(root, f), str(e)), file=sys.stderr)
-          failed = True
-      dirs[:] = [d for d in dirs
-                 if not os.path.lexists(os.path.join(root, d, '.git'))]
-      dirs_to_remove += [os.path.join(root, d) for d in dirs
-                         if os.path.join(root, d) not in dirs_to_remove]
-    for d in reversed(dirs_to_remove):
-      if platform_utils.islink(d):
-        try:
-          platform_utils.remove(d)
-        except OSError as e:
-          print('Failed to remove %s (%s)' % (os.path.join(root, d), str(e)), file=sys.stderr)
-          failed = True
-      elif len(platform_utils.listdir(d)) == 0:
-        try:
-          platform_utils.rmdir(d)
-        except OSError as e:
-          print('Failed to remove %s (%s)' % (os.path.join(root, d), str(e)), file=sys.stderr)
-          failed = True
-          continue
-    if failed:
-      print('error: Failed to delete obsolete path %s' % path, file=sys.stderr)
-      print('       remove manually, then run sync again', file=sys.stderr)
-      return 1
-
-    # Try deleting parent dirs if they are empty
-    project_dir = path
-    while project_dir != self.manifest.topdir:
-      if len(platform_utils.listdir(project_dir)) == 0:
-        platform_utils.rmdir(project_dir)
-      else:
-        break
-      project_dir = os.path.dirname(project_dir)
-
-    return 0
-
   def UpdateProjectList(self, opt):
     new_project_paths = []
     for project in self.GetProjects(None, missing_ok=True):
@@ -727,23 +658,15 @@ later is required to fix a server side protocol bug.
                 remote=RemoteSpec('origin'),
                 gitdir=gitdir,
                 objdir=gitdir,
+                use_git_worktrees=os.path.isfile(gitdir),
                 worktree=os.path.join(self.manifest.topdir, path),
                 relpath=path,
                 revisionExpr='HEAD',
                 revisionId=None,
                 groups=None)
-
-            if project.IsDirty() and opt.force_remove_dirty:
-              print('WARNING: Removing dirty project "%s": uncommitted changes '
-                    'erased' % project.relpath, file=sys.stderr)
-              self._DeleteProject(project.worktree)
-            elif project.IsDirty():
-              print('error: Cannot remove project "%s": uncommitted changes '
-                    'are present' % project.relpath, file=sys.stderr)
-              print('       commit changes, then run sync again',
-                    file=sys.stderr)
-              return 1
-            elif self._DeleteProject(project.worktree):
+            if not project.DeleteWorktree(
+                quiet=opt.quiet,
+                force=opt.force_remove_dirty):
               return 1
 
     new_project_paths.sort()

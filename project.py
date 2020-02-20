@@ -1832,6 +1832,122 @@ class Project(object):
                             patch_id,
                             self.bare_git.rev_parse('FETCH_HEAD'))
 
+  def DeleteWorktree(self, quiet=False, force=False):
+    """Delete the source checkout and any other housekeeping tasks.
+
+    This currently leaves behind the internal .repo/ cache state.  This helps
+    when switching branches or manifest changes get reverted as we don't have
+    to redownload all the git objects.  But we should do some GC at some point.
+
+    Args:
+      quiet: Whether to hide normal messages.
+      force: Always delete tree even if dirty.
+
+    Returns:
+      True if the worktree was completely cleaned out.
+    """
+    if self.IsDirty():
+      if force:
+        print('warning: %s: Removing dirty project: uncommitted changes lost.' %
+              (self.relpath,), file=sys.stderr)
+      else:
+        print('error: %s: Cannot remove project: uncommitted changes are '
+              'present.\n' % (self.relpath,), file=sys.stderr)
+        return False
+
+    if not quiet:
+      print('%s: Deleting obsolete checkout.' % (self.relpath,))
+
+    # Unlock and delink from the main worktree.  We don't use git's worktree
+    # remove because it will recursively delete projects -- we handle that
+    # ourselves below.  https://crbug.com/git/48
+    if self.use_git_worktrees:
+      needle = platform_utils.realpath(self.gitdir)
+      # Find the git worktree commondir under .repo/worktrees/.
+      output = self.bare_git.worktree('list', '--porcelain').splitlines()[0]
+      assert output.startswith('worktree '), output
+      commondir = output[9:]
+      # Walk each of the git worktrees to see where they point.
+      configs = os.path.join(commondir, 'worktrees')
+      for name in os.listdir(configs):
+        gitdir = os.path.join(configs, name, 'gitdir')
+        with open(gitdir) as fp:
+          relpath = fp.read().strip()
+        # Resolve the checkout path and see if it matches this project.
+        fullpath = platform_utils.realpath(os.path.join(configs, name, relpath))
+        if fullpath == needle:
+          platform_utils.rmtree(os.path.join(configs, name))
+
+    # Delete the .git directory first, so we're less likely to have a partially
+    # working git repository around. There shouldn't be any git projects here,
+    # so rmtree works.
+
+    # Try to remove plain files first in case of git worktrees.  If this fails
+    # for any reason, we'll fall back to rmtree, and that'll display errors if
+    # it can't remove things either.
+    try:
+      platform_utils.remove(self.gitdir)
+    except OSError:
+      pass
+    try:
+      platform_utils.rmtree(self.gitdir)
+    except OSError as e:
+      if e.errno != errno.ENOENT:
+        print('error: %s: %s' % (self.gitdir, e), file=sys.stderr)
+        print('error: %s: Failed to delete obsolete checkout; remove manually, '
+              'then run `repo sync -l`.' % (self.relpath,), file=sys.stderr)
+        return False
+
+    # Delete everything under the worktree, except for directories that contain
+    # another git project.
+    dirs_to_remove = []
+    failed = False
+    for root, dirs, files in platform_utils.walk(self.worktree):
+      for f in files:
+        path = os.path.join(root, f)
+        try:
+          platform_utils.remove(path)
+        except OSError as e:
+          if e.errno != errno.ENOENT:
+            print('error: %s: Failed to remove: %s' % (path, e), file=sys.stderr)
+            failed = True
+      dirs[:] = [d for d in dirs
+                 if not os.path.lexists(os.path.join(root, d, '.git'))]
+      dirs_to_remove += [os.path.join(root, d) for d in dirs
+                         if os.path.join(root, d) not in dirs_to_remove]
+    for d in reversed(dirs_to_remove):
+      if platform_utils.islink(d):
+        try:
+          platform_utils.remove(d)
+        except OSError as e:
+          if e.errno != errno.ENOENT:
+            print('error: %s: Failed to remove: %s' % (d, e), file=sys.stderr)
+            failed = True
+      elif not platform_utils.listdir(d):
+        try:
+          platform_utils.rmdir(d)
+        except OSError as e:
+          if e.errno != errno.ENOENT:
+            print('error: %s: Failed to remove: %s' % (d, e), file=sys.stderr)
+            failed = True
+    if failed:
+      print('error: %s: Failed to delete obsolete checkout.' % (self.relpath,),
+            file=sys.stderr)
+      print('       Remove manually, then run `repo sync -l`.', file=sys.stderr)
+      return False
+
+    # Try deleting parent dirs if they are empty.
+    path = self.worktree
+    while path != self.manifest.topdir:
+      try:
+        platform_utils.rmdir(path)
+      except OSError as e:
+        if e.errno != errno.ENOENT:
+          break
+      path = os.path.dirname(path)
+
+    return True
+
 # Branch Management ##
   def GetHeadPath(self):
     """Return the full path to the HEAD ref."""
