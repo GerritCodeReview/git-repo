@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "caf39758_16e471ad",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T00:25:12Z",
+      "side": 1,
+      "message": "it has the .git suffix.  i copied most of this from project-objects above, so i\u0027ll update both.\nhttps://gerrit-review.googlesource.com/c/git-repo/+/256033\n\ni don\u0027t want to add inline examples as these are already pretty busy.  but i can see about adding a dedicated example section for each.  that might take a bit more time.",
+      "parentUuid": "7b3688ef_d1248506",
+      "range": {
+        "startLine": 106,
+        "startChar": 22,
+        "endLine": 106,
+        "endChar": 61
+      },
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "89581a5c_b08b8920",
         "filename": "project.py",
         "patchSetId": 9
@@ -39,6 +63,24 @@
       "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65359f75_70ae2e89",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1885,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T00:25:12Z",
+      "side": 1,
+      "message": "i debated changing this whole section to use the use_git_worktrees independently.  part of me is annoyed at replacing a single FS write with a `git` execution, but so it goes :).\n\ni thought i\u0027d give it a little time to bake under --worktrees before cutting it all over.\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/256034",
+      "parentUuid": "89581a5c_b08b8920",
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "1922c826_0532b056",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2633,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T00:25:12Z",
+      "side": 1,
+      "message": "hmm, we don\u0027t.  i can do it here.   i was doing specific testing with shared tree repos which themselves set it to 1, so i prob missed it.\n\ni see clone filter also doesn\u0027t set the format version to 1 ...\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/256035",
+      "parentUuid": "5c5bbf40_c6b29855",
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5ab9c33f_b7cd34c9",
         "filename": "project.py",
         "patchSetId": 9
@@ -73,6 +133,24 @@
       "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08a06e52_9a56a679",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2670,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T00:25:12Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5ab9c33f_b7cd34c9",
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -99,6 +177,30 @@
     },
     {
       "key": {
+        "uuid": "710edc82_f85d4c83",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 2894,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T00:25:12Z",
+      "side": 1,
+      "message": "by default git worktrees uses absolute paths which means it\u0027s not possible to move/rename a repo client checkout, or mount one on removable/network storage to a different path than was used initially, without breaking everything.  repo takes pains to use relative paths everywhere so that you can rename/mount/whatever and things keep working.\n\nfiled https://crbug.com/git/47 for improving git worktree itself.",
+      "parentUuid": "dd7a5564_3615870e",
+      "range": {
+        "startLine": 2894,
+        "startChar": 6,
+        "endLine": 2894,
+        "endChar": 38
+      },
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ab8936df_4c8bc737",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
@@ -119,6 +221,30 @@
       "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "116c9a56_8b824741",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T00:25:12Z",
+      "side": 1,
+      "message": "hmm, this is missing a `git worktree unlock` at the very least in the .repo/worktrees/ path.  i can add that.\n\ni think we want to keep this overall manual pruning at least as a fallback as it helps prevent a local corrupted git checkout from wedging repo.\n\nplus after implementing it, `git worktree` is unable to unlock/remove things in the way we want/need.  i filed some more bugs for git.\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/256072\nhttps://crbug.com/git/48",
+      "parentUuid": "ab8936df_4c8bc737",
+      "range": {
+        "startLine": 644,
+        "startChar": 6,
+        "endLine": 644,
+        "endChar": 63
+      },
+      "revId": "979d5bdc3ebe45998a76dbbaff46c33d4e59683b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
