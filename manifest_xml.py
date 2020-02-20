@@ -1010,19 +1010,30 @@ class XmlManifest(object):
     # Assume paths might be used on case-insensitive filesystems.
     path = path.lower()
 
+    # Split up the path by its components.  We can't use os.path.sep exclusively
+    # as some platforms (like Windows) will convert / to \ and that bypasses all
+    # our constructed logic here.  Especially since manifest authors only use
+    # / in their paths.
+    resep = re.compile(r'[/%s]' % re.escape(os.path.sep))
+    parts = resep.split(path)
+
     # Some people use src="." to create stable links to projects.  Lets allow
     # that but reject all other uses of "." to keep things simple.
-    parts = path.split(os.path.sep)
     if parts != ['.']:
       for part in set(parts):
         if part in {'.', '..', '.git'} or part.startswith('.repo'):
           return 'bad component: %s' % (part,)
 
-    if not symlink and path.endswith(os.path.sep):
+    if not symlink and resep.match(path[-1]):
       return 'dirs not allowed'
 
+    # NB: The two abspath checks here are to handle platforms with multiple
+    # filesystem path styles (e.g. Windows).
     norm = os.path.normpath(path)
-    if norm == '..' or norm.startswith('../') or norm.startswith(os.path.sep):
+    if (norm == '..' or
+        (len(norm) >= 3 and norm.startswith('..') and resep.match(norm[0])) or
+        os.path.isabs(norm) or
+        norm.startswith('/')):
       return 'path cannot be outside'
 
   @classmethod
