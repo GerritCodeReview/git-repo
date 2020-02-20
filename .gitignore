@@ -1,3 +1,4 @@
+*.asc
 *.egg-info/
 *.log
 *.pyc
