@@ -21,7 +21,13 @@ from __future__ import print_function
 import re
 import unittest
 
+try:
+  from unittest import mock
+except ImportError:
+  import mock
+
 import git_command
+import wrapper
 
 
 class GitCallUnitTest(unittest.TestCase):
@@ -76,3 +82,45 @@ class UserAgentUnitTest(unittest.TestCase):
     # the general form.
     m = re.match(r'^git/[^ ]+ ([^ ]+) git-repo/[^ ]+', ua)
     self.assertIsNotNone(m)
+
+
+class GitRequireTests(unittest.TestCase):
+  """Test the git_require helper."""
+
+  def setUp(self):
+    ver = wrapper.GitVersion(1, 2, 3, 4)
+    mock.patch.object(git_command.git, 'version_tuple', return_value=ver).start()
+
+  def tearDown(self):
+    mock.patch.stopall()
+
+  def test_older_nonfatal(self):
+    """Test non-fatal require calls with old versions."""
+    self.assertFalse(git_command.git_require((2,)))
+    self.assertFalse(git_command.git_require((1, 3)))
+    self.assertFalse(git_command.git_require((1, 2, 4)))
+    self.assertFalse(git_command.git_require((1, 2, 3, 5)))
+
+  def test_newer_nonfatal(self):
+    """Test non-fatal require calls with newer versions."""
+    self.assertTrue(git_command.git_require((0,)))
+    self.assertTrue(git_command.git_require((1, 0)))
+    self.assertTrue(git_command.git_require((1, 2, 0)))
+    self.assertTrue(git_command.git_require((1, 2, 3, 0)))
+
+  def test_equal_nonfatal(self):
+    """Test require calls with equal values."""
+    self.assertTrue(git_command.git_require((1, 2, 3, 4), fail=False))
+    self.assertTrue(git_command.git_require((1, 2, 3, 4), fail=True))
+
+  def test_older_fatal(self):
+    """Test fatal require calls with old versions."""
+    with self.assertRaises(SystemExit) as e:
+      git_command.git_require((2,), fail=True)
+      self.assertNotEqual(0, e.code)
+
+  def test_older_fatal_msg(self):
+    """Test fatal require calls with old versions and message."""
+    with self.assertRaises(SystemExit) as e:
+      git_command.git_require((2,), fail=True, msg='so sad')
+      self.assertNotEqual(0, e.code)
