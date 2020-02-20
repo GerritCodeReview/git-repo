@@ -27,6 +27,7 @@ import unittest
 
 import error
 import git_config
+import platform_utils
 import project
 
 
@@ -40,7 +41,7 @@ def TempGitTree():
     subprocess.check_call(['git', 'init'], cwd=tempdir)
     yield tempdir
   finally:
-    shutil.rmtree(tempdir)
+    platform_utils.rmtree(tempdir)
 
 
 class RepoHookShebang(unittest.TestCase):
@@ -243,17 +244,19 @@ class CopyFile(CopyLinkTestCase):
     src = os.path.join(self.worktree, 'foo.txt')
     sym = os.path.join(self.worktree, 'sym')
     self.touch(src)
-    os.symlink('foo.txt', sym)
+    platform_utils.symlink('foo.txt', sym)
     self.assertExists(sym)
     cf = self.CopyFile('sym', 'foo')
     self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
 
   def test_src_block_symlink_traversal(self):
     """Do not allow reading through a symlink dir."""
-    src = os.path.join(self.worktree, 'bar', 'passwd')
-    os.symlink('/etc', os.path.join(self.worktree, 'bar'))
+    realfile = os.path.join(self.tempdir, 'file.txt')
+    self.touch(realfile)
+    src = os.path.join(self.worktree, 'bar', 'file.txt')
+    platform_utils.symlink(self.tempdir, os.path.join(self.worktree, 'bar'))
     self.assertExists(src)
-    cf = self.CopyFile('bar/foo.txt', 'foo')
+    cf = self.CopyFile('bar/file.txt', 'foo')
     self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
 
   def test_src_block_copy_from_dir(self):
@@ -267,7 +270,7 @@ class CopyFile(CopyLinkTestCase):
     """Do not allow writing to a symlink."""
     src = os.path.join(self.worktree, 'foo.txt')
     self.touch(src)
-    os.symlink('dest', os.path.join(self.topdir, 'sym'))
+    platform_utils.symlink('dest', os.path.join(self.topdir, 'sym'))
     cf = self.CopyFile('foo.txt', 'sym')
     self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
 
@@ -275,7 +278,7 @@ class CopyFile(CopyLinkTestCase):
     """Do not allow writing through a symlink dir."""
     src = os.path.join(self.worktree, 'foo.txt')
     self.touch(src)
-    os.symlink('/tmp', os.path.join(self.topdir, 'sym'))
+    platform_utils.symlink(tempfile.gettempdir(), os.path.join(self.topdir, 'sym'))
     cf = self.CopyFile('foo.txt', 'sym/foo.txt')
     self.assertRaises(error.ManifestInvalidPathError, cf._Copy)
 
@@ -303,7 +306,7 @@ class LinkFile(CopyLinkTestCase):
     dest = os.path.join(self.topdir, 'foo')
     self.assertExists(dest)
     self.assertTrue(os.path.islink(dest))
-    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+    self.assertEqual(os.path.join('git-project', 'foo.txt'), os.readlink(dest))
 
   def test_src_subdir(self):
     """Link to a file in a subdir of a project."""
@@ -320,7 +323,7 @@ class LinkFile(CopyLinkTestCase):
     lf = self.LinkFile('.', 'foo/bar')
     lf._Link()
     self.assertExists(dest)
-    self.assertEqual('../git-project', os.readlink(dest))
+    self.assertEqual(os.path.join('..', 'git-project'), os.readlink(dest))
 
   def test_dest_subdir(self):
     """Link a file to a subdir of a checkout."""
@@ -354,10 +357,10 @@ class LinkFile(CopyLinkTestCase):
     self.touch(src)
     lf = self.LinkFile('foo.txt', 'sym')
     lf._Link()
-    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+    self.assertEqual(os.path.join('git-project', 'foo.txt'), os.readlink(dest))
 
     # Point the symlink somewhere else.
     os.unlink(dest)
-    os.symlink('/', dest)
+    platform_utils.symlink(self.tempdir, dest)
     lf._Link()
-    self.assertEqual('git-project/foo.txt', os.readlink(dest))
+    self.assertEqual(os.path.join('git-project', 'foo.txt'), os.readlink(dest))
