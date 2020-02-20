@@ -25,7 +25,7 @@ class Manifest(PagedCommand):
   common = False
   helpSummary = "Manifest inspection utility"
   helpUsage = """
-%prog [-o {-|NAME.xml} [-r]]
+%prog [-o {-|NAME.xml} [-m MANIFEST.xml] [-r]]
 """
   _helpDescription = """
 
@@ -50,6 +50,12 @@ in a Git repository for use during future 'repo init' invocations.
     p.add_option('-r', '--revision-as-HEAD',
                  dest='peg_rev', action='store_true',
                  help='Save revisions as current HEAD')
+    p.add_option('-m', '--override-manifest',
+                 dest='alt_manifest', action="store", type="string",
+                 help='Specify an alternative manifest to use. this is particularly '
+                 'useful when combined with -r to update a subset of the projects in '
+                 'the full manifest (eg when generating external snapshot from an '
+                 'internal checkout).')
     p.add_option('--suppress-upstream-revision', dest='peg_rev_upstream',
                  default=True, action='store_false',
                  help='If in -r mode, do not write the upstream field.  '
@@ -62,6 +68,10 @@ in a Git repository for use during future 'repo init' invocations.
                  metavar='-|NAME.xml')
 
   def _Output(self, opt):
+    # if alternate manifest is specified, override the manifest file that we're using
+    if (opt.alt_manifest):
+      self.manifest.Override(opt.alt_manifest, False)
+
     if opt.output_file == '-':
       fd = sys.stdout
     else:
