@@ -16,6 +16,24 @@
       "revId": "7ff80afdf66e8a00745300c0375d98f2ba8887b5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdcf615d_49ad8699",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1891,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-20T06:13:27Z",
+      "side": 0,
+      "message": "thanks, wasn\u0027t familiar with that.  should be good now.",
+      "parentUuid": "75d9aad5_3eaaf839",
+      "revId": "7ff80afdf66e8a00745300c0375d98f2ba8887b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
