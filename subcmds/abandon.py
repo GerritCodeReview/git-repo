@@ -37,6 +37,9 @@ It is equivalent to "git branch -D <branchname>".
 """
 
   def _Options(self, p):
+    p.add_option('-q', '--quiet',
+                 action='store_true', default=False,
+                 help='be quiet')
     p.add_option('--all',
                  dest='all', action='store_true',
                  help='delete all branches in all projects')
@@ -93,11 +96,14 @@ It is equivalent to "git branch -D <branchname>".
             file=sys.stderr)
       sys.exit(1)
     else:
-      print('Abandoned branches:', file=sys.stderr)
+      # Everything below here is displaying status.
+      if opt.quiet:
+        return
+      print('Abandoned branches:')
       for br in success.keys():
         if len(all_projects) > 1 and len(all_projects) == len(success[br]):
           result = "all project"
         else:
           result = "%s" % (
               ('\n' + ' ' * width + '| ').join(p.relpath for p in success[br]))
-        print("%s%s| %s\n" % (br, ' ' * (width - len(br)), result), file=sys.stderr)
+        print("%s%s| %s\n" % (br, ' ' * (width - len(br)), result))
