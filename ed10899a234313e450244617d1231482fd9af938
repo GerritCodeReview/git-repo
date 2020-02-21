@@ -1,0 +1,192 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6d131214_7103c97d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "scope it like:\n\n manifest: support optional --manifest-name",
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7610fa67_49d2ec2e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "\"e.g.\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 39,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9f87d316_abced27e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "this statement has no meaning outside of CrOS.  can you rephrase/reframe it in a general context ?",
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5dcae259_f7f5b626",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "not a new issue, but while you\u0027re here, the [] are incorrect\n\n %prog [-o {-|NAME.xml}] [-m MANIFEST.xml] [-r]",
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d0d02b84_2c94bbf0",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "other commands use -m/--manifest-name for largely the same meaning.  lets use that too.",
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a897945_f3691b09",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "type\u003d\"string\" isn\u0027t necessary, so you can omit it.",
+      "range": {
+        "startLine": 54,
+        "startChar": 54,
+        "endLine": 54,
+        "endChar": 67
+      },
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "051081f0_bf2229b9",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "use single quotes whenever possible\n\nthen again do you need this ?  i think this is the default isn\u0027t it ?",
+      "range": {
+        "startLine": 54,
+        "startChar": 38,
+        "endLine": 54,
+        "endChar": 52
+      },
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e7caa42_8d2b72d1",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "per-option help text should be kept brief.  i would just copy what sync uses:\nhelp\u003d\u0027temporary manifest to use for this sync\u0027, metavar\u003d\u0027NAME.xml\u0027)\n\nif you want to add extended discussion, add it to _helpDescription above",
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41329358_d6df3bf9",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "comments are full sentences, so use \"If\" and add a period at the end",
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a71cbe7_71be0dc1",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T21:28:02Z",
+      "side": 1,
+      "message": "these parens are superfluous.  C programmer says what ? :)",
+      "revId": "ed10899a234313e450244617d1231482fd9af938",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
