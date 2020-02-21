@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a5d6f1b4_fc42f7e4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1014,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-21T04:26:20Z",
+      "side": 1,
+      "message": "repeated word",
+      "range": {
+        "startLine": 1014,
+        "startChar": 6,
+        "endLine": 1014,
+        "endChar": 17
+      },
+      "revId": "5a67693ab946431749cc8953a90cae6e5e2b3505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "70daf8b9_c092cd45",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-02-21T04:26:20Z",
+      "side": 1,
+      "message": "and here",
+      "range": {
+        "startLine": 279,
+        "startChar": 4,
+        "endLine": 279,
+        "endChar": 15
+      },
+      "revId": "5a67693ab946431749cc8953a90cae6e5e2b3505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
