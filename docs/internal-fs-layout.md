@@ -68,13 +68,20 @@ support, see the [manifest-format.md] file.
     If you want to switch the tracking settings, re-run `repo init` with the
     new settings.
 
+*   `manifest.xml`: The manifest that repo uses.  It is generated at `repo init`
+    and uses the `--manifest-name` to determine what manifest file to load next
+    out of `manifests/`.
+
+    Do not try to modify this to load other manifests as it will confuse repo.
+    If you want to switch manifest files, re-run `repo init` with the new
+    setting.
+
+    Older versions of repo managed this with symlinks.
+
 *   `manifest.xml -> manifests/<manifest-name>.xml`: A symlink to the manifest
     that the user wishes to sync.  It is specified at `repo init` time via
     `--manifest-name`.
 
-    Do not try to repoint this symlink to other files as it will confuse repo.
-    If you want to switch manifest files, re-run `repo init` with the new
-    setting.
 
 *   `manifests.git/.repo_config.json`: JSON cache of the `manifests.git/config`
     file for repo to read/process quickly.
