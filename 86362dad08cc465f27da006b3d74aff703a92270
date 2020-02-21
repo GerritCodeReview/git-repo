@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1e29093a_faba5cdb",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T23:07:24Z",
+      "side": 1,
+      "message": "delete this -- it\u0027ll make it consistent with other modules wrt variable names \u0026 meanings",
+      "revId": "86362dad08cc465f27da006b3d74aff703a92270",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
