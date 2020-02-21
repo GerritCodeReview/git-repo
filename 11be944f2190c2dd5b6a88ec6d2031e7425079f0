@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c07d480b_5c8398cb",
+        "filename": "release/sign-tag.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T05:19:30Z",
+      "side": 1,
+      "message": "yes so people can copy \u0026 paste safely and are forced to review the output before actually pushing things since things go live immediately",
+      "parentUuid": "a05e59cf_35ff693d",
+      "range": {
+        "startLine": 79,
+        "startChar": 50,
+        "endLine": 79,
+        "endChar": 52
+      },
+      "revId": "11be944f2190c2dd5b6a88ec6d2031e7425079f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8f3ffff9_a46141ba",
         "filename": "release/sign-tag.py",
         "patchSetId": 3
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "8349b721_72b81bd5",
+        "filename": "release/sign-tag.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T05:19:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8f3ffff9_a46141ba",
+      "range": {
+        "startLine": 82,
+        "startChar": 3,
+        "endLine": 82,
+        "endChar": 11
+      },
+      "revId": "11be944f2190c2dd5b6a88ec6d2031e7425079f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "f91d3e64_9c11bc2d",
         "filename": "release/sign-tag.py",
         "patchSetId": 3
@@ -68,6 +116,30 @@
       "revId": "11be944f2190c2dd5b6a88ec6d2031e7425079f0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "13c10883_c7881a24",
+        "filename": "release/sign-tag.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-21T05:19:30Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f91d3e64_9c11bc2d",
+      "range": {
+        "startLine": 83,
+        "startChar": 51,
+        "endLine": 83,
+        "endChar": 53
+      },
+      "revId": "11be944f2190c2dd5b6a88ec6d2031e7425079f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
