@@ -2860,19 +2860,23 @@ class Project(object):
       if platform_utils.islink(dst):
         continue
       if os.path.exists(dst):
-        if filecmp.cmp(stock_hook, dst, shallow=False):
-          platform_utils.remove(dst)
-        else:
+        # If the files are the same, we'll leave it alone.  We create symlinks
+        # below by default but fallback to hardlinks if the OS blocks them.
+        # So if we're here, it's probably because we made a hardlink below.
+        if not filecmp.cmp(stock_hook, dst, shallow=False):
           if not quiet:
             _warn("%s: Not replacing locally modified %s hook",
                   self.relpath, name)
-          continue
+        continue
       try:
         platform_utils.symlink(
             os.path.relpath(stock_hook, os.path.dirname(dst)), dst)
       except OSError as e:
         if e.errno == errno.EPERM:
-          raise GitError(self._get_symlink_error_message())
+          try:
+            os.link(stock_hook, dst)
+          except OSError:
+            raise GitError(self._get_symlink_error_message())
         else:
           raise
 
