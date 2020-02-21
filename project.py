@@ -3034,6 +3034,9 @@ class Project(object):
       setting = fp.read()
       assert setting.startswith('gitdir:')
       git_worktree_path = setting.split(':', 1)[1].strip()
+    # Some platforms (e.g. Windows) won't let us update dotgit in situ because
+    # of file permissions.  Delete it and recreate it from scratch to avoid.
+    platform_utils.remove(dotgit)
     # Use relative path from checkout->worktree.
     with open(dotgit, 'w') as fp:
       print('gitdir:', os.path.relpath(git_worktree_path, self.worktree),
