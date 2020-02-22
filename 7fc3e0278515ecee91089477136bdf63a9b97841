@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d905dfea_60a4b392",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-22T05:21:19Z",
+      "side": 1,
+      "message": "This means `verbose` is always `not quiet`, right? Why not make \u0027-v\u0027 write to `opt.quiet` directly?",
+      "revId": "7fc3e0278515ecee91089477136bdf63a9b97841",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
