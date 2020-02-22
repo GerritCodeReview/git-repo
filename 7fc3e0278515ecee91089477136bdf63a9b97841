@@ -34,6 +34,24 @@
       "revId": "7fc3e0278515ecee91089477136bdf63a9b97841",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fb37a66e_e2d0a102",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-22T05:50:52Z",
+      "side": 1,
+      "message": "we want the output mode to be tristate: errors only (quiet), basic/progress but not too chatty/spammy (default), and everything (verbose).\n\ni think this current style is the most straightforward and robust.\n\nthe following parser only gets a bool, not a tristate:\n* \u0027--quiet\u0027, dest\u003d\u0027quiet\u0027, action\u003d\u0027store_true\u0027\n* \u0027--verbose\u0027, dest\u003d\u0027quiet\u0027, action\u003d\u0027store_false\u0027\n\nif the parser had dest\u003dquiet \u0026 dest\u003dverbose, and --verbose would set quiet, and --quiet would set verbose, i\u0027d have to write a custom optparse callback (or two) so they\u0027d be able to set themselves \u0026 clear the other.  each callback would take like 4 LOC.\n\nif i kept the parser simple:\n* \u0027--quiet\u0027, dest\u003d\u0027quiet\u0027, action\u003d\u0027store_true\u0027\n* \u0027--verbose\u0027, dest\u003d\u0027verbose\u0027, action\u003d\u0027store_true\u0027\n\ni\u0027d have to write logic in Extend to handle clearing one or the other, and it\u0027s now impossible to correctly handle multiple options.  the current correctly handles [-q -v] and [-v -q] and [-v -q -v] and such, but this wouldn\u0027t -- the options all saturate to True rather than tracking intermediate state correctly.\n\nwriting good/robust CLI parsers are hard :).",
+      "parentUuid": "97f941a8_0a89d283",
+      "revId": "7fc3e0278515ecee91089477136bdf63a9b97841",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
