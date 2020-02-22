@@ -34,6 +34,24 @@
       "revId": "0dd919abfb0b5d9e02039d915cf2cc80f25a04eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1aaa0d82_4896ed9c",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-22T17:09:16Z",
+      "side": 1,
+      "message": "the line you quoted isn\u0027t redundant.  that is \u0027--current-branch\u0027 which defaults to dest\u003d\u0027current_branch\u0027 but that line is setting dest\u003d\u0027current_branch_only\u0027.\n\nthere are some opts in the tree that are redundant, but i\u0027ve been trimming them as i make changes that affect the relevant lines.  so lets not add new redundant lines.",
+      "parentUuid": "1e99e2a5_5a6d9e49",
+      "revId": "0dd919abfb0b5d9e02039d915cf2cc80f25a04eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
