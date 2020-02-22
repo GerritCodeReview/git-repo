@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "43ce8ad8_28b066b7",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-22T01:04:59Z",
+      "side": 1,
+      "message": "this is redundant, so you can just delete it",
+      "revId": "0dd919abfb0b5d9e02039d915cf2cc80f25a04eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
