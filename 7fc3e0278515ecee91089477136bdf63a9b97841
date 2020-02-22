@@ -16,6 +16,24 @@
       "revId": "7fc3e0278515ecee91089477136bdf63a9b97841",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "97f941a8_0a89d283",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-22T05:22:21Z",
+      "side": 1,
+      "message": "Ah, I see this is for consistency with sync.py.",
+      "parentUuid": "d905dfea_60a4b392",
+      "revId": "7fc3e0278515ecee91089477136bdf63a9b97841",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
