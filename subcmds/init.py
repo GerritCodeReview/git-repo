@@ -87,9 +87,12 @@ to update the working directory files.
   def _Options(self, p, gitc_init=False):
     # Logging
     g = p.add_option_group('Logging options')
+    g.add_option('-v', '--verbose',
+                 dest='output_mode', action='store_true',
+                 help='show all output')
     g.add_option('-q', '--quiet',
-                 dest="quiet", action="store_true", default=False,
-                 help="be quiet")
+                 dest='output_mode', action='store_false',
+                 help='only show errors')
 
     # Manifest
     g = p.add_option_group('Manifest options')
@@ -300,7 +303,7 @@ to update the working directory files.
     if opt.submodules:
       m.config.SetString('repo.submodules', 'true')
 
-    if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet,
+    if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,
                               current_branch_only=opt.current_branch_only,
                               tags=opt.tags, submodules=opt.submodules,
@@ -482,6 +485,9 @@ to update the working directory files.
             'version of git to maintain support.'
             % ('.'.join(str(x) for x in MIN_GIT_VERSION_SOFT),),
             file=sys.stderr)
+
+    opt.quiet = opt.output_mode is False
+    opt.verbose = opt.output_mode is True
 
     if opt.worktree:
       # Older versions of git supported worktree, but had dangerous gc bugs.
