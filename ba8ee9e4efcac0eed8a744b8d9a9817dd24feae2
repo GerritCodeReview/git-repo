@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "730e32df_29e01daf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-02-22T05:18:33Z",
+      "side": 1,
+      "message": "nit: \"improve\" doesn\u0027t tell me what kind of improvement happened in the shortlog. How about something like\n\n repo: show redirects when tracing commands\n\n?",
+      "revId": "ba8ee9e4efcac0eed8a744b8d9a9817dd24feae2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
