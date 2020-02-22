@@ -193,7 +193,8 @@ to update the working directory files.
         sys.exit(1)
 
       if not opt.quiet:
-        print('Get %s' % GitConfig.ForUser().UrlInsteadOf(opt.manifest_url),
+        print('Downloading manifest from %s' %
+              (GitConfig.ForUser().UrlInsteadOf(opt.manifest_url),),
               file=sys.stderr)
 
       # The manifest project object doesn't keep track of the path on the
