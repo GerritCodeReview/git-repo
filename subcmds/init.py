@@ -90,6 +90,9 @@ to update the working directory files.
     g.add_option('-q', '--quiet',
                  dest="quiet", action="store_true", default=False,
                  help="be quiet")
+    g.add_option('-v', '--verbose',
+                 action='store_true', default=False,
+                 help='show all output')
 
     # Manifest
     g = p.add_option_group('Manifest options')
@@ -300,7 +303,7 @@ to update the working directory files.
     if opt.submodules:
       m.config.SetString('repo.submodules', 'true')
 
-    if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet,
+    if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,
                               current_branch_only=opt.current_branch_only,
                               tags=opt.tags, submodules=opt.submodules,
