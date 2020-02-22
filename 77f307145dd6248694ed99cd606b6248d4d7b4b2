@@ -16,6 +16,24 @@
       "revId": "77f307145dd6248694ed99cd606b6248d4d7b4b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56553111_b9f4408c",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-22T05:55:50Z",
+      "side": 1,
+      "message": "err, yeah.  i wrote the -q/-v options as sep knobs first so this would make sense.  let me double check the logic now that i\u0027ve unified the bools.",
+      "parentUuid": "32b6a347_34d91557",
+      "revId": "77f307145dd6248694ed99cd606b6248d4d7b4b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
