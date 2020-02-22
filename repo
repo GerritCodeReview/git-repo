@@ -531,6 +531,8 @@ def _Init(args, gitc_init=False):
       else:
         do_verify = True
 
+    if not opt.quiet and not opt.verbose:
+      print('Downloading Repo source from', url)
     dst = os.path.abspath(os.path.join(repodir, S_repo))
     _Clone(url, dst, opt.clone_bundle, opt.quiet, opt.verbose)
 
@@ -752,9 +754,6 @@ def _InitHttp():
 
 
 def _Fetch(url, cwd, src, quiet, verbose):
-  if not quiet:
-    print('Get %s' % url, file=sys.stderr)
-
   cmd = ['fetch']
   if quiet:
     cmd.append('--quiet')
@@ -801,8 +800,8 @@ def _DownloadBundle(url, cwd, quiet, verbose):
       print('fatal: error %s' % e.reason, file=sys.stderr)
       raise CloneFailure()
     try:
-      if not quiet:
-        print('Get %s' % url, file=sys.stderr)
+      if verbose:
+        print('Downloading clone bundle %s' % url, file=sys.stderr)
       while True:
         buf = r.read(8192)
         if not buf:
@@ -825,6 +824,9 @@ def _ImportBundle(cwd):
 def _Clone(url, cwd, clone_bundle, quiet, verbose):
   """Clones a git repository to a new subdirectory of repodir
   """
+  if verbose:
+    print('Cloning', url)
+
   try:
     os.mkdir(cwd)
   except OSError as e:
