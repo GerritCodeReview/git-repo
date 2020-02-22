@@ -57,6 +57,60 @@ urllib.parse.uses_netloc.extend([
     'rpc'])
 
 
+def XmlBool(node, attr, default=None):
+  """Determine boolean value of |node|'s |attr|.
+
+  Invalid values will issue a non-fatal warning.
+
+  Args:
+    node: XML node whose attributes we access.
+    attr: The attribute to access.
+    default: If the attribute is not set (value is empty), then use this.
+
+  Returns:
+    True if the attribute is a valid string representing true.
+    False if the attribute is a valid string representing false.
+    |default| otherwise.
+  """
+  value = node.getAttribute(attr)
+  s = value.lower()
+  if s == '':
+    return default
+  elif s in {'yes', 'true', '1'}:
+    return True
+  elif s in {'no', 'false', '0'}:
+    return False
+  else:
+    print('warning: manifest: %s="%s": ignoring invalid XML boolean' %
+          (attr, value), file=sys.stderr)
+    return default
+
+
+def XmlInt(node, attr, default=None):
+  """Determine integer value of |node|'s |attr|.
+
+  Args:
+    node: XML node whose attributes we access.
+    attr: The attribute to access.
+    default: If the attribute is not set (value is empty), then use this.
+
+  Returns:
+    The number if the attribute is a valid number.
+
+  Raises:
+    ManifestParseError: The number is invalid.
+  """
+  value = node.getAttribute(attr)
+  if not value:
+    return default
+
+  try:
+    return int(value)
+  except ValueError:
+    raise ManifestParseError('manifest: invalid %s="%s" integer' %
+                             (attr, value))
+
+
 class _Default(object):
   """Project defaults within the manifest."""
 
@@ -757,29 +811,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     d.destBranchExpr = node.getAttribute('dest-branch') or None
     d.upstreamExpr = node.getAttribute('upstream') or None
 
-    sync_j = node.getAttribute('sync-j')
-    if sync_j == '' or sync_j is None:
-      d.sync_j = 1
-    else:
-      d.sync_j = int(sync_j)
+    d.sync_j = XmlInt(node, 'sync-j', 1)
+    if d.sync_j <= 0:
+      raise ManifestParseError('%s: sync-j must be greater than 0, not "%s"' %
+                               (self.manifestFile, d.sync_j))
 
-    sync_c = node.getAttribute('sync-c')
-    if not sync_c:
-      d.sync_c = False
-    else:
-      d.sync_c = sync_c.lower() in ("yes", "true", "1")
-
-    sync_s = node.getAttribute('sync-s')
-    if not sync_s:
-      d.sync_s = False
-    else:
-      d.sync_s = sync_s.lower() in ("yes", "true", "1")
-
-    sync_tags = node.getAttribute('sync-tags')
-    if not sync_tags:
-      d.sync_tags = True
-    else:
-      d.sync_tags = sync_tags.lower() in ("yes", "true", "1")
+    d.sync_c = XmlBool(node, 'sync-c', False)
+    d.sync_s = XmlBool(node, 'sync-s', False)
+    d.sync_tags = XmlBool(node, 'sync-tags', True)
     return d
 
   def _ParseNotice(self, node):
@@ -856,39 +895,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       raise ManifestParseError("project %s path cannot be absolute in %s" %
                                (name, self.manifestFile))
 
-    rebase = node.getAttribute('rebase')
-    if not rebase:
-      rebase = True
-    else:
-      rebase = rebase.lower() in ("yes", "true", "1")
+    rebase = XmlBool(node, 'rebase', True)
+    sync_c = XmlBool(node, 'sync-c', False)
+    sync_s = XmlBool(node, 'sync-s', self._default.sync_s)
+    sync_tags = XmlBool(node, 'sync-tags', self._default.sync_tags)
 
-    sync_c = node.getAttribute('sync-c')
-    if not sync_c:
-      sync_c = False
-    else:
-      sync_c = sync_c.lower() in ("yes", "true", "1")
-
-    sync_s = node.getAttribute('sync-s')
-    if not sync_s:
-      sync_s = self._default.sync_s
-    else:
-      sync_s = sync_s.lower() in ("yes", "true", "1")
-
-    sync_tags = node.getAttribute('sync-tags')
-    if not sync_tags:
-      sync_tags = self._default.sync_tags
-    else:
-      sync_tags = sync_tags.lower() in ("yes", "true", "1")
-
-    clone_depth = node.getAttribute('clone-depth')
-    if clone_depth:
-      try:
-        clone_depth = int(clone_depth)
-        if clone_depth <= 0:
-          raise ValueError()
-      except ValueError:
-        raise ManifestParseError('invalid clone-depth %s in %s' %
-                                 (clone_depth, self.manifestFile))
+    clone_depth = XmlInt(node, 'clone-depth')
+    if clone_depth is not None and clone_depth <= 0:
+      raise ManifestParseError('%s: clone-depth must be greater than 0, not "%s"' %
+                               (self.manifestFile, clone_depth))
 
     dest_branch = node.getAttribute('dest-branch') or self._default.destBranchExpr
 
@@ -911,7 +926,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     groups.extend(set(default_groups).difference(groups))
 
     if self.IsMirror and node.hasAttribute('force-path'):
-      if node.getAttribute('force-path').lower() in ("yes", "true", "1"):
+      if XmlBool(node, 'force-path', False):
         gitdir = os.path.join(self.topdir, '%s.git' % path)
 
     project = Project(manifest=self,

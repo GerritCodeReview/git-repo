@@ -20,6 +20,7 @@ from __future__ import print_function
 
 import os
 import unittest
+import xml.dom.minidom
 
 import error
 import manifest_xml
@@ -89,3 +90,59 @@ class ManifestValidateFilePaths(unittest.TestCase):
           error.ManifestInvalidPathError, self.check_both, path, 'a')
       self.assertRaises(
           error.ManifestInvalidPathError, self.check_both, 'a', path)
+
+
+class ValueTests(unittest.TestCase):
+  """Check utility parsing code."""
+
+  def _get_node(self, text):
+    return xml.dom.minidom.parseString(text).firstChild
+
+  def test_bool_default(self):
+    """Check XmlBool default handling."""
+    node = self._get_node('<node/>')
+    self.assertIsNone(manifest_xml.XmlBool(node, 'a'))
+    self.assertIsNone(manifest_xml.XmlBool(node, 'a', None))
+    self.assertEqual(123, manifest_xml.XmlBool(node, 'a', 123))
+
+    node = self._get_node('<node a=""/>')
+    self.assertIsNone(manifest_xml.XmlBool(node, 'a'))
+
+  def test_bool_invalid(self):
+    """Check XmlBool invalid handling."""
+    node = self._get_node('<node a="moo"/>')
+    self.assertEqual(123, manifest_xml.XmlBool(node, 'a', 123))
+
+  def test_bool_true(self):
+    """Check XmlBool true values."""
+    for value in ('yes', 'true', '1'):
+      node = self._get_node('<node a="%s"/>' % (value,))
+      self.assertTrue(manifest_xml.XmlBool(node, 'a'))
+
+  def test_bool_false(self):
+    """Check XmlBool false values."""
+    for value in ('no', 'false', '0'):
+      node = self._get_node('<node a="%s"/>' % (value,))
+      self.assertFalse(manifest_xml.XmlBool(node, 'a'))
+
+  def test_int_default(self):
+    """Check XmlInt default handling."""
+    node = self._get_node('<node/>')
+    self.assertIsNone(manifest_xml.XmlInt(node, 'a'))
+    self.assertIsNone(manifest_xml.XmlInt(node, 'a', None))
+    self.assertEqual(123, manifest_xml.XmlInt(node, 'a', 123))
+
+    node = self._get_node('<node a=""/>')
+    self.assertIsNone(manifest_xml.XmlInt(node, 'a'))
+
+  def test_int_good(self):
+    """Check XmlInt numeric handling."""
+    for value in (-1, 0, 1, 50000):
+      node = self._get_node('<node a="%s"/>' % (value,))
+      self.assertEqual(value, manifest_xml.XmlInt(node, 'a'))
+
+  def test_int_invalid(self):
+    """Check XmlInt invalid handling."""
+    with self.assertRaises(error.ManifestParseError):
+      node = self._get_node('<node a="xx"/>')
+      manifest_xml.XmlInt(node, 'a')
