@@ -1048,7 +1048,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if (norm == '..' or
         (len(norm) >= 3 and norm.startswith('..') and resep.match(norm[0])) or
         os.path.isabs(norm) or
-        norm.startswith('/')):
+            norm.startswith('/')):
       return 'path cannot be outside'
 
   @classmethod
