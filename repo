@@ -265,9 +265,12 @@ def GetParser(gitc_init=False):
 
   # Logging.
   group = parser.add_option_group('Logging options')
+  group.add_option('-v', '--verbose',
+                   dest='output_mode', action='store_true',
+                   help='show all output')
   group.add_option('-q', '--quiet',
-                   action='store_true', default=False,
-                   help='be quiet')
+                   dest='output_mode', action='store_false',
+                   help='only show errors')
 
   # Manifest.
   group = parser.add_option_group('Manifest options')
@@ -468,6 +471,8 @@ def _Init(args, gitc_init=False):
   if args:
     parser.print_usage()
     sys.exit(1)
+  opt.quiet = opt.output_mode is False
+  opt.verbose = opt.output_mode is True
 
   url = opt.repo_url
   if not url:
@@ -527,7 +532,7 @@ def _Init(args, gitc_init=False):
         do_verify = True
 
     dst = os.path.abspath(os.path.join(repodir, S_repo))
-    _Clone(url, dst, opt.quiet, opt.clone_bundle)
+    _Clone(url, dst, opt.clone_bundle, opt.quiet, opt.verbose)
 
     if do_verify:
       rev = _Verify(dst, branch, opt.quiet)
@@ -746,7 +751,7 @@ def _InitHttp():
   urllib.request.install_opener(urllib.request.build_opener(*handlers))
 
 
-def _Fetch(url, cwd, src, quiet):
+def _Fetch(url, cwd, src, quiet, verbose):
   if not quiet:
     print('Get %s' % url, file=sys.stderr)
 
@@ -762,7 +767,7 @@ def _Fetch(url, cwd, src, quiet):
   run_git(*cmd, stderr=err, cwd=cwd)
 
 
-def _DownloadBundle(url, cwd, quiet):
+def _DownloadBundle(url, cwd, quiet, verbose):
   if not url.endswith('/'):
     url += '/'
   url += 'clone.bundle'
@@ -812,12 +817,12 @@ def _DownloadBundle(url, cwd, quiet):
 def _ImportBundle(cwd):
   path = os.path.join(cwd, '.git', 'clone.bundle')
   try:
-    _Fetch(cwd, cwd, path, True)
+    _Fetch(cwd, cwd, path, True, False)
   finally:
     os.remove(path)
 
 
-def _Clone(url, cwd, quiet, clone_bundle):
+def _Clone(url, cwd, clone_bundle, quiet, verbose):
   """Clones a git repository to a new subdirectory of repodir
   """
   try:
@@ -834,9 +839,9 @@ def _Clone(url, cwd, quiet, clone_bundle):
   _SetConfig(cwd,
              'remote.origin.fetch',
              '+refs/heads/*:refs/remotes/origin/*')
-  if clone_bundle and _DownloadBundle(url, cwd, quiet):
+  if clone_bundle and _DownloadBundle(url, cwd, quiet, verbose):
     _ImportBundle(cwd)
-  _Fetch(url, cwd, 'origin', quiet)
+  _Fetch(url, cwd, 'origin', quiet, verbose)
 
 
 def _Verify(cwd, branch, quiet):
