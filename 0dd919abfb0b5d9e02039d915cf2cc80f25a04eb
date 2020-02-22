@@ -16,6 +16,24 @@
       "revId": "0dd919abfb0b5d9e02039d915cf2cc80f25a04eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1e99e2a5_5a6d9e49",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-02-22T16:59:02Z",
+      "side": 1,
+      "message": "I left it in intentionally to mimic init and sync: https://gerrit.googlesource.com/git-repo/+/refs/heads/master/subcmds/init.py#111\nhttps://gerrit.googlesource.com/git-repo/+/refs/heads/master/subcmds/sync.py#248\n\nDo you want me to match those or remove it?",
+      "parentUuid": "43ce8ad8_28b066b7",
+      "revId": "0dd919abfb0b5d9e02039d915cf2cc80f25a04eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
