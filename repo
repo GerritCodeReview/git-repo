@@ -382,7 +382,16 @@ def run_command(cmd, **kwargs):
   # Run & package the results.
   proc = subprocess.Popen(cmd, **kwargs)
   (stdout, stderr) = proc.communicate(input=cmd_input)
-  trace.print(':', ' '.join(cmd))
+  dbg = ': ' + ' '.join(cmd)
+  if cmd_input is not None:
+    dbg += ' 0<|'
+  if stdout == subprocess.PIPE:
+    dbg += ' 1>|'
+  if stderr == subprocess.PIPE:
+    dbg += ' 2>|'
+  elif stderr == subprocess.STDOUT:
+    dbg += ' 2>&1'
+  trace.print(dbg)
   ret = RunResult(proc.returncode, decode(stdout), decode(stderr))
 
   # If things failed, print useful debugging output.
