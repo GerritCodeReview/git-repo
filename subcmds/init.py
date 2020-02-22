@@ -347,7 +347,7 @@ to update the working directory files.
       return value
     return a
 
-  def _ShouldConfigureUser(self):
+  def _ShouldConfigureUser(self, opt):
     gc = self.manifest.globalConfig
     mp = self.manifest.manifestProject
 
@@ -359,21 +359,24 @@ to update the working directory files.
       mp.config.SetString('user.name', gc.GetString('user.name'))
       mp.config.SetString('user.email', gc.GetString('user.email'))
 
-    print()
-    print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
-                                         mp.config.GetString('user.email')))
-    print('If you want to change this, please re-run \'repo init\' with --config-name')
+    if not opt.quiet:
+      print()
+      print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
+                                           mp.config.GetString('user.email')))
+      print("If you want to change this, please re-run 'repo init' with --config-name")
     return False
 
-  def _ConfigureUser(self):
+  def _ConfigureUser(self, opt):
     mp = self.manifest.manifestProject
 
     while True:
-      print()
+      if not opt.quiet:
+        print()
       name = self._Prompt('Your Name', mp.UserName)
       email = self._Prompt('Your Email', mp.UserEmail)
 
-      print()
+      if not opt.quiet:
+        print()
       print('Your identity is: %s <%s>' % (name, email))
       print('is this correct [y/N]? ', end='')
       # TODO: When we require Python 3, use flush=True w/print above.
@@ -445,15 +448,16 @@ to update the working directory files.
       # We store the depth in the main manifest project.
       self.manifest.manifestProject.config.SetString('repo.depth', depth)
 
-  def _DisplayResult(self):
+  def _DisplayResult(self, opt):
     if self.manifest.IsMirror:
       init_type = 'mirror '
     else:
       init_type = ''
 
-    print()
-    print('repo %shas been initialized in %s'
-          % (init_type, self.manifest.topdir))
+    if not opt.quiet:
+      print()
+      print('repo %shas been initialized in %s' %
+            (init_type, self.manifest.topdir))
 
     current_dir = os.getcwd()
     if current_dir != self.manifest.topdir:
@@ -487,8 +491,8 @@ to update the working directory files.
     self._LinkManifest(opt.manifest_name)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
-      if opt.config_name or self._ShouldConfigureUser():
-        self._ConfigureUser()
+      if opt.config_name or self._ShouldConfigureUser(opt):
+        self._ConfigureUser(opt)
       self._ConfigureColor()
 
-    self._DisplayResult()
+    self._DisplayResult(opt)
