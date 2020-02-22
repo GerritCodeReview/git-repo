@@ -52,6 +52,24 @@
       "revId": "0dd919abfb0b5d9e02039d915cf2cc80f25a04eb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad1d1dba_20c1459f",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-02-22T19:17:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1aaa0d82_4896ed9c",
+      "revId": "0dd919abfb0b5d9e02039d915cf2cc80f25a04eb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
