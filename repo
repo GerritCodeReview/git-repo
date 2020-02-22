@@ -758,15 +758,17 @@ def _InitHttp():
 
 def _Fetch(url, cwd, src, quiet, verbose):
   cmd = ['fetch']
-  if quiet:
+  if not verbose:
     cmd.append('--quiet')
+  err = None
+  if not quiet and sys.stdout.isatty():
+    cmd.append('--progress')
+  elif not verbose:
     err = subprocess.PIPE
-  else:
-    err = None
   cmd.append(src)
   cmd.append('+refs/heads/*:refs/remotes/origin/*')
   cmd.append('+refs/tags/*:refs/tags/*')
-  run_git(*cmd, stderr=err, cwd=cwd)
+  run_git(*cmd, stderr=err, capture_output=False, cwd=cwd)
 
 
 def _DownloadBundle(url, cwd, quiet, verbose):
