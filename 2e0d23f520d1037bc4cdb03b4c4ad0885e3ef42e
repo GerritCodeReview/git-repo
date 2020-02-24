@@ -22,6 +22,30 @@
       "revId": "2e0d23f520d1037bc4cdb03b4c4ad0885e3ef42e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29d22b0b_ec50699a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-24T21:16:13Z",
+      "side": 1,
+      "message": "if Gerrit intended to support the \u003d syntax work, it doesn\u0027t seem to\n\n $ git push -q -o l\u003dVerified+1 origin HEAD:refs/for/master\nTo https://gerrit.googlesource.com/git-repo\n ! [remote rejected]           HEAD -\u003e refs/for/master (no new changes)\nerror: failed to push some refs to \u0027https://gerrit.googlesource.com/git-repo\u0027\n $ git push -q -o l\u003dVerified\u003d1 origin HEAD:refs/for/master\nTo https://gerrit.googlesource.com/git-repo\n ! [remote rejected]           HEAD -\u003e refs/for/master (internal error)\nerror: failed to push some refs to \u0027https://gerrit.googlesource.com/git-repo\u0027\n $ git push -q -o l\u003dVerified%3d1 origin HEAD:refs/for/master\nTo https://gerrit.googlesource.com/git-repo\n ! [remote rejected]           HEAD -\u003e refs/for/master (internal error)\nerror: failed to push some refs to \u0027https://gerrit.googlesource.com/git-repo\u0027",
+      "parentUuid": "3c78cf71_ec1d876c",
+      "range": {
+        "startLine": 446,
+        "startChar": 28,
+        "endLine": 446,
+        "endChar": 42
+      },
+      "revId": "2e0d23f520d1037bc4cdb03b4c4ad0885e3ef42e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
