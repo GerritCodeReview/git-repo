@@ -7,6 +7,7 @@ easier to work with Git.  The repo command is an executable Python script
 that you can put anywhere in your path.
 
 * Homepage: <https://gerrit.googlesource.com/git-repo/>
+* Mailing list: [repo-discuss on Google Groups][repo-discuss]
 * Bug reports: <https://bugs.chromium.org/p/gerrit/issues/list?q=component:repo>
 * Source: <https://gerrit.googlesource.com/git-repo/>
 * Overview: <https://source.android.com/source/developing.html>
@@ -17,6 +18,17 @@ that you can put anywhere in your path.
 * Running Repo in [Microsoft Windows](./docs/windows.md)
 * GitHub mirror: <https://github.com/GerritCodeReview/git-repo>
 * Postsubmit tests: <https://github.com/GerritCodeReview/git-repo/actions>
+
+## Contact
+
+Please use the [repo-discuss] mailing list or [issue tracker] for questions.
+
+You can [file a new bug report][new-bug] under the "repo" component.
+
+Please do not e-mail individual developers for support.
+They do not have the bandwidth for it, and often times questions have already
+been asked on [repo-discuss] or bugs posted to the [issue tracker].
+So please search those sites first.
 
 ## Install
 
@@ -36,3 +48,8 @@ $ PATH="${HOME}/.bin:${PATH}"
 $ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/.bin/repo
 $ chmod a+rx ~/.bin/repo
 ```
+
+
+[new-bug]: https://bugs.chromium.org/p/gerrit/issues/entry?components=repo
+[issue tracker]: https://bugs.chromium.org/p/gerrit/issues/list?q=component:repo
+[repo-discuss]: https://groups.google.com/forum/#!forum/repo-discuss
