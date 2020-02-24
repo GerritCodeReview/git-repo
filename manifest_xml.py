@@ -155,7 +155,7 @@ class XmlManifest(object):
     # normal repo settings live in the manifestProject which we just setup
     # above, so we couldn't easily query before that.  We assume Project()
     # init doesn't care if this changes afterwards.
-    if mp.config.GetBoolean('repo.worktree'):
+    if os.path.exists(mp.gitdir) and mp.config.GetBoolean('repo.worktree'):
       mp.use_git_worktrees = True
 
     self._Unload()
