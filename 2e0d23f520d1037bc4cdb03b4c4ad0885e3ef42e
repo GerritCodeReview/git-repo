@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3c78cf71_ec1d876c",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1096415
+      },
+      "writtenOn": "2020-02-24T21:09:34Z",
+      "side": 1,
+      "message": "I think Gerrit may also be OK with things like Code-Review\u003d2. Not sure if we want to allow this.",
+      "range": {
+        "startLine": 446,
+        "startChar": 28,
+        "endLine": 446,
+        "endChar": 42
+      },
+      "revId": "2e0d23f520d1037bc4cdb03b4c4ad0885e3ef42e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
