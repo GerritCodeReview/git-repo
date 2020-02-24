@@ -134,7 +134,13 @@ review.URL.uploadhashtags:
 
 To add hashtags whenever uploading a commit, you can set a per-project
 or global Git option to do so. The value of review.URL.uploadhashtags
-will be used as comma delimited hashtags like the --hashtags option.
+will be used as comma delimited hashtags like the --hashtag option.
+
+review.URL.uploadlabels:
+
+To add labels whenever uploading a commit, you can set a per-project
+or global Git option to do so. The value of review.URL.uploadlabels
+will be used as comma delimited labels like the --label option.
 
 # References
 
@@ -152,6 +158,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--hashtag-branch', '--htb',
                  action='store_true',
                  help='Add local branch name as a hashtag.')
+    p.add_option('-l', '--label',
+                 dest='labels', action='append', default=[],
+                 help='Add a label when uploading.')
     p.add_option('--re', '--reviewers',
                  type='string', action='append', dest='reviewers',
                  help='Request reviews from these people.')
@@ -410,21 +419,34 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
           key = 'review.%s.uploadtopic' % branch.project.remote.review
           opt.auto_topic = branch.project.config.GetBoolean(key)
 
-        # Check if hashtags should be included.
-        def _ExpandHashtag(value):
-          """Split |value| up into comma delimited tags."""
+        def _ExpandCommaList(value):
+          """Split |value| up into comma delimited entries."""
           if not value:
             return
-          for tag in value.split(','):
-            tag = tag.strip()
-            if tag:
-              yield tag
+          for ret in value.split(','):
+            ret = ret.strip()
+            if ret:
+              yield ret
+
+        # Check if hashtags should be included.
         key = 'review.%s.uploadhashtags' % branch.project.remote.review
-        hashtags = set(_ExpandHashtag(branch.project.config.GetString(key)))
+        hashtags = set(_ExpandCommaList(branch.project.config.GetString(key)))
         for tag in opt.hashtags:
-          hashtags.update(_ExpandHashtag(tag))
+          hashtags.update(_ExpandCommaList(tag))
         if opt.hashtag_branch:
           hashtags.add(branch.name)
+
+        # Check if labels should be included.
+        key = 'review.%s.uploadlabels' % branch.project.remote.review
+        labels = set(_ExpandCommaList(branch.project.config.GetString(key)))
+        for label in opt.labels:
+          labels.update(_ExpandCommaList(label))
+        # Basic sanity check on label syntax.
+        for label in labels:
+          if not re.match(r'^.+[+-][0-9]+$', label):
+            print('repo: error: invalid label syntax "%s": labels use forms '
+                  'like CodeReview+1 or Verified-1' % (label,), file=sys.stderr)
+            sys.exit(1)
 
         destination = opt.dest_branch or branch.project.dest_branch
 
@@ -445,6 +467,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                dryrun=opt.dryrun,
                                auto_topic=opt.auto_topic,
                                hashtags=hashtags,
+                               labels=labels,
                                draft=opt.draft,
                                private=opt.private,
                                notify=None if opt.notify else 'NONE',

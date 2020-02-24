@@ -201,6 +201,7 @@ class ReviewableBranch(object):
                       dryrun=False,
                       auto_topic=False,
                       hashtags=(),
+                      labels=(),
                       draft=False,
                       private=False,
                       notify=None,
@@ -213,6 +214,7 @@ class ReviewableBranch(object):
                                  dryrun=dryrun,
                                  auto_topic=auto_topic,
                                  hashtags=hashtags,
+                                 labels=labels,
                                  draft=draft,
                                  private=private,
                                  notify=notify,
@@ -1346,6 +1348,7 @@ class Project(object):
                       dryrun=False,
                       auto_topic=False,
                       hashtags=(),
+                      labels=(),
                       draft=False,
                       private=False,
                       notify=None,
@@ -1406,6 +1409,7 @@ class Project(object):
     if auto_topic:
       opts += ['topic=' + branch.name]
     opts += ['t=%s' % p for p in hashtags]
+    opts += ['l=%s' % p for p in labels]
 
     opts += ['r=%s' % p for p in people[0]]
     opts += ['cc=%s' % p for p in people[1]]
