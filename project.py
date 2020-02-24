@@ -986,11 +986,9 @@ class Project(object):
     return None
 
   def IsRebaseInProgress(self):
-    w = self.worktree
-    g = os.path.join(w, '.git')
-    return os.path.exists(os.path.join(g, 'rebase-apply')) \
-        or os.path.exists(os.path.join(g, 'rebase-merge')) \
-        or os.path.exists(os.path.join(w, '.dotest'))
+    return (os.path.exists(self.work_git.GetDotgitPath('rebase-apply')) or
+            os.path.exists(self.work_git.GetDotgitPath('rebase-merge')) or
+            os.path.exists(os.path.join(self.worktree, '.dotest')))
 
   def IsDirty(self, consider_untracked=True):
     """Is the working directory modified in some way?
@@ -3232,11 +3230,28 @@ class Project(object):
       finally:
         p.Wait()
 
-    def GetHead(self):
+    def GetDotgitPath(self, subpath=None):
+      """Return the full path to the .git dir.
+
+      As a convenience, append |subpath| if provided.
+      """
       if self._bare:
-        path = os.path.join(self._project.gitdir, HEAD)
+        dotgit = self._gitdir
       else:
-        path = self._project.GetHeadPath()
+        dotgit = os.path.join(self._project.worktree, '.git')
+        if os.path.isfile(dotgit):
+          # Git worktrees use a "gitdir:" syntax to point to the scratch space.
+          with open(dotgit) as fp:
+            setting = fp.read()
+          assert setting.startswith('gitdir:')
+          gitdir = setting.split(':', 1)[1].strip()
+          dotgit = os.path.normpath(os.path.join(self._project.worktree, gitdir))
+
+      return dotgit if subpath is None else os.path.join(dotgit, subpath)
+
+    def GetHead(self):
+      """Return the ref that HEAD points to."""
+      path = self.GetDotgitPath(subpath=HEAD)
       try:
         with open(path) as fd:
           line = fd.readline()
