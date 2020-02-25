@@ -202,7 +202,6 @@ class ReviewableBranch(object):
                       auto_topic=False,
                       hashtags=(),
                       labels=(),
-                      draft=False,
                       private=False,
                       notify=None,
                       wip=False,
@@ -215,7 +214,6 @@ class ReviewableBranch(object):
                                  auto_topic=auto_topic,
                                  hashtags=hashtags,
                                  labels=labels,
-                                 draft=draft,
                                  private=private,
                                  notify=notify,
                                  wip=wip,
@@ -1349,7 +1347,6 @@ class Project(object):
                       auto_topic=False,
                       hashtags=(),
                       labels=(),
-                      draft=False,
                       private=False,
                       notify=None,
                       wip=False,
@@ -1399,12 +1396,7 @@ class Project(object):
     if dest_branch.startswith(R_HEADS):
       dest_branch = dest_branch[len(R_HEADS):]
 
-    upload_type = 'for'
-    if draft:
-      upload_type = 'drafts'
-
-    ref_spec = '%s:refs/%s/%s' % (R_HEADS + branch.name, upload_type,
-                                  dest_branch)
+    ref_spec = '%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch)
     opts = []
     if auto_topic:
       opts += ['topic=' + branch.name]
