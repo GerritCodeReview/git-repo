@@ -44,9 +44,9 @@ class Version(Command, MirrorSafeCommand):
     print('repo version %s' % rp_ver)
     print('       (from %s)' % rem.url)
 
-    if Version.wrapper_path is not None:
-      print('repo launcher version %s' % Version.wrapper_version)
-      print('       (from %s)' % Version.wrapper_path)
+    if self.wrapper_path is not None:
+      print('repo launcher version %s' % self.wrapper_version)
+      print('       (from %s)' % self.wrapper_path)
 
       if src_ver != rp_ver:
         print('       (currently at %s)' % src_ver)
