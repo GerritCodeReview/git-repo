@@ -94,6 +94,30 @@
       "revId": "2e0d23f520d1037bc4cdb03b4c4ad0885e3ef42e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14cb4d45_5067807d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 446,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-02-25T00:32:05Z",
+      "side": 1,
+      "message": "i filed https://crbug.com/gerrit/12397 to track Gerrit misbehavior\n\nthe Gerrit search language supports Verified\u003d1 syntax at least",
+      "parentUuid": "4b5ec1fd_7335a4cd",
+      "range": {
+        "startLine": 446,
+        "startChar": 28,
+        "endLine": 446,
+        "endChar": 42
+      },
+      "revId": "2e0d23f520d1037bc4cdb03b4c4ad0885e3ef42e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
