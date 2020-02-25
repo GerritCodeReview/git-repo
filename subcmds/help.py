@@ -19,6 +19,7 @@ import re
 import sys
 from formatter import AbstractFormatter, DumbWriter
 
+from subcmds import all_commands
 from color import Coloring
 from command import PagedCommand, MirrorSafeCommand, GitcAvailableCommand, GitcClientCommand
 import gitc_utils
@@ -42,7 +43,7 @@ Displays detailed usage information about a command.
     fmt = '  %%-%ds  %%s' % maxlen
 
     for name in commandNames:
-      command = self.commands[name]
+      command = all_commands[name]
       try:
         summary = command.helpSummary.strip()
       except AttributeError:
@@ -52,7 +53,7 @@ Displays detailed usage information about a command.
   def _PrintAllCommands(self):
     print('usage: repo COMMAND [ARGS]')
     print('The complete list of recognized repo commands are:')
-    commandNames = list(sorted(self.commands))
+    commandNames = list(sorted(all_commands))
     self._PrintCommands(commandNames)
     print("See 'repo help <command>' for more information on a "
           'specific command.')
@@ -73,7 +74,7 @@ Displays detailed usage information about a command.
       return False
 
     commandNames = list(sorted([name
-                                for name, command in self.commands.items()
+                                for name, command in all_commands.items()
                                 if command.common and gitc_supported(command)]))
     self._PrintCommands(commandNames)
 
@@ -132,8 +133,8 @@ Displays detailed usage information about a command.
     out._PrintSection('Description', 'helpDescription')
 
   def _PrintAllCommandHelp(self):
-    for name in sorted(self.commands):
-      cmd = self.commands[name]
+    for name in sorted(all_commands):
+      cmd = all_commands[name]
       cmd.manifest = self.manifest
       self._PrintCommandHelp(cmd, header_prefix='[%s] ' % (name,))
 
@@ -158,7 +159,7 @@ Displays detailed usage information about a command.
       name = args[0]
 
       try:
-        cmd = self.commands[name]
+        cmd = all_commands[name]
       except KeyError:
         print("repo: '%s' is not a repo command." % name, file=sys.stderr)
         sys.exit(1)
