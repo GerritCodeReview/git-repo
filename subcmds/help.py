@@ -43,7 +43,7 @@ Displays detailed usage information about a command.
     fmt = '  %%-%ds  %%s' % maxlen
 
     for name in commandNames:
-      command = all_commands[name]
+      command = all_commands[name]()
       try:
         summary = command.helpSummary.strip()
       except AttributeError:
@@ -134,7 +134,7 @@ Displays detailed usage information about a command.
 
   def _PrintAllCommandHelp(self):
     for name in sorted(all_commands):
-      cmd = all_commands[name]
+      cmd = all_commands[name]()
       cmd.manifest = self.manifest
       self._PrintCommandHelp(cmd, header_prefix='[%s] ' % (name,))
 
@@ -159,7 +159,7 @@ Displays detailed usage information about a command.
       name = args[0]
 
       try:
-        cmd = all_commands[name]
+        cmd = all_commands[name]()
       except KeyError:
         print("repo: '%s' is not a repo command." % name, file=sys.stderr)
         sys.exit(1)

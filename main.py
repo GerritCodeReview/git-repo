@@ -204,7 +204,7 @@ class _Repo(object):
     SetDefaultColoring(gopts.color)
 
     try:
-      cmd = self.commands[name]
+      cmd = self.commands[name]()
     except KeyError:
       print("repo: '%s' is not a repo command.  See 'repo help'." % name,
             file=sys.stderr)
