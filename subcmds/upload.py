@@ -173,9 +173,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--cbr', '--current-branch',
                  dest='current_branch', action='store_true',
                  help='Upload current git branch.')
-    p.add_option('-d', '--draft',
-                 action='store_true', dest='draft', default=False,
-                 help='If specified, upload as a draft.')
     p.add_option('--ne', '--no-emails',
                  action='store_false', dest='notify', default=True,
                  help='If specified, do not send emails on upload.')
@@ -247,7 +244,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
       destination = opt.dest_branch or project.dest_branch or project.revisionExpr
       print('Upload project %s/ to remote branch %s%s:' %
-            (project.relpath, destination, ' (draft)' if opt.draft else ''))
+            (project.relpath, destination, ' (private)' if opt.private else ''))
       print('  branch %s (%2d commit%s, %s):' % (
           name,
           len(commit_list),
@@ -468,7 +465,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                auto_topic=opt.auto_topic,
                                hashtags=hashtags,
                                labels=labels,
-                               draft=opt.draft,
                                private=opt.private,
                                notify=None if opt.notify else 'NONE',
                                wip=opt.wip,
