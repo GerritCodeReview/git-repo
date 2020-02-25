@@ -993,6 +993,10 @@ def _Version():
   print('       (from %s)' % (__file__,))
   print('git %s' % (ParseGitVersion().full,))
   print('Python %s' % sys.version)
+  uname = platform.uname()
+  print('OS %s %s (%s)' % (uname.system, uname.release, uname.version))
+  print('CPU %s (%s)' %
+        (uname.machine, uname.processor if uname.processor else 'unknown'))
   sys.exit(0)
 
 

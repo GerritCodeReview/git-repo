@@ -15,7 +15,10 @@
 # limitations under the License.
 
 from __future__ import print_function
+
+import platform
 import sys
+
 from command import Command, MirrorSafeCommand
 from git_command import git, RepoSourceVersion, user_agent
 from git_refs import HEAD
@@ -52,3 +55,7 @@ class Version(Command, MirrorSafeCommand):
     print('git %s' % git.version_tuple().full)
     print('git User-Agent %s' % user_agent.git)
     print('Python %s' % sys.version)
+    uname = platform.uname()
+    print('OS %s %s (%s)' % (uname.system, uname.release, uname.version))
+    print('CPU %s (%s)' %
+          (uname.machine, uname.processor if uname.processor else 'unknown'))
