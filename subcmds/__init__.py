@@ -46,5 +46,5 @@ for py in os.listdir(my_dir):
     cmd.NAME = name
     all_commands[name] = cmd
 
-if 'help' in all_commands:
-  all_commands['help'].commands = all_commands
+# Add 'branch' as an alias for 'branches'.
+all_commands['branch'] = all_commands['branches']

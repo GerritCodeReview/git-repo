@@ -135,8 +135,6 @@ class _Repo(object):
   def __init__(self, repodir):
     self.repodir = repodir
     self.commands = all_commands
-    # add 'branch' as an alias for 'branches'
-    all_commands['branch'] = all_commands['branches']
 
   def _ParseArgs(self, argv):
     """Parse the main `repo` command line options."""
