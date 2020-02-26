@@ -50,6 +50,6 @@ $ chmod a+rx ~/.bin/repo
 ```
 
 
-[new-bug]: https://bugs.chromium.org/p/gerrit/issues/entry?components=repo
+[new-bug]: https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue
 [issue tracker]: https://bugs.chromium.org/p/gerrit/issues/list?q=component:repo
 [repo-discuss]: https://groups.google.com/forum/#!forum/repo-discuss
