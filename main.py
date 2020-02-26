@@ -347,13 +347,21 @@ repo: error:
 """ % (ver_str, min_str, exp_str, WrapperPath(), repo_path), file=sys.stderr)
     sys.exit(1)
 
-  if exp > ver:
-    print("""
-... A new version of repo (%s) is available.
+  if True or exp > ver:
+    print('\n... A new version of repo (%s) is available.' % (exp_str,),
+          file=sys.stderr)
+    if False and os.access(repo_path, os.W_OK):
+      print("""\
 ... You should upgrade soon:
-
     cp %s %s
-""" % (exp_str, WrapperPath(), repo_path), file=sys.stderr)
+""" % (WrapperPath(), repo_path), file=sys.stderr)
+    else:
+      print("""\
+... New version is available at: %s
+... The launcher is run from: %s
+!!! The launcher is not writable.  Please talk to your sysadmin or distro
+!!! to get an update installed.
+""" % (WrapperPath(), repo_path), file=sys.stderr)
 
 
 def _CheckRepoDir(repo_dir):
