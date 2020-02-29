@@ -463,6 +463,34 @@ class CloneFailure(Exception):
   """
 
 
+def check_repo_verify(repo_verify, quiet=False):
+  """Check the --repo-verify state."""
+  if not repo_verify:
+    print('repo: warning: verification of repo code has been disabled;\n'
+          'repo will not be able to verify the integrity of itself.\n',
+          file=sys.stderr)
+    return False
+
+  if NeedSetupGnuPG():
+    return SetupGnuPG(quiet)
+
+  return True
+
+
+def check_repo_rev(dst, rev, repo_verify=True, quiet=False):
+  """Check that |rev| is valid."""
+  do_verify = check_repo_verify(repo_verify, quiet=quiet)
+  remote_ref, local_rev = resolve_repo_rev(dst, rev)
+  if not quiet and not remote_ref.startswith('refs/heads/'):
+    print('warning: repo is not tracking a remote branch, so it will not '
+          'receive updates', file=sys.stderr)
+  if do_verify:
+    rev = verify_rev(dst, remote_ref, local_rev, quiet)
+  else:
+    rev = local_rev
+  return (remote_ref, rev)
+
+
 def _Init(args, gitc_init=False):
   """Installs repo by cloning it over the network.
   """
@@ -510,30 +538,12 @@ def _Init(args, gitc_init=False):
 
   _CheckGitVersion()
   try:
-    if not opt.repo_verify:
-      do_verify = False
-      print('repo: warning: verification of repo code has been disabled;\n'
-            'repo will not be able to verify the integrity of itself.\n',
-            file=sys.stderr)
-    else:
-      if NeedSetupGnuPG():
-        do_verify = SetupGnuPG(opt.quiet)
-      else:
-        do_verify = True
-
     if not opt.quiet:
       print('Downloading Repo source from', url)
     dst = os.path.abspath(os.path.join(repodir, S_repo))
     _Clone(url, dst, opt.clone_bundle, opt.quiet, opt.verbose)
 
-    remote_ref, local_rev = resolve_repo_rev(dst, rev)
-    if not opt.quiet and not remote_ref.startswith('refs/heads/'):
-      print('warning: repo is not tracking a remote branch, so it will not '
-            'receive updates', file=sys.stderr)
-    if do_verify:
-      rev = _Verify(dst, remote_ref, local_rev, opt.quiet)
-    else:
-      rev = local_rev
+    remote_ref, rev = check_repo_rev(dst, rev, opt.repo_verify, quiet=opt.quiet)
     _Checkout(dst, remote_ref, rev, opt.quiet)
 
     if not os.path.isfile(os.path.join(dst, 'repo')):
@@ -907,7 +917,7 @@ def resolve_repo_rev(cwd, committish):
   raise CloneFailure()
 
 
-def _Verify(cwd, remote_ref, rev, quiet):
+def verify_rev(cwd, remote_ref, rev, quiet):
   """Verify the commit has been signed by a tag."""
   ret = run_git('describe', rev, cwd=cwd)
   cur = ret.stdout.strip()

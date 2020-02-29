@@ -18,12 +18,14 @@
 
 from __future__ import print_function
 
+import contextlib
 import os
 import re
 import shutil
 import tempfile
 import unittest
 
+import platform_utils
 from pyversion import is_python3
 import wrapper
 
@@ -34,6 +36,18 @@ if is_python3():
 else:
   import mock
   from StringIO import StringIO
+
+
+@contextlib.contextmanager
+def TemporaryDirectory():
+  """Create a new empty git checkout for testing."""
+  # TODO(vapier): Convert this to tempfile.TemporaryDirectory once we drop
+  # Python 2 support entirely.
+  try:
+    tempdir = tempfile.mkdtemp(prefix='repo-tests')
+    yield tempdir
+  finally:
+    platform_utils.rmtree(tempdir)
 
 
 def fixture(*paths):
@@ -243,8 +257,93 @@ class CheckGitVersion(RepoWrapperTestCase):
       self.wrapper._CheckGitVersion()
 
 
-class ResolveRepoRev(RepoWrapperTestCase):
-  """Check resolve_repo_rev behavior."""
+class NeedSetupGnuPG(RepoWrapperTestCase):
+  """Check NeedSetupGnuPG behavior."""
+
+  def test_missing_dir(self):
+    """The ~/.repoconfig tree doesn't exist yet."""
+    with TemporaryDirectory() as tempdir:
+      self.wrapper.home_dot_repo = os.path.join(tempdir, 'foo')
+      self.assertTrue(self.wrapper.NeedSetupGnuPG())
+
+  def test_missing_keyring(self):
+    """The keyring-version file doesn't exist yet."""
+    with TemporaryDirectory() as tempdir:
+      self.wrapper.home_dot_repo = tempdir
+      self.assertTrue(self.wrapper.NeedSetupGnuPG())
+
+  def test_empty_keyring(self):
+    """The keyring-version file exists, but is empty."""
+    with TemporaryDirectory() as tempdir:
+      self.wrapper.home_dot_repo = tempdir
+      with open(os.path.join(tempdir, 'keyring-version'), 'w'):
+        pass
+      self.assertTrue(self.wrapper.NeedSetupGnuPG())
+
+  def test_old_keyring(self):
+    """The keyring-version file exists, but it's old."""
+    with TemporaryDirectory() as tempdir:
+      self.wrapper.home_dot_repo = tempdir
+      with open(os.path.join(tempdir, 'keyring-version'), 'w') as fp:
+        fp.write('1.0\n')
+      self.assertTrue(self.wrapper.NeedSetupGnuPG())
+
+  def test_new_keyring(self):
+    """The keyring-version file exists, and is up-to-date."""
+    with TemporaryDirectory() as tempdir:
+      self.wrapper.home_dot_repo = tempdir
+      with open(os.path.join(tempdir, 'keyring-version'), 'w') as fp:
+        fp.write('1000.0\n')
+      self.assertFalse(self.wrapper.NeedSetupGnuPG())
+
+
+class SetupGnuPG(RepoWrapperTestCase):
+  """Check SetupGnuPG behavior."""
+
+  def test_full(self):
+    """Make sure it works completely."""
+    with TemporaryDirectory() as tempdir:
+      self.wrapper.home_dot_repo = tempdir
+      self.assertTrue(self.wrapper.SetupGnuPG(True))
+      with open(os.path.join(tempdir, 'keyring-version'), 'r') as fp:
+        data = fp.read()
+      self.assertEqual('.'.join(str(x) for x in self.wrapper.KEYRING_VERSION),
+                       data.strip())
+
+
+class VerifyRev(RepoWrapperTestCase):
+  """Check verify_rev behavior."""
+
+  def test_verify_passes(self):
+    """Check when we have a valid signed tag."""
+    desc_result = self.wrapper.RunResult(0, 'v1.0\n', '')
+    gpg_result = self.wrapper.RunResult(0, '', '')
+    with mock.patch.object(self.wrapper, 'run_git',
+                           side_effect=(desc_result, gpg_result)):
+      ret = self.wrapper.verify_rev('/', 'refs/heads/stable', '1234', True)
+      self.assertEqual('v1.0^0', ret)
+
+  def test_unsigned_commit(self):
+    """Check we fall back to signed tag when we have an unsigned commit."""
+    desc_result = self.wrapper.RunResult(0, 'v1.0-10-g1234\n', '')
+    gpg_result = self.wrapper.RunResult(0, '', '')
+    with mock.patch.object(self.wrapper, 'run_git',
+                           side_effect=(desc_result, gpg_result)):
+      ret = self.wrapper.verify_rev('/', 'refs/heads/stable', '1234', True)
+      self.assertEqual('v1.0^0', ret)
+
+  def test_verify_fails(self):
+    """Check we fall back to signed tag when we have an unsigned commit."""
+    desc_result = self.wrapper.RunResult(0, 'v1.0-10-g1234\n', '')
+    gpg_result = Exception
+    with mock.patch.object(self.wrapper, 'run_git',
+                           side_effect=(desc_result, gpg_result)):
+      with self.assertRaises(Exception):
+        self.wrapper.verify_rev('/', 'refs/heads/stable', '1234', True)
+
+
+class GitCheckoutTestCase(RepoWrapperTestCase):
+  """Tests that use a real/small git checkout."""
 
   GIT_DIR = None
   REV_LIST = None
@@ -273,6 +372,10 @@ class ResolveRepoRev(RepoWrapperTestCase):
       return
 
     shutil.rmtree(cls.GIT_DIR)
+
+
+class ResolveRepoRev(GitCheckoutTestCase):
+  """Check resolve_repo_rev behavior."""
 
   def test_explicit_branch(self):
     """Check refs/heads/branch argument."""
@@ -326,6 +429,55 @@ class ResolveRepoRev(RepoWrapperTestCase):
     """Check unknown ref/commit argument."""
     with self.assertRaises(wrapper.CloneFailure):
       self.wrapper.resolve_repo_rev(self.GIT_DIR, 'boooooooya')
+
+
+class CheckRepoVerify(RepoWrapperTestCase):
+  """Check check_repo_verify behavior."""
+
+  def test_no_verify(self):
+    """Always fail with --no-repo-verify."""
+    self.assertFalse(self.wrapper.check_repo_verify(False))
+
+  def test_gpg_initialized(self):
+    """Should pass if gpg is setup already."""
+    with mock.patch.object(self.wrapper, 'NeedSetupGnuPG', return_value=False):
+      self.assertTrue(self.wrapper.check_repo_verify(True))
+
+  def test_need_gpg_setup(self):
+    """Should pass/fail based on gpg setup."""
+    with mock.patch.object(self.wrapper, 'NeedSetupGnuPG', return_value=True):
+      with mock.patch.object(self.wrapper, 'SetupGnuPG') as m:
+        m.return_value = True
+        self.assertTrue(self.wrapper.check_repo_verify(True))
+
+        m.return_value = False
+        self.assertFalse(self.wrapper.check_repo_verify(True))
+
+
+class CheckRepoRev(GitCheckoutTestCase):
+  """Check check_repo_rev behavior."""
+
+  def test_verify_works(self):
+    """Should pass when verification passes."""
+    with mock.patch.object(self.wrapper, 'check_repo_verify', return_value=True):
+      with mock.patch.object(self.wrapper, 'verify_rev', return_value='12345'):
+        rrev, lrev = self.wrapper.check_repo_rev(self.GIT_DIR, 'stable')
+    self.assertEqual('refs/heads/stable', rrev)
+    self.assertEqual('12345', lrev)
+
+  def test_verify_fails(self):
+    """Should fail when verification fails."""
+    with mock.patch.object(self.wrapper, 'check_repo_verify', return_value=True):
+      with mock.patch.object(self.wrapper, 'verify_rev', side_effect=Exception):
+        with self.assertRaises(Exception):
+          self.wrapper.check_repo_rev(self.GIT_DIR, 'stable')
+
+  def test_verify_ignore(self):
+    """Should pass when verification is disabled."""
+    with mock.patch.object(self.wrapper, 'verify_rev', side_effect=Exception):
+      rrev, lrev = self.wrapper.check_repo_rev(self.GIT_DIR, 'stable', repo_verify=False)
+    self.assertEqual('refs/heads/stable', rrev)
+    self.assertEqual(self.REV_LIST[1], lrev)
 
 
 if __name__ == '__main__':
