@@ -525,6 +525,9 @@ def _Init(args, gitc_init=False):
   try:
     if not opt.repo_verify:
       do_verify = False
+      print('repo: warning: verification of repo code has been disabled;\n'
+            'repo will not be able to verify the integrity of itself.\n',
+            file=sys.stderr)
     else:
       if NeedSetupGnuPG():
         do_verify = SetupGnuPG(opt.quiet)
