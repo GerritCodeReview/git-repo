@@ -490,6 +490,14 @@ to update the working directory files.
     opt.quiet = opt.output_mode is False
     opt.verbose = opt.output_mode is True
 
+    rp = self.manifest.repoProject
+
+    # Handle new --repo-url requests.
+    if opt.repo_url:
+      remote = rp.GetRemote('origin')
+      remote.url = opt.repo_url
+      remote.Save()
+
     if opt.worktree:
       # Older versions of git supported worktree, but had dangerous gc bugs.
       git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
