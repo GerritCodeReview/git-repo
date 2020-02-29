@@ -475,13 +475,7 @@ def _Init(args, gitc_init=False):
   opt.verbose = opt.output_mode is True
 
   url = opt.repo_url or REPO_URL
-  branch = opt.repo_rev or REPO_REV
-
-  if branch.startswith('refs/heads/'):
-    branch = branch[len('refs/heads/'):]
-  if branch.startswith('refs/'):
-    print("fatal: invalid branch name '%s'" % branch, file=sys.stderr)
-    raise CloneFailure()
+  rev = opt.repo_rev or REPO_REV
 
   try:
     if gitc_init:
@@ -532,12 +526,15 @@ def _Init(args, gitc_init=False):
     dst = os.path.abspath(os.path.join(repodir, S_repo))
     _Clone(url, dst, opt.clone_bundle, opt.quiet, opt.verbose)
 
+    remote_ref, local_rev = resolve_repo_rev(dst, rev)
+    if not opt.quiet and not remote_ref.startswith('refs/heads/'):
+      print('warning: repo is not tracking a remote branch, so it will not '
+            'receive updates', file=sys.stderr)
     if do_verify:
-      rev = _Verify(dst, branch, opt.quiet)
+      rev = _Verify(dst, remote_ref, local_rev, opt.quiet)
     else:
-      rev = 'refs/remotes/origin/%s^0' % branch
-
-    _Checkout(dst, branch, rev, opt.quiet)
+      rev = local_rev
+    _Checkout(dst, remote_ref, rev, opt.quiet)
 
     if not os.path.isfile(os.path.join(dst, 'repo')):
       print("warning: '%s' does not look like a git-repo repository, is "
@@ -845,23 +842,83 @@ def _Clone(url, cwd, clone_bundle, quiet, verbose):
   _Fetch(url, cwd, 'origin', quiet, verbose)
 
 
-def _Verify(cwd, branch, quiet):
-  """Verify the branch has been signed by a tag.
+def resolve_repo_rev(cwd, committish):
+  """Figure out what REPO_REV represents.
+
+  We support:
+  * refs/heads/xxx: Branch.
+  * refs/tags/xxx: Tag.
+  * xxx: Branch or tag or commit.
+
+  Args:
+    cwd: The git checkout to run in.
+    committish: The REPO_REV argument to resolve.
+
+  Returns:
+    A tuple of (remote ref, commit) as makes sense for the committish.
+    For branches, this will look like ('refs/heads/stable', <revision>).
+    For tags, this will look like ('refs/tags/v1.0', <revision>).
+    For commits, this will be (<revision>, <revision>).
   """
-  try:
-    ret = run_git('describe', 'origin/%s' % branch, cwd=cwd)
-    cur = ret.stdout.strip()
-  except CloneFailure:
-    print("fatal: branch '%s' has not been signed" % branch, file=sys.stderr)
-    raise
+  def resolve(committish):
+    ret = run_git('rev-parse', '--verify', '%s^{commit}' % (committish,),
+                  cwd=cwd, check=False)
+    return None if ret.returncode else ret.stdout.strip()
+
+  # An explicit branch.
+  if committish.startswith('refs/heads/'):
+    remote_ref = committish
+    committish = committish[len('refs/heads/'):]
+    rev = resolve('refs/remotes/origin/%s' % committish)
+    if rev is None:
+      print('repo: error: unknown branch "%s"' % (committish,),
+            file=sys.stderr)
+      raise CloneFailure()
+    return (remote_ref, rev)
+
+  # An explicit tag.
+  if committish.startswith('refs/tags/'):
+    remote_ref = committish
+    committish = committish[len('refs/tags/'):]
+    rev = resolve(remote_ref)
+    if rev is None:
+      print('repo: error: unknown tag "%s"' % (committish,),
+            file=sys.stderr)
+      raise CloneFailure()
+    return (remote_ref, rev)
+
+  # See if it's a short branch name.
+  rev = resolve('refs/remotes/origin/%s' % committish)
+  if rev:
+    return ('refs/heads/%s' % (committish,), rev)
+
+  # See if it's a tag.
+  rev = resolve('refs/tags/%s' % committish)
+  if rev:
+    return ('refs/tags/%s' % (committish,), rev)
+
+  # See if it's a commit.
+  rev = resolve(committish)
+  if rev:
+    return (rev, rev)
+
+  # Give up!
+  print('repo: error: unable to resolve "%s"' % (committish,), file=sys.stderr)
+  raise CloneFailure()
+
+
+def _Verify(cwd, remote_ref, rev, quiet):
+  """Verify the commit has been signed by a tag."""
+  ret = run_git('describe', rev, cwd=cwd)
+  cur = ret.stdout.strip()
 
   m = re.compile(r'^(.*)-[0-9]{1,}-g[0-9a-f]{1,}$').match(cur)
   if m:
     cur = m.group(1)
     if not quiet:
       print(file=sys.stderr)
-      print("info: Ignoring branch '%s'; using tagged release '%s'"
-            % (branch, cur), file=sys.stderr)
+      print("warning: '%s' is not signed; falling back to signed release '%s'"
+            % (remote_ref, cur), file=sys.stderr)
       print(file=sys.stderr)
 
   env = os.environ.copy()
@@ -870,13 +927,13 @@ def _Verify(cwd, branch, quiet):
   return '%s^0' % cur
 
 
-def _Checkout(cwd, branch, rev, quiet):
+def _Checkout(cwd, remote_ref, rev, quiet):
   """Checkout an upstream branch into the repository and track it.
   """
   run_git('update-ref', 'refs/heads/default', rev, cwd=cwd)
 
   _SetConfig(cwd, 'branch.default.remote', 'origin')
-  _SetConfig(cwd, 'branch.default.merge', 'refs/heads/%s' % branch)
+  _SetConfig(cwd, 'branch.default.merge', remote_ref)
 
   run_git('symbolic-ref', 'HEAD', 'refs/heads/default', cwd=cwd)
 

@@ -20,6 +20,8 @@ from __future__ import print_function
 
 import os
 import re
+import shutil
+import tempfile
 import unittest
 
 from pyversion import is_python3
@@ -239,6 +241,84 @@ class CheckGitVersion(RepoWrapperTestCase):
         self.wrapper, 'ParseGitVersion',
         return_value=self.wrapper.GitVersion(100, 0, 0, '100.0.0')):
       self.wrapper._CheckGitVersion()
+
+
+class ResolveRepoRev(RepoWrapperTestCase):
+  """Check resolve_repo_rev behavior."""
+
+  GIT_DIR = None
+  REV_LIST = None
+
+  @classmethod
+  def setUpClass(cls):
+    # Create a repo to operate on, but do it once per-class.
+    cls.GIT_DIR = tempfile.mkdtemp(prefix='repo-rev-tests')
+    run_git = wrapper.Wrapper().run_git
+
+    remote = os.path.join(cls.GIT_DIR, 'remote')
+    os.mkdir(remote)
+    run_git('init', cwd=remote)
+    run_git('commit', '--allow-empty', '-minit', cwd=remote)
+    run_git('branch', 'stable', cwd=remote)
+    run_git('tag', 'v1.0', cwd=remote)
+    run_git('commit', '--allow-empty', '-m2nd commit', cwd=remote)
+    cls.REV_LIST = run_git('rev-list', 'HEAD', cwd=remote).stdout.splitlines()
+
+    run_git('init', cwd=cls.GIT_DIR)
+    run_git('fetch', remote, '+refs/heads/*:refs/remotes/origin/*', cwd=cls.GIT_DIR)
+
+  @classmethod
+  def tearDownClass(cls):
+    if not cls.GIT_DIR:
+      return
+
+    shutil.rmtree(cls.GIT_DIR)
+
+  def test_explicit_branch(self):
+    """Check refs/heads/branch argument."""
+    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/heads/stable')
+    self.assertEqual('refs/heads/stable', rrev)
+    self.assertEqual(self.REV_LIST[1], lrev)
+
+    with self.assertRaises(wrapper.CloneFailure):
+      self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/heads/unknown')
+
+  def test_explicit_tag(self):
+    """Check refs/tags/tag argument."""
+    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/tags/v1.0')
+    self.assertEqual('refs/tags/v1.0', rrev)
+    self.assertEqual(self.REV_LIST[1], lrev)
+
+    with self.assertRaises(wrapper.CloneFailure):
+      self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/tags/unknown')
+
+  def test_branch_name(self):
+    """Check branch argument."""
+    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'stable')
+    self.assertEqual('refs/heads/stable', rrev)
+    self.assertEqual(self.REV_LIST[1], lrev)
+
+    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'master')
+    self.assertEqual('refs/heads/master', rrev)
+    self.assertEqual(self.REV_LIST[0], lrev)
+
+  def test_tag_name(self):
+    """Check tag argument."""
+    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'v1.0')
+    self.assertEqual('refs/tags/v1.0', rrev)
+    self.assertEqual(self.REV_LIST[1], lrev)
+
+  def test_commit(self):
+    """Check specific commit argument."""
+    commit = self.REV_LIST[0]
+    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, commit)
+    self.assertEqual(commit, rrev)
+    self.assertEqual(commit, lrev)
+
+  def test_unknown(self):
+    """Check unknown ref/commit argument."""
+    with self.assertRaises(wrapper.CloneFailure):
+      self.wrapper.resolve_repo_rev(self.GIT_DIR, 'boooooooya')
 
 
 if __name__ == '__main__':
