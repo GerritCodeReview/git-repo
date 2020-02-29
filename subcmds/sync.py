@@ -845,6 +845,13 @@ later is required to fix a server side protocol bug.
 
     rp = self.manifest.repoProject
     rp.PreSync()
+    cb = rp.CurrentBranch
+    if cb:
+      base = rp.GetBranch(cb).merge
+      if not base or not base.startswith('refs/heads/'):
+        print("warning: repo's version is frozen and will not receive updates; "
+              'run `repo init --repo-branch=stable` to fix.',
+              file=sys.stderr)
 
     mp = self.manifest.manifestProject
     mp.PreSync()
