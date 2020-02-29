@@ -38,6 +38,7 @@ from project import SyncBuffer
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
 import platform_utils
+from wrapper import Wrapper
 
 
 class Init(InteractiveCommand, MirrorSafeCommand):
@@ -498,6 +499,17 @@ to update the working directory files.
       remote = rp.GetRemote('origin')
       remote.url = opt.repo_url
       remote.Save()
+
+    # Handle new --repo-rev requests.
+    if opt.repo_rev:
+      wrapper = Wrapper()
+      print(opt.repo_verify)
+      remote_ref, rev = wrapper.check_repo_rev(
+          rp.gitdir, opt.repo_rev, repo_verify=opt.repo_verify, quiet=opt.quiet)
+      branch = rp.GetBranch('default')
+      branch.merge = remote_ref
+      rp.work_git.update_ref('refs/heads/default', rev)
+      branch.Save()
 
     if opt.worktree:
       # Older versions of git supported worktree, but had dangerous gc bugs.
