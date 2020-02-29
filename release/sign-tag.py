@@ -15,7 +15,14 @@
 
 """Helper tool for signing repo release tags correctly.
 
-This is intended to be run only by the official Repo release managers.
+This is intended to be run only by the official Repo release managers, but it
+could be run by people maintaining their own fork of the project.
+
+NB: Avoid new releases on off-hours.  If something goes wrong, staff/oncall need
+to be active in order to respond quickly & effectively.  Recommend sticking to:
+* Mon - Thu, 9:00 - 14:00 PT (i.e. MTV time)
+* Avoid US holidays (and large international ones if possible)
+* Follow the normal Google production freeze schedule
 """
 
 import argparse
@@ -86,7 +93,9 @@ To roll back a release:
 
 def get_parser():
   """Get a CLI parser."""
-  parser = argparse.ArgumentParser(description=__doc__)
+  parser = argparse.ArgumentParser(
+      description=__doc__,
+      formatter_class=argparse.RawDescriptionHelpFormatter)
   parser.add_argument('-n', '--dry-run',
                       dest='dryrun', action='store_true',
                       help='show everything that would be done')
