@@ -251,8 +251,6 @@ else:
 home_dot_repo = os.path.expanduser('~/.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 
-extra_args = []
-
 
 def GetParser(gitc_init=False):
   """Setup the CLI parser."""
@@ -474,15 +472,8 @@ def _Init(args, gitc_init=False):
   opt.quiet = opt.output_mode is False
   opt.verbose = opt.output_mode is True
 
-  url = opt.repo_url
-  if not url:
-    url = REPO_URL
-    extra_args.append('--repo-url=%s' % url)
-
-  branch = opt.repo_branch
-  if not branch:
-    branch = REPO_REV
-    extra_args.append('--repo-branch=%s' % branch)
+  url = opt.repo_url or REPO_URL
+  branch = opt.repo_branch or REPO_REV
 
   if branch.startswith('refs/heads/'):
     branch = branch[len('refs/heads/'):]
@@ -1105,7 +1096,6 @@ def main(orig_args):
         '--wrapper-path=%s' % wrapper_path,
         '--']
   me.extend(orig_args)
-  me.extend(extra_args)
   exec_command(me)
   print("fatal: unable to start %s" % repo_main, file=sys.stderr)
   sys.exit(148)
