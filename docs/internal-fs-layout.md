@@ -195,6 +195,7 @@ The `[branch]` settings are updated by `repo start` and `git branch`.
 | review.\<url\>.autoupload     | upload        | Automatically answer "yes" or "no" to all prompts |
 | review.\<url\>.uploadhashtags | upload        | Automatically add to `--hashtag=<value>` |
 | review.\<url\>.uploadlabels   | upload        | Automatically add to `--label=<value>` |
+| review.\<url\>.uploadnotify   | upload        | [Notify setting][upload-notify] to use |
 | review.\<url\>.uploadtopic    | upload        | Default [topic] to use |
 | review.\<url\>.username       | upload        | Override username with `ssh://` review URIs |
 | remote.\<remote\>.fetch       | sync          | Set of refs to fetch |
@@ -227,3 +228,4 @@ Repo will create & maintain a few files in the user's home directory.
 [manifest-format.md]: ./manifest-format.md
 [local manifests]: ./manifest-format.md#Local-Manifests
 [topic]: https://gerrit-review.googlesource.com/Documentation/intro-user.html#topics
+[upload-notify]: https://gerrit-review.googlesource.com/Documentation/user-upload.html#notify

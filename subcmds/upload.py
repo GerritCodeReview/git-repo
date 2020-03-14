@@ -142,6 +142,11 @@ To add labels whenever uploading a commit, you can set a per-project
 or global Git option to do so. The value of review.URL.uploadlabels
 will be used as comma delimited labels like the --label option.
 
+review.URL.uploadnotify:
+
+Control e-mail notifications when uploading.
+https://gerrit-review.googlesource.com/Documentation/user-upload.html#notify
+
 # References
 
 Gerrit Code Review:  https://www.gerritcodereview.com/
@@ -445,6 +450,13 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                   'like CodeReview+1 or Verified-1' % (label,), file=sys.stderr)
             sys.exit(1)
 
+        # Handle e-mail notifications.
+        if opt.notify is False:
+          notify = 'NONE'
+        else:
+          key = 'review.%s.uploadnotify' % branch.project.remote.review
+          notify = branch.project.config.GetString(key)
+
         destination = opt.dest_branch or branch.project.dest_branch
 
         # Make sure our local branch is not setup to track a different remote branch
@@ -466,7 +478,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                hashtags=hashtags,
                                labels=labels,
                                private=opt.private,
-                               notify=None if opt.notify else 'NONE',
+                               notify=notify,
                                wip=opt.wip,
                                dest_branch=destination,
                                validate_certs=opt.validate_certs,
