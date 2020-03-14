@@ -166,9 +166,10 @@ to update the working directory files.
     g.add_option('--repo-url',
                  dest='repo_url',
                  help='repo repository location', metavar='URL')
-    g.add_option('--repo-branch',
-                 dest='repo_branch',
-                 help='repo branch or revision', metavar='REVISION')
+    g.add_option('--repo-rev', metavar='REV',
+                 help='repo branch or revision')
+    g.add_option('--repo-branch', dest='repo_rev',
+                 help=optparse.SUPPRESS_HELP)
     g.add_option('--no-repo-verify',
                  dest='repo_verify', default=True, action='store_false',
                  help='do not verify repo source code')
