@@ -49,11 +49,11 @@ control how repo finds updates:
 
 *   `--repo-url`: This tells repo where to clone the full repo project itself.
     It defaults to the official project (`REPO_URL` in the launcher script).
-*   `--repo-branch`: This tells repo which branch to use for the full project.
+*   `--repo-rev`: This tells repo which branch to use for the full project.
     It defaults to the `stable` branch (`REPO_REV` in the launcher script).
 
 Whenever `repo sync` is run, repo will check to see if an update is available.
-It fetches the latest repo-branch from the repo-url.
+It fetches the latest repo-rev from the repo-url.
 Then it verifies that the latest commit in the branch has a valid signed tag
 using `git tag -v` (which uses gpg).
 If the tag is valid, then repo will update its internal checkout to it.
@@ -91,7 +91,7 @@ When you want to create a new release, you'll need to select a good version and
 create a signed tag using a key registered in repo itself.
 Typically we just tag the latest version of the `master` branch.
 The tag could be pushed now, but it won't be used by clients normally (since the
-default `repo-branch` setting is `stable`).
+default `repo-rev` setting is `stable`).
 This would allow some early testing on systems who explicitly select `master`.
 
 ### Creating a signed tag

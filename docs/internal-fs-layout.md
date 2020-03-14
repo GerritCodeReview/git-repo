@@ -34,7 +34,7 @@ For example, if you want to change the manifest branch, you can simply run
 
     It tracks the git repository at `REPO_URL` using the `REPO_REV` branch.
     Those are specified at `repo init` time using the `--repo-url=<REPO_URL>`
-    and `--repo-branch=<REPO_REV>` options.
+    and `--repo-rev=<REPO_REV>` options.
 
     Any changes made to this directory will usually be automatically discarded
     by repo itself when it checks for updates.  If you want to update to the

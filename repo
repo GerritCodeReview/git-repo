@@ -328,8 +328,10 @@ def GetParser(gitc_init=False):
   group = parser.add_option_group('repo Version options')
   group.add_option('--repo-url', metavar='URL',
                    help='repo repository location ($REPO_URL)')
-  group.add_option('--repo-branch', metavar='REVISION',
+  group.add_option('--repo-rev', metavar='REV',
                    help='repo branch or revision ($REPO_REV)')
+  group.add_option('--repo-branch', dest='repo_rev',
+                   help=optparse.SUPPRESS_HELP)
   group.add_option('--no-repo-verify',
                    dest='repo_verify', default=True, action='store_false',
                    help='do not verify repo source code')
@@ -473,7 +475,7 @@ def _Init(args, gitc_init=False):
   opt.verbose = opt.output_mode is True
 
   url = opt.repo_url or REPO_URL
-  branch = opt.repo_branch or REPO_REV
+  branch = opt.repo_rev or REPO_REV
 
   if branch.startswith('refs/heads/'):
     branch = branch[len('refs/heads/'):]
