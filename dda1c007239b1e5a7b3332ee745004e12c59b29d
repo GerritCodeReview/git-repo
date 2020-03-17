@@ -22,6 +22,30 @@
       "revId": "dda1c007239b1e5a7b3332ee745004e12c59b29d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "560ca266_e12192e5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 852,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-03-17T05:31:41Z",
+      "side": 1,
+      "message": "i\u0027ve tweaked the wording a bit ... lmkwyt",
+      "parentUuid": "927df8db_11e903b9",
+      "range": {
+        "startLine": 852,
+        "startChar": 24,
+        "endLine": 852,
+        "endChar": 78
+      },
+      "revId": "dda1c007239b1e5a7b3332ee745004e12c59b29d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
