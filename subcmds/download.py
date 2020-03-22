@@ -40,6 +40,8 @@ If no project is specified try to use current directory as a project.
     p.add_option('-c', '--cherry-pick',
                  dest='cherrypick', action='store_true',
                  help="cherry-pick instead of checkout")
+    p.add_option('-x', '--record-origin', action='store_true',
+                 help='pass -x when cherry-picking')
     p.add_option('-r', '--revert',
                  dest='revert', action='store_true',
                  help="revert instead of checkout")
@@ -78,6 +80,14 @@ If no project is specified try to use current directory as a project.
         project = self.GetProjects([a])[0]
     return to_get
 
+  def ValidateOptions(self, opt, args):
+    if opt.record_origin:
+      if not opt.cherrypick:
+        self.OptionParser.error('-x only makes sense with --cherry-pick')
+
+      if opt.ffonly:
+        self.OptionParser.error('-x and --ff are mutually exclusive options')
+
   def Execute(self, opt, args):
     for project, change_id, ps_id in self._ParseChangeIds(args):
       dl = project.DownloadPatchSet(change_id, ps_id)
@@ -101,7 +111,8 @@ If no project is specified try to use current directory as a project.
           print('  %s' % (c), file=sys.stderr)
       if opt.cherrypick:
         try:
-          project._CherryPick(dl.commit, ffonly=opt.ffonly)
+          project._CherryPick(dl.commit, ffonly=opt.ffonly,
+                              record_origin=opt.record_origin)
         except GitError:
           print('[%s] Could not complete the cherry-pick of %s'
                 % (project.name, dl.commit), file=sys.stderr)
