@@ -37,6 +37,8 @@ If no project is specified try to use current directory as a project.
 """
 
   def _Options(self, p):
+    p.add_option('-b', '--branch',
+                 help='create a new branch first')
     p.add_option('-c', '--cherry-pick',
                  dest='cherrypick', action='store_true',
                  help="cherry-pick instead of checkout")
@@ -119,6 +121,11 @@ If no project is specified try to use current directory as a project.
       else:
         mode = 'checkout'
 
+      # We'll combine the branch+checkout operation, but all the rest need a
+      # dedicated branch start.
+      if opt.branch and mode != 'checkout':
+        project.StartBranch(opt.branch)
+
       try:
         if opt.cherrypick:
           project._CherryPick(dl.commit, ffonly=opt.ffonly,
@@ -128,7 +135,10 @@ If no project is specified try to use current directory as a project.
         elif opt.ffonly:
           project._FastForward(dl.commit, ffonly=True)
         else:
-          project._Checkout(dl.commit)
+          if opt.branch:
+            project.StartBranch(opt.branch, revision=dl.commit)
+          else:
+            project._Checkout(dl.commit)
 
       except GitError:
         print('[%s] Could not complete the %s of %s'
