@@ -2681,10 +2681,12 @@ class Project(object):
       if self._allrefs:
         raise GitError('%s checkout %s ' % (self.name, rev))
 
-  def _CherryPick(self, rev, ffonly=False):
+  def _CherryPick(self, rev, ffonly=False, record_origin=False):
     cmd = ['cherry-pick']
     if ffonly:
       cmd.append('--ff')
+    if record_origin:
+      cmd.append('-x')
     cmd.append(rev)
     cmd.append('--')
     if GitCommand(self, cmd).Wait() != 0:
