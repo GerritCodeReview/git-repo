@@ -101,7 +101,7 @@ If no project is specified try to use current directory as a project.
           print('  %s' % (c), file=sys.stderr)
       if opt.cherrypick:
         try:
-          project._CherryPick(dl.commit)
+          project._CherryPick(dl.commit, ffonly=opt.ffonly)
         except GitError:
           print('[%s] Could not complete the cherry-pick of %s'
                 % (project.name, dl.commit), file=sys.stderr)
