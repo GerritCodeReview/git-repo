@@ -109,18 +109,28 @@ If no project is specified try to use current directory as a project.
               file=sys.stderr)
         for c in dl.commits:
           print('  %s' % (c), file=sys.stderr)
+
       if opt.cherrypick:
-        try:
+        mode = 'cherry-pick'
+      elif opt.revert:
+        mode = 'revert'
+      elif opt.ffonly:
+        mode = 'fast-forward merge'
+      else:
+        mode = 'checkout'
+
+      try:
+        if opt.cherrypick:
           project._CherryPick(dl.commit, ffonly=opt.ffonly,
                               record_origin=opt.record_origin)
-        except GitError:
-          print('[%s] Could not complete the cherry-pick of %s'
-                % (project.name, dl.commit), file=sys.stderr)
-          sys.exit(1)
+        elif opt.revert:
+          project._Revert(dl.commit)
+        elif opt.ffonly:
+          project._FastForward(dl.commit, ffonly=True)
+        else:
+          project._Checkout(dl.commit)
 
-      elif opt.revert:
-        project._Revert(dl.commit)
-      elif opt.ffonly:
-        project._FastForward(dl.commit, ffonly=True)
-      else:
-        project._Checkout(dl.commit)
+      except GitError:
+        print('[%s] Could not complete the %s of %s'
+              % (project.name, mode, dl.commit), file=sys.stderr)
+        sys.exit(1)
