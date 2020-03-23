@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a69fa251_8836da5f",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-03-23T22:09:02Z",
+      "side": 1,
+      "message": "nit: this name is based on the (old) implementation so it doesn\u0027t describe what the helper does. How about \"def resolve(committish):\"?",
+      "range": {
+        "startLine": 863,
+        "startChar": 6,
+        "endLine": 863,
+        "endChar": 14
+      },
+      "revId": "b401745da55a1574a462226b560024de5b2599b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "701da164_c7c36cbf",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-03-23T22:09:02Z",
+      "side": 1,
+      "message": "nit: \"refs/remotes/origin/%s\" would be more precise",
+      "range": {
+        "startLine": 872,
+        "startChar": 20,
+        "endLine": 872,
+        "endChar": 27
+      },
+      "revId": "b401745da55a1574a462226b560024de5b2599b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "449c33e6_c1a4c139",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 883,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-03-23T22:09:02Z",
+      "side": 1,
+      "message": "opportunity for simplification: this strips off refs/tags/, only to add it back again",
+      "revId": "b401745da55a1574a462226b560024de5b2599b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8bb4de42_08b79233",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-03-23T22:09:02Z",
+      "side": 1,
+      "message": "same comment about refs/remotes/origin/%s",
+      "revId": "b401745da55a1574a462226b560024de5b2599b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0bdbc50_9eacc61b",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-03-23T22:09:02Z",
+      "side": 1,
+      "message": "Should this check that it\u0027s a hex string (e.g. using a regex)?",
+      "revId": "b401745da55a1574a462226b560024de5b2599b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
