@@ -992,9 +992,13 @@ def _Version():
   print('git %s' % (ParseGitVersion().full,))
   print('Python %s' % sys.version)
   uname = platform.uname()
-  print('OS %s %s (%s)' % (uname.system, uname.release, uname.version))
-  print('CPU %s (%s)' %
-        (uname.machine, uname.processor if uname.processor else 'unknown'))
+  if sys.version_info.major < 3:
+    # Python 3 returns a named tuple, but Python 2 is simpler.
+    print(uname)
+  else:
+    print('OS %s %s (%s)' % (uname.system, uname.release, uname.version))
+    print('CPU %s (%s)' %
+          (uname.machine, uname.processor if uname.processor else 'unknown'))
   sys.exit(0)
 
 
