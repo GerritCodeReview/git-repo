@@ -153,5 +153,93 @@ class SetGitTrace2ParentSid(RepoWrapperTestCase):
     self.assertRegex(value, self.VALID_FORMAT)
 
 
+class RunCommand(RepoWrapperTestCase):
+  """Check run_command behavior."""
+
+  def test_capture(self):
+    """Check capture_output handling."""
+    ret = self.wrapper.run_command(['echo', 'hi'], capture_output=True)
+    self.assertEqual(ret.stdout, 'hi\n')
+
+  def test_check(self):
+    """Check check handling."""
+    self.wrapper.run_command(['true'], check=False)
+    self.wrapper.run_command(['true'], check=True)
+    self.wrapper.run_command(['false'], check=False)
+    with self.assertRaises(self.wrapper.RunError):
+      self.wrapper.run_command(['false'], check=True)
+
+
+class RunGit(RepoWrapperTestCase):
+  """Check run_git behavior."""
+
+  def test_capture(self):
+    """Check capture_output handling."""
+    ret = self.wrapper.run_git('--version')
+    self.assertIn('git', ret.stdout)
+
+  def test_check(self):
+    """Check check handling."""
+    with self.assertRaises(self.wrapper.CloneFailure):
+      self.wrapper.run_git('--version-asdfasdf')
+    self.wrapper.run_git('--version-asdfasdf', check=False)
+
+
+class ParseGitVersion(RepoWrapperTestCase):
+  """Check ParseGitVersion behavior."""
+
+  def test_autoload(self):
+    """Check we can load the version from the live git."""
+    ret = self.wrapper.ParseGitVersion()
+    self.assertIsNotNone(ret)
+
+  def test_bad_ver(self):
+    """Check handling of bad git versions."""
+    ret = self.wrapper.ParseGitVersion(ver_str='asdf')
+    self.assertIsNone(ret)
+
+  def test_normal_ver(self):
+    """Check handling of normal git versions."""
+    ret = self.wrapper.ParseGitVersion(ver_str='git version 2.25.1')
+    self.assertEqual(2, ret.major)
+    self.assertEqual(25, ret.minor)
+    self.assertEqual(1, ret.micro)
+    self.assertEqual('2.25.1', ret.full)
+
+  def test_extended_ver(self):
+    """Check handling of extended distro git versions."""
+    ret = self.wrapper.ParseGitVersion(
+        ver_str='git version 1.30.50.696.g5e7596f4ac-goog')
+    self.assertEqual(1, ret.major)
+    self.assertEqual(30, ret.minor)
+    self.assertEqual(50, ret.micro)
+    self.assertEqual('1.30.50.696.g5e7596f4ac-goog', ret.full)
+
+
+class CheckGitVersion(RepoWrapperTestCase):
+  """Check _CheckGitVersion behavior."""
+
+  def test_unknown(self):
+    """Unknown versions should abort."""
+    with mock.patch.object(self.wrapper, 'ParseGitVersion', return_value=None):
+      with self.assertRaises(self.wrapper.CloneFailure):
+        self.wrapper._CheckGitVersion()
+
+  def test_old(self):
+    """Old versions should abort."""
+    with mock.patch.object(
+        self.wrapper, 'ParseGitVersion',
+        return_value=self.wrapper.GitVersion(1, 0, 0, '1.0.0')):
+      with self.assertRaises(self.wrapper.CloneFailure):
+        self.wrapper._CheckGitVersion()
+
+  def test_new(self):
+    """Newer versions should run fine."""
+    with mock.patch.object(
+        self.wrapper, 'ParseGitVersion',
+        return_value=self.wrapper.GitVersion(100, 0, 0, '100.0.0')):
+      self.wrapper._CheckGitVersion()
+
+
 if __name__ == '__main__':
   unittest.main()
