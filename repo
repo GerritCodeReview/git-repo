@@ -1088,12 +1088,18 @@ def _SetDefaultsTo(gitdir):
   global REPO_REV
 
   REPO_URL = gitdir
-  try:
-    ret = run_git('--git-dir=%s' % gitdir, 'symbolic-ref', 'HEAD')
-    REPO_REV = ret.stdout.strip()
-  except CloneFailure:
-    print('fatal: %s has no current branch' % gitdir, file=sys.stderr)
-    sys.exit(1)
+  ret = run_git('--git-dir=%s' % gitdir, 'symbolic-ref', 'HEAD', check=False)
+  if ret.returncode:
+    # If we're not tracking a branch (bisect/etc...), then fall back to commit.
+    print('repo: warning: %s has no current branch; using HEAD' % gitdir,
+          file=sys.stderr)
+    try:
+      ret = run_git('rev-parse', 'HEAD', cwd=gitdir)
+    except CloneFailure:
+      print('fatal: %s has invalid HEAD' % gitdir, file=sys.stderr)
+      sys.exit(1)
+
+  REPO_REV = ret.stdout.strip()
 
 
 def main(orig_args):
