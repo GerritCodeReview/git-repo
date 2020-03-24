@@ -234,6 +234,24 @@
       "revId": "b401745da55a1574a462226b560024de5b2599b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2c58354a_66e0c7f4",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-03-24T03:09:26Z",
+      "side": 1,
+      "message": "Yes, perfect. :)",
+      "parentUuid": "fc2235fd_41930bab",
+      "revId": "b401745da55a1574a462226b560024de5b2599b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
