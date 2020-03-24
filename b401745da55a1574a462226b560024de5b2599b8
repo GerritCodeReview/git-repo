@@ -198,6 +198,24 @@
       "revId": "b401745da55a1574a462226b560024de5b2599b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d74b64b_54637182",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-03-24T03:04:44Z",
+      "side": 1,
+      "message": "\u003e what scenario are you worried about?\n\nTwo things:\n* mostly, just trying to pin down the semantics\n* if this method migrates out of the repo wrapper and gets used for other things, then for maintainability we\u0027d want to know what kinds of inputs we support\n\nSince this is only for the rev passed on the commandline / envvar, there\u0027s less to worry about compatibility-wise, so I\u0027m asking mostly as a way to understand intent.",
+      "parentUuid": "ea984d11_7eea0faa",
+      "revId": "b401745da55a1574a462226b560024de5b2599b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
