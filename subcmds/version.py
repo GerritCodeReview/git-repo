@@ -43,6 +43,7 @@ class Version(Command, MirrorSafeCommand):
     rp_ver = rp.bare_git.describe(HEAD)
     print('repo version %s' % rp_ver)
     print('       (from %s)' % rem.url)
+    print('       (%s)' % rp.bare_git.log('-1', '--format=%cD', HEAD))
 
     if self.wrapper_path is not None:
       print('repo launcher version %s' % self.wrapper_version)
