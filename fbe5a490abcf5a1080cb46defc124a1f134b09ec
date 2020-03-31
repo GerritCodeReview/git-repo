@@ -16,6 +16,24 @@
       "revId": "fbe5a490abcf5a1080cb46defc124a1f134b09ec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aca7c56a_afbd1b72",
+        "filename": "subcmds/version.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-03-31T03:27:53Z",
+      "side": 1,
+      "message": "that feels wrong when i\u0027m not diffing anything :).  i\u0027ll keep the log.",
+      "parentUuid": "2ab3d586_86ff8d8b",
+      "revId": "fbe5a490abcf5a1080cb46defc124a1f134b09ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
