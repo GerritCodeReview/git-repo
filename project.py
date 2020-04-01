@@ -54,6 +54,10 @@ else:
   urllib.parse = urlparse
   input = raw_input  # noqa: F821
 
+# Bound sleep times in fetch loops to 1 hour each.
+MAXIMUM_RETRY_SLEEP_SEC = 3600.0
+# +-10% random jitter is added to each Fetches retry sleep duration.
+RETRY_JITTER_PERCENT = 0.1
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
@@ -875,6 +879,7 @@ class Project(object):
                is_derived=False,
                dest_branch=None,
                optimized_fetch=False,
+               fetch_retries=0,
                old_revision=None):
     """Init a Project object.
 
@@ -901,6 +906,8 @@ class Project(object):
       dest_branch: The branch to which to push changes for review by default.
       optimized_fetch: If True, when a project is set to a sha1 revision, only
                        fetch from the remote if the sha1 is not present locally.
+      fetch_retries: Retry remote fetches n times upon receiving a HTTP 429 with
+                       exponential backoff and jitter.
       old_revision: saved git commit id for open GITC projects.
     """
     self.manifest = manifest
@@ -936,6 +943,7 @@ class Project(object):
     self.use_git_worktrees = use_git_worktrees
     self.is_derived = is_derived
     self.optimized_fetch = optimized_fetch
+    self.fetch_retries = max(0, fetch_retries)
     self.subprojects = []
 
     self.snapshots = {}
@@ -1449,6 +1457,7 @@ class Project(object):
                        tags=True,
                        archive=False,
                        optimized_fetch=False,
+                       fetch_retries=0,
                        prune=False,
                        submodules=False,
                        clone_filter=None):
@@ -1532,7 +1541,7 @@ class Project(object):
               current_branch_only=current_branch_only,
               tags=tags, prune=prune, depth=depth,
               submodules=submodules, force_sync=force_sync,
-              clone_filter=clone_filter):
+              clone_filter=clone_filter, fetch_retries=fetch_retries):
         return False
 
     mp = self.manifest.manifestProject
@@ -2334,8 +2343,10 @@ class Project(object):
                    depth=None,
                    submodules=False,
                    force_sync=False,
-                   clone_filter=None):
-
+                   clone_filter=None,
+                   fetch_retries=2,
+                   retry_sleep_initial_sec=4.0,
+                   retry_exp_factor=2.0):
     is_sha1 = False
     tag_name = None
     # The depth should not be used when fetching to a mirror because
@@ -2497,18 +2508,35 @@ class Project(object):
 
     cmd.extend(spec)
 
-    ok = False
-    for _i in range(2):
+
+    # At least one retry minimum due to git remote prune.
+    fetch_retries = max(fetch_retries, 2)
+    retry_cur_sleep = retry_sleep_initial_sec
+    ok, prune_tried = False, False
+    for try_n in range(fetch_retries):
       gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy,
                           merge_output=True, capture_stdout=quiet)
       ret = gitcmd.Wait()
       if ret == 0:
         ok = True
         break
-      # If needed, run the 'git remote prune' the first time through the loop
-      elif (not _i and
+
+      # Retry later due to HTTP 429 Too Many Requests.
+      elif ("error:" in gitcmd.stderr and
+            "HTTP 429" in gitcmd.stderr):
+        time.sleep(retry_cur_sleep)
+        retry_cur_sleep = min(retry_exp_factor * retry_cur_sleep,
+                              MAXIMUM_RETRY_SLEEP_SEC)
+        retry_cur_sleep *= (1 - random.uniform(-RETRY_JITTER_PERCENT,
+                                               RETRY_JITTER_PERCENT))
+        continue
+
+      # If this is not last attempt, try 'git remote prune'.
+      elif (try_n < fetch_retries - 1 and
             "error:" in gitcmd.stderr and
-            "git remote prune" in gitcmd.stderr):
+            "git remote prune" in gitcmd.stderr and
+            not prune_tried):
+        prune_tried = True
         prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
                               ssh_proxy=ssh_proxy)
         ret = prunecmd.Wait()
