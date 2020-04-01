@@ -265,6 +265,9 @@ later is required to fix a server side protocol bug.
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
+    p.add_option('--fetch-retries',
+                dest='fetch_retries', action='store', type='int',
+                help='number of times to retry fetches on HTTP 429 returns')
     p.add_option('--prune', dest='prune', action='store_true',
                  help='delete refs that no longer exist on the remote')
     if show_smart:
@@ -342,6 +345,7 @@ later is required to fix a server side protocol bug.
             clone_bundle=opt.clone_bundle,
             tags=opt.tags, archive=self.manifest.IsArchive,
             optimized_fetch=opt.optimized_fetch,
+            fetch_retries=opt.fetch_retries,
             prune=opt.prune,
             clone_filter=clone_filter)
         self._fetch_times.Set(project, time.time() - start)
