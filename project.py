@@ -2644,7 +2644,9 @@ class Project(object):
         # returned another error with the HTTP error code being 400 or above.
         # This return code only appears if -f, --fail is used.
         if verbose:
-          print('Server does not provide clone.bundle; ignoring.')
+          print('Unable to retrieve clone.bundle at %s -- ignoring.' % srcUrl)
+          if output:
+            print('Curl output:\n%s', % output)
         return False
       elif curlret and not verbose and output:
         print('%s' % output, file=sys.stderr)
