@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5fb74f8_af30173c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "write:\n\n Bug: https://crbug.com/1061473",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b23a4f0d_13dd3245",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "818f16f5_89602373",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "i\u0027ve read this a few times and i think i understand what it\u0027s saying.  or i don\u0027t.  could you give it another rephrase attempt ? :)",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9bd6b52d_c998d41a",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 910,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "should align with \"Retry\" above to be consistent",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "48595a76_dd544f09",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2515,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "you can just assign in one shot\n\n ok \u003d prune_tried \u003d False",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4ab65932_3e9c6188",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2525,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "single quotes in new code",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07ed917a_f545adcc",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 2527,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "should print a warning to sys.stderr if !quiet",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37687b62_cf0d3e1b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "drop the redundant dest\u003d.  we have a bunch of code still using it, but i\u0027ve been removing it as i go.",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b0bffcd_f9384514",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 1,
+      "message": "how about \"transient errors\" instead of listing HTTP/429 explicitly ?",
+      "revId": "5ff7b403a79a5d0758ba833fcfda2db2d5e6fa43",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

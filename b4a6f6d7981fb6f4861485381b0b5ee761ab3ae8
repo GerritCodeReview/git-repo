@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cfe4e8ef_19c741ba",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 0,
+      "message": "two blank lines",
+      "revId": "b4a6f6d7981fb6f4861485381b0b5ee761ab3ae8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ebff338c_95619241",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 0,
+      "message": "two blank lines",
+      "revId": "b4a6f6d7981fb6f4861485381b0b5ee761ab3ae8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b9dc46f_05d5b5a7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T07:38:11Z",
+      "side": 0,
+      "message": "you want to update this call site too.  this is when repo goes to update its internal manifest checkout.",
+      "revId": "b4a6f6d7981fb6f4861485381b0b5ee761ab3ae8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
