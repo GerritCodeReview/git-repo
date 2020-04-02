@@ -51,6 +51,24 @@
       "revId": "b8440d81fe7f5e7d049e5601ea1e039704cafc89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ec45e924_f2182869",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2647,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T20:29:06Z",
+      "side": 1,
+      "message": "that output is from repo-2.4 which doesn\u0027t have my recent change:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/256456",
+      "parentUuid": "03f5d02b_edd58bca",
+      "revId": "b8440d81fe7f5e7d049e5601ea1e039704cafc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
