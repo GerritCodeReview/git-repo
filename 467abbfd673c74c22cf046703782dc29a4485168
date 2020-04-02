@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1da5057e_d7ebe614",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-02T20:55:18Z",
+      "side": 1,
+      "message": "use https://crbug.com/1061473",
+      "revId": "467abbfd673c74c22cf046703782dc29a4485168",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
