@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "7780c23d_835da5ac",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1096090
+      },
+      "writtenOn": "2020-04-07T14:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7127a155_10a591b2",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d11a6b55_c7aeb35a",
         "filename": "git_command.py",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7905400c_6249f6ce",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1096090
+      },
+      "writtenOn": "2020-04-07T14:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d11a6b55_c7aeb35a",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "375cefa6_16bbe1ec",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1096090
+      },
+      "writtenOn": "2020-04-07T14:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5db9121c_1f915033",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "622a6736_8fc42a64",
         "filename": "tests/test_git_command.py",
         "patchSetId": 4
@@ -67,6 +121,24 @@
       "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f03a8968_d593eaa6",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1096090
+      },
+      "writtenOn": "2020-04-07T14:09:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "622a6736_8fc42a64",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
