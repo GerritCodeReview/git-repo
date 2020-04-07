@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7127a155_10a591b2",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-07T09:36:22Z",
+      "side": 1,
+      "message": "add a docstring please",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d11a6b55_c7aeb35a",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-07T09:36:22Z",
+      "side": 1,
+      "message": "add a docstring please",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5db9121c_1f915033",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-07T09:36:22Z",
+      "side": 1,
+      "message": "add a docstring",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "622a6736_8fc42a64",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-07T09:36:22Z",
+      "side": 1,
+      "message": "use single quotes",
+      "revId": "307bfd7cef15a2d6c0ace38476ef73098790d309",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
