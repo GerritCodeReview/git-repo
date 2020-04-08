@@ -16,6 +16,24 @@
       "revId": "7c4ac71cf838cc97e4288d8073d36f6f47169f19",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9de760c_7ff01433",
+        "filename": "git_command.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1096090
+      },
+      "writtenOn": "2020-04-08T17:05:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2695a3f_2defa678",
+      "revId": "7c4ac71cf838cc97e4288d8073d36f6f47169f19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
