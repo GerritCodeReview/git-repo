@@ -304,6 +304,7 @@ class SetupGnuPG(RepoWrapperTestCase):
     """Make sure it works completely."""
     with TemporaryDirectory() as tempdir:
       self.wrapper.home_dot_repo = tempdir
+      self.wrapper.gpg_dir = os.path.join(self.wrapper.home_dot_repo, 'gnupg')
       self.assertTrue(self.wrapper.SetupGnuPG(True))
       with open(os.path.join(tempdir, 'keyring-version'), 'r') as fp:
         data = fp.read()
