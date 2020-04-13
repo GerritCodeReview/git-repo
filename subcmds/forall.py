@@ -370,8 +370,8 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
       for s in in_ready:
         buf = s.read().decode()
         if not buf:
-          s.close()
           s_in.remove(s)
+          s.close()
           continue
 
         if not opt.verbose:
