@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a2fde958_fefa040c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2020-04-13T12:32:53Z",
+      "side": 1,
+      "message": "Please add:\n\n Bug: https://crbug.com/gerrit/12563",
+      "revId": "e21c7f6bcbb87bbe98cfd57499e4a954a13c5249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
