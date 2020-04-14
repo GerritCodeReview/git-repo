@@ -16,6 +16,24 @@
       "revId": "e21c7f6bcbb87bbe98cfd57499e4a954a13c5249",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d9910c2b_cdb07bf6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1099397
+      },
+      "writtenOn": "2020-04-14T06:49:17Z",
+      "side": 1,
+      "message": "Ack and Done",
+      "parentUuid": "a2fde958_fefa040c",
+      "revId": "e21c7f6bcbb87bbe98cfd57499e4a954a13c5249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
