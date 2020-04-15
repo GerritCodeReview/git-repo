@@ -2678,7 +2678,7 @@ class Project(object):
         if verbose:
           print('%s: Unable to retrieve clone.bundle; ignoring.' % self.name)
           if output:
-            print('Curl output:\n%s', % output)
+            print('Curl output:\n%s' % output)
         return False
       elif curlret and not verbose and output:
         print('%s' % output, file=sys.stderr)

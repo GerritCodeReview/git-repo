@@ -11,6 +11,19 @@ Manifests are inherently version controlled, since they are kept
 within a Git repository.  Updates to manifests are automatically
 obtained by clients during `repo sync`.
 
+Often, a manifest contains projects with a revision that refers to a ref (e.g.:
+refs/heads/master) that tracks a particular branch of the git repository.  At
+times, however, it's useful to have the manifest refer to a specific commit, in
+which case the revision field may be a SHA1 hash.  A common use case for this is
+generating a "snapshot" of a manifest at a particular point in time.
+
+`repo manifest -r` can be used to generate a manifest file with project
+revisions set to the current commit hash.  We refer to these as "revision locked
+manifests", as they don't follow a particular branch.  In this case, the
+`upstream` and `dest-branch` attributes are set to the ref we were on when the
+manifest was generated.  We use `upstream` to know where the commit came from
+and use `dest-branch` to know where to push changes via `repo upload`.
+
 [TOC]
 
 
