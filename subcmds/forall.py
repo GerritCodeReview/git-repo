@@ -179,6 +179,8 @@ without iterating through the remaining projects.
         'annotations': dict((a.name, a.value) for a in project.annotations),
         'gitdir': project.gitdir,
         'worktree': project.worktree,
+        'upstream': project.upstream,
+        'dest_branch': project.dest_branch,
     }
 
   def ValidateOptions(self, opt, args):
@@ -317,6 +319,8 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
   setenv('REPO_REMOTE', project['remote_name'])
   setenv('REPO_LREV', project['lrev'])
   setenv('REPO_RREV', project['rrev'])
+  setenv('REPO_UPSTREAM', project['upstream'])
+  setenv('REPO_DEST_BRANCH', project['dest_branch'])
   setenv('REPO_I', str(cnt + 1))
   for name in project['annotations']:
     setenv("REPO__%s" % (name), project['annotations'][name])
