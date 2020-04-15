@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73e7658d_664a8cbc",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2681,
+      "author": {
+        "id": 1078339
+      },
+      "writtenOn": "2020-04-15T17:21:27Z",
+      "side": 1,
+      "message": "Is the \u0027,\u0027/comma supposed to be there?\n\n\u003e  File \"/srv/git/repo/project.py\", line 2681\n\u003e     print(\u0027Curl output:\\n%s\u0027, % output)\n\u003e                               ^\n\u003e SyntaxError: invalid syntax",
+      "revId": "b6871899be405178e8557fd9097918143532dd8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
