@@ -34,6 +34,14 @@ The manifest and (if present) local_manifest.xml are combined
 together to produce a single manifest file.  This file can be stored
 in a Git repository for use during future 'repo init' invocations.
 
+The -r option can be used to generate a manifest file with project
+revisions set to the current commit hash.  These are know as
+"revision locked manifests" as they are pinned to specific revisions 
+instead of tracking a named reference. In this case, the 'upstream' 
+and 'dest-branch' attributes are set to the ref we were on when the 
+manifest was generated. 'upstream' is used to know where the commit 
+came from and 'dest-branch' to know where to push changes via 
+'repo upload'.
 """
 
   @property
