@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "a7b101ed_fa0260d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-15T20:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4d2dbd6_fb849b4e",
+      "revId": "4f75c82d429b463f2a43cc2adc2730f3e48152d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a9c07e54_bde3751e",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -33,6 +51,24 @@
       "revId": "4f75c82d429b463f2a43cc2adc2730f3e48152d4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2af1e930_a7f92b7f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-15T20:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9c07e54_bde3751e",
+      "revId": "4f75c82d429b463f2a43cc2adc2730f3e48152d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -59,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "12431f6e_52facd04",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-15T20:21:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f50d1bb6_7535675f",
+      "range": {
+        "startLine": 14,
+        "startChar": 78,
+        "endLine": 14,
+        "endChar": 79
+      },
+      "revId": "4f75c82d429b463f2a43cc2adc2730f3e48152d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0d81b279_4f6d4352",
         "filename": "docs/manifest-format.md",
         "patchSetId": 4
@@ -70,6 +130,30 @@
       "writtenOn": "2020-04-15T20:13:38Z",
       "side": 1,
       "message": "this first section is meant as a general/high level introduction to manifests, not for getting into day-to-day usage or random tips\n\nseems like we would want to create a new chapter at the bottom of this document, or merge some of this text into subcmds/manifest.py\u0027s _helpDescription.",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 70
+      },
+      "revId": "4f75c82d429b463f2a43cc2adc2730f3e48152d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf62503e_1bead2ba",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-15T20:21:39Z",
+      "side": 1,
+      "message": "Yeah it felt a little out of place but wasn\u0027t 100% sure where to put it, open to wherever you want it to go.",
+      "parentUuid": "0d81b279_4f6d4352",
       "range": {
         "startLine": 14,
         "startChar": 0,
