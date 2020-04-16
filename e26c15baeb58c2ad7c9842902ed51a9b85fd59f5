@@ -260,6 +260,30 @@
     },
     {
       "key": {
+        "uuid": "a133fcce_a02ffcab",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-16T17:37:32Z",
+      "side": 1,
+      "message": "should this change be pulled out of this CL then and merged when the functionality is there ?  the help text should reflect reality and not aspirations ;).",
+      "parentUuid": "6dbe7eda_07bea4f7",
+      "range": {
+        "startLine": 40,
+        "startChar": 33,
+        "endLine": 40,
+        "endChar": 65
+      },
+      "revId": "e26c15baeb58c2ad7c9842902ed51a9b85fd59f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3de2d52e_44cea955",
         "filename": "subcmds/manifest.py",
         "patchSetId": 6
