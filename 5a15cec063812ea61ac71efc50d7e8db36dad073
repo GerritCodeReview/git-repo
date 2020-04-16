@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5989ac86_4e147f08",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-16T17:49:02Z",
+      "side": 1,
+      "message": "Weird, refixed.",
+      "parentUuid": "7cbfa3d5_9d611727",
+      "range": {
+        "startLine": 38,
+        "startChar": 43,
+        "endLine": 39,
+        "endChar": 70
+      },
+      "revId": "5a15cec063812ea61ac71efc50d7e8db36dad073",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "926cf0a7_67634b4a",
         "filename": "subcmds/manifest.py",
         "patchSetId": 8
@@ -39,6 +63,24 @@
       "revId": "5a15cec063812ea61ac71efc50d7e8db36dad073",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "500d5fd1_0bc3f0f0",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-16T17:49:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "926cf0a7_67634b4a",
+      "revId": "5a15cec063812ea61ac71efc50d7e8db36dad073",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
