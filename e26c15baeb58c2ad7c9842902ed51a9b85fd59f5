@@ -284,6 +284,30 @@
     },
     {
       "key": {
+        "uuid": "265af578_e7919443",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-16T17:41:42Z",
+      "side": 1,
+      "message": "Sure, I\u0027ll add it back in on the next CL.",
+      "parentUuid": "a133fcce_a02ffcab",
+      "range": {
+        "startLine": 40,
+        "startChar": 33,
+        "endLine": 40,
+        "endChar": 65
+      },
+      "revId": "e26c15baeb58c2ad7c9842902ed51a9b85fd59f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3de2d52e_44cea955",
         "filename": "subcmds/manifest.py",
         "patchSetId": 6
