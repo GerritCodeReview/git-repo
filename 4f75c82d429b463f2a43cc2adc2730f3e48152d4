@@ -187,6 +187,30 @@
       "revId": "4f75c82d429b463f2a43cc2adc2730f3e48152d4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43f444af_641baa8d",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1096224
+      },
+      "writtenOn": "2020-04-16T14:59:49Z",
+      "side": 1,
+      "message": "OK, I\u0027ll do that.",
+      "parentUuid": "65c3041f_4f23618c",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 70
+      },
+      "revId": "4f75c82d429b463f2a43cc2adc2730f3e48152d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
