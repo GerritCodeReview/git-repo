@@ -1169,6 +1169,10 @@ def main(orig_args):
   if my_main:
     repo_main = my_main
 
+  if not repo_main:
+    print("fatal: unable to find repo entry point", file=sys.stderr)
+    sys.exit(1)
+
   ver_str = '.'.join(map(str, VERSION))
   me = [sys.executable, repo_main,
         '--repo-dir=%s' % rel_repo_dir,
