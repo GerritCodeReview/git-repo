@@ -284,7 +284,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def _ParseGroups(self, groups):
     return [x for x in re.split(r'[,\s]+', groups) if x]
 
-  def Save(self, fd, peg_rev=False, peg_rev_upstream=True, groups=None):
+  def Save(self, fd, peg_rev=False, peg_rev_upstream=True, peg_rev_dest_branch=True, groups=None):
     """Write the current manifest out to the given file descriptor.
     """
     mp = self.manifestProject
@@ -389,6 +389,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             # Only save the origin if the origin is not a sha1, and the default
             # isn't our value
             e.setAttribute('upstream', p.revisionExpr)
+
+        if peg_rev_dest_branch:
+          if p.dest_branch:
+            e.setAttribute('dest-branch', p.dest_branch)
+          elif value != p.revisionExpr:
+            e.setAttribute('dest-branch', p.revisionExpr)
+
       else:
         revision = self.remotes[p.remote.orig_name].revision or d.revisionExpr
         if not revision or revision != p.revisionExpr:
