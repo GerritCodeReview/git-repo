@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c50e1df9_b674b4c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-20T16:26:56Z",
+      "side": 1,
+      "message": "use Bug: and https://crbug.com instead",
+      "revId": "0d6363a1dd8870d99db48e59054b0d5e56651646",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b866835_bfbb19c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-20T16:26:56Z",
+      "side": 1,
+      "message": "use Test: instead",
+      "revId": "0d6363a1dd8870d99db48e59054b0d5e56651646",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
