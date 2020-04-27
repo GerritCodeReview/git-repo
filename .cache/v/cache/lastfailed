@@ -1,0 +1,20 @@
+{
+  "tests/test_git_command.py::GitCallUnitTest": true, 
+  "tests/test_git_command.py::GitRequireTests": true, 
+  "tests/test_git_command.py::SSHUnitTest": true, 
+  "tests/test_git_command.py::UserAgentUnitTest": true, 
+  "tests/test_wrapper.py::CheckGitVersion": true, 
+  "tests/test_wrapper.py::CheckRepoRev": true, 
+  "tests/test_wrapper.py::CheckRepoVerify": true, 
+  "tests/test_wrapper.py::GitCheckoutTestCase": true, 
+  "tests/test_wrapper.py::NeedSetupGnuPG": true, 
+  "tests/test_wrapper.py::ParseGitVersion": true, 
+  "tests/test_wrapper.py::RepoWrapperTestCase": true, 
+  "tests/test_wrapper.py::RepoWrapperUnitTest": true, 
+  "tests/test_wrapper.py::ResolveRepoRev": true, 
+  "tests/test_wrapper.py::RunCommand": true, 
+  "tests/test_wrapper.py::RunGit": true, 
+  "tests/test_wrapper.py::SetGitTrace2ParentSid": true, 
+  "tests/test_wrapper.py::SetupGnuPG": true, 
+  "tests/test_wrapper.py::VerifyRev": true
+}
