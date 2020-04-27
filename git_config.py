@@ -362,7 +362,7 @@ class GitConfig(object):
     return c
 
   def _do(self, *args):
-    command = ['config', '--file', self.file]
+    command = ['config', '--file', self.file, '--includes']
     command.extend(args)
 
     p = GitCommand(None,
