@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9909cc50_c9711c14",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-04-29T18:39:18Z",
+      "side": 1,
+      "message": "Should we be using `git config --global` instead of hardcoding the filename here?\n\nThat way, we\u0027d also respect the xdg dir `~/.config/git/config`.",
+      "revId": "d0ca0f6814247d18d28e35de08ba193c4cf8e028",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
