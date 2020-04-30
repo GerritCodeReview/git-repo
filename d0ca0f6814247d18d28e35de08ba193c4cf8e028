@@ -16,6 +16,24 @@
       "revId": "d0ca0f6814247d18d28e35de08ba193c4cf8e028",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a95d0091_cd00101f",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-04-30T08:13:16Z",
+      "side": 1,
+      "message": "hrm, having two files makes this class logic tricky.  we maintain a JSON cache of the settings to speed up loading, and we test the file against the cache to see when it\u0027s out of date.\n\nalthough i guess the use of --includes also breaks that.  if a file included by ~/.gitconfig is updated but not ~/.gitconfig itself, we\u0027ll assume the cache is up-to-date.",
+      "parentUuid": "9909cc50_c9711c14",
+      "revId": "d0ca0f6814247d18d28e35de08ba193c4cf8e028",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
