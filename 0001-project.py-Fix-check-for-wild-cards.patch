@@ -1,0 +1,44 @@
+From c7c3954d22a2169caa582add31048ff41fa2f1c6 Mon Sep 17 00:00:00 2001
+From: Angel Petkov <apetkov86@gmail.com>
+Date: Sat, 2 May 2020 23:16:20 +0300
+Subject: [PATCH] project.py: Fix check for wild cards
+
+The intention of the check is to verify whether the target
+file name contains a wild card. The code, however, assumes
+that if the file is non-existent - it contains a wild card.
+This has the side effect that a target file that does not
+exist at the moment of the check is considered to contain a
+wild card, this leads itself to softlink not being created.
+
+Change-Id: I4e4cd7b5e1b8ce2e4b2edc9abf5a1147cd86242f
+---
+ project.py | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/project.py b/project.py
+index 2687e37..adf549b 100644
+--- a/project.py
++++ b/project.py
+@@ -405,8 +405,8 @@ class _LinkFile(object):
+     else:
+       src = _SafeExpandPath(self.git_worktree, self.src)
+ 
+-    if os.path.exists(src):
+-      # Entity exists so just a simple one to one link operation.
++    if not glob.has_magic(src):
++      # Entity does not contain a wild card so just a simple one to one link operation.
+       dest = _SafeExpandPath(self.topdir, self.dest, skipfinal=True)
+       # dest & src are absolute paths at this point.  Make sure the target of
+       # the symlink is relative in the context of the repo client checkout.
+@@ -414,7 +414,7 @@ class _LinkFile(object):
+       self.__linkIt(relpath, dest)
+     else:
+       dest = _SafeExpandPath(self.topdir, self.dest)
+-      # Entity doesn't exist assume there is a wild card
++      # Entity contains a wild card
+       if os.path.exists(dest) and not platform_utils.isdir(dest):
+         _error('Link error: src with wildcard, %s must be a directory', dest)
+       else:
+-- 
+2.17.1
+
