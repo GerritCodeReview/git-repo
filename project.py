@@ -405,8 +405,8 @@ class _LinkFile(object):
     else:
       src = _SafeExpandPath(self.git_worktree, self.src)
 
-    if os.path.exists(src):
-      # Entity exists so just a simple one to one link operation.
+    if not glob.has_magic(src):
+      # Entity does not contain a wild card so just a simple one to one link operation.
       dest = _SafeExpandPath(self.topdir, self.dest, skipfinal=True)
       # dest & src are absolute paths at this point.  Make sure the target of
       # the symlink is relative in the context of the repo client checkout.
@@ -414,7 +414,7 @@ class _LinkFile(object):
       self.__linkIt(relpath, dest)
     else:
       dest = _SafeExpandPath(self.topdir, self.dest)
-      # Entity doesn't exist assume there is a wild card
+      # Entity contains a wild card.
       if os.path.exists(dest) and not platform_utils.isdir(dest):
         _error('Link error: src with wildcard, %s must be a directory', dest)
       else:
