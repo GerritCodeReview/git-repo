@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73895ac7_dcd95b09",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-03T04:54:26Z",
+      "side": 1,
+      "message": "can you add a period at the end of the sentence while you\u0027re here ?",
+      "revId": "c7c3954d22a2169caa582add31048ff41fa2f1c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
