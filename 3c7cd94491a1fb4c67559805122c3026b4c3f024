@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5dec1522_aebb3912",
+        "filename": "hooks/pre-commit",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1086450
+      },
+      "writtenOn": "2020-05-08T18:36:33Z",
+      "side": 1,
+      "message": "I just realized this version is catered for Darwinn. Can you replace the file content with this:\n\n\n#!/bin/bash\n# Owner: gchips-productivity-team@google.com\n# VERSION: 2019-12-16\n# Pre commit hook to auto format code using git clang-format\n\n# change the default style to Google\ngit config --global clangformat.style Google\n\n# default PRE_COMMIT_CLANG_FORMAT to true\nPRE_COMMIT_CLANG_FORMAT\u003d\"${PRE_COMMIT_CLANG_FORMAT:-true}\"\n\ncheck_clang_format() {\n  if ! [ -x \"$(command -v clang-format)\" ]; then\n    echo \"Warning: clang-format not found.  Unable to format source code before commit. Please check go/clang-format-setup for setup instructions.\"\n  fi\n}\n\nif [ \"$PRE_COMMIT_CLANG_FORMAT\" \u003d true ] ; then\n  check_clang_format\n  FILES\u003d$(git clang-format)\n  counter\u003d0\n  for file in $FILES ; do\n    if [[ -f \"$file\" ]]; then\n      git add ${file}\n      echo -e \"[Info] Changes in ${file} have been formatted\"\n      ((counter++))\n    fi\n  done\n\n  if ((  counter \u003e 0 )); then\n    echo \"[Info] $counter file(s) have been formatted\"\n    # Track Usage\n    MY_PATH\u003d${PWD//\\//\"%2F\"}\n    curl \"https://us-central1-si-sw-eng-prod-team.cloudfunctions.net/trackAutoFormatUsage?user\u003d${USER}\u0026pwd\u003d${MY_PATH}\u0026timestamp\u003d$(date +%s)\u0026type\u003dFORMAT\u0026filesFormatted\u003d${counter}\" \u003e /dev/null 2\u003e\u00261\n  fi\n\nfi",
+      "revId": "3c7cd94491a1fb4c67559805122c3026b4c3f024",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
