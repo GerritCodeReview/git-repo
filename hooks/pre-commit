@@ -1,0 +1,32 @@
+#!/bin/bash
+# Owner: gchips-productivity-team@google.com
+# VERSION: 2019-12-16
+# Pre commit hook to auto format code using git clang-format
+# default PRE_COMMIT_CLANG_FORMAT to true
+PRE_COMMIT_CLANG_FORMAT="${PRE_COMMIT_CLANG_FORMAT:-true}"
+
+CLANG_FORMAT_TYPE="linux-x86"
+
+if [[ "$OSTYPE" == "darwin" ]]; then
+  CLANG_FORMAT_TYPE="darwin-x86"
+fi
+
+if [ "$PRE_COMMIT_CLANG_FORMAT" = true ] ; then
+  FILES=$(${PWD}/../prebuilts/clang/host/${CLANG_FORMAT_TYPE}/clang-stable/bin/git-clang-format --binary="${PWD}/../prebuilts/clang/host/${CLANG_FORMAT_TYPE}/clang-stable/bin/clang-format")
+  counter=0
+  for file in $FILES ; do
+    if [[ -f "$file" ]]; then
+      git add ${file}
+      echo -e "[Info] Changes in ${file} have been formatted"
+      ((counter++))
+    fi
+  done
+
+  if ((  counter > 0 )); then
+    echo "[Info] $counter file(s) have been formatted"
+    # Track Usage
+    MY_PATH=${PWD//\//"%2F"}
+    curl "https://us-central1-si-sw-eng-prod-team.cloudfunctions.net/trackAutoFormatUsage?user=${USER}&pwd=${MY_PATH}&timestamp=$(date +%s)&type=FORMAT&filesFormatted=${counter}" > /dev/null 2>&1
+  fi
+
+fi
