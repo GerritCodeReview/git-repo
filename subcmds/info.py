@@ -16,7 +16,7 @@
 
 from command import PagedCommand
 from color import Coloring
-from git_refs import R_M
+from git_refs import R_M, R_HEADS
 
 
 class _Coloring(Coloring):
@@ -127,7 +127,10 @@ class Info(PagedCommand):
     if not self.opt.local:
       project.Sync_NetworkHalf(quiet=True, current_branch_only=True)
 
-    logTarget = R_M + self.manifest.manifestProject.config.GetBranch("default").merge
+    branch = self.manifest.manifestProject.config.GetBranch('default').merge
+    if branch.startswith(R_HEADS):
+      branch = branch[len(R_HEADS):]
+    logTarget = R_M + branch
 
     bareTmp = project.bare_git._bare
     project.bare_git._bare = False
