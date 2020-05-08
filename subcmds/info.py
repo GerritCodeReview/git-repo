@@ -127,7 +127,10 @@ class Info(PagedCommand):
     if not self.opt.local:
       project.Sync_NetworkHalf(quiet=True, current_branch_only=True)
 
-    logTarget = R_M + self.manifest.manifestProject.config.GetBranch("default").merge
+    branch = self.manifest.manifestProject.config.GetBranch("default").merge
+    if branch.startswith('refs/heads/'):
+      branch = branch[len('refs/heads/'):]
+    logTarget = R_M + branch
 
     bareTmp = project.bare_git._bare
     project.bare_git._bare = False
