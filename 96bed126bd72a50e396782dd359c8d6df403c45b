@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "47c2bd40_ffa81153",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-12T07:02:48Z",
+      "side": 1,
+      "message": "switch to single quotes while you\u0027re here",
+      "revId": "96bed126bd72a50e396782dd359c8d6df403c45b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1c8179f4_7cbb7265",
         "filename": "subcmds/info.py",
         "patchSetId": 1
@@ -13,6 +30,24 @@
       "writtenOn": "2020-05-08T05:54:43Z",
       "side": 1,
       "message": "Should I use git_refs.py\u0027s R_HEADS here?",
+      "revId": "96bed126bd72a50e396782dd359c8d6df403c45b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2eff86c_13ffeef2",
+        "filename": "subcmds/info.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-12T07:02:48Z",
+      "side": 1,
+      "message": "yeah",
+      "parentUuid": "1c8179f4_7cbb7265",
       "revId": "96bed126bd72a50e396782dd359c8d6df403c45b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
