@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3828c335_f9d24723",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-19T05:08:14Z",
+      "side": 1,
+      "message": "you\u0027ll want to use Bug: instead",
+      "revId": "4518a9a4f307dfff54861ab641960a360bd28f2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b98b2d39_bd8274de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-19T05:08:14Z",
+      "side": 1,
+      "message": "you can delete this entirely.  we don\u0027t require or expect test tags in this repo unless they have detailed content.",
+      "revId": "4518a9a4f307dfff54861ab641960a360bd28f2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
