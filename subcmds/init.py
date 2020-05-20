@@ -130,7 +130,8 @@ to update the working directory files.
     g.add_option('--partial-clone', action='store_true',
                  dest='partial_clone',
                  help='perform partial clone (https://git-scm.com/'
-                 'docs/gitrepository-layout#_code_partialclone_code)')
+                 'docs/gitrepository-layout#_code_partialclone_code); '
+                 'implies --no-clone-bundle')
     g.add_option('--clone-filter', action='store', default='blob:none',
                  dest='clone_filter',
                  help='filter for use with --partial-clone [default: %default]')
@@ -307,7 +308,7 @@ to update the working directory files.
       m.config.SetString('repo.submodules', 'true')
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
-                              clone_bundle=opt.clone_bundle,
+                              clone_bundle=(opt.clone_filter is None) and opt.clone_bundle,
                               current_branch_only=opt.current_branch_only,
                               tags=opt.tags, submodules=opt.submodules,
                               clone_filter=opt.clone_filter):

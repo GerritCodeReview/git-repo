@@ -342,7 +342,7 @@ later is required to fix a server side protocol bug.
             verbose=opt.verbose,
             current_branch_only=opt.current_branch_only,
             force_sync=opt.force_sync,
-            clone_bundle=opt.clone_bundle,
+            clone_bundle=(clone_filter is None) and opt.clone_bundle,
             tags=opt.tags, archive=self.manifest.IsArchive,
             optimized_fetch=opt.optimized_fetch,
             retry_fetches=opt.retry_fetches,

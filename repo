@@ -297,8 +297,10 @@ def GetParser(gitc_init=False):
                    help='create a shallow clone with given depth; '
                         'see git clone')
   group.add_option('--partial-clone', action='store_true',
+                   dest="partial_clone",
                    help='perform partial clone (https://git-scm.com/'
-                        'docs/gitrepository-layout#_code_partialclone_code)')
+                        'docs/gitrepository-layout#_code_partialclone_code); '
+                        'implies --no-clone-bundle')
   group.add_option('--clone-filter', action='store', default='blob:none',
                    help='filter for use with --partial-clone '
                         '[default: %default]')
@@ -541,7 +543,7 @@ def _Init(args, gitc_init=False):
     if not opt.quiet:
       print('Downloading Repo source from', url)
     dst = os.path.abspath(os.path.join(repodir, S_repo))
-    _Clone(url, dst, opt.clone_bundle, opt.quiet, opt.verbose)
+    _Clone(url, dst, (not opt.partial_clone) and opt.clone_bundle, opt.quiet, opt.verbose)
 
     remote_ref, rev = check_repo_rev(dst, rev, opt.repo_verify, quiet=opt.quiet)
     _Checkout(dst, remote_ref, rev, opt.quiet)
