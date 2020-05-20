@@ -502,6 +502,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return self._manifest_server
 
   @property
+  def CloneBundle(self):
+    clone_bundle = self.manifestProject.config.GetBoolean('repo.clonebundle')
+    if clone_bundle is None:
+      return False if self.manifestProject.config.GetBoolean('repo.partialclone') else True
+    else:
+      return clone_bundle
+
+  @property
   def CloneFilter(self):
     if self.manifestProject.config.GetBoolean('repo.partialclone'):
       return self.manifestProject.config.GetString('repo.clonefilter')
