@@ -135,6 +135,7 @@ User controlled settings are initialized when running `repo init`.
 | manifest.groups   | `--groups` & `--platform` | The manifest groups to sync |
 | repo.archive      | `--archive`               | Use `git archive` for checkouts |
 | repo.clonefilter  | `--clone-filter`          | Filter setting when using [partial git clones] |
+| repo.clonebundle  | `--clone-bundle`          | Whether to use clone bundle specified from command line |
 | repo.depth        | `--depth`                 | Create shallow checkouts when cloning |
 | repo.dissociate   | `--dissociate`            | Dissociate from any reference/mirrors after initial clone |
 | repo.mirror       | `--mirror`                | Checkout is a repo mirror |

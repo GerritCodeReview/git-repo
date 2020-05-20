@@ -128,7 +128,6 @@ to update the working directory files.
                  dest='depth',
                  help='create a shallow clone with given depth; see git clone')
     g.add_option('--partial-clone', action='store_true',
-                 dest='partial_clone',
                  help='perform partial clone (https://git-scm.com/'
                  'docs/gitrepository-layout#_code_partialclone_code)')
     g.add_option('--clone-filter', action='store', default='blob:none',
@@ -155,9 +154,11 @@ to update the working directory files.
                  help='restrict manifest projects to ones with a specified '
                       'platform group [auto|all|none|linux|darwin|...]',
                  metavar='PLATFORM')
+    g.add_option('--clone-bundle', action='store_true',
+                 help='force use of /clone.bundle on HTTP/HTTPS (default if not --partial-clone)')
     g.add_option('--no-clone-bundle',
-                 dest='clone_bundle', default=True, action='store_false',
-                 help='disable use of /clone.bundle on HTTP/HTTPS')
+                 dest='clone_bundle', action='store_false',
+                 help='disable use of /clone.bundle on HTTP/HTTPS (default if --partial-clone)')
     g.add_option('--no-tags',
                  dest='tags', default=True, action='store_false',
                  help="don't fetch tags in the manifest")
@@ -302,6 +303,11 @@ to update the working directory files.
         m.config.SetString('repo.clonefilter', opt.clone_filter)
     else:
       opt.clone_filter = None
+
+    if opt.clone_bundle is None:
+       opt.clone_bundle = False if opt.partial_clone else True
+    else:
+      m.config.SetString('repo.clonebundle', 'true' if opt.clone_bundle else 'false')
 
     if opt.submodules:
       m.config.SetString('repo.submodules', 'true')

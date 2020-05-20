@@ -247,8 +247,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
-    p.add_option('--no-clone-bundle',
-                 dest='clone_bundle', default=True, action='store_false',
+    p.add_option('--clone-bundle', action='store_true',
+                 help='enable use of /clone.bundle on HTTP/HTTPS')
+    p.add_option('--no-clone-bundle', dest='clone_bundle', action='store_false',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
     p.add_option('-u', '--manifest-server-username', action='store',
                  dest='manifest_server_username',
@@ -835,6 +836,9 @@ later is required to fix a server side protocol bug.
     manifest_name = opt.manifest_name
     smart_sync_manifest_path = os.path.join(
         self.manifest.manifestProject.worktree, 'smart_sync_override.xml')
+
+    if opt.clone_bundle is None:
+      opt.clone_bundle = self.manifest.CloneBundle
 
     if opt.smart_sync or opt.smart_tag:
       manifest_name = self._SmartSyncSetup(opt, smart_sync_manifest_path)
