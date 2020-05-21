@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9041ef46_776065d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-05-21T19:13:02Z",
+      "side": 1,
+      "message": "explicitly",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 11
+      },
+      "revId": "c6912a8bb92701c86671676a670765640baefb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a78ea469_37b0baec",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-05-21T19:13:02Z",
+      "side": 1,
+      "message": "I had trouble parsing this. Maybe something simple like \"Whether the initial sync used clone.bundle\"?",
+      "range": {
+        "startLine": 137,
+        "startChar": 50,
+        "endLine": 137,
+        "endChar": 105
+      },
+      "revId": "c6912a8bb92701c86671676a670765640baefb02",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
