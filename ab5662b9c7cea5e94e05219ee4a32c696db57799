@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1124c49b_bece115f",
+        "filename": "subcmds/init.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-05-21T19:40:26Z",
+      "side": 1,
+      "message": "nit: indentation should be two spaces",
+      "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a20f06b_01f31247",
+        "filename": "subcmds/init.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-05-21T19:40:26Z",
+      "side": 1,
+      "message": "optional: could set this unconditionally (i.e. pull it out of the `else`)",
+      "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
