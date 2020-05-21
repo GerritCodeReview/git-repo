@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fda059d4_e9095824",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-21T16:08:27Z",
+      "side": 1,
+      "message": "\"b\" comes before \"f\" ;)",
+      "revId": "52533b2867ff330364ec602d156879e47b5bad9e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
