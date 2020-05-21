@@ -16,6 +16,24 @@
       "revId": "52533b2867ff330364ec602d156879e47b5bad9e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "000ef663_6dd21b6d",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2020-05-21T16:34:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fda059d4_e9095824",
+      "revId": "52533b2867ff330364ec602d156879e47b5bad9e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
