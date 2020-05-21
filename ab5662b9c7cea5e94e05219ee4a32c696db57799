@@ -69,6 +69,24 @@
       "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "56f3046e_4c77780b",
+        "filename": "subcmds/init.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-05-21T19:47:23Z",
+      "side": 1,
+      "message": "Sure, what I mean is\n\n if opt.clone_bundle is None:\n   ...\n m.config.SetString(...)\n\nsince after that \"if\", opt.clone_bundle would always be set.",
+      "parentUuid": "669c0e2e_da20a507",
+      "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
