@@ -16,6 +16,24 @@
       "revId": "682f0b6426a06ed1e89b130d50c6521b1c67d529",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ea96fa1_00da8c6e",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2020-05-21T19:30:42Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "6f4bc857_262629d6",
+      "revId": "682f0b6426a06ed1e89b130d50c6521b1c67d529",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
