@@ -22,6 +22,74 @@
       "revId": "854337a07b1142a038fa82c39a22ea73eeb79b23",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "63cd3a88_0065152d",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-21T04:23:33Z",
+      "side": 1,
+      "message": "this is not needed as it\u0027s redundant -- this is already the default dest value",
+      "revId": "854337a07b1142a038fa82c39a22ea73eeb79b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1c3a3e7_fff8b735",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 546,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-21T04:23:33Z",
+      "side": 1,
+      "message": "parens here are not necessary",
+      "revId": "854337a07b1142a038fa82c39a22ea73eeb79b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6a48040_e3670e13",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-21T04:23:33Z",
+      "side": 1,
+      "message": "parens are not necessary",
+      "revId": "854337a07b1142a038fa82c39a22ea73eeb79b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e8cfe1b_62943bc2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-05-21T04:23:33Z",
+      "side": 1,
+      "message": "parens are not necessary",
+      "revId": "854337a07b1142a038fa82c39a22ea73eeb79b23",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
