@@ -978,6 +978,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return project
 
   def GetProjectPaths(self, name, path):
+    # The manifest entries might have trailing slashes.  Normalize them to avoid
+    # unexpected filesystem behavior since we do string concatenation below.
+    path = path.rstrip('/')
+    name = name.rstrip('/')
     use_git_worktrees = False
     relpath = path
     if self.IsMirror:
@@ -1010,6 +1014,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return os.path.relpath(relpath, parent_relpath)
 
   def GetSubprojectPaths(self, parent, name, path):
+    # The manifest entries might have trailing slashes.  Normalize them to avoid
+    # unexpected filesystem behavior since we do string concatenation below.
+    path = path.rstrip('/')
+    name = name.rstrip('/')
     relpath = self._JoinRelpath(parent.relpath, path)
     gitdir = os.path.join(parent.gitdir, 'subprojects', '%s.git' % path)
     objdir = os.path.join(parent.gitdir, 'subproject-objects', '%s.git' % name)
