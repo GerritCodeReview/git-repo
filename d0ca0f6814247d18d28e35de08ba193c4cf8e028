@@ -34,6 +34,24 @@
       "revId": "d0ca0f6814247d18d28e35de08ba193c4cf8e028",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2334f9c5_2c596b6b",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-06-12T07:13:06Z",
+      "side": 1,
+      "message": "tracked in https://crbug.com/gerrit/12912 now",
+      "parentUuid": "a95d0091_cd00101f",
+      "revId": "d0ca0f6814247d18d28e35de08ba193c4cf8e028",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
