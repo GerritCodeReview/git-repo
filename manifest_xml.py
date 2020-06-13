@@ -864,6 +864,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                                    'project: %s' % name)
 
         path = node.getAttribute('path')
+        dest_path = node.getAttribute('dest-path')
         groups = node.getAttribute('groups')
         if groups:
           groups = self._ParseList(groups)
@@ -872,6 +873,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if remote:
           remote = self._get_remote(node)
 
+        named_projects = self._projects[name]
+        if len(named_projects) > 1 and dest_path:
+          raise ManifestParseError('extend-project cannot use dest-path when '
+                                   'matching multiple projects: %s' % name)
         for p in self._projects[name]:
           if path and p.relpath != path:
             continue
@@ -885,6 +890,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
               p.revisionId = None
           if remote:
             p.remote = remote.ToRemoteSpec(name)
+          if dest_path:
+            del self._paths[p.relpath]
+            relpath, worktree, gitdir, objdir = self.GetProjectPaths(name, dest_path)
+            p.UpdatePaths(relpath, worktree, gitdir, objdir)
+            self._paths[p.relpath] = p
+
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
