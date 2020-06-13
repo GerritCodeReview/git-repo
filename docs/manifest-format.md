@@ -90,6 +90,7 @@ following DTD:
   <!ELEMENT extend-project EMPTY>
   <!ATTLIST extend-project name CDATA #REQUIRED>
   <!ATTLIST extend-project path CDATA #IMPLIED>
+  <!ATTLIST extend-project dest-path CDATA #IMPLIED>
   <!ATTLIST extend-project groups CDATA #IMPLIED>
   <!ATTLIST extend-project revision CDATA #IMPLIED>
   <!ATTLIST extend-project remote CDATA #IMPLIED>
@@ -335,6 +336,10 @@ against changes to the original manifest.
 
 Attribute `path`: If specified, limit the change to projects checked out
 at the specified path, rather than all projects with the given name.
+
+Attribute `dest-path`: If specified, a path relative to the top directory
+of the repo client where the Git working directory for this project
+should be placed.
 
 Attribute `groups`: List of additional groups to which this project
 belongs.  Same syntax as the corresponding element of `project`.
