@@ -797,3 +797,48 @@ class RemoveProjectElementTests(ManifestParseTestCase):
 </manifest>
 """)
     self.assertEqual(manifest.projects, [])
+
+
+class ExtendProjectElementTests(ManifestParseTestCase):
+  """Tests for <extend-project>."""
+  def test_extend_project_dest_path_single_match(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <extend-project name="myproject" dest-path="bar" />
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 1)
+    self.assertEqual(manifest.projects[0].relpath, "bar")
+
+  def test_extend_project_dest_path_multi_match(self):
+    with self.assertRaises(manifest_xml.ManifestParseError):
+      manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" path="x" />
+  <project name="myproject" path="y" />
+  <extend-project name="myproject" dest-path="bar" />
+</manifest>
+""")
+      manifest.projects
+
+  def test_extend_project_dest_path_multi_match_path_specified(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" path="x" />
+  <project name="myproject" path="y" />
+  <extend-project name="myproject" path="x" dest-path="bar" />
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 2)
+    if manifest.projects[0].relpath == "y":
+      self.assertEqual(manifest.projects[1].relpath, "bar")
+    else:
+      self.assertEqual(manifest.projects[0].relpath, "bar")
+      self.assertEqual(manifest.projects[1].relpath, "y")
