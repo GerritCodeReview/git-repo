@@ -868,6 +868,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                                    'project: %s' % name)
 
         path = node.getAttribute('path')
+        dest_path = node.getAttribute('dest-path')
         groups = node.getAttribute('groups')
         if groups:
           groups = self._ParseList(groups)
@@ -876,6 +877,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if remote:
           remote = self._get_remote(node)
 
+        named_projects = self._projects[name]
+        if dest_path and not path and len(named_projects) > 1:
+          raise ManifestParseError('extend-project cannot use dest-path when '
+                                   'matching multiple projects: %s' % name)
         for p in self._projects[name]:
           if path and p.relpath != path:
             continue
@@ -889,6 +894,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
               p.revisionId = None
           if remote:
             p.remote = remote.ToRemoteSpec(name)
+          if dest_path:
+            del self._paths[p.relpath]
+            relpath, worktree, gitdir, objdir, _ = self.GetProjectPaths(name, dest_path)
+            p.UpdatePaths(relpath, worktree, gitdir, objdir)
+            self._paths[p.relpath] = p
+
       if node.nodeName == 'repo-hooks':
         # Only one project can be the hooks project
         if repo_hooks_project is not None:
