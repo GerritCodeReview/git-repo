@@ -503,13 +503,7 @@ class Project(object):
     self.client = self.manifest = manifest
     self.name = name
     self.remote = remote
-    self.gitdir = gitdir.replace('\\', '/')
-    self.objdir = objdir.replace('\\', '/')
-    if worktree:
-      self.worktree = os.path.normpath(worktree).replace('\\', '/')
-    else:
-      self.worktree = None
-    self.relpath = relpath
+    self.UpdatePaths(relpath, worktree, gitdir, objdir)
     self.revisionExpr = revisionExpr
 
     if revisionId is None \
@@ -540,22 +534,32 @@ class Project(object):
     self.copyfiles = []
     self.linkfiles = []
     self.annotations = []
-    self.config = GitConfig.ForRepository(gitdir=self.gitdir,
-                                          defaults=self.client.globalConfig)
-
-    if self.worktree:
-      self.work_git = self._GitGetByExec(self, bare=False, gitdir=gitdir)
-    else:
-      self.work_git = None
-    self.bare_git = self._GitGetByExec(self, bare=True, gitdir=gitdir)
-    self.bare_ref = GitRefs(gitdir)
-    self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=objdir)
     self.dest_branch = dest_branch
     self.old_revision = old_revision
 
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
     self.enabled_repo_hooks = []
+
+  def UpdatePaths(self, relpath, worktree, gitdir, objdir):
+    self.gitdir = gitdir.replace('\\', '/')
+    self.objdir = objdir.replace('\\', '/')
+    if worktree:
+      self.worktree = os.path.normpath(worktree).replace('\\', '/')
+    else:
+      self.worktree = None
+    self.relpath = relpath
+
+    self.config = GitConfig.ForRepository(gitdir=self.gitdir,
+                                          defaults=self.manifest.globalConfig)
+
+    if self.worktree:
+      self.work_git = self._GitGetByExec(self, bare=False, gitdir=self.gitdir)
+    else:
+      self.work_git = None
+    self.bare_git = self._GitGetByExec(self, bare=True, gitdir=self.gitdir)
+    self.bare_ref = GitRefs(self.gitdir)
+    self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=self.objdir)
 
   @property
   def Derived(self):
