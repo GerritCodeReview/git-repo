@@ -5,6 +5,37 @@ related topics and flows.
 
 [TOC]
 
+## Schedule
+
+There is no specific schedule for when releases are made.
+Usually it's more along the lines of "enough minor changes have been merged",
+or "there's a known issue the maintainers know should get fixed".
+If you find a fix has been merged for an issue important to you, but hasn't been
+released after a week or so, feel free to [contact] us to request a new release.
+
+### Release Freezes {#freeze}
+
+We try to observe a regular schedule for when **not** to release.
+If something goes wrong, staff need to be active in order to respond quickly &
+effectively.
+We also don't want to disrupt non-Google organizations if possible.
+
+We generally follow the rules:
+
+* Release during Mon - Thu, 9:00 - 14:00 [US PT]
+* Avoid holidays
+  * All regular [US holidays]
+  * Large international ones if possible
+  * All the various [New Years]
+    * Jan 1 in Gregorian calendar is the most obvious
+    * Check for large Lunar New Years too
+* Follow the normal [Google production freeze schedule]
+
+[US holidays]: https://en.wikipedia.org/wiki/Federal_holidays_in_the_United_States
+[US PT]: https://en.wikipedia.org/wiki/Pacific_Time_Zone
+[New Years]: https://en.wikipedia.org/wiki/New_Year
+[Google production freeze schedule]: http://goto.google.com/prod-freeze
+
 ## Launcher script
 
 The main repo script serves as a standalone program and is often referred to as
@@ -242,6 +273,7 @@ Things in italics are things we used to care about but probably don't anymore.
 | Apr 2020 | **Apr 2030** |              |                 | **20.04 Focal**      | 2.25.0   | 2.7.17 3.7.5 |
 
 
+[contact]: ../README.md#contact
 [rel-d]: https://en.wikipedia.org/wiki/Debian_version_history
 [rel-g]: https://en.wikipedia.org/wiki/Git#Releases
 [rel-p]: https://en.wikipedia.org/wiki/History_of_Python#Table_of_versions

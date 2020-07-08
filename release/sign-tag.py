@@ -18,11 +18,7 @@
 This is intended to be run only by the official Repo release managers, but it
 could be run by people maintaining their own fork of the project.
 
-NB: Avoid new releases on off-hours.  If something goes wrong, staff/oncall need
-to be active in order to respond quickly & effectively.  Recommend sticking to:
-* Mon - Thu, 9:00 - 14:00 PT (i.e. MTV time)
-* Avoid US holidays (and large international ones if possible)
-* Follow the normal Google production freeze schedule
+NB: Check docs/release-process.md for production freeze information.
 """
 
 import argparse
