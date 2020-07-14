@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "91f72e09_7a2cc7bc",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-07-14T19:44:42Z",
+      "side": 1,
+      "message": "Does repo have on-call support?",
+      "range": {
+        "startLine": 19,
+        "startChar": 25,
+        "endLine": 19,
+        "endChar": 37
+      },
+      "revId": "5174231b578bedfd33b42a5d00b2b145f1dda655",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfd21ee5_7c4c41f2",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-07-14T19:44:42Z",
+      "side": 1,
+      "message": "external to who?",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 52
+      },
+      "revId": "5174231b578bedfd33b42a5d00b2b145f1dda655",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "938e60fc_1b33b540",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-07-14T19:44:42Z",
+      "side": 1,
+      "message": "I think we can leave this part out, since it\u0027s not likely to be meaningful for non-Googlers.",
+      "range": {
+        "startLine": 25,
+        "startChar": 48,
+        "endLine": 25,
+        "endChar": 66
+      },
+      "revId": "5174231b578bedfd33b42a5d00b2b145f1dda655",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
