@@ -31,7 +31,7 @@ else:
   urllib.parse = urlparse
 
 import gitc_utils
-from git_config import GitConfig
+from git_config import GitConfig, IsId
 from git_refs import R_HEADS, HEAD
 import platform_utils
 from project import RemoteSpec, Project, MetaProject
@@ -709,6 +709,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             p.groups.extend(groups)
           if revision:
             p.revisionExpr = revision
+            if IsId(revision):
+              p.revisionId = revision
+            else:
+              p.revisionId = None
           if remote:
             p.remote = remote.ToRemoteSpec(name)
       if node.nodeName == 'repo-hooks':
