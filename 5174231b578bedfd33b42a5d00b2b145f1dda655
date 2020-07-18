@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "87b37765_2c4394e7",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-18T06:13:06Z",
+      "side": 1,
+      "message": "not atm.\n\ni meant this as a general point to cover both repo maintainers and Google projects that use repo and have their own oncall rotations who can detect+report issues up rather than wait for users to notice.\n\nthis text is really meant to drive home the point as to why releases should avoid off-hours rather than detailing exact organizational structure.",
+      "parentUuid": "91f72e09_7a2cc7bc",
+      "range": {
+        "startLine": 19,
+        "startChar": 25,
+        "endLine": 19,
+        "endChar": 37
+      },
+      "revId": "5174231b578bedfd33b42a5d00b2b145f1dda655",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "cfd21ee5_7c4c41f2",
         "filename": "docs/release-process.md",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "46ee976d_8402c972",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-18T06:13:06Z",
+      "side": 1,
+      "message": "i can change it to \"non-Google organizations\"",
+      "parentUuid": "cfd21ee5_7c4c41f2",
+      "range": {
+        "startLine": 21,
+        "startChar": 30,
+        "endLine": 21,
+        "endChar": 52
+      },
+      "revId": "5174231b578bedfd33b42a5d00b2b145f1dda655",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "938e60fc_1b33b540",
         "filename": "docs/release-process.md",
         "patchSetId": 1
@@ -68,6 +116,30 @@
       "revId": "5174231b578bedfd33b42a5d00b2b145f1dda655",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80ad4ea7_60b60008",
+        "filename": "docs/release-process.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-18T06:13:06Z",
+      "side": 1,
+      "message": "it\u0027s meaningful to the target audience who are all currently Google employees.  but we can prob assume they know this relationship already.",
+      "parentUuid": "938e60fc_1b33b540",
+      "range": {
+        "startLine": 25,
+        "startChar": 48,
+        "endLine": 25,
+        "endChar": 66
+      },
+      "revId": "5174231b578bedfd33b42a5d00b2b145f1dda655",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
