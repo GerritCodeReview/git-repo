@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7199fbfb_72ba97ee",
+        "filename": "docs/release-process.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-07-18T18:19:58Z",
+      "side": 1,
+      "message": "I\u0027d just change this to \"staff need to be active\".\n\nI understand what you mean, but I really don\u0027t want to give anyone the wrong impression of offering more support than we do. :)",
+      "range": {
+        "startLine": 19,
+        "startChar": 25,
+        "endLine": 19,
+        "endChar": 55
+      },
+      "revId": "e825338752abf93bc2fac82c76e857cff185e2ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
