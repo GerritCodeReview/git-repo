@@ -884,12 +884,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             p.groups.extend(groups)
           if revision:
             p.revisionExpr = revision
-            if IsId(revision):
-              p.revisionId = revision
-            else:
-              p.revisionId = None
+            p.UpdateRevision()
+
           if remote:
             p.remote = remote.ToRemoteSpec(name)
+
           if dest_path:
             del self._paths[p.relpath]
             relpath, worktree, gitdir, objdir = self.GetProjectPaths(name, dest_path)
