@@ -596,7 +596,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
           print('\nWARNING: pre-upload hooks failed, but uploading anyways.',
                 file=sys.stderr)
         else:
-          return
+          return 1
 
     if opt.reviewers:
       reviewers = _SplitEmails(opt.reviewers)
