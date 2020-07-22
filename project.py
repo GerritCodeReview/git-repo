@@ -520,14 +520,7 @@ class Project(object):
     self.name = name
     self.remote = remote
     self.UpdatePaths(relpath, worktree, gitdir, objdir)
-    self.revisionExpr = revisionExpr
-
-    if revisionId is None \
-            and revisionExpr \
-            and IsId(revisionExpr):
-      self.revisionId = revisionExpr
-    else:
-      self.revisionId = revisionId
+    self.SetRevision(revisionExpr, revisionId=revisionId)
 
     self.rebase = rebase
     self.groups = groups
@@ -556,6 +549,14 @@ class Project(object):
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
     self.enabled_repo_hooks = []
+
+  def SetRevision(self, revisionExpr, revisionId=None):
+    """Set revisionId based on revision expression and id"""
+    self.revisionExpr = revisionExpr
+    if revisionId is None and revisionExpr and IsId(revisionExpr):
+      self.revisionId = self.revisionExpr
+    else:
+      self.revisionId = revisionId
 
   def UpdatePaths(self, relpath, worktree, gitdir, objdir):
     """Update paths used by this project
