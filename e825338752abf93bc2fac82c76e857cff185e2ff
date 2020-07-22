@@ -22,6 +22,30 @@
       "revId": "e825338752abf93bc2fac82c76e857cff185e2ff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3071639c_bd4a858b",
+        "filename": "docs/release-process.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-22T07:30:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7199fbfb_72ba97ee",
+      "range": {
+        "startLine": 19,
+        "startChar": 25,
+        "endLine": 19,
+        "endChar": 55
+      },
+      "revId": "e825338752abf93bc2fac82c76e857cff185e2ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
