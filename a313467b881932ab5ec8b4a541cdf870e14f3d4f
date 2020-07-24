@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d378df03_945aa9d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-24T16:22:47Z",
+      "side": 1,
+      "message": "thanks.  i don\u0027t know where i got that 2.19 from.",
+      "revId": "a313467b881932ab5ec8b4a541cdf870e14f3d4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
