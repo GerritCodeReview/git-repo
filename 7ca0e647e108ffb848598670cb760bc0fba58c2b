@@ -34,6 +34,24 @@
       "revId": "7ca0e647e108ffb848598670cb760bc0fba58c2b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b63f28eb_d02432e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-07-24T16:14:20Z",
+      "side": 1,
+      "message": "I suppose if we have a bug open for how to test subcommands, that would make me happiest (that way there\u0027s an easy way to see the state in one place).",
+      "parentUuid": "d5b451bc_4b45cf15",
+      "revId": "7ca0e647e108ffb848598670cb760bc0fba58c2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
