@@ -16,6 +16,24 @@
       "revId": "7ca0e647e108ffb848598670cb760bc0fba58c2b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5b451bc_4b45cf15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-24T09:08:54Z",
+      "side": 1,
+      "message": "i\u0027ve been adding tests for lib modules, but haven\u0027t really figured out how to handle subcommands due to their interesting instantiation and reliance on ambient state (i.e. a manifest).  i did some work a while back to try and move subcommands into a better state, but it\u0027s still not close enough.\n\nthe best we could do atm is @staticmethod, but i don\u0027t think that would help in this particular case.",
+      "parentUuid": "25fd9cc0_1a777d03",
+      "revId": "7ca0e647e108ffb848598670cb760bc0fba58c2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
