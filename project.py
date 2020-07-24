@@ -2793,7 +2793,7 @@ class Project(object):
 
           # Enable per-worktree config file support if possible.  This is more a
           # nice-to-have feature for users rather than a hard requirement.
-          if git_require((2, 19, 0)):
+          if git_require((2, 20, 0)):
             self.EnableRepositoryExtension('worktreeConfig')
 
       # If we have a separate directory to hold refs, initialize it as well.
