@@ -64,8 +64,10 @@ RETRY_JITTER_PERCENT = 0.1
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
-  with open(lock, 'w') as fd:
-    fd.write(content)
+  # We should use binary mode when writing files since
+  # git expects line endings to be unix style.
+  with open(lock, 'wb') as fd:
+    fd.write(content.encode(encoding='UTF-8'))
 
   try:
     platform_utils.rename(lock, path)
@@ -3083,12 +3085,11 @@ class Project(object):
     # of file permissions.  Delete it and recreate it from scratch to avoid.
     platform_utils.remove(dotgit)
     # Use relative path from checkout->worktree.
-    with open(dotgit, 'w') as fp:
-      print('gitdir:', os.path.relpath(git_worktree_path, self.worktree),
-            file=fp)
+    _lwrite(dotgit, 'gitdir:%s' % os.path.relpath(git_worktree_path, self.worktree))
+    print('gitdir:%s' % os.path.relpath(git_worktree_path, self.worktree))
     # Use relative path from worktree->checkout.
-    with open(os.path.join(git_worktree_path, 'gitdir'), 'w') as fp:
-      print(os.path.relpath(dotgit, git_worktree_path), file=fp)
+    _lwrite(os.path.join(git_worktree_path, 'gitdir'),
+            os.path.relpath(dotgit, git_worktree_path))
 
     self._InitMRef()
 
