@@ -30,6 +30,7 @@ import tarfile
 import tempfile
 import time
 import traceback
+import io
 
 from color import Coloring
 from git_command import GitCommand, git_require
@@ -64,7 +65,7 @@ RETRY_JITTER_PERCENT = 0.1
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
-  with open(lock, 'w') as fd:
+  with io.open(lock, 'w', newline='\n') as fd:
     fd.write(content)
 
   try:
