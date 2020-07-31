@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "00947a31_08b24b91",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1109990
+      },
+      "writtenOn": "2020-07-31T16:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eab92001_7afd8a8c",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fa45c5c0_baf716c6",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-07-31T05:57:58Z",
       "side": 1,
       "message": "glancing through this file, we have two other places that do open(..., \u0027w\u0027).  we prob should change them to use _lwrite for this same reason.",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b8ad3b1a_55c8bcf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1109990
+      },
+      "writtenOn": "2020-07-31T16:34:02Z",
+      "side": 1,
+      "message": "Good point. I changed them to use the same _lwrite function.",
+      "parentUuid": "fa45c5c0_baf716c6",
       "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "a75ff6a6_7f240e08",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1109990
+      },
+      "writtenOn": "2020-07-31T16:34:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "624dc5a8_04b78008",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a1ce348b_fb2a029a",
         "filename": "project.py",
         "patchSetId": 1
@@ -67,6 +121,24 @@
       "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e12dff9_50f375b5",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1109990
+      },
+      "writtenOn": "2020-07-31T16:34:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1ce348b_fb2a029a",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
