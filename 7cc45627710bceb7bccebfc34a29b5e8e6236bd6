@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eab92001_7afd8a8c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-31T05:57:58Z",
+      "side": 1,
+      "message": "please add a \"Bug: https://crbug.com/gerrit/13208\" tag here",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa45c5c0_baf716c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-31T05:57:58Z",
+      "side": 1,
+      "message": "glancing through this file, we have two other places that do open(..., \u0027w\u0027).  we prob should change them to use _lwrite for this same reason.",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "624dc5a8_04b78008",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-31T05:57:58Z",
+      "side": 1,
+      "message": "we keep module imports sorted",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1ce348b_fb2a029a",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-07-31T05:57:58Z",
+      "side": 1,
+      "message": "how about writing it in binary mode instead ?  then you don\u0027t need the |io| module.\n\nwould be good to add a comment here explaining that we want to write Unix line endings everywhere as that\u0027s what git tools expect.",
+      "revId": "7cc45627710bceb7bccebfc34a29b5e8e6236bd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
