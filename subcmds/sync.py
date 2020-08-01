@@ -75,6 +75,7 @@ from project import Project
 from project import RemoteSpec
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError, ManifestParseError
+from hooks import RepoHook
 import platform_utils
 from project import SyncBuffer
 from progress import Progress
@@ -278,6 +279,8 @@ later is required to fix a server side protocol bug.
       p.add_option('-t', '--smart-tag',
                    dest='smart_tag', action='store',
                    help='smart sync using manifest from a known tag')
+
+    RepoHook.AddOptionGroup(p, 'post-sync')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -570,6 +573,25 @@ later is required to fix a server side protocol bug.
       t.join()
 
     pm.end()
+
+  def _RunHooks(self, all_projects, opt, err_event):
+    """Run the post repo sync hooks
+
+    Args:
+      all_projects: List of all projects for which to run the hook.
+      opt: Program options returned from optparse.  See _Options().
+      err_event: We'll set this event in the case of an error (after printing
+          out info about the error).
+    """
+    pending_proj_names = [project.name for project in all_projects]
+    pending_worktrees = [project.worktree for project in all_projects]
+    hook = RepoHook.FromSubcmd(
+      hook_type='post-sync', manifest=self.manifest,
+      opt=opt, abort_if_user_denies=True)
+    if (not hook.Run(
+        project_list=pending_proj_names,
+        worktree_list=pending_worktrees)):
+      err_event.set()
 
   def _GCProjects(self, projects, opt, err_event):
     gc_gitdirs = {}
@@ -984,6 +1006,9 @@ later is required to fix a server side protocol bug.
     if err_event.isSet():
       err_checkout = True
       # NB: We don't exit here because this is the last step.
+
+    if not err_event.isSet():
+      self._RunHooks(all_projects, opt, err_event)
 
     # If there's a notice that's supposed to print at the end of the sync, print
     # it now...
