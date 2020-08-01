@@ -76,7 +76,7 @@ from project import RemoteSpec
 from command import Command, MirrorSafeCommand
 from error import RepoChangedException, GitError, ManifestParseError
 import platform_utils
-from project import SyncBuffer
+from project import SyncBuffer, RepoHook
 from progress import Progress
 from wrapper import Wrapper
 from manifest_xml import GitcManifest
@@ -168,6 +168,10 @@ exist locally.
 
 The --prune option can be used to remove any refs that no longer
 exist on the remote.
+
+The repo-hooks options listed in project.py/RepoHook/AddHookOptionGroup() can
+be used to control the bahvior of the 'post-sync' hook after 'repo sync'
+completed.
 
 # SSH Connections
 
@@ -278,6 +282,8 @@ later is required to fix a server side protocol bug.
       p.add_option('-t', '--smart-tag',
                    dest='smart_tag', action='store',
                    help='smart sync using manifest from a known tag')
+
+    RepoHook.AddHookOptionGroup(p, 'post-sync')
 
     g = p.add_option_group('repo Version options')
     g.add_option('--no-repo-verify',
@@ -983,6 +989,15 @@ later is required to fix a server side protocol bug.
     if err_event.isSet():
       err_checkout = True
       # NB: We don't exit here because this is the last step.
+
+    if not err_event.isSet():
+      pending_proj_names = [project.name for project in all_projects]
+      pending_worktrees = [project.worktree for project in all_projects]
+      if (not RepoHook('post-sync', self.manifest, opt,
+                       abort_if_user_denies=True).Run(
+                          project_list=pending_proj_names,
+                          worktree_list=pending_worktrees)):
+        err_event.set()
 
     # If there's a notice that's supposed to print at the end of the sync, print
     # it now...
