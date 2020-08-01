@@ -21,7 +21,7 @@ import sys
 
 from command import InteractiveCommand
 from editor import Editor
-from error import HookError, UploadError
+from error import UploadError
 from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
@@ -205,33 +205,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--no-cert-checks',
                  dest='validate_certs', action='store_false', default=True,
                  help='Disable verifying ssl certs (unsafe).')
-
-    # Options relating to upload hook.  Note that verify and no-verify are NOT
-    # opposites of each other, which is why they store to different locations.
-    # We are using them to match 'git commit' syntax.
-    #
-    # Combinations:
-    # - no-verify=False, verify=False (DEFAULT):
-    #   If stdout is a tty, can prompt about running upload hooks if needed.
-    #   If user denies running hooks, the upload is cancelled.  If stdout is
-    #   not a tty and we would need to prompt about upload hooks, upload is
-    #   cancelled.
-    # - no-verify=False, verify=True:
-    #   Always run upload hooks with no prompt.
-    # - no-verify=True, verify=False:
-    #   Never run upload hooks, but upload anyway (AKA bypass hooks).
-    # - no-verify=True, verify=True:
-    #   Invalid
-    g = p.add_option_group('Upload hooks')
-    g.add_option('--no-verify',
-                 dest='bypass_hooks', action='store_true',
-                 help='Do not run the upload hook.')
-    g.add_option('--verify',
-                 dest='allow_all_hooks', action='store_true',
-                 help='Run the upload hook without prompting.')
-    g.add_option('--ignore-hooks',
-                 dest='ignore_hooks', action='store_true',
-                 help='Do not abort uploading if upload hooks fail.')
+    RepoHook.AddHookOptionGroup(p, 'pre-upload')
 
   def _SingleBranch(self, opt, branch, people):
     project = branch.project
@@ -572,31 +546,13 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
               (branch,), file=sys.stderr)
       return 1
 
-    if not opt.bypass_hooks:
-      hook = RepoHook('pre-upload', self.manifest.repo_hooks_project,
-                      self.manifest.topdir,
-                      self.manifest.manifestProject.GetRemote('origin').url,
-                      abort_if_user_denies=True)
-      pending_proj_names = [project.name for (project, available) in pending]
-      pending_worktrees = [project.worktree for (project, available) in pending]
-      passed = True
-      try:
-        hook.Run(opt.allow_all_hooks, project_list=pending_proj_names,
-                 worktree_list=pending_worktrees)
-      except SystemExit:
-        passed = False
-        if not opt.ignore_hooks:
-          raise
-      except HookError as e:
-        passed = False
-        print("ERROR: %s" % str(e), file=sys.stderr)
-
-      if not passed:
-        if opt.ignore_hooks:
-          print('\nWARNING: pre-upload hooks failed, but uploading anyways.',
-                file=sys.stderr)
-        else:
-          return 1
+    pending_proj_names = [project.name for (project, available) in pending]
+    pending_worktrees = [project.worktree for (project, available) in pending]
+    if (not RepoHook('pre-upload', self.manifest, opt,
+                     abort_if_user_denies=True).Run(
+                        project_list=pending_proj_names,
+                        worktree_list=pending_worktrees)):
+        return 1
 
     if opt.reviewers:
       reviewers = _SplitEmails(opt.reviewers)
