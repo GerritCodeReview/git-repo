@@ -45,13 +45,29 @@ class RepoHook(object):
 
   Hooks are always python.  When a hook is run, we will load the hook into the
   interpreter and execute its main() function.
+
+  Combinations of hook option flags:
+  - no-verify=False, verify=False (DEFAULT):
+    If stdout is a tty, can prompt about running hooks if needed.
+    If user denies running hooks, the action is cancelled. If stdout is
+    not a tty and we would need to prompt about hooks, action is
+    cancelled.
+  - no-verify=False, verify=True:
+    Always run hooks with no prompt.
+  - no-verify=True, verify=False:
+    Never run hooks, but run action anyway (AKA bypass hooks).
+  - no-verify=True, verify=True:
+    Invalid
   """
 
   def __init__(self,
                hook_type,
                hooks_project,
-               topdir,
+               repo_topdir,
                manifest_url,
+               bypass_hooks=False,
+               allow_all_hooks=False,
+               ignore_hooks=False,
                abort_if_user_denies=False):
     """RepoHook constructor.
 
@@ -59,20 +75,27 @@ class RepoHook(object):
       hook_type: A string representing the type of hook.  This is also used
           to figure out the name of the file containing the hook.  For
           example: 'pre-upload'.
-      hooks_project: The project containing the repo hooks.  If you have a
-          manifest, this is manifest.repo_hooks_project.  OK if this is None,
-          which will make the hook a no-op.
-      topdir: Repo's top directory (the one containing the .repo directory).
-          Scripts will run with CWD as this directory.  If you have a manifest,
-          this is manifest.topdir
+      hooks_project: The project containing the repo hooks.
+          If you have a manifest, this is manifest.repo_hooks_project.
+          OK if this is None, which will make the hook a no-op.
+      repo_topdir: The top directory of the repo client checkout.
+          This is the one containing the .repo directory. Scripts will
+          run with CWD as this directory.
+          If you have a manifest, this is manifest.topdir.
       manifest_url: The URL to the manifest git repo.
-      abort_if_user_denies: If True, we'll throw a HookError() if the user
+      bypass_hooks: If True, then 'Do not run the hook'.
+      allow_all_hooks: If True, then 'Run the hook without prompting'.
+      ignore_hooks: If True, then 'Do not abort action if hooks fail'.
+      abort_if_user_denies: If True, we'll abort running the hook if the user
           doesn't allow us to run the hook.
     """
     self._hook_type = hook_type
     self._hooks_project = hooks_project
+    self._repo_topdir = repo_topdir
     self._manifest_url = manifest_url
-    self._topdir = topdir
+    self._bypass_hooks = bypass_hooks
+    self._allow_all_hooks = allow_all_hooks
+    self._ignore_hooks = ignore_hooks
     self._abort_if_user_denies = abort_if_user_denies
 
     # Store the full path to the script for convenience.
@@ -347,7 +370,7 @@ context['main'](**kwargs)
 
     try:
       # Always run hooks with CWD as topdir.
-      os.chdir(self._topdir)
+      os.chdir(self._repo_topdir)
 
       # Put the hook dir as the first item of sys.path so hooks can do
       # relative imports.  We want to replace the repo dir as [0] so
@@ -397,7 +420,12 @@ context['main'](**kwargs)
       sys.path = orig_syspath
       os.chdir(orig_path)
 
-  def Run(self, user_allows_all_hooks, **kwargs):
+  def _CheckHook(self):
+      # Bail with a nice error if we can't find the hook.
+      if not os.path.isfile(self._script_fullpath):
+        raise HookError('Couldn\'t find repo hook: %s' % self._script_fullpath)
+
+  def Run(self, **kwargs):
     """Run the hook.
 
     If the hook doesn't exist (because there is no hooks project or because
@@ -410,22 +438,80 @@ context['main'](**kwargs)
           to the hook type.  For instance, pre-upload hooks will contain
           a project_list.
 
-    Raises:
-      HookError: If there was a problem finding the hook or the user declined
-          to run a required hook (from _CheckForHookApproval).
+    Returns:
+      True: On success or ignore hooks by user-request
+      False: The hook failed. The caller should respond with aborting the action.
+        Some examples in which False is returned:
+        * Finding the hook failed while it was enabled, or
+        * the user declined to run a required hook (from _CheckForHookApproval)
+        In all these cases the user did not pass the proper arguments to
+        ignore the result through the option combinations as listed in
+        AddHookOptionGroup().
     """
-    # No-op if there is no hooks project or if hook is disabled.
-    if ((not self._hooks_project) or (self._hook_type not in
-                                      self._hooks_project.enabled_repo_hooks)):
-      return
+    # Do not do anything in case bypass_hooks is set, or
+    # no-op if there is no hooks project or if hook is disabled.
+    if (self._bypass_hooks or
+        not self._hooks_project or
+        self._hook_type not in self._hooks_project.enabled_repo_hooks):
+      return True
 
-    # Bail with a nice error if we can't find the hook.
-    if not os.path.isfile(self._script_fullpath):
-      raise HookError('Couldn\'t find repo hook: "%s"' % self._script_fullpath)
+    passed = True
+    try:
+      self._CheckHook()
 
-    # Make sure the user is OK with running the hook.
-    if (not user_allows_all_hooks) and (not self._CheckForHookApproval()):
-      return
+      # Make sure the user is OK with running the hook.
+      if self._allow_all_hooks or self._CheckForHookApproval():
+        # Run the hook with the same version of python we're using.
+        self._ExecuteHook(**kwargs)
+    except SystemExit as e:
+      passed = False
+      print('ERROR: %s hooks exited with exit code: %s' % (self._hook_type, str(e)),
+            file=sys.stderr)
+    except HookError as e:
+      passed = False
+      print('ERROR: %s' % str(e), file=sys.stderr)
 
-    # Run the hook with the same version of python we're using.
-    self._ExecuteHook(**kwargs)
+    if not passed and self._ignore_hooks:
+      print('\nWARNING: %s hooks failed, but continuing anyways.' % self._hook_type,
+            file=sys.stderr)
+      passed = True
+
+    return passed
+
+  @classmethod
+  def FromSubcmd(cls, manifest, opt, *args, **kwargs):
+    """Method to construct the repo hook class
+
+    Args:
+      manifest: The current active manifest for this command from which we
+          extract a couple of fields.
+      opt: Contains the commandline options for the action of this hook.
+          It should contain the options added by AddHookOptionGroup() in which
+          we are interested in RepoHook execution.
+    """
+    for key in ('bypass_hooks', 'allow_all_hooks', 'ignore_hooks'):
+      kwargs.setdefault(key, getattr(opt, key))
+    kwargs.update({
+        'hooks_project': manifest.repo_hooks_project,
+        'repo_topdir': manifest.topdir,
+        'manifest_url': manifest.manifestProject.GetRemote('origin').url,
+    })
+    return cls(*args, **kwargs)
+
+  @staticmethod
+  def AddOptionGroup(parser, name):
+    """Help options relating to the various hooks."""
+
+    # Note that verify and no-verify are NOT opposites of each other, which
+    # is why they store to different locations. We are using them to match
+    # 'git commit' syntax.
+    group = parser.add_option_group(name + ' hooks')
+    group.add_option('--no-verify',
+                     dest='bypass_hooks', action='store_true',
+                     help='Do not run the %s hook.' % name)
+    group.add_option('--verify',
+                     dest='allow_all_hooks', action='store_true',
+                     help='Run the %s hook without prompting.' % name)
+    group.add_option('--ignore-hooks',
+                     action='store_true',
+                     help='Do not abort if %s hooks fail.' % name)
