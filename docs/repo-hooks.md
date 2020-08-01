@@ -35,15 +35,16 @@ with the name `platform/tools/repohooks` for hooks to run during the
 
 ```xml
 <project path="tools/repohooks" name="platform/tools/repohooks" />
-<repo-hooks in-project="platform/tools/repohooks" enabled-list="pre-upload" />
+<repo-hooks in-project="platform/tools/repohooks" enabled-list="pre-upload,post-sync" />
 ```
 
 ## Source Layout
 
 The repohooks git repo should have a python file with the same name as the hook.
 So if you want to support the `pre-upload` hook, you'll need to create a file
-named `pre-upload.py`.  Repo will dynamically load that module when processing
-the hook and then call the `main` function in it.
+named `pre-upload.py`. Similarly you can support the `post-sync` hook when a file
+named `post-sync.py` is created.  Repo will dynamically load that module when
+processing the hook and then call the `main` function in it.
 
 Hooks should have their `main` accept `**kwargs` for future compatibility.
 
@@ -117,6 +118,28 @@ Here are all the points available for hooking.
 This hook runs when people run `repo upload`.
 
 The `pre-upload.py` file should be defined like:
+
+```py
+def main(project_list, worktree_list=None, **kwargs):
+    """Main function invoked directly by repo.
+
+    We must use the name "main" as that is what repo requires.
+
+    Args:
+      project_list: List of projects to run on.
+      worktree_list: A list of directories.  It should be the same length as
+          project_list, so that each entry in project_list matches with a
+          directory in worktree_list.  If None, we will attempt to calculate
+          the directories automatically.
+      kwargs: Leave this here for forward-compatibility.
+    """
+```
+
+### post-sync
+
+This hook runs at the end of when this command completes `repo sync`.
+
+The `post-sync.py` file should be defined like:
 
 ```py
 def main(project_list, worktree_list=None, **kwargs):
