@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c87201e0_0adefe50",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1030482
+      },
+      "writtenOn": "2020-08-26T18:00:00Z",
+      "side": 1,
+      "message": "Can we remove this? It causes needless failures not everyone might guess are due to the hook:\n\n $ git commit -m \u0027 \u0027\n file is empty: .git/COMMIT_EDITMSG",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 2
+      },
+      "revId": "3995ebd8c1569f2c3e59c33593fed611a923f428",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
