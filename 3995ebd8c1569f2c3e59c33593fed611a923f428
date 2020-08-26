@@ -22,6 +22,30 @@
       "revId": "3995ebd8c1569f2c3e59c33593fed611a923f428",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37457dbb_c086487f",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-26T18:36:40Z",
+      "side": 1,
+      "message": "we only keep a copy of the hook, we don\u0027t customize it.  you should follow up with the Gerrit project instead.",
+      "parentUuid": "c87201e0_0adefe50",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 2
+      },
+      "revId": "3995ebd8c1569f2c3e59c33593fed611a923f428",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
