@@ -488,6 +488,9 @@ to update the working directory files.
     if opt.archive and opt.mirror:
       self.OptionParser.error('--mirror and --archive cannot be used together.')
 
+    if args:
+      self.OptionParser.error('init takes no arguments')
+
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION_HARD, fail=True)
     if not git_require(MIN_GIT_VERSION_SOFT):
