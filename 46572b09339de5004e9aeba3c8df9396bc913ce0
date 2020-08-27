@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0163f6c3_70961a50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-08-27T05:52:44Z",
+      "side": 1,
+      "message": "The usual question: would this be easy to test in automated tests?",
+      "revId": "46572b09339de5004e9aeba3c8df9396bc913ce0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
