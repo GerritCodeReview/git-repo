@@ -17,15 +17,15 @@
 from __future__ import print_function
 
 import glob
-import itertools
+import multiprocessing
 import os
-
-from command import PagedCommand
 
 try:
   import threading as _threading
 except ImportError:
   import dummy_threading as _threading
+
+from command import PagedCommand
 
 from color import Coloring
 import platform_utils
@@ -95,25 +95,29 @@ the following meanings:
     p.add_option('-q', '--quiet', action='store_true',
                  help="only print the name of modified projects")
 
-  def _StatusHelper(self, project, clean_counter, sem, quiet):
-    """Obtains the status for a specific project.
+  def _StatusHelper(self, all_projects, clean_counter, next_project_index, quiet):
+    """Obtains the status for some projects.
 
-    Obtains the status for a project, redirecting the output to
-    the specified object. It will release the semaphore
-    when done.
+    Obtains the status for projects, redirecting the output to
+    the specified object.
 
     Args:
-      project: Project to get status of.
+      all_projects: Projects to get status of.
       clean_counter: Counter for clean projects.
-      sem: Semaphore, will call release() when complete.
-      output: Where to output the status.
+      next_project_index: Index of the next project to be processed. This is used like a queue.
+      quiet: Where to output the status.
     """
-    try:
+    while True:
+      with next_project_index.get_lock():
+        if next_project_index.value >= len(all_projects):
+          break
+        i = next_project_index.value
+        next_project_index.value += 1
+      project = all_projects[i]
       state = project.PrintWorkTreeStatus(quiet=quiet)
       if state == 'CLEAN':
-        next(clean_counter)
-    finally:
-      sem.release()
+        with clean_counter.get_lock():
+          clean_counter.value += 1
 
   def _FindOrphans(self, dirs, proj_dirs, proj_dirs_parents, outstring):
     """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""
@@ -133,27 +137,41 @@ the following meanings:
 
   def Execute(self, opt, args):
     all_projects = self.GetProjects(args)
-    counter = itertools.count()
+    counter = multiprocessing.Value('i', 0)
 
     if opt.jobs == 1:
       for project in all_projects:
         state = project.PrintWorkTreeStatus(quiet=opt.quiet)
         if state == 'CLEAN':
-          next(counter)
+          with counter.get_lock():
+            counter.value += 1
     else:
-      sem = _threading.Semaphore(opt.jobs)
-      threads = []
-      for project in all_projects:
-        sem.acquire()
-
-        t = _threading.Thread(target=self._StatusHelper,
-                              args=(project, counter, sem, opt.quiet))
-        threads.append(t)
-        t.daemon = True
-        t.start()
-      for t in threads:
-        t.join()
-    if not opt.quiet and len(all_projects) == next(counter):
+      # The objects of the Project class are not pickle-able. So we cannot pass
+      # them to other child processes except at the fork timing.
+      if multiprocessing.get_start_method() == 'fork':
+        processes = []
+        next_project_index = multiprocessing.Value('i', 0)
+        for _ in range(opt.jobs):
+          p = multiprocessing.Process(target=self._StatusHelper,
+                                      args=(all_projects, counter, next_project_index, opt.quiet))
+          processes.append(p)
+          p.daemon = True
+          p.start()
+        for p in processes:
+          p.join()
+      else:
+        # Threads are slower than processes due to the global interpreter lock.
+        threads = []
+        next_project_index = multiprocessing.Value('i', 0)
+        for _ in range(opt.jobs):
+          t = _threading.Thread(target=self._StatusHelper,
+                                args=(all_projects, counter, next_project_index, opt.quiet))
+          threads.append(t)
+          t.daemon = True
+          t.start()
+        for t in threads:
+          t.join()
+    if not opt.quiet and len(all_projects) == counter.value:
       print('nothing to commit (working directory clean)')
 
     if opt.orphans:
