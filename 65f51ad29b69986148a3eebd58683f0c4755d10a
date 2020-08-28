@@ -16,6 +16,24 @@
       "revId": "65f51ad29b69986148a3eebd58683f0c4755d10a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ddabebd_04910852",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-28T08:35:13Z",
+      "side": 0,
+      "message": "I used multiprocessing.Value",
+      "parentUuid": "8f03d641_d47dd4d7",
+      "revId": "65f51ad29b69986148a3eebd58683f0c4755d10a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }

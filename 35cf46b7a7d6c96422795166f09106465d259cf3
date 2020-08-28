@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "aa34616b_41e76c4c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-28T08:35:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51f37389_39233338",
+      "range": {
+        "startLine": 10,
+        "startChar": 45,
+        "endLine": 10,
+        "endChar": 59
+      },
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "cf3bff1c_00de3bb0",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
@@ -39,6 +63,24 @@
       "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f8a7f68_d1021ed5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-28T08:35:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf3bff1c_00de3bb0",
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     },
     {
       "key": {
@@ -76,6 +118,24 @@
     },
     {
       "key": {
+        "uuid": "466c12d2_e8a98185",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-28T08:35:13Z",
+      "side": 1,
+      "message": "I tested only on Linux.\nI have no testing environments on Windows nor macOS, so I want to ask you to test. Thank you!",
+      "parentUuid": "e3aecc68_c7d52f46",
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8e61672b_bdade4d0",
         "filename": "subcmds/status.py",
         "patchSetId": 1
@@ -96,6 +156,30 @@
       "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89e992a9_8e4f38d8",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-28T08:35:13Z",
+      "side": 1,
+      "message": "multiprocessing.Pool is useful, however it seems we cannot use this because pool.map(f, args) requires that f and args are pickle-able but the Project class is not pickle-able.\n\nInstead, I passed all Project objects anyway to the constructor of multiprocessing.Process, and implement a job queue which passes only indices of projects.",
+      "parentUuid": "8e61672b_bdade4d0",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 55
+      },
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
