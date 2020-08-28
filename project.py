@@ -3208,6 +3208,13 @@ class Project(object):
       self._bare = bare
       self._gitdir = gitdir
 
+    # __getstate__ and __setstate__ are required for pickling because __getattr__ exists.
+    def __getstate__(self):
+      return (self._project, self._bare, self._gitdir)
+
+    def __setstate__(self, state):
+      self._project, self._bare, self._gitdir = state
+
     def LsOthers(self):
       p = GitCommand(self._project,
                      ['ls-files',
