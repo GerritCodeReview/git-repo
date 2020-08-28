@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "776e371d_1f036b8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-28T09:22:19Z",
+      "side": 1,
+      "message": "It seems that multiprocessing doesn\u0027t works on Windows and macOS because they don\u0027t use fork and require objects can be pickled. Project class cannot be pickled, so errors will happen.\n\nI updated the code to fallback to threading when multiprocessing seems not available.\n\nhttps://docs.python.org/3/library/multiprocessing.html#all-start-methods\n\u003e When using the spawn or forkserver start methods many types from multiprocessing need to be picklable so that child processes can use them. \nhttps://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods",
+      "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
