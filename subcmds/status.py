@@ -16,16 +16,12 @@
 
 from __future__ import print_function
 
+import functools
 import glob
-import itertools
+import multiprocessing
 import os
 
 from command import PagedCommand
-
-try:
-  import threading as _threading
-except ImportError:
-  import dummy_threading as _threading
 
 from color import Coloring
 import platform_utils
@@ -95,25 +91,19 @@ the following meanings:
     p.add_option('-q', '--quiet', action='store_true',
                  help="only print the name of modified projects")
 
-  def _StatusHelper(self, project, clean_counter, sem, quiet):
+  def _StatusHelper(self, quiet, project):
     """Obtains the status for a specific project.
 
     Obtains the status for a project, redirecting the output to
-    the specified object. It will release the semaphore
-    when done.
+    the specified object.
 
     Args:
+      quiet: Where to output the status.
       project: Project to get status of.
-      clean_counter: Counter for clean projects.
-      sem: Semaphore, will call release() when complete.
-      output: Where to output the status.
+
+    Returns: The status of the project.
     """
-    try:
-      state = project.PrintWorkTreeStatus(quiet=quiet)
-      if state == 'CLEAN':
-        next(clean_counter)
-    finally:
-      sem.release()
+    return project.PrintWorkTreeStatus(quiet=quiet)
 
   def _FindOrphans(self, dirs, proj_dirs, proj_dirs_parents, outstring):
     """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""
@@ -133,27 +123,18 @@ the following meanings:
 
   def Execute(self, opt, args):
     all_projects = self.GetProjects(args)
-    counter = itertools.count()
+    counter = 0
 
     if opt.jobs == 1:
       for project in all_projects:
         state = project.PrintWorkTreeStatus(quiet=opt.quiet)
         if state == 'CLEAN':
-          next(counter)
+          counter += 1
     else:
-      sem = _threading.Semaphore(opt.jobs)
-      threads = []
-      for project in all_projects:
-        sem.acquire()
-
-        t = _threading.Thread(target=self._StatusHelper,
-                              args=(project, counter, sem, opt.quiet))
-        threads.append(t)
-        t.daemon = True
-        t.start()
-      for t in threads:
-        t.join()
-    if not opt.quiet and len(all_projects) == next(counter):
+      with multiprocessing.Pool(opt.jobs) as pool:
+        states = pool.map(functools.partial(self._StatusHelper, opt.quiet), all_projects)
+        counter += states.count('CLEAN')
+    if not opt.quiet and len(all_projects) == counter.value:
       print('nothing to commit (working directory clean)')
 
     if opt.orphans:
