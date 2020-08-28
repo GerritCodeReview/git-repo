@@ -16,6 +16,57 @@
       "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd66b731_59e7fc8c",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T09:24:00Z",
+      "side": 1,
+      "message": "you don\u0027t need to grab the lock here -- we already know there\u0027s a single process since opt.jobs\u003d\u003d1 above",
+      "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "666673c2_d2a5a81c",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T09:24:00Z",
+      "side": 1,
+      "message": "why this check ?  can\u0027t we always use multiprocessing ?",
+      "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "08b3de95_34d75239",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T09:24:00Z",
+      "side": 1,
+      "message": "this will only process opt.jobs projects instead of all the projects",
+      "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
