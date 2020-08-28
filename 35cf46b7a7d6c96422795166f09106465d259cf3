@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "28c744c5_88c74172",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-28T02:49:52Z",
+      "side": 1,
+      "message": "This change makes `repo status` faster.\n\n* It becomes from 13 sec to 1.7 sec with `-j48` on my cloud environment (48 cores) and my directory (Chrome OS checkout, 702 projects).\n* When we use only few number of jobs (e.g. `-j2`), the speed doesn\u0027t change. \n* There is no change when the files are not cached. For example, the first run after `sync \u0026\u0026 sh -c \u0027echo 3 \u003e /proc/sys/vm/drop_caches\u0027` takes about 2 minutes both with thread and with processes.",
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
