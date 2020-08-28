@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8f03d641_d47dd4d7",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T03:47:19Z",
+      "side": 0,
+      "message": "i\u0027m pretty sure the |counter| no longer works using multiprocessing.  it needs to changed to multiprocessing.Value, and _StatusHelper has to grab a lock when incrementing it (instead of using next()).  the manual has an example snippet.\nhttps://docs.python.org/3/library/multiprocessing.html#multiprocessing.Value",
+      "revId": "65f51ad29b69986148a3eebd58683f0c4755d10a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

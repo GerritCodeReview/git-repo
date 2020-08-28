@@ -2,6 +2,46 @@
   "comments": [
     {
       "key": {
+        "uuid": "51f37389_39233338",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T03:47:19Z",
+      "side": 1,
+      "message": "\"doesn\u0027t work\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 45,
+        "endLine": 10,
+        "endChar": 59
+      },
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf3bff1c_00de3bb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T03:47:19Z",
+      "side": 1,
+      "message": "add:\n\n Bug: https://crbug.com/gerrit/12389",
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "28c744c5_88c74172",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -16,6 +56,46 @@
       "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e3aecc68_c7d52f46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T03:47:19Z",
+      "side": 1,
+      "message": "i\u0027m guessing you tested on Linux.  did you try Windows/macOS too ?  if not, i can check them for you.",
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8e61672b_bdade4d0",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-08-28T03:47:19Z",
+      "side": 1,
+      "message": "i don\u0027t think this design is very good at distributing load.  if i have 100 repos, 90 of which are small, and 10 that are very large, and i run with -j10, this could assign the 10 large ones to a single process, and the remaining small jobs to the other 9 processes.  so we\u0027d complete the 90 small ones quickly, but take a long time with the remaining 10 large ones.\n\ni think you want to:\n\n* create a multiprocessing.Pool() instead\n* change _StatusHelper so it operates on a single project\n* shuffle the _StatusHelper arguments so |project| comes last\n* create a functor with functools.partial(self._StatusHelper, counter, opt.quiet)\n* use pool.map() on the functor \u0026 all_projects",
+      "range": {
+        "startLine": 136,
+        "startChar": 0,
+        "endLine": 138,
+        "endChar": 55
+      },
+      "revId": "35cf46b7a7d6c96422795166f09106465d259cf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
