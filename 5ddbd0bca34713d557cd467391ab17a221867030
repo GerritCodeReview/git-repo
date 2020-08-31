@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d290799c_e878ddab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011600
+      },
+      "writtenOn": "2020-08-31T13:57:52Z",
+      "side": 1,
+      "message": "I\u0027m sorry but I\u0027ve left the Android for serveral years now and can\u0027t really help.",
+      "revId": "5ddbd0bca34713d557cd467391ab17a221867030",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
