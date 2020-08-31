@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "242b7aa0_49f2dbef",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-31T09:13:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd66b731_59e7fc8c",
+      "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "666673c2_d2a5a81c",
         "filename": "subcmds/status.py",
         "patchSetId": 3
@@ -53,6 +71,24 @@
     },
     {
       "key": {
+        "uuid": "b7068d91_2981dce1",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-31T09:13:03Z",
+      "side": 1,
+      "message": "I could avoid this check.\n\nIt was a problem of pickling. The objects of _GitGetByExec class in project.py are not picklable because they have __getattr__, so I added __getstate__ and __setstate__ for this class.",
+      "parentUuid": "666673c2_d2a5a81c",
+      "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "08b3de95_34d75239",
         "filename": "subcmds/status.py",
         "patchSetId": 3
@@ -67,6 +103,24 @@
       "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "151d6d22_f76afc1d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-08-31T09:13:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08b3de95_34d75239",
+      "revId": "f181b791e4b54639419dea5394ea1a4502e47b24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
