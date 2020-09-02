@@ -283,9 +283,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def _ParseGroups(self, groups):
     return [x for x in re.split(r'[,\s]+', groups) if x]
 
-  def Save(self, fd, peg_rev=False, peg_rev_upstream=True, peg_rev_dest_branch=True, groups=None):
-    """Write the current manifest out to the given file descriptor.
-    """
+  def ToXml(self, peg_rev=False, peg_rev_upstream=True, peg_rev_dest_branch=True, groups=None):
+    """Return the current manifest XML."""
     mp = self.manifestProject
 
     if groups is None:
@@ -459,6 +458,56 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                      ' '.join(self._repo_hooks_project.enabled_repo_hooks))
       root.appendChild(e)
 
+    return doc
+
+  def ToDict(self, **kwargs):
+    """Return the current manifest as a dictionary."""
+    # Elements that may only appear once.
+    SINGLE_ELEMENTS = {
+        'notice',
+        'default',
+        'manifest-server',
+        'repo-hooks',
+    }
+    # Elements that may be repeated.
+    MULTI_ELEMENTS = {
+        'remote',
+        'remove-project',
+        'project',
+        'extend-project',
+        'include',
+        # These are children of 'project' nodes.
+        'annotation',
+        'project',
+        'copyfile',
+        'linkfile',
+    }
+
+    doc = self.ToXml(**kwargs)
+    ret = {}
+
+    def append_children(ret, node):
+      for child in node.childNodes:
+        if child.nodeType == xml.dom.Node.ELEMENT_NODE:
+          attrs = child.attributes
+          element = dict((attrs.item(i).localName, attrs.item(i).value)
+                         for i in range(attrs.length))
+          if child.nodeName in SINGLE_ELEMENTS:
+            ret[child.nodeName] = element
+          elif child.nodeName in MULTI_ELEMENTS:
+            ret.setdefault(child.nodeName, []).append(element)
+          else:
+            raise ManifestParseError('Unhandled element "%s"' % (child.nodeName,))
+
+          append_children(element, child)
+
+    append_children(ret, doc.firstChild)
+
+    return ret
+
+  def Save(self, fd, **kwargs):
+    """Write the current manifest out to the given file descriptor."""
+    doc = self.ToXml(**kwargs)
     doc.writexml(fd, '', '  ', '\n', 'UTF-8')
 
   def _output_manifest_project_extras(self, p, e):
