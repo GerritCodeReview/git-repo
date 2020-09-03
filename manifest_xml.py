@@ -163,7 +163,14 @@ class _XmlRemote(object):
     # We handle no scheme by replacing it with an obscure protocol, gopher
     # and then replacing it with the original when we are done.
 
-    if manifestUrl.find(':') != manifestUrl.find('/') - 1:
+    if manifestUrl.startswith('git@'):
+      #urllib can't support scheme git@
+      #gitolite hosting git repo
+      url = re.sub(r'git@', 'git://', url)
+      manifestUrl = re.sub(r'git@', 'git://', manifestUrl)
+      url = urllib.parse.urljoin(manifestUrl, url)
+      url = re.sub(r'git://', 'git@', url)
+    elif manifestUrl.find(':') != manifestUrl.find('/') - 1:
       url = urllib.parse.urljoin('gopher://' + manifestUrl, url)
       url = re.sub(r'^gopher://', '', url)
     else:
