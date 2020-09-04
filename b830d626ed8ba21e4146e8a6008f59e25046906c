@@ -16,6 +16,24 @@
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "25ef43e4_0c85e727",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-04T21:42:20Z",
+      "side": 1,
+      "message": "this is for https://crbug.com/gerrit/10490 where github uses a lot of URIs w/out schemas\n\npretty sure we want schema-less URIs to default to ssh:// though, not git:// which is what this is trying to do",
+      "parentUuid": "c8463d71_fd996484",
+      "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
