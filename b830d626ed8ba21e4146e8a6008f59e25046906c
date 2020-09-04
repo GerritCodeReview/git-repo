@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c8463d71_fd996484",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-09-04T04:34:49Z",
+      "side": 1,
+      "message": "git@ isn\u0027t a URL scheme. Are you looking for ssh://?",
+      "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
