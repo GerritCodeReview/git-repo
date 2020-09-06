@@ -510,7 +510,7 @@ class Project(object):
                      with exponential backoff and jitter.
       old_revision: saved git commit id for open GITC projects.
     """
-    self.manifest = manifest
+    self.client = self.manifest = manifest
     self.name = name
     self.remote = remote
     self.gitdir = gitdir.replace('\\', '/')
@@ -551,7 +551,7 @@ class Project(object):
     self.linkfiles = []
     self.annotations = []
     self.config = GitConfig.ForRepository(gitdir=self.gitdir,
-                                          defaults=self.manifest.globalConfig)
+                                          defaults=self.client.globalConfig)
 
     if self.worktree:
       self.work_git = self._GitGetByExec(self, bare=False, gitdir=gitdir)
@@ -1168,7 +1168,7 @@ class Project(object):
     self._InitHooks()
 
   def _CopyAndLinkFiles(self):
-    if self.manifest.isGitcClient:
+    if self.client.isGitcClient:
       return
     for copyfile in self.copyfiles:
       copyfile._Copy()

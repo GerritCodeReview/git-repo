@@ -365,7 +365,7 @@ to update the working directory files.
     return a
 
   def _ShouldConfigureUser(self, opt):
-    gc = self.manifest.globalConfig
+    gc = self.client.globalConfig
     mp = self.manifest.manifestProject
 
     # If we don't have local settings, get from global.
@@ -414,7 +414,7 @@ to update the working directory files.
     return False
 
   def _ConfigureColor(self):
-    gc = self.manifest.globalConfig
+    gc = self.client.globalConfig
     if self._HasColorSet(gc):
       return
 
