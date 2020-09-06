@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 #
 # Copyright (C) 2008 The Android Open Source Project
@@ -85,9 +85,10 @@ MIN_PYTHON_VERSION_SOFT = (3, 6)
 MIN_PYTHON_VERSION_HARD = (3, 4)
 
 if sys.version_info.major < 3:
-  print('repo: warning: Python 2 is no longer supported; '
+  print('repo: error: Python 2 is no longer supported; '
         'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_SOFT),
         file=sys.stderr)
+  sys.exit(1)
 else:
   if sys.version_info < MIN_PYTHON_VERSION_HARD:
     print('repo: error: Python 3 version is too old; '
