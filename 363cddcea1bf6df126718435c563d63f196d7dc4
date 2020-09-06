@@ -16,6 +16,40 @@
       "revId": "363cddcea1bf6df126718435c563d63f196d7dc4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "55ff4f39_931660b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-06T16:10:56Z",
+      "side": 1,
+      "message": "this looks good to me.  i can test it on Windows to make sure it still works.",
+      "revId": "363cddcea1bf6df126718435c563d63f196d7dc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5211affa_ddda7443",
+        "filename": "subcmds/status.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-06T16:10:56Z",
+      "side": 1,
+      "message": "docstring style has \"Returns:\" on dedicated lines",
+      "revId": "363cddcea1bf6df126718435c563d63f196d7dc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
