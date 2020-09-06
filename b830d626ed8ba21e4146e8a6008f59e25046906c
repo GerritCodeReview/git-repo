@@ -34,6 +34,24 @@
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e2562772_48ebac88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-09-06T15:58:17Z",
+      "side": 1,
+      "message": "Isn\u0027t that already handled by the case `    elif manifestUrl.find(\u0027:\u0027) !\u003d manifestUrl.find(\u0027/\u0027) - 1:` a few lines down?",
+      "parentUuid": "25ef43e4_0c85e727",
+      "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
