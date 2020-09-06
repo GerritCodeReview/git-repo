@@ -65,7 +65,7 @@ Displays detailed usage information about a command.
     def gitc_supported(cmd):
       if not isinstance(cmd, GitcAvailableCommand) and not isinstance(cmd, GitcClientCommand):
         return True
-      if self.manifest.isGitcClient:
+      if self.client.isGitcClient:
         return True
       if isinstance(cmd, GitcClientCommand):
         return False
@@ -127,7 +127,7 @@ Displays detailed usage information about a command.
           self.wrap.end_paragraph(1)
         self.wrap.end_paragraph(0)
 
-    out = _Out(self.manifest.globalConfig)
+    out = _Out(self.client.globalConfig)
     out._PrintSection('Summary', 'helpSummary')
     cmd.OptionParser.print_help()
     out._PrintSection('Description', 'helpDescription')

@@ -165,7 +165,7 @@ the following meanings:
                           proj_dirs, proj_dirs_parents, outstring)
 
         if outstring:
-          output = StatusColoring(self.manifest.globalConfig)
+          output = StatusColoring(self.client.globalConfig)
           output.project('Objects not within a project (orphans)')
           output.nl()
           for entry in outstring:
