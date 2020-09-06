@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cdc2d8ee_ddd03b1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-06T17:53:42Z",
+      "side": 1,
+      "message": "going to move forward with dropping Python 2 now, so need to drop the testing",
+      "revId": "d46a3ffac600bcbff6c05ea771dd2de5d666f158",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
