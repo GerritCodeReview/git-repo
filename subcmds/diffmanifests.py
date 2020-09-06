@@ -16,7 +16,7 @@
 
 from color import Coloring
 from command import PagedCommand
-from manifest_xml import XmlManifest
+from manifest_xml import RepoClient
 
 
 class _Coloring(Coloring):
@@ -183,7 +183,7 @@ synced and their revisions won't be found.
       self.OptionParser.error('missing manifests to diff')
 
   def Execute(self, opt, args):
-    self.out = _Coloring(self.manifest.globalConfig)
+    self.out = _Coloring(self.client.globalConfig)
     self.printText = self.out.nofmt_printer('text')
     if opt.color:
       self.printProject = self.out.nofmt_printer('project', attr='bold')
@@ -193,12 +193,12 @@ synced and their revisions won't be found.
     else:
       self.printProject = self.printAdded = self.printRemoved = self.printRevision = self.printText
 
-    manifest1 = XmlManifest(self.manifest.repodir)
+    manifest1 = RepoClient(self.manifest.repodir)
     manifest1.Override(args[0], load_local_manifests=False)
     if len(args) == 1:
       manifest2 = self.manifest
     else:
-      manifest2 = XmlManifest(self.manifest.repodir)
+      manifest2 = RepoClient(self.manifest.repodir)
       manifest2.Override(args[1], load_local_manifests=False)
 
     diff = manifest1.projectsDiff(manifest2)

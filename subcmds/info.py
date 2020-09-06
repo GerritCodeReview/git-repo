@@ -44,7 +44,7 @@ class Info(PagedCommand):
                  help="Disable all remote operations")
 
   def Execute(self, opt, args):
-    self.out = _Coloring(self.manifest.globalConfig)
+    self.out = _Coloring(self.client.globalConfig)
     self.heading = self.out.printer('heading', attr='bold')
     self.headtext = self.out.nofmt_printer('headtext', fg='yellow')
     self.redtext = self.out.printer('redtext', fg='red')

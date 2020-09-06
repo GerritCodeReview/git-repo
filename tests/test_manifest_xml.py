@@ -19,6 +19,8 @@
 from __future__ import print_function
 
 import os
+import shutil
+import tempfile
 import unittest
 import xml.dom.minidom
 
@@ -146,3 +148,90 @@ class ValueTests(unittest.TestCase):
     with self.assertRaises(error.ManifestParseError):
       node = self._get_node('<node a="xx"/>')
       manifest_xml.XmlInt(node, 'a')
+
+
+class XmlManifestTests(unittest.TestCase):
+  """Check manifest processing."""
+
+  def setUp(self):
+    self.tempdir = tempfile.mkdtemp(prefix='repo_tests')
+    self.repodir = os.path.join(self.tempdir, '.repo')
+    self.manifest_dir = os.path.join(self.repodir, 'manifests')
+    self.manifest_file = os.path.join(
+        self.repodir, manifest_xml.MANIFEST_FILE_NAME)
+    self.local_manifest_dir = os.path.join(
+        self.repodir, manifest_xml.LOCAL_MANIFESTS_DIR_NAME)
+    os.mkdir(self.repodir)
+    os.mkdir(self.manifest_dir)
+
+    # The manifest parsing really wants a git repo currently.
+    gitdir = os.path.join(self.repodir, 'manifests.git')
+    os.mkdir(gitdir)
+    with open(os.path.join(gitdir, 'config'), 'w') as fp:
+      fp.write("""[remote "origin"]
+        url = https://localhost:0/manifest
+""")
+
+  def tearDown(self):
+    shutil.rmtree(self.tempdir, ignore_errors=True)
+
+  def getXmlManifest(self, data):
+    """Helper to initialize a manifest for testing."""
+    with open(self.manifest_file, 'w') as fp:
+      fp.write(data)
+    return manifest_xml.XmlManifest(self.repodir, self.manifest_file)
+
+  def test_empty(self):
+    """Parse an 'empty' manifest file."""
+    manifest = self.getXmlManifest(
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<manifest></manifest>')
+    self.assertEqual(manifest.remotes, {})
+    self.assertEqual(manifest.projects, [])
+
+  def test_link(self):
+    """Verify Link handling with new names."""
+    manifest = manifest_xml.XmlManifest(self.repodir, self.manifest_file)
+    with open(os.path.join(self.manifest_dir, 'foo.xml'), 'w') as fp:
+      fp.write('<manifest></manifest>')
+    manifest.Link('foo.xml')
+    with open(self.manifest_file) as fp:
+      self.assertIn('<include name="foo.xml" />', fp.read())
+
+  def test_toxml_empty(self):
+    """Verify the ToXml() helper."""
+    manifest = self.getXmlManifest(
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<manifest></manifest>')
+    self.assertEqual(manifest.ToXml().toxml(), '<?xml version="1.0" ?><manifest/>')
+
+  def test_todict_empty(self):
+    """Verify the ToDict() helper."""
+    manifest = self.getXmlManifest(
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<manifest></manifest>')
+    self.assertEqual(manifest.ToDict(), {})
+
+  def test_project_group(self):
+    """Check project group settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-name" path="test-path"/>
+  <project name="extras" path="path" groups="g1,g2,g1"/>
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 2)
+    # Ordering isn't guaranteed.
+    result = {
+        manifest.projects[0].name: manifest.projects[0].groups,
+        manifest.projects[1].name: manifest.projects[1].groups,
+    }
+    project = manifest.projects[0]
+    self.assertCountEqual(
+        result['test-name'],
+        ['name:test-name', 'all', 'path:test-path'])
+    self.assertCountEqual(
+        result['extras'],
+        ['g1', 'g2', 'g1', 'name:extras', 'all', 'path:path'])

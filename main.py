@@ -63,7 +63,7 @@ from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
 import gitc_utils
-from manifest_xml import GitcManifest, XmlManifest
+from manifest_xml import GitcClient, RepoClient
 from pager import RunPager, TerminatePager
 from wrapper import WrapperPath, Wrapper
 
@@ -212,14 +212,15 @@ class _Repo(object):
       return 1
 
     cmd.repodir = self.repodir
-    cmd.manifest = XmlManifest(cmd.repodir)
+    cmd.client = RepoClient(cmd.repodir)
+    cmd.manifest = cmd.client.manifest
     cmd.gitc_manifest = None
     gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
     if gitc_client_name:
-      cmd.gitc_manifest = GitcManifest(cmd.repodir, gitc_client_name)
-      cmd.manifest.isGitcClient = True
+      cmd.gitc_manifest = GitcClient(cmd.repodir, gitc_client_name)
+      cmd.client.isGitcClient = True
 
-    Editor.globalConfig = cmd.manifest.globalConfig
+    Editor.globalConfig = cmd.client.globalConfig
 
     if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
       print("fatal: '%s' requires a working directory" % name,
@@ -247,7 +248,7 @@ class _Repo(object):
       return 1
 
     if gopts.pager is not False and not isinstance(cmd, InteractiveCommand):
-      config = cmd.manifest.globalConfig
+      config = cmd.client.globalConfig
       if gopts.pager:
         use_pager = True
       else:
