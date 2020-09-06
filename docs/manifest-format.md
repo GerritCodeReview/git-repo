@@ -396,10 +396,4 @@ these extra projects.
 Manifest files stored in `$TOP_DIR/.repo/local_manifests/*.xml` will
 be loaded in alphabetical order.
 
-Additional remotes and projects may also be added through a local
-manifest, stored in `$TOP_DIR/.repo/local_manifest.xml`. This method
-is deprecated in favor of using multiple manifest files as mentioned
-above.
-
-If `$TOP_DIR/.repo/local_manifest.xml` exists, it will be loaded before
-any manifest files stored in `$TOP_DIR/.repo/local_manifests/*.xml`.
+The legacy `$TOP_DIR/.repo/local_manifest.xml` path is no longer supported.
