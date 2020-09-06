@@ -30,7 +30,7 @@ class Manifest(PagedCommand):
   _helpDescription = """
 
 With the -o option, exports the current manifest for inspection.
-The manifest and (if present) local_manifest.xml are combined
+The manifest and (if present) local_manifests/ are combined
 together to produce a single manifest file.  This file can be stored
 in a Git repository for use during future 'repo init' invocations.
 

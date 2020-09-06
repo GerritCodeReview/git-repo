@@ -192,7 +192,6 @@ class XmlManifest(object):
     self.topdir = os.path.dirname(self.repodir)
     self.manifestFile = os.path.join(self.repodir, MANIFEST_FILE_NAME)
     self.globalConfig = GitConfig.ForUser()
-    self.localManifestWarning = False
     self.isGitcClient = False
     self._load_local_manifests = True
 
@@ -555,15 +554,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                                           self.manifestProject.worktree))
 
       if self._load_local_manifests:
-        local = os.path.join(self.repodir, LOCAL_MANIFEST_NAME)
-        if os.path.exists(local):
-          if not self.localManifestWarning:
-            self.localManifestWarning = True
-            print('warning: %s is deprecated; put local manifests '
-                  'in `%s` instead' % (LOCAL_MANIFEST_NAME,
-                                       os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
-                  file=sys.stderr)
-          nodes.append(self._ParseManifestXml(local, self.repodir))
+        if os.path.exists(os.path.join(self.repodir, LOCAL_MANIFEST_NAME)):
+          print('error: %s is not supported; put local manifests in `%s`'
+                'instead' % (LOCAL_MANIFEST_NAME,
+                             os.path.join(self.repodir, LOCAL_MANIFESTS_DIR_NAME)),
+                file=sys.stderr)
+          sys.exit(1)
 
         local_dir = os.path.abspath(os.path.join(self.repodir,
                                                  LOCAL_MANIFESTS_DIR_NAME))
