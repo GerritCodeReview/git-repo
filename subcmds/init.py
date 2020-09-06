@@ -54,7 +54,8 @@ from the server and is installed in the .repo/ directory in the
 current working directory.
 
 The optional -b argument can be used to select the manifest branch
-to checkout and use.  If no branch is specified, master is assumed.
+to checkout and use.  If no branch is specified, the remote's default
+branch is used.
 
 The optional -m argument can be used to specify an alternate manifest
 to be used. If no manifest is specified, the manifest default.xml
@@ -215,23 +216,26 @@ to update the working directory files.
 
       m._InitGitDir(mirror_git=mirrored_manifest_git)
 
-      if opt.manifest_branch:
-        m.revisionExpr = opt.manifest_branch
-      else:
-        m.revisionExpr = 'refs/heads/master'
-    else:
-      if opt.manifest_branch:
-        m.revisionExpr = opt.manifest_branch
-      else:
-        m.PreSync()
-
     self._ConfigureDepth(opt)
 
+    # Set the remote URL before the remote branch as we might need it below.
     if opt.manifest_url:
       r = m.GetRemote(m.remote.name)
       r.url = opt.manifest_url
       r.ResetFetch()
       r.Save()
+
+    if opt.manifest_branch:
+      m.revisionExpr = opt.manifest_branch
+    else:
+      if is_new:
+        default_branch = m.ResolveRemoteHead()
+        if default_branch is None:
+          # If the remote doesn't have HEAD configured, default to master.
+          default_branch = 'refs/heads/master'
+        m.revisionExpr = default_branch
+      else:
+        m.PreSync()
 
     groups = re.split(r'[,\s]+', opt.groups)
     all_platforms = ['linux', 'darwin', 'windows']

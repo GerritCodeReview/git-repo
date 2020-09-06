@@ -2311,6 +2311,27 @@ class Project(object):
     # Enable the extension!
     self.config.SetString('extensions.%s' % (key,), value)
 
+  def ResolveRemoteHead(self, name=None):
+    """Find out what the default branch (HEAD) points to.
+
+    Normally this points to refs/heads/master, but projects are moving to main.
+    Support whatever the server uses rather than hardcoding "master" ourselves.
+    """
+    if name is None:
+      name = self.remote.name
+
+    # The output will look like (NB: tabs are separators):
+    # ref: refs/heads/master	HEAD
+    # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44	HEAD
+    output = self.bare_git.ls_remote('-q', '--symref', '--exit-code', name, 'HEAD')
+
+    for line in output.splitlines():
+      lhs, rhs = line.split('\t', 1)
+      if rhs == 'HEAD' and lhs.startswith('ref:'):
+        return lhs[4:].strip()
+
+    return None
+
   def _CheckForImmutableRevision(self):
     try:
       # if revision (sha or tag) is not present then following function
