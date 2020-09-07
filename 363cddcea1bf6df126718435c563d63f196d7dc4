@@ -36,6 +36,24 @@
     },
     {
       "key": {
+        "uuid": "5d20067e_256785c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-09-07T00:21:48Z",
+      "side": 1,
+      "message": "Thank you!\nI cannot test it on Windows or macOS, so I want you to test it.",
+      "parentUuid": "55ff4f39_931660b9",
+      "revId": "363cddcea1bf6df126718435c563d63f196d7dc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5211affa_ddda7443",
         "filename": "subcmds/status.py",
         "patchSetId": 6
@@ -50,6 +68,24 @@
       "revId": "363cddcea1bf6df126718435c563d63f196d7dc4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7076418c_ca1e4643",
+        "filename": "subcmds/status.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1099571
+      },
+      "writtenOn": "2020-09-07T00:21:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5211affa_ddda7443",
+      "revId": "363cddcea1bf6df126718435c563d63f196d7dc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
