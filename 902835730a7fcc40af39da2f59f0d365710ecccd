@@ -22,6 +22,30 @@
       "revId": "902835730a7fcc40af39da2f59f0d365710ecccd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14c5acb7_28a87c61",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-07T06:07:37Z",
+      "side": 1,
+      "message": "yeah, wanted to make it clear that it\u0027s a dir full of files",
+      "parentUuid": "f12a7401_a21eaba8",
+      "range": {
+        "startLine": 33,
+        "startChar": 46,
+        "endLine": 33,
+        "endChar": 47
+      },
+      "revId": "902835730a7fcc40af39da2f59f0d365710ecccd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
