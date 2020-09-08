@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed27b2da_455896f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-08T17:04:06Z",
+      "side": 1,
+      "message": "if we\u0027re going to go through this effort, i\u0027m inclined to start a new module.  project.py is by far the largest module in the tree at 3.6k lines atm, and only 2 other modules being above 1k lines.\n\nhow about creating a new hooks.py instead and concentrating the logic there ?",
+      "revId": "bea905ab3ad51f2685840cd7807ea06aab7475b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
