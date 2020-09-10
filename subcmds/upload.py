@@ -24,7 +24,7 @@ from editor import Editor
 from error import HookError, UploadError
 from git_command import GitCommand
 from git_refs import R_HEADS
-from project import RepoHook
+from hooks import RepoHook
 
 from pyversion import is_python3
 if not is_python3():
