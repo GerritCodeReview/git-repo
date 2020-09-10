@@ -52,6 +52,24 @@
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d764ef2d_1c3be6ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1113226
+      },
+      "writtenOn": "2020-09-10T12:47:19Z",
+      "side": 1,
+      "message": "Our company use gitolite of  https://gitolite.com/gitolite/ for hosting multi git repo.\nWhen use repo init, then sync will fail.\n\nthe follow is the error.\n\nrepo init   -u git@huizhou.gitweb.com:qualcomm/manifest -m r4250-austin-v1.0-\ndint.xml\nrepo: warning: Python 2 is no longer supported; Please upgrade to Python 3.6+.\nDownloading manifest from git@huizhou.gitweb.com:qualcomm/manifest\nremote: Counting objects: 45073, done.        \nremote: Compressing objects: 100% (12321/12321), done.\n\nthen repo sync\n\nfail:\nPlease make sure you have the correct access rights\nand the repository exists.\nqualcomm/platform/prebuilts/abi-dumps/platform:\nFATAL: invalid repo name: \u0027qualcomm/git@huizhou.gitweb.com:/qualcomm/platform/prebuilts/abi-dumps/platform\u0027\nfatal: Could not read from remote repository.\n.",
+      "parentUuid": "e2562772_48ebac88",
+      "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
