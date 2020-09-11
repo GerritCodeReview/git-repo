@@ -16,6 +16,24 @@
       "revId": "bea905ab3ad51f2685840cd7807ea06aab7475b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7356e2d2_52f77892",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-09-11T12:38:05Z",
+      "side": 1,
+      "message": "Added a new patch that first move the class to a dedicated file, and rebased these changes on top of it.",
+      "parentUuid": "ed27b2da_455896f4",
+      "revId": "bea905ab3ad51f2685840cd7807ea06aab7475b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
