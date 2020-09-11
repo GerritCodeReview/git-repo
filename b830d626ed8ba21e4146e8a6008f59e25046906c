@@ -70,6 +70,24 @@
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b845f490_60b7cb2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-11T08:51:37Z",
+      "side": 1,
+      "message": "Jonathan is still correct though -- \"git@\" is not a scheme, it\u0027s a username.  the URI you specified is most likely git+ssh://git@huizhou.gitweb.com/qualcomm/manifest instead.\n\nthis is git\u0027s support for \"scp-like syntax\":\nhttps://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols#_the_ssh_protocol\n\nhardcoding \"git@\" is not acceptable: that\u0027s a convention that your server/setup happens to use.  other people might use \"anon@\" instead.  or another username.",
+      "parentUuid": "d764ef2d_1c3be6ef",
+      "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
