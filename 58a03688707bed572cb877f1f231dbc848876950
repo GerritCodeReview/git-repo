@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9af2d503_0fffd17d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-11T19:20:17Z",
+      "side": 1,
+      "message": "looks mostly good",
+      "revId": "58a03688707bed572cb877f1f231dbc848876950",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "192576cc_56d40138",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-11T19:20:17Z",
+      "side": 1,
+      "message": "delete this blank line while you\u0027re here please",
+      "revId": "58a03688707bed572cb877f1f231dbc848876950",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0895309a_ed218541",
+        "filename": "tests/test_project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-09-11T19:20:17Z",
+      "side": 1,
+      "message": "guessing you didn\u0027t actually run the tests because |hooks| is undefined ;)\n\nyou\u0027ll want to create a new test_hooks.py and move the hooks-specific tests to it from here",
+      "revId": "58a03688707bed572cb877f1f231dbc848876950",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
