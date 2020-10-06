@@ -235,3 +235,46 @@ class XmlManifestTests(unittest.TestCase):
     self.assertCountEqual(
         result['extras'],
         ['g1', 'g2', 'g1', 'name:extras', 'all', 'path:path'])
+
+  def test_include_levels(self):
+    root_m = os.path.join(self.manifest_dir, 'root.xml')
+    with open(root_m, 'w') as fp:
+      fp.write("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <include name="level1.xml" groups="level1-group" />
+  <project name="root-name1" path="root-path1" />
+  <project name="root-name2" path="root-path2" groups="r2g1,r2g2" />
+</manifest>
+""")
+    with open(os.path.join(self.manifest_dir, 'level1.xml'), 'w') as fp:
+      fp.write("""
+<manifest>
+  <include name="level2.xml" groups="level2-group" />
+  <project name="level1-name1" path="level1-path1" />
+</manifest>
+""")
+    with open(os.path.join(self.manifest_dir, 'level2.xml'), 'w') as fp:
+      fp.write("""
+<manifest>
+  <project name="level2-name1" path="level2-path1" groups="l2g1,l2g2" />
+</manifest>
+""")
+    include_m = manifest_xml.XmlManifest(self.repodir, root_m)
+    for proj in include_m.projects:
+      if proj.name == 'root-name1':
+        # Check include group not set on root level proj.
+        self.assertNotIn('level1-group', proj.groups)
+      if proj.name == 'root-name2':
+        # Check root proj group not removed.
+        self.assertIn('r2g1', proj.groups)
+      if proj.name == 'level1-name1':
+        # Check level1 proj has inherited group level 1.
+        self.assertIn('level1-group', proj.groups)
+      if proj.name == 'level2-name1':
+        # Check level2 proj has inherited group levels 1 and 2.
+        self.assertIn('level1-group', proj.groups)
+        self.assertIn('level2-group', proj.groups)
+        # Check level2 proj group not removed.
+        self.assertIn('l2g1', proj.groups)

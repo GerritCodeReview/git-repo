@@ -99,7 +99,8 @@ following DTD:
   <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
 
   <!ELEMENT include EMPTY>
-  <!ATTLIST include name CDATA #REQUIRED>
+  <!ATTLIST include name   CDATA #REQUIRED>
+  <!ATTLIST include groups CDATA #IMPLIED>
 ]>
 ```
 
@@ -368,6 +369,10 @@ target manifest to include - it must be a usable manifest on its own.
 Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
 
+Attribute `groups`: List of additional groups to which all projects
+in the included manifest belong. This appends and recurses, meaning
+all projects in sub-manifests carry all parent include groups.
+Same syntax as the corresponding element of `project`.
 
 ## Local Manifests
 
