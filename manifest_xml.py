@@ -585,7 +585,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
       self._loaded = True
 
-  def _ParseManifestXml(self, path, include_root):
+  def _ParseManifestXml(self, path, include_root, inherit_groups=None):
     try:
       root = xml.dom.minidom.parse(path)
     except (OSError, xml.parsers.expat.ExpatError) as e:
@@ -604,12 +604,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     for node in manifest.childNodes:
       if node.nodeName == 'include':
         name = self._reqatt(node, 'name')
+        if node.hasAttribute('groups'):
+          inherit_groups = node.getAttribute('groups')
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
           raise ManifestParseError("include %s doesn't exist or isn't a file"
                                    % (name,))
         try:
-          nodes.extend(self._ParseManifestXml(fp, include_root))
+          nodes.extend(self._ParseManifestXml(fp, include_root, inherit_groups))
         # should isolate this to the exact exception, but that's
         # tricky.  actual parsing implementation may vary.
         except (KeyboardInterrupt, RuntimeError, SystemExit):
@@ -618,6 +620,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           raise ManifestParseError(
               "failed parsing included manifest %s: %s" % (name, e))
       else:
+        if inherit_groups is not None:
+          if node.nodeName == 'project':
+            if node.hasAttribute('groups'):
+              nodeGroups = node.getAttribute('groups')
+              for group in inherit_groups and not in nodeGroups:
+                  node.setAttribute('groups', nodeGroups + " " + group)
+            else:
+              node.setAttribute('groups', inherit_groups)
         nodes.append(node)
     return nodes
 
