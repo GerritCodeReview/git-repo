@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "c8463d71_fd996484",
         "filename": "/PATCHSET_LEVEL",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "git@ isn\u0027t a URL scheme. Are you looking for ssh://?",
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": false
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "25ef43e4_0c85e727",
         "filename": "/PATCHSET_LEVEL",
@@ -32,10 +33,10 @@
       "message": "this is for https://crbug.com/gerrit/10490 where github uses a lot of URIs w/out schemas\n\npretty sure we want schema-less URIs to default to ssh:// though, not git:// which is what this is trying to do",
       "parentUuid": "c8463d71_fd996484",
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": false
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "e2562772_48ebac88",
         "filename": "/PATCHSET_LEVEL",
@@ -50,10 +51,10 @@
       "message": "Isn\u0027t that already handled by the case `    elif manifestUrl.find(\u0027:\u0027) !\u003d manifestUrl.find(\u0027/\u0027) - 1:` a few lines down?",
       "parentUuid": "25ef43e4_0c85e727",
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "d764ef2d_1c3be6ef",
         "filename": "/PATCHSET_LEVEL",
@@ -68,10 +69,10 @@
       "message": "Our company use gitolite of  https://gitolite.com/gitolite/ for hosting multi git repo.\nWhen use repo init, then sync will fail.\n\nthe follow is the error.\n\nrepo init   -u git@huizhou.gitweb.com:qualcomm/manifest -m r4250-austin-v1.0-\ndint.xml\nrepo: warning: Python 2 is no longer supported; Please upgrade to Python 3.6+.\nDownloading manifest from git@huizhou.gitweb.com:qualcomm/manifest\nremote: Counting objects: 45073, done.        \nremote: Compressing objects: 100% (12321/12321), done.\n\nthen repo sync\n\nfail:\nPlease make sure you have the correct access rights\nand the repository exists.\nqualcomm/platform/prebuilts/abi-dumps/platform:\nFATAL: invalid repo name: \u0027qualcomm/git@huizhou.gitweb.com:/qualcomm/platform/prebuilts/abi-dumps/platform\u0027\nfatal: Could not read from remote repository.\n.",
       "parentUuid": "e2562772_48ebac88",
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": false
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "b845f490_60b7cb2d",
         "filename": "/PATCHSET_LEVEL",
@@ -86,8 +87,25 @@
       "message": "Jonathan is still correct though -- \"git@\" is not a scheme, it\u0027s a username.  the URI you specified is most likely git+ssh://git@huizhou.gitweb.com/qualcomm/manifest instead.\n\nthis is git\u0027s support for \"scp-like syntax\":\nhttps://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols#_the_ssh_protocol\n\nhardcoding \"git@\" is not acceptable: that\u0027s a convention that your server/setup happens to use.  other people might use \"anon@\" instead.  or another username.",
       "parentUuid": "d764ef2d_1c3be6ef",
       "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": false
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69b92c5f_6634deae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-10-15T04:11:56Z",
+      "side": 1,
+      "message": "\u003e Isn\u0027t that already handled by the case `    elif manifestUrl.find(\u0027:\u0027) !\u003d manifestUrl.find(\u0027/\u0027) - 1:` a few lines down?\n\nPerhaps the issue is with scp-style syntax with a `/` as the first character of the path part. In other words, perhaps a change like replacing `manifestUrl.find(\u0027/\u0027)` with `manifestUrl.find(\u0027//\u0027)` would handle this case.\n\nThe test Git uses is that (1) the URL has no \u003chelper\u003e:: prefix (2) the URL has no \"://\" (3) the URL contains a \u0027:\u0027 (4) the \u0027:\u0027 is before any \u0027/\u0027 and (5) the \u0027:\u0027 is not part of a DOS-style drive prefix.",
+      "parentUuid": "b845f490_60b7cb2d",
+      "revId": "b830d626ed8ba21e4146e8a6008f59e25046906c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
