@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd0cf5aa_097c4a26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1117770
+      },
+      "writtenOn": "2020-10-19T16:40:03Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1:\n\u003e \n\u003e I can\u0027t seem to set it now, can you please check the group membership again?\n\nyt r.c jo ut 5",
+      "revId": "719757d6a8670660c3c7d2490457ff7064241422",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
