@@ -966,9 +966,7 @@ def _FindRepo():
   repo = None
 
   olddir = None
-  while curdir != '/' \
-          and curdir != olddir \
-          and not repo:
+  while curdir != olddir and not repo:
     repo = os.path.join(curdir, repodir, REPO_MAIN)
     if not os.path.isfile(repo):
       repo = None
