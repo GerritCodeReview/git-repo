@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce3d8734_f9c1786c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-05T08:36:48Z",
+      "side": 1,
+      "message": "Hi again Mike, so is this something you approve of conceptually? (the idea is to make use of groups more powerful)\n\nIn that case I can clean it up a bit more?",
+      "revId": "f8b337c0a74f611b9b478846b7b2e7d535a857e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
