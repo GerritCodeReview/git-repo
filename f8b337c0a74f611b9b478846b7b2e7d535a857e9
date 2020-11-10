@@ -16,6 +16,23 @@
       "message": "Hi again Mike, so is this something you approve of conceptually? (the idea is to make use of groups more powerful)\n\nIn that case I can clean it up a bit more?",
       "revId": "f8b337c0a74f611b9b478846b7b2e7d535a857e9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ff648bb_b9b898c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-10T00:33:16Z",
+      "side": 1,
+      "message": "conceptually sounds reasonable\n\ni think we\u0027ll need real test coverage here though.  i know historically we haven\u0027t had any, but we\u0027ve been trying to improve that.\n\ni haven\u0027t read the code too closely, but at a high level, how do you think recursive include group settings should work ?  seems like they should be cumulative.  for example:\n\n* default.xml includes level-1.xml with groups\u003d\"level-1\"\n* level-1.xml includes level-2.xml with groups\u003d\"level-2\"\n* level-2.xml defines project \"P\" with groups\u003d\"blah\"\n\nat this point, i would expect project \"P\" to have groups\u003d\"level-1,level-2,blah\".\n\ni don\u0027t think we have support for removing groups (extend-project only adds), so don\u0027t have to worry about that here.",
+      "revId": "f8b337c0a74f611b9b478846b7b2e7d535a857e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
