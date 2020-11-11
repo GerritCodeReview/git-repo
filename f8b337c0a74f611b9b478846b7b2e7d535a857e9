@@ -51,6 +51,24 @@
       "parentUuid": "7ff648bb_b9b898c6",
       "revId": "f8b337c0a74f611b9b478846b7b2e7d535a857e9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1af47f4d_c3d5faf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-11T06:24:34Z",
+      "side": 1,
+      "message": "since the groups attr to the include element is new, there\u0027s no need to worry about breaking anything existing\n\ni would focus on the behavior being consistent across elements/attrs, and trying to implement the most likely expected behavior.  it looks like the current attrs are additive only, so lets start there.  as for recursive inclusion vs depth-of-1, recursive makes more sense to me.\n\nif someone wants to extend the syntax to allow removal of groups, we can do that as a follow up later on.",
+      "parentUuid": "7448e847_6d91e2ba",
+      "revId": "f8b337c0a74f611b9b478846b7b2e7d535a857e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
