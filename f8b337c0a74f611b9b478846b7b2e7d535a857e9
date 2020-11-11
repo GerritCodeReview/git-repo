@@ -33,6 +33,24 @@
       "message": "conceptually sounds reasonable\n\ni think we\u0027ll need real test coverage here though.  i know historically we haven\u0027t had any, but we\u0027ve been trying to improve that.\n\ni haven\u0027t read the code too closely, but at a high level, how do you think recursive include group settings should work ?  seems like they should be cumulative.  for example:\n\n* default.xml includes level-1.xml with groups\u003d\"level-1\"\n* level-1.xml includes level-2.xml with groups\u003d\"level-2\"\n* level-2.xml defines project \"P\" with groups\u003d\"blah\"\n\nat this point, i would expect project \"P\" to have groups\u003d\"level-1,level-2,blah\".\n\ni don\u0027t think we have support for removing groups (extend-project only adds), so don\u0027t have to worry about that here.",
       "revId": "f8b337c0a74f611b9b478846b7b2e7d535a857e9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7448e847_6d91e2ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-11T06:17:47Z",
+      "side": 1,
+      "message": "Great, thanks!\n\nMy initial idea was for the list of groups added in the include element, append those to every project for that \"level xml\" only, meaning project P in your example would only have groups \"level-2,blah\", but inheriting might make more sense and is simple to add.\n\nI guess that would impact how the manifests would need to be included (serial or parallel includes) if we don\u0027t support removing the groups again (assuming a leaf level include doesn\u0027t want it).\n\nNot inheriting would mean that same groups would need to be added on all levels, obviously more tedious if expected, so it\u0027s a good counter-suggestion, I\u0027ll do that.\n\nI\u0027ll push an update when not swamped, and I\u0027ll see what can be done about testing this, cheers.",
+      "parentUuid": "7ff648bb_b9b898c6",
+      "revId": "f8b337c0a74f611b9b478846b7b2e7d535a857e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
