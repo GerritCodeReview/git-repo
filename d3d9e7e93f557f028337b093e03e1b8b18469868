@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed74aae9_f4a4ff7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-12T08:08:24Z",
+      "side": 1,
+      "message": "you\u0027ll want to set Verified+1 before we can merge",
+      "revId": "d3d9e7e93f557f028337b093e03e1b8b18469868",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
