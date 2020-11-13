@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "824d81fe_43a04c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-13T15:30:14Z",
+      "side": 1,
+      "message": "Seems to work as expected now with inheritance and some cleanup done.\n\nHave to get my head around adding some testing though, haven\u0027t looked at that yet, but feedback on the code so far is welcome, cheers...",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
