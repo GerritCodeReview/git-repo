@@ -106,7 +106,7 @@ support, see the [manifest-format.md] file.
     setting in the manifest (i.e. the path on the remote server) with a `.git`
     suffix.  This allows for multiple checkouts of the same remote git repo to
     share their objects.  For example, you could have different branches of
-    `foo/bar.git` checked out to `foo/bar-master`, `foo/bar-release`, etc...
+    `foo/bar.git` checked out to `foo/bar-main`, `foo/bar-release`, etc...
     There will be multiple trees under `projects/` for each one, but only one
     under `project-objects/`.
 

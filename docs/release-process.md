@@ -97,7 +97,7 @@ If that tag cannot be verified, it gives up and forces the user to resolve.
 
 ## Branch management
 
-All development happens on the `master` branch and should generally be stable.
+All development happens on the `main` branch and should generally be stable.
 
 Since the repo launcher defaults to tracking the `stable` branch, it is not
 normally updated until a new release is available.
@@ -112,7 +112,7 @@ For example, when `stable` moves from `v1.10.x` to `v1.11.x`, then the `maint`
 branch will be updated from `v1.9.x` to `v1.10.x`.
 
 We don't have parallel release branches/series.
-Typically all tags are made against the `master` branch and then pushed to the
+Typically all tags are made against the `main` branch and then pushed to the
 `stable` branch to make it available to the rest of the world.
 Since repo doesn't typically see a lot of changes, this tends to be OK.
 
@@ -120,10 +120,10 @@ Since repo doesn't typically see a lot of changes, this tends to be OK.
 
 When you want to create a new release, you'll need to select a good version and
 create a signed tag using a key registered in repo itself.
-Typically we just tag the latest version of the `master` branch.
+Typically we just tag the latest version of the `main` branch.
 The tag could be pushed now, but it won't be used by clients normally (since the
 default `repo-rev` setting is `stable`).
-This would allow some early testing on systems who explicitly select `master`.
+This would allow some early testing on systems who explicitly select `main`.
 
 ### Creating a signed tag
 
@@ -144,7 +144,7 @@ $ export GNUPGHOME=~/.gnupg/repo/
 $ gpg -K
 
 # Pick whatever branch or commit you want to tag.
-$ r=master
+$ r=main
 
 # Pick the new version.
 $ t=1.12.10

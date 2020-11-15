@@ -5,7 +5,7 @@ name: Test CI
 
 on:
   push:
-    branches: [master, repo-1, stable, maint]
+    branches: [main, repo-1, stable, maint]
     tags: [v*]
 
 jobs:
