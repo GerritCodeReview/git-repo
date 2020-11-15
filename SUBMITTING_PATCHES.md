@@ -10,7 +10,7 @@
  - Make corrections if requested.
  - Verify your changes on gerrit so they can be submitted.
 
-   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/master`
+   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/main`
 
 
 # Long Version
@@ -150,7 +150,7 @@ Push your patches over HTTPS to the review server, possibly through
 a remembered remote to make this easier in the future:
 
     git config remote.review.url https://gerrit-review.googlesource.com/git-repo
-    git config remote.review.push HEAD:refs/for/master
+    git config remote.review.push HEAD:refs/for/main
 
     git push review
 
