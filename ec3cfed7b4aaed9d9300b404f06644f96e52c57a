@@ -1,0 +1,368 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a0aa64b_473fa87c",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "this pattern is convenient, but it\u0027s also a bit of a trap when used outside of the specific script scope.  e.g. unittests or if we were to integrate into other modules (not sure we will).\n\ni think it\u0027d be better if the __init__ signature broke out all the |opt| fields we care about, and we didn\u0027t store |self._opt| at all.  instead, for the sake of scripts, we could add a factory @classmethod down above AddHookOptionGroup that would instantiate \u0026 extract.  that would keep the messy logic in this class for scripts while still keeping other modules (e.g. unittests) nice.\n\nthere\u0027s a similar issue with |manifest| actually.\n\n @classmethod\n def FromSubcmd(cls, manifest, opt, *args, **kwargs):\n   for key in (\u0027bypass_hooks\u0027, \u0027allow_all_hooks\u0027, \u0027ignore_hooks\u0027):\n     kwargs.setdefault(key, getattr(opt, key))\n   kwargs.update({\n       \u0027hooks_project\u0027: manifest.repo_hooks_project,\n       ...\n   })\n   return cls(*args, **kwargs)\n\n\nwdyt ?",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "242d74cf_df981c3b",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f056078f_e93efab2",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "only need to indent with 2 spaces",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ed7e332_6158b611",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "\"\"\" needs to be on a line by itself like it was before",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "649d467f_ea456287",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "extraneous parens here \u0026 next line",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0ad3634_5aa8a813",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "extraneous parens",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a08286f2_a8246397",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "trim this blank line",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34aa35e1_53fb24a6",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "don\u0027t mix + \u0026 % for string concatenation.  stick to just using %.\n\nalso, single quotes",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d07c3cfd_b6b2f907",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "single quotes",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b21cd911_5166c343",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "all the parens are extraneous",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d8c9c67_1204fe5a",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "use % only",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef08b3a7_235f80c2",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "|parser|",
+      "range": {
+        "startLine": 465,
+        "startChar": 25,
+        "endLine": 465,
+        "endChar": 38
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ac4f3ff_f2e24423",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "just |name| should be sufficiently clear given the scope",
+      "range": {
+        "startLine": 465,
+        "startChar": 40,
+        "endLine": 465,
+        "endChar": 48
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83062130_73c9bfa6",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "|AddOptionGroup| should be fine considering this is a |RepoHook| class",
+      "range": {
+        "startLine": 465,
+        "startChar": 6,
+        "endLine": 465,
+        "endChar": 24
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ac3d1c0_9e69ed67",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "stick to the docstring style we use elsewhere.  the first line should be standalone and on the same line as \"\"\".",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e7c9f7_5e2c836e",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "these would prob be better hoisted to the class docstring",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cff2c0e_4fa1b25e",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "name it |group|",
+      "range": {
+        "startLine": 485,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 5
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb8fc357_f4e889bc",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "use % everywhere",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e7425d8_bb7ffca8",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "the |dest| is redundant -\u003e delete",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "241eb7c5_f84a1c33",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:31:26Z",
+      "side": 1,
+      "message": "don\u0027t instantiate inline.  pull it out into a variable to make it readable like it was before (assigning it to |hook|).",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
