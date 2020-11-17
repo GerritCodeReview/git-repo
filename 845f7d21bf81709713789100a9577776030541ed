@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e61a4cd_d26ac026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:36:04Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/git-repo/+/277563/6 is taking another run at this if you want to weigh in",
+      "revId": "845f7d21bf81709713789100a9577776030541ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
