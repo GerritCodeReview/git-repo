@@ -402,8 +402,8 @@ class ResolveRepoRev(GitCheckoutTestCase):
     self.assertEqual('refs/heads/stable', rrev)
     self.assertEqual(self.REV_LIST[1], lrev)
 
-    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'master')
-    self.assertEqual('refs/heads/master', rrev)
+    rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'main')
+    self.assertEqual('refs/heads/main', rrev)
     self.assertEqual(self.REV_LIST[0], lrev)
 
   def test_tag_name(self):

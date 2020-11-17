@@ -77,7 +77,7 @@ class ReviewableBranchTests(unittest.TestCase):
 
       # Start off with the normal details.
       rb = project.ReviewableBranch(
-          fakeproj, fakeproj.config.GetBranch('work'), 'master')
+          fakeproj, fakeproj.config.GetBranch('work'), 'main')
       self.assertEqual('work', rb.name)
       self.assertEqual(1, len(rb.commits))
       self.assertIn('Del file', rb.commits[0])
@@ -90,9 +90,9 @@ class ReviewableBranchTests(unittest.TestCase):
       self.assertTrue(rb.date)
 
       # Now delete the tracking branch!
-      fakeproj.work_git.branch('-D', 'master')
+      fakeproj.work_git.branch('-D', 'main')
       rb = project.ReviewableBranch(
-          fakeproj, fakeproj.config.GetBranch('work'), 'master')
+          fakeproj, fakeproj.config.GetBranch('work'), 'main')
       self.assertEqual(0, len(rb.commits))
       self.assertFalse(rb.base_exists)
       # Hard to assert anything useful about this.
