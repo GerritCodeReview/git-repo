@@ -16,6 +16,24 @@
       "message": "Do the functions in this script normally have unit tests, or with repo is there no good way to create and run them?",
       "revId": "b35b8dbb44c9f35b7d7520df5b490f2a2c78f541",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "816ee4ba_ff7f398f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T02:28:05Z",
+      "side": 1,
+      "message": "there are no tests for this class currently.  the current code structure makes it difficult to unittest because this class conflates \"this is a repo client checkout\" with \"this is a repo manifest file\".\n\nlooks like i have another commit locally that started to split this apart and clean it up so that we could unittest the manifest parsing logic independently.  that would then allow adding unittest coverage for this and the rest of the class.  i\u0027ll try and revisit it.",
+      "parentUuid": "31a7a88c_7e696f96",
+      "revId": "b35b8dbb44c9f35b7d7520df5b490f2a2c78f541",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
