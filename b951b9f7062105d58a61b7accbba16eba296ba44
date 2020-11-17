@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "55ecc5b5_762da72e",
         "filename": "/COMMIT_MSG",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "what does #2 mean ?\n\nwhat is \"the first patch\" ?\n\nplease describe in the commit message the scenarios in which this change is necessary/matters",
       "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "5489c24b_456bf409",
         "filename": "/COMMIT_MSG",
@@ -37,10 +38,10 @@
         "endChar": 10
       },
       "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "e5708dd3_fc34835d",
         "filename": "/COMMIT_MSG",
@@ -55,10 +56,10 @@
       "message": "Done",
       "parentUuid": "55ecc5b5_762da72e",
       "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "22bea97e_748c6660",
         "filename": "/COMMIT_MSG",
@@ -79,8 +80,49 @@
         "endChar": 10
       },
       "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f44c9773_d41a661c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22bea97e_748c6660",
+      "range": {
+        "startLine": 7,
+        "startChar": 2,
+        "endLine": 7,
+        "endChar": 10
+      },
+      "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6416e2c8_63b2ebc0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-17T03:06:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5708dd3_fc34835d",
+      "revId": "b951b9f7062105d58a61b7accbba16eba296ba44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
