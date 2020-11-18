@@ -16,6 +16,104 @@
       "message": "Seems to work as expected now with inheritance and some cleanup done.\n\nHave to get my head around adding some testing though, haven\u0027t looked at that yet, but feedback on the code so far is welcome, cheers...",
       "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43a98386_270cb42e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-18T08:50:13Z",
+      "side": 1,
+      "message": "i looked at manifest_xml.py recently wrt testing and it is not well structured for it :/.  we need to split apart client \u0026 parsing first.  sent you https://gerrit-review.googlesource.com/c/git-repo/+/288682 to hopefully help.",
+      "parentUuid": "824d81fe_43a04c60",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e4f0221_f2d14fb6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-18T08:50:13Z",
+      "side": 1,
+      "message": "use single quotes",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbd79637_7c76d98d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-18T08:50:13Z",
+      "side": 1,
+      "message": "use +\u003d",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70c0b089_e3fadcc4",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-18T08:50:13Z",
+      "side": 1,
+      "message": "combine these to avoid having to indent as much",
+      "range": {
+        "startLine": 626,
+        "startChar": 0,
+        "endLine": 627,
+        "endChar": 40
+      },
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f3ca447_1e803a57",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-18T08:50:13Z",
+      "side": 1,
+      "message": "you can simplify this: just merge the two and let the lower project element parsing deal with duplicates.  it doesn\u0027t today, so we should prob fix that, but do it independently ;).\n\n nodeGroups \u003d parent_groups\n if node.hasAttribute(\u0027groups\u0027):\n   nodeGroups +\u003d \u0027,\u0027 + node.getAttribute(\u0027groups\u0027)\n node.setAttribute(\u0027groups\u0027, nodeGroups)",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 634,
+        "endChar": 56
+      },
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
