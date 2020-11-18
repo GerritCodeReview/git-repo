@@ -34,6 +34,24 @@
       "parentUuid": "31a7a88c_7e696f96",
       "revId": "b35b8dbb44c9f35b7d7520df5b490f2a2c78f541",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85950af2_24a95d88",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 464,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-18T08:05:48Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/git-repo/+/288682 is up",
+      "parentUuid": "816ee4ba_ff7f398f",
+      "revId": "b35b8dbb44c9f35b7d7520df5b490f2a2c78f541",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
