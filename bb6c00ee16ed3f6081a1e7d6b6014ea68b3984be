@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0147a09b_711be83b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-20T06:50:00Z",
+      "side": 1,
+      "message": "i think with my change (which is merged now), you should be able to stay in the realm of \"unit\".  something like (untested :P):\n\n  def test_include_depth1(self):\n    with open(os.path.join(self.manifest_dir, \u0027foo.xml\u0027), \u0027w\u0027) as fp:\n      fp.write(\u0027... basic manifest ...\u0027)\n    manifest \u003d self.getXmlManifest(\"\"\"\n... manifest that includes foo.xml with groups ...\n\"\"\")\n    ...assert project group state...\n\nand then maybe another include but with depth2 ?",
+      "parentUuid": "fe9daa5f_7d9f8294",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e4f0221_f2d14fb6",
