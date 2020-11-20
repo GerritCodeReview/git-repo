@@ -2702,12 +2702,14 @@ class Project(object):
     # Some platforms (e.g. Windows) won't let us update dotgit in situ because
     # of file permissions.  Delete it and recreate it from scratch to avoid.
     platform_utils.remove(dotgit)
-    # Use relative path from checkout->worktree.
-    with open(dotgit, 'w') as fp:
+    # Use relative path from checkout->worktree & maintain Unix line endings
+    # on all OS's to match git behavior.
+    with open(dotgit, 'w', newline='\n') as fp:
       print('gitdir:', os.path.relpath(git_worktree_path, self.worktree),
             file=fp)
-    # Use relative path from worktree->checkout.
-    with open(os.path.join(git_worktree_path, 'gitdir'), 'w') as fp:
+    # Use relative path from worktree->checkout & maintain Unix line endings
+    # on all OS's to match git behavior.
+    with open(os.path.join(git_worktree_path, 'gitdir'), 'w', newline='\n') as fp:
       print(os.path.relpath(dotgit, git_worktree_path), file=fp)
 
     self._InitMRef()
