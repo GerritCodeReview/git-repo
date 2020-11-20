@@ -36,6 +36,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe9daa5f_7d9f8294",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-20T06:40:57Z",
+      "side": 1,
+      "message": "Yeah, thanks for including me on that review, it helps understand where it is going.\n\nMy gripe with it was that I almost immediately slipped from \"unit\" testing it, to \"function testing it\", meaning setting up a real dummy manifest hierarchy and doing commands and verifying but it grew a lot, and immediately meant breaking things out from test_project.py to get some common classes done for doing that setup, but that became more like \"test refactoring\" than \"group in includes\".\n\nSo anyway, not the sort of thing to engage in when swamped with other delivery stuff, so maybe today I can push your feedback points and then keep experimenting with the tests next week or something.",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e4f0221_f2d14fb6",
