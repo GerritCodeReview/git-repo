@@ -16,6 +16,24 @@
       "message": "looks like this was https://crbug.com/gerrit/13208",
       "revId": "44bc9643ed1b53ef72a0f4089c80ca8ef7310c7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57c72661_450d339f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T08:26:10Z",
+      "side": 1,
+      "message": "I do not think so.\nThis change is for the \u0027repo init --worktree\u0027 support. The bug mentioned is about --mirror support. Similar issue, but in a different part of the code.",
+      "parentUuid": "ab63d1c5_b9e2eef2",
+      "revId": "44bc9643ed1b53ef72a0f4089c80ca8ef7310c7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
