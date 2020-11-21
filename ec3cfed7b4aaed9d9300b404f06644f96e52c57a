@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9a44d4_e53f1e1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "All comments reworked, except 1 still todo.",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a0aa64b_473fa87c",
@@ -35,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94226009_ee513171",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "242d74cf_df981c3b",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f056078f_e93efab2",
@@ -48,6 +83,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "only need to indent with 2 spaces",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ade2a4a6_fc4825d2",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f056078f_e93efab2",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +122,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f091d11_075635b8",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9ed7e332_6158b611",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "649d467f_ea456287",
@@ -82,6 +153,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "extraneous parens here \u0026 next line",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cce7319_4dc19acf",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "649d467f_ea456287",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -103,6 +192,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2110019c_390b2840",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b0ad3634_5aa8a813",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a08286f2_a8246397",
@@ -116,6 +223,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "trim this blank line",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93ae019b_04a31fc8",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a08286f2_a8246397",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -137,6 +262,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69a64d1a_78bb57cd",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "34aa35e1_53fb24a6",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d07c3cfd_b6b2f907",
@@ -150,6 +293,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "single quotes",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "410ea2f1_680e4eb7",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d07c3cfd_b6b2f907",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -171,6 +332,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce722795_601ede9c",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b21cd911_5166c343",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9d8c9c67_1204fe5a",
@@ -184,6 +363,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "use % only",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e794a5b_b8c7873a",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9d8c9c67_1204fe5a",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -257,6 +454,78 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb20461_e920cd3f",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "83062130_73c9bfa6",
+      "range": {
+        "startLine": 465,
+        "startChar": 6,
+        "endLine": 465,
+        "endChar": 24
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1066959_6692e4c7",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ef08b3a7_235f80c2",
+      "range": {
+        "startLine": 465,
+        "startChar": 25,
+        "endLine": 465,
+        "endChar": 38
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb2356da_16d3dc87",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8ac4f3ff_f2e24423",
+      "range": {
+        "startLine": 465,
+        "startChar": 40,
+        "endLine": 465,
+        "endChar": 48
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ac3d1c0_9e69ed67",
@@ -274,6 +543,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef80ad29_bef653c9",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0ac3d1c0_9e69ed67",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95e7c9f7_5e2c836e",
@@ -287,6 +574,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "these would prob be better hoisted to the class docstring",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c2739af_fd463af8",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "95e7c9f7_5e2c836e",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -314,6 +619,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb975b7c_37f96528",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5cff2c0e_4fa1b25e",
+      "range": {
+        "startLine": 485,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 5
+      },
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb8fc357_f4e889bc",
@@ -327,6 +656,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "use % everywhere",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "913378ba_f9046e8a",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cb8fc357_f4e889bc",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -348,6 +695,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3919e2f9_e29b2f85",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3e7425d8_bb7ffca8",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "241eb7c5_f84a1c33",
@@ -361,6 +726,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "don\u0027t instantiate inline.  pull it out into a variable to make it readable like it was before (assigning it to |hook|).",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da663ee9_6fb116e9",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "241eb7c5_f84a1c33",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

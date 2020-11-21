@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12dee0c5_9fd5bf95",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "4013554c_988b44e4",
+      "revId": "16c1328fecdbd950bb4f2c24f9c49a8ed0992c50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da4dc13d_8181f44a",
@@ -31,6 +49,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 0,
       "message": "\"no-op\" now that this is part of a sentence",
+      "revId": "16c1328fecdbd950bb4f2c24f9c49a8ed0992c50",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb2913c8_3cab7fcb",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 417,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T19:53:45Z",
+      "side": 0,
+      "message": "Ack",
+      "parentUuid": "da4dc13d_8181f44a",
       "revId": "16c1328fecdbd950bb4f2c24f9c49a8ed0992c50",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
