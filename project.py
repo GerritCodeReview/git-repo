@@ -62,7 +62,8 @@ RETRY_JITTER_PERCENT = 0.1
 def _lwrite(path, content):
   lock = '%s.lock' % path
 
-  with open(lock, 'w') as fd:
+  # Maintain Unix line endings on all OS's to match git behavior.
+  with open(lock, 'w', newline='\n') as fd:
     fd.write(content)
 
   try:
