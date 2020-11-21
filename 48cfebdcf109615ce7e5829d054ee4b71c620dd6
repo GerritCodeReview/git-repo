@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6294ec8_e2eea8e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-21T05:36:55Z",
+      "side": 1,
+      "message": "adding --detach sounds fine",
+      "revId": "48cfebdcf109615ce7e5829d054ee4b71c620dd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b4ee0af_fe52b13a",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1404,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-21T05:36:55Z",
+      "side": 1,
+      "message": "there\u0027s already a Project.CheckoutBranch method you an use.  pretty sure it does pretty much all of this.",
+      "revId": "48cfebdcf109615ce7e5829d054ee4b71c620dd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
