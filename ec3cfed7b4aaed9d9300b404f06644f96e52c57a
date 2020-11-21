@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4cdeed0_3210a32a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T21:02:18Z",
+      "side": 1,
+      "message": "All comments will be reworked. First thoroughly testing before uploading next patchset",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6a0aa64b_473fa87c",
@@ -31,6 +48,24 @@
       "writtenOn": "2020-11-17T03:31:26Z",
       "side": 1,
       "message": "this pattern is convenient, but it\u0027s also a bit of a trap when used outside of the specific script scope.  e.g. unittests or if we were to integrate into other modules (not sure we will).\n\ni think it\u0027d be better if the __init__ signature broke out all the |opt| fields we care about, and we didn\u0027t store |self._opt| at all.  instead, for the sake of scripts, we could add a factory @classmethod down above AddHookOptionGroup that would instantiate \u0026 extract.  that would keep the messy logic in this class for scripts while still keeping other modules (e.g. unittests) nice.\n\nthere\u0027s a similar issue with |manifest| actually.\n\n @classmethod\n def FromSubcmd(cls, manifest, opt, *args, **kwargs):\n   for key in (\u0027bypass_hooks\u0027, \u0027allow_all_hooks\u0027, \u0027ignore_hooks\u0027):\n     kwargs.setdefault(key, getattr(opt, key))\n   kwargs.update({\n       \u0027hooks_project\u0027: manifest.repo_hooks_project,\n       ...\n   })\n   return cls(*args, **kwargs)\n\n\nwdyt ?",
+      "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f6997f4_180de91c",
+        "filename": "hooks.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T21:02:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6a0aa64b_473fa87c",
       "revId": "ec3cfed7b4aaed9d9300b404f06644f96e52c57a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
