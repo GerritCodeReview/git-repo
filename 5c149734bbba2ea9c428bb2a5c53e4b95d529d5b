@@ -16,6 +16,23 @@
       "message": "Change I088cfd994f3cc31db4e0ca7791fa0a4ee3ac222f only fixed the \u0027repo init --worktree\u0027 issue, the \u0027repo init --reference\u0027 is a similar problem but a different solution to be required. The change https://gerrit-review.googlesource.com/c/git-repo/+/277385 did more than what was mentioned inside the Bug report.\nSince the original patch is abandoned and I cannot restore it, I created a new patch to solve the remaining issues with --reference.",
       "revId": "5c149734bbba2ea9c428bb2a5c53e4b95d529d5b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9659a11_9fb3fad6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1109990
+      },
+      "writtenOn": "2020-11-21T10:27:33Z",
+      "side": 1,
+      "message": "Yes, this is the actual fix for the --reference issue under Windows. Thanks for bringing back the missing piece.",
+      "revId": "5c149734bbba2ea9c428bb2a5c53e4b95d529d5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
