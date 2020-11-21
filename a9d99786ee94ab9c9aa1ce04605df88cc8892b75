@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": false,
       "key": {
         "uuid": "e763d4af_5eb4d535",
         "filename": "/PATCHSET_LEVEL",
@@ -14,8 +15,24 @@
       "side": 1,
       "message": "Hi Mike,\n\nDo you have any additional feedback on this change? \n\nThanks!\nJavier Alvarez",
       "revId": "a9d99786ee94ab9c9aa1ce04605df88cc8892b75",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": false
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8f25783_aace2835",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-21T10:16:30Z",
+      "side": 1,
+      "message": "Actually, https://gerrit-review.googlesource.com/c/git-repo/+/289310 fixed only the --worktree issue, this patch attempted to do both --worktree as --reference, and thus more than what was described in the bug report.\nSince this patch is now abandoned, I created a follow up patch with the missing parts for --reference to be fixed: https://gerrit-review.googlesource.com/c/git-repo/+/289431\n",
+      "revId": "a9d99786ee94ab9c9aa1ce04605df88cc8892b75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
