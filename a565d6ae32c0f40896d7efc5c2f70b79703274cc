@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4b738009_db0852bb",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:34:33Z",
+      "side": 1,
+      "message": "also, is it called after each project is synced ?  or after they\u0027re all done syncing ?  if there\u0027s an error during sync, will it still be called ?\n\nthese kind of nuances users/hook-authors always run into ;).",
+      "parentUuid": "7212a646_84802b69",
+      "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "64ec69d9_7877dff9",
         "filename": "subcmds/sync.py",
         "patchSetId": 7
