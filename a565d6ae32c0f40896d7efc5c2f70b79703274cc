@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d3d9be8_d2bdbea6",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T10:41:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "95ff124a_3b294ea8",
+      "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7212a646_84802b69",
@@ -53,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af98bfbc_318d5ee1",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T10:41:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4b738009_db0852bb",
+      "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64ec69d9_7877dff9",
@@ -66,6 +102,24 @@
       "writtenOn": "2020-11-22T02:32:49Z",
       "side": 1,
       "message": "this docstring is shown to users as the help/usage string.  code references won\u0027t be helpful.",
+      "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce7b60f2_756ca365",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T10:41:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "64ec69d9_7877dff9",
       "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
