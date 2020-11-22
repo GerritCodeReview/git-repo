@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95ff124a_3b294ea8",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:32:49Z",
+      "side": 1,
+      "message": "stick to 80 cols",
+      "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7212a646_84802b69",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:32:49Z",
+      "side": 1,
+      "message": "after network sync ?  local sync ?  both or only one ?  needs a bit more clarity.",
+      "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64ec69d9_7877dff9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:32:49Z",
+      "side": 1,
+      "message": "this docstring is shown to users as the help/usage string.  code references won\u0027t be helpful.",
+      "revId": "a565d6ae32c0f40896d7efc5c2f70b79703274cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
