@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64bc8609_3d72da93",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "83f66800_478fb2d9",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d15d3ea7_24c2dbbc",
@@ -48,6 +66,24 @@
       "writtenOn": "2020-11-22T02:26:12Z",
       "side": 1,
       "message": "the order of the args in the docstring has to match the order in the func signature",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b2a9b1a_198f9eaa",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d15d3ea7_24c2dbbc",
       "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -75,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c5802ec_63318edc",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "499b4199_efd321f5",
+      "range": {
+        "startLine": 82,
+        "startChar": 19,
+        "endLine": 82,
+        "endChar": 39
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc5354d9_04df9175",
@@ -88,6 +148,24 @@
       "writtenOn": "2020-11-22T02:26:12Z",
       "side": 1,
       "message": "this could all be moved to the docstring above.  we don\u0027t need the arg docs to be short/one-line.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc2efa8_e02a0056",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "bc5354d9_04df9175",
       "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -109,6 +187,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61300cd2_13495915",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fd3e4998_85cc58b0",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a63d1fcf_7e603337",
@@ -122,6 +218,30 @@
       "writtenOn": "2020-11-22T02:26:12Z",
       "side": 1,
       "message": "you can drop the (no error case) aside here.  that\u0027s normal behavior in these kind of APIs.",
+      "range": {
+        "startLine": 447,
+        "startChar": 56,
+        "endLine": 447,
+        "endChar": 69
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69a3529c_9f772786",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a63d1fcf_7e603337",
       "range": {
         "startLine": 447,
         "startChar": 56,
@@ -155,6 +275,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d79d7f0_d5f3b195",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b0ddcd21_c8d68b93",
+      "range": {
+        "startLine": 448,
+        "startChar": 13,
+        "endLine": 448,
+        "endChar": 77
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b136890_ce23e5c2",
@@ -168,6 +312,24 @@
       "writtenOn": "2020-11-22T02:26:12Z",
       "side": 1,
       "message": "docstrings need to be below the func itself, not above it.  see all the other uses in here.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c71a942f_e55b00e7",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6b136890_ce23e5c2",
       "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -189,6 +351,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b6e783d_4cbf7132",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "77353431_6fcd7cd5",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1951551_b9163950",
@@ -206,6 +386,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa5aa316_0b9e01e2",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a1951551_b9163950",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "592d8b96_9dbca378",
@@ -219,6 +417,24 @@
       "writtenOn": "2020-11-22T02:26:12Z",
       "side": 1,
       "message": "i think this is better as a comment rather than docstring.  docstrings are more for people using the APIs than the people implementing them.  wdyt ?\n\nshould be rewrapped either way.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d49ca63_2b38e617",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "592d8b96_9dbca378",
       "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -246,6 +462,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d15dc26_a0d36127",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7ee63925_108b1bbd",
+      "range": {
+        "startLine": 522,
+        "startChar": 36,
+        "endLine": 522,
+        "endChar": 42
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a13d1ab_4e412311",
@@ -259,6 +499,24 @@
       "writtenOn": "2020-11-22T02:26:12Z",
       "side": 1,
       "message": "we use 2 space indent in this project",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e928c879_9fe8a05f",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-22T09:50:56Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "8a13d1ab_4e412311",
       "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
