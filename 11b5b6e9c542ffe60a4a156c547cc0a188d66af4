@@ -1,0 +1,266 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76da8958_979d1d03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "mostly nits",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83f66800_478fb2d9",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "let\u0027s not focus on the CLI.  focus on what it does.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d15d3ea7_24c2dbbc",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "the order of the args in the docstring has to match the order in the func signature",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "499b4199_efd321f5",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "\"The top directory of the repo client checkout.\"",
+      "range": {
+        "startLine": 82,
+        "startChar": 19,
+        "endLine": 82,
+        "endChar": 39
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc5354d9_04df9175",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "this could all be moved to the docstring above.  we don\u0027t need the arg docs to be short/one-line.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd3e4998_85cc58b0",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 431,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "i don\u0027t think you need the inner double quotes.  we have the colon to delimit the error from the value.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a63d1fcf_7e603337",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 447,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "you can drop the (no error case) aside here.  that\u0027s normal behavior in these kind of APIs.",
+      "range": {
+        "startLine": 447,
+        "startChar": 56,
+        "endLine": 447,
+        "endChar": 69
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0ddcd21_c8d68b93",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "same here ... you can just simplify this as \"The hook failed.\"",
+      "range": {
+        "startLine": 448,
+        "startChar": 13,
+        "endLine": 448,
+        "endChar": 77
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b136890_ce23e5c2",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "docstrings need to be below the func itself, not above it.  see all the other uses in here.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77353431_6fcd7cd5",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "look at the Run func above for correct Args: style \u0026 indentation.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1951551_b9163950",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "no space at start of docstrings",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "592d8b96_9dbca378",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "i think this is better as a comment rather than docstring.  docstrings are more for people using the APIs than the people implementing them.  wdyt ?\n\nshould be rewrapped either way.",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ee63925_108b1bbd",
+        "filename": "hooks.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 522,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "you can drop \"action\" while maintaining clarity",
+      "range": {
+        "startLine": 522,
+        "startChar": 36,
+        "endLine": 522,
+        "endChar": 42
+      },
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a13d1ab_4e412311",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 557,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-22T02:26:12Z",
+      "side": 1,
+      "message": "we use 2 space indent in this project",
+      "revId": "11b5b6e9c542ffe60a4a156c547cc0a188d66af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
