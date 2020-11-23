@@ -88,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6417b0a_c2970707",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 588,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-23T16:24:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e4f0221_f2d14fb6",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbd79637_7c76d98d",
@@ -101,6 +119,24 @@
       "writtenOn": "2020-11-18T08:50:13Z",
       "side": 1,
       "message": "use +\u003d",
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a9a1bf5_57aa9bf8",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-23T16:24:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbd79637_7c76d98d",
       "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -128,6 +164,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a340aed_fb3abfa6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-23T16:24:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70c0b089_e3fadcc4",
+      "range": {
+        "startLine": 626,
+        "startChar": 0,
+        "endLine": 627,
+        "endChar": 40
+      },
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f3ca447_1e803a57",
@@ -141,6 +201,30 @@
       "writtenOn": "2020-11-18T08:50:13Z",
       "side": 1,
       "message": "you can simplify this: just merge the two and let the lower project element parsing deal with duplicates.  it doesn\u0027t today, so we should prob fix that, but do it independently ;).\n\n nodeGroups \u003d parent_groups\n if node.hasAttribute(\u0027groups\u0027):\n   nodeGroups +\u003d \u0027,\u0027 + node.getAttribute(\u0027groups\u0027)\n node.setAttribute(\u0027groups\u0027, nodeGroups)",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 634,
+        "endChar": 56
+      },
+      "revId": "bb6c00ee16ed3f6081a1e7d6b6014ea68b3984be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0de42556_27ccc6fd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-23T16:24:17Z",
+      "side": 1,
+      "message": "Great feedback, thanks and agree, done!",
+      "parentUuid": "8f3ca447_1e803a57",
       "range": {
         "startLine": 628,
         "startChar": 0,
