@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13fb34e8_b0f19c4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T10:02:33Z",
+      "side": 1,
+      "message": "not sure if you saw https://gerrit-review.googlesource.com/c/git-repo/+/194350.  it takes a different approach by keeping track over all before/after sync state to pass to the hook.\n\nit might help if you could describe in the commit message what your goals are here.  like what are you trying to support ?",
+      "revId": "6b13e5be341941a70b587d6cb288d79e4bc1c0e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f331c47_7263dfd8",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T10:02:33Z",
+      "side": 1,
+      "message": "omit spaces when they\u0027re the start of the line",
+      "revId": "6b13e5be341941a70b587d6cb288d79e4bc1c0e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
