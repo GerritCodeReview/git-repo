@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41942e72_2fbd302c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-23T16:28:25Z",
+      "side": 1,
+      "message": "I\u0027m not done with test yet, so something like this, and then some asserts is what it looks like after your additions to the test class:\n\n+  def test_include_levels(self):\n+    root_man \u003d os.path.join(self.manifest_dir, \u0027level-root.xml\u0027)\n+    with open(root_man, \u0027w\u0027) as fp:\n+      fp.write(\"\"\"\n+\u003cmanifest\u003e\n+  \u003cremote name\u003d\"test-remote\" fetch\u003d\"http://localhost\" /\u003e\n+  \u003cdefault remote\u003d\"test-remote\" revision\u003d\"refs/heads/main\" /\u003e\n+  \u003cinclude name\u003d\"level1.xml\" groups\u003d\"level1-group\" /\u003e\n+  \u003cproject name\u003d\"root-name1\" path\u003d\"root-path1\" /\u003e\n+  \u003cproject name\u003d\"root-name2\" path\u003d\"root-path2\" groups\u003d\"r2g1,r2g2\" /\u003e\n+\u003c/manifest\u003e\n+\"\"\")\n+    with open(os.path.join(self.manifest_dir, \u0027level1.xml\u0027), \u0027w\u0027) as fp:\n+      fp.write(\"\"\"\n+\u003cmanifest\u003e\n+  \u003cinclude name\u003d\"level2.xml\" groups\u003d\"level2-group\" /\u003e\n+  \u003cproject name\u003d\"level1-name1\" path\u003d\"level1-path1\" /\u003e\n+\u003c/manifest\u003e\n+\"\"\")\n+    with open(os.path.join(self.manifest_dir, \u0027level2.xml\u0027), \u0027w\u0027) as fp:\n+      fp.write(\"\"\"\n+\u003cmanifest\u003e\n+  \u003cproject name\u003d\"level2-name1\" path\u003d\"level2-path1\" groups\u003d\"l2g1,l2g2\" /\u003e\n+\u003c/manifest\u003e\n+\"\"\")\n+    inc_man \u003d manifest_xml.XmlManifest(self.repodir, root_man)\n+    for this_proj in inc_man.projects:\n\nI usually work with element tree for xml, and this minidom makes me feel like a complete noob, haha, sorry. Just expecting the groups to be empty for root-name1 is of course not true and so on, well more coming up.",
+      "revId": "35629c633f76350780e032f32b7c040bc719f128",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
