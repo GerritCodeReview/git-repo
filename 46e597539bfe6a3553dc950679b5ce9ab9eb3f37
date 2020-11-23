@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3316aa8b_81035bd4",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-23T08:42:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "63c58937_8e3a93c8",
+      "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bfa70af_87478d45",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f76e919_b32dbd39",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-23T08:42:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0bfa70af_87478d45",
+      "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fbba4df7_cf8b573c",
@@ -65,6 +101,24 @@
       "writtenOn": "2020-11-23T06:49:31Z",
       "side": 1,
       "message": "it\u0027s the other way around ... hanging indent is 4 spaces, but normal scope indent is 2 spaces.  so the args to Run() should be 4, but the return below should be 2.\n\nthe FromSubcmd above should be 4 too.",
+      "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c240a0e_26105f29",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-23T08:42:46Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "fbba4df7_cf8b573c",
       "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
