@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53434f33_30d1cb15",
+        "filename": "hooks.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T08:47:13Z",
+      "side": 1,
+      "message": "i guess i missed this earlier, but this block should have 2 fewer spaces indent too",
+      "revId": "e0c1e68ce67d003a6a0b89ffee3532e1886e6d41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
