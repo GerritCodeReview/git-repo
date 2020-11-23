@@ -16,6 +16,24 @@
       "message": "We are getting there... Do we have coding style checker tools too? Would have saved a few cycles :-)",
       "revId": "938705aae783c34813cc3f02136863fcf294acdb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "456e2bc2_710fb151",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T09:18:33Z",
+      "side": 1,
+      "message": "David likes flake8:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/SUBMITTING_PATCHES.md#check-for-coding-errors-and-style-violations-with-flake8",
+      "parentUuid": "234c79f8_5a783974",
+      "revId": "938705aae783c34813cc3f02136863fcf294acdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
