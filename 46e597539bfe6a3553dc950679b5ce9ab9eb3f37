@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eac0752a_3c2b92ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T06:49:31Z",
+      "side": 1,
+      "message": "just nits",
+      "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63c58937_8e3a93c8",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T06:49:31Z",
+      "side": 1,
+      "message": "add a dangling comma",
+      "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bfa70af_87478d45",
+        "filename": "hooks.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T06:49:31Z",
+      "side": 1,
+      "message": "indent should be aligned to ( from which it hangs",
+      "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbba4df7_cf8b573c",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-23T06:49:31Z",
+      "side": 1,
+      "message": "it\u0027s the other way around ... hanging indent is 4 spaces, but normal scope indent is 2 spaces.  so the args to Run() should be 4, but the return below should be 2.\n\nthe FromSubcmd above should be 4 too.",
+      "revId": "46e597539bfe6a3553dc950679b5ce9ab9eb3f37",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
