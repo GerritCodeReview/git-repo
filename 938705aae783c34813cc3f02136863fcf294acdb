@@ -52,6 +52,24 @@
       "parentUuid": "456e2bc2_710fb151",
       "revId": "938705aae783c34813cc3f02136863fcf294acdb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c06295d_11112cd3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-11-23T09:55:14Z",
+      "side": 1,
+      "message": "Patchset 9 is ready now to my view.",
+      "parentUuid": "456ba04f_f4d21a27",
+      "revId": "938705aae783c34813cc3f02136863fcf294acdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
