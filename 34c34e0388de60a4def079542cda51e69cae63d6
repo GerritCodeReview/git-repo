@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f95c4d_8ae69f18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-25T09:50:09Z",
+      "side": 1,
+      "message": "There, hope the test code doesn\u0027t invoke too much cringe... \u003d)\n\n(project and wrapper are currently failing, but that should probably not be fixed in this CL)",
+      "revId": "34c34e0388de60a4def079542cda51e69cae63d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
