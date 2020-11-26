@@ -16,6 +16,80 @@
       "message": "There, no longer growing a list of commas for no reason. \u003d)",
       "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cdaa0c6_4ec5b26e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T08:35:55Z",
+      "side": 1,
+      "message": "this is just:\n\n include_groups \u003d node.getAttribute(\u0027groups\u0027) + \u0027,\u0027 + include_groups",
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec8d76f5_329dd8d1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T08:35:55Z",
+      "side": 1,
+      "message": "same here about using + rather than join()",
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65aef566_a64ad985",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T08:35:55Z",
+      "side": 1,
+      "message": "i think if you just used |proj| here instead of |this_proj|, the code will be a bit more readable w/out losing clarity",
+      "range": {
+        "startLine": 265,
+        "startChar": 8,
+        "endLine": 265,
+        "endChar": 17
+      },
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0868c5b5_75b18049",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T08:35:55Z",
+      "side": 1,
+      "message": "comments are full sentences, so these should all have periods at the end",
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

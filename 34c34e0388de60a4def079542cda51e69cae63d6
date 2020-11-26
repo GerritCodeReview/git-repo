@@ -88,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e574484f_e108df4e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T08:35:55Z",
+      "side": 1,
+      "message": "i meant that i think _ParseGroups would consume multiple runs of , such that the parsed Project.groups member wouldn\u0027t have it.  so while internally we might generate a lot of commas, the final parsed objects wouldn\u0027t have them.",
+      "parentUuid": "4e406df2_b60e9a6d",
+      "revId": "34c34e0388de60a4def079542cda51e69cae63d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2769181_443f338f",
