@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "591ce516_67d266bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-26T07:01:28Z",
+      "side": 1,
+      "message": "Yeah I get prints like this when running my own repo setup, no very pretty, will improve it:\n\ninclude_groups:  \ninclude_groups:  \ninclude_groups:  beta\ninclude_groups:  \ninclude_groups:  gamma\ninclude_groups:  gamma,\ninclude_groups:  gamma,\ninclude_groups:  gamma,,\ninclude_groups:  gamma,,\n",
+      "revId": "9c6a880545281eb46c4927b469eae5d9a28d7d80",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
