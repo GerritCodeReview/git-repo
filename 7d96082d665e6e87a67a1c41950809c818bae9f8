@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53f45c56_138beac7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-26T07:52:31Z",
+      "side": 1,
+      "message": "There, no longer growing a list of commas for no reason. \u003d)",
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
