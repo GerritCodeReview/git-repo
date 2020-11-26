@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe90a558_40c1a164",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 663,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-26T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8cdaa0c6_4ec5b26e",
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec8d76f5_329dd8d1",
@@ -48,6 +66,24 @@
       "writtenOn": "2020-11-26T08:35:55Z",
       "side": 1,
       "message": "same here about using + rather than join()",
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5e39ef1_810a27ef",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-26T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec8d76f5_329dd8d1",
       "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -75,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "590b4357_5e128a52",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-26T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65aef566_a64ad985",
+      "range": {
+        "startLine": 265,
+        "startChar": 8,
+        "endLine": 265,
+        "endChar": 17
+      },
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0868c5b5_75b18049",
@@ -88,6 +148,24 @@
       "writtenOn": "2020-11-26T08:35:55Z",
       "side": 1,
       "message": "comments are full sentences, so these should all have periods at the end",
+      "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f94cd725_7254414e",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-11-26T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0868c5b5_75b18049",
       "revId": "7d96082d665e6e87a67a1c41950809c818bae9f8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
