@@ -16,6 +16,57 @@
       "message": "There, hope the test code doesn\u0027t invoke too much cringe... \u003d)\n\n(project and wrapper are currently failing, but that should probably not be fixed in this CL)",
       "revId": "34c34e0388de60a4def079542cda51e69cae63d6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bbe4e73_955c2970",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T06:46:17Z",
+      "side": 1,
+      "message": "just a nit in the unittest logic",
+      "revId": "34c34e0388de60a4def079542cda51e69cae63d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7273b05_b37d255f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T06:46:17Z",
+      "side": 1,
+      "message": "this will generate runs of ,,, when groups isn\u0027t used on an include right ?  i don\u0027t think it matters as it\u0027ll collapse down \u0026 be thrown away when doing the final parse, so more just noting it.",
+      "revId": "34c34e0388de60a4def079542cda51e69cae63d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2769181_443f338f",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-11-26T06:46:17Z",
+      "side": 1,
+      "message": "use regular # comments, not docstrings",
+      "revId": "34c34e0388de60a4def079542cda51e69cae63d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
