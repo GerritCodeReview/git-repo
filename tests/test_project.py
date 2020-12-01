@@ -29,6 +29,7 @@ import error
 import git_config
 import platform_utils
 import project
+from git_command import git_require
 
 
 @contextlib.contextmanager
@@ -38,7 +39,19 @@ def TempGitTree():
   # Python 2 support entirely.
   try:
     tempdir = tempfile.mkdtemp(prefix='repo-tests')
-    subprocess.check_call(['git', 'init'], cwd=tempdir)
+
+    # Tests need to assume, that main is default branch at init,
+    # which is not supported in config until 2.28.
+    initcmd = ['git', 'init']
+    if not git_require((2, 28, 0)):
+      initcmd += ['--initial-branch=main']
+    else:
+      # Use template dir for init
+      templatedir = tempfile.mkdtemp(prefix='.test-template')
+      with open(os.path.join(templatedir, 'HEAD'), 'w') as fp:
+        fp.write('ref: refs/heads/main\n')
+      initcmd += ['--template=' + templatedir]
+    subprocess.check_call(initcmd, cwd=tempdir)
     yield tempdir
   finally:
     platform_utils.rmtree(tempdir)
