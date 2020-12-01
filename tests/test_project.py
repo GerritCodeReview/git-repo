@@ -71,6 +71,7 @@ class ReviewableBranchTests(unittest.TestCase):
         fp.write('txt')
       fakeproj.work_git.add('readme')
       fakeproj.work_git.commit('-mAdd file')
+      fakeproj.work_git.branch('main')
       fakeproj.work_git.checkout('-b', 'work')
       fakeproj.work_git.rm('-f', 'readme')
       fakeproj.work_git.commit('-mDel file')

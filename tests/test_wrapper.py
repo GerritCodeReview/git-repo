@@ -362,6 +362,8 @@ class GitCheckoutTestCase(RepoWrapperTestCase):
     run_git('branch', 'stable', cwd=remote)
     run_git('tag', 'v1.0', cwd=remote)
     run_git('commit', '--allow-empty', '-m2nd commit', cwd=remote)
+    run_git('branch', 'main', cwd=remote)
+    run_git('commit', '--allow-empty', '-mmain commit', cwd=remote)
     cls.REV_LIST = run_git('rev-list', 'HEAD', cwd=remote).stdout.splitlines()
 
     run_git('init', cwd=cls.GIT_DIR)
@@ -382,7 +384,7 @@ class ResolveRepoRev(GitCheckoutTestCase):
     """Check refs/heads/branch argument."""
     rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/heads/stable')
     self.assertEqual('refs/heads/stable', rrev)
-    self.assertEqual(self.REV_LIST[1], lrev)
+    self.assertEqual(self.REV_LIST[2], lrev)
 
     with self.assertRaises(wrapper.CloneFailure):
       self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/heads/unknown')
@@ -391,7 +393,7 @@ class ResolveRepoRev(GitCheckoutTestCase):
     """Check refs/tags/tag argument."""
     rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/tags/v1.0')
     self.assertEqual('refs/tags/v1.0', rrev)
-    self.assertEqual(self.REV_LIST[1], lrev)
+    self.assertEqual(self.REV_LIST[2], lrev)
 
     with self.assertRaises(wrapper.CloneFailure):
       self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/tags/unknown')
@@ -400,17 +402,17 @@ class ResolveRepoRev(GitCheckoutTestCase):
     """Check branch argument."""
     rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'stable')
     self.assertEqual('refs/heads/stable', rrev)
-    self.assertEqual(self.REV_LIST[1], lrev)
+    self.assertEqual(self.REV_LIST[2], lrev)
 
     rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'main')
     self.assertEqual('refs/heads/main', rrev)
-    self.assertEqual(self.REV_LIST[0], lrev)
+    self.assertEqual(self.REV_LIST[1], lrev)
 
   def test_tag_name(self):
     """Check tag argument."""
     rrev, lrev = self.wrapper.resolve_repo_rev(self.GIT_DIR, 'v1.0')
     self.assertEqual('refs/tags/v1.0', rrev)
-    self.assertEqual(self.REV_LIST[1], lrev)
+    self.assertEqual(self.REV_LIST[2], lrev)
 
   def test_full_commit(self):
     """Check specific commit argument."""
@@ -478,7 +480,7 @@ class CheckRepoRev(GitCheckoutTestCase):
     with mock.patch.object(self.wrapper, 'verify_rev', side_effect=Exception):
       rrev, lrev = self.wrapper.check_repo_rev(self.GIT_DIR, 'stable', repo_verify=False)
     self.assertEqual('refs/heads/stable', rrev)
-    self.assertEqual(self.REV_LIST[1], lrev)
+    self.assertEqual(self.REV_LIST[2], lrev)
 
 
 if __name__ == '__main__':
