@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Copyright 2019 The Android Open Source Project
 #
@@ -55,9 +55,10 @@ setuptools.setup(
         'Operating System :: MacOS :: MacOS X',
         'Operating System :: Microsoft :: Windows :: Windows 10',
         'Operating System :: POSIX :: Linux',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Topic :: Software Development :: Version Control :: Git',
     ],
-    # We support Python 2.7 and Python 3.6+.
-    python_requires='>=2.7, ' + ', '.join('!=3.%i.*' % x for x in range(0, 6)),
+    python_requires='>=3.6',
     packages=['subcmds'],
 )
