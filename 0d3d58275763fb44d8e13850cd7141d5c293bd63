@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2799dfbc_f6b14ed8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-01T18:32:19Z",
+      "side": 1,
+      "message": "hmm with the code being python3-only now, this defaulting to python2 is a problem.  posted a newer update to move to python3:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/290503",
+      "revId": "0d3d58275763fb44d8e13850cd7141d5c293bd63",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
