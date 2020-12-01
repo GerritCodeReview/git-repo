@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14904a6a_aa36a7f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-01T18:40:53Z",
+      "side": 1,
+      "message": "thanks for pointing this out.  it\u0027s been passing locally for me, but that\u0027s because my OS switched init.defaultBranch to main.  i think git will eventually do that too.  i added some more details to the commit message.\n\nhowever, with that setting, these tests now fail, but pass with the old init.defaultBranch\u003dmaster setting :).",
+      "revId": "f4ba3dba9e7553e68a57e3f9169c5ad764d60b4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
