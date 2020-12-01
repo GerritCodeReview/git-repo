@@ -38,7 +38,13 @@ def TempGitTree():
   # Python 2 support entirely.
   try:
     tempdir = tempfile.mkdtemp(prefix='repo-tests')
-    subprocess.check_call(['git', 'init'], cwd=tempdir)
+    # Use template dir for init, to allow use of main as default branch
+    # even if client running has "to be deprecated" master as default.
+    # Can't use init.defaultBranch since we must support git older than 2.28.
+    templatedir = tempfile.mkdtemp(prefix='.test_project-template')
+    with open(os.path.join(templatedir, 'HEAD'), 'w') as fp:
+      fp.write('ref: refs/heads/main\n')
+    subprocess.check_call(['git', 'init', '--template=' + templatedir], cwd=tempdir)
     yield tempdir
   finally:
     platform_utils.rmtree(tempdir)

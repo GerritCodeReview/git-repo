@@ -357,7 +357,13 @@ class GitCheckoutTestCase(RepoWrapperTestCase):
 
     remote = os.path.join(cls.GIT_DIR, 'remote')
     os.mkdir(remote)
-    run_git('init', cwd=remote)
+    # Use template dir for init, to allow use of main as default branch
+    # even if client running has "to be deprecated" master as default.
+    # Can't use init.defaultBranch since we must support git older than 2.28.
+    templatedir = tempfile.mkdtemp(prefix='.test_wrapper-template')
+    with open(os.path.join(templatedir, 'HEAD'), 'w') as fp:
+      fp.write('ref: refs/heads/main\n')
+    run_git('init', '--template=' + templatedir, cwd=remote)
     run_git('commit', '--allow-empty', '-minit', cwd=remote)
     run_git('branch', 'stable', cwd=remote)
     run_git('tag', 'v1.0', cwd=remote)
