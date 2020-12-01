@@ -1,6 +1,24 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb382710_b305b446",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-01T18:31:46Z",
+      "side": 1,
+      "message": "hmm with the code being python3-only now, this defaulting to python2 is a problem.  posted a newer update to move to python3:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/290503",
+      "revId": "e1dd6b62de78a177c2d0b42f4eabd9e1d4662489",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "984b3e1c_7e8b3a76",
         "filename": "run_tests",
@@ -20,10 +38,10 @@
         "endChar": 58
       },
       "revId": "e1dd6b62de78a177c2d0b42f4eabd9e1d4662489",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "44ca4261_950a406c",
         "filename": "run_tests",
@@ -44,10 +62,10 @@
         "endChar": 58
       },
       "revId": "e1dd6b62de78a177c2d0b42f4eabd9e1d4662489",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "c206d552_d16629f0",
         "filename": "run_tests",
@@ -68,10 +86,10 @@
         "endChar": 58
       },
       "revId": "e1dd6b62de78a177c2d0b42f4eabd9e1d4662489",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "fb4b0724_ae605fce",
         "filename": "run_tests",
@@ -92,8 +110,7 @@
         "endChar": 58
       },
       "revId": "e1dd6b62de78a177c2d0b42f4eabd9e1d4662489",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
