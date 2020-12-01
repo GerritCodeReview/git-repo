@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Copyright 2019 The Android Open Source Project
 #
@@ -20,22 +20,26 @@ from __future__ import print_function
 
 import errno
 import os
+import shutil
 import subprocess
 import sys
 
 
-def run_pytest(cmd, argv):
-  """Run the unittests via |cmd|."""
-  try:
-    return subprocess.call([cmd] + argv)
-  except OSError as e:
-    if e.errno == errno.ENOENT:
-      print('%s: unable to run `%s`: %s' % (__file__, cmd, e), file=sys.stderr)
-      print('%s: Try installing pytest: sudo apt-get install python-pytest' %
-            (__file__,), file=sys.stderr)
-      return 127
-    else:
-      raise
+def find_pytest():
+  """Try to locate a good version of pytest."""
+  # Use the Python 3 version if available.
+  ret = shutil.which('pytest-3')
+  if ret:
+    return ret
+
+  # Hopefully this is a Python 3 version.
+  ret = shutil.which('pytest')
+  if ret:
+    return ret
+
+  print(f'{__file__}: unable to find pytest.', file=sys.stderr)
+  print(f'{__file__}: Try installing: sudo apt-get install python-pytest',
+        file=sys.stderr)
 
 
 def main(argv):
@@ -48,7 +52,8 @@ def main(argv):
     pythonpath += os.pathsep + oldpythonpath
   os.environ['PYTHONPATH'] = pythonpath
 
-  return run_pytest('pytest', argv)
+  pytest = find_pytest()
+  return subprocess.run([pytest] + argv, check=True)
 
 
 if __name__ == '__main__':
