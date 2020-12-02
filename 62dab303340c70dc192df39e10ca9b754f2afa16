@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1642caf0_999b5396",
+        "filename": "tests/test_project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T18:32:58Z",
+      "side": 1,
+      "message": "import git_command rather than methods out of it\n\nkeep it sorted",
+      "revId": "62dab303340c70dc192df39e10ca9b754f2afa16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83523528_8c253377",
+        "filename": "tests/test_project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T18:32:58Z",
+      "side": 1,
+      "message": "nit: |cmd| is shorter, and given the limited scope of its usage, doesn\u0027t lose clarity",
+      "revId": "62dab303340c70dc192df39e10ca9b754f2afa16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24297802_e78fa809",
+        "filename": "tests/test_project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T18:32:58Z",
+      "side": 1,
+      "message": "this feels inverted.  i think you want to remove \"not\".",
+      "revId": "62dab303340c70dc192df39e10ca9b754f2afa16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef74387a_9773cdcf",
+        "filename": "tests/test_project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T18:32:58Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "62dab303340c70dc192df39e10ca9b754f2afa16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c7b3e8c_de6b8d20",
+        "filename": "tests/test_project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T18:32:58Z",
+      "side": 1,
+      "message": "pretty sure they don\u0027t have to be one arg\n\n initcmd +\u003d [\u0027--template\u0027, templatedir]",
+      "revId": "62dab303340c70dc192df39e10ca9b754f2afa16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11e92e23_779894ae",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T18:32:58Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "62dab303340c70dc192df39e10ca9b754f2afa16",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

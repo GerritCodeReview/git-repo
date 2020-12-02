@@ -34,6 +34,24 @@
       "parentUuid": "d963f837_301fd1ae",
       "revId": "eefc971193f4a8db29dc81a68786eb00819dc558",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15318496_91786d21",
+        "filename": "tests/test_project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T18:32:58Z",
+      "side": 1,
+      "message": "you can still do this correctly\n\n cmd \u003d [\u0027init\u0027]\n ... cmd +\u003d [\u0027--foo\u0027] ...\n run_git(*cmd, cwd\u003dremote)",
+      "parentUuid": "8f5f28eb_6d786982",
+      "revId": "eefc971193f4a8db29dc81a68786eb00819dc558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
