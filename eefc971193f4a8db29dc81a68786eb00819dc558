@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d963f837_301fd1ae",
+        "filename": "tests/test_project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-02T09:29:37Z",
+      "side": 1,
+      "message": "you should be able to make this conditional like:\n\n cmd \u003d [\u0027git\u0027, \u0027init\u0027]\n if not git_command.git_require((2, 28, 0)):\n   ... do template stuff ...\n   cmd +\u003d [\u0027--template\u0027, templatedir]\n else:\n   cmd +\u003d [\u0027--initial-branch\u003dmain\u0027]",
+      "revId": "eefc971193f4a8db29dc81a68786eb00819dc558",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
