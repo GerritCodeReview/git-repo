@@ -16,6 +16,24 @@
       "message": "were you going to use a list or keep this as-is ?  if you want one string, don\u0027t bother appending, just assign it.\n\n if git_command.git_require((2, 28, 0)):\n   initstr \u003d \u0027--initial-branch\u003dmain\u0027\n else:\n   ...\n   initstr \u003d ...",
       "revId": "5660e921b81eb51b568eec1254715d9ce27e98b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1df3aa71_eaef4438",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-12-02T20:36:08Z",
+      "side": 1,
+      "message": "Sure thing, but it\u0027s almost 10 pm here and I closed down server connections and what not after uploading last patch set. Maybe you can tweak this or push as is? I  won\u0027t push any more patch sets today, cheers.",
+      "parentUuid": "ed634460_40f1f9ab",
+      "revId": "5660e921b81eb51b568eec1254715d9ce27e98b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
