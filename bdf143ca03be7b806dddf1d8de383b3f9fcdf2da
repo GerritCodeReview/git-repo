@@ -176,6 +176,24 @@
       "parentUuid": "a2214f34_d7d9481f",
       "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37573f09_266fed8f",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-12-03T07:37:59Z",
+      "side": 1,
+      "message": "Ah ok, just thought it would be a shame about the tests being broken in 2.10, but thanks for the info and enjoy the downtime, I sure will after this year, would not recommend and so on. \u003d)",
+      "parentUuid": "0bcaf133_450ca2b7",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
