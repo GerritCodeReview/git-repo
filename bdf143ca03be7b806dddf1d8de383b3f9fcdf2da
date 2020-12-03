@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "603dbec1_89113808",
+        "filename": "tests/test_project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T07:05:10Z",
+      "side": 1,
+      "message": "imports should be sorted.  i thought you\u0027d do that once you adjusted it to not import git_require ;).",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a45d483f_e559c5bb",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T07:05:10Z",
+      "side": 1,
+      "message": "sorted",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9392d85_cc08e2fc",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T07:05:10Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
