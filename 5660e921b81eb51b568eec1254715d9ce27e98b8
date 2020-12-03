@@ -52,6 +52,24 @@
       "parentUuid": "1df3aa71_eaef4438",
       "revId": "5660e921b81eb51b568eec1254715d9ce27e98b8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd7ce1fe_b331ad5c",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-12-03T06:12:21Z",
+      "side": 1,
+      "message": "There, switched to assign.",
+      "parentUuid": "5d0fe5e2_5380acb0",
+      "revId": "5660e921b81eb51b568eec1254715d9ce27e98b8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
