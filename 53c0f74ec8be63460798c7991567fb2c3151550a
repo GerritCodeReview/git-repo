@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62a9f9c3_a878f133",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1654,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T08:17:09Z",
+      "side": 1,
+      "message": "too much indentation.  please look at AbandonBranch below for a good example.",
+      "revId": "53c0f74ec8be63460798c7991567fb2c3151550a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d3014c4_b4f51a7e",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1675,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T08:17:09Z",
+      "side": 1,
+      "message": "i don\u0027t think this does what you want.  if you\u0027re checked out to a branch that happens to be the same as the latest commit, the revid\u0027s will match \u0026 you\u0027ll return, but you didn\u0027t actually detach.\n\nthat\u0027s why there\u0027s a write to HEAD in CheckoutBranch above.",
+      "revId": "53c0f74ec8be63460798c7991567fb2c3151550a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9284f26_84c0d811",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T08:17:09Z",
+      "side": 1,
+      "message": "i think we can rephrase to avoid qualifications.  how about:\n\n The command is similar to running:\n\nalternatively, the new --detach option matches git\u0027s, so you could just change the code example:\n\n  repo forall [\u003cproject\u003e...] -c git checkout [-d] \u003cbranchname\u003e",
+      "revId": "53c0f74ec8be63460798c7991567fb2c3151550a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
