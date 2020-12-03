@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9a27d65_e912d47c",
+        "filename": "tests/test_project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-12-03T07:14:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "603dbec1_89113808",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a45d483f_e559c5bb",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79ab86bc_948ee7f0",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-12-03T07:14:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a45d483f_e559c5bb",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9392d85_cc08e2fc",
@@ -48,6 +84,24 @@
       "writtenOn": "2020-12-03T07:05:10Z",
       "side": 1,
       "message": "delete this",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9db43d09_cdac889f",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-12-03T07:14:32Z",
+      "side": 1,
+      "message": "Done, Python variable scoping still freaks me out though ;)",
+      "parentUuid": "f9392d85_cc08e2fc",
       "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
