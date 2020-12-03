@@ -140,6 +140,24 @@
       "parentUuid": "a8ce4738_9d51fbff",
       "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2214f34_d7d9481f",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T07:33:16Z",
+      "side": 1,
+      "message": "i\u0027m planning on repo-2.10 going to stable next week.  then we\u0027ll go quiet for the holidays and won\u0027t consider anything until mid-Jan.  and tbh, at that point, i\u0027ll prob forget about repo in general, so until someone reminds or something happens to come up.",
+      "parentUuid": "2515b2a6_54579fb0",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
