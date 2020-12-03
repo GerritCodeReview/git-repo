@@ -16,6 +16,23 @@
       "message": "Please kindly help to review. Thank you!",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ac679e3_27cba8f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T18:38:33Z",
+      "side": 1,
+      "message": "sorry, but i don\u0027t see this happening.  there are many OS\u0027s beyond Linux, and many distros beyond Debian \u0026 Fedora, so we cannot make changes that require those.  some are only installing `python`, not `python2` or `python3` (where `python` is Python 3).\n\nthis also seems to go against PEP-0394:\nhttps://www.python.org/dev/peps/pep-0394/\n\nthe reason we can migrate all the other shebangs is because they are not executed directly.  only the repo launcher is shipped to end users.  so making the assumption/requirement that `python3` is available isn\u0027t a big deal because the subset of devs hacking on repo are fine with it.",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
