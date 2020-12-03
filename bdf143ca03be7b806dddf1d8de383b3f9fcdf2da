@@ -158,6 +158,24 @@
       "parentUuid": "2515b2a6_54579fb0",
       "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bcaf133_450ca2b7",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-03T07:33:58Z",
+      "side": 1,
+      "message": "also, repo-2.10 has already been tagged (before this commit), so it isn\u0027t like we\u0027ll be tagging current ToT as repo-2.10",
+      "parentUuid": "a2214f34_d7d9481f",
+      "revId": "bdf143ca03be7b806dddf1d8de383b3f9fcdf2da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
