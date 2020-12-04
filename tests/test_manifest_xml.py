@@ -212,6 +212,19 @@ class XmlManifestTests(unittest.TestCase):
         '<manifest></manifest>')
     self.assertEqual(manifest.ToDict(), {})
 
+  def test_repo_hooks(self):
+    """Check repo-hooks settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="repohooks" path="src/repohooks"/>
+  <repo-hooks in-project="repohooks" enabled-list="a, b"/>
+</manifest>
+""")
+    self.assertEqual(manifest.repo_hooks_project.name, 'repohooks')
+    self.assertEqual(manifest.repo_hooks_project.enabled_repo_hooks, ['a', 'b'])
+
   def test_project_group(self):
     """Check project group settings."""
     manifest = self.getXmlManifest("""
