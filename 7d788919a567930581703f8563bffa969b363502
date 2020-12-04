@@ -1,0 +1,147 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb265e2f_d5c13b26",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-04T10:55:03Z",
+      "side": 1,
+      "message": "i\u0027ve never used git-lfs, so i can\u0027t speak to it as a user, but should it be supported in repo itself in some form ?  can it be done cheaply ?",
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50872518_491a03ce",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-04T10:55:03Z",
+      "side": 1,
+      "message": "this sounds dicey :P",
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3da7c0a5_0bf93b25",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-04T10:55:03Z",
+      "side": 1,
+      "message": "let\u0027s use commas here to match project.groups\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/290743",
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b5b93e2_7407e015",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-04T10:55:03Z",
+      "side": 1,
+      "message": "the docs have been using 2 spaces after the .",
+      "range": {
+        "startLine": 45,
+        "startChar": 22,
+        "endLine": 45,
+        "endChar": 23
+      },
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "417b0804_b054e398",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-04T10:55:03Z",
+      "side": 1,
+      "message": "that-\u003ethe now that there\u0027s more than one",
+      "range": {
+        "startLine": 46,
+        "startChar": 66,
+        "endLine": 46,
+        "endChar": 70
+      },
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f982b3c4_f2ad34ca",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-04T10:55:03Z",
+      "side": 1,
+      "message": "at first glance it seems like we should run at this point.  but the big gotcha is that the project won\u0027t exist yet in the checkout.  maybe we should add that as a parenthetical aside for future readers ?\n\n(as the network only updates the internal cache, and does not create or update the local project checkout)",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 34
+      },
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74c20cdf_6b58e688",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-04T10:55:03Z",
+      "side": 1,
+      "message": "it seems to me that we should always run when not in network-only mode.  we should pass in the projects that succeeded \u0026 the projects that failed.\n\nthe current API with the sep lists gets awkward, so maybe a list of dicts would be better.\n\n def main(passed\u003d(), failed\u003d(), **kwargs):\n\n passed \u003d [\n   {\n     \u0027name\u0027: \u0027the/project/name/attribute\u0027,\n     \u0027workdir\u0027: \u0027/the/local/checkout/path\u0027,\n   },\n ]\n\nsplitting passed \u0026 failed out seems like it\u0027d cater a bit more to people who only care about e.g. passed rather than smooshing them together with a \u0027pass\u0027: True/False key.\n\nwdyt ?",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 12
+      },
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
