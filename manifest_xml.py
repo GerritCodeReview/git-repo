@@ -292,8 +292,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if r.revision is not None:
       e.setAttribute('revision', r.revision)
 
-  def _ParseGroups(self, groups):
-    return [x for x in re.split(r'[,\s]+', groups) if x]
+  def _ParseList(self, field):
+    """Parse fields that contain flattened lists.
+
+    These are whitespace & comma separated.  Empty elements will be discarded.
+    """
+    return [x for x in re.split(r'[,\s]+', field) if x]
 
   def ToXml(self, peg_rev=False, peg_rev_upstream=True, peg_rev_dest_branch=True, groups=None):
     """Return the current manifest XML."""
@@ -302,7 +306,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if groups is None:
       groups = mp.config.GetString('manifest.groups')
     if groups:
-      groups = self._ParseGroups(groups)
+      groups = self._ParseList(groups)
 
     doc = xml.dom.minidom.Document()
     root = doc.createElement('manifest')
@@ -754,7 +758,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         path = node.getAttribute('path')
         groups = node.getAttribute('groups')
         if groups:
-          groups = self._ParseGroups(groups)
+          groups = self._ParseList(groups)
         revision = node.getAttribute('revision')
         remote = node.getAttribute('remote')
         if remote:
@@ -776,7 +780,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if node.nodeName == 'repo-hooks':
         # Get the name of the project and the (space-separated) list of enabled.
         repo_hooks_project = self._reqatt(node, 'in-project')
-        enabled_repo_hooks = self._reqatt(node, 'enabled-list').split()
+        enabled_repo_hooks = self._ParseList(self._reqatt(node, 'enabled-list'))
 
         # Only one project can be the hooks project
         if self._repo_hooks_project is not None:
@@ -989,7 +993,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     groups = ''
     if node.hasAttribute('groups'):
       groups = node.getAttribute('groups')
-    groups = self._ParseGroups(groups)
+    groups = self._ParseList(groups)
 
     if parent is None:
       relpath, worktree, gitdir, objdir, use_git_worktrees = \

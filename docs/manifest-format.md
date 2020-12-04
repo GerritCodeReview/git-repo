@@ -111,6 +111,10 @@ A description of the elements and their attributes follows.
 
 The root element of the file.
 
+### Element notice
+
+Arbitrary text that is displayed to users whenever `repo sync` finishes.
+The content is simply passed through as it exists in the manifest.
 
 ### Element remote
 
@@ -359,6 +363,19 @@ replace the project with a different source.
 This element is mostly useful in a local manifest file, where
 the user can remove a project, and possibly replace it with their
 own definition.
+
+### Element repo-hooks
+
+NB: See the [practical documentation](./repo-hooks.md) for using repo hooks.
+
+Only one repo-hooks element may be specified at a time.
+Attempting to redefine it will fail to parse.
+
+Attribute `in-project`: The project where the hooks are defined.  The value
+must match the `name` attribute (**not** the `path` attribute) of a previously
+defined `project` element.
+
+Attribute `enabled-list`: List of hooks to use, whitespace or comma separated.
 
 ### Element include
 
