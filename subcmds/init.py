@@ -521,7 +521,7 @@ to update the working directory files.
           rp.gitdir, opt.repo_rev, repo_verify=opt.repo_verify, quiet=opt.quiet)
       branch = rp.GetBranch('default')
       branch.merge = remote_ref
-      rp.work_git.update_ref('refs/heads/default', rev)
+      rp.work_git.reset('--hard', rev)
       branch.Save()
 
     if opt.worktree:
