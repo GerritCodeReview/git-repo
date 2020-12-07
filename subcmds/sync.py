@@ -524,22 +524,11 @@ later is required to fix a server side protocol bug.
           failed.
     """
 
-    # Perform checkouts in multiple threads when we are using partial clone.
-    # Without partial clone, all needed git objects are already downloaded,
-    # in this situation it's better to use only one process because the checkout
-    # would be mostly disk I/O; with partial clone, the objects are only
-    # downloaded when demanded (at checkout time), which is similar to the
-    # Sync_NetworkHalf case and parallelism would be helpful.
-    if self.manifest.CloneFilter:
-      syncjobs = self.jobs
-    else:
-      syncjobs = 1
-
     lock = _threading.Lock()
     pm = Progress('Checking out projects', len(all_projects))
 
     threads = set()
-    sem = _threading.Semaphore(syncjobs)
+    sem = _threading.Semaphore(self.jobs)
 
     for project in all_projects:
       # Check for any errors before running any more tasks.
@@ -556,7 +545,7 @@ later is required to fix a server side protocol bug.
                       pm=pm,
                       err_event=err_event,
                       err_results=err_results)
-        if syncjobs > 1:
+        if self.jobs > 1:
           t = _threading.Thread(target=self._CheckoutWorker,
                                 kwargs=kwargs)
           # Ensure that Ctrl-C will not freeze the repo process.
