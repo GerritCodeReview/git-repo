@@ -2712,7 +2712,8 @@ class Project(object):
     # on all OS's to match git behavior.
     with open(os.path.join(git_worktree_path, 'gitdir'), 'w', newline='\n') as fp:
       print(os.path.relpath(dotgit, git_worktree_path), file=fp)
-
+    # Update the HEAD in the bare-git to something sane. Not 'refs/heads/master'. 
+    self._InitAnyMRef(HEAD, self.bare_git)
     self._InitMRef()
 
   def _InitWorkTree(self, force_sync=False, submodules=False):
