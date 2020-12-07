@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65a49ef7_3e476191",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-12-07T19:36:00Z",
+      "side": 1,
+      "message": "Hi,\nWe ran into this issue today, it is not v2.10 related issue. It is in there for a longer time.\n\nKind regards,\nRemy ",
+      "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
