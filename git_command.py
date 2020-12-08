@@ -158,6 +158,8 @@ def git_require(min_version, fail=False, msg=''):
 
 
 class GitCommand(object):
+  """Wrapper around a single git invocation."""
+
   def __init__(self,
                project,
                cmdv,
