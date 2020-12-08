@@ -2673,6 +2673,7 @@ class Project(object):
       remote.Save()
 
   def _InitMRef(self):
+    """Initialize the pseudo m/<manifest branch> ref."""
     if self.manifest.branch:
       if self.use_git_worktrees:
         # Set up the m/ space to point to the worktree-specific ref space.
@@ -2702,6 +2703,10 @@ class Project(object):
     self._InitAnyMRef(HEAD, self.bare_git)
 
   def _InitAnyMRef(self, ref, active_git, detach=False):
+    """Initialize |ref| in |active_git| to the value in the manifest.
+
+    This points |ref| to the <project> setting in the manifest.
+    """
     cur = self.bare_ref.symref(ref)
 
     if self.revisionId:
