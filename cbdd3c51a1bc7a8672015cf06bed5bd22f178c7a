@@ -16,6 +16,23 @@
       "message": "Hi,\nWe ran into this issue today, it is not v2.10 related issue. It is in there for a longer time.\n\nKind regards,\nRemy ",
       "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8665ba4_3ecb8c16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-08T00:23:41Z",
+      "side": 1,
+      "message": "thanks ... i had actually seen this in my checkouts of late, but hadn\u0027t gotten around to investigating it.  it also seemed inconsistent (only a subset of my repos had this prob), but that might be due to ongoing migrations where we\u0027ve been switching the default branch from master-\u003emain.\n\nalong those lines, the issue isn\u0027t with \"master\" exactly, it\u0027s with whatever the default remote branch is.  looking at a CrOS project that uses \"main\", if i create a local branch named \"main\", things get into the same bad state.\n\ni\u0027m not sure this change is correct.  in my testing locally, it points HEAD to the remote which is an odd value for HEAD to be in general.  but i\u0027m not entirely clear as to the implication of having HEAD in this bare repo at all.  or why git is choking in the first place.\n\nwhat if we just deleted HEAD ?  it serves no purpose in the bare checkout.  it seems to work for me.",
+      "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
