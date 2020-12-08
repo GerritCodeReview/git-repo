@@ -33,6 +33,24 @@
       "message": "thanks ... i had actually seen this in my checkouts of late, but hadn\u0027t gotten around to investigating it.  it also seemed inconsistent (only a subset of my repos had this prob), but that might be due to ongoing migrations where we\u0027ve been switching the default branch from master-\u003emain.\n\nalong those lines, the issue isn\u0027t with \"master\" exactly, it\u0027s with whatever the default remote branch is.  looking at a CrOS project that uses \"main\", if i create a local branch named \"main\", things get into the same bad state.\n\ni\u0027m not sure this change is correct.  in my testing locally, it points HEAD to the remote which is an odd value for HEAD to be in general.  but i\u0027m not entirely clear as to the implication of having HEAD in this bare repo at all.  or why git is choking in the first place.\n\nwhat if we just deleted HEAD ?  it serves no purpose in the bare checkout.  it seems to work for me.",
       "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "498db1fa_73ca224d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-12-08T08:08:28Z",
+      "side": 1,
+      "message": "\u003e i\u0027m not sure this change is correct.  in my testing locally, it points HEAD to the remote which is an odd value for HEAD to be in general. \n\nThat was intentionally: make it point to an existing ref that is not a local branch. It is a bit odd but technically valid.\n\n\u003e but i\u0027m not entirely clear as to the implication of having HEAD in this bare repo at all.  or why git is choking in the first place.\n\nSince HEAD is pointing to the local master branch, Git assumes \u0027master\u0027 is checked out in a different worktree than the one currently active. Hence it forbids the deletion. And since it assumes that branch is already checked out in another worktree, it prohibits the checkout of the same branch in another worktree. Conclusion: HEAD may not point to any local branch in the bare Git.\n\n\u003e what if we just deleted HEAD ?  it serves no purpose in the bare checkout.  it seems to work for me.\n\nIf you go to the bare git and try to open a Git history viewer, it will complain about \u0027This Git repository does not contain any commits\u0027 if HEAD is being deleted. So, I am not sure if deleting HEAD is the right way forward, even though it has no other functional use in this Git worktree setup. I think it needs to exist, and point to something valid, even though it can be odd. It may also point to any valid Commit-sha1, as long is it not a local branch.",
+      "parentUuid": "c8665ba4_3ecb8c16",
+      "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
