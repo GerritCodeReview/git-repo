@@ -15,9 +15,20 @@
 # limitations under the License.
 
 from __future__ import print_function
+import itertools
+import multiprocessing
 import sys
+from typing import List, Tuple
 from color import Coloring
 from command import Command
+
+# Number of projects to submit to a single worker process at a time.
+# This number represents a tradeoff between the overhead of IPC and finer
+# grained opportunity for parallelism. This particular value was chosen by
+# iterating through powers of two until the overall performance no longer
+# improved. The performance of this batch size is not a function of the
+# number of cores on the system.
+WORKER_BATCH_SIZE = 32
 
 
 class BranchColoring(Coloring):
@@ -97,20 +108,32 @@ is shown, then the branch appears in all projects.
 
 """
 
+  def _Options(self, p):
+    """Add flags to CLI parser for this subcommand."""
+    default_jobs = min(multiprocessing.cpu_count(), 8)
+    p.add_option(
+        '-j',
+        '--jobs',
+        type=int,
+        default=default_jobs,
+        help='Number of worker processes to spawn '
+        f'(default: {default_jobs})')
+
   def Execute(self, opt, args):
     projects = self.GetProjects(args)
     out = BranchColoring(self.manifest.manifestProject.config)
     all_branches = {}
     project_cnt = len(projects)
+    with multiprocessing.Pool(processes=opt.jobs) as pool:
+      project_branches = pool.imap_unordered(
+          expand_project_to_branches, projects, chunksize=WORKER_BATCH_SIZE)
 
-    for project in projects:
-      for name, b in project.GetBranches().items():
-        b.project = project
+      for name, b in itertools.chain.from_iterable(project_branches):
         if name not in all_branches:
           all_branches[name] = BranchInfo(name)
         all_branches[name].add(b)
 
-    names = list(sorted(all_branches))
+    names = sorted(all_branches)
 
     if not names:
       print('   (no branches)', file=sys.stderr)
@@ -180,3 +203,13 @@ is shown, then the branch appears in all projects.
       else:
         out.write(' in all projects')
       out.nl()
+
+
+def expand_project_to_branches(
+    project: 'project.Project') -> List[Tuple[str, 'git_config.Branch']]:
+  """Expands a project into a list of branch names & associated information."""
+  branches = []
+  for name, b in project.GetBranches().items():
+    b.project = project
+    branches.append((name, b))
+  return branches
