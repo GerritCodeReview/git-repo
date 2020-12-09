@@ -15,7 +15,10 @@
 # limitations under the License.
 
 from __future__ import print_function
+import itertools
+import multiprocessing
 import sys
+from typing import List, Tuple
 from color import Coloring
 from command import Command
 
@@ -102,15 +105,16 @@ is shown, then the branch appears in all projects.
     out = BranchColoring(self.manifest.manifestProject.config)
     all_branches = {}
     project_cnt = len(projects)
+    with multiprocessing.Pool() as pool:
+      project_branches = pool.imap_unordered(
+          expand_project_to_branches, projects, chunksize=32)
 
-    for project in projects:
-      for name, b in project.GetBranches().items():
-        b.project = project
+      for name, b in itertools.chain.from_iterable(project_branches):
         if name not in all_branches:
           all_branches[name] = BranchInfo(name)
         all_branches[name].add(b)
 
-    names = list(sorted(all_branches))
+    names = sorted(all_branches)
 
     if not names:
       print('   (no branches)', file=sys.stderr)
@@ -180,3 +184,13 @@ is shown, then the branch appears in all projects.
       else:
         out.write(' in all projects')
       out.nl()
+
+
+def expand_project_to_branches(
+    project: 'project.Project') -> List[Tuple[str, 'git_config.Branch']]:
+  """Expands a project into a list of branch names & associated information."""
+  branches = []
+  for name, b in project.GetBranches().items():
+    b.project = project
+    branches.append((name, b))
+  return branches
