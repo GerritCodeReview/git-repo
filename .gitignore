@@ -7,6 +7,7 @@ __pycache__
 .repopickle_*
 /repoc
 /.tox
+/.venv
 
 # PyCharm related
 /.idea/
