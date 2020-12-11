@@ -157,8 +157,10 @@ def save_manifest(manifest, client_dir=None):
     client_dir: Client directory to save the manifest in.
   """
   if not client_dir:
-    client_dir = manifest.gitc_client_dir
-  with open(os.path.join(client_dir, '.manifest'), 'w') as f:
+    manifest_file = manifest.manifestFile
+  else:
+    manifest_file = os.path.join(client_dir, '.manifest')
+  with open(manifest_file, 'w') as f:
     manifest.Save(f, groups=_manifest_groups(manifest))
   # TODO(sbasi/jorg): Come up with a solution to remove the sleep below.
   # Give the GITC filesystem time to register the manifest changes.
