@@ -33,6 +33,24 @@
       "message": "It occurred to me that a project tagged as \"notdefault\" ... that is part of an included manifest with a tagged group, will then be included much in the same way as if it was not \"notdefault\".\n\nMaybe I should add special handling for that, so a notdefault project should not get tagged unless you specifically set that project (as it behaves when not getting include-tagged)?",
       "revId": "352c93b68084e97ec7a3c09f0bd3f2a161290211",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89cae7a2_129b206f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-11T07:40:11Z",
+      "side": 1,
+      "message": "i\u0027m not sure i follow\n\nif you have default.xml:\n\n \u003cmanifest\u003e\n  \u003cinclude name\u003d\"sub.xml\" groups\u003d\"sub-group\" /\u003e\n \u003c/manifest\u003e\n\nand sub.xml:\n\n \u003cmanifest\u003e\n   \u003cproject name\u003d\"subproj\" path\u003d\"src/sub\" groups\u003d\"notdefault\" /\u003e\n \u003c/manifest\u003e\n\nthen i would expect subproj to have groups\u003d\"notdefault,sub-group\".  that means it won\u0027t be synced with default groups (repo init \u0026\u0026 repo sync), but would be synced with if you specified groups\u003dsub-group during repo init.\n\nremember that \"notdefault\" is \"just another group\", so ignoring the new \u003cinclude\u003e logic, you could always do something like:\n\n \u003cproject name\u003d\"fooproj\" path\u003d\"src/foo\" groups\u003d\"notdefault,foo-group\" /\u003e\n\nthis means it won\u0027t be synced by default, but would be synced if you specified the foo-group.\n\nnow if you mean that you want to support including manifests and changing how groups are applied on a per-project basis, then i think things are getting a bit more complicated and not at all simple.  i don\u0027t think that sort of thing would change/invalidate the new behavior you\u0027ve created here as i think the way it works now is a reasonable default.\n\nmaybe you want to implement the idea discussed earlier about extending the groups syntax to allow for removing of groups ?  then i think you could write:\n\n \u003cmanifest\u003e\n  \u003cinclude name\u003d\"sub.xml\" groups\u003d\"sub-group\" /\u003e\n  \u003cextend-project name\u003d\"fooproj\" groups\u003d\"-sub-group\" /\u003e\n \u003c/manifest\u003e\n\nit\u0027s a bit clunky, but maybe Good Enough for people to not try and invent something more complicated ?",
+      "parentUuid": "4bc2ddbb_914b1b9c",
+      "revId": "352c93b68084e97ec7a3c09f0bd3f2a161290211",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
