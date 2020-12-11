@@ -16,6 +16,42 @@
       "message": "This removes the gitc_client_dir field from the GitcManifest...",
       "revId": "a488af5ea5c53dd7cf2c90a751e77cc4ba87b7c3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f071746f_c0c5f865",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-11T09:06:01Z",
+      "side": 0,
+      "message": "right, it moved to GitcClient.  the idea is to disconnect the manifest from the client.  does that not make sense for gitc ?",
+      "parentUuid": "e11e6460_0701ea97",
+      "revId": "a488af5ea5c53dd7cf2c90a751e77cc4ba87b7c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7a772ed_a8b9abd9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-11T09:06:01Z",
+      "side": 0,
+      "message": "right, we want to disconnect the manifest logic from the client logic, so this is correct i think.  if there\u0027s something fundamental about gitc that prevents this, let me know.",
+      "parentUuid": "e11e6460_0701ea97",
+      "revId": "a488af5ea5c53dd7cf2c90a751e77cc4ba87b7c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

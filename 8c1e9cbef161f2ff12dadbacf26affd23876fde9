@@ -16,6 +16,24 @@
       "message": "... which is still used here. Thanks to bills@ for reporting and dwillemsen@ for diagnosing.",
       "revId": "8c1e9cbef161f2ff12dadbacf26affd23876fde9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26bda249_6b3265a6",
+        "filename": "gitc_utils.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-11T09:06:01Z",
+      "side": 1,
+      "message": "i think this can be fixed by pulling out the manifest file name rather than the client dir and then reconstructing the name.  i looked through the tree and couldn\u0027t find any other cases where this comes up.\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/291264",
+      "parentUuid": "9ef7ccaa_0d9e41c2",
+      "revId": "8c1e9cbef161f2ff12dadbacf26affd23876fde9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
