@@ -45,7 +45,8 @@ def _set_project_revisions(projects):
   should not be overly large. Recommend calling this function multiple times
   with each call not exceeding NUM_BATCH_RETRIEVE_REVISIONID projects.
 
-  @param projects: List of project objects to set the revionExpr for.
+  Args:
+    projects: List of project objects to set the revionExpr for.
   """
   # Retrieve the commit id for each project based off of it's current
   # revisionExpr and it is not already a commit id.
@@ -73,7 +74,8 @@ def _manifest_groups(manifest):
   This is the same logic used by Command.GetProjects(), which is used during
   repo sync
 
-  @param manifest: The XmlManifest object
+  Args:
+    manifest: The XmlManifest object
   """
   mp = manifest.manifestProject
   groups = mp.config.GetString('manifest.groups')
@@ -85,9 +87,10 @@ def _manifest_groups(manifest):
 def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
   """Generate a manifest for shafsd to use for this GITC client.
 
-  @param gitc_manifest: Current gitc manifest, or None if there isn't one yet.
-  @param manifest: A GitcManifest object loaded with the current repo manifest.
-  @param paths: List of project paths we want to update.
+  Args:
+    gitc_manifest: Current gitc manifest, or None if there isn't one yet.
+    manifest: A GitcManifest object loaded with the current repo manifest.
+    paths: List of project paths we want to update.
   """
 
   print('Generating GITC Manifest by fetching revision SHAs for each '
@@ -149,8 +152,9 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
 def save_manifest(manifest, client_dir=None):
   """Save the manifest file in the client_dir.
 
-  @param client_dir: Client directory to save the manifest in.
-  @param manifest: Manifest object to save.
+  Args:
+    manifest: Manifest object to save.
+    client_dir: Client directory to save the manifest in.
   """
   if not client_dir:
     client_dir = manifest.gitc_client_dir

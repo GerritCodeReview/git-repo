@@ -439,9 +439,11 @@ def get_gitc_manifest_dir():
 def gitc_parse_clientdir(gitc_fs_path):
   """Parse a path in the GITC FS and return its client name.
 
-  @param gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
+  Args:
+    gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
 
-  @returns: The GITC client name
+  Returns:
+    The GITC client name.
   """
   if gitc_fs_path == GITC_FS_ROOT_DIR:
     return None
