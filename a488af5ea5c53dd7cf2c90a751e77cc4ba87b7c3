@@ -52,6 +52,24 @@
       "parentUuid": "e11e6460_0701ea97",
       "revId": "a488af5ea5c53dd7cf2c90a751e77cc4ba87b7c3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "645b5260_14ac473c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-11T15:48:28Z",
+      "side": 0,
+      "message": "\u003e does that not make sense for gitc ?\n\nIt makes sense for gitc. Really the underlying issue is that repo\u0027s gitc support doesn\u0027t have test coverage. (Keep in mind that I\u0027m not very familiar with how gitc works; I\u0027m more interested in approaches like https://gerrit.googlesource.com/gitfs and https://github.com/microsoft/VFSForGit that are fully open source.)",
+      "parentUuid": "f071746f_c0c5f865",
+      "revId": "a488af5ea5c53dd7cf2c90a751e77cc4ba87b7c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
