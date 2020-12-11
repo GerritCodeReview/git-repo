@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11e6460_0701ea97",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-11T05:20:40Z",
+      "side": 0,
+      "message": "This removes the gitc_client_dir field from the GitcManifest...",
+      "revId": "a488af5ea5c53dd7cf2c90a751e77cc4ba87b7c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
