@@ -69,6 +69,24 @@
       "parentUuid": "498db1fa_73ca224d",
       "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2437de83_87fcab6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-13T05:08:14Z",
+      "side": 1,
+      "message": "maybe we always detach HEAD and call it a day ?  a bit hacky, but this seems to work for me.\n\n --- a/project.py\n +++ b/project.py\n @@ -2555,6 +2555,8 @@ class Project(object):\n  \n          base \u003d R_WORKTREE_M\n          active_git \u003d self.work_git\n +\n +        self._InitAnyMRef(HEAD, self.bare_git, detach\u003dTrue)\n        else:\n          base \u003d R_M\n          active_git \u003d self.bare_git\n @@ -2564,7 +2566,7 @@ class Project(object):\n    def _InitMirrorHead(self):\n      self._InitAnyMRef(HEAD, self.bare_git)\n  \n -  def _InitAnyMRef(self, ref, active_git):\n +  def _InitAnyMRef(self, ref, active_git, detach\u003dFalse):\n      \"\"\"Initialize |ref| in |active_git| to the value in the manifest.\n  \n      This points |ref| to the \u003cproject\u003e setting in the manifest.\n @@ -2581,7 +2583,10 @@ class Project(object):\n        dst \u003d remote.ToLocal(self.revisionExpr)\n        if cur !\u003d dst:\n          msg \u003d \u0027manifest set to %s\u0027 % self.revisionExpr\n -        active_git.symbolic_ref(\u0027-m\u0027, msg, ref, dst)\n +        if detach:\n +          active_git.UpdateRef(ref, dst, message\u003dmsg, detach\u003dTrue)\n +        else:\n +          active_git.symbolic_ref(\u0027-m\u0027, msg, ref, dst)\n  \n    def _CheckDirReference(self, srcdir, destdir, share_refs):\n      # Git worktrees don\u0027t use symlinks to share at all.",
+      "parentUuid": "76424631_26acb156",
+      "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
