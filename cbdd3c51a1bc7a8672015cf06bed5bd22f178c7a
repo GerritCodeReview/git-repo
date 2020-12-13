@@ -51,6 +51,24 @@
       "parentUuid": "c8665ba4_3ecb8c16",
       "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76424631_26acb156",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-13T04:22:35Z",
+      "side": 1,
+      "message": "messing with repos directly under .repo/ isn\u0027t really a supported workflow, but we prob shouldn\u0027t go out of our way to break it.\n\nas is, this breaks the manifest checkout (.repo/manifests.git/) which then upsets things beyond that when trying to find the \"manifest branch\".  _InitGitWorktree only fires when first creating the checkout, so that wouldn\u0027t help when switching branches later on.\n\ni think we need to have the logic be in _InitMRef, and figure out how to handle the manifest project specially.\n\ni\u0027ve been testing with a small checkout like:\n\n repo init -c -u http://chromium.googlesource.com/chromiumos/manifest -g moblab --worktree\n repo sync -c\n git --git-dir\u003d.repo/manifests.git branch\n git --git-dir\u003d.repo/worktrees/chromiumos/platform/moblab.git branch",
+      "parentUuid": "498db1fa_73ca224d",
+      "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
