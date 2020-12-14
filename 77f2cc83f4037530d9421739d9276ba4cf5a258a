@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51f6c9e4_3e842dba",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T22:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e9f49f2_111399c6",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0449a6a8_f08068a4",
@@ -31,6 +49,24 @@
       "writtenOn": "2020-12-14T22:10:29Z",
       "side": 1,
       "message": "redundant -\u003e delete",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "437fc0f5_338e1fef",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T22:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0449a6a8_f08068a4",
       "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "804f4a4c_0a33fa6e",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T22:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a00ccacc_ca097f76",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6072630a_c544bc2b",
@@ -65,6 +119,24 @@
       "writtenOn": "2020-12-14T22:10:29Z",
       "side": 1,
       "message": "shouldn\u0027t this be type\u003dint ?",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "630c4504_2f31116b",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T22:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6072630a_c544bc2b",
       "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bf2608c_94798c56",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T22:46:39Z",
+      "side": 1,
+      "message": "Some small experimentation confirms this. Capped at 8.",
+      "parentUuid": "856ce640_436d6bb4",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6eb26328_5c0136a5",
@@ -99,6 +189,24 @@
       "writtenOn": "2020-12-14T22:10:29Z",
       "side": 1,
       "message": "argparse supports %(default)s so you don\u0027t have to replicate it yourself",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "665ee507_04a7fb66",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T22:46:39Z",
+      "side": 1,
+      "message": "optparse does not support this, but I morally did the same thing",
+      "parentUuid": "6eb26328_5c0136a5",
       "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
