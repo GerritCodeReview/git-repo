@@ -16,6 +16,23 @@
       "message": "Removed the f-strings and type annotations to avoid bumping the minimum required Python version.",
       "revId": "2561e371956bb1fc8069d1a3c4fcbe67c8fe50d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcb6e654_45331cca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T23:35:07Z",
+      "side": 1,
+      "message": "i uploaded https://gerrit-review.googlesource.com/c/git-repo/+/291502 for dropping Python 3.4 with release notes in it.  prob land that in Jan 2021 assuming the Python 2 drop sticks.",
+      "revId": "2561e371956bb1fc8069d1a3c4fcbe67c8fe50d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
