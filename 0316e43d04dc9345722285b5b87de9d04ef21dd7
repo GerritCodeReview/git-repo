@@ -16,6 +16,24 @@
       "message": "how much of this is based on your system ?  we have dual cpus with 18 cores each in them, so 32 sounds suspiciously close to that.\n\nat the very least, we should have a -j/--jobs options to control this like we do with other commands, and have it default to something lower.  or maybe max(32, multiprocessing.cpu_count()) ?\n\nother subcmds default to just 1 or 2 ...",
       "revId": "0316e43d04dc9345722285b5b87de9d04ef21dd7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "464131c8_28a2137b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T18:09:55Z",
+      "side": 1,
+      "message": "`chunksize` refers to how many tasks are given to a single worker at once, not how many processes are started. It\u0027s the tradeoff curve between IPC overhead and parallelism. I tested this number with only two processes in the pool and 32 was still optimal among powers of two.\n\nmultiprocessing.Pool defaults to cpu_count() processes, but I can change this to accept a -j argument.",
+      "parentUuid": "90d37da5_35b1ac15",
+      "revId": "0316e43d04dc9345722285b5b87de9d04ef21dd7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
