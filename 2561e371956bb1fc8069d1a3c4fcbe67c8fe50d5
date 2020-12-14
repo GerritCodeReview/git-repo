@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f0505cd_e26dc68a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2020-12-14T23:14:53Z",
+      "side": 1,
+      "message": "Removed the f-strings and type annotations to avoid bumping the minimum required Python version.",
+      "revId": "2561e371956bb1fc8069d1a3c4fcbe67c8fe50d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
