@@ -34,6 +34,24 @@
       "parentUuid": "90d37da5_35b1ac15",
       "revId": "0316e43d04dc9345722285b5b87de9d04ef21dd7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5db85ad9_40a06b2e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T21:32:12Z",
+      "side": 1,
+      "message": "that sounds fine.  you\u0027ll want to pull the 32 out into a module constant so you can put this explanation as to why 32 is OK.",
+      "parentUuid": "464131c8_28a2137b",
+      "revId": "0316e43d04dc9345722285b5b87de9d04ef21dd7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
