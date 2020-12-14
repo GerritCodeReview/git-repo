@@ -83,7 +83,7 @@ if not is_python3():
 #
 # python-3.6 is in Ubuntu Bionic.
 MIN_PYTHON_VERSION_SOFT = (3, 6)
-MIN_PYTHON_VERSION_HARD = (3, 4)
+MIN_PYTHON_VERSION_HARD = (3, 5)
 
 if sys.version_info.major < 3:
   print('repo: error: Python 2 is no longer supported; '
