@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e9f49f2_111399c6",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T22:10:29Z",
+      "side": 1,
+      "message": "can you add a note that it didn\u0027t seem to be bound by the number of cores on the system",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0449a6a8_f08068a4",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T22:10:29Z",
+      "side": 1,
+      "message": "redundant -\u003e delete",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a00ccacc_ca097f76",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T22:10:29Z",
+      "side": 1,
+      "message": "redundant ?",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6072630a_c544bc2b",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T22:10:29Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be type\u003dint ?",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "856ce640_436d6bb4",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T22:10:29Z",
+      "side": 1,
+      "message": "as i noted earlier, it feels like we should cap the default to something like 8.  i don\u0027t have the feeling that this tool is generally cpu-bound, so swarming with 72+ jobs makes things worse by default.",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6eb26328_5c0136a5",
+        "filename": "subcmds/branches.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-14T22:10:29Z",
+      "side": 1,
+      "message": "argparse supports %(default)s so you don\u0027t have to replicate it yourself",
+      "revId": "77f2cc83f4037530d9421739d9276ba4cf5a258a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
