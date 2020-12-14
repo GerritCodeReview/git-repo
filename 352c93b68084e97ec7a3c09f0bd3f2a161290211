@@ -51,6 +51,24 @@
       "parentUuid": "4bc2ddbb_914b1b9c",
       "revId": "352c93b68084e97ec7a3c09f0bd3f2a161290211",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8957e2c7_56b7609a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1092036
+      },
+      "writtenOn": "2020-12-14T08:50:04Z",
+      "side": 1,
+      "message": "Just to illustrate using public example, Android default.xml being included for example, using:\n\u003cmanifest\u003e\n  \u003cinclude name\u003d\"default.xml\" groups\u003d\"android\" /\u003e\n  \u003cinclude name\u003d\"vendor-x-bsp.xml\" groups\u003d\"x-bsp\" /\u003e\n\u003c/manifest\u003e\n\nThen, unless you have cleaned out the Google default groups (guessing most companies do?) then you would get the \"android\" but \"notdefault\" flagged ones synced also after something like repo init -g \"android, x-bsp\".\n\nThe behavior feels different from what \"notdefault\" does if not being include-tagged. So was toying with the idea of doing something like \"if this project has notdefault, don\u0027t tag it with parent groups\", then you would need to include the project name itself to override the notdefault.\n\nThis is not hurting us, but it just hit me as something that might be counter-intuitive to others, but definitely wasn\u0027t looking to add any other complication avalanche. \u003d)",
+      "parentUuid": "89cae7a2_129b206f",
+      "revId": "352c93b68084e97ec7a3c09f0bd3f2a161290211",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
