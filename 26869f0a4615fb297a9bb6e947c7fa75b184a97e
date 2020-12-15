@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e47079_29f9dee0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-12-15T18:40:22Z",
+      "side": 1,
+      "message": "Uploaded patchset 14 to store rework on patchset 13 so far. 2 comments on patchset 13 are still open and may result in a patchset 15 later.",
+      "revId": "26869f0a4615fb297a9bb6e947c7fa75b184a97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
