@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dedc8a5a_2e5edcd5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-15T22:45:14Z",
+      "side": 1,
+      "message": "how about:\n\n project: detach HEAD in internal worktree checkout",
+      "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e2fa2cc_0ee534d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-15T22:45:14Z",
+      "side": 1,
+      "message": "it\u0027s not always master, it\u0027s whatever the system default uses when running git init.  so you can rephrase this slightly like:\n\n ... the HEAD in the bare-git repositories point to the initialized\n default (e.g. \u0027refs/heads/master\u0027).",
+      "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ccda7c3_8889fc6f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-15T22:45:14Z",
+      "side": 1,
+      "message": "the commit message is great in explaining the problem, but not in how it fixes it :).  how about:\n\n To workaround this, we always detach HEAD in the bare-git when\n syncing.  We don\u0027t need it to point to a ref in general, but we\n would like it to be valid so git tools \"just work\" if they\u0027re run\n in here.",
+      "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6e79317_264c5371",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-15T22:45:14Z",
+      "side": 1,
+      "message": "thanks for testing.  some nits about the commit message, but i think we can move forward here.",
+      "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
