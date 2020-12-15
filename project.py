@@ -2558,6 +2558,8 @@ class Project(object):
 
         base = R_WORKTREE_M
         active_git = self.work_git
+
+        self._InitAnyMRef(HEAD, self.bare_git, detach=True)
       else:
         base = R_M
         active_git = self.bare_git
@@ -2567,7 +2569,7 @@ class Project(object):
   def _InitMirrorHead(self):
     self._InitAnyMRef(HEAD, self.bare_git)
 
-  def _InitAnyMRef(self, ref, active_git):
+  def _InitAnyMRef(self, ref, active_git, detach=False):
     cur = self.bare_ref.symref(ref)
 
     if self.revisionId:
@@ -2580,7 +2582,10 @@ class Project(object):
       dst = remote.ToLocal(self.revisionExpr)
       if cur != dst:
         msg = 'manifest set to %s' % self.revisionExpr
-        active_git.symbolic_ref('-m', msg, ref, dst)
+        if detach:
+          active_git.UpdateRef(ref, dst, message=msg, detach=True)
+        else:
+          active_git.symbolic_ref('-m', msg, ref, dst)
 
   def _CheckDirReference(self, srcdir, destdir, share_refs):
     # Git worktrees don't use symlinks to share at all.
