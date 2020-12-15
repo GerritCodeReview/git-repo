@@ -87,6 +87,24 @@
       "parentUuid": "76424631_26acb156",
       "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b027377b_c68cdbe0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-12-15T18:09:18Z",
+      "side": 1,
+      "message": "Hi,\nI think this approach is good enough too. It works in my case.\nI uploaded a new patch based on this approach.",
+      "parentUuid": "2437de83_87fcab6e",
+      "revId": "cbdd3c51a1bc7a8672015cf06bed5bd22f178c7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
