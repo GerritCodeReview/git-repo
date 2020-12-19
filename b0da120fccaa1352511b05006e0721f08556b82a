@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1d930dc_62d32ece",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-12-19T17:31:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dedc8a5a_2e5edcd5",
+      "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e2fa2cc_0ee534d7",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e57a3b24_6c0fd77f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-12-19T17:31:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "0e2fa2cc_0ee534d7",
+      "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ccda7c3_8889fc6f",
@@ -48,6 +84,24 @@
       "writtenOn": "2020-12-15T22:45:14Z",
       "side": 1,
       "message": "the commit message is great in explaining the problem, but not in how it fixes it :).  how about:\n\n To workaround this, we always detach HEAD in the bare-git when\n syncing.  We don\u0027t need it to point to a ref in general, but we\n would like it to be valid so git tools \"just work\" if they\u0027re run\n in here.",
+      "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c0eb82c_7a4d7b79",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2020-12-19T17:31:54Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3ccda7c3_8889fc6f",
       "revId": "b0da120fccaa1352511b05006e0721f08556b82a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
