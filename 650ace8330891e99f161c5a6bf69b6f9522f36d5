@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bfcdca4_a4ed6232",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-19T23:54:57Z",
+      "side": 1,
+      "message": "hmm i need to tweak the Gerrit settings to not reset labels on commit message changes",
+      "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
