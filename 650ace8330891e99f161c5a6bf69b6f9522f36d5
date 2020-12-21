@@ -16,6 +16,23 @@
       "message": "hmm i need to tweak the Gerrit settings to not reset labels on commit message changes",
       "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e366b557_35fb22cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002235
+      },
+      "writtenOn": "2020-12-21T18:08:12Z",
+      "side": 1,
+      "message": "Is Qualcomm in on this change? Every single patch and new Chipcode software they release and the Codeaurora Android baseline for the reference hardware supporting their chipsets are dependent on Ubuntu 14. ",
+      "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
