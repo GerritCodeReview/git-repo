@@ -33,6 +33,24 @@
       "message": "Is Qualcomm in on this change? Every single patch and new Chipcode software they release and the Codeaurora Android baseline for the reference hardware supporting their chipsets are dependent on Ubuntu 14. ",
       "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efd35595_4dbfa96e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-21T18:29:17Z",
+      "side": 1,
+      "message": "if their software stack only works on Ubuntu Trusty (14) and nothing newer, that sounds like their problem.  them choosing to support an old version is not the same thing as them not working/supporting newer versions too.\n\ni have no contacts with Qualcomm.  if running `repo` in their old setup is an important use case to them, they should get in contact.",
+      "parentUuid": "e366b557_35fb22cc",
+      "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
