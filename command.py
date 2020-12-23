@@ -21,6 +21,7 @@ import re
 import sys
 
 from event_log import EventLog
+from git_trace2_event_log import GitTrace2EventLog
 from error import NoSuchProjectError
 from error import InvalidProjectGroupsError
 
@@ -31,6 +32,7 @@ class Command(object):
 
   common = False
   event_log = EventLog()
+  git_trace2_event_log = GitTrace2EventLog()
   manifest = None
   _optparse = None
 

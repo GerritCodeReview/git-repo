@@ -130,6 +130,9 @@ global_options.add_option('--version',
 global_options.add_option('--event-log',
                           dest='event_log', action='store',
                           help='filename of event log to append timeline to')
+global_options.add_option('--git-trace2-event-log',
+                          dest='git_trace2_event_log', action='store',
+                          help='directory to write git trace2 event log to')
 
 
 class _Repo(object):
@@ -261,6 +264,8 @@ class _Repo(object):
     start = time.time()
     cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
     cmd.event_log.SetParent(cmd_event)
+    cmd.git_trace2_event_log.StartEvent()
+
     try:
       cmd.ValidateOptions(copts, cargs)
       result = cmd.Execute(copts, cargs)
@@ -303,10 +308,16 @@ class _Repo(object):
 
       cmd.event_log.FinishEvent(cmd_event, finish,
                                 result is None or result == 0)
+      cmd.git_trace2_event_log.ExitEvent(result)
+
       if gopts.event_log:
         cmd.event_log.Write(os.path.abspath(
                             os.path.expanduser(gopts.event_log)))
 
+      if gopts.git_trace2_event_log:
+        cmd.git_trace2_event_log.Write(gopts.git_trace2_event_log)
+      else:
+        cmd.git_trace2_event_log.Write()
     return result
 
 
