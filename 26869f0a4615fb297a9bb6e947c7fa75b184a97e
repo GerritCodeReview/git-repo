@@ -16,6 +16,24 @@
       "message": "Uploaded patchset 14 to store rework on patchset 13 so far. 2 comments on patchset 13 are still open and may result in a patchset 15 later.",
       "revId": "26869f0a4615fb297a9bb6e947c7fa75b184a97e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4b054bc_acbc6b9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-26T08:26:25Z",
+      "side": 1,
+      "message": "sorry for taking so long on this.  i\u0027m not trying to drag my feet here ... i\u0027m overly cautious when it comes to adding new functionality that is exposed to users and becomes APIs that we have to support forever.  the manifest is prob the single most important thing we don\u0027t break, and hooks are an extension of that.\n\nso i\u0027m not trying to nitpick, but to think out as many possible angles before i commit the project to something we can\u0027t (easily) undo.",
+      "parentUuid": "c2e47079_29f9dee0",
+      "revId": "26869f0a4615fb297a9bb6e947c7fa75b184a97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
