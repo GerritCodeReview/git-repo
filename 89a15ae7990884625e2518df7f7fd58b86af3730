@@ -1,0 +1,396 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fcbbef9_b7c9cdc6",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "this is being treated as a global log (as only main.py is managing it), so does putting it inside of Command make sense ?",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee432608_916a3445",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "you can drop these lines in new modules.  we\u0027ll purge them this month as it\u0027s only used by python2 which is not supported.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 1
+      },
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11af2abc_d3126544",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "sort this block",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7cb82d_d50a84ea",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "just import datetime and move it to the stdlib block above",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d580cb0_ff2e485e",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "this module is called \"git_trace2_event_log\".  the style guide says to avoid repeating prefixes with names inside the module when possible.\n\nthis could be just \"EventLog\" as a result.  or something else.  you can bikeshed it ;).",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4712524_5230464b",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "should move the url to the next line to avoid long line issues",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1663b60_b47eebfb",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "comments are full sentences, and those have periods at the end\n\ncomes up below too",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e448fd0_0bee9172",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "indent these by 2 fewer spaces",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a20640f_a5fcec4d",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "return the dict directly ... no need for the var",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b90abf3d_12a32f63",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "indent these by 2 fewer spaces",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db6bea68_81f09f34",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "bad indentation",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8054b55d_40ff6cf8",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "i would simplify |logging_path| as |output| or just |path|",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3784db83_62c7cf73",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "use git_command.GitCommand instead.  we rarely want to reach back into the wrapper/launcher module.",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3377511_2c7b7388",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "i think you can just use .strip() ?  might be simpler \u0026 more robust.",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3061576a_b4d69967",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "if the caller passes in a bad argument, you should throw a TypeError instead of returning false",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c472ac6_b4af8d15",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "never use .format().  stick to % instead.",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79f228cd_36bf5a4b",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "\"gaurante\"",
+      "range": {
+        "startLine": 142,
+        "startChar": 32,
+        "endLine": 142,
+        "endChar": 41
+      },
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b29eb4e_fb37df6c",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "errors/warnings should be printed to file\u003dsys.stderr",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7df60f26_a39b2d2f",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "you can omit the dest\u003d as it\u0027s redundant",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a21af1_b67a3070",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "\"logs\" ?",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bacd961_bd378ed6",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "shouldn\u0027t this record the subcommand being run in some way ?",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "481b7439_772ea35c",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2020-12-28T21:44:35Z",
+      "side": 1,
+      "message": "you can merge this since gopts.git_trace2_event_log defaults to None:\n\n cmd.git_trace2_event_log.Write(path\u003dgopts.git_trace2_event_log)",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 40
+      },
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
