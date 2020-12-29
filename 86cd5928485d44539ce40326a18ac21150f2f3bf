@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5a0be41_ebd4cc47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T22:52:54Z",
+      "side": 1,
+      "message": "Yay, thanks again for writing this.\n\nI still would like to see some tests, but I don\u0027t mind if they come in a followup change (though I also don\u0027t mind if they come in a new patchset for this change).",
+      "revId": "86cd5928485d44539ce40326a18ac21150f2f3bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ca535c4_fd88f0e1",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T22:52:54Z",
+      "side": 1,
+      "message": "In Git this gets called an \"sid component\", versus an \"sid\".",
+      "range": {
+        "startLine": 59,
+        "startChar": 20,
+        "endLine": 59,
+        "endChar": 48
+      },
+      "revId": "86cd5928485d44539ce40326a18ac21150f2f3bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e0d924_3639b916",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T22:52:54Z",
+      "side": 1,
+      "message": "nit: s/global/system/\n\nConfusingly, `git config --global` is used for accessing per-user git configuration, which GitConfig already supports. I think `git config --system` aka /etc/gitconfig is what you mean here.",
+      "range": {
+        "startLine": 142,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 14
+      },
+      "revId": "86cd5928485d44539ce40326a18ac21150f2f3bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d60ebbf_dc2fef51",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T22:52:54Z",
+      "side": 1,
+      "message": "What happens if the command fails?\n\n`git config --get` is documented to produce an exit status of `1` if the requested variable is not present in the configuration. Any other value would indicate an error reading the configuration, which presumably we\u0027d want to report to the user.",
+      "revId": "86cd5928485d44539ce40326a18ac21150f2f3bf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
