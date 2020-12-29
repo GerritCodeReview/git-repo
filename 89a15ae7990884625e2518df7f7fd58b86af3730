@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a58dc9f_e5b5fde9",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done.\n\nMy thought was to be consistent with event_log in terms of placement/usage but moved it out to main until there is a reason for command to have it.",
+      "parentUuid": "2fcbbef9_b7c9cdc6",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee432608_916a3445",
@@ -31,6 +49,30 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "you can drop these lines in new modules.  we\u0027ll purge them this month as it\u0027s only used by python2 which is not supported.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 1
+      },
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2963da25_b7ea6f99",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee432608_916a3445",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "862e4b53_06f450f9",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11af2abc_d3126544",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db7cb82d_d50a84ea",
@@ -71,6 +131,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "just import datetime and move it to the stdlib block above",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51303851_aa5b8fd7",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db7cb82d_d50a84ea",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +170,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3821c416_1e70cfcf",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5d580cb0_ff2e485e",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4712524_5230464b",
@@ -105,6 +201,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "should move the url to the next line to avoid long line issues",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18a63dbe_9ca4de82",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4712524_5230464b",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -126,6 +240,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4d5f515_d5cd1173",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1663b60_b47eebfb",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e448fd0_0bee9172",
@@ -139,6 +271,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "indent these by 2 fewer spaces",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e708f4d0_bb5f4fa8",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e448fd0_0bee9172",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -160,6 +310,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8288c11_2d5d31fc",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a20640f_a5fcec4d",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b90abf3d_12a32f63",
@@ -173,6 +341,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "indent these by 2 fewer spaces",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6de88acb_88b89ae0",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b90abf3d_12a32f63",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -194,6 +380,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fa55e93_ed431cd0",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db6bea68_81f09f34",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8054b55d_40ff6cf8",
@@ -207,6 +411,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "i would simplify |logging_path| as |output| or just |path|",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7128721f_54234087",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8054b55d_40ff6cf8",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -228,6 +450,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f6cc5cb_81d3e768",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3784db83_62c7cf73",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3377511_2c7b7388",
@@ -241,6 +481,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "i think you can just use .strip() ?  might be simpler \u0026 more robust.",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "529d8e16_3fb631ea",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Added a comment, the git config call returns string with \u0027\\n\u0027 so that\u0027s what we needed to explicitly strip.",
+      "parentUuid": "c3377511_2c7b7388",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -262,6 +520,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e29e61a_92cc42dc",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3061576a_b4d69967",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c472ac6_b4af8d15",
@@ -275,6 +551,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "never use .format().  stick to % instead.",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad72131_95f9ba71",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c472ac6_b4af8d15",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -302,6 +596,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7095207e_808b3d43",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "changed wording",
+      "parentUuid": "79f228cd_36bf5a4b",
+      "range": {
+        "startLine": 142,
+        "startChar": 32,
+        "endLine": 142,
+        "endChar": 41
+      },
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b29eb4e_fb37df6c",
@@ -315,6 +633,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "errors/warnings should be printed to file\u003dsys.stderr",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8ba6fd1_2c74dc80",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b29eb4e_fb37df6c",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -336,6 +672,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc67f565_c5e940cd",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7df60f26_a39b2d2f",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89a21af1_b67a3070",
@@ -349,6 +703,24 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "\"logs\" ?",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e96c0ad7_724768f6",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Currently it generates a single log (one per repo command), git does itself generate additional logs.",
+      "parentUuid": "89a21af1_b67a3070",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -370,6 +742,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "185f80bc_8dd7e163",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "cmd_name - https://git-scm.com/docs/api-trace2#Documentation/technical/api-trace2.txt-codecmdnamecode - Is the event we would add if we wanted to capture this. If Chrome would need it to be able to migrate I can add in a follow-up, the superproject work doesn\u0027t current require it.",
+      "parentUuid": "6bacd961_bd378ed6",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "481b7439_772ea35c",
@@ -383,6 +773,30 @@
       "writtenOn": "2020-12-28T21:44:35Z",
       "side": 1,
       "message": "you can merge this since gopts.git_trace2_event_log defaults to None:\n\n cmd.git_trace2_event_log.Write(path\u003dgopts.git_trace2_event_log)",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 40
+      },
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08092ddc_b1e9a2d8",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T16:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "481b7439_772ea35c",
       "range": {
         "startLine": 317,
         "startChar": 0,
