@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa15a6e0_7d228ac4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "Ack on tests (coming in next rev). Addressed most comments, PTAL.",
+      "parentUuid": "ad7af93e_e2b3c344",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "134f287c_24aa6aa9",
         "filename": "git_trace2_event_log.py",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2020-12-29T19:04:18Z",
       "side": 1,
       "message": "I\u0027d use https://www.kernel.org/pub/software/scm/git/docs/technical/api-trace2.html#_event_format. It has worse CSS but it\u0027s more certain to remain a stable URL.",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ecbd852_dd69268c",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134f287c_24aa6aa9",
       "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad1759d8_1e45eb5e",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "As discussed offline, implemented a variant of (b) above.\n\nDoes the following:\n1) Gets any currently set sid (parent_sid) from the environment\n2) Generates it\u0027s own sid (self._sid)\n3) If there is a parent, set\u0027s the full sid we log to: parent_sid/self._sid otherwise sets it to self._sid\n4) Updates environment variable to the new full sid.",
+      "parentUuid": "49ea851f_2dd0dddc",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b774a4b2_456e8d05",
@@ -65,6 +119,24 @@
       "writtenOn": "2020-12-29T19:04:18Z",
       "side": 1,
       "message": "When we set _sid, we should also export it in the environment as GIT_TRACE2_PARENT_SID for `git` child processes to build from.",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94595e89_8f50e5de",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b774a4b2_456e8d05",
       "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -103,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "825a8687_e885d8db",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "I didn\u0027t know that, but the implementation supports both command-line opt (passed in) and git config read, so we expand it to cover the command-line opt case.",
+      "parentUuid": "b722ed34_201b11db",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19c3e44b_83f95750",
@@ -116,6 +206,24 @@
       "writtenOn": "2020-12-29T19:04:18Z",
       "side": 1,
       "message": "If the event target is not a directory, that means to append to that file. I don\u0027t think we need to support that right away, but we should probably skip it silently with a TODO comment to avoid irritating people with that configuration (if I remember correctly, that configuration is what folks at Microsoft are using).",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cfed6f7_6cf56b13",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19c3e44b_83f95750",
       "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -137,6 +245,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ed9bd83_8a608dab",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaa481d1_b97fba6b",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2d0a864_ef2cacf9",
@@ -150,6 +276,24 @@
       "writtenOn": "2020-12-29T19:04:18Z",
       "side": 1,
       "message": "Does json.dump guarantee that its output contains no newlines?",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9837cc44_498a0c1a",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-29T21:17:21Z",
+      "side": 1,
+      "message": "Updated to explicitly operate in compact format. Nice catch!",
+      "parentUuid": "e2d0a864_ef2cacf9",
       "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
