@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad7af93e_e2b3c344",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "Some nits and questions, but this generally looks good. Thanks for implementing it.\n\nCan this have a test or two in the tests/ directory? (Existing tests there seem to be mostly unit tests, so it\u0027s fine to match that here.)",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134f287c_24aa6aa9",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "I\u0027d use https://www.kernel.org/pub/software/scm/git/docs/technical/api-trace2.html#_event_format. It has worse CSS but it\u0027s more certain to remain a stable URL.",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49ea851f_2dd0dddc",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "Interesting!\n\nThis feels slightly fragile:\n1. if we can guarantee that we were launched by the `repo` wrapper, then good --- the GIT_TRACE2_PARENT_SID envvar is set and we can use its value. So I have no concerns in that case\n2. however, the fallback when the envvar is not set tells me this code isn\u0027t certain that we were launched by the `repo` wrapper. The fallback generation still seems reasonable.\n3. okay, so why am I worried? Because what if we were not launched by the `repo` wrapper and GIT_TRACE2_PARENT_SID *is* set? For example, what if we are run as a subprocess of a git command? Then reusing the same SID would conflate events from the parent and child processes and make a bit of a mess.\n\nThinking it through further, the problem is not theoretical: a user with an old version of the `repo` wrapper that does not set GIT_TRACE2_PARENT_SID yet can fall in cases 2 and 3 above.\n\nTwo ideas for solving it:\n\na. The `repo` wrapper could set an envvar that is particular to it --- e.g., \u0027REPO_SID\u0027. Or it could pass a commandline option to set the sid, which would be even more robust\nb. Alternatively, we can treat what happens in the `repo` wrapper as a parent and what happens here as a child process --- that is, *always* generate a sid, of form like \"${GIT_TRACE2_PARENT_SID}${GIT_TRACE2_PARENT_SID:+/}repo-${now}-${mypid}\".\n\nI think I prefer (b). An advantage is that it allows distinguishing between `git` commands that were run by the `repo` wrapper from `git` commands that were run in the main repo code, which seems like useful information.",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b774a4b2_456e8d05",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "When we set _sid, we should also export it in the environment as GIT_TRACE2_PARENT_SID for `git` child processes to build from.",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "817a59e2_cbd4d2a2",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "I think we can use GitConfig for this. (I suspect GitConfig ought to be made into a thin wrapper around the `git config` command instead of over-optimizing by reading config itself, but that\u0027s orthogonal to this patch.)",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b722ed34_201b11db",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "Git doesn\u0027t support relative pathnames for this setting.",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19c3e44b_83f95750",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "If the event target is not a directory, that means to append to that file. I don\u0027t think we need to support that right away, but we should probably skip it silently with a TODO comment to avoid irritating people with that configuration (if I remember correctly, that configuration is what folks at Microsoft are using).",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaa481d1_b97fba6b",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "This means we buffer the log in memory instead of writing each event as we good. I think that\u0027s fine for now but if the volume of events grows, that might want to change. Maybe worth a TODO comment.",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2d0a864_ef2cacf9",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "Does json.dump guarantee that its output contains no newlines?",
+      "revId": "d6506df6ae9318332ce4efe1bb9daf6156208308",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

@@ -762,6 +762,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9a4ebf63_9f067505",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2020-12-29T19:04:18Z",
+      "side": 1,
+      "message": "I think we do want the \"start\" event, with \"argv\" field (not cmd_name, since repo commands aren\u0027t git commands). But I agree that that should go in a followup.",
+      "parentUuid": "185f80bc_8dd7e163",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "481b7439_772ea35c",
         "filename": "main.py",
         "patchSetId": 1
