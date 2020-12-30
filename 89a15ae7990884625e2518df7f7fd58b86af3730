@@ -778,6 +778,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d053830d_5713e8b5",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2020-12-30T18:44:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "9a4ebf63_9f067505",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "481b7439_772ea35c",
