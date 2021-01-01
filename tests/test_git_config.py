@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2009 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +13,6 @@
 # limitations under the License.
 
 """Unittests for the git_config.py module."""
-
-from __future__ import print_function
 
 import os
 import unittest

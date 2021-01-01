@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding:utf-8 -*-
 #
 # Copyright (C) 2008 The Android Open Source Project
 #
@@ -21,7 +20,6 @@ People shouldn't run this directly; instead, they should use the `repo` wrapper
 which takes care of execing this entry point.
 """
 
-from __future__ import print_function
 import getpass
 import netrc
 import optparse
