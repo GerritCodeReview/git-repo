@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,7 +17,6 @@
 Activated via `repo --trace ...` or `REPO_TRACE=1 repo ...`.
 """
 
-from __future__ import print_function
 import sys
 import os
 

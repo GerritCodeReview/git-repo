@@ -1,5 +1,3 @@
-# -*- coding:utf-8 -*-
-#
 # Copyright (C) 2019 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +14,6 @@
 
 """Unittests for the hooks.py module."""
 
-from __future__ import print_function
-
 import hooks
 import unittest
 
@@ -28,7 +24,6 @@ class RepoHookShebang(unittest.TestCase):
     """Lines w/out shebangs should be rejected."""
     DATA = (
         '',
-        '# -*- coding:utf-8 -*-\n',
         '#\n# foo\n',
         '# Bad shebang in script\n#!/foo\n'
     )
