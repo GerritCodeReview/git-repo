@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b345d68_97a59e7e",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "prior art in this codebase can sometimes be misleading :/",
+      "parentUuid": "6a58dc9f_e5b5fde9",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee432608_916a3445",
@@ -792,6 +810,24 @@
       "side": 1,
       "message": "Ack",
       "parentUuid": "9a4ebf63_9f067505",
+      "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cffa438_8a851eb7",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "as long as we agree that trace events are not ABI and we are free to adjust them, i\u0027m ok with a feedback loop.  we might settle on some events as more stable ones at some point (if i understand how these logs are used generally), but we\u0027d document those as such.\n\ncan you note this in the module docstring so we don\u0027t have to debate now/future ?",
+      "parentUuid": "d053830d_5713e8b5",
       "revId": "89a15ae7990884625e2518df7f7fd58b86af3730",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },

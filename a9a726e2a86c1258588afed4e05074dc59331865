@@ -1,0 +1,327 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79a7a5d3_0f5bed5a",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "add a module docstring",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a556d23a_350dcf01",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "isn\u0027t this a better link ?\nhttps://git-scm.com/docs/api-trace2#_the_event_format_target",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eddde4f_77d67e6d",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "outdated",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8cd2c3f_c85922a3",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "we allow lines to exceed 80 up to 100 when it\u0027s convenient for code, but since you\u0027re already wrapping these docstrings, can you keep them to 80 cols ?",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57634bdd_142eb254",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "|retval| is fine considering the limited scope",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82bea17e_152eadcb",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "please avoid inline comments",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e55f364b_8d898c2a",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd45d319_4671f6c0",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "i don\u0027t think type(str()) is really necessary.  just say like \"path: str required but got %s\".",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18ef3194_168d5bdd",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "955905cc_dd33b712",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "use a tuple instead of list",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "349a085e_4bc2d6f0",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "you can omit \"with\"",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0925275b_d2843e19",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "delete in new files",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20195734_98b89fff",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "delete in new files",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1565ee3_87badae6",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "don\u0027t bother adding python2 support here.  we\u0027re going to delete it this month.",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65e69eb4_6c8d5ba7",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "keep this block sorted",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a35196c8_a6bb8347",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "you can do this now as we don\u0027t need python2 support in here",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "830bad2d_59119ff8",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "add a dangling comma",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d587194_b5b00ac8",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "use mode\u003d\u0027rb\u0027",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba0cfd34_dc2aeab9",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-01T13:36:02Z",
+      "side": 1,
+      "message": "should add one-line docstrings to each func.  these get used by humans when summarizing tests and are easier to read than short_snake_case_func_descs.",
+      "revId": "a9a726e2a86c1258588afed4e05074dc59331865",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
