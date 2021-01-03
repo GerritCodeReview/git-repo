@@ -14,6 +14,7 @@
 
 """Random utility code for release tools."""
 
+from __future__ import print_function
 import os
 import re
 import subprocess
