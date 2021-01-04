@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c287062c_e3c38ca5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-04T01:48:58Z",
+      "side": 1,
+      "message": "make sure your repo launcher is up-to-date.  if it\u0027s an old version, it won\u0027t work with current repo releases.\n\nhttps://crbug.com/gerrit/13795 has some more details.",
+      "revId": "20f6a87a5a5d3fc0a3f8e83ac0fb1f13816b2cb5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
