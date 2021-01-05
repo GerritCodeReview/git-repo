@@ -26,6 +26,7 @@ import tempfile
 import unittest
 
 import git_command
+import main
 import platform_utils
 from pyversion import is_python3
 import wrapper
@@ -82,6 +83,16 @@ class RepoWrapperUnitTest(RepoWrapperTestCase):
     self.assertEqual(0, e.exception.code)
     self.assertEqual('', stderr.getvalue())
     self.assertIn('repo launcher version', stdout.getvalue())
+
+  def test_python_constraints(self):
+    """The launcher should never require newer than main.py."""
+    self.assertGreaterEqual(main.MIN_PYTHON_VERSION_HARD,
+                            wrapper.MIN_PYTHON_VERSION_HARD)
+    self.assertGreaterEqual(main.MIN_PYTHON_VERSION_SOFT,
+                            wrapper.MIN_PYTHON_VERSION_SOFT)
+    # Make sure the versions are themselves in sync.
+    self.assertGreaterEqual(wrapper.MIN_PYTHON_VERSION_SOFT,
+                            wrapper.MIN_PYTHON_VERSION_HARD)
 
   def test_init_parser(self):
     """Make sure 'init' GetParser works."""
