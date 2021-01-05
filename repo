@@ -103,8 +103,8 @@ def check_python_version():
         break
       reexec('python{}.{}'.format(min_major, min_minor - inc))
 
-    # Try the generic Python 3 wrapper, but only if it's new enough.  We don't
-    # want to go from (still supported) Python 2.7 to (unsupported) Python 3.5.
+    # Try the generic Python 3 wrapper, but only if it's new enough.  If it
+    # isn't, we want to just give up below and make the user resolve things.
     try:
       proc = subprocess.Popen(
           ['python3', '-c', 'import sys; '
@@ -122,9 +122,10 @@ def check_python_version():
 
     # We're still here, so diagnose things for the user.
     if major < 3:
-      print('repo: warning: Python 2 is no longer supported; '
+      print('repo: error: Python 2 is no longer supported; '
             'Please upgrade to Python {}.{}+.'.format(*MIN_PYTHON_VERSION_HARD),
             file=sys.stderr)
+      sys.exit(1)
     elif (major, minor) < MIN_PYTHON_VERSION_HARD:
       print('repo: error: Python 3 version is too old; '
             'Please use Python {}.{} or newer.'.format(*MIN_PYTHON_VERSION_HARD),
