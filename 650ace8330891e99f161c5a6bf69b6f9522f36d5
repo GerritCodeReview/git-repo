@@ -68,6 +68,23 @@
       "message": "+nasser from qualcomm",
       "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4d9b6a1_e5f22c06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-05T22:58:28Z",
+      "side": 1,
+      "message": "haven\u0027t heard back, so lets move forward.  people can post real cases to the mailing lists where i\u0027ve already started threads.",
+      "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
