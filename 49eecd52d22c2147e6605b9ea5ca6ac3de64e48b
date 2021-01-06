@@ -16,6 +16,23 @@
       "message": "Bump",
       "revId": "49eecd52d22c2147e6605b9ea5ca6ac3de64e48b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f30c543_b127514e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-06T18:58:33Z",
+      "side": 1,
+      "message": "Xin: could you take a look ?  this limiting comes from https://gerrit-review.googlesource.com/c/git-repo/+/229532.",
+      "revId": "49eecd52d22c2147e6605b9ea5ca6ac3de64e48b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
