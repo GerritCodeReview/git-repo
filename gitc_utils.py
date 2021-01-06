@@ -146,7 +146,9 @@ def save_manifest(manifest, client_dir=None):
     client_dir: Client directory to save the manifest in.
   """
   if not client_dir:
-    manifest_file = manifest.manifestFile
+#    manifest_file = manifest.manifestFile
+    client_dir = os.path.join('/gitc/manifest-rw', manifest.manifestFile)
+    manifest_file = os.path.join(client_dir, '.manifest')
   else:
     manifest_file = os.path.join(client_dir, '.manifest')
   with open(manifest_file, 'w') as f:
