@@ -85,6 +85,24 @@
       "message": "haven\u0027t heard back, so lets move forward.  people can post real cases to the mailing lists where i\u0027ve already started threads.",
       "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f656658_71d4ead7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-06T17:55:12Z",
+      "side": 1,
+      "message": "please start a thread on the repo-discuss@ mailing list or follow up to the existing one i started on the topic:\nhttps://groups.google.com/g/repo-discuss/c/QkktZP4BTm8/m/lRLxIv7_DAAJ",
+      "parentUuid": "efd35595_4dbfa96e",
+      "revId": "650ace8330891e99f161c5a6bf69b6f9522f36d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
