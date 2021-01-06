@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd2ade56_85b7c89c",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-06T09:07:48Z",
+      "side": 1,
+      "message": "module docstrings should be after the initial file comment and before the import block",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfe2abb6_09ef94b6",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-06T09:07:48Z",
+      "side": 1,
+      "message": "unindent this block",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae93a608_21d120d6",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-06T09:07:48Z",
+      "side": 1,
+      "message": "we allow double quotes to avoid escaping:\n\n print(\"repo: error: \u0027git config .........\n\nor use double quotes inside:\n\n print(\u0027repo: error: \"git config ......\n\neither form is acceptable",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54ee20b5_a013c12d",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-06T09:07:48Z",
+      "side": 1,
+      "message": "unindent the body by 3 spaces\n\ncomes up below too",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
