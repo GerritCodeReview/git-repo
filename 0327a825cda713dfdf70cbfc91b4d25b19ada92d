@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e2a795d_31c51bef",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-06T14:55:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd2ade56_85b7c89c",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfe2abb6_09ef94b6",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-01-06T09:07:48Z",
       "side": 1,
       "message": "unindent this block",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85bc1d60_3207068e",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-06T14:55:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfe2abb6_09ef94b6",
       "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fc51dbc_4e34da88",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-06T14:55:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae93a608_21d120d6",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54ee20b5_a013c12d",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-01-06T09:07:48Z",
       "side": 1,
       "message": "unindent the body by 3 spaces\n\ncomes up below too",
+      "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bd4be65_cff01ade",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-06T14:55:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54ee20b5_a013c12d",
       "revId": "0327a825cda713dfdf70cbfc91b4d25b19ada92d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
