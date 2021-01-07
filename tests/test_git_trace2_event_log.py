@@ -15,8 +15,10 @@
 """Unittests for the git_trace2_event_log.py module."""
 
 import json
+import os
 import tempfile
 import unittest
+from unittest import mock
 
 import git_trace2_event_log
 
@@ -157,12 +159,27 @@ class EventLogTestCase(unittest.TestCase):
     self.assertIn('code', exit_event)
     self.assertEqual(exit_event['code'], 2)
 
-  # TODO(https://crbug.com/gerrit/13706): Add additional test coverage for
-  # Write() where:
-  # - path=None (using git config call)
-  # - path=<Non-String type> (raises TypeError)
-  # - path=<Non-Directory> (should return None)
-  # - tempfile.NamedTemporaryFile errors with FileExistsError (should return  None)
+  def test_write_with_filename(self):
+    """Test Write() with a path to a file exits with None."""
+    self.assertEqual(self._event_log_module.Write(path='path/to/file'), None)
+
+  def test_write_with_git_config(self):
+    """Test Write() uses the git config path when 'git config' call succeeds."""
+    with tempfile.TemporaryDirectory(prefix='event_log_tests') as tempdir:
+      with mock.patch.object(self._event_log_module,
+                             '_GetEventTargetPath', return_value=tempdir):
+        self.assertEqual(os.path.dirname(self._event_log_module.Write()), tempdir)
+
+  def test_write_no_git_config(self):
+    """Test Write() with no git config variable present exits with None."""
+    with mock.patch.object(self._event_log_module,
+                           '_GetEventTargetPath', return_value=None):
+      self.assertEqual(self._event_log_module.Write(), None)
+
+  def test_write_non_string(self):
+    """Test Write() with non-string type for |path| throws TypeError."""
+    with self.assertRaises(TypeError):
+      self._event_log_module.Write(path=1234)
 
 
 if __name__ == '__main__':
