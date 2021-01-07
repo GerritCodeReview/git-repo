@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0854d507_55deb417",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-07T01:02:15Z",
+      "side": 1,
+      "message": "use assertIsNone",
+      "revId": "9675c86f0b446a241bfeeb7a18675e399732b460",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e89045b_42e957cb",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-07T01:02:15Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "9675c86f0b446a241bfeeb7a18675e399732b460",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
