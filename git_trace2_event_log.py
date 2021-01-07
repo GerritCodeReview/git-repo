@@ -132,6 +132,30 @@ class EventLog(object):
     exit_event['code'] = result
     self._log.append(exit_event)
 
+  def _GetEventTargetPath(self):
+    """Get the 'trace2.eventtarget' path from git configuration.
+
+    Returns:
+      path: git config's 'trace2.eventtarget' path if it exists, or None
+    """
+    path = None
+    cmd = ['config', '--get', 'trace2.eventtarget']
+    # TODO(https://crbug.com/gerrit/13706): Use GitConfig when it supports
+    # system git config variables.
+    p = GitCommand(None, cmd, capture_stdout=True, capture_stderr=True,
+                   bare=True)
+    retval = p.Wait()
+    if retval == 0:
+      # Strip trailing carriage-return in path.
+      path = p.stdout.rstrip('\n')
+    elif retval != 1:
+      # `git config --get` is documented to produce an exit status of `1` if
+      # the requested variable is not present in the configuration. Report any
+      # other return value as an error.
+      print("repo: error: 'git config --get' call failed with return code: %r, stderr: %r" % (
+          retval, p.stderr), file=sys.stderr)
+    return path
+
   def Write(self, path=None):
     """Writes the log out to a file.
 
@@ -150,21 +174,11 @@ class EventLog(object):
     log_path = None
     # If no logging path is specified, get the path from 'trace2.eventtarget'.
     if path is None:
-      cmd = ['config', '--get', 'trace2.eventtarget']
-      # TODO(https://crbug.com/gerrit/13706): Use GitConfig when it supports
-      # system git config variables.
-      p = GitCommand(None, cmd, capture_stdout=True, capture_stderr=True,
-                     bare=True)
-      retval = p.Wait()
-      if retval == 0:
-        # Strip trailing carriage-return in path.
-        path = p.stdout.rstrip('\n')
-      elif retval != 1:
-        # `git config --get` is documented to produce an exit status of `1` if
-        # the requested variable is not present in the configuration. Report any
-        # other return value as an error.
-        print("repo: error: 'git config --get' call failed with return code: %r, stderr: %r" % (
-            retval, p.stderr), file=sys.stderr)
+      path = self._GetEventTargetPath()
+
+    # If no logging path is specified, exit.
+    if path is None:
+      return None
 
     if isinstance(path, str):
       # Get absolute path.
