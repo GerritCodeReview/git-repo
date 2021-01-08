@@ -463,6 +463,19 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                      ' '.join(self._repo_hooks_project.enabled_repo_hooks))
       root.appendChild(e)
 
+    if self._superproject:
+      root.appendChild(doc.createTextNode(''))
+      e = doc.createElement('superproject')
+      e.setAttribute('name', self._superproject['name'])
+      remoteName = None
+      if d.remote:
+        remoteName = d.remote.name
+      remote = self._superproject.get('remote')
+      if not d.remote or remote.orig_name != remoteName:
+        remoteName = remote.orig_name
+        e.setAttribute('remote', remoteName)
+      root.appendChild(e)
+
     return doc
 
   def ToDict(self, **kwargs):
@@ -473,6 +486,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         'default',
         'manifest-server',
         'repo-hooks',
+        'superproject',
     }
     # Elements that may be repeated.
     MULTI_ELEMENTS = {
@@ -545,6 +559,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return self._repo_hooks_project
 
   @property
+  def superproject(self):
+    self._Load()
+    return self._superproject
+
+  @property
   def notice(self):
     self._Load()
     return self._notice
@@ -591,6 +610,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._remotes = {}
     self._default = None
     self._repo_hooks_project = None
+    self._superproject = {}
     self._notice = None
     self.branch = None
     self._manifest_server = None
@@ -793,6 +813,23 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         # Store the enabled hooks in the Project object.
         self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
+      if node.nodeName == 'superproject':
+        name = self._reqatt(node, 'name')
+        # There can only be one superproject.
+        if self._superproject.get('name'):
+          raise ManifestParseError(
+              'duplicate superproject in %s' %
+              (self.manifestFile))
+        self._superproject['name'] = name
+        remote_name = node.getAttribute('remote')
+        if not remote_name:
+          remote = self._default.remote
+        else:
+          remote = self._get_remote(node)
+        if remote is None:
+          raise ManifestParseError("no remote for superproject %s within %s" %
+                                   (name, self.manifestFile))
+        self._superproject['remote'] = remote.ToRemoteSpec(name)
       if node.nodeName == 'remove-project':
         name = self._reqatt(node, 'name')
 
