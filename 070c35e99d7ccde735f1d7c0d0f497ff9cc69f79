@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ded245e_e60becb1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T06:47:23Z",
+      "side": 1,
+      "message": "Added code that is similar to project\u0027s handling of remote (including default). I am not 100% sure if I have done it correctly or not.\nDone",
+      "parentUuid": "7173d6d0_d4d4fb52",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d74bff0_18e14b30",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-01-08T04:02:47Z",
       "side": 1,
       "message": "add a Bug: tag\n\n Bug: https://crbug.com/gerrit/13709",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f203da28_c991c178",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T06:47:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d74bff0_18e14b30",
       "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a0a4891_ebccdc38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T06:47:23Z",
+      "side": 1,
+      "message": "I would like to implement the changes to sync.py in another CL. What do you think?",
+      "parentUuid": "04e5717f_525532ea",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a04b18f_940e88ff",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e60de35_51e66f02",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T06:47:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a04b18f_940e88ff",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42152b71_2eef4a8c",
@@ -82,6 +154,30 @@
       "writtenOn": "2021-01-08T04:02:47Z",
       "side": 1,
       "message": "drop \"SSO\" as it isn\u0027t needed",
+      "range": {
+        "startLine": 387,
+        "startChar": 36,
+        "endLine": 387,
+        "endChar": 39
+      },
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab07439b_a248af55",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T06:47:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42152b71_2eef4a8c",
       "range": {
         "startLine": 387,
         "startChar": 36,
@@ -115,6 +211,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c660afbd_fb8ea3ff",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T06:47:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab4571c2_01d59e86",
+      "range": {
+        "startLine": 388,
+        "startChar": 30,
+        "endLine": 388,
+        "endChar": 37
+      },
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "583b475e_85d73463",
@@ -128,6 +248,24 @@
       "writtenOn": "2021-01-08T04:02:47Z",
       "side": 1,
       "message": "this is incorrect.  look at the description for the project element -- name will have the same meaning as there.",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23af2d37_f885ce5b",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T06:47:23Z",
+      "side": 1,
+      "message": "Added a link to the Project. What do you think of that change. I am not sure if I have addressed it correctly or not.",
+      "parentUuid": "583b475e_85d73463",
       "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
