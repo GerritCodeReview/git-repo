@@ -1,0 +1,57 @@
+# This file declares various requirements for this version of repo.  The
+# launcher script will load it and check the constraints before trying to run
+# us.  This avoids issues of the launcher using an old version of Python (e.g.
+# 3.5) while the codebase has moved on to requiring something much newer (e.g.
+# 3.8).  If the launcher tried to import us, it would fail with syntax errors.
+
+# This is a JSON file with line-level comments allowed.
+
+# Always keep backwards compatibility in mine.  The launcher script is robust
+# against missing values, but when a field is renamed/removed, it means older
+# versions of the launcher script won't be able to enforce the constraint.
+
+# When requiring versions, always use lists as they are easy to parse & compare
+# in Python.  Strings would require futher processing to turn into a list.
+
+# Version constraints should be expressed in pairs: soft & hard.  Soft versions
+# are when we start warning users that their software too old and we're planning
+# on dropping support for it, so they need to start planning system upgrades.
+# Hard versions are when we refuse to work the tool.  Users will be shown an
+# error message before we abort entirely.
+
+# When deciding whether to upgrade a version requirement, check out the distro
+# lists to see who will be impacted:
+# https://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md#Project-References
+
+{
+  # The repo launcher itself.  This allows us to force people to upgrade as some
+  # ignore the warnings about it being out of date, or install ancient versions
+  # to start with for whatever reason.
+  #
+  # NB: Repo launchers started checking this file with repo-2.12, so listing
+  # versions older than that won't make a difference.
+  "repo": {
+    "hard": [2, 11],
+    "soft": [2, 11]
+  },
+
+  # Supported Python versions.
+  #
+  # python-3.6 is in Ubuntu Bionic.
+  # python-3.5 is in Debian Stretch.
+  "python": {
+    "hard": [3, 5],
+    "soft": [3, 6]
+  },
+
+  # Supported git versions.
+  #
+  # git-1.7.2 is in Debian Squeeze.
+  # git-1.7.9 is in Ubuntu Precise.
+  # git-1.9.1 is in Ubuntu Trusty.
+  # git-1.7.10 is in Debian Wheezy.
+  "git": {
+    "hard": [1, 7, 2],
+    "soft": [1, 9, 1]
+  }
+}
