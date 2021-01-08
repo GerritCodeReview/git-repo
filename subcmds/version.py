@@ -33,12 +33,14 @@ class Version(Command, MirrorSafeCommand):
   def Execute(self, opt, args):
     rp = self.manifest.repoProject
     rem = rp.GetRemote(rp.remote.name)
+    branch = rp.GetBranch('default')
 
     # These might not be the same.  Report them both.
     src_ver = RepoSourceVersion()
     rp_ver = rp.bare_git.describe(HEAD)
     print('repo version %s' % rp_ver)
     print('       (from %s)' % rem.url)
+    print('       (tracking %s)' % branch.merge)
     print('       (%s)' % rp.bare_git.log('-1', '--format=%cD', HEAD))
 
     if self.wrapper_path is not None:
