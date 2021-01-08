@@ -221,6 +221,25 @@ class XmlManifestTests(unittest.TestCase):
     self.assertEqual(manifest.repo_hooks_project.name, 'repohooks')
     self.assertEqual(manifest.repo_hooks_project.enabled_repo_hooks, ['a', 'b'])
 
+  def test_superproject(self):
+    """Check superproject settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <superproject name="superproject" remote="test-remote"/>
+</manifest>
+""")
+    self.assertEqual(manifest.superproject['name'], 'superproject')
+    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
+    self.assertEqual(
+        manifest.ToXml().toxml(),
+        '<?xml version="1.0" ?><manifest>' +
+        '<remote name="test-remote" fetch="http://localhost"/>' +
+        '<default remote="test-remote" revision="refs/heads/main"/>' +
+        '<superproject name="superproject" remote="test-remote"/>' +
+        '</manifest>')
+
   def test_project_group(self):
     """Check project group settings."""
     manifest = self.getXmlManifest("""

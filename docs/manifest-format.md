@@ -29,6 +29,7 @@ following DTD:
                       project*,
                       extend-project*,
                       repo-hooks?,
+                      superproject?,
                       include*)>
 
   <!ELEMENT notice (#PCDATA)>
@@ -97,6 +98,10 @@ following DTD:
   <!ELEMENT repo-hooks EMPTY>
   <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
   <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
+
+  <!ELEMENT superproject (EMPTY)>
+  <!ATTLIST superproject name    CDATA #REQUIRED>
+  <!ATTLIST superproject remote  IDREF #IMPLIED>
 
   <!ELEMENT include EMPTY>
   <!ATTLIST include name   CDATA #REQUIRED>
@@ -376,6 +381,17 @@ must match the `name` attribute (**not** the `path` attribute) of a previously
 defined `project` element.
 
 Attribute `enabled-list`: List of hooks to use, whitespace or comma separated.
+
+### Element superproject
+
+This element is used to specify the SSO URL of the superproject. It has three
+attributes: remote, name, and default. Only "name" is required while the others
+have reasonable defaults. At most one superproject may be specified.
+
+Attribute `name`: A unique name for the superproject.
+
+Attribute `remote`: Name of a previously defined remote element.
+If not supplied the remote given by the default element is used.
 
 ### Element include
 
