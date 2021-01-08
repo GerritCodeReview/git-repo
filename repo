@@ -246,6 +246,7 @@ GITC_FS_ROOT_DIR = '/gitc/manifest-rw/'
 
 import collections
 import errno
+import json
 import optparse
 import re
 import shutil
@@ -1035,6 +1036,90 @@ def _ParseArguments(args):
   return cmd, opt, arg
 
 
+class Requirements(object):
+  """Helper for checking repo's system requirements."""
+
+  REQUIREMENTS_NAME = 'requirements.json'
+
+  def __init__(self, requirements):
+    """Initialize.
+
+    Args:
+      requirements: A dictionary of settings.
+    """
+    self.requirements = requirements
+
+  @classmethod
+  def from_dir(cls, path):
+    return cls.from_file(os.path.join(path, cls.REQUIREMENTS_NAME))
+
+  @classmethod
+  def from_file(cls, path):
+    try:
+      with open(path, 'rb') as f:
+        data = f.read()
+    except EnvironmentError:
+      # NB: EnvironmentError is used for Python 2 & 3 compatibility.
+      # If we couldn't open the file, assume it's an old source tree.
+      return None
+
+    return cls.from_data(data)
+
+  @classmethod
+  def from_data(cls, data):
+    comment_line = re.compile(br'^ *#')
+    strip_data = b''.join(x for x in data.splitlines() if not comment_line.match(x))
+    try:
+      json_data = json.loads(strip_data)
+    except Exception:  # pylint: disable=broad-except
+      # If we couldn't parse it, assume it's incompatible.
+      return None
+
+    return cls(json_data)
+
+  def _get_soft_ver(self, pkg):
+    """Return the soft version for |pkg| if it exists."""
+    return self.requirements.get(pkg, {}).get('soft', ())
+
+  def _get_hard_ver(self, pkg):
+    """Return the hard version for |pkg| if it exists."""
+    return self.requirements.get(pkg, {}).get('hard', ())
+
+  @staticmethod
+  def _format_ver(ver):
+    """Return a dotted version from |ver|."""
+    return '.'.join(str(x) for x in ver)
+
+  def assert_ver(self, pkg, curr_ver):
+    """Verify |pkg|'s |curr_ver| is new enough."""
+    curr_ver = tuple(curr_ver)
+    soft_ver = tuple(self._get_soft_ver(pkg))
+    hard_ver = tuple(self._get_hard_ver(pkg))
+    if curr_ver < hard_ver:
+      print('repo: error: Your version of "%s" (%s) is unsupported; '
+            'Please upgrade to at least version %s to continue.' %
+            (pkg, self._format_ver(curr_ver), self._format_ver(soft_ver)),
+            file=sys.stderr)
+      sys.exit(1)
+
+    if curr_ver < soft_ver:
+      print('repo: warning: Your version of "%s" (%s) is no longer supported; '
+            'Please upgrade to at least version %s to avoid breakage.' %
+            (pkg, self._format_ver(curr_ver), self._format_ver(soft_ver)),
+            file=sys.stderr)
+
+  def assert_all(self):
+    """Assert all of the requirements are satisified."""
+    # See if we need a repo launcher upgrade first.
+    self.assert_ver('repo', VERSION)
+
+    # Check python before we try to import the repo code.
+    self.assert_ver('python', sys.version_info)
+
+    # Check git while we're at it.
+    self.assert_ver('git', ParseGitVersion())
+
+
 def _Usage():
   gitc_usage = ""
   if get_gitc_manifest_dir():
@@ -1191,6 +1276,10 @@ def main(orig_args):
   if not repo_main:
     print("fatal: unable to find repo entry point", file=sys.stderr)
     sys.exit(1)
+
+  reqs = Requirements.from_dir(os.path.dirname(repo_main))
+  if reqs:
+    reqs.assert_all()
 
   ver_str = '.'.join(map(str, VERSION))
   me = [sys.executable, repo_main,

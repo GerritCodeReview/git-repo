@@ -19,6 +19,7 @@ from io import StringIO
 import os
 import re
 import shutil
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -253,6 +254,81 @@ class CheckGitVersion(RepoWrapperTestCase):
         self.wrapper, 'ParseGitVersion',
         return_value=self.wrapper.GitVersion(100, 0, 0, '100.0.0')):
       self.wrapper._CheckGitVersion()
+
+
+class Requirements(RepoWrapperTestCase):
+  """Check Requirements handling."""
+
+  def test_missing_file(self):
+    """Don't crash if the file is missing (old version)."""
+    testdir = os.path.dirname(os.path.realpath(__file__))
+    self.assertIsNone(self.wrapper.Requirements.from_dir(testdir))
+    self.assertIsNone(self.wrapper.Requirements.from_file(
+        os.path.join(testdir, 'xxxxxxxxxxxxxxxxxxxxxxxx')))
+
+  def test_corrupt_data(self):
+    """If the file can't be parsed, don't blow up."""
+    self.assertIsNone(self.wrapper.Requirements.from_file(__file__))
+    self.assertIsNone(self.wrapper.Requirements.from_data(b'x'))
+
+  def test_valid_data(self):
+    """Make sure we can parse the file we ship."""
+    self.assertIsNotNone(self.wrapper.Requirements.from_data(b'{}'))
+    rootdir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    self.assertIsNotNone(self.wrapper.Requirements.from_dir(rootdir))
+    self.assertIsNotNone(self.wrapper.Requirements.from_file(os.path.join(
+        rootdir, 'requirements.json')))
+
+  def test_format_ver(self):
+    """Check format_ver can format."""
+    self.assertEqual('1.2.3', self.wrapper.Requirements._format_ver((1, 2, 3)))
+    self.assertEqual('1', self.wrapper.Requirements._format_ver([1]))
+
+  def test_assert_all_unknown(self):
+    """Check assert_all works with incompatible file."""
+    reqs = self.wrapper.Requirements({})
+    reqs.assert_all()
+
+  def test_assert_all_new_repo(self):
+    """Check assert_all accepts new enough repo."""
+    reqs = self.wrapper.Requirements({'repo': {'hard': [1, 0]}})
+    reqs.assert_all()
+
+  def test_assert_all_old_repo(self):
+    """Check assert_all rejects old repo."""
+    reqs = self.wrapper.Requirements({'repo': {'hard': [99999, 0]}})
+    with self.assertRaises(SystemExit):
+      reqs.assert_all()
+
+  def test_assert_all_new_python(self):
+    """Check assert_all accepts new enough python."""
+    reqs = self.wrapper.Requirements({'python': {'hard': sys.version_info}})
+    reqs.assert_all()
+
+  def test_assert_all_old_repo(self):
+    """Check assert_all rejects old repo."""
+    reqs = self.wrapper.Requirements({'python': {'hard': [99999, 0]}})
+    with self.assertRaises(SystemExit):
+      reqs.assert_all()
+
+  def test_assert_ver_unknown(self):
+    """Check assert_ver works with incompatible file."""
+    reqs = self.wrapper.Requirements({})
+    reqs.assert_ver('xxx', (1, 0))
+
+  def test_assert_ver_new(self):
+    """Check assert_ver allows new enough versions."""
+    reqs = self.wrapper.Requirements({'git': {'hard': [1, 0], 'soft': [2, 0]}})
+    reqs.assert_ver('git', (1, 0))
+    reqs.assert_ver('git', (1, 5))
+    reqs.assert_ver('git', (2, 0))
+    reqs.assert_ver('git', (2, 5))
+
+  def test_assert_ver_old(self):
+    """Check assert_ver rejects old versions."""
+    reqs = self.wrapper.Requirements({'git': {'hard': [1, 0], 'soft': [2, 0]}})
+    with self.assertRaises(SystemExit):
+      reqs.assert_ver('git', (0, 5))
 
 
 class NeedSetupGnuPG(RepoWrapperTestCase):
