@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6beb8e0_792e83ef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T17:30:15Z",
+      "side": 1,
+      "message": "how about:\n\n manifest_xml: initial support for \u003csuperproject\u003e",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b3de425_92997a5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T17:30:15Z",
+      "side": 1,
+      "message": "can you note here that this CL only implements the parsing logic and further work will be in followup CLs ?",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21d734ee_4ed29b82",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T17:30:15Z",
+      "side": 1,
+      "message": "since this is currently incomplete, how about adding a block like:\n\n ***\n *Note*: This is currently a WIP.\n ***\n\nthen you can replace it with \"First released in vX.Y\" once you\u0027re ready to ship.  these docs go live immediately so we don\u0027t want users trying to use it and getting confused when it doesn\u0027t work.",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f00ae693_be561662",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T17:30:15Z",
+      "side": 1,
+      "message": "you can omit the quotes, and write \"element\"",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b79d28dd_2b481dcf",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T17:30:15Z",
+      "side": 1,
+      "message": "only need one blank line here",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
