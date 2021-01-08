@@ -1,0 +1,135 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7173d6d0_d4d4fb52",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T04:02:47Z",
+      "side": 1,
+      "message": "this CL doesn\u0027t implement \"default\"",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d74bff0_18e14b30",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T04:02:47Z",
+      "side": 1,
+      "message": "add a Bug: tag\n\n Bug: https://crbug.com/gerrit/13709",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04e5717f_525532ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T04:02:47Z",
+      "side": 1,
+      "message": "code seems fine, but looks like it\u0027s just parsing logic currently ... it doesn\u0027t actually checkout anything",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a04b18f_940e88ff",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T04:02:47Z",
+      "side": 1,
+      "message": "can you add a sentence at the start here like:\n\n See the [git superprojects\n documentation](https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects)\n for background information.",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42152b71_2eef4a8c",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T04:02:47Z",
+      "side": 1,
+      "message": "drop \"SSO\" as it isn\u0027t needed",
+      "range": {
+        "startLine": 387,
+        "startChar": 36,
+        "endLine": 387,
+        "endChar": 39
+      },
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab4571c2_01d59e86",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T04:02:47Z",
+      "side": 1,
+      "message": "you don\u0027t implement \"default\" here",
+      "range": {
+        "startLine": 388,
+        "startChar": 30,
+        "endLine": 388,
+        "endChar": 37
+      },
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "583b475e_85d73463",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-08T04:02:47Z",
+      "side": 1,
+      "message": "this is incorrect.  look at the description for the project element -- name will have the same meaning as there.",
+      "revId": "070c35e99d7ccde735f1d7c0d0f497ff9cc69f79",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
