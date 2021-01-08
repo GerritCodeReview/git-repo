@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8b11471_904b58cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T18:14:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6beb8e0_792e83ef",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b3de425_92997a5d",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-01-08T17:30:15Z",
       "side": 1,
       "message": "can you note here that this CL only implements the parsing logic and further work will be in followup CLs ?",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75f75085_7c15bb29",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T18:14:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b3de425_92997a5d",
       "revId": "4de06d63b1b49957004b44ad028a627867eff769",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c170f545_74c60fbf",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T18:14:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21d734ee_4ed29b82",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f00ae693_be561662",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe8c3db3_80cefaae",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T18:14:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f00ae693_be561662",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b79d28dd_2b481dcf",
@@ -82,6 +154,24 @@
       "writtenOn": "2021-01-08T17:30:15Z",
       "side": 1,
       "message": "only need one blank line here",
+      "revId": "4de06d63b1b49957004b44ad028a627867eff769",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76d84da9_dd080860",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 11
+      },
+      "lineNbr": 400,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-08T18:14:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b79d28dd_2b481dcf",
       "revId": "4de06d63b1b49957004b44ad028a627867eff769",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
