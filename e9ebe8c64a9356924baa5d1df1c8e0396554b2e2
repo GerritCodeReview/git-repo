@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9f40283b_df1b27ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-11T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fa716c2_1712dd74",
+      "revId": "e9ebe8c64a9356924baa5d1df1c8e0396554b2e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c83d7df1_6c8ddcbf",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2021-01-11T20:33:17Z",
       "side": 1,
       "message": "i feel like we should emit warnings if we aren\u0027t already, but that can wait until later since this is not new behavior afaik\n\ncan you update docs/manifest-format.md to clarify handling of unknown tags ?  maybe we should make a spec guarantee like \"we will always ignore tags that start with x- for local usage\".",
+      "revId": "e9ebe8c64a9356924baa5d1df1c8e0396554b2e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1fd9e1cf_ae431c14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-11T20:54:43Z",
+      "side": 1,
+      "message": "Added handling of unknown tags text to docs/manifest-format.md. Please take another look. Thanks much.",
+      "parentUuid": "c83d7df1_6c8ddcbf",
       "revId": "e9ebe8c64a9356924baa5d1df1c8e0396554b2e2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
