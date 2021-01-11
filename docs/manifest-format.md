@@ -109,6 +109,12 @@ following DTD:
 ]>
 ```
 
+For compatibility purposes across repo releases, all unknown elements are
+silently ignored.  However, repo reserves all possible names for itself for
+future use.  If you want to use custom elements, the `x-*` namespace is
+reserved for that purpose, and repo guarantees to never allocate any
+corresponding names.
+
 A description of the elements and their attributes follows.
 
 

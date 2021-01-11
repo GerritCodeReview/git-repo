@@ -280,6 +280,27 @@ class XmlManifestTests(unittest.TestCase):
         '<superproject name="superproject"/>' +
         '</manifest>')
 
+  def test_unknown_tags(self):
+    """Check superproject settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <superproject name="superproject"/>
+  <iankaz value="unknown (possible) future tags are ignored"/>
+  <x-custom-tag>X tags are always ignored</x-custom-tag>
+</manifest>
+""")
+    self.assertEqual(manifest.superproject['name'], 'superproject')
+    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
+    self.assertEqual(
+        manifest.ToXml().toxml(),
+        '<?xml version="1.0" ?><manifest>' +
+        '<remote name="test-remote" fetch="http://localhost"/>' +
+        '<default remote="test-remote" revision="refs/heads/main"/>' +
+        '<superproject name="superproject"/>' +
+        '</manifest>')
+
   def test_project_group(self):
     """Check project group settings."""
     manifest = self.getXmlManifest("""
