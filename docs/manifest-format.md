@@ -11,6 +11,9 @@ Manifests are inherently version controlled, since they are kept
 within a Git repository.  Updates to manifests are automatically
 obtained by clients during `repo sync`.
 
+Unknown tags or elements not listed [XML file format](#xml-file-format)
+are ignored.
+
 [TOC]
 
 
