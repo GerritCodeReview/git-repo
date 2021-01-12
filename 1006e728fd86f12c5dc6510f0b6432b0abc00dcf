@@ -16,6 +16,23 @@
       "message": "PTAL. Thanks very much for the thorough code review.",
       "revId": "1006e728fd86f12c5dc6510f0b6432b0abc00dcf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d689894_95c7db06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-12T21:36:36Z",
+      "side": 1,
+      "message": "thanks.  it\u0027s always good to formalize things so repo doesn\u0027t feel so squishy all the time.",
+      "revId": "1006e728fd86f12c5dc6510f0b6432b0abc00dcf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
