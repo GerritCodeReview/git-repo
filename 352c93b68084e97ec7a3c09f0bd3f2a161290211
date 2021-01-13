@@ -69,6 +69,24 @@
       "parentUuid": "89cae7a2_129b206f",
       "revId": "352c93b68084e97ec7a3c09f0bd3f2a161290211",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8eaff0c_5c58b0e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-13T08:24:26Z",
+      "side": 1,
+      "message": "i think one could make reasonable arguments for either mode wrt projects with notdefault.  one could conceivably have a manifest fragment full of projects that are all marked as notdefault, and then include it with a groups\u003d setting so that you don\u0027t have to copy \u0026 paste that group setting manually to each project element.\n\ni won\u0027t have a suggestion atm for a syntax that would satisfy both use cases, and do so without creating too much metaprogramming in the process ;).  i\u0027d rather not blow out the variations in attributes either as each one complicates the code a bit more ...",
+      "parentUuid": "8957e2c7_56b7609a",
+      "revId": "352c93b68084e97ec7a3c09f0bd3f2a161290211",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
