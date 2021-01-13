@@ -450,6 +450,7 @@ class RemoteSpec(object):
     self.orig_name = orig_name
     self.fetchUrl = fetchUrl
 
+
 class Project(object):
   # These objects can be shared between several working trees.
   shareable_files = ['description', 'info']
@@ -1034,6 +1035,16 @@ class Project(object):
                               message=msg)
 
 # Sync ##
+  def CleanTagsCache(self, all_refs=None):
+    """Prunes any present local tag refs.
+    """
+    if all_refs is None:
+      all_refs = self._allrefs
+    canrm = dict((name, ref_id) for name, ref_id in all_refs.items()
+                 if name.startswith(R_TAGS))
+    for name, ref_id in canrm.items():
+      self.bare_git.DeleteRef(name, ref_id)
+
   def _ExtractArchive(self, tarpath, path=None):
     """Extract the given tar on its current location
 
@@ -2537,6 +2548,11 @@ class Project(object):
   def _InitRemote(self):
     if self.remote.url:
       remote = self.GetRemote(self.remote.name)
+      if remote.url != self.remote.url:
+        # We should clean all local tags if remote url is going to change.
+        # Otherwise, the tag name may be repeated both in
+        # old and new repository, and we'll stuck at the old one.
+        self.CleanTagsCache()
       remote.url = self.remote.url
       remote.pushUrl = self.remote.pushUrl
       remote.review = self.remote.review
