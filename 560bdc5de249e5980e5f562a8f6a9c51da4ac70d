@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23d76b72_3451bf4e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-14T10:18:50Z",
+      "side": 1,
+      "message": "please see these docs for writing commit messages:\nhttps://chris.beams.io/posts/git-commit/",
+      "revId": "560bdc5de249e5980e5f562a8f6a9c51da4ac70d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73e81ff2_e82d4caa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-14T10:18:50Z",
+      "side": 1,
+      "message": "can you provide example manifest changes to show what you\u0027re talking about ?  we don\u0027t need the full manifest, just the relevant diff \u0026 elements that changed (sounds like just \u003cproject\u003e ?).",
+      "revId": "560bdc5de249e5980e5f562a8f6a9c51da4ac70d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
