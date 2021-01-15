@@ -1197,6 +1197,9 @@ class Project(object):
       raise ManifestInvalidRevisionError('revision %s in %s not found' %
                                          (self.revisionExpr, self.name))
 
+  def SetRevisionId(self, revisionId):
+    self.revisionId = revisionId
+
   def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
     """Perform only the local IO portion of the sync process.
        Network access is not required.
