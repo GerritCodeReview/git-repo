@@ -51,6 +51,7 @@ import event_log
 from git_command import GIT, git_require
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
+import git_superproject
 import gitc_utils
 from project import Project
 from project import RemoteSpec
@@ -241,6 +242,10 @@ later is required to fix a server side protocol bug.
     p.add_option('--fetch-submodules',
                  dest='fetch_submodules', action='store_true',
                  help='fetch submodules from server')
+    p.add_option('--use-superproject',
+                 dest='use_superproject', action='store_true',
+                 help='enable getting SHAs from superproject and what commits '
+                      'to sync to based on the state of a superproject.')
     p.add_option('--no-tags',
                  dest='tags', default=True, action='store_false',
                  help="don't fetch tags")
@@ -893,6 +898,30 @@ later is required to fix a server side protocol bug.
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
+
+    if opt.use_superproject and self.manifest.superproject:
+      superproject_url = self.manifest.superproject['remote'].url
+      if not superproject_url:
+        print('error: superproject URL is not defined in manifest.xml',
+              file=sys.stderr)
+        sys.exit(1)
+      superproject = git_superproject.Superproject()
+      superproject_shas = superproject.GetAllProjectsSHAs(url=superproject_url)
+      projects_missing_shas = []
+      for project in all_projects:
+        path = project.relpath
+        if not path:
+          continue
+        sha = superproject_shas.get(path)
+        if sha:
+          project.SetRevisionId(sha)
+        else:
+          projects_missing_shas.append(path)
+      if projects_missing_shas:
+        bug_report_url = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
+        print('error: please file a bug using %s to report missing shas for: %s' %
+              (bug_report_url, projects_missing_shas), file=sys.stderr)
+        sys.exit(1)
 
     err_network_sync = False
     err_update_projects = False

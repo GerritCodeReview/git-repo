@@ -232,6 +232,7 @@ class XmlManifestTests(unittest.TestCase):
 """)
     self.assertEqual(manifest.superproject['name'], 'superproject')
     self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
+    self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/superproject')
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>' +
@@ -245,20 +246,21 @@ class XmlManifestTests(unittest.TestCase):
     manifest = self.getXmlManifest("""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
-  <remote name="test-remote" fetch="http://localhost" />
+  <remote name="superproject-remote" fetch="sso://android" />
   <default remote="default-remote" revision="refs/heads/main" />
-  <superproject name="superproject" remote="test-remote"/>
+  <superproject name="platform/superproject" remote="superproject-remote"/>
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
+    self.assertEqual(manifest.superproject['name'], 'platform/superproject')
+    self.assertEqual(manifest.superproject['remote'].name, 'superproject-remote')
+    self.assertEqual(manifest.superproject['remote'].url, 'sso://android/platform/superproject')
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>' +
         '<remote name="default-remote" fetch="http://localhost"/>' +
-        '<remote name="test-remote" fetch="http://localhost"/>' +
+        '<remote name="superproject-remote" fetch="sso://android"/>' +
         '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<superproject name="superproject" remote="test-remote"/>' +
+        '<superproject name="platform/superproject" remote="superproject-remote"/>' +
         '</manifest>')
 
   def test_superproject_with_defalut_remote(self):
