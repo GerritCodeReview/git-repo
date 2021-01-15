@@ -1,0 +1,6 @@
+120000 blob 158258bdf146f159218e2b90f8b699c4d85b5804	Android.bp
+100644 blob 1ef9aca146547dde5a26531ee10dcdcad0fa658a	Makefile
+160000 commit ef28d24d7625943cc2b53e10bbece86a305b3ffd	art
+160000 commit 40d4bc9e199d93dd62615d512b24ec5d5d600075	bootable/recovery
+120000 blob 0a467554a6de18d858e55db58697c1efebc73de0	build/CleanSpec.mk
+160000 commit 600f42f7e6dfbb98e5ccb0fd7a565cd30239c7db	build/bazel
