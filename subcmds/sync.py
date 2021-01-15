@@ -51,6 +51,7 @@ import event_log
 from git_command import GIT, git_require
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
+import git_superproject
 import gitc_utils
 from project import Project
 from project import RemoteSpec
@@ -241,6 +242,10 @@ later is required to fix a server side protocol bug.
     p.add_option('--fetch-submodules',
                  dest='fetch_submodules', action='store_true',
                  help='fetch submodules from server')
+    p.add_option('--use-superproject',
+                 dest='use_superproject', action='store_true',
+                 help='enable getting SHAs from superproject and what commits '
+                      'to sync to based on the state of a superproject.')
     p.add_option('--no-tags',
                  dest='tags', default=True, action='store_false',
                  help="don't fetch tags")
@@ -833,6 +838,19 @@ later is required to fix a server side protocol bug.
                 e, file=sys.stderr)
 
     err_event = _threading.Event()
+
+    if opt.use_superproject:
+      # TODO(rtenneti): sync of projects based on git shas.
+      superproject_url = self.manifest.superproject['remote'].url
+      superproject_shas = git_superproject.Superproject().GetAllProjectsSHAs(url=superproject_url)
+      projects_missing_shas = []
+      for path in self.manifest.paths:
+        if path not in superproject_shas:
+          projects_missing_shas.append(path)
+      if projects_missing_shas:
+        print('error: superproject has missing shas for these projects: %s' %
+              projects_missing_shas, file=sys.stderr)
+        sys.exit(1)
 
     rp = self.manifest.repoProject
     rp.PreSync()
