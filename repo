@@ -323,6 +323,9 @@ def GetParser(gitc_init=False):
                         'each project. See git archive.')
   group.add_option('--submodules', action='store_true',
                    help='sync any submodules associated with the manifest repo')
+  group.add_option('--use-superproject', action='store_true',
+                   help='enable getting SHAs from superproject and what commits '
+                        'to sync to based on the state of a superproject.')
   group.add_option('-g', '--groups', default='default',
                    help='restrict manifest projects to ones with specified '
                         'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
@@ -332,7 +335,8 @@ def GetParser(gitc_init=False):
                         'platform group [auto|all|none|linux|darwin|...]',
                    metavar='PLATFORM')
   group.add_option('--clone-bundle', action='store_true',
-                   help='enable use of /clone.bundle on HTTP/HTTPS (default if not --partial-clone)')
+                   help='enable use of /clone.bundle on HTTP/HTTPS (default if not --partial-clone)'
+                   )
   group.add_option('--no-clone-bundle',
                    dest='clone_bundle', action='store_false',
                    help='disable use of /clone.bundle on HTTP/HTTPS (default if --partial-clone)')

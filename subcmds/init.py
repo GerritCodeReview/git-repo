@@ -134,6 +134,10 @@ to update the working directory files.
     g.add_option('--submodules',
                  dest='submodules', action='store_true',
                  help='sync any submodules associated with the manifest repo')
+    g.add_option('--use-superproject', action='store_true',
+                 dest='use_superproject',
+                 help='enable getting SHAs from superproject and what commits '
+                      'to sync to based on the state of a superproject.')
     g.add_option('-g', '--groups',
                  dest='groups', default='default',
                  help='restrict manifest projects to ones with specified '
@@ -304,6 +308,9 @@ to update the working directory files.
 
     if opt.submodules:
       m.config.SetString('repo.submodules', 'true')
+
+    if opt.use_superproject:
+      m.config.SetString('repo.usesuperproject', 'true')
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,
