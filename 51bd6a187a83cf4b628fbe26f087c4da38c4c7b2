@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c15df09_03c31629",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-15T15:03:26Z",
+      "side": 1,
+      "message": "I don\u0027t believe we need this at the repo level, the flag only needs to be specified once.",
+      "range": {
+        "startLine": 326,
+        "startChar": 2,
+        "endLine": 326,
+        "endChar": 7
+      },
+      "revId": "51bd6a187a83cf4b628fbe26f087c4da38c4c7b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79953347_d1ef6702",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-15T15:03:26Z",
+      "side": 1,
+      "message": "Same here, I think we only need the flag once.",
+      "range": {
+        "startLine": 137,
+        "startChar": 6,
+        "endLine": 137,
+        "endChar": 16
+      },
+      "revId": "51bd6a187a83cf4b628fbe26f087c4da38c4c7b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "795a5bb3_8a4f5336",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-15T15:03:26Z",
+      "side": 1,
+      "message": "I think we need to handle init with superproject in a future/separate CL because we want it to be sticky (as init doesn\u0027t actually sync)",
+      "range": {
+        "startLine": 312,
+        "startChar": 4,
+        "endLine": 312,
+        "endChar": 6
+      },
+      "revId": "51bd6a187a83cf4b628fbe26f087c4da38c4c7b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a0cffeb_21eee7db",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-15T15:03:26Z",
+      "side": 1,
+      "message": "We should confirm w/ vapier whether this should be here or in the main.py flags (as we want to use it across multiple subcommands eventually).",
+      "range": {
+        "startLine": 245,
+        "startChar": 6,
+        "endLine": 245,
+        "endChar": 16
+      },
+      "revId": "51bd6a187a83cf4b628fbe26f087c4da38c4c7b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34843376_b5f3725d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-15T15:03:26Z",
+      "side": 1,
+      "message": "This should be an error and thus should print to stderr (see other examples in repo code). Also we should be exiting if there are missing projects (instead of syncing) and reporting that failure to the user. Depending on how \"Execute\" is called you could throw a custom error or just output to stdout the error and then exit \u003cnon-zero return code\u003e",
+      "range": {
+        "startLine": 849,
+        "startChar": 8,
+        "endLine": 849,
+        "endChar": 13
+      },
+      "revId": "51bd6a187a83cf4b628fbe26f087c4da38c4c7b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
