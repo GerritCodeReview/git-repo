@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cc2de11_e7128302",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-18T20:53:11Z",
+      "side": 1,
+      "message": "Hi Mike,\n  As Ian mentioned, should we add --use-subproject to main.py or should I add the option to init.py and sync.py (ala --partial-clone)? This code shouldn\u0027t have an effect until we make changes to manifest.xml. I will add the code to fectch projects based on SHAs in another CL (after talking with you the best way to do it).\n\nThanks\nRaman",
+      "revId": "61665e5ca5fff703c01ab5d570f703e6c6c381a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
