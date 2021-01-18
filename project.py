@@ -1464,7 +1464,7 @@ class Project(object):
     if self.use_git_worktrees:
       needle = platform_utils.realpath(self.gitdir)
       # Find the git worktree commondir under .repo/worktrees/.
-      output = self.bare_git.worktree('list', '--porcelain').splitlines()[0]
+      output = self.work_git.worktree('list', '--porcelain').splitlines()[0]
       assert output.startswith('worktree '), output
       commondir = output[9:]
       # Walk each of the git worktrees to see where they point.
