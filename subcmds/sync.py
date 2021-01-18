@@ -561,8 +561,9 @@ later is required to fix a server side protocol bug.
       # Make sure pruning never kicks in with shared projects.
       if (not project.use_git_worktrees and
               len(project.manifest.GetProjectsWithName(project.name)) > 1):
-        print('%s: Shared project %s found, disabling pruning.' %
-              (project.relpath, project.name))
+        if not opt.quiet:
+          print('%s: Shared project %s found, disabling pruning.' %
+                (project.relpath, project.name))
         if git_require((2, 7, 0)):
           project.EnableRepositoryExtension('preciousObjects')
         else:
