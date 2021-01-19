@@ -92,7 +92,7 @@ class EventLog(object):
   def _AddVersionEvent(self):
     """Adds a 'version' event at the beginning of current log."""
     version_event = self._CreateEventDict('version')
-    version_event['evt'] = 2
+    version_event['evt'] = "2"
     version_event['exe'] = RepoSourceVersion()
     self._log.insert(0, version_event)
 
