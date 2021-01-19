@@ -95,6 +95,8 @@ class EventLogTestCase(unittest.TestCase):
     # Check for 'version' event specific fields.
     self.assertIn('evt', version_event)
     self.assertIn('exe', version_event)
+    # Verify "evt" version field is a string.
+    self.assertIsInstance(version_event['evt'], str)
 
   def test_start_event(self):
     """Test and validate 'start' event data is valid.
