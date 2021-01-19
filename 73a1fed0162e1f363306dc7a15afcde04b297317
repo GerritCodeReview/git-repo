@@ -16,6 +16,24 @@
       "message": "This should go in the footer paragraph, next to Change-Id\n\nIt should use a full URL to make the bug tracker unambiguous:\n\n Bug: https://crbug.com/gerrit/13966",
       "revId": "73a1fed0162e1f363306dc7a15afcde04b297317",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d2b30ff_8ce4e17d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-01-19T19:07:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc644956_17bae8bf",
+      "revId": "73a1fed0162e1f363306dc7a15afcde04b297317",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
