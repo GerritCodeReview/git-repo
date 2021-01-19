@@ -16,6 +16,24 @@
       "message": "Hi Mike,\n\nI have an issue when i switch from a worktree to another worktree under Windows (with Git worktree option). I have found a fix but i am not an expert so please tell me if it is good or not.\n\nBest regards,",
       "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcc61cf7_d4f2f254",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-19T02:16:04Z",
+      "side": 1,
+      "message": "it\u0027s unclear what the problem is you\u0027re experiencing.  can you describe what exactly you\u0027re doing to trigger the issue ?",
+      "parentUuid": "01b54b7b_6231953c",
+      "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
