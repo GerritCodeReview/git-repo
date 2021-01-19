@@ -34,6 +34,23 @@
       "parentUuid": "01b54b7b_6231953c",
       "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "365a6a3a_6f08e11c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1109081
+      },
+      "writtenOn": "2021-01-19T07:39:38Z",
+      "side": 1,
+      "message": "I initialize a workspace under Windows with command “repo init –worktree …” from a manifest file where there is one project with path\u003d“tools/test”. I synchronize my workspace with command “repo sync” and it works normally.\nAfter, I modify the project on the manifest file to a new path\u003d”tools/test-new”. When I re-synchronize my workspace with command “repo sync”, I have the following failure on Git command “git worktree list --porcelaine’ when repo try to delete the obsolete checkout (DeleteWorktree function).\n\ntools/test: Deleting obsolete checkout.\nTraceback (most recent call last):\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo/main.py\", line 627, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo/main.py\", line 601, in _Main\n    result \u003d run()\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo/main.py\", line 594, in \u003clambda\u003e\n    run \u003d lambda: repo._Run(name, gopts, argv) or 0\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo/main.py\", line 260, in _Run\n    result \u003d cmd.Execute(copts, cargs)\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo\\subcmds\\sync.py\", line 956, in Execute\n    if self.UpdateProjectList(opt):\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo\\subcmds\\sync.py\", line 655, in UpdateProjectList\n    force\u003dopt.force_remove_dirty):\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo\\project.py\", line 1465, in DeleteWorktree\n    output \u003d self.bare_git.worktree(\u0027list\u0027, \u0027--porcelain\u0027).splitlines()[0]\n  File \"C:\\Users\\Anonymous\\workspace\\.repo\\repo\\project.py\", line 3034, in runner\n    (self._project.name, name, p.stderr))\nerror.GitError: tools/test worktree: fatal: not a git repository: C:\\Users\\Anonymous\\workspace\\tools/..\\..\\.repo\\worktrees\\git-repo.git\\worktrees\\test\n\nIf I delete manually the directory tools/test with command “rm -rf”, then I can do re-synchronization without issue.",
+      "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
