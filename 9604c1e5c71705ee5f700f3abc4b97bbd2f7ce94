@@ -1,0 +1,549 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b2bd654_18e9ead6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "nit: you can omit \"repo\" as this is the repo project",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b20cde8_b71ad03e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "as a POC to try and get more field data, this is OK, but this is def not ready for shipping: we shouldn\u0027t be cloning the repo from scratch every time.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3577fcba_57e88d57",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "would be good to link to the gerrit docs about what a \"superproject\" is",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ecec145_52d6d4c0",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "unindent and use Examples: instead",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50e50dbf_8ecec467",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "delete this line",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e51ae5b7_36dbc4c3",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "delete this blank line",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c1169d7_a688d72c",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "seems like this does more than just this ?",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c56ccdf7_dada67d4",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "please add docstrings to all funcs.  a one-liner at a minimum.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1a4c863_d695add6",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "as a general rule: never chdir in modules.  this is global state and will mess up any callers.\n\nif you need to run a subcommand (like the git below) in a specific dir, they almost always accept a cwd\u003d kwarg that you should set instead",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23bf0a6c_5f24cc46",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "i suspect you want to do:\n\n platform_utils.rmtree(os.path.join(chdir_dirpath, rmtree_dirpath))",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a982d0c9_3c97813d",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "since you\u0027re cloning this from scratch every time, you prob want --depth\u003d1 here",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f982b1c_97ee95be",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "use ` instead of \u0027",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84407dfc_c73e0868",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "use -z to get NUL delimited output instead",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b78f910_7ffd5045",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "is this just copy \u0026 paste from somewhere else ?  doesn\u0027t seem like this is relevant to ls-tree.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13cc602b_7da7d489",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "missing space between these words",
+      "range": {
+        "startLine": 106,
+        "startChar": 36,
+        "endLine": 106,
+        "endChar": 42
+      },
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb70c71a_8c6825c2",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "\"dictionary\"",
+      "range": {
+        "startLine": 106,
+        "startChar": 8,
+        "endLine": 106,
+        "endChar": 17
+      },
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b98b5640_c77de3f3",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "this is an odd API.  shouldn\u0027t you throw a ValueError exception instead ?",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df6e0d95_4cda67c9",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "use single quotes\n\nthis comes up multiple times in this CL",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43800825_803319b4",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "this is going to write the checkout to wherever the user happens to be running `repo`.  we def do not want that.  use the .repo/ tree instead as we discussed.  prob .repo/exp-superproject to start with.  (exp\u003d\u003dexperimental).",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2730300c_c2cd4d36",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "i would really expect these to be errors, not silently returning None",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b3c4143_fd466661",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "use splitlines() instead",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46515be3_613020b2",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "add a comment with an example line of output so it\u0027s easier for people to understand what this parsing code is doing",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c18d496_c5e9d5d1",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "invert the if so you don\u0027t need to continue",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec674d64_3a3fd842",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "delete the dest -- it\u0027s redundant",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30eea227_b972e81b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "this desc is a bit repetitive.  how about:\n\n help\u003d\u0027use the manifest superproject to sync projects\u0027",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51bea0f4_548cb3b8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 902,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "if the user specifies --use-superproject but there\u0027s none defined in the manifest, we should error out so it\u0027s clear to the user that the option wouldn\u0027t do anything",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee721536_b08a5f69",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "please add a warning message that --use-superproject is experimental and not meant for general use",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e74e1757_dd5e8ada",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "since you have to wrap this anyways, prefer to wrap both args",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a70f661d_71bfb8fe",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "need encoding\u003d\u0027utf-8\u0027",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dd99742_b644920e",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "|shas| is a dict right ?\n\njust use a single assertEqual against a dict with the expected values.  Python will DTRT.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f97aadcb_37fe6f9c",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-20T05:16:10Z",
+      "side": 1,
+      "message": "it\u0027s not clear why any of these changes are needed in this test.  it seems to mostly be http:// -\u003e sso:// which tests don\u0027t care about.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
