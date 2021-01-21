@@ -16,6 +16,194 @@
       "message": "Hi Ian and Mike,\n  Made changes to fix all the comments. PTAL. Thanks.",
       "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18c55a74_ddd56a9e",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "i was thinking of https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects\n\nif you want to point to local docs, you don\u0027t need the full URI.  you can just say \"check out the superproject element in docs/manifest-format.md\".",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f91e51_d8706bd1",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "the first line of docstrings should be a single sentence/fragment by itself.  followups should be in the body below.\n\nan example:\nhttps://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/python.md#Describing-arguments-in-docstrings",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02349eb9_4c4be397",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "idiomatic python is to write:\n\n if retval:",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "779376f3_00faff9e",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "\"its\"",
+      "range": {
+        "startLine": 134,
+        "startChar": 62,
+        "endLine": 134,
+        "endChar": 66
+      },
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2423fda_c64e3424",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "this should be:\n\n ls_data \u003d line.split(None, 3)\n\nthat way you don\u0027t split spaces in the filename itself",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e25ece_98c0fcb4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "\"use\"",
+      "range": {
+        "startLine": 906,
+        "startChar": 25,
+        "endLine": 906,
+        "endChar": 27
+      },
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e38b6a71_a722982c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "this would be better as a constant in a module.  maybe errors.py ?",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3947fc8b_0e0a84f2",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "\"superproject\"",
+      "range": {
+        "startLine": 31,
+        "startChar": 14,
+        "endLine": 31,
+        "endChar": 26
+      },
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5049ca87_179aa0f3",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "we never want to use \\\n\nfor long lines like this, use () instead",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9be2b4ec_c9aed27b",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-21T17:16:18Z",
+      "side": 1,
+      "message": "wrap the dict\n\n self.assertEqual(shas, {\n     \u0027art\u0027: ......,\n     .....\n })",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
