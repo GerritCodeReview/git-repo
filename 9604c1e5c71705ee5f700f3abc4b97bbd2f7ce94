@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f197f73f_24396746",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b2bd654_18e9ead6",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9b20cde8_b71ad03e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
@@ -37,6 +61,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "as a POC to try and get more field data, this is OK, but this is def not ready for shipping: we shouldn\u0027t be cloning the repo from scratch every time.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61224500_fbee8295",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Ack. Added a TODO.",
+      "parentUuid": "9b20cde8_b71ad03e",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ca60aae_58ba870b",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3577fcba_57e88d57",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ecec145_52d6d4c0",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "unindent and use Examples: instead",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5233424_9156eac2",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ecec145_52d6d4c0",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +170,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5222417d_4408f970",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50e50dbf_8ecec467",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e51ae5b7_36dbc4c3",
@@ -105,6 +201,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "delete this blank line",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b301b9fb_9a1b8b7f",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e51ae5b7_36dbc4c3",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -126,6 +240,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ccfaa17_ad833455",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "I took a shot at explaining. Would appreciate suggestions.\nDone",
+      "parentUuid": "1c1169d7_a688d72c",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c56ccdf7_dada67d4",
@@ -139,6 +271,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "please add docstrings to all funcs.  a one-liner at a minimum.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9eda36cf_471295c3",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c56ccdf7_dada67d4",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -160,6 +310,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd6043d_15ce88cc",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1a4c863_d695add6",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23bf0a6c_5f24cc46",
@@ -173,6 +341,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "i suspect you want to do:\n\n platform_utils.rmtree(os.path.join(chdir_dirpath, rmtree_dirpath))",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f8fdd55_c48f91fc",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23bf0a6c_5f24cc46",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -194,6 +380,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d870db5_ecbb2182",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a982d0c9_3c97813d",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f982b1c_97ee95be",
@@ -207,6 +411,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "use ` instead of \u0027",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0deb611a_c4e0a990",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f982b1c_97ee95be",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -228,6 +450,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edfbccdc_33dc27be",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "84407dfc_c73e0868",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b78f910_7ffd5045",
@@ -241,6 +481,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "is this just copy \u0026 paste from somewhere else ?  doesn\u0027t seem like this is relevant to ls-tree.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00118f5f_b94404ed",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b78f910_7ffd5045",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -291,6 +549,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39ea8dc5_88789762",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb70c71a_8c6825c2",
+      "range": {
+        "startLine": 106,
+        "startChar": 8,
+        "endLine": 106,
+        "endChar": 17
+      },
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0758c7ab_6fce9057",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13cc602b_7da7d489",
+      "range": {
+        "startLine": 106,
+        "startChar": 36,
+        "endLine": 106,
+        "endChar": 42
+      },
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b98b5640_c77de3f3",
@@ -304,6 +610,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "this is an odd API.  shouldn\u0027t you throw a ValueError exception instead ?",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb53818a_e29b7fd5",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b98b5640_c77de3f3",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -325,6 +649,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69f2d16b_46633d07",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df6e0d95_4cda67c9",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43800825_803319b4",
@@ -338,6 +680,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "this is going to write the checkout to wherever the user happens to be running `repo`.  we def do not want that.  use the .repo/ tree instead as we discussed.  prob .repo/exp-superproject to start with.  (exp\u003d\u003dexperimental).",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee97cbc_42d1f749",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "43800825_803319b4",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -359,6 +719,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2ba8ce4_57c2762e",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2730300c_c2cd4d36",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b3c4143_fd466661",
@@ -372,6 +750,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "use splitlines() instead",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4afa5b8f_ca2bc09c",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b3c4143_fd466661",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -393,6 +789,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85250287_88776b3c",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46515be3_613020b2",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c18d496_c5e9d5d1",
@@ -406,6 +820,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "invert the if so you don\u0027t need to continue",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b8255be_e2bc39a9",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c18d496_c5e9d5d1",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -427,6 +859,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "384a9812_cd4bb1e5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec674d64_3a3fd842",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "30eea227_b972e81b",
@@ -440,6 +890,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "this desc is a bit repetitive.  how about:\n\n help\u003d\u0027use the manifest superproject to sync projects\u0027",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ce000a5_3da3482f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30eea227_b972e81b",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -461,6 +929,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "493ddc18_0fceb4f1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 902,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51bea0f4_548cb3b8",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee721536_b08a5f69",
@@ -474,6 +960,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "please add a warning message that --use-superproject is experimental and not meant for general use",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cdca273_f6ea2a41",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee721536_b08a5f69",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -495,6 +999,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ae14d8_1f701a91",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e74e1757_dd5e8ada",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a70f661d_71bfb8fe",
@@ -508,6 +1030,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "need encoding\u003d\u0027utf-8\u0027",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d83802_7032df45",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "With -z, output format was different. I have saved the data as string in this code and deleted the code to read from file.\n\nDone",
+      "parentUuid": "a70f661d_71bfb8fe",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -529,6 +1069,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cac9d64c_8d37d2d4",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5dd99742_b644920e",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f97aadcb_37fe6f9c",
@@ -542,6 +1100,24 @@
       "writtenOn": "2021-01-20T05:16:10Z",
       "side": 1,
       "message": "it\u0027s not clear why any of these changes are needed in this test.  it seems to mostly be http:// -\u003e sso:// which tests don\u0027t care about.",
+      "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05b059d3_3aab18de",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T05:43:56Z",
+      "side": 1,
+      "message": "I was making sure remote.url returns the correct URL (the code called RemoteSpec). Undid the http to sso changes.",
+      "parentUuid": "f97aadcb_37fe6f9c",
       "revId": "9604c1e5c71705ee5f700f3abc4b97bbd2f7ce94",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
