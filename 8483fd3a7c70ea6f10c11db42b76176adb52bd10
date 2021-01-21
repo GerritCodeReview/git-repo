@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "418d7dfb_6141d681",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Hi Mike,\n  Sincerely appreciating your comments. Made all the changes. PTAL. Thanks much.",
+      "revId": "8483fd3a7c70ea6f10c11db42b76176adb52bd10",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df7ffe89_b78750b3",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18c55a74_ddd56a9e",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2f91e51_d8706bd1",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d256d584_d3c1500a",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2f91e51_d8706bd1",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02349eb9_4c4be397",
@@ -65,6 +101,24 @@
       "writtenOn": "2021-01-21T17:16:18Z",
       "side": 1,
       "message": "idiomatic python is to write:\n\n if retval:",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b99e110c_929f67cb",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02349eb9_4c4be397",
       "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +146,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "669d3b9b_5734e2a3",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "779376f3_00faff9e",
+      "range": {
+        "startLine": 134,
+        "startChar": 62,
+        "endLine": 134,
+        "endChar": 66
+      },
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2423fda_c64e3424",
@@ -105,6 +183,24 @@
       "writtenOn": "2021-01-21T17:16:18Z",
       "side": 1,
       "message": "this should be:\n\n ls_data \u003d line.split(None, 3)\n\nthat way you don\u0027t split spaces in the filename itself",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b9d5d11_ea56194d",
+        "filename": "git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2423fda_c64e3424",
       "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -132,6 +228,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1626b3fb_59fe08f1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93e25ece_98c0fcb4",
+      "range": {
+        "startLine": 906,
+        "startChar": 25,
+        "endLine": 906,
+        "endChar": 27
+      },
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e38b6a71_a722982c",
@@ -145,6 +265,24 @@
       "writtenOn": "2021-01-21T17:16:18Z",
       "side": 1,
       "message": "this would be better as a constant in a module.  maybe errors.py ?",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "699cb672_4be2e19d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 931,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e38b6a71_a722982c",
       "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -172,6 +310,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae5df74e_3b945af6",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3947fc8b_0e0a84f2",
+      "range": {
+        "startLine": 31,
+        "startChar": 14,
+        "endLine": 31,
+        "endChar": 26
+      },
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5049ca87_179aa0f3",
@@ -189,6 +351,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41ca088f_b6972237",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5049ca87_179aa0f3",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9be2b4ec_c9aed27b",
@@ -202,6 +382,24 @@
       "writtenOn": "2021-01-21T17:16:18Z",
       "side": 1,
       "message": "wrap the dict\n\n self.assertEqual(shas, {\n     \u0027art\u0027: ......,\n     .....\n })",
+      "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "192b7164_4ae6415d",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-01-21T19:29:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9be2b4ec_c9aed27b",
       "revId": "45672ea11542770f2827a67e1b81de8b9cd82912",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
