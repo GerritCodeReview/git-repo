@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ab7e041_e9c8d3b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-22T03:10:21Z",
+      "side": 1,
+      "message": "you\u0027ll want to set Verified+1 once you\u0027ve verified things work, then we can submit it",
+      "revId": "89b33d8bdd38e2050fdb11794d7e7c7f8b3775cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
