@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "30a33e54_3471626d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2021-01-22T17:53:40Z",
+      "side": 1,
+      "message": "It is not about preference with Git-lfs, it is about that it does not work if you clone a tree when cloning via a mirror via the --reference option. That does not work. I need to look at the other options to solve that, but that would be outside the scope of this patch.",
+      "parentUuid": "03d6e996_5095deb0",
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "50872518_491a03ce",
@@ -326,6 +344,30 @@
       "side": 1,
       "message": "i appreciate symmetry if it works well for them all, but i don\u0027t think we should bend things in an awkward direction just to attain it.  i\u0027m fine letting them diverge in whatever shape makes sense.\n\nif we did want to harmonize/formalize things, then i\u0027d be inclined to create real classes/objects (namedtuple) to pass in rather than doing a dict grab-bag.  that\u0027d be less error prone \u0026 easier to lint.  prob should have it mirror the project.py:Project naming conventions.\n\nwrt backwards compatibility, perhaps we could get more (but not too much more) clever.  atm, we\u0027ve been forcing hooks to accept **kwargs as a future-proofing thing.  what if the func signature itself was used to declare its expected version ?  and then we used the inspect module to see what version of the interface it accepted ?\nhttps://docs.python.org/3/library/inspect.html#inspect.getfullargspec\n\nfor example, hook authors would do (happy to bikeshed the name):\n\n def main(..., hook_version\u003d1, ...):\n\nthen we\u0027d extend the RepoHook class:\n\n* __init__ would take a list of supported_versions which defaults to [0]\n* add a GetVersion() that would inspect the func to pull out the version from it\n* if hook_version wasn\u0027t defined, we\u0027d assume the default of 0\n* if GetVersion() doesn\u0027t match a value in supported_versions then we\u0027d throw an error\n\nthen the caller would be responsible for handling the diff versions, e.g. subcmds/upload.py would check for version 0 or 1 or whatever and construct/call it accordingly.\n\nthe current hooks code complicates this interface a bit due to support for out-of-process hook execution with _ExecuteHookViaReexec.  that was added to support hooks running a different version of python than repo itself so we could upgrade repo to python3 will supporting python2 hooks, and upgrade hooks to python3 with repo running under python2.  i\u0027d be fine deprecating this mode now that we\u0027re forcing python3 in repo itself, and only supporting new hooks \u0026 hook versions in python3-only.  basically we\u0027d add code to _ExecuteHookViaReexec to only support version 0 of the pre-upload interface, and to abort on any other combo.",
       "parentUuid": "f865f223_f37fbce5",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 143,
+        "endChar": 12
+      },
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ca3dd0c_12cd6ed2",
+        "filename": "docs/repo-hooks.md",
+        "patchSetId": 13
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2021-01-22T17:53:40Z",
+      "side": 1,
+      "message": "I understand what you are saying here, I need to think about it a bit more.",
+      "parentUuid": "e33c0058_983a3116",
       "range": {
         "startLine": 143,
         "startChar": 0,
