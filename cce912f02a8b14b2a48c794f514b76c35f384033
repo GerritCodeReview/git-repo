@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4b95ed7_d55d52fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096090
+      },
+      "writtenOn": "2021-01-22T09:49:47Z",
+      "side": 1,
+      "message": "I have tested with \"main\", and with the regular \"stable\" by cherry-picking the change",
+      "revId": "cce912f02a8b14b2a48c794f514b76c35f384033",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
