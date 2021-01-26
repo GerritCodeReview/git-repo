@@ -395,7 +395,10 @@ class GitCommand(object):
           s_in.remove(s)
           continue
         if not hasattr(buf, 'encode'):
-          buf = buf.decode()
+          try:
+              buf = buf.decode()
+          except (UnicodeDecodeError, AttributeError):
+              buf = str(buf)
         if s.std_name == 'stdout':
           self.stdout += buf
         else:
