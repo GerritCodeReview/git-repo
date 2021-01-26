@@ -27,7 +27,6 @@ import sys
 
 from error import GitError
 from git_command import GitCommand
-import platform_utils
 
 
 class Superproject(object):
@@ -63,6 +62,7 @@ class Superproject(object):
     Returns:
       True if 'git clone <url> <branch>' is successful, or False.
     """
+    os.mkdir(self._superproject_path)
     cmd = ['clone', url, '--depth', '1']
     if branch:
       cmd += ['--branch', branch]
@@ -76,6 +76,28 @@ class Superproject(object):
       # `git clone` is documented to produce an exit status of `128` if
       # the requested url or branch are not present in the configuration.
       print('repo: error: git clone call failed with return code: %r, stderr: %r' %
+            (retval, p.stderr), file=sys.stderr)
+      return False
+    return True
+
+  def _Pull(self):
+    """Do a 'git pull' to to fetch the latest content.
+
+    Returns:
+      True if 'git pull <branch>' is successful, or False.
+    """
+    git_dir = os.path.join(self._superproject_path, 'superproject')
+    if not os.path.exists(git_dir):
+      raise GitError('git pull. Missing drectory: %s' % git_dir)
+    cmd = ['pull']
+    p = GitCommand(None,
+                   cmd,
+                   cwd=git_dir,
+                   capture_stdout=True,
+                   capture_stderr=True)
+    retval = p.Wait()
+    if retval:
+      print('repo: error: git pull call failed with return code: %r, stderr: %r' %
             (retval, p.stderr), file=sys.stderr)
       return False
     return True
@@ -121,12 +143,11 @@ class Superproject(object):
     if not url:
       raise ValueError('url argument is not supplied.')
     if os.path.exists(self._superproject_path):
-      platform_utils.rmtree(self._superproject_path)
-    os.mkdir(self._superproject_path)
-
-    # TODO(rtenneti): we shouldn't be cloning the repo from scratch every time.
-    if not self._Clone(url, branch):
-      raise GitError('git clone failed for url: %s' % url)
+      if not self._Pull():
+        raise GitError('git pull failed for url: %s' % url)
+    else:
+      if not self._Clone(url, branch):
+        raise GitError('git clone failed for url: %s' % url)
 
     data = self._LsTree()
     if not data:
