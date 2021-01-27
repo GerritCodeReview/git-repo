@@ -16,6 +16,24 @@
       "message": "please clearly document in the commit message why this is needed",
       "revId": "1b9df79bc926e2ea1ffa8f545f636623097b149d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40be9094_aa12d09e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1127700
+      },
+      "writtenOn": "2021-01-27T14:45:42Z",
+      "side": 1,
+      "message": "Updated the Commit message with brief description.",
+      "parentUuid": "50df39b4_f76eb34a",
+      "revId": "1b9df79bc926e2ea1ffa8f545f636623097b149d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
