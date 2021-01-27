@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "4622179c_d8bedcea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-27T18:19:56Z",
+      "side": 1,
+      "message": "ascii-\u003eUTF-8",
+      "range": {
+        "startLine": 11,
+        "startChar": 6,
+        "endLine": 11,
+        "endChar": 11
+      },
+      "revId": "63df73e7037600ff9de722ad7dcf731fbda74e12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5e718910_936e2dc1",
@@ -14,6 +37,24 @@
       "writtenOn": "2021-01-27T14:45:42Z",
       "side": 1,
       "message": "Added a brief explanation in commit message.\nSorry, I am new to this gerrit-review interface, that\u0027s why it took me time to reply.",
+      "revId": "63df73e7037600ff9de722ad7dcf731fbda74e12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "951a5651_850d5ce2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-01-27T18:19:56Z",
+      "side": 1,
+      "message": "no need to apologize.  it\u0027s your time schedule ;).",
+      "parentUuid": "5e718910_936e2dc1",
       "revId": "63df73e7037600ff9de722ad7dcf731fbda74e12",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
