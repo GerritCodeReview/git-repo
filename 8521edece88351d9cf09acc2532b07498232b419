@@ -16,6 +16,24 @@
       "message": "bad indentation",
       "revId": "8521edece88351d9cf09acc2532b07498232b419",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25aeffe2_b48c5469",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1127700
+      },
+      "writtenOn": "2021-01-28T14:48:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdaf5c4d_9377153f",
+      "revId": "8521edece88351d9cf09acc2532b07498232b419",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
