@@ -16,6 +16,24 @@
       "message": "just change this one line to:\n\n buf \u003d buf.decode(\u0027utf-8\u0027, \u0027backslashreplace\u0027)",
       "revId": "2a2da80ba6f1a511fbf8f6ffe3800c1455a337d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09d58cab_f1e7f46b",
+        "filename": "git_command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1127700
+      },
+      "writtenOn": "2021-01-28T07:27:43Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "e9834d05_1f8994c3",
+      "revId": "2a2da80ba6f1a511fbf8f6ffe3800c1455a337d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
