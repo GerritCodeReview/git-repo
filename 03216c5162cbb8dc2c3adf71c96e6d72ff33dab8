@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e64bab7_45532b91",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-01T19:27:49Z",
+      "side": 1,
+      "message": "Hi Mike,\n  This is still POC. Added code to do \"git pull\" if the superproject source tree already exists. I have found found git clone takes around 6 secs and git pull takes around 1 second. Thanks much.",
+      "revId": "03216c5162cbb8dc2c3adf71c96e6d72ff33dab8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
