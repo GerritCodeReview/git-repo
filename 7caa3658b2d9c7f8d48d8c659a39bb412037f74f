@@ -34,6 +34,24 @@
       "parentUuid": "790418d7_5df4f84f",
       "revId": "7caa3658b2d9c7f8d48d8c659a39bb412037f74f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f43e4102_fd3adc5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-01T23:18:50Z",
+      "side": 1,
+      "message": "it looks like you created a stack of two CLs and moved the content between them, then submitted them both.  gitiles shows two commits:\n\n* https://gerrit.googlesource.com/git-repo/+log/HEAD\n* 7caa365 sync: Do a git pull with --use-superproject if superproject tree already exists. by Raman Tenneti · 4 hours ago main\n* 9e78753 sync: Added --filter\u003dblob:none (and no-depth) wduring git clone of superproject. by Raman Tenneti · 3 hours ago\n\nmaybe you did `git push` directly and bypassed Gerrit ?  i guess i need to lock down the ACLs on that.",
+      "parentUuid": "d8498c83_375f6cfc",
+      "revId": "7caa3658b2d9c7f8d48d8c659a39bb412037f74f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
