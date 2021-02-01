@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbf483c2_af48c92e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-01T20:44:03Z",
+      "side": 1,
+      "message": "Hi Jonathan,\n  I have changed the git clone to the following as you have suggested. I have found there is around 10 minutes for the first time \"repo sync --use-superproject\" and less than 5 secs for subsequent \"repo sync --use-superproject\". Ian and I are going to test this change after one day to see if it has any negative performance impacts.\n\n \"git clone --filter\u003dblob:none\" (_without_ --depth option)",
+      "revId": "d54eb288d0fa3ec3c2dfa416e908a113d8b2fb48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
