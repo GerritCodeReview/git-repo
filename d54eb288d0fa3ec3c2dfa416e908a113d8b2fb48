@@ -34,6 +34,24 @@
       "parentUuid": "dbf483c2_af48c92e",
       "revId": "d54eb288d0fa3ec3c2dfa416e908a113d8b2fb48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e26f2ac_47750798",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-01T20:59:13Z",
+      "side": 1,
+      "message": "it seems like we would want both.  the history is not useful at all.",
+      "parentUuid": "c03e440d_7412ca24",
+      "revId": "d54eb288d0fa3ec3c2dfa416e908a113d8b2fb48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
