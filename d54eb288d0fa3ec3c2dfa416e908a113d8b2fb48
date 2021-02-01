@@ -16,6 +16,24 @@
       "message": "Hi Jonathan,\n  I have changed the git clone to the following as you have suggested. I have found there is around 10 minutes for the first time \"repo sync --use-superproject\" and less than 5 secs for subsequent \"repo sync --use-superproject\". Ian and I are going to test this change after one day to see if it has any negative performance impacts.\n\n \"git clone --filter\u003dblob:none\" (_without_ --depth option)",
       "revId": "d54eb288d0fa3ec3c2dfa416e908a113d8b2fb48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c03e440d_7412ca24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2021-02-01T20:50:09Z",
+      "side": 1,
+      "message": "When I\u0027ve previously looked at the android superprojects, the vast majority of the data in them was actually the commit message history (omitted via --depth, but not --filter\u003dblob), not blobs. Not saying that one\u0027s better than the other, just that this is likely more similar to a full clone.",
+      "parentUuid": "dbf483c2_af48c92e",
+      "revId": "d54eb288d0fa3ec3c2dfa416e908a113d8b2fb48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
