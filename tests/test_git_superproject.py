@@ -61,6 +61,13 @@ class SuperprojectTestCase(unittest.TestCase):
       with mock.patch.object(self._superproject, '_Clone', return_value=False):
         self._superproject.GetAllProjectsSHAs(url='localhost')
 
+  def test_superproject_get_project_shas_mock_pull(self):
+    """Test with _Pull failing."""
+    with self.assertRaises(GitError):
+      with mock.patch.object(self._superproject, '_Clone', return_value=True):
+        with mock.patch.object(self._superproject, '_Pull', return_value=False):
+          self._superproject.GetAllProjectsSHAs(url='localhost')
+
   def test_superproject_get_project_shas_mock_ls_tree(self):
     """Test with LsTree being a mock."""
     data = ('120000 blob 158258bdf146f159218e2b90f8b699c4d85b5804\tAndroid.bp\x00'

@@ -63,7 +63,7 @@ class Superproject(object):
       True if 'git clone <url> <branch>' is successful, or False.
     """
     os.mkdir(self._superproject_path)
-    cmd = ['clone', url, '--filter', 'blob:none']
+    cmd = ['clone', url, '--depth', '1']
     if branch:
       cmd += ['--branch', branch]
     p = GitCommand(None,
