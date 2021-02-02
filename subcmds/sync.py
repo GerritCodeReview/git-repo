@@ -919,15 +919,26 @@ later is required to fix a server side protocol bug.
               file=sys.stderr)
         sys.exit(1)
       projects_missing_shas = []
+      same_sha_count = 0
+      project_count = 0
       for project in all_projects:
         path = project.relpath
         if not path:
           continue
+        project_count += 1
         sha = superproject_shas.get(path)
         if sha:
+          try:
+            revid = project.GetRevisionId()
+          except GitError:
+            revid = None
+          if sha == revid:
+            same_sha_count += 1
           project.SetRevisionId(sha)
         else:
           projects_missing_shas.append(path)
+      print('Total projects %d total projects with same rev_ids: %d' %
+            (project_count, same_sha_count), file=sys.stderr)
       if projects_missing_shas:
         print('error: please file a bug using %s to report missing shas for: %s' %
               (BUG_REPORT_URL, projects_missing_shas), file=sys.stderr)
