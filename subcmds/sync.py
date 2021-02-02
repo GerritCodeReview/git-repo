@@ -897,8 +897,11 @@ later is required to fix a server side protocol bug.
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
-
-    if opt.use_superproject:
+    projects_to_fetch = []
+    projects_to_skip = []
+    if not opt.use_superproject:
+      projects_to_fetch = all_projects
+    else:
       if not self.manifest.superproject:
         print('error: superproject tag is not defined in manifest.xml',
               file=sys.stderr)
@@ -919,15 +922,30 @@ later is required to fix a server side protocol bug.
               file=sys.stderr)
         sys.exit(1)
       projects_missing_shas = []
+      same_sha_count = 0
+      project_count = 0
       for project in all_projects:
         path = project.relpath
         if not path:
           continue
+        project_count += 1
         sha = superproject_shas.get(path)
         if sha:
-          project.SetRevisionId(sha)
+          try:
+            revid = project.GetRevisionId()
+          except GitError:
+            revid = None
+          if sha == revid:
+            same_sha_count += 1
+            # Skip projects with same sha
+            projects_to_skip.append(project.gitdir)
+          else:
+            project.SetRevisionId(sha)
+            projects_to_fetch.append(project)
         else:
           projects_missing_shas.append(path)
+      print('Total projects %d with same rev_ids: %d skipping %d' %
+            (project_count, same_sha_count, len(projects_to_skip)), file=sys.stderr)
       if projects_missing_shas:
         print('error: please file a bug using %s to report missing shas for: %s' %
               (BUG_REPORT_URL, projects_missing_shas), file=sys.stderr)
@@ -943,10 +961,13 @@ later is required to fix a server side protocol bug.
       now = time.time()
       if _ONE_DAY_S <= (now - rp.LastFetch):
         to_fetch.append(rp)
-      to_fetch.extend(all_projects)
+      to_fetch.extend(projects_to_fetch)
       to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
       fetched = self._Fetch(to_fetch, opt, err_event)
+
+      # Count skipped projects as fetched (not missing)
+      fetched.update(projects_to_skip)
 
       _PostRepoFetch(rp, opt.repo_verify)
       if opt.network_only:
