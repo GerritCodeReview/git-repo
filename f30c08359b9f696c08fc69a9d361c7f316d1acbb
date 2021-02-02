@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "996527ff_0311f8ff",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 935,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2021-02-02T19:31:52Z",
+      "side": 1,
+      "message": "Are we not hitting the existing optimization here? https://gerrit.googlesource.com/git-repo/+/b64bec6acc0e2a835f427d8424af89dfcddaf08f/project.py#1984\n\nThat should be more flexible that it checks to see if we have the revision, vs the revision being at HEAD.\n\nNote: _CheckForImmutableRevision has some issues with filter\u003dblob currently, see the [google-internal] b/177964225 (rev-parse doesn\u0027t work to detect presence, `git rev-list -1 --missing\u003dallow-any` should be used instead)",
+      "revId": "f30c08359b9f696c08fc69a9d361c7f316d1acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
