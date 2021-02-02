@@ -70,6 +70,24 @@
       "parentUuid": "4e26f2ac_47750798",
       "revId": "d54eb288d0fa3ec3c2dfa416e908a113d8b2fb48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6518ef0b_b2639052",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-02T04:53:13Z",
+      "side": 1,
+      "message": "I have removed --depth\u003d1 option. Ian and Jonathan have explained the reason.\n\nThe following is the one time cost of 25 secs. But it was recommended for  reachability.\n\nThe following is the explanation from Ian:\n\n\"If you depth own the server doesn\u0027t know what you know about in the history so it always sends you the whole thing Which is very slow.\n\nIf you have the full history it can send you incremental update history which is very small and fast\"\n\n\n$ time git clone --filter\u003dblob:none sso://android/platform/superproject superproject\n\n....\nreal\t0m25.221s\nuser\t0m14.656s\nsys\t0m9.193s",
+      "parentUuid": "5713b041_0a1ef7d8",
+      "revId": "d54eb288d0fa3ec3c2dfa416e908a113d8b2fb48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
