@@ -16,6 +16,23 @@
       "message": "PTAL.",
       "revId": "b1f0333cfd62170dd652d7dd1fe4c040fca1b3e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "552a1890_9763ce52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-02T16:18:00Z",
+      "side": 1,
+      "message": "Got an okay from Ian to check the change in. ",
+      "revId": "b1f0333cfd62170dd652d7dd1fe4c040fca1b3e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
