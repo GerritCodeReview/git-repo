@@ -24,6 +24,7 @@ Examples:
 
 import os
 import sys
+import time
 
 from error import GitError
 from git_command import GitCommand
@@ -46,6 +47,7 @@ class Superproject(object):
     self._repodir = os.path.abspath(repodir)
     self._superproject_dir = superproject_dir
     self._superproject_path = os.path.join(self._repodir, superproject_dir)
+    self._superproject_git_dir = os.path.join(self._superproject_path, 'superproject')
 
   @property
   def project_shas(self):
@@ -86,13 +88,12 @@ class Superproject(object):
     Returns:
       True if 'git pull <branch>' is successful, or False.
     """
-    git_dir = os.path.join(self._superproject_path, 'superproject')
-    if not os.path.exists(git_dir):
-      raise GitError('git pull. Missing drectory: %s' % git_dir)
+    if not os.path.exists(self._superproject_git_dir):
+      raise GitError('git pull. Missing drectory: %s' % self._superproject_git_dir)
     cmd = ['pull']
     p = GitCommand(None,
                    cmd,
-                   cwd=git_dir,
+                   cwd=self._superproject_git_dir,
                    capture_stdout=True,
                    capture_stderr=True)
     retval = p.Wait()
@@ -110,14 +111,13 @@ class Superproject(object):
     Returns:
       data: data returned from 'git ls-tree -r HEAD' instead of None.
     """
-    git_dir = os.path.join(self._superproject_path, 'superproject')
-    if not os.path.exists(git_dir):
-      raise GitError('git ls-tree. Missing drectory: %s' % git_dir)
+    if not os.path.exists(self._superproject_git_dir):
+      raise GitError('git ls-tree. Missing drectory: %s' % self._superproject_git_dir)
     data = None
     cmd = ['ls-tree', '-z', '-r', 'HEAD']
     p = GitCommand(None,
                    cmd,
-                   cwd=git_dir,
+                   cwd=self._superproject_git_dir,
                    capture_stdout=True,
                    capture_stderr=True)
     retval = p.Wait()
@@ -146,8 +146,13 @@ class Superproject(object):
       if not self._Pull():
         raise GitError('git pull failed for url: %s' % url)
     else:
+      # TODO(rtenneti): remove performance timing code.
+      start_time = time.perf_counter()
       if not self._Clone(url, branch):
         raise GitError('git clone failed for url: %s' % url)
+      end_time = time.perf_counter()
+      elapsed = end_time - start_time
+      print('git clone of superproject took %.3f seconds' % elapsed, file=sys.stderr)
 
     data = self._LsTree()
     if not data:
