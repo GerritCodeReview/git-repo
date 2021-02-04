@@ -327,6 +327,26 @@ class XmlManifestTests(unittest.TestCase):
         result['extras'],
         ['g1', 'g2', 'g1', 'name:extras', 'all', 'path:path'])
 
+  def test_project_set_revision_id(self):
+    """Check setting of project's revisionId."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="test-name"/>
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 1)
+    project = manifest.projects[0]
+    project.SetRevisionId('ABCDEF')
+    self.assertEqual(
+        manifest.ToXml().toxml(),
+        '<?xml version="1.0" ?><manifest>' +
+        '<remote name="default-remote" fetch="http://localhost"/>' +
+        '<default remote="default-remote" revision="refs/heads/main"/>' +
+        '<project name="test-name" revision="ABCDEF"/>' +
+        '</manifest>')
+
   def test_include_levels(self):
     root_m = os.path.join(self.manifest_dir, 'root.xml')
     with open(root_m, 'w') as fp:
