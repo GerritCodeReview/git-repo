@@ -271,6 +271,62 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+  def _UpdateProjectsSHAs(self, projects):
+    if not self.manifest.superproject:
+      print('error: superproject tag is not defined in manifest.xml',
+            file=sys.stderr)
+      sys.exit(1)
+    print('WARNING: --use-superproject is experimental and not '
+          'for general use', file=sys.stderr)
+
+    superproject_url = self.manifest.superproject['remote'].url
+    if not superproject_url:
+      print('error: superproject URL is not defined in manifest.xml',
+            file=sys.stderr)
+      sys.exit(1)
+
+    # Get SHAs for all projects from superproject.
+    superproject = git_superproject.Superproject(self.manifest.repodir)
+    try:
+      superproject_shas = superproject.GetAllProjectsSHAs(url=superproject_url)
+    except Exception as e:
+      print('error: Cannot get project SHAs for %s: %s: %s' %
+            (superproject_url, type(e).__name__, str(e)),
+            file=sys.stderr)
+      sys.exit(1)
+
+    # Updated project SHAs and if there are missing SHA's exit.
+    projects_missing_shas = []
+    for project in projects:
+      path = project.relpath
+      if not path:
+        continue
+      sha = superproject_shas.get(path)
+      if sha:
+        project.SetRevisionId(sha)
+      else:
+        projects_missing_shas.append(path)
+    if projects_missing_shas:
+      print('error: please file a bug using %s to report missing shas for: %s' %
+            (BUG_REPORT_URL, projects_missing_shas), file=sys.stderr)
+      sys.exit(1)
+
+    # Create a new manifest with SHAs and reload it.
+    manifest_str = self.manifest.ToXml().toxml()
+    superproject_manifest_path = os.path.join(
+        self.manifest.manifestProject.worktree, 'superproject_override.xml')
+    manifest_name = os.path.basename(superproject_manifest_path)
+    try:
+      with open(superproject_manifest_path, 'w') as f:
+        f.write(manifest_str)
+    except IOError as e:
+      print('error: cannot write manifest to %s:\n%s'
+            % (superproject_manifest_path, e),
+            file=sys.stderr)
+      sys.exit(1)
+    self._ReloadManifest(manifest_name)
+    return manifest_name
+
   def _FetchProjectList(self, opt, projects, sem, *args, **kwargs):
     """Main function of the fetch threads.
 
@@ -836,6 +892,12 @@ later is required to fix a server side protocol bug.
           print('error: failed to remove existing smart sync override manifest: %s' %
                 e, file=sys.stderr)
 
+    if opt.use_superproject:
+      all_projects = self.GetProjects(args,
+                                      missing_ok=True,
+                                      submodules_ok=opt.fetch_submodules)
+      manifest_name = self._UpdateProjectsSHAs(all_projects)
+
     err_event = _threading.Event()
 
     rp = self.manifest.repoProject
@@ -897,41 +959,6 @@ later is required to fix a server side protocol bug.
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
-
-    if opt.use_superproject:
-      if not self.manifest.superproject:
-        print('error: superproject tag is not defined in manifest.xml',
-              file=sys.stderr)
-        sys.exit(1)
-      print('WARNING: --use-superproject is experimental and not '
-            'for general use', file=sys.stderr)
-      superproject_url = self.manifest.superproject['remote'].url
-      if not superproject_url:
-        print('error: superproject URL is not defined in manifest.xml',
-              file=sys.stderr)
-        sys.exit(1)
-      superproject = git_superproject.Superproject(self.manifest.repodir)
-      try:
-        superproject_shas = superproject.GetAllProjectsSHAs(url=superproject_url)
-      except Exception as e:
-        print('error: Cannot get project SHAs for %s: %s: %s' %
-              (superproject_url, type(e).__name__, str(e)),
-              file=sys.stderr)
-        sys.exit(1)
-      projects_missing_shas = []
-      for project in all_projects:
-        path = project.relpath
-        if not path:
-          continue
-        sha = superproject_shas.get(path)
-        if sha:
-          project.SetRevisionId(sha)
-        else:
-          projects_missing_shas.append(path)
-      if projects_missing_shas:
-        print('error: please file a bug using %s to report missing shas for: %s' %
-              (BUG_REPORT_URL, projects_missing_shas), file=sys.stderr)
-        sys.exit(1)
 
     err_network_sync = False
     err_update_projects = False
