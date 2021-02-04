@@ -263,6 +263,30 @@ class XmlManifestTests(unittest.TestCase):
         '<superproject name="platform/superproject" remote="superproject-remote"/>' +
         '</manifest>')
 
+  def test_superproject_update_revision_id(self):
+    """Check superproject settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <superproject name="superproject" remote="default-remote"/>
+  <project name="test-name"/>
+</manifest>
+""")
+    self.assertEqual(manifest.superproject['name'], 'superproject')
+    self.assertEqual(manifest.superproject['remote'].name, 'default-remote')
+    self.assertEqual(len(manifest.projects), 1)
+    project = manifest.projects[0]
+    project.SetRevisionId('ABCDEF')
+    self.assertEqual(
+        manifest.ToXml().toxml(),
+        '<?xml version="1.0" ?><manifest>' +
+        '<remote name="default-remote" fetch="http://localhost"/>' +
+        '<default remote="default-remote" revision="refs/heads/main"/>' +
+        '<project name="test-name" revision="ABCDEF"/>' +
+        '<superproject name="superproject"/>' +
+        '</manifest>')
+
   def test_superproject_with_defalut_remote(self):
     """Check superproject settings."""
     manifest = self.getXmlManifest("""
