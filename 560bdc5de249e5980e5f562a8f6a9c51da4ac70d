@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9137969_39ec02db",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1125410
+      },
+      "writtenOn": "2021-02-05T10:18:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23d76b72_3451bf4e",
+      "revId": "560bdc5de249e5980e5f562a8f6a9c51da4ac70d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "73e81ff2_e82d4caa",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-02-05T04:46:49Z",
       "side": 1,
       "message": "thanks for the script [1].  that makes things much clearer and is diff from what i thought might be happening.",
+      "parentUuid": "73e81ff2_e82d4caa",
+      "revId": "560bdc5de249e5980e5f562a8f6a9c51da4ac70d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2db13bf1_8a1cdd9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125410
+      },
+      "writtenOn": "2021-02-05T10:18:46Z",
+      "side": 1,
+      "message": "Of course, only 1 \u003cproject\u003e element changed (its name). Here is a diff:\n\ndiff --git a/default.xml b/default.xml\nindex fb5c1d9..7bc3eb7 100644\n--- a/default.xml\n+++ b/default.xml\n@@ -4,5 +4,5 @@\n \n     \u003cdefault remote\u003d\"origin\" clone-depth\u003d\"1\" sync-c\u003d\"true\" sync-j\u003d\"4\"/\u003e\n \n-    \u003cproject path\u003d\"repo_a_or_b\" name\u003d\"repoa\" rebase\u003d\"false\" revision\u003d\"refs/tags/v1.0.0\" /\u003e\n+    \u003cproject path\u003d\"repo_a_or_b\" name\u003d\"repob\" rebase\u003d\"false\" revision\u003d\"refs/tags/v1.0.0\" /\u003e\n \u003c/manifest\u003e\n\nThe full manifest is mentioned inside script, mentioned in commit message.",
       "parentUuid": "73e81ff2_e82d4caa",
       "revId": "560bdc5de249e5980e5f562a8f6a9c51da4ac70d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"

@@ -37,6 +37,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "08c0d702_82d81143",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125410
+      },
+      "writtenOn": "2021-02-05T10:18:46Z",
+      "side": 1,
+      "message": "\u003e if that doesn\u0027t work, we should fix it.\n\nProvided script already uses --force-sync option during each sync operation - it doesn\u0027t work for this particular case. Should I change my proposal so that it cleans old tags only if --force-sync is provided? Of course, with respect to the review notes.",
+      "parentUuid": "84111714_6290c7a4",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e04b6c3c_c34e1711",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1125410
+      },
+      "writtenOn": "2021-02-05T10:18:46Z",
+      "side": 1,
+      "message": "Hello, Mike.\nWe may clean tags only with --force-sync option provided. What do you think of this?\n\nPS\nI\u0027m sorry I didn\u0027t reply to the previous review comments. \nI\u0027m new to gerrit, and I missed that my replies were in draft state. My fault 😞",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7158a7e2_9e031b66",
         "filename": "project.py",
         "patchSetId": 2
