@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "defba5c6_a84beace",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-05T04:46:49Z",
+      "side": 1,
+      "message": "would prefer:\n\n sync: delete project tags when remote URL changes",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84111714_6290c7a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-05T04:46:49Z",
+      "side": 1,
+      "message": "i have a few concerns with this proposal.\n\nfirst, there is a chance for data loss.  consider that users can create as many tags as they want in their local repos independent of the remote.  switching remotes doesn\u0027t delete their history or branches, but this would delete their tags.  maybe a mitigation would be to see what tags exist in the old remote and only clear those if they match the local tags.\n\nsecond, the check here is comparing the fully constructed URL.  consider that we allow people to switch remotes easily to support mirrors/caches better.  maybe your company has an internal mirror that updates once a day, so you sync against that to catch up, but then you switch to the public live version to get the very latest changes before uploading or pushing.  by comparing against the full URL, it would cause tags to get deleted \u0026 refetched everytime the user switched mirror\u003c-\u003elive remotes.  it probably isn\u0027t normally a significant amount of data as all the objects should still exist locally just without names, but it\u0027s still constant thrashing.\n\nfinally, what you\u0027re doing goes against the model that repo has long used.  it is explained here:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/internal-fs-layout.md#project-objects\nit doesn\u0027t seem to be noted in our manifest docs though ... prob should add it somewhere.\n\nso all things considered, i don\u0027t think we want to adopt this behavior, nor encourage the idea that the same \u003cproject name\u003d...\u003e can refer to completely different things based on the remote\u003d... attribute.  if it\u0027s something you do, you should be able to work around it by using --force-sync when syncing.  if that doesn\u0027t work, we should fix it.",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7158a7e2_9e031b66",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-05T04:46:49Z",
+      "side": 1,
+      "message": "while correct, it\u0027s unrelated, so best to omit whitespace changes like this",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5de6ec17_91d962f8",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1038,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-05T04:46:49Z",
+      "side": 1,
+      "message": "this isn\u0027t deleting \"cache\", it\u0027s deleting all local tags",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e817241_52fbed00",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1040,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-05T04:46:49Z",
+      "side": 1,
+      "message": "cuddle this up to the previous line",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

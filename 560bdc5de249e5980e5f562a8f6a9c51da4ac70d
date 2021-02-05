@@ -33,6 +33,24 @@
       "message": "can you provide example manifest changes to show what you\u0027re talking about ?  we don\u0027t need the full manifest, just the relevant diff \u0026 elements that changed (sounds like just \u003cproject\u003e ?).",
       "revId": "560bdc5de249e5980e5f562a8f6a9c51da4ac70d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9e33ad6_17a270c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-05T04:46:49Z",
+      "side": 1,
+      "message": "thanks for the script [1].  that makes things much clearer and is diff from what i thought might be happening.",
+      "parentUuid": "73e81ff2_e82d4caa",
+      "revId": "560bdc5de249e5980e5f562a8f6a9c51da4ac70d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
