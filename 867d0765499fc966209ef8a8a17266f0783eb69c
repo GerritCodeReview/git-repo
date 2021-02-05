@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f324cbe_44bb72f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-05T18:27:45Z",
+      "side": 1,
+      "message": "thanks, i took another (closer) look.  i think the tags are a red herring.  there is a bug here that we need to fix, but clearing tags wouldn\u0027t be sufficient to workaround it.\n\ni filed https://crbug.com/gerrit/14051 with some details.  i won\u0027t have time to get to it though if you want to take a look.",
+      "parentUuid": "08c0d702_82d81143",
+      "revId": "867d0765499fc966209ef8a8a17266f0783eb69c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7158a7e2_9e031b66",
         "filename": "project.py",
         "patchSetId": 2
