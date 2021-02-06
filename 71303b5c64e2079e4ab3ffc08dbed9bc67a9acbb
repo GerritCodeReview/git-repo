@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d132461_d1124f00",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-06T05:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "944a62f9_27518086",
+      "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab4b432f_5c5b0478",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41c6319d_7e2523a1",
+        "filename": "git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-06T05:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab4b432f_5c5b0478",
+      "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bba596fd_39c77f7d",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-02-05T17:39:01Z",
       "side": 1,
       "message": "all funcs should have docstrings, even if only a one-liner",
+      "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaae032c_13d895b5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-06T05:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bba596fd_39c77f7d",
       "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -75,6 +129,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a74bf1c9_b45f6471",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-06T05:18:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a418f8c7_84b11536",
+      "range": {
+        "startLine": 298,
+        "startChar": 52,
+        "endLine": 298,
+        "endChar": 57
+      },
+      "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e3bb1f5f_3f1105d1",
@@ -88,6 +166,24 @@
       "writtenOn": "2021-02-05T17:39:01Z",
       "side": 1,
       "message": "what is this ?  it isn\u0027t documented and hasn\u0027t been discussed before that i can see.",
+      "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cfd6505_2a60b3a0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 897,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-06T05:18:48Z",
+      "side": 1,
+      "message": "Deleted this code.\n\nDone",
+      "parentUuid": "e3bb1f5f_3f1105d1",
       "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -109,6 +205,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f337eba1_87d79ee4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-06T05:18:48Z",
+      "side": 1,
+      "message": "Changed the code to create the manifest overriding file in the \nexp-superproject directory.\n\nDone.",
+      "parentUuid": "5fb54620_b28bb30e",
+      "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "33383f0f_42813bd3",
@@ -122,6 +236,24 @@
       "writtenOn": "2021-02-05T17:39:01Z",
       "side": 1,
       "message": "this doesn\u0027t seem to be appropriate for this unittest",
+      "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7ea8049_df6d7b3d",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-06T05:18:48Z",
+      "side": 1,
+      "message": "Created a separate test to test updating project\u0027s revision id changes in manifest.xml.\n\nDone",
+      "parentUuid": "33383f0f_42813bd3",
       "revId": "71303b5c64e2079e4ab3ffc08dbed9bc67a9acbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
