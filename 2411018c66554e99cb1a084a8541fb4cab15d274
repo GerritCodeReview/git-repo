@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d05d7477_bcf69fec",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-07T06:17:36Z",
+      "side": 1,
+      "message": "combine these into an elif",
+      "range": {
+        "startLine": 406,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 26
+      },
+      "revId": "2411018c66554e99cb1a084a8541fb4cab15d274",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
