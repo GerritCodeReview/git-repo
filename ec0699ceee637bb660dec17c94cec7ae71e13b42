@@ -121,6 +121,24 @@
       "parentUuid": "f2646bce_581a6e2b",
       "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c20696_342d13ed",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 881,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-07T20:41:56Z",
+      "side": 1,
+      "message": "i assume gitc \u0026 superprojects won\u0027t be used at the same time, so i won\u0027t think about this scenario",
+      "parentUuid": "dbbd901d_944bb375",
+      "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

@@ -16,6 +16,23 @@
       "message": "Thanks for the comments Mike. PTAL.",
       "revId": "ae75f9640a692f9db6b04b8f0799e6015e6cd60e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd06b364_b6f43118",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-07T20:41:56Z",
+      "side": 1,
+      "message": "stick to single quotes",
+      "revId": "ae75f9640a692f9db6b04b8f0799e6015e6cd60e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
