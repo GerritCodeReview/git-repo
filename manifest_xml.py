@@ -403,9 +403,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         revision = self.remotes[p.remote.orig_name].revision or d.revisionExpr
         if not revision or revision != p.revisionExpr:
           e.setAttribute('revision', p.revisionExpr)
-        else:
-          if p.revisionId:
-            e.setAttribute('revision', p.revisionId)
+        elif p.revisionId:
+          e.setAttribute('revision', p.revisionId)
         if (p.upstream and (p.upstream != p.revisionExpr or
                             p.upstream != d.upstreamExpr)):
           e.setAttribute('upstream', p.upstream)
