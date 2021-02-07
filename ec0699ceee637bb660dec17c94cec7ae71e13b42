@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c20500bb_bf2e24e8",
+        "filename": "git_superproject.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-07T17:28:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df4c3506_8fbfe302",
+      "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0774f58_755bd433",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f405ff28_b1c6c84b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-07T17:28:21Z",
+      "side": 1,
+      "message": "Thanks for the suggestion. Will do a pull/merge and upload this change for review after the following CL is merged.\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/296182\n\nDone.",
+      "parentUuid": "f0774f58_755bd433",
+      "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2646bce_581a6e2b",
@@ -65,6 +101,24 @@
       "writtenOn": "2021-02-06T15:34:45Z",
       "side": 1,
       "message": "are you sure moving the call up here is correct ?  you\u0027re skipping the _UpdateManifestProject call which updates the manifest checkout itself.  you should be processing that first before processing the superproject settings.",
+      "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbbd901d_944bb375",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 881,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-07T17:28:21Z",
+      "side": 1,
+      "message": "Moved the call to immediately after _UpdateManifestProject  and before updating Gitc client.\n\nDone",
+      "parentUuid": "f2646bce_581a6e2b",
       "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
