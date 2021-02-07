@@ -139,6 +139,24 @@
       "parentUuid": "dbbd901d_944bb375",
       "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f02e62b_7c777996",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 881,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-07T22:20:37Z",
+      "side": 1,
+      "message": "Ack. Thanks very much for your CR comments.",
+      "parentUuid": "a1c20696_342d13ed",
+      "revId": "ec0699ceee637bb660dec17c94cec7ae71e13b42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

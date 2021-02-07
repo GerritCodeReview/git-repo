@@ -33,6 +33,24 @@
       "message": "stick to single quotes",
       "revId": "ae75f9640a692f9db6b04b8f0799e6015e6cd60e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b4801a8_7c6da2ae",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-07T22:20:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd06b364_b6f43118",
+      "revId": "ae75f9640a692f9db6b04b8f0799e6015e6cd60e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
