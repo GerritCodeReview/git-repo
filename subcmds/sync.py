@@ -271,6 +271,15 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+  def _GetBranch(self):
+    """Returns the branch name for getting the approved manifest."""
+    p = self.manifest.manifestProject
+    b = p.GetBranch(p.CurrentBranch)
+    branch = b.merge
+    if branch.startswith(R_HEADS):
+      branch = branch[len(R_HEADS):]
+    return branch
+
   def _UpdateProjectsRevisionId(self, opt, args):
     """Update revisionId of every project with the SHA from superproject.
 
@@ -302,9 +311,11 @@ later is required to fix a server side protocol bug.
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
+    branch = self._GetBranch()
     manifest_path = superproject.UpdateProjectsRevisionId(self.manifest,
                                                           all_projects,
-                                                          url=superproject_url)
+                                                          url=superproject_url,
+                                                          branch=branch)
     if not manifest_path:
       print('error: Update of revsionId from superproject has failed',
             file=sys.stderr)
@@ -753,11 +764,7 @@ later is required to fix a server side protocol bug.
     try:
       server = xmlrpc.client.Server(manifest_server, transport=transport)
       if opt.smart_sync:
-        p = self.manifest.manifestProject
-        b = p.GetBranch(p.CurrentBranch)
-        branch = b.merge
-        if branch.startswith(R_HEADS):
-          branch = branch[len(R_HEADS):]
+        branch = self._GetBranch()
 
         if 'SYNC_TARGET' in os.environ:
           target = os.environ['SYNC_TARGET']

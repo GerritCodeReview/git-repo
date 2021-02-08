@@ -29,6 +29,12 @@ from error import BUG_REPORT_URL, GitError
 from git_command import GitCommand
 import platform_utils
 
+_SUPERPROJECT_GIT_NAME = 'superproject.git'
+_SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
+# TODO(rtenneti): Delete _SUPERPROJECT_OLD_GIT_NAME. Added this to cleanup the
+# old git directories that were created.
+_SUPERPROJECT_OLD_GIT_NAME = 'superproject'
+
 
 class Superproject(object):
   """Get SHAs from superproject.
@@ -48,8 +54,11 @@ class Superproject(object):
     self._superproject_dir = superproject_dir
     self._superproject_path = os.path.join(self._repodir, superproject_dir)
     self._manifest_path = os.path.join(self._superproject_path,
-                                       'superproject_override.xml')
-    self._work_git = os.path.join(self._superproject_path, 'superproject')
+                                       _SUPERPROJECT_MANIFEST_NAME)
+    self._old_work_git = os.path.join(self._superproject_path,
+                                      _SUPERPROJECT_OLD_GIT_NAME)
+    self._work_git = os.path.join(self._superproject_path,
+                                  _SUPERPROJECT_GIT_NAME)
 
   @property
   def project_shas(self):
@@ -66,8 +75,9 @@ class Superproject(object):
     Returns:
       True if 'git clone <url> <branch>' is successful, or False.
     """
-    os.mkdir(self._superproject_path)
-    cmd = ['clone', url, '--filter', 'blob:none']
+    if not os.path.exists(self._superproject_path):
+      os.mkdir(self._superproject_path)
+    cmd = ['clone', url, '--filter', 'blob:none', '--bare']
     if branch:
       cmd += ['--branch', branch]
     p = GitCommand(None,
@@ -144,6 +154,12 @@ class Superproject(object):
     """
     if not url:
       raise ValueError('url argument is not supplied.')
+
+    if os.path.exists(self._old_work_git):
+      # If the old git directory exists, do a new git clone with --bare option.
+      # TODO(rtenneti): Delete this code.
+      platform_utils.rmtree(self._old_work_git)
+
     do_clone = True
     if os.path.exists(self._superproject_path):
       if not self._Pull():
