@@ -29,6 +29,9 @@ from error import BUG_REPORT_URL, GitError
 from git_command import GitCommand
 import platform_utils
 
+_SUPERPROJECT_GIT_NAME = 'superproject.git'
+_SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
+
 
 class Superproject(object):
   """Get SHAs from superproject.
@@ -48,8 +51,9 @@ class Superproject(object):
     self._superproject_dir = superproject_dir
     self._superproject_path = os.path.join(self._repodir, superproject_dir)
     self._manifest_path = os.path.join(self._superproject_path,
-                                       'superproject_override.xml')
-    self._work_git = os.path.join(self._superproject_path, 'superproject')
+                                       _SUPERPROJECT_MANIFEST_NAME)
+    self._work_git = os.path.join(self._superproject_path,
+                                  _SUPERPROJECT_GIT_NAME)
 
   @property
   def project_shas(self):
@@ -67,7 +71,8 @@ class Superproject(object):
       True if 'git clone <url> <branch>' is successful, or False.
     """
     os.mkdir(self._superproject_path)
-    cmd = ['clone', url, '--filter', 'blob:none']
+    cmd = ['clone', url, '--filter', 'blob:none',
+           '--bare', _SUPERPROJECT_GIT_NAME]
     if branch:
       cmd += ['--branch', branch]
     p = GitCommand(None,
