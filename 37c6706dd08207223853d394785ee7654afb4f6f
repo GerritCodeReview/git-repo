@@ -16,6 +16,24 @@
       "message": "for bare repos, we use \".git\" suffix on the dir names",
       "revId": "37c6706dd08207223853d394785ee7654afb4f6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09cfbf8d_68ae0ae9",
+        "filename": "git_superproject.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-08T17:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc88bdff_f4da19e8",
+      "revId": "37c6706dd08207223853d394785ee7654afb4f6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
