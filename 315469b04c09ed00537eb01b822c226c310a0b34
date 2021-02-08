@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c6e4a7c_0a048b86",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-08T15:02:26Z",
+      "side": 1,
+      "message": "If --bare is having issues (as noted in email) let\u0027s remove it from this CL and just handle pull/fetch and -c changes (would also require updating the description).",
+      "range": {
+        "startLine": 80,
+        "startChar": 49,
+        "endLine": 80,
+        "endChar": 59
+      },
+      "revId": "315469b04c09ed00537eb01b822c226c310a0b34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
