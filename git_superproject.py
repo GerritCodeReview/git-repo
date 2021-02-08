@@ -112,10 +112,13 @@ class Superproject(object):
       return False
     return True
 
-  def _LsTree(self):
-    """Returns the data from 'git ls-tree -r HEAD'.
+  def _LsTree(self, branch='HEAD'):
+    """Returns the data from 'git ls-tree -r <branch>'.
 
     Works only in git repositories.
+
+    Args:
+      branch: The branchname to be passed as argument to git ls-tree.
 
     Returns:
       data: data returned from 'git ls-tree -r HEAD' instead of None.
@@ -125,7 +128,8 @@ class Superproject(object):
             file=sys.stderr)
       return None
     data = None
-    cmd = ['ls-tree', '-z', '-r', 'HEAD']
+    cmd = ['ls-tree', '-z', '-r', branch]
+
     p = GitCommand(None,
                    cmd,
                    cwd=self._work_git,
@@ -165,7 +169,7 @@ class Superproject(object):
       if not self._Clone(url, branch):
         raise GitError('git clone failed for url: %s' % url)
 
-    data = self._LsTree()
+    data = self._LsTree(branch)
     if not data:
       raise GitError('git ls-tree failed for url: %s' % url)
 
