@@ -78,11 +78,11 @@ class SuperprojectTestCase(unittest.TestCase):
       with mock.patch.object(self._superproject, '_Clone', return_value=False):
         self._superproject._GetAllProjectsSHAs(url='localhost')
 
-  def test_superproject_get_project_shas_mock_pull(self):
-    """Test with _Pull failing."""
+  def test_superproject_get_project_shas_mock_fetch(self):
+    """Test with _Fetch failing."""
     with self.assertRaises(GitError):
       with mock.patch.object(self._superproject, '_Clone', return_value=True):
-        with mock.patch.object(self._superproject, '_Pull', return_value=False):
+        with mock.patch.object(self._superproject, '_Fetch', return_value=False):
           self._superproject._GetAllProjectsSHAs(url='localhost')
 
   def test_superproject_get_project_shas_mock_ls_tree(self):
@@ -141,7 +141,7 @@ class SuperprojectTestCase(unittest.TestCase):
     data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
             '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tbootable/recovery\x00')
     with mock.patch.object(self._superproject, '_Clone', return_value=True):
-      with mock.patch.object(self._superproject, '_Pull', return_value=True):
+      with mock.patch.object(self._superproject, '_Fetch', return_value=True):
         with mock.patch.object(self._superproject, '_LsTree', return_value=data):
           # Create temporary directory so that it can write the file.
           os.mkdir(self._superproject._superproject_path)
