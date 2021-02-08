@@ -16,6 +16,24 @@
       "message": "use branch\u003d\u0027HEAD\u0027 and it simplifies the logic below",
       "revId": "36c95d70412e522d37d944144efa78533259d8ec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da9e412c_18de69ac",
+        "filename": "git_superproject.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-08T22:29:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adee7819_87b5293a",
+      "revId": "36c95d70412e522d37d944144efa78533259d8ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
