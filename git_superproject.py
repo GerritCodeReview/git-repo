@@ -19,13 +19,13 @@ https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects
 
 Examples:
   superproject = Superproject()
-  project_shas = superproject.GetAllProjectsSHAs()
+  project_shas = superproject.UpdateProjectsRevisionId(projects)
 """
 
 import os
 import sys
 
-from error import BUG_REPORT_URL, GitError
+from error import BUG_REPORT_URL
 from git_command import GitCommand
 import platform_utils
 
@@ -36,17 +36,25 @@ _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
 class Superproject(object):
   """Get SHAs from superproject.
 
-  It does a 'git clone' of superproject and 'git ls-tree' to get list of SHAs for all projects.
-  It contains project_shas which is a dictionary with project/sha entries.
+  It does a 'git clone' of superproject and 'git ls-tree' to get list of SHAs
+  for all projects. It contains project_shas which is a dictionary with
+  project/sha entries.
   """
-  def __init__(self, repodir, superproject_dir='exp-superproject'):
+  def __init__(self, manifest, repodir, branch=None,
+               superproject_dir='exp-superproject'):
     """Initializes superproject.
 
     Args:
+      manifest: A Manifest object that is to be written to a file.
       repodir: Path to the .repo/ dir for holding all internal checkout state.
+          It must be in the top directory of the repo client checkout.
+      branch: The branchname to be passed as argument to git clone, fetch and
+          ls-tree.
       superproject_dir: Relative path under |repodir| to checkout superproject.
     """
     self._project_shas = None
+    self._manifest = manifest
+    self._branch = branch
     self._repodir = os.path.abspath(repodir)
     self._superproject_dir = superproject_dir
     self._superproject_path = os.path.join(self._repodir, superproject_dir)
@@ -60,21 +68,20 @@ class Superproject(object):
     """Returns a dictionary of projects and their SHAs."""
     return self._project_shas
 
-  def _Clone(self, url, branch=None):
-    """Do a 'git clone' for the given url and branch.
+  def _Clone(self, url):
+    """Do a 'git clone' for the given url.
 
     Args:
       url: superproject's url to be passed to git clone.
-      branch: The branchname to be passed as argument to git clone.
 
     Returns:
-      True if 'git clone <url> <branch>' is successful, or False.
+      True if git clone is successful, or False.
     """
     if not os.path.exists(self._superproject_path):
       os.mkdir(self._superproject_path)
     cmd = ['clone', url, '--filter', 'blob:none', '--bare']
-    if branch:
-      cmd += ['--branch', branch]
+    if self._branch:
+      cmd += ['--branch', self._branch]
     p = GitCommand(None,
                    cmd,
                    cwd=self._superproject_path,
@@ -112,22 +119,20 @@ class Superproject(object):
       return False
     return True
 
-  def _LsTree(self, branch='HEAD'):
-    """Returns the data from 'git ls-tree -r <branch>'.
+  def _LsTree(self):
+    """Returns the data from 'git ls-tree ...'.
 
     Works only in git repositories.
 
-    Args:
-      branch: The branchname to be passed as argument to git ls-tree.
-
     Returns:
-      data: data returned from 'git ls-tree -r HEAD' instead of None.
+      data: data returned from 'git ls-tree ...' instead of None.
     """
     if not os.path.exists(self._work_git):
       print('git ls-tree missing drectory: %s' % self._work_git,
             file=sys.stderr)
       return None
     data = None
+    branch = 'HEAD' if not self._branch else self._branch
     cmd = ['ls-tree', '-z', '-r', branch]
 
     p = GitCommand(None,
@@ -145,18 +150,25 @@ class Superproject(object):
           retval, p.stderr), file=sys.stderr)
     return data
 
-  def _GetAllProjectsSHAs(self, url, branch=None):
-    """Get SHAs for all projects from superproject and save them in _project_shas.
-
-    Args:
-      url: superproject's url to be passed to git clone or fetch.
-      branch: The branchname to be passed as argument to git clone or fetch.
+  def Sync(self):
+    """Sync superproject either by git clone/fetch.
 
     Returns:
-      A dictionary with the projects/SHAs instead of None.
+      True if sync of superproject is successful, or False.
     """
+    print('WARNING: --use-superproject is experimental and not '
+          'for general use', file=sys.stderr)
+
+    if not self._manifest.superproject:
+      print('error: superproject tag is not defined in manifest',
+            file=sys.stderr)
+      return False
+
+    url = self._manifest.superproject['remote'].url
     if not url:
-      raise ValueError('url argument is not supplied.')
+      print('error: superproject URL is not defined in manifest',
+            file=sys.stderr)
+      return False
 
     do_clone = True
     if os.path.exists(self._superproject_path):
@@ -166,12 +178,24 @@ class Superproject(object):
       else:
         do_clone = False
     if do_clone:
-      if not self._Clone(url, branch):
-        raise GitError('git clone failed for url: %s' % url)
+      if not self._Clone(url):
+        print('error: git clone failed for url: %s' % url, file=sys.stderr)
+        return False
+    return True
 
-    data = self._LsTree(branch)
+  def _GetAllProjectsSHAs(self):
+    """Get SHAs for all projects from superproject and save them in _project_shas.
+
+    Returns:
+      A dictionary with the projects/SHAs on success, otherwise None.
+    """
+    if not self.Sync():
+      return None
+
+    data = self._LsTree()
     if not data:
-      raise GitError('git ls-tree failed for url: %s' % url)
+      print('error: git ls-tree failed for superproject', file=sys.stderr)
+      return None
 
     # Parse lines like the following to select lines starting with '160000' and
     # build a dictionary with project path (last element) and its SHA (3rd element).
@@ -189,11 +213,8 @@ class Superproject(object):
     self._project_shas = shas
     return shas
 
-  def _WriteManfiestFile(self, manifest):
+  def _WriteManfiestFile(self):
     """Writes manifest to a file.
-
-    Args:
-      manifest: A Manifest object that is to be written to a file.
 
     Returns:
       manifest_path: Path name of the file into which manifest is written instead of None.
@@ -203,7 +224,7 @@ class Superproject(object):
             self._superproject_path,
             file=sys.stderr)
       return None
-    manifest_str = manifest.ToXml().toxml()
+    manifest_str = self._manifest.ToXml().toxml()
     manifest_path = self._manifest_path
     try:
       with open(manifest_path, 'w', encoding='utf-8') as fp:
@@ -215,24 +236,18 @@ class Superproject(object):
       return None
     return manifest_path
 
-  def UpdateProjectsRevisionId(self, manifest, projects, url, branch=None):
+  def UpdateProjectsRevisionId(self, projects):
     """Update revisionId of every project in projects with the SHA.
 
     Args:
-      manifest: A Manifest object that is to be written to a file.
       projects: List of projects whose revisionId needs to be updated.
-      url: superproject's url to be passed to git clone or fetch.
-      branch: The branchname to be passed as argument to git clone or fetch.
 
     Returns:
       manifest_path: Path name of the overriding manfiest file instead of None.
     """
-    try:
-      shas = self._GetAllProjectsSHAs(url=url, branch=branch)
-    except Exception as e:
-      print('error: Cannot get project SHAs for %s: %s: %s' %
-            (url, type(e).__name__, str(e)),
-            file=sys.stderr)
+    shas = self._GetAllProjectsSHAs()
+    if not shas:
+      print('error: Cannot get project SHAs from manifest', file=sys.stderr)
       return None
 
     projects_missing_shas = []
@@ -250,5 +265,5 @@ class Superproject(object):
             (BUG_REPORT_URL, projects_missing_shas), file=sys.stderr)
       return None
 
-    manifest_path = self._WriteManfiestFile(manifest)
+    manifest_path = self._WriteManfiestFile()
     return manifest_path
