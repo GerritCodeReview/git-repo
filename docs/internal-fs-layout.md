@@ -142,11 +142,13 @@ User controlled settings are initialized when running `repo init`.
 | repo.partialclone | `--partial-clone`         | Create [partial git clones] |
 | repo.reference    | `--reference`             | Reference repo client checkout |
 | repo.submodules   | `--submodules`            | Sync git submodules |
+| repo.superproject | `--use-superproject`      | Sync [superproject] |
 | repo.worktree     | `--worktree`              | Use `git worktree` for checkouts |
 | user.email        | `--config-name`           | User's e-mail address; Copied into `.git/config` when checking out a new project |
 | user.name         | `--config-name`           | User's name; Copied into `.git/config` when checking out a new project |
 
 [partial git clones]: https://git-scm.com/docs/gitrepository-layout#_code_partialclone_code
+[superproject]: https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects
 
 ### Repo hooks settings
 
