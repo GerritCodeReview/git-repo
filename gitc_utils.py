@@ -90,7 +90,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
     paths: List of project paths we want to update.
   """
 
-  print('Generating GITC Manifest by fetching revision SHAs for each '
+  print('Generating GITC Manifest by fetching revision commit ids for each '
         'project.')
   if paths is None:
     paths = list(manifest.paths.keys())

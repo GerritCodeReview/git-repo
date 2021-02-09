@@ -1756,8 +1756,8 @@ class Project(object):
       sub_paths, sub_urls = parse_gitmodules(gitdir, rev)
       if not sub_paths:
         return []
-      # Run `git ls-tree` to read SHAs of submodule object, which happen to be
-      # revision of submodule repository
+      # Run `git ls-tree` to read commit ids of submodule object, which happen
+      # to be revision of submodule repository
       sub_revs = git_ls_tree(gitdir, rev, sub_paths)
       submodules = []
       for sub_path, sub_url in zip(sub_paths, sub_urls):
