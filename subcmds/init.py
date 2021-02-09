@@ -25,6 +25,7 @@ from error import ManifestParseError
 from project import SyncBuffer
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
+import git_superproject
 import platform_utils
 from wrapper import Wrapper
 
@@ -134,6 +135,8 @@ to update the working directory files.
     g.add_option('--submodules',
                  dest='submodules', action='store_true',
                  help='sync any submodules associated with the manifest repo')
+    g.add_option('--use-superproject', action='store_true',
+                 help='use the manifest superproject to sync projects')
     g.add_option('-g', '--groups',
                  dest='groups', default='default',
                  help='restrict manifest projects to ones with specified '
@@ -175,6 +178,20 @@ to update the working directory files.
   def _RegisteredEnvironmentOptions(self):
     return {'REPO_MANIFEST_URL': 'manifest_url',
             'REPO_MIRROR_LOCATION': 'reference'}
+
+  def _CloneSuperproject(self, branch=None):
+    """Clone the superproject based on the superproject's url and branch.
+
+    Args:
+      branch: The branchname to be passed as argument to git clone.
+
+    Returns:
+      True if superproject update is successful, otherwise False.
+    """
+    superproject = git_superproject.Superproject(self.manifest)
+    if not superproject.SyncSuperproject(branch):
+      print('error: git update of superproject failed', file=sys.stderr)
+      return False
 
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
@@ -304,6 +321,9 @@ to update the working directory files.
 
     if opt.submodules:
       m.config.SetString('repo.submodules', 'true')
+
+    if opt.use_superproject:
+      m.config.SetString('repo.superproject', 'true')
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,
@@ -518,6 +538,9 @@ to update the working directory files.
 
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
+
+    if opt.use_superproject:
+      self._CloneSuperproject(branch=opt.manifest_branch)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       if opt.config_name or self._ShouldConfigureUser(opt):
