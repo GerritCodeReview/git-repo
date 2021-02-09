@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f96b5154_c8b56b15",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:42:33Z",
+      "side": 1,
+      "message": "Suggest call it SyncSuperproject (conisistent with the description).",
+      "range": {
+        "startLine": 149,
+        "startChar": 6,
+        "endLine": 149,
+        "endChar": 33
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c367e80_bf69e786",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:42:33Z",
+      "side": 1,
+      "message": "A dictionary with the projects/SHAs on success, otherwise None.",
+      "range": {
+        "startLine": 192,
+        "startChar": 50,
+        "endLine": 192,
+        "endChar": 52
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3dbe3f5_7be4a957",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:42:33Z",
+      "side": 1,
+      "message": "Suggest returning None on failure since caller is expecting an object (dict). Here and elsewhere.",
+      "range": {
+        "startLine": 195,
+        "startChar": 13,
+        "endLine": 195,
+        "endChar": 18
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41f7681c_1222219c",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:42:33Z",
+      "side": 1,
+      "message": "This no longer throws an exception on failure, should do an:\nif shas are None:\n  \u003chandle failure\u003e",
+      "range": {
+        "startLine": 252,
+        "startChar": 18,
+        "endLine": 252,
+        "endChar": 37
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
