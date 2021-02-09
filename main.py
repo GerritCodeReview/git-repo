@@ -121,6 +121,8 @@ global_options.add_option('--event-log',
                           help='filename of event log to append timeline to')
 global_options.add_option('--git-trace2-event-log', action='store',
                           help='directory to write git trace2 event log to')
+global_options.add_option('--use-superproject', action='store',
+                          help='use the manifest superproject to sync projects')
 
 
 class _Repo(object):
