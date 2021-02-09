@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aff76167_7a01505c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "Hi Mike,\n  I have looked at https://gerrit-review.googlesource.com/c/git-repo/+/229532 and made changes similar to that to add --use-superproject option. Added the code to clone superproject to repo init and added that at the very end. PTAL. Thanks",
+      "revId": "258033780de7b78d54f782593dd1180a8a97b506",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

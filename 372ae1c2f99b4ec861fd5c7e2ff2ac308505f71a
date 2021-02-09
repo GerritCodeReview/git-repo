@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95d3197a_03901c84",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f96b5154_c8b56b15",
+      "range": {
+        "startLine": 149,
+        "startChar": 6,
+        "endLine": 149,
+        "endChar": 33
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c367e80_bf69e786",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-02-09T20:42:33Z",
       "side": 1,
       "message": "A dictionary with the projects/SHAs on success, otherwise None.",
+      "range": {
+        "startLine": 192,
+        "startChar": 50,
+        "endLine": 192,
+        "endChar": 52
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de3bb3b4_f810ed70",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c367e80_bf69e786",
       "range": {
         "startLine": 192,
         "startChar": 50,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b99b0b_e8d8226d",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3dbe3f5_7be4a957",
+      "range": {
+        "startLine": 195,
+        "startChar": 13,
+        "endLine": 195,
+        "endChar": 18
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41f7681c_1222219c",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-02-09T20:42:33Z",
       "side": 1,
       "message": "This no longer throws an exception on failure, should do an:\nif shas are None:\n  \u003chandle failure\u003e",
+      "range": {
+        "startLine": 252,
+        "startChar": 18,
+        "endLine": 252,
+        "endChar": 37
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1f1e4b6_ba823376",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "Wondering if git command or pipe code will throw an exception. \n\nDone",
+      "parentUuid": "41f7681c_1222219c",
       "range": {
         "startLine": 252,
         "startChar": 18,
@@ -116,6 +212,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54742c2a_0e5940b4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "As we had discussed in chat. Will leave it as is. Thanks.",
+      "parentUuid": "12418410_baa9e095",
+      "range": {
+        "startLine": 138,
+        "startChar": 6,
+        "endLine": 138,
+        "endChar": 16
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d0337489_008f1bf4",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-02-09T20:49:00Z",
       "side": 1,
       "message": "True if superproject update is successful, otherwise False.\n\nSince we sometimes clone and sometimes fetch (if clone already exists)",
+      "range": {
+        "startLine": 189,
+        "startChar": 14,
+        "endLine": 189,
+        "endChar": 19
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de1580bd_4def3ea0",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d0337489_008f1bf4",
       "range": {
         "startLine": 189,
         "startChar": 14,
@@ -162,6 +306,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff6c2c8f_be8fd649",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be68760d_97ff50ae",
+      "range": {
+        "startLine": 193,
+        "startChar": 24,
+        "endLine": 193,
+        "endChar": 29
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8bc49e1_1b588a4c",
@@ -175,6 +343,30 @@
       "writtenOn": "2021-02-09T20:49:00Z",
       "side": 1,
       "message": "Remove, I think if multiple subcommands use it it should be defined in repo (or possibly main)",
+      "range": {
+        "startLine": 245,
+        "startChar": 6,
+        "endLine": 245,
+        "endChar": 16
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56733b04_1333787f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-09T22:04:57Z",
+      "side": 1,
+      "message": "As we had talked offline. I will live this as. Similar to https://gerrit-review.googlesource.com/c/git-repo/+/229532",
+      "parentUuid": "c8bc49e1_1b588a4c",
       "range": {
         "startLine": 245,
         "startChar": 6,
