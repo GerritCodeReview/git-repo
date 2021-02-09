@@ -73,15 +73,15 @@ class SuperprojectTestCase(unittest.TestCase):
           branch='junk')
 
   def test_superproject_get_project_shas_mock_clone(self):
-    """Test with _Clone failing."""
+    """Test with Clone failing."""
     with self.assertRaises(GitError):
-      with mock.patch.object(self._superproject, '_Clone', return_value=False):
+      with mock.patch.object(self._superproject, 'Clone', return_value=False):
         self._superproject._GetAllProjectsSHAs(url='localhost')
 
   def test_superproject_get_project_shas_mock_fetch(self):
     """Test with _Fetch failing."""
     with self.assertRaises(GitError):
-      with mock.patch.object(self._superproject, '_Clone', return_value=True):
+      with mock.patch.object(self._superproject, 'Clone', return_value=True):
         with mock.patch.object(self._superproject, '_Fetch', return_value=False):
           self._superproject._GetAllProjectsSHAs(url='localhost')
 
@@ -92,7 +92,7 @@ class SuperprojectTestCase(unittest.TestCase):
             '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tbootable/recovery\x00'
             '120000 blob acc2cbdf438f9d2141f0ae424cec1d8fc4b5d97f\tbootstrap.bash\x00'
             '160000 commit ade9b7a0d874e25fff4bf2552488825c6f111928\tbuild/bazel\x00')
-    with mock.patch.object(self._superproject, '_Clone', return_value=True):
+    with mock.patch.object(self._superproject, 'Clone', return_value=True):
       with mock.patch.object(self._superproject, '_LsTree', return_value=data):
         shas = self._superproject._GetAllProjectsSHAs(url='localhost', branch='junk')
         self.assertEqual(shas, {
@@ -140,7 +140,7 @@ class SuperprojectTestCase(unittest.TestCase):
     projects = manifest.projects
     data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
             '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tbootable/recovery\x00')
-    with mock.patch.object(self._superproject, '_Clone', return_value=True):
+    with mock.patch.object(self._superproject, 'Clone', return_value=True):
       with mock.patch.object(self._superproject, '_Fetch', return_value=True):
         with mock.patch.object(self._superproject, '_LsTree', return_value=data):
           # Create temporary directory so that it can write the file.

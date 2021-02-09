@@ -60,7 +60,7 @@ class Superproject(object):
     """Returns a dictionary of projects and their SHAs."""
     return self._project_shas
 
-  def _Clone(self, url, branch=None):
+  def Clone(self, url, branch=None):
     """Do a 'git clone' for the given url and branch.
 
     Args:
@@ -166,7 +166,7 @@ class Superproject(object):
       else:
         do_clone = False
     if do_clone:
-      if not self._Clone(url, branch):
+      if not self.Clone(url, branch):
         raise GitError('git clone failed for url: %s' % url)
 
     data = self._LsTree(branch)
