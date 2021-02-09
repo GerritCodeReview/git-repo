@@ -91,6 +91,98 @@
       },
       "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12418410_baa9e095",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:49:00Z",
+      "side": 1,
+      "message": "We should (I think) only need the option in one place, it was added in repo do we need it here?",
+      "range": {
+        "startLine": 138,
+        "startChar": 6,
+        "endLine": 138,
+        "endChar": 16
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0337489_008f1bf4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:49:00Z",
+      "side": 1,
+      "message": "True if superproject update is successful, otherwise False.\n\nSince we sometimes clone and sometimes fetch (if clone already exists)",
+      "range": {
+        "startLine": 189,
+        "startChar": 14,
+        "endLine": 189,
+        "endChar": 19
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be68760d_97ff50ae",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:49:00Z",
+      "side": 1,
+      "message": "update",
+      "range": {
+        "startLine": 193,
+        "startChar": 24,
+        "endLine": 193,
+        "endChar": 29
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8bc49e1_1b588a4c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-02-09T20:49:00Z",
+      "side": 1,
+      "message": "Remove, I think if multiple subcommands use it it should be defined in repo (or possibly main)",
+      "range": {
+        "startLine": 245,
+        "startChar": 6,
+        "endLine": 245,
+        "endChar": 16
+      },
+      "revId": "372ae1c2f99b4ec861fd5c7e2ff2ac308505f71a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
