@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8758806f_ee04366c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-10T04:51:08Z",
+      "side": 0,
+      "message": "the |branch| is being derived from the manifest project.  you\u0027ve passed that into Superproject() now when instantiating it.  so can\u0027t you move this helper into that class now too ?  then you don\u0027t have to pass branch into it explicitly anywhere.",
+      "revId": "ce64e3d47b97e54cc7fac3d7577cd53f1857de26",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

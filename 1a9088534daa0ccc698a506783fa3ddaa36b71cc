@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b57c3885_9969ec4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-10T04:51:08Z",
+      "side": 1,
+      "message": "just \"init\" is fine",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dd19659_0fa7c00b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-10T04:51:08Z",
+      "side": 1,
+      "message": "update docs/internal-fs-layout.md for this",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05cda3ac_fc27330c",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-10T04:51:08Z",
+      "side": 1,
+      "message": "i\u0027m not a fan of how we (ab)use repodir as a property of the manifest object.  just pass it directly into this class.\n\nyou can access it via self.repodir in any Command class like Sync and Init.",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a06c12d_85141ffc",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-10T04:51:08Z",
+      "side": 1,
+      "message": "isn\u0027t \"Superproject\" redundant ?  seems like \"Sync\" alone is sufficient.",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d2ed60d_6fba99be",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-10T04:51:08Z",
+      "side": 1,
+      "message": "if you set default\u003dNone, you can add:\n\n group.add_option(\u0027--no-use-superproject\u0027, action\u003d\u0027store_false\u0027,\n                  dest\u003d\u0027use_superproject\u0027, ...\n\nthen if you rebase on top of https://gerrit-review.googlesource.com/c/git-repo/+/296522 you can do in init.py:\n\n m.config.SetBoolean(\u0027repo.superproject\u0027, opt.use_superproject)",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7faf242e_ba981d67",
+        "filename": "subcmds/init.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-10T04:51:08Z",
+      "side": 1,
+      "message": "this func isn\u0027t returning True",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
