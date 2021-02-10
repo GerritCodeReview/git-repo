@@ -191,12 +191,12 @@ synced and their revisions won't be found.
     else:
       self.printProject = self.printAdded = self.printRemoved = self.printRevision = self.printText
 
-    manifest1 = RepoClient(self.manifest.repodir)
+    manifest1 = RepoClient(self.repodir)
     manifest1.Override(args[0], load_local_manifests=False)
     if len(args) == 1:
       manifest2 = self.manifest
     else:
-      manifest2 = RepoClient(self.manifest.repodir)
+      manifest2 = RepoClient(self.repodir)
       manifest2.Override(args[1], load_local_manifests=False)
 
     diff = manifest1.projectsDiff(manifest2)
