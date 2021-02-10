@@ -680,7 +680,7 @@ later is required to fix a server side protocol bug.
       if project.relpath:
         new_project_paths.append(project.relpath)
     file_name = 'project.list'
-    file_path = os.path.join(self.manifest.repodir, file_name)
+    file_path = os.path.join(self.repodir, file_name)
     old_project_paths = []
 
     if os.path.exists(file_path):
