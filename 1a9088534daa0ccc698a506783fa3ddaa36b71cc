@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e6baeff_c5445bd6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-10T19:30:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b57c3885_9969ec4f",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 13
+      },
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6dd19659_0fa7c00b",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-02-10T04:51:08Z",
       "side": 1,
       "message": "update docs/internal-fs-layout.md for this",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7194b64_00c96dc3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-10T19:30:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6dd19659_0fa7c00b",
       "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b749ca_001f3ecb",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-10T19:30:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05cda3ac_fc27330c",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a06c12d_85141ffc",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-02-10T04:51:08Z",
       "side": 1,
       "message": "isn\u0027t \"Superproject\" redundant ?  seems like \"Sync\" alone is sufficient.",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a85e219d_38ac5fd4",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-10T19:30:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a06c12d_85141ffc",
       "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +170,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fae2a7c_c6af7a86",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-10T19:30:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d2ed60d_6fba99be",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7faf242e_ba981d67",
@@ -105,6 +201,24 @@
       "writtenOn": "2021-02-10T04:51:08Z",
       "side": 1,
       "message": "this func isn\u0027t returning True",
+      "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "751e5976_e45d8c6c",
+        "filename": "subcmds/init.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-10T19:30:54Z",
+      "side": 1,
+      "message": "Changed the error condition to sys.exit ala sync\u0027s code.\nDone",
+      "parentUuid": "7faf242e_ba981d67",
       "revId": "1a9088534daa0ccc698a506783fa3ddaa36b71cc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
