@@ -250,7 +250,7 @@ to update the working directory files.
       m.config.SetString('repo.reference', opt.reference)
 
     if opt.dissociate:
-      m.config.SetString('repo.dissociate', 'true')
+      m.config.SetBoolean('repo.dissociate', opt.dissociate)
 
     if opt.worktree:
       if opt.mirror:
@@ -261,14 +261,14 @@ to update the working directory files.
         print('fatal: --submodules and --worktree are incompatible',
               file=sys.stderr)
         sys.exit(1)
-      m.config.SetString('repo.worktree', 'true')
+      m.config.SetBoolean('repo.worktree', opt.worktree)
       if is_new:
         m.use_git_worktrees = True
       print('warning: --worktree is experimental!', file=sys.stderr)
 
     if opt.archive:
       if is_new:
-        m.config.SetString('repo.archive', 'true')
+        m.config.SetBoolean('repo.archive', opt.archive)
       else:
         print('fatal: --archive is only supported when initializing a new '
               'workspace.', file=sys.stderr)
@@ -278,7 +278,7 @@ to update the working directory files.
 
     if opt.mirror:
       if is_new:
-        m.config.SetString('repo.mirror', 'true')
+        m.config.SetBoolean('repo.mirror', opt.mirror)
       else:
         print('fatal: --mirror is only supported when initializing a new '
               'workspace.', file=sys.stderr)
@@ -291,7 +291,7 @@ to update the working directory files.
         print('fatal: --mirror and --partial-clone are mutually exclusive',
               file=sys.stderr)
         sys.exit(1)
-      m.config.SetString('repo.partialclone', 'true')
+      m.config.SetBoolean('repo.partialclone', opt.partial_clone)
       if opt.clone_filter:
         m.config.SetString('repo.clonefilter', opt.clone_filter)
     else:
@@ -300,10 +300,10 @@ to update the working directory files.
     if opt.clone_bundle is None:
       opt.clone_bundle = False if opt.partial_clone else True
     else:
-      m.config.SetString('repo.clonebundle', 'true' if opt.clone_bundle else 'false')
+      m.config.SetBoolean('repo.clonebundle', opt.clone_bundle)
 
     if opt.submodules:
-      m.config.SetString('repo.submodules', 'true')
+      m.config.SetBoolean('repo.submodules', opt.submodules)
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,

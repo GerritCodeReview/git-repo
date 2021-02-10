@@ -15,6 +15,7 @@
 """Unittests for the git_config.py module."""
 
 import os
+import tempfile
 import unittest
 
 import git_config
@@ -26,9 +27,8 @@ def fixture(*paths):
   return os.path.join(os.path.dirname(__file__), 'fixtures', *paths)
 
 
-class GitConfigUnitTest(unittest.TestCase):
-  """Tests the GitConfig class.
-  """
+class GitConfigReadOnlyTests(unittest.TestCase):
+  """Read-only tests of the GitConfig class."""
 
   def setUp(self):
     """Create a GitConfig object using the test.gitconfig fixture.
@@ -103,6 +103,70 @@ class GitConfigUnitTest(unittest.TestCase):
     )
     for key, value in TESTS:
       self.assertEqual(value, self.config.GetInt('section.%s' % (key,)))
+
+
+class GitConfigReadWriteTests(unittest.TestCase):
+  """Read/write tests of the GitConfig class."""
+
+  def setUp(self):
+    self.tmpfile = tempfile.NamedTemporaryFile()
+    self.config = self.get_config()
+
+  def get_config(self):
+    """Get a new GitConfig instance."""
+    return git_config.GitConfig(self.tmpfile.name)
+
+  def test_SetString(self):
+    """Test SetString behavior."""
+    # Set a value.
+    self.assertIsNone(self.config.GetString('foo.bar'))
+    self.config.SetString('foo.bar', 'val')
+    self.assertEqual('val', self.config.GetString('foo.bar'))
+
+    # Make sure the value was actually written out.
+    config = self.get_config()
+    self.assertEqual('val', config.GetString('foo.bar'))
+
+    # Update the value.
+    self.config.SetString('foo.bar', 'valll')
+    self.assertEqual('valll', self.config.GetString('foo.bar'))
+    config = self.get_config()
+    self.assertEqual('valll', config.GetString('foo.bar'))
+
+    # Delete the value.
+    self.config.SetString('foo.bar', None)
+    self.assertIsNone(self.config.GetString('foo.bar'))
+    config = self.get_config()
+    self.assertIsNone(config.GetString('foo.bar'))
+
+  def test_SetBoolean(self):
+    """Test SetBoolean behavior."""
+    # Set a true value.
+    self.assertIsNone(self.config.GetBoolean('foo.bar'))
+    for val in (True, 1):
+      self.config.SetBoolean('foo.bar', val)
+      self.assertTrue(self.config.GetBoolean('foo.bar'))
+
+    # Make sure the value was actually written out.
+    config = self.get_config()
+    self.assertTrue(config.GetBoolean('foo.bar'))
+    self.assertEqual('true', config.GetString('foo.bar'))
+
+    # Set a false value.
+    for val in (False, 0):
+      self.config.SetBoolean('foo.bar', val)
+      self.assertFalse(self.config.GetBoolean('foo.bar'))
+
+    # Make sure the value was actually written out.
+    config = self.get_config()
+    self.assertFalse(config.GetBoolean('foo.bar'))
+    self.assertEqual('false', config.GetString('foo.bar'))
+
+    # Delete the value.
+    self.config.SetBoolean('foo.bar', None)
+    self.assertIsNone(self.config.GetBoolean('foo.bar'))
+    config = self.get_config()
+    self.assertIsNone(config.GetBoolean('foo.bar'))
 
 
 if __name__ == '__main__':

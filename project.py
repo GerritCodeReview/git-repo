@@ -2472,10 +2472,7 @@ class Project(object):
             self.config.SetString(key, m.GetString(key))
         self.config.SetString('filter.lfs.smudge', 'git-lfs smudge --skip -- %f')
         self.config.SetString('filter.lfs.process', 'git-lfs filter-process --skip')
-        if self.manifest.IsMirror:
-          self.config.SetString('core.bare', 'true')
-        else:
-          self.config.SetString('core.bare', None)
+        self.config.SetBoolean('core.bare', True if self.manifest.IsMirror else None)
     except Exception:
       if init_obj_dir and os.path.exists(self.objdir):
         platform_utils.rmtree(self.objdir)
