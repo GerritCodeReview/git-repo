@@ -161,6 +161,12 @@ class GitConfig(object):
       return False
     return None
 
+  def SetBoolean(self, name, value):
+    """Set the truthy value for a key."""
+    if value is not None:
+      value = 'true' if value else 'false'
+    self.SetString(name, value)
+
   def GetString(self, name, all_keys=False):
     """Get the first value for a key, or None if it is not defined.
 
