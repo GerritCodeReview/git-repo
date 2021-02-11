@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c66c098_6dd06eb3",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-11T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd92e674_42dea06a",
+      "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ebcc0d2_91f96178",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-02-11T06:33:28Z",
       "side": 1,
       "message": "we should avoid the term \"sha\".  use \"commit id\" instead.",
+      "range": {
+        "startLine": 40,
+        "startChar": 32,
+        "endLine": 40,
+        "endChar": 44
+      },
+      "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc330386_3579261f",
+        "filename": "git_superproject.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-11T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ebcc0d2_91f96178",
       "range": {
         "startLine": 40,
         "startChar": 32,
@@ -64,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c7122e9_233fcf6a",
+        "filename": "repo",
+        "patchSetId": 10
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-11T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f52ce5a_ae4fe83e",
+      "range": {
+        "startLine": 330,
+        "startChar": 50,
+        "endLine": 330,
+        "endChar": 96
+      },
+      "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4aa3d7ec_e19f1ae7",
@@ -77,6 +143,24 @@
       "writtenOn": "2021-02-11T06:33:28Z",
       "side": 1,
       "message": "need --no-use-superproject here too unfortunately",
+      "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4a3e807_b609a376",
+        "filename": "subcmds/init.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-11T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4aa3d7ec_e19f1ae7",
       "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -98,6 +182,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e4361af_d5d1000b",
+        "filename": "subcmds/init.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-11T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0da14b3_46cf264d",
+      "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58f38581_e7a6fa33",
@@ -115,6 +217,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51b072a8_0e51eff4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-11T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58f38581_e7a6fa33",
+      "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f67ff2c_e7c2519d",
@@ -128,6 +248,24 @@
       "writtenOn": "2021-02-11T06:33:28Z",
       "side": 1,
       "message": "i know i said \"don\u0027t use manifest.repodir\" so this is going to sound inconsistent, but i promise it\u0027s not :)\n\ninstead of passing the branch around explicitly, since you\u0027re passing the manifest project into the superproject class, you should be able to pull the branch out of that object.  i.e. sync.py:_GetBranch should be part of the superproject class instead.\n\nthe reason this is ok is because the superproject is tied to the manifest branch exactly ... whenever the manifest branch changes, so does the superproject branch.  since you\u0027re passing in the manifest project, pulling the branch out of that makes sense design-wise.",
+      "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ba4dbae_a2eda8a8",
+        "filename": "subcmds/init.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-11T08:47:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f67ff2c_e7c2519d",
       "revId": "75bff8d22cbe309c8f86aa535787efc0bdd7615c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
