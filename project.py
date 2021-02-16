@@ -849,6 +849,7 @@ class Project(object):
                      cmd,
                      capture_stdout=True,
                      capture_stderr=True)
+      p.Wait()
     except GitError as e:
       out.nl()
       out.project('project %s/' % self.relpath)
@@ -856,16 +857,11 @@ class Project(object):
       out.fail('%s', str(e))
       out.nl()
       return False
-    has_diff = False
-    for line in p.process.stdout:
-      if not hasattr(line, 'encode'):
-        line = line.decode()
-      if not has_diff:
-        out.nl()
-        out.project('project %s/' % self.relpath)
-        out.nl()
-        has_diff = True
-      print(line[:-1])
+    if p.stdout:
+      out.nl()
+      out.project('project %s/' % self.relpath)
+      out.nl()
+      out.write(p.stdout)
     return p.Wait() == 0
 
 # Publish / Upload ##
@@ -2861,48 +2857,44 @@ class Project(object):
                      bare=False,
                      capture_stdout=True,
                      capture_stderr=True)
-      try:
-        out = p.process.stdout.read()
-        if not hasattr(out, 'encode'):
-          out = out.decode()
-        r = {}
-        if out:
-          out = iter(out[:-1].split('\0'))
-          while out:
-            try:
-              info = next(out)
-              path = next(out)
-            except StopIteration:
-              break
+      p.Wait()
+      r = {}
+      out = p.stdout
+      if out:
+        out = iter(out[:-1].split('\0'))
+        while out:
+          try:
+            info = next(out)
+            path = next(out)
+          except StopIteration:
+            break
 
-            class _Info(object):
+          class _Info(object):
 
-              def __init__(self, path, omode, nmode, oid, nid, state):
-                self.path = path
-                self.src_path = None
-                self.old_mode = omode
-                self.new_mode = nmode
-                self.old_id = oid
-                self.new_id = nid
+            def __init__(self, path, omode, nmode, oid, nid, state):
+              self.path = path
+              self.src_path = None
+              self.old_mode = omode
+              self.new_mode = nmode
+              self.old_id = oid
+              self.new_id = nid
 
-                if len(state) == 1:
-                  self.status = state
-                  self.level = None
-                else:
-                  self.status = state[:1]
-                  self.level = state[1:]
-                  while self.level.startswith('0'):
-                    self.level = self.level[1:]
+              if len(state) == 1:
+                self.status = state
+                self.level = None
+              else:
+                self.status = state[:1]
+                self.level = state[1:]
+                while self.level.startswith('0'):
+                  self.level = self.level[1:]
 
-            info = info[1:].split(' ')
-            info = _Info(path, *info)
-            if info.status in ('R', 'C'):
-              info.src_path = info.path
-              info.path = next(out)
-            r[info.path] = info
-        return r
-      finally:
-        p.Wait()
+          info = info[1:].split(' ')
+          info = _Info(path, *info)
+          if info.status in ('R', 'C'):
+            info.src_path = info.path
+            info.path = next(out)
+          r[info.path] = info
+      return r
 
     def GetDotgitPath(self, subpath=None):
       """Return the full path to the .git dir.
