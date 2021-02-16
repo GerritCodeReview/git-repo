@@ -352,6 +352,11 @@ class GitCommand(object):
       p.stdin.write(input)
       p.stdin.close()
 
+    try:
+      self.rc = self._CaptureOutput()
+    finally:
+      _remove_ssh_client(p)
+
   @staticmethod
   def _GetBasicEnv():
     """Return a basic env for running git under.
@@ -370,12 +375,7 @@ class GitCommand(object):
     return env
 
   def Wait(self):
-    try:
-      p = self.process
-      rc = self._CaptureOutput()
-    finally:
-      _remove_ssh_client(p)
-    return rc
+    return self.rc
 
   def _CaptureOutput(self):
     p = self.process
