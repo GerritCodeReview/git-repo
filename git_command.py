@@ -249,7 +249,7 @@ class GitCommand(object):
                project,
                cmdv,
                bare=False,
-               provide_stdin=False,
+               input=None,
                capture_stdout=False,
                capture_stderr=False,
                merge_output=False,
@@ -298,11 +298,7 @@ class GitCommand(object):
         command.append('--progress')
     command.extend(cmdv[1:])
 
-    if provide_stdin:
-      stdin = subprocess.PIPE
-    else:
-      stdin = None
-
+    stdin = subprocess.PIPE if input else None
     stdout = subprocess.PIPE
     stderr = subprocess.STDOUT if merge_output else subprocess.PIPE
 
@@ -350,7 +346,11 @@ class GitCommand(object):
       _add_ssh_client(p)
 
     self.process = p
-    self.stdin = p.stdin
+    if input:
+      if isinstance(input, str):
+        input = input.encode('utf-8')
+      p.stdin.write(input)
+      p.stdin.close()
 
   @staticmethod
   def _GetBasicEnv():

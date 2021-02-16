@@ -72,11 +72,9 @@ change id will be added.
       new_msg = self._Reformat(old_msg, sha1)
 
       p = GitCommand(None, ['commit', '--amend', '-F', '-'],
-                     provide_stdin=True,
+                     input=new_msg,
                      capture_stdout=True,
                      capture_stderr=True)
-      p.stdin.write(new_msg)
-      p.stdin.close()
       if p.Wait() != 0:
         print("error: Failed to update commit message", file=sys.stderr)
         sys.exit(1)
