@@ -17,7 +17,7 @@ import glob
 import multiprocessing
 import os
 
-from command import PagedCommand
+from command import DEFAULT_LOCAL_JOBS, PagedCommand
 
 from color import Coloring
 import platform_utils
@@ -76,11 +76,10 @@ the following meanings:
  d:  deleted       (    in index, not in work tree                )
 
 """
+  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
-    p.add_option('-j', '--jobs',
-                 dest='jobs', action='store', type='int', default=2,
-                 help="number of projects to check simultaneously")
+    super()._Options(p)
     p.add_option('-o', '--orphans',
                  dest='orphans', action='store_true',
                  help="include objects in working directory outside of repo projects")

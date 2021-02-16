@@ -21,7 +21,7 @@ import sys
 import subprocess
 
 from color import Coloring
-from command import Command, MirrorSafeCommand
+from command import DEFAULT_LOCAL_JOBS, Command, MirrorSafeCommand
 import platform_utils
 
 _CAN_COLOR = [
@@ -113,8 +113,11 @@ terminal and are not redirected.
 If -e is used, when a command exits unsuccessfully, '%prog' will abort
 without iterating through the remaining projects.
 """
+  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
+    super()._Options(p)
+
     def cmd(option, opt_str, value, parser):
       setattr(parser.values, option.dest, list(parser.rargs))
       while parser.rargs:
@@ -148,9 +151,6 @@ without iterating through the remaining projects.
     g.add_option('-v', '--verbose',
                  dest='verbose', action='store_true',
                  help='Show command error messages')
-    g.add_option('-j', '--jobs',
-                 dest='jobs', action='store', type='int', default=1,
-                 help='number of commands to execute simultaneously')
 
   def WantPager(self, opt):
     return opt.project_header and opt.jobs == 1
