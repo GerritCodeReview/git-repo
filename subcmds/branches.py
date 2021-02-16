@@ -121,7 +121,7 @@ is shown, then the branch appears in all projects.
     all_branches = {}
     project_cnt = len(projects)
     with multiprocessing.Pool(processes=opt.jobs) as pool:
-      project_branches = pool.imap_unordered(
+      project_branches = pool.imap(
           expand_project_to_branches, projects, chunksize=WORKER_BATCH_SIZE)
 
       for name, b in itertools.chain.from_iterable(project_branches):
