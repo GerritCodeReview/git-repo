@@ -1086,20 +1086,11 @@ def _VerifyTag(project):
   env['GNUPGHOME'] = gpg_dir
 
   cmd = [GIT, 'tag', '-v', cur]
-  proc = subprocess.Popen(cmd,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.PIPE,
-                          env=env)
-  out = proc.stdout.read()
-  proc.stdout.close()
-
-  err = proc.stderr.read()
-  proc.stderr.close()
-
-  if proc.wait() != 0:
+  result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                          env=env, check=False)
+  if result.returncode:
     print(file=sys.stderr)
-    print(out, file=sys.stderr)
-    print(err, file=sys.stderr)
+    print(result.stdout, file=sys.stderr)
     print(file=sys.stderr)
     return False
   return True
