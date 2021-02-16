@@ -280,7 +280,6 @@ without iterating through the remaining projects.
 
 class WorkerKeyboardInterrupt(Exception):
   """ Keyboard interrupt exception for worker processes. """
-  pass
 
 
 def InitWorker():

@@ -68,7 +68,6 @@ _ONE_DAY_S = 24 * 60 * 60
 
 class _FetchError(Exception):
   """Internal error thrown in _FetchHelper() when we don't want stack trace."""
-  pass
 
 
 class _CheckoutError(Exception):

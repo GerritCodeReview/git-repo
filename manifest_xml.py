@@ -533,7 +533,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   def _output_manifest_project_extras(self, p, e):
     """Manifests can modify e if they support extra project attributes."""
-    pass
 
   @property
   def paths(self):
