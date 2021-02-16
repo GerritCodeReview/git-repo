@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import os
+import multiprocessing
 import platform
 import re
 import sys
@@ -35,6 +36,15 @@ def parse_clientdir(gitc_fs_path):
   return wrapper.Wrapper().gitc_parse_clientdir(gitc_fs_path)
 
 
+def _get_project_revision(args):
+  """Worker for _set_project_revisions to lookup one project remote."""
+  (i, url, expr) = args
+  gitcmd = git_command.GitCommand(
+      None, ['ls-remote', url, expr], capture_stdout=True, cwd='/tmp')
+  rc = gitcmd.Wait()
+  return (i, rc, gitcmd.stdout.split('\t', 1)[0])
+
+
 def _set_project_revisions(projects):
   """Sets the revisionExpr for a list of projects.
 
@@ -47,22 +57,24 @@ def _set_project_revisions(projects):
   """
   # Retrieve the commit id for each project based off of it's current
   # revisionExpr and it is not already a commit id.
-  project_gitcmds = [(
-      project, git_command.GitCommand(None,
-                                      ['ls-remote',
-                                       project.remote.url,
-                                       project.revisionExpr],
-                                      capture_stdout=True, cwd='/tmp'))
-                     for project in projects if not git_config.IsId(project.revisionExpr)]
-  for proj, gitcmd in project_gitcmds:
-    if gitcmd.Wait():
-      print('FATAL: Failed to retrieve revisionExpr for %s' % proj)
-      sys.exit(1)
-    revisionExpr = gitcmd.stdout.split('\t')[0]
-    if not revisionExpr:
-      raise ManifestParseError('Invalid SHA-1 revision project %s (%s)' %
-                               (proj.remote.url, proj.revisionExpr))
-    proj.revisionExpr = revisionExpr
+  with multiprocessing.Pool(NUM_BATCH_RETRIEVE_REVISIONID) as pool:
+    results_iter = pool.imap_unordered(
+        _get_project_revision,
+        ((i, project.remote.url, project.revisionExpr)
+         for i, project in enumerate(projects)
+         if not git_config.IsId(project.revisionExpr)),
+        chunksize=8)
+    for (i, rc, revisionExpr) in results_iter:
+      project = projects[i]
+      if rc:
+        print('FATAL: Failed to retrieve revisionExpr for %s' % project.name)
+        pool.terminate()
+        sys.exit(1)
+      if not revisionExpr:
+        pool.terminate()
+        raise ManifestParseError('Invalid SHA-1 revision project %s (%s)' %
+                                 (project.remote.url, project.revisionExpr))
+      project.revisionExpr = revisionExpr
 
 
 def _manifest_groups(manifest):
@@ -123,11 +135,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
         else:
           proj.revisionExpr = gitc_proj.revisionExpr
 
-  index = 0
-  while index < len(projects):
-    _set_project_revisions(
-        projects[index:(index + NUM_BATCH_RETRIEVE_REVISIONID)])
-    index += NUM_BATCH_RETRIEVE_REVISIONID
+  _set_project_revisions(projects)
 
   if gitc_manifest is not None:
     for path, proj in gitc_manifest.paths.items():
