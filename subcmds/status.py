@@ -14,10 +14,11 @@
 
 import functools
 import glob
+import io
 import multiprocessing
 import os
 
-from command import DEFAULT_LOCAL_JOBS, PagedCommand
+from command import DEFAULT_LOCAL_JOBS, PagedCommand, WORKER_BATCH_SIZE
 
 from color import Coloring
 import platform_utils
@@ -99,7 +100,9 @@ the following meanings:
     Returns:
       The status of the project.
     """
-    return project.PrintWorkTreeStatus(quiet=quiet)
+    buf = io.StringIO()
+    ret = project.PrintWorkTreeStatus(quiet=quiet, output_redir=buf)
+    return (ret, buf.getvalue())
 
   def _FindOrphans(self, dirs, proj_dirs, proj_dirs_parents, outstring):
     """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""
@@ -128,8 +131,13 @@ the following meanings:
           counter += 1
     else:
       with multiprocessing.Pool(opt.jobs) as pool:
-        states = pool.map(functools.partial(self._StatusHelper, opt.quiet), all_projects)
-        counter += states.count('CLEAN')
+        states = pool.imap(functools.partial(self._StatusHelper, opt.quiet),
+                           all_projects, chunksize=WORKER_BATCH_SIZE)
+        for (state, output) in states:
+          if output:
+            print(output, end='')
+          if state == 'CLEAN':
+            counter += 1
     if not opt.quiet and len(all_projects) == counter:
       print('nothing to commit (working directory clean)')
 

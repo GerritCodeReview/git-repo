@@ -16,15 +16,7 @@ import itertools
 import multiprocessing
 import sys
 from color import Coloring
-from command import Command, DEFAULT_LOCAL_JOBS
-
-# Number of projects to submit to a single worker process at a time.
-# This number represents a tradeoff between the overhead of IPC and finer
-# grained opportunity for parallelism. This particular value was chosen by
-# iterating through powers of two until the overall performance no longer
-# improved. The performance of this batch size is not a function of the
-# number of cores on the system.
-WORKER_BATCH_SIZE = 32
+from command import Command, DEFAULT_LOCAL_JOBS, WORKER_BATCH_SIZE
 
 
 class BranchColoring(Coloring):

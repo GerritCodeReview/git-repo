@@ -23,6 +23,15 @@ from error import NoSuchProjectError
 from error import InvalidProjectGroupsError
 
 
+# Number of projects to submit to a single worker process at a time.
+# This number represents a tradeoff between the overhead of IPC and finer
+# grained opportunity for parallelism. This particular value was chosen by
+# iterating through powers of two until the overall performance no longer
+# improved. The performance of this batch size is not a function of the
+# number of cores on the system.
+WORKER_BATCH_SIZE = 32
+
+
 # How many jobs to run in parallel by default?  This assumes the jobs are
 # largely I/O bound and do not hit the network.
 DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
