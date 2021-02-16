@@ -23,6 +23,11 @@ from error import NoSuchProjectError
 from error import InvalidProjectGroupsError
 
 
+# How many jobs to run in parallel by default?  This assumes the jobs are
+# largely I/O bound and do not hit the network.
+DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
+
+
 class Command(object):
   """Base class for any command line action in repo.
   """
@@ -31,6 +36,10 @@ class Command(object):
   event_log = EventLog()
   manifest = None
   _optparse = None
+
+  # Whether this command supports running in parallel.  If greater than 0,
+  # it is the number of parallel jobs to default to.
+  PARALLEL_JOBS = 0
 
   def WantPager(self, _opt):
     return False
@@ -72,6 +81,11 @@ class Command(object):
   def _Options(self, p):
     """Initialize the option parser.
     """
+    if self.PARALLEL_JOBS:
+      p.add_option(
+          '-j', '--jobs',
+          type=int, default=self.PARALLEL_JOBS,
+          help='number of jobs to run in parallel (default: %s)' % self.PARALLEL_JOBS)
 
   def _RegisteredEnvironmentOptions(self):
     """Get options that can be set from environment variables.

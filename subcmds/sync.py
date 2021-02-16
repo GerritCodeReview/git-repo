@@ -178,12 +178,14 @@ If the remote SSH daemon is Gerrit Code Review, version 2.0.10 or
 later is required to fix a server side protocol bug.
 
 """
+  PARALLEL_JOBS = 1
 
   def _Options(self, p, show_smart=True):
     try:
-      self.jobs = self.manifest.default.sync_j
+      self.PARALLEL_JOBS = self.manifest.default.sync_j
     except ManifestParseError:
-      self.jobs = 1
+      pass
+    super()._Options(p)
 
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
@@ -223,9 +225,6 @@ later is required to fix a server side protocol bug.
     p.add_option('-q', '--quiet',
                  dest='output_mode', action='store_false',
                  help='only show errors')
-    p.add_option('-j', '--jobs',
-                 dest='jobs', action='store', type='int',
-                 help="projects to fetch simultaneously (default %d)" % self.jobs)
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
