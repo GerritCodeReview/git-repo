@@ -259,9 +259,6 @@ class GitCommand(object):
                gitdir=None):
     env = self._GetBasicEnv()
 
-    # If we are not capturing std* then need to print it.
-    self.tee = {'stdout': not capture_stdout, 'stderr': not capture_stderr}
-
     if disable_editor:
       env['GIT_EDITOR'] = ':'
     if ssh_proxy:
@@ -299,8 +296,9 @@ class GitCommand(object):
     command.extend(cmdv[1:])
 
     stdin = subprocess.PIPE if input else None
-    stdout = subprocess.PIPE
-    stderr = subprocess.STDOUT if merge_output else subprocess.PIPE
+    stdout = subprocess.PIPE if capture_stdout else None
+    stderr = (subprocess.STDOUT if merge_output else
+              (subprocess.PIPE if capture_stderr else None))
 
     if IsTrace():
       global LAST_CWD
@@ -336,6 +334,8 @@ class GitCommand(object):
       p = subprocess.Popen(command,
                            cwd=cwd,
                            env=env,
+                           encoding='utf-8',
+                           errors='backslashreplace',
                            stdin=stdin,
                            stdout=stdout,
                            stderr=stderr)
@@ -353,9 +353,10 @@ class GitCommand(object):
       p.stdin.close()
 
     try:
-      self.rc = self._CaptureOutput()
+      self.stdout, self.stderr = p.communicate()
     finally:
       _remove_ssh_client(p)
+    self.rc = p.wait()
 
   @staticmethod
   def _GetBasicEnv():
@@ -376,30 +377,3 @@ class GitCommand(object):
 
   def Wait(self):
     return self.rc
-
-  def _CaptureOutput(self):
-    p = self.process
-    s_in = platform_utils.FileDescriptorStreams.create()
-    s_in.add(p.stdout, sys.stdout, 'stdout')
-    if p.stderr is not None:
-      s_in.add(p.stderr, sys.stderr, 'stderr')
-    self.stdout = ''
-    self.stderr = ''
-
-    while not s_in.is_done:
-      in_ready = s_in.select()
-      for s in in_ready:
-        buf = s.read()
-        if not buf:
-          s_in.remove(s)
-          continue
-        if not hasattr(buf, 'encode'):
-          buf = buf.decode('utf-8', 'backslashreplace')
-        if s.std_name == 'stdout':
-          self.stdout += buf
-        else:
-          self.stderr += buf
-        if self.tee[s.std_name]:
-          s.dest.write(buf)
-          s.dest.flush()
-    return p.wait()
