@@ -832,10 +832,12 @@ class Project(object):
 
     return 'DIRTY'
 
-  def PrintWorkTreeDiff(self, absolute_paths=False):
+  def PrintWorkTreeDiff(self, absolute_paths=False, output_redir=None):
     """Prints the status of the repository to stdout.
     """
     out = DiffColoring(self.config)
+    if output_redir:
+      out.redirect(output_redir)
     cmd = ['diff']
     if out.is_on:
       cmd.append('--color')
