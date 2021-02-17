@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fd42c7e_91f8019c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-02-17T02:16:14Z",
+      "side": 1,
+      "message": "The running-time difference shouldn\u0027t be a big deal, but wouldn\u0027t this increase memory usage by buffering the full diff?",
+      "revId": "aea70e31e406b8637cb68e0f4d96dbffcb559935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
