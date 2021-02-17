@@ -16,6 +16,24 @@
       "message": "I used `imap_unordered` since we sort the output on line 132 anyway. Are you seeing outputs that aren\u0027t stable between runs?",
       "revId": "e2c74fbfd115d1d3d60abd59231459309b4db628",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b7d7548_bf60bafa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-17T15:24:45Z",
+      "side": 1,
+      "message": "you\u0027re right of course.  i was looking at all the subcommands and how they used multiprocessing and was switching them to imap (vs map).",
+      "parentUuid": "634d9dba_03a243b3",
+      "revId": "e2c74fbfd115d1d3d60abd59231459309b4db628",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
