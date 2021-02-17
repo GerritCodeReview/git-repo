@@ -34,6 +34,24 @@
       "parentUuid": "2fd42c7e_91f8019c",
       "revId": "aea70e31e406b8637cb68e0f4d96dbffcb559935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0084538c_7aa1ef9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-02-17T02:59:02Z",
+      "side": 1,
+      "message": "\u003e buffering all the output is necessary to fix running in parallel and not having intermingled output\n\nAh, that\u0027s the context I was missing. It\u0027s probably worth mentioning in the commit message that this will simplify future code for avoiding interleaved output.\n\nWhen Git itself runs into similar cases, it buffers all parallel jobs except for one that is \"in the foreground\"; that foreground job\u0027s output gets streamed as it runs to the console.",
+      "parentUuid": "6352ad9d_1e48b94c",
+      "revId": "aea70e31e406b8637cb68e0f4d96dbffcb559935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
