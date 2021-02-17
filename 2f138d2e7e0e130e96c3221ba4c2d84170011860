@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd57dceb_37482438",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1091587
+      },
+      "writtenOn": "2021-02-17T04:44:09Z",
+      "side": 1,
+      "message": "The value \u00278\u0027 is the chunk size for multiprocessing, right?  Maybe a comment explaining it...",
+      "revId": "2f138d2e7e0e130e96c3221ba4c2d84170011860",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
