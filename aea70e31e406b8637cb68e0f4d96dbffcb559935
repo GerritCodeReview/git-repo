@@ -16,6 +16,24 @@
       "message": "The running-time difference shouldn\u0027t be a big deal, but wouldn\u0027t this increase memory usage by buffering the full diff?",
       "revId": "aea70e31e406b8637cb68e0f4d96dbffcb559935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6352ad9d_1e48b94c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-17T02:45:28Z",
+      "side": 1,
+      "message": "it\u0027s buffered until it\u0027s displayed and then it\u0027s discarded.  i\u0027m not sure we\u0027ll ever have large enough diffs for this to really matter to anyone ?\n\nbuffering all the output is necessary to fix running in parallel and not having intermingled output.  i have CLs locally to fix that, but it\u0027s waiting on some other common --jobs reviews first.",
+      "parentUuid": "2fd42c7e_91f8019c",
+      "revId": "aea70e31e406b8637cb68e0f4d96dbffcb559935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
