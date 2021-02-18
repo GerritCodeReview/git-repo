@@ -22,6 +22,30 @@
       },
       "revId": "6e3f156da3a22ad45fd8ef6480b047d403d62b71",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc80af9f_6c32afc4",
+        "filename": "subcmds/status.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-18T16:04:52Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c65ff8d2_894fa6fb",
+      "range": {
+        "startLine": 135,
+        "startChar": 41,
+        "endLine": 135,
+        "endChar": 58
+      },
+      "revId": "6e3f156da3a22ad45fd8ef6480b047d403d62b71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
