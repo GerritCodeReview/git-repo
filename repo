@@ -270,9 +270,9 @@ gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 def GetParser(gitc_init=False):
   """Setup the CLI parser."""
   if gitc_init:
-    usage = 'repo gitc-init -u url -c client [options]'
+    usage = 'repo gitc-init -c client [options] [-u] url'
   else:
-    usage = 'repo init -u url [options]'
+    usage = 'repo init [options] [-u] url'
 
   parser = optparse.OptionParser(usage=usage)
 
@@ -522,8 +522,11 @@ def _Init(args, gitc_init=False):
   parser = GetParser(gitc_init=gitc_init)
   opt, args = parser.parse_args(args)
   if args:
-    parser.print_usage()
-    sys.exit(1)
+    if not opt.manifest_url:
+      opt.manifest_url = args.pop(0)
+    if args:
+      parser.print_usage()
+      sys.exit(1)
   opt.quiet = opt.output_mode is False
   opt.verbose = opt.output_mode is True
 
