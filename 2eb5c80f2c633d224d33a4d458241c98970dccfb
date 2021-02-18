@@ -22,6 +22,30 @@
       },
       "revId": "2eb5c80f2c633d224d33a4d458241c98970dccfb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7080682d_8837a888",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-18T15:55:38Z",
+      "side": 1,
+      "message": "from the code:\n\n        if processes is None:\n            processes \u003d os.cpu_count() or 1\n        if processes \u003c 1:\n            raise ValueError(\"Number of processes must be at least 1\")\n\ndo you want a separate knob instead like PARALLEL_JOBS_SUPPORTED ?  or a sentinel value to indicate it\u0027s not supported (other than None) ?",
+      "parentUuid": "75e002eb_481d74ef",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 19
+      },
+      "revId": "2eb5c80f2c633d224d33a4d458241c98970dccfb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
