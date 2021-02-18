@@ -32,15 +32,19 @@ from wrapper import Wrapper
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   common = True
-  helpSummary = "Initialize repo in the current directory"
+  helpSummary = "Initialize a repo client checkout in the current directory"
   helpUsage = """
-%prog [options]
+%prog [options] [manifest url]
 """
   helpDescription = """
 The '%prog' command is run once to install and initialize repo.
 The latest repo source code and manifest collection is downloaded
 from the server and is installed in the .repo/ directory in the
 current working directory.
+
+When creating a new checkout, the manifest URL is the only required setting.
+It may be specified using the --manifest-url option, or as the first optional
+argument.
 
 The optional -b argument can be used to select the manifest branch
 to checkout and use.  If no branch is specified, the remote's default
@@ -196,7 +200,7 @@ to update the working directory files.
 
     if is_new:
       if not opt.manifest_url:
-        print('fatal: manifest url (-u) is required.', file=sys.stderr)
+        print('fatal: manifest url is required.', file=sys.stderr)
         sys.exit(1)
 
       if not opt.quiet:
@@ -498,7 +502,15 @@ to update the working directory files.
       self.OptionParser.error('--mirror and --archive cannot be used together.')
 
     if args:
-      self.OptionParser.error('init takes no arguments')
+      if opt.manifest_url:
+        self.OptionParser.error(
+            '--manifest-url option and URL argument both specified: only use '
+            'one to select the manifest URL.')
+
+      opt.manifest_url = args.pop(0)
+
+      if args:
+        self.OptionParser.error('too many arguments to init')
 
   def Execute(self, opt, args):
     git_require(MIN_GIT_VERSION_HARD, fail=True)
