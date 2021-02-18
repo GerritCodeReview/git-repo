@@ -33,6 +33,24 @@
       "message": "Should this error message change as well?",
       "revId": "b1f50894a39d73dd5d113cceaad6d9ad6f25b875",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2b2ad15_55b019e2",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-18T20:37:40Z",
+      "side": 1,
+      "message": "sure, can do",
+      "parentUuid": "46bd9b96_b81fce72",
+      "revId": "b1f50894a39d73dd5d113cceaad6d9ad6f25b875",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
