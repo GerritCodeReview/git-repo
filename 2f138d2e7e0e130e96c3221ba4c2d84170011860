@@ -16,6 +16,24 @@
       "message": "The value \u00278\u0027 is the chunk size for multiprocessing, right?  Maybe a comment explaining it...",
       "revId": "2f138d2e7e0e130e96c3221ba4c2d84170011860",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ffc43a9_4533f544",
+        "filename": "gitc_utils.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-18T07:11:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd57dceb_37482438",
+      "revId": "2f138d2e7e0e130e96c3221ba4c2d84170011860",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
