@@ -52,6 +52,24 @@
       "parentUuid": "6352ad9d_1e48b94c",
       "revId": "aea70e31e406b8637cb68e0f4d96dbffcb559935",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "243ac1ad_a246b5ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-18T03:54:26Z",
+      "side": 1,
+      "message": "\u003e It\u0027s probably worth mentioning in the commit message that this will simplify future code for avoiding interleaved output.\n\nthat\u0027s the reason i was looking around the code in general, but i also did it as a bit of cleanup \u0026 simplification: this allows me to delete a lot of this custom GitCommand logic with subprocess.run instead.\n\n\u003e When Git itself runs into similar cases, it buffers all parallel jobs except for one that is \"in the foreground\"; that foreground job\u0027s output gets streamed as it runs to the console.\n\nwe have a similar module in chromite, but maybe even slightly better: it buffers all jobs in the background, and the foreground thread will output the first job as it\u0027s running.  once that job finishes, it switches to the next one (finished or unfinished) and outputs it, then so on until all the jobs are done.  but that requires a not insignificant amount of code that has been a long time in the making (history goes back almost 10 years), and i\u0027m not ready to commit to that in repo when batching it is sufficient almost all the time.  especially as that is only been tested on Linux.",
+      "parentUuid": "0084538c_7aa1ef9f",
+      "revId": "aea70e31e406b8637cb68e0f4d96dbffcb559935",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
