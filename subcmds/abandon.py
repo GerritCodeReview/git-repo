@@ -13,9 +13,12 @@
 # limitations under the License.
 
 from collections import defaultdict
+import functools
+import itertools
+import multiprocessing
 import sys
 
-from command import Command
+from command import Command, DEFAULT_LOCAL_JOBS, WORKER_BATCH_SIZE
 from git_command import git
 from progress import Progress
 
@@ -31,8 +34,10 @@ deleting it (and all its history) from your local repository.
 
 It is equivalent to "git branch -D <branchname>".
 """
+  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
+    super()._Options(p)
     p.add_option('-q', '--quiet',
                  action='store_true', default=False,
                  help='be quiet')
@@ -51,35 +56,49 @@ It is equivalent to "git branch -D <branchname>".
     else:
       args.insert(0, "'All local branches'")
 
+  def _ExecuteOne(self, opt, nb, project):
+    """Abandon one project."""
+    if opt.all:
+      branches = project.GetBranches()
+    else:
+      branches = [nb]
+
+    ret = {}
+    for name in branches:
+      status = project.AbandonBranch(name)
+      if status is not None:
+        ret[name] = status
+    return (ret, project)
+
   def Execute(self, opt, args):
     nb = args[0]
     err = defaultdict(list)
     success = defaultdict(list)
     all_projects = self.GetProjects(args[1:])
 
-    pm = Progress('Abandon %s' % nb, len(all_projects))
-    for project in all_projects:
-      pm.update()
-
-      if opt.all:
-        branches = list(project.GetBranches().keys())
-      else:
-        branches = [nb]
-
-      for name in branches:
-        status = project.AbandonBranch(name)
-        if status is not None:
+    def _ProcessResults(states):
+      for (results, project) in states:
+        for branch, status in results.items():
           if status:
-            success[name].append(project)
+            success[branch].append(project)
           else:
-            err[name].append(project)
+            err[branch].append(project)
+        pm.update()
+
+    pm = Progress('Abandon %s' % nb, len(all_projects))
+    # NB: Multiprocessing is heavy, so don't spin it up for one job.
+    if len(all_projects) == 1 or opt.jobs == 1:
+      _ProcessResults(self._ExecuteOne(opt, nb, x) for x in all_projects)
+    else:
+      with multiprocessing.Pool(opt.jobs) as pool:
+        states = pool.imap_unordered(
+            functools.partial(self._ExecuteOne, opt, nb), all_projects,
+            chunksize=WORKER_BATCH_SIZE)
+        _ProcessResults(states)
     pm.end()
 
-    width = 25
-    for name in branches:
-      if width < len(name):
-        width = len(name)
-
+    width = max(itertools.chain(
+        [25], (len(x) for x in itertools.chain(success, err))))
     if err:
       for br in err.keys():
         err_msg = "error: cannot abandon %s" % br
