@@ -37,7 +37,7 @@ class NoManifestException(Exception):
   """
 
   def __init__(self, path, reason):
-    super(NoManifestException, self).__init__()
+    super(NoManifestException, self).__init__(path, reason)
     self.path = path
     self.reason = reason
 
@@ -50,7 +50,7 @@ class EditorError(Exception):
   """
 
   def __init__(self, reason):
-    super(EditorError, self).__init__()
+    super(EditorError, self).__init__(reason)
     self.reason = reason
 
   def __str__(self):
@@ -62,7 +62,7 @@ class GitError(Exception):
   """
 
   def __init__(self, command):
-    super(GitError, self).__init__()
+    super(GitError, self).__init__(command)
     self.command = command
 
   def __str__(self):
@@ -74,7 +74,7 @@ class UploadError(Exception):
   """
 
   def __init__(self, reason):
-    super(UploadError, self).__init__()
+    super(UploadError, self).__init__(reason)
     self.reason = reason
 
   def __str__(self):
@@ -86,7 +86,7 @@ class DownloadError(Exception):
   """
 
   def __init__(self, reason):
-    super(DownloadError, self).__init__()
+    super(DownloadError, self).__init__(reason)
     self.reason = reason
 
   def __str__(self):
@@ -98,7 +98,7 @@ class NoSuchProjectError(Exception):
   """
 
   def __init__(self, name=None):
-    super(NoSuchProjectError, self).__init__()
+    super(NoSuchProjectError, self).__init__(name)
     self.name = name
 
   def __str__(self):
@@ -112,7 +112,7 @@ class InvalidProjectGroupsError(Exception):
   """
 
   def __init__(self, name=None):
-    super(InvalidProjectGroupsError, self).__init__()
+    super(InvalidProjectGroupsError, self).__init__(name)
     self.name = name
 
   def __str__(self):
@@ -128,7 +128,7 @@ class RepoChangedException(Exception):
   """
 
   def __init__(self, extra_args=None):
-    super(RepoChangedException, self).__init__()
+    super(RepoChangedException, self).__init__(extra_args)
     self.extra_args = extra_args or []
 
 
