@@ -1301,7 +1301,7 @@ class GitcManifest(XmlManifest):
 
   def _ParseProject(self, node, parent=None):
     """Override _ParseProject and add support for GITC specific attributes."""
-    return super(GitcManifest, self)._ParseProject(
+    return super()._ParseProject(
         node, parent=parent, old_revision=node.getAttribute('old-revision'))
 
   def _output_manifest_project_extras(self, p, e):
@@ -1325,7 +1325,7 @@ class RepoClient(XmlManifest):
     if manifest_file is None:
       manifest_file = os.path.join(repodir, MANIFEST_FILE_NAME)
     local_manifests = os.path.abspath(os.path.join(repodir, LOCAL_MANIFESTS_DIR_NAME))
-    super(RepoClient, self).__init__(repodir, manifest_file, local_manifests)
+    super().__init__(repodir, manifest_file, local_manifests)
 
     # TODO: Completely separate manifest logic out of the client.
     self.manifest = self
@@ -1340,6 +1340,5 @@ class GitcClient(RepoClient, GitcManifest):
     self.gitc_client_dir = os.path.join(gitc_utils.get_gitc_manifest_dir(),
                                         gitc_client_name)
 
-    super(GitcManifest, self).__init__(
-        repodir, os.path.join(self.gitc_client_dir, '.manifest'))
+    super().__init__(repodir, os.path.join(self.gitc_client_dir, '.manifest'))
     self.isGitcClient = True

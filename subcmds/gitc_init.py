@@ -47,7 +47,7 @@ use for this GITC client.
 """
 
   def _Options(self, p):
-    super(GitcInit, self)._Options(p, gitc_init=True)
+    super()._Options(p, gitc_init=True)
     g = p.add_option_group('GITC options')
     g.add_option('-f', '--manifest-file',
                  dest='manifest_file',
@@ -64,7 +64,7 @@ use for this GITC client.
       sys.exit(1)
     self.client_dir = os.path.join(gitc_utils.get_gitc_manifest_dir(),
                                    gitc_client)
-    super(GitcInit, self).Execute(opt, args)
+    super().Execute(opt, args)
 
     manifest_file = self.manifest.manifestFile
     if opt.manifest_file:
