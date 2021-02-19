@@ -232,7 +232,7 @@ class ReviewableBranch(object):
 class StatusColoring(Coloring):
 
   def __init__(self, config):
-    Coloring.__init__(self, config, 'status')
+    super().__init__(config, 'status')
     self.project = self.printer('header', attr='bold')
     self.branch = self.printer('header', attr='bold')
     self.nobranch = self.printer('nobranch', fg='red')
@@ -246,7 +246,7 @@ class StatusColoring(Coloring):
 class DiffColoring(Coloring):
 
   def __init__(self, config):
-    Coloring.__init__(self, config, 'diff')
+    super().__init__(config, 'diff')
     self.project = self.printer('header', attr='bold')
     self.fail = self.printer('fail', fg='red')
 
@@ -3091,7 +3091,7 @@ class _Later(object):
 class _SyncColoring(Coloring):
 
   def __init__(self, config):
-    Coloring.__init__(self, config, 'reposync')
+    super().__init__(config, 'reposync')
     self.project = self.printer('header', attr='bold')
     self.info = self.printer('info')
     self.fail = self.printer('fail', fg='red')
