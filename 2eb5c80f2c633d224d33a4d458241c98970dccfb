@@ -70,6 +70,30 @@
       },
       "revId": "2eb5c80f2c633d224d33a4d458241c98970dccfb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d0614d7_a58c441f",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-22T22:46:42Z",
+      "side": 1,
+      "message": "i didn\u0027t want to add --jobs to all subcommands if the subcommand wasn\u0027t going to respect it.  it\u0027ll confuse users and waste their time trying to figure out why things aren\u0027t working as they expect.\n\ni was on the fence between 0-and-None, but i can go with None.  i was using 0 rather than None in case we went that route (passing the value directly to --jobs default), but it seems unlikely.\n\nwrt variable case, the other fields above are different ... they\u0027re really instance properties that should have been initialized in an __init__ method instead of here.  the code in this tree is so old and doesn\u0027t always use current/best practices :/.",
+      "parentUuid": "e544aa60_2f5f424b",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 19
+      },
+      "revId": "2eb5c80f2c633d224d33a4d458241c98970dccfb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
