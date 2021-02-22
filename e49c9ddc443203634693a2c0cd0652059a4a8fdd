@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "899777f4_cb699039",
+        "filename": "subcmds/diff.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-22T23:07:03Z",
+      "side": 1,
+      "message": "we have ~27 subcommands atm, and when i\u0027m done with this sprint, ~6 will support parallel operation.  so i think the current default of no --jobs support is the right one.  if we make it to more than half, then inverting would prob make sense.",
+      "parentUuid": "ddb5ee81_e0b60fcf",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 36
+      },
+      "revId": "e49c9ddc443203634693a2c0cd0652059a4a8fdd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e04d5a9b_f0537a19",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-02-22T22:03:39Z",
       "side": 1,
       "message": "opinion: Is it worth having this whole branch for the 1 job case? A process pool with a single worker functions the same.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 17
+      },
+      "revId": "e49c9ddc443203634693a2c0cd0652059a4a8fdd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5feeec90_24e215fe",
+        "filename": "subcmds/diff.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-22T23:07:03Z",
+      "side": 1,
+      "message": "imo it is: the startup \u0026 runtime cost for multiprocessing with just 1 job is noticeable.  arguably when doing -j1 across O(100) projects, one might argue that those costs get lost in the noise, but remember that Android/CrOS are prob some of the largest manifest sizes, and that a user could run `repo diff .` to see the current project.  in which case the startup hurts a lot.\n\ni\u0027ll copy in the comment/logic that i used in the abandon/start command to make this more obvious.\n\nnow that we have like ~6 commands that have similar boilerplate, i might take a closer look at how we could add a helper for this.  maybe a method that you pass a functools.partial callback, the thing to iterate over, and a callback to process the results.  that way the opt.jobs\u003d\u003d1 codepath would be duplicated in only one place.",
+      "parentUuid": "e04d5a9b_f0537a19",
       "range": {
         "startLine": 58,
         "startChar": 0,
