@@ -22,6 +22,30 @@
       },
       "revId": "2d65e3dd46409e7d3cfc186c19fe60704eccc31a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6408ab6_0cd47872",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-22T22:58:11Z",
+      "side": 1,
+      "message": "it is -- the forall loop above is operating on return codes, and will exit with the same status as the first failing one it sees\n\nso if you run `repo forall -j1 -c \u0027exit 12\u0027`, repo itself will then exit(12)\n\ni\u0027m not claiming this is the best interface, but it is the current design, so i didn\u0027t want to break it in this specific commit since it\u0027s already doing quite a bit",
+      "parentUuid": "b2e93272_7ac3d6e0",
+      "range": {
+        "startLine": 341,
+        "startChar": 14,
+        "endLine": 341,
+        "endChar": 15
+      },
+      "revId": "2d65e3dd46409e7d3cfc186c19fe60704eccc31a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
