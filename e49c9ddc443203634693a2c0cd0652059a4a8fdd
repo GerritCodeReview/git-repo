@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddb5ee81_e0b60fcf",
+        "filename": "subcmds/diff.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-22T22:03:39Z",
+      "side": 1,
+      "message": "nit/observation: maybe this should be the default and non-parallel commands should opt-out",
+      "range": {
+        "startLine": 32,
+        "startChar": 2,
+        "endLine": 32,
+        "endChar": 36
+      },
+      "revId": "e49c9ddc443203634693a2c0cd0652059a4a8fdd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e04d5a9b_f0537a19",
+        "filename": "subcmds/diff.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-22T22:03:39Z",
+      "side": 1,
+      "message": "opinion: Is it worth having this whole branch for the 1 job case? A process pool with a single worker functions the same.",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 61,
+        "endChar": 17
+      },
+      "revId": "e49c9ddc443203634693a2c0cd0652059a4a8fdd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
