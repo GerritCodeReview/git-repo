@@ -46,6 +46,30 @@
       },
       "revId": "2eb5c80f2c633d224d33a4d458241c98970dccfb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e544aa60_2f5f424b",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-22T21:23:23Z",
+      "side": 1,
+      "message": "Do we even need a knob to signify whether or not a command supports parallelism? The command just won\u0027t internally use a Pool if it can\u0027t, right?\n\nI sort of like `None` as a sentinel value, WDYT? A class having an attribute with a value of None *is* different than not having that attribute at all.\n\nThis is bikeshed territory though. The difference between 0 and None isn\u0027t that significant to me since they are both false-y. My one remaining nit is that the class attribute shouldn\u0027t be all uppercase, to match the style of the existing base class attributes.",
+      "parentUuid": "7080682d_8837a888",
+      "range": {
+        "startLine": 42,
+        "startChar": 2,
+        "endLine": 42,
+        "endChar": 19
+      },
+      "revId": "2eb5c80f2c633d224d33a4d458241c98970dccfb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
