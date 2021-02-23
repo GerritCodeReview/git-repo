@@ -2135,8 +2135,9 @@ class Project(object):
         break
 
       # Retry later due to HTTP 429 Too Many Requests.
-      elif ('error:' in gitcmd.stderr and
-            'HTTP 429' in gitcmd.stderr):
+      elif (gitcmd.stdout and
+            'error:' in gitcmd.stdout and
+            'HTTP 429' in gitcmd.stdout):
         if not quiet:
           print('429 received, sleeping: %s sec' % retry_cur_sleep,
                 file=sys.stderr)
@@ -2149,8 +2150,9 @@ class Project(object):
 
       # If this is not last attempt, try 'git remote prune'.
       elif (try_n < retry_fetches - 1 and
-            'error:' in gitcmd.stderr and
-            'git remote prune' in gitcmd.stderr and
+            gitcmd.stdout and
+            'error:' in gitcmd.stdout and
+            'git remote prune' in gitcmd.stdout and
             not prune_tried):
         prune_tried = True
         prunecmd = GitCommand(self, ['remote', 'prune', name], bare=True,
