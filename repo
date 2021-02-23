@@ -289,8 +289,8 @@ def GetParser(gitc_init=False):
   group = parser.add_option_group('Manifest options')
   group.add_option('-u', '--manifest-url',
                    help='manifest repository location', metavar='URL')
-  group.add_option('-b', '--manifest-branch',
-                   help='manifest branch or revision', metavar='REVISION')
+  group.add_option('-b', '--manifest-branch', metavar='REVISION',
+                   help='manifest branch or revision (use HEAD for default)')
   group.add_option('-m', '--manifest-name',
                    help='initial manifest file', metavar='NAME.xml')
   cbr_opts = ['--current-branch']
