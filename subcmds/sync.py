@@ -354,6 +354,8 @@ later is required to fix a server side protocol bug.
     # - We always make sure we unlock the lock if we locked it.
     start = time.time()
     success = False
+    with lock:
+      pm.start(project.name)
     try:
       try:
         success = project.Sync_NetworkHalf(
@@ -383,7 +385,6 @@ later is required to fix a server side protocol bug.
             raise _FetchError()
 
         fetched.add(project.gitdir)
-        pm.update(msg=project.name)
       except _FetchError:
         pass
       except Exception as e:
@@ -392,8 +393,10 @@ later is required to fix a server side protocol bug.
         err_event.set()
         raise
     finally:
-      if did_lock:
-        lock.release()
+      if not did_lock:
+        lock.acquire()
+      pm.finish(project.name)
+      lock.release()
       finish = time.time()
       self.event_log.AddSync(project, event_log.TASK_SYNC_NETWORK,
                              start, finish, success)
@@ -403,7 +406,7 @@ later is required to fix a server side protocol bug.
   def _Fetch(self, projects, opt, err_event):
     fetched = set()
     lock = _threading.Lock()
-    pm = Progress('Fetching projects', len(projects))
+    pm = Progress('Fetching', len(projects))
 
     objdir_project_map = dict()
     for project in projects:
@@ -493,6 +496,8 @@ later is required to fix a server side protocol bug.
     syncbuf = SyncBuffer(self.manifest.manifestProject.config,
                          detach_head=opt.detach_head)
     success = False
+    with lock:
+      pm.start(project.name)
     try:
       try:
         project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
@@ -508,8 +513,6 @@ later is required to fix a server side protocol bug.
           print('error: Cannot checkout %s' % (project.name),
                 file=sys.stderr)
           raise _CheckoutError()
-
-        pm.update(msg=project.name)
       except _CheckoutError:
         pass
       except Exception as e:
@@ -519,10 +522,12 @@ later is required to fix a server side protocol bug.
         err_event.set()
         raise
     finally:
-      if did_lock:
-        if not success:
-          err_results.append(project.relpath)
-        lock.release()
+      if not did_lock:
+        lock.acquire()
+      if not success:
+        err_results.append(project.relpath)
+      pm.finish(project.name)
+      lock.release()
       finish = time.time()
       self.event_log.AddSync(project, event_log.TASK_SYNC_LOCAL,
                              start, finish, success)
@@ -553,7 +558,7 @@ later is required to fix a server side protocol bug.
       syncjobs = 1
 
     lock = _threading.Lock()
-    pm = Progress('Checking out projects', len(all_projects))
+    pm = Progress('Checking out', len(all_projects))
 
     threads = set()
     sem = _threading.Semaphore(syncjobs)
