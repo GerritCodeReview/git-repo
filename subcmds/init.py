@@ -48,7 +48,7 @@ argument.
 
 The optional -b argument can be used to select the manifest branch
 to checkout and use.  If no branch is specified, the remote's default
-branch is used.
+branch is used.  This is equivalent to using -b HEAD.
 
 The optional -m argument can be used to specify an alternate manifest
 to be used. If no manifest is specified, the manifest default.xml
@@ -94,9 +94,8 @@ to update the working directory files.
     g.add_option('-u', '--manifest-url',
                  dest='manifest_url',
                  help='manifest repository location', metavar='URL')
-    g.add_option('-b', '--manifest-branch',
-                 dest='manifest_branch',
-                 help='manifest branch or revision', metavar='REVISION')
+    g.add_option('-b', '--manifest-branch', metavar='REVISION',
+                 help='manifest branch or revision (use HEAD for default)')
     cbr_opts = ['--current-branch']
     # The gitc-init subcommand allocates -c itself, but a lot of init users
     # want -c, so try to satisfy both as best we can.
@@ -232,6 +231,11 @@ to update the working directory files.
       r.Save()
 
     if opt.manifest_branch:
+      if opt.manifest_branch == 'HEAD':
+        opt.manifest_branch = m.ResolveRemoteHead()
+        if opt.manifest_branch is None:
+          print('fatal: unable to resolve HEAD', file=sys.stderr)
+          sys.exit(1)
       m.revisionExpr = opt.manifest_branch
     else:
       if is_new:
