@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cf0a45f_bda87482",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-23T05:25:19Z",
+      "side": 1,
+      "message": "Thanks very much for the code review. I will test the code (there were some untested changes) and will fix all the comments. I am guessing the design document is okay. I will proceed with the implementation.",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d99d6c9d_1c285c15",
