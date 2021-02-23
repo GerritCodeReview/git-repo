@@ -26,17 +26,14 @@ CSI_ERASE_LINE = '\x1b[2K'
 
 
 class Progress(object):
-  def __init__(self, title, total=0, units='', print_newline=False,
-               always_print_percentage=False):
+  def __init__(self, title, total=0, units='', print_newline=False):
     self._title = title
     self._total = total
     self._done = 0
-    self._lastp = -1
     self._start = time()
     self._show = False
     self._units = units
     self._print_newline = print_newline
-    self._always_print_percentage = always_print_percentage
 
   def update(self, inc=1, msg=''):
     self._done += inc
@@ -58,18 +55,15 @@ class Progress(object):
       sys.stderr.flush()
     else:
       p = (100 * self._done) / self._total
-
-      if self._lastp != p or self._always_print_percentage:
-        self._lastp = p
-        sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s)%s%s%s' % (
-            CSI_ERASE_LINE,
-            self._title,
-            p,
-            self._done, self._units,
-            self._total, self._units,
-            ' ' if msg else '', msg,
-            "\n" if self._print_newline else ""))
-        sys.stderr.flush()
+      sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s)%s%s%s' % (
+          CSI_ERASE_LINE,
+          self._title,
+          p,
+          self._done, self._units,
+          self._total, self._units,
+          ' ' if msg else '', msg,
+          '\n' if self._print_newline else ''))
+      sys.stderr.flush()
 
   def end(self):
     if _NOT_TTY or IsTrace() or not self._show:

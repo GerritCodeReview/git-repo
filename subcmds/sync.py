@@ -403,8 +403,7 @@ later is required to fix a server side protocol bug.
   def _Fetch(self, projects, opt, err_event):
     fetched = set()
     lock = _threading.Lock()
-    pm = Progress('Fetching projects', len(projects),
-                  always_print_percentage=opt.quiet)
+    pm = Progress('Fetching projects', len(projects))
 
     objdir_project_map = dict()
     for project in projects:
