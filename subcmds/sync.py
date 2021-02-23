@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import http.cookiejar as cookielib
+import io
 import json
 import netrc
 from optparse import SUPPRESS_HELP
@@ -354,6 +355,7 @@ later is required to fix a server side protocol bug.
     # - We always make sure we unlock the lock if we locked it.
     start = time.time()
     success = False
+    buf = io.StringIO()
     with lock:
       pm.start(project.name)
     try:
@@ -361,6 +363,7 @@ later is required to fix a server side protocol bug.
         success = project.Sync_NetworkHalf(
             quiet=opt.quiet,
             verbose=opt.verbose,
+            output_redir=buf,
             current_branch_only=opt.current_branch_only,
             force_sync=opt.force_sync,
             clone_bundle=opt.clone_bundle,
@@ -375,6 +378,10 @@ later is required to fix a server side protocol bug.
         # and Progress.update() are not thread safe.
         lock.acquire()
         did_lock = True
+
+        output = buf.getvalue()
+        if opt.verbose and output:
+          pm.update(inc=0, msg=output.rstrip())
 
         if not success:
           err_event.set()
