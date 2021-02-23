@@ -22,13 +22,13 @@ Examples:
   project_commit_ids = superproject.UpdateProjectsRevisionId(projects)
 """
 
+import hashlib
 import os
 import sys
 
 from error import BUG_REPORT_URL
 from git_command import GitCommand
 from git_refs import R_HEADS
-import platform_utils
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
@@ -37,9 +37,9 @@ _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
 class Superproject(object):
   """Get commit ids from superproject.
 
-  It does a 'git clone' of superproject and 'git ls-tree' to get list of commit ids
-  for all projects. It contains project_commit_ids which is a dictionary with
-  project/commit id entries.
+  Initializes a local copy of a superproject for the manifest. This allows
+  lookup of commit ids for all projects. It contains _project_commit_ids which
+  is a dictionary with project/commit id entries.
   """
   def __init__(self, manifest, repodir, superproject_dir='exp-superproject'):
     """Initializes superproject.
@@ -58,8 +58,12 @@ class Superproject(object):
     self._superproject_path = os.path.join(self._repodir, superproject_dir)
     self._manifest_path = os.path.join(self._superproject_path,
                                        _SUPERPROJECT_MANIFEST_NAME)
-    self._work_git = os.path.join(self._superproject_path,
-                                  _SUPERPROJECT_GIT_NAME)
+    git_name = ''
+    if self._manifest.superproject:
+      remote_name = self._manifest.superproject['remote'].name
+      git_name = hashlib.md5(remote_name.encode('utf8')).hexdigest() + '-'
+    self._work_git_name = git_name + _SUPERPROJECT_GIT_NAME
+    self._work_git = os.path.join(self._superproject_path, self._work_git_name)
 
   @property
   def project_commit_ids(self):
@@ -77,20 +81,15 @@ class Superproject(object):
       branch = branch[len(R_HEADS):]
     return branch
 
-  def _Clone(self, url):
-    """Do a 'git clone' for the given url.
-
-    Args:
-      url: superproject's url to be passed to git clone.
+  def _Init(self):
+    """Sets up a local Git repository to get a copy of a superproject.
 
     Returns:
-      True if git clone is successful, or False.
+      True if initialization is successful, or False.
     """
     if not os.path.exists(self._superproject_path):
       os.mkdir(self._superproject_path)
-    cmd = ['clone', url, '--filter', 'blob:none', '--bare']
-    if self._branch:
-      cmd += ['--branch', self._branch]
+    cmd = ['init', '--bare', self._work_git_name]
     p = GitCommand(None,
                    cmd,
                    cwd=self._superproject_path,
@@ -98,24 +97,27 @@ class Superproject(object):
                    capture_stderr=True)
     retval = p.Wait()
     if retval:
-      # `git clone` is documented to produce an exit status of `128` if
-      # the requested url or branch are not present in the configuration.
-      print('repo: error: git clone call failed with return code: %r, stderr: %r' %
+      print('repo: error: git init call failed with return code: %r, stderr: %r' %
             (retval, p.stderr), file=sys.stderr)
       return False
     return True
 
-  def _Fetch(self):
-    """Do a 'git fetch' to to fetch the latest content.
+  def _Fetch(self, url):
+    """Fetches a local copy of a superproject for the manifest based on url.
+
+    Args:
+      url: superproject's url.
 
     Returns:
-      True if 'git fetch' is successful, or False.
+      True if fetch is successful, or False.
     """
     if not os.path.exists(self._work_git):
       print('git fetch missing drectory: %s' % self._work_git,
             file=sys.stderr)
       return False
-    cmd = ['fetch', 'origin', '+refs/heads/*:refs/heads/*', '--prune']
+    cmd = ['fetch', url, '--force', '--no-tags', '--filter', 'blob:none']
+    if self._branch:
+      cmd += [self._branch + ':' + self._branch]
     p = GitCommand(None,
                    cmd,
                    cwd=self._work_git,
@@ -129,7 +131,7 @@ class Superproject(object):
     return True
 
   def _LsTree(self):
-    """Returns the data from 'git ls-tree ...'.
+    """Gets the commit ids for all projects.
 
     Works only in git repositories.
 
@@ -153,14 +155,12 @@ class Superproject(object):
     if retval == 0:
       data = p.stdout
     else:
-      # `git clone` is documented to produce an exit status of `128` if
-      # the requested url or branch are not present in the configuration.
       print('repo: error: git ls-tree call failed with return code: %r, stderr: %r' % (
           retval, p.stderr), file=sys.stderr)
     return data
 
   def Sync(self):
-    """Sync superproject either by git clone/fetch.
+    """Gets a local copy of a superproject for the manifest.
 
     Returns:
       True if sync of superproject is successful, or False.
@@ -179,17 +179,10 @@ class Superproject(object):
             file=sys.stderr)
       return False
 
-    do_clone = True
-    if os.path.exists(self._superproject_path):
-      if not self._Fetch():
-        # If fetch fails due to a corrupted git directory, then do a git clone.
-        platform_utils.rmtree(self._superproject_path)
-      else:
-        do_clone = False
-    if do_clone:
-      if not self._Clone(url):
-        print('error: git clone failed for url: %s' % url, file=sys.stderr)
-        return False
+    if not self._Init():
+      return False
+    if not self._Fetch(url):
+      return False
     return True
 
   def _GetAllProjectsCommitIds(self):
@@ -203,7 +196,8 @@ class Superproject(object):
 
     data = self._LsTree()
     if not data:
-      print('error: git ls-tree failed for superproject', file=sys.stderr)
+      print('error: git ls-tree failed to return data for superproject',
+            file=sys.stderr)
       return None
 
     # Parse lines like the following to select lines starting with '160000' and
