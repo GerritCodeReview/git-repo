@@ -1039,6 +1039,7 @@ class Project(object):
   def Sync_NetworkHalf(self,
                        quiet=False,
                        verbose=False,
+                       output_redir=None,
                        is_new=None,
                        current_branch_only=False,
                        force_sync=False,
@@ -1126,8 +1127,9 @@ class Project(object):
             (ID_RE.match(self.revisionExpr) and
              self._CheckForImmutableRevision())):
       if not self._RemoteFetch(
-              initial=is_new, quiet=quiet, verbose=verbose, alt_dir=alt_dir,
-              current_branch_only=current_branch_only,
+              initial=is_new,
+              quiet=quiet, verbose=verbose, output_redir=output_redir,
+              alt_dir=alt_dir, current_branch_only=current_branch_only,
               tags=tags, prune=prune, depth=depth,
               submodules=submodules, force_sync=force_sync,
               clone_filter=clone_filter, retry_fetches=retry_fetches):
@@ -1139,7 +1141,11 @@ class Project(object):
       alternates_file = os.path.join(self.gitdir, 'objects/info/alternates')
       if os.path.exists(alternates_file):
         cmd = ['repack', '-a', '-d']
-        if GitCommand(self, cmd, bare=True).Wait() != 0:
+        p = GitCommand(self, cmd, bare=True, capture_stdout=bool(output_redir),
+                       merge_output=bool(output_redir))
+        if p.stdout and output_redir:
+          buf.write(p.stdout)
+        if p.Wait() != 0:
           return False
         platform_utils.remove(alternates_file)
 
@@ -1951,6 +1957,7 @@ class Project(object):
                    initial=False,
                    quiet=False,
                    verbose=False,
+                   output_redir=None,
                    alt_dir=None,
                    tags=True,
                    prune=False,
@@ -2128,7 +2135,9 @@ class Project(object):
     ok = prune_tried = False
     for try_n in range(retry_fetches):
       gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy,
-                          merge_output=True, capture_stdout=quiet)
+                          merge_output=True, capture_stdout=quiet or bool(output_redir))
+      if gitcmd.stdout and not quiet and output_redir:
+        output_redir.write(gitcmd.stdout)
       ret = gitcmd.Wait()
       if ret == 0:
         ok = True
@@ -2170,7 +2179,7 @@ class Project(object):
         # Git died with a signal, exit immediately
         break
       if not verbose:
-        print('%s:\n%s' % (self.name, gitcmd.stdout), file=sys.stderr)
+        print('\n%s:\n%s' % (self.name, gitcmd.stdout), file=sys.stderr)
       time.sleep(random.randint(30, 45))
 
     if initial:
@@ -2189,7 +2198,7 @@ class Project(object):
         # Sync the current branch only with depth set to None.
         # We always pass depth=None down to avoid infinite recursion.
         return self._RemoteFetch(
-            name=name, quiet=quiet, verbose=verbose,
+            name=name, quiet=quiet, verbose=verbose, output_redir=output_redir,
             current_branch_only=current_branch_only and depth,
             initial=False, alt_dir=alt_dir,
             depth=None, clone_filter=clone_filter)
