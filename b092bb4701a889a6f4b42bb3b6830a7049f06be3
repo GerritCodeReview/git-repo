@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d99d6c9d_1c285c15",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "a lot of these comments you could write more generically and then you wouldn\u0027t have to constantly tweak them in every patch\n\n Initializes a local copy of a superproject for the manifest.  This allows\n lookup of commit ids for all projects. ...\n\nsame feedback for a lot of the docstrings/comments below too.",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d215a56_0eae0167",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "use single quotes",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03f9658b_3b5df1fc",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "shouldn\u0027t this include a trailing \u0027-\u0027 ?  otherwise the git_name below will be \"\u003cremote\u003esuperproject.git\" instead of \"\u003cremote\u003e-superproject.git\".",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f86ca35_e999d210",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "are you sure this is accurate now ?  `git init` isn\u0027t passed a URL or branch, so why would it ever exit 128 ?",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e05d5e2c_b1cc1ceb",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "we should not be hardcoding \"master\" anywhere.  the remote should have HEAD configured correctly for us to be able to fetch from it.",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c284d4b5_321232be",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "is this comment accurate anymore ?",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8f99e2f_3963a133",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "_Init() already printed an error message.  do we have to do that again ?",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "528ccbf4_92c950e6",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T05:22:21Z",
+      "side": 1,
+      "message": "same for _Fetch",
+      "revId": "b092bb4701a889a6f4b42bb3b6830a7049f06be3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
