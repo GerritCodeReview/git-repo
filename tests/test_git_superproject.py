@@ -97,17 +97,17 @@ class SuperprojectTestCase(unittest.TestCase):
     with mock.patch.object(self._superproject, '_GetBranch', return_value='junk'):
       self.assertFalse(superproject.Sync())
 
-  def test_superproject_get_superproject_mock_clone(self):
-    """Test with _Clone failing."""
-    with mock.patch.object(self._superproject, '_Clone', return_value=False):
+  def test_superproject_get_superproject_mock_init(self):
+    """Test with _Init failing."""
+    with mock.patch.object(self._superproject, '_Init', return_value=False):
       self.assertFalse(self._superproject.Sync())
 
   def test_superproject_get_superproject_mock_fetch(self):
-    """Test with _Fetch failing and _clone being called."""
-    with mock.patch.object(self._superproject, '_Clone', return_value=True):
+    """Test with _Fetch failing."""
+    with mock.patch.object(self._superproject, '_Init', return_value=True):
       os.mkdir(self._superproject._superproject_path)
       with mock.patch.object(self._superproject, '_Fetch', return_value=False):
-        self.assertTrue(self._superproject.Sync())
+        self.assertFalse(self._superproject.Sync())
 
   def test_superproject_get_all_project_commit_ids_mock_ls_tree(self):
     """Test with LsTree being a mock."""
@@ -116,14 +116,15 @@ class SuperprojectTestCase(unittest.TestCase):
             '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tbootable/recovery\x00'
             '120000 blob acc2cbdf438f9d2141f0ae424cec1d8fc4b5d97f\tbootstrap.bash\x00'
             '160000 commit ade9b7a0d874e25fff4bf2552488825c6f111928\tbuild/bazel\x00')
-    with mock.patch.object(self._superproject, '_Clone', return_value=True):
-      with mock.patch.object(self._superproject, '_LsTree', return_value=data):
-        commit_ids = self._superproject._GetAllProjectsCommitIds()
-        self.assertEqual(commit_ids, {
-            'art': '2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea',
-            'bootable/recovery': 'e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06',
-            'build/bazel': 'ade9b7a0d874e25fff4bf2552488825c6f111928'
-        })
+    with mock.patch.object(self._superproject, '_Init', return_value=True):
+      with mock.patch.object(self._superproject, '_Fetch', return_value=True):
+        with mock.patch.object(self._superproject, '_LsTree', return_value=data):
+          commit_ids = self._superproject._GetAllProjectsCommitIds()
+          self.assertEqual(commit_ids, {
+              'art': '2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea',
+              'bootable/recovery': 'e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06',
+              'build/bazel': 'ade9b7a0d874e25fff4bf2552488825c6f111928'
+          })
 
   def test_superproject_write_manifest_file(self):
     """Test with writing manifest to a file after setting revisionId."""
@@ -151,7 +152,7 @@ class SuperprojectTestCase(unittest.TestCase):
     projects = self._superproject._manifest.projects
     data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
             '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tbootable/recovery\x00')
-    with mock.patch.object(self._superproject, '_Clone', return_value=True):
+    with mock.patch.object(self._superproject, '_Init', return_value=True):
       with mock.patch.object(self._superproject, '_Fetch', return_value=True):
         with mock.patch.object(self._superproject,
                                '_LsTree',
