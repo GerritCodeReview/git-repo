@@ -72,6 +72,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "298c7cd2_66ab3fe9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-23T04:52:30Z",
+      "side": 1,
+      "message": "sure, i\u0027m not asking for this patch to include git-lfs.  when you say git-lfs support is the reason for implementing a post sync hook, the question is whether it\u0027d be better if repo provided that itself directly rather than requiring projects constantly reimplement it themselves, and thus whether we\u0027d need this at all.\n\ni\u0027ve never used git-lfs myself, so i wouldn\u0027t be able to put that together.  i\u0027m not sure why --reference would break things, but i\u0027d understand that things might not cache the objects as well as desired.",
+      "parentUuid": "30a33e54_3471626d",
+      "revId": "7d788919a567930581703f8563bffa969b363502",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "50872518_491a03ce",
