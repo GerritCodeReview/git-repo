@@ -415,7 +415,7 @@ later is required to fix a server side protocol bug.
     for project_list in objdir_project_map.values():
       # Check for any errors before running any more tasks.
       # ...we'll let existing threads finish, though.
-      if err_event.isSet() and opt.fail_fast:
+      if err_event.is_set() and opt.fail_fast:
         break
 
       sem.acquire()
@@ -562,7 +562,7 @@ later is required to fix a server side protocol bug.
     for project in all_projects:
       # Check for any errors before running any more tasks.
       # ...we'll let existing threads finish, though.
-      if err_event.isSet() and opt.fail_fast:
+      if err_event.is_set() and opt.fail_fast:
         break
 
       sem.acquire()
@@ -638,7 +638,7 @@ later is required to fix a server side protocol bug.
         sem.release()
 
     for bare_git in gc_gitdirs.values():
-      if err_event.isSet() and opt.fail_fast:
+      if err_event.is_set() and opt.fail_fast:
         break
       sem.acquire()
       t = _threading.Thread(target=GC, args=(bare_git,))
@@ -949,7 +949,7 @@ later is required to fix a server side protocol bug.
       _PostRepoFetch(rp, opt.repo_verify)
       if opt.network_only:
         # bail out now; the rest touches the working tree
-        if err_event.isSet():
+        if err_event.is_set():
           print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
           sys.exit(1)
         return
@@ -976,7 +976,7 @@ later is required to fix a server side protocol bug.
         fetched.update(self._Fetch(missing, opt, err_event))
 
       # If we saw an error, exit with code 1 so that other scripts can check.
-      if err_event.isSet():
+      if err_event.is_set():
         err_network_sync = True
         if opt.fail_fast:
           print('\nerror: Exited sync due to fetch errors.\n'
@@ -999,7 +999,7 @@ later is required to fix a server side protocol bug.
 
     err_results = []
     self._Checkout(all_projects, opt, err_event, err_results)
-    if err_event.isSet():
+    if err_event.is_set():
       err_checkout = True
       # NB: We don't exit here because this is the last step.
 
@@ -1009,7 +1009,7 @@ later is required to fix a server side protocol bug.
       print(self.manifest.notice)
 
     # If we saw an error, exit with code 1 so that other scripts can check.
-    if err_event.isSet():
+    if err_event.is_set():
       print('\nerror: Unable to fully sync the tree.', file=sys.stderr)
       if err_network_sync:
         print('error: Downloading network changes failed.', file=sys.stderr)
