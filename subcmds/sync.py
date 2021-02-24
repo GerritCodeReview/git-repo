@@ -889,7 +889,8 @@ later is required to fix a server side protocol bug.
     else:
       self._UpdateManifestProject(opt, mp, manifest_name)
 
-    if opt.use_superproject:
+    if (opt.use_superproject or
+        self.manifest.manifestProject.config.GetBoolean('repo.superproject')):
       manifest_name = self._UpdateProjectsRevisionId(opt, args)
 
     if self.gitc_manifest:
