@@ -50,6 +50,23 @@
       "message": "actually i can repro why this is desirable: `repo sync -l -j1` is faster across 1000 repos than `repo sync -l -j2` or higher -j#.  i think https://crbug.com/gerrit/12389 needs to be resolved before we can merge this.",
       "revId": "49eecd52d22c2147e6605b9ea5ca6ac3de64e48b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3923bb0_990651f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-24T23:49:04Z",
+      "side": 1,
+      "message": "i\u0027ve done a bit of a sprint and fixed this in https://gerrit-review.googlesource.com/c/git-repo/+/298063",
+      "revId": "49eecd52d22c2147e6605b9ea5ca6ac3de64e48b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
