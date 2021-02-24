@@ -42,12 +42,12 @@ def duration_str(total):
 
 
 class Progress(object):
-  def __init__(self, title, total=0, units='', print_newline=False):
+  def __init__(self, title, total=0, units='', print_newline=False, delay=True):
     self._title = title
     self._total = total
     self._done = 0
     self._start = time()
-    self._show = False
+    self._show = not delay
     self._units = units
     self._print_newline = print_newline
     # Only show the active jobs section if we run more than one in parallel.
