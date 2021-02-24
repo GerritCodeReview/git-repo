@@ -62,29 +62,27 @@ contain a line that matches both expressions:
 
 """
 
+  @staticmethod
+  def _carry_option(_option, opt_str, value, parser):
+    pt = getattr(parser.values, 'cmd_argv', None)
+    if pt is None:
+      pt = []
+      setattr(parser.values, 'cmd_argv', pt)
+
+    if opt_str == '-(':
+      pt.append('(')
+    elif opt_str == '-)':
+      pt.append(')')
+    else:
+      pt.append(opt_str)
+
+    if value is not None:
+      pt.append(value)
+
   def _Options(self, p):
-    def carry(option,
-              opt_str,
-              value,
-              parser):
-      pt = getattr(parser.values, 'cmd_argv', None)
-      if pt is None:
-        pt = []
-        setattr(parser.values, 'cmd_argv', pt)
-
-      if opt_str == '-(':
-        pt.append('(')
-      elif opt_str == '-)':
-        pt.append(')')
-      else:
-        pt.append(opt_str)
-
-      if value is not None:
-        pt.append(value)
-
     g = p.add_option_group('Sources')
     g.add_option('--cached',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Search the index, instead of the work tree')
     g.add_option('-r', '--revision',
                  dest='revision', action='append', metavar='TREEish',
@@ -92,66 +90,66 @@ contain a line that matches both expressions:
 
     g = p.add_option_group('Pattern')
     g.add_option('-e',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  metavar='PATTERN', type='str',
                  help='Pattern to search for')
     g.add_option('-i', '--ignore-case',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Ignore case differences')
     g.add_option('-a', '--text',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help="Process binary files as if they were text")
     g.add_option('-I',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help="Don't match the pattern in binary files")
     g.add_option('-w', '--word-regexp',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Match the pattern only at word boundaries')
     g.add_option('-v', '--invert-match',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Select non-matching lines')
     g.add_option('-G', '--basic-regexp',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Use POSIX basic regexp for patterns (default)')
     g.add_option('-E', '--extended-regexp',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Use POSIX extended regexp for patterns')
     g.add_option('-F', '--fixed-strings',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Use fixed strings (not regexp) for pattern')
 
     g = p.add_option_group('Pattern Grouping')
     g.add_option('--all-match',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Limit match to lines that have all patterns')
     g.add_option('--and', '--or', '--not',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Boolean operators to combine patterns')
     g.add_option('-(', '-)',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Boolean operator grouping')
 
     g = p.add_option_group('Output')
     g.add_option('-n',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Prefix the line number to matching lines')
     g.add_option('-C',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  metavar='CONTEXT', type='str',
                  help='Show CONTEXT lines around match')
     g.add_option('-B',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  metavar='CONTEXT', type='str',
                  help='Show CONTEXT lines before match')
     g.add_option('-A',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  metavar='CONTEXT', type='str',
                  help='Show CONTEXT lines after match')
     g.add_option('-l', '--name-only', '--files-with-matches',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Show only file names containing matching lines')
     g.add_option('-L', '--files-without-match',
-                 action='callback', callback=carry,
+                 action='callback', callback=self._carry_option,
                  help='Show only file names not containing matching lines')
 
   def Execute(self, opt, args):
