@@ -93,6 +93,23 @@ support, see the [manifest-format.md] file.
 
 ### Project objects
 
+*** note
+**Warning**: Please do not use repo's approach to projects/ & project-objects/
+layouts as a model for other tools to implement similar approaches.
+It has a number of known downsides like:
+*   [Symlinks do not work well under Windows](./windows.md).
+*   Git sometimes replaces symlinks under .git/ with real files (under unknown
+    circumstances), and then the internal state gets out of sync, and data loss
+    may ensue.
+*   When sharing project-objects between multiple project checkouts, Git might
+    automatically run `gc` or `prune` which may lead to data loss or corruption
+    (since those operate on leaf projects and miss refs in other leaves).  See
+    https://gerrit-review.googlesource.com/c/git-repo/+/254392 for more details.
+
+Instead, you should use standard Git workflows like [git worktree] or
+[gitsubmodules] with [superprojects].
+***
+
 *   `project.list`: Tracking file used by `repo sync` to determine when projects
     are added or removed and need corresponding updates in the checkout.
 *   `projects/`: Bare checkouts of every project synced by the manifest.  The
@@ -121,7 +138,7 @@ support, see the [manifest-format.md] file.
     (i.e. the path on the remote server) with a `.git` suffix.  This has the
     same advantages as the `project-objects/` layout above.
 
-    This is used when git worktrees are enabled.
+    This is used when [git worktree]'s are enabled.
 
 ### Global settings
 
@@ -143,7 +160,7 @@ User controlled settings are initialized when running `repo init`.
 | repo.reference    | `--reference`             | Reference repo client checkout |
 | repo.submodules   | `--submodules`            | Sync git submodules |
 | repo.superproject | `--use-superproject`      | Sync [superproject] |
-| repo.worktree     | `--worktree`              | Use `git worktree` for checkouts |
+| repo.worktree     | `--worktree`              | Use [git worktree] for checkouts |
 | user.email        | `--config-name`           | User's e-mail address; Copied into `.git/config` when checking out a new project |
 | user.name         | `--config-name`           | User's name; Copied into `.git/config` when checking out a new project |
 
@@ -228,7 +245,10 @@ Repo will create & maintain a few files in the user's home directory.
 
 
 [git-config]: https://git-scm.com/docs/git-config
+[git worktree]: https://git-scm.com/docs/git-worktree
+[gitsubmodules]: https://git-scm.com/docs/gitsubmodules
 [manifest-format.md]: ./manifest-format.md
 [local manifests]: ./manifest-format.md#Local-Manifests
+[superprojects]: https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects
 [topic]: https://gerrit-review.googlesource.com/Documentation/intro-user.html#topics
 [upload-notify]: https://gerrit-review.googlesource.com/Documentation/user-upload.html#notify
