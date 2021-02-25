@@ -104,6 +104,24 @@
       "parentUuid": "82dc5db6_425409ce",
       "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "597ff762_577c86de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1109081
+      },
+      "writtenOn": "2021-02-25T13:35:57Z",
+      "side": 1,
+      "message": "Hi Mike,\n\nI have done some more tests following of your answer.\n\nThe path returned by the Git error is indeed incorrect due to one \".. \" too many.\n\nWith the following command works under Windows\n GIT_DIR:\u0027C:\\Users\\Anonymous\\workspace\\tools/..\\.repo\\worktrees\\git-repo.git\\worktrees\\test\u0027 git worktree list\n\nSo why there is one \"..\" too many under Windows?",
+      "parentUuid": "88e9e388_85b8d286",
+      "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
