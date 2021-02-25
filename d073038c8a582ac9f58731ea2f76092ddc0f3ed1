@@ -86,6 +86,24 @@
       "parentUuid": "365a6a3a_6f08e11c",
       "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88e9e388_85b8d286",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-25T01:59:41Z",
+      "side": 1,
+      "message": "thanks, that helps.  the issue is that the code you\u0027re changing isn\u0027t Windows specific, and the scenario you describe i tested specifically (on Linux).  i just checked again and it\u0027s working fine for me:\n\n* run `repo sync`\n* add a project with path\u003dtools/test\n* run `repo sync`\n* tools/test/ exists and is a git worktree\n* change path\u003dtools/test-new\n* run `repo sync` and see it report \"tools/test: Deleting obsolete checkout.\"\n* tools/test/ does not exist\n* tools/test-new/ exists and is a git worktree\n\nself.bare_git \u0026 self.work_git point to the same path.  so if there\u0027s different behavior here on Windows, i really don\u0027t think this change fixes the real problem.\n\nbare_git works by setting the $GITDIR env var to the path and cwd to None (so it uses whatever the active cwd is), while work_git works by not setting $GITDIR but changing the cwd to the path.\n\nit looks like git doesn\u0027t like paths taking different forms.  this fails under Windows:\n\n GIT_DIR\u003d\u0027C:\\path\\to\\the\\.git\u0027 git worktree list\n\nbut this works:\n\n GIT_DIR\u003d\u0027c/path/to/the/.git\u0027 git worktree list\n\nand the .git file looks like:\n\n gitdir: ..\\.repo\\worktrees\\foo\\dir.git\\worktrees\\foo\n\nnot sure whether this is a problem in git itself, or if repo should be using different path forms ... somewhere",
+      "parentUuid": "82dc5db6_425409ce",
+      "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
