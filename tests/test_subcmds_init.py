@@ -38,7 +38,7 @@ class InitCommand(unittest.TestCase):
     """Check invalid command line options."""
     ARGV = (
         # Too many arguments.
-        ['asdf'],
+        ['url', 'asdf'],
 
         # Conflicting options.
         ['--mirror', '--archive'],
