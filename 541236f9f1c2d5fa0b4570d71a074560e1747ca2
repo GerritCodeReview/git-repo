@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af6f40ca_2d0c0c96",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-25T20:05:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf3856a0_8f837da7",
+      "revId": "541236f9f1c2d5fa0b4570d71a074560e1747ca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f8561f59_8145502e",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-02-25T08:49:25Z",
       "side": 1,
       "message": "should we use --no-tags ?  not sure it\u0027ll make a practical difference, but might as well avoid asking the server to look them up ?",
+      "revId": "541236f9f1c2d5fa0b4570d71a074560e1747ca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2bfc201_34754519",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-25T20:05:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8561f59_8145502e",
       "revId": "541236f9f1c2d5fa0b4570d71a074560e1747ca2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
