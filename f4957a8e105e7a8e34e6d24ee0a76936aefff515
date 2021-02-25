@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a630b5f1_f5e35c51",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-25T08:51:42Z",
+      "side": 1,
+      "message": "use \"sync:\" tag style",
+      "revId": "f4957a8e105e7a8e34e6d24ee0a76936aefff515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e58ee31f_238fe1af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-25T08:51:42Z",
+      "side": 1,
+      "message": "first line is too long.  please see:\nhttps://chris.beams.io/posts/git-commit/",
+      "revId": "f4957a8e105e7a8e34e6d24ee0a76936aefff515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "288f52b4_8f9ea90f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-25T08:51:42Z",
+      "side": 1,
+      "message": "nit: footers should be at the bottom of the commit message with no text inbetween\n\n Bug: ...\n Bug: ...\n Change-Id: ...",
+      "revId": "f4957a8e105e7a8e34e6d24ee0a76936aefff515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
