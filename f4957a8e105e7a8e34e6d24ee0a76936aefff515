@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a4db644_ee9422f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-25T16:35:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a630b5f1_f5e35c51",
+      "revId": "f4957a8e105e7a8e34e6d24ee0a76936aefff515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e58ee31f_238fe1af",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33000d4c_b702af87",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-25T16:35:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e58ee31f_238fe1af",
+      "revId": "f4957a8e105e7a8e34e6d24ee0a76936aefff515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "288f52b4_8f9ea90f",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-02-25T08:51:42Z",
       "side": 1,
       "message": "nit: footers should be at the bottom of the commit message with no text inbetween\n\n Bug: ...\n Bug: ...\n Change-Id: ...",
+      "revId": "f4957a8e105e7a8e34e6d24ee0a76936aefff515",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0f4af14_89ea715d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-02-25T16:35:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "288f52b4_8f9ea90f",
       "revId": "f4957a8e105e7a8e34e6d24ee0a76936aefff515",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
