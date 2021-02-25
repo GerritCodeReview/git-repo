@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf3856a0_8f837da7",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-25T08:49:25Z",
+      "side": 1,
+      "message": "so i just realized we\u0027ve never enforced any constraints on |name|.  it could be \"/etc/\" in which case self._work_git will end up pointing to paths under /etc/ and attempting to write to those.  that would be ... bad.\n\nwe should add some constraints on this, but i\u0027m not sure that leaves us in a good place.  there\u0027s also case folding issues (see manifest_xml.py::_CheckLocalPath for more examples) to contend with, characters that aren\u0027t valid in some filesystems or OS\u0027s, and many other messy issues.\n\nhow about instead of using the name directly, we hash it ?  then users can continue to use whatever name values they want, and we never have to worry about it causing issues with the active OS.  just use hashlib.md5 and call it a day.  no need to worry about hash collisions in this limited space imo.",
+      "revId": "541236f9f1c2d5fa0b4570d71a074560e1747ca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8561f59_8145502e",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-25T08:49:25Z",
+      "side": 1,
+      "message": "should we use --no-tags ?  not sure it\u0027ll make a practical difference, but might as well avoid asking the server to look them up ?",
+      "revId": "541236f9f1c2d5fa0b4570d71a074560e1747ca2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
