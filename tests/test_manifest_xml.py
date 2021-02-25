@@ -87,6 +87,8 @@ class ManifestValidateFilePaths(unittest.TestCase):
   def test_bad_paths(self):
     """Make sure bad paths (src & dest) are rejected."""
     PATHS = (
+        '',
+        '.',
         '..',
         '../',
         './',
