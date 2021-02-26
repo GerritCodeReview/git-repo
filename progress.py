@@ -25,6 +25,22 @@ _NOT_TTY = not os.isatty(2)
 CSI_ERASE_LINE = '\x1b[2K'
 
 
+def duration_str(total):
+  """A less noisy timedelta.__str__.
+
+  The default timedelta stringification contains a lot of leading zeros and
+  uses microsecond resolution.  This makes for noisy output.
+  """
+  hours, rem = divmod(total, 3600)
+  mins, secs = divmod(rem, 60)
+  ret = '%.3fs' % (secs,)
+  if mins:
+    ret = '%im%s' % (mins, ret)
+  if hours:
+    ret = '%ih%s' % (hours, ret)
+  return ret
+
+
 class Progress(object):
   def __init__(self, title, total=0, units='', print_newline=False):
     self._title = title
@@ -87,18 +103,21 @@ class Progress(object):
     if _NOT_TTY or IsTrace() or not self._show:
       return
 
+    duration = duration_str(time() - self._start)
     if self._total <= 0:
-      sys.stderr.write('%s\r%s: %d, done.\n' % (
+      sys.stderr.write('%s\r%s: %d, done in %s\n' % (
           CSI_ERASE_LINE,
           self._title,
-          self._done))
+          self._done,
+          duration))
       sys.stderr.flush()
     else:
       p = (100 * self._done) / self._total
-      sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s), done.\n' % (
+      sys.stderr.write('%s\r%s: %3d%% (%d%s/%d%s), done in %s\n' % (
           CSI_ERASE_LINE,
           self._title,
           p,
           self._done, self._units,
-          self._total, self._units))
+          self._total, self._units,
+          duration))
       sys.stderr.flush()
