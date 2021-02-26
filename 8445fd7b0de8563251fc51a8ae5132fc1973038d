@@ -46,6 +46,30 @@
       },
       "revId": "8445fd7b0de8563251fc51a8ae5132fc1973038d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5e16304_33617e41",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-26T22:22:01Z",
+      "side": 1,
+      "message": "I guess it would only be ambiguous if the closure was returned from this function.",
+      "parentUuid": "82b7b1b5_b4d2cd1f",
+      "range": {
+        "startLine": 60,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 19
+      },
+      "revId": "8445fd7b0de8563251fc51a8ae5132fc1973038d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
