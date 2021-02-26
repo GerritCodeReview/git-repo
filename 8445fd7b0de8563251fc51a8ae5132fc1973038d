@@ -22,6 +22,30 @@
       },
       "revId": "8445fd7b0de8563251fc51a8ae5132fc1973038d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82b7b1b5_b4d2cd1f",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-26T22:13:09Z",
+      "side": 1,
+      "message": "i don\u0027t think that\u0027s how python closures work ... i think it\u0027s instantiated at execution of the func, not definition\n\nat least, this code all works :)",
+      "parentUuid": "28ae815a_095049fc",
+      "range": {
+        "startLine": 60,
+        "startChar": 8,
+        "endLine": 60,
+        "endChar": 19
+      },
+      "revId": "8445fd7b0de8563251fc51a8ae5132fc1973038d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
