@@ -16,6 +16,47 @@
       "message": "git/Gerrit doesn\u0027t render this diff well, but i reindented the output code to move it from the for loop above into this nested func.\n\nprobably moving from using properties of the |p| object to func arguments also made it hard to minimize the changes.",
       "revId": "64345501fd6af8e351b34f4335f41b4a76f41c84",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66c59e67_e06c1b78",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-26T22:34:51Z",
+      "side": 1,
+      "message": "Rather than a closure could this just be a free function that takes `out` as an argument? Would help with the complexity of this function body.",
+      "parentUuid": "fa82b96c_9b077f1e",
+      "revId": "64345501fd6af8e351b34f4335f41b4a76f41c84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04ef526b_fbd7ae01",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-26T22:34:51Z",
+      "side": 1,
+      "message": "is it too much to ask that there be a unique retcode for this case? :(",
+      "range": {
+        "startLine": 220,
+        "startChar": 28,
+        "endLine": 220,
+        "endChar": 66
+      },
+      "revId": "64345501fd6af8e351b34f4335f41b4a76f41c84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
