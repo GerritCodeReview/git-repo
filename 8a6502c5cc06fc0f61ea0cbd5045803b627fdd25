@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffb780fc_030ad7dc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-26T22:03:08Z",
+      "side": 1,
+      "message": "style nit: this could be refactored to be `if syncbuf.Finish(): return (True, ...) else: err_msg(); return (False, ...)`",
+      "range": {
+        "startLine": 475,
+        "startChar": 6,
+        "endLine": 475,
+        "endChar": 21
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b98cd3f6_4d606a4f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-26T22:03:08Z",
+      "side": 1,
+      "message": "TODO/nit: I\u0027d eventually like to convert this stuff to use stdlib logging.",
+      "range": {
+        "startLine": 478,
+        "startChar": 6,
+        "endLine": 480,
+        "endChar": 28
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd68e46_3d1c0bb5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-26T22:03:08Z",
+      "side": 1,
+      "message": "All of the tasks have already been submitted to the pool so they\u0027ll still run to completion. Seems fine to me but making sure that this behavior difference is noted/intended.",
+      "range": {
+        "startLine": 526,
+        "startChar": 10,
+        "endLine": 526,
+        "endChar": 22
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b16d33c_ad934d1b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-02-26T22:03:08Z",
+      "side": 1,
+      "message": "TODO/nit: the Progress class smells like a context manager to me",
+      "range": {
+        "startLine": 528,
+        "startChar": 4,
+        "endLine": 528,
+        "endChar": 12
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
