@@ -16,6 +16,24 @@
       "message": "What is _total used for in this class?  It\u0027s a constructor arg that is initialized to 0, and it is never changed, even in the update method.  Is it some total number of expected executions to run, since it\u0027s used with self._done (which is incrememented) to show a percentage?",
       "revId": "309102fedbbbf80de25721d5910ed85f5c631a4f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d1d46d4_8cc43d79",
+        "filename": "progress.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-26T17:16:22Z",
+      "side": 1,
+      "message": "when we have a known number of items to process, the progress bar is initialized with that, and then it\u0027s updated from 0 to that total.  if the number of items is unknown, then total is 0, and we show a generic progress bar (no percentages or counts).",
+      "parentUuid": "e339f4da_5f086ade",
+      "revId": "309102fedbbbf80de25721d5910ed85f5c631a4f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
