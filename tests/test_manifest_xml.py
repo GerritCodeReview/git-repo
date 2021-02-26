@@ -24,6 +24,40 @@ import error
 import manifest_xml
 
 
+# Invalid paths that we don't want in the filesystem.
+INVALID_FS_PATHS = (
+    '',
+    '.',
+    '..',
+    '../',
+    './',
+    'foo/',
+    './foo',
+    '../foo',
+    'foo/./bar',
+    'foo/../../bar',
+    '/foo',
+    './../foo',
+    '.git/foo',
+    # Check case folding.
+    '.GIT/foo',
+    'blah/.git/foo',
+    '.repo/foo',
+    '.repoconfig',
+    # Block ~ due to 8.3 filenames on Windows filesystems.
+    '~',
+    'foo~',
+    'blah/foo~',
+    # Block Unicode characters that get normalized out by filesystems.
+    u'foo\u200Cbar',
+)
+
+# Make sure platforms that use path separators (e.g. Windows) are also
+# rejected properly.
+if os.path.sep != '/':
+  INVALID_FS_PATHS += tuple(x.replace('/', os.path.sep) for x in INVALID_FS_PATHS)
+
+
 class ManifestParseTestCase(unittest.TestCase):
   """TestCase for parsing manifests."""
 
@@ -86,38 +120,7 @@ class ManifestValidateFilePaths(unittest.TestCase):
 
   def test_bad_paths(self):
     """Make sure bad paths (src & dest) are rejected."""
-    PATHS = (
-        '',
-        '.',
-        '..',
-        '../',
-        './',
-        'foo/',
-        './foo',
-        '../foo',
-        'foo/./bar',
-        'foo/../../bar',
-        '/foo',
-        './../foo',
-        '.git/foo',
-        # Check case folding.
-        '.GIT/foo',
-        'blah/.git/foo',
-        '.repo/foo',
-        '.repoconfig',
-        # Block ~ due to 8.3 filenames on Windows filesystems.
-        '~',
-        'foo~',
-        'blah/foo~',
-        # Block Unicode characters that get normalized out by filesystems.
-        u'foo\u200Cbar',
-    )
-    # Make sure platforms that use path separators (e.g. Windows) are also
-    # rejected properly.
-    if os.path.sep != '/':
-      PATHS += tuple(x.replace('/', os.path.sep) for x in PATHS)
-
-    for path in PATHS:
+    for path in INVALID_FS_PATHS:
       self.assertRaises(
           error.ManifestInvalidPathError, self.check_both, path, 'a')
       self.assertRaises(
@@ -248,51 +251,11 @@ class XmlManifestTests(ManifestParseTestCase):
         '<superproject name="superproject"/>' +
         '</manifest>')
 
-  def test_project_group(self):
-    """Check project group settings."""
-    manifest = self.getXmlManifest("""
-<manifest>
-  <remote name="test-remote" fetch="http://localhost" />
-  <default remote="test-remote" revision="refs/heads/main" />
-  <project name="test-name" path="test-path"/>
-  <project name="extras" path="path" groups="g1,g2,g1"/>
-</manifest>
-""")
-    self.assertEqual(len(manifest.projects), 2)
-    # Ordering isn't guaranteed.
-    result = {
-        manifest.projects[0].name: manifest.projects[0].groups,
-        manifest.projects[1].name: manifest.projects[1].groups,
-    }
-    project = manifest.projects[0]
-    self.assertCountEqual(
-        result['test-name'],
-        ['name:test-name', 'all', 'path:test-path'])
-    self.assertCountEqual(
-        result['extras'],
-        ['g1', 'g2', 'g1', 'name:extras', 'all', 'path:path'])
 
-  def test_project_set_revision_id(self):
-    """Check setting of project's revisionId."""
-    manifest = self.getXmlManifest("""
-<manifest>
-  <remote name="default-remote" fetch="http://localhost" />
-  <default remote="default-remote" revision="refs/heads/main" />
-  <project name="test-name"/>
-</manifest>
-""")
-    self.assertEqual(len(manifest.projects), 1)
-    project = manifest.projects[0]
-    project.SetRevisionId('ABCDEF')
-    self.assertEqual(
-        manifest.ToXml().toxml(),
-        '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
-        '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<project name="test-name" revision="ABCDEF"/>' +
-        '</manifest>')
+class IncludeElementTests(ManifestParseTestCase):
+  """Tests for <include>."""
 
-  def test_include_levels(self):
+  def test_group_levels(self):
     root_m = os.path.join(self.manifest_dir, 'root.xml')
     with open(root_m, 'w') as fp:
       fp.write("""
@@ -335,8 +298,133 @@ class XmlManifestTests(ManifestParseTestCase):
         # Check level2 proj group not removed.
         self.assertIn('l2g1', proj.groups)
 
+  def test_bad_name_checks(self):
+    """Check handling of bad name attribute."""
+    def parse(name):
+      manifest = self.getXmlManifest(f"""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <include name="{name}" />
+</manifest>
+""")
+      # Force the manifest to be parsed.
+      manifest.ToXml()
 
-class SuperProjectTests(ManifestParseTestCase):
+    # Handle empty name explicitly because a different codepath rejects it.
+    with self.assertRaises(error.ManifestParseError):
+      parse('')
+
+    for path in INVALID_FS_PATHS:
+      if not path:
+        continue
+
+      with self.assertRaises(error.ManifestInvalidPathError):
+        parse(path)
+
+
+class ProjectElementTests(ManifestParseTestCase):
+  """Tests for <project>."""
+
+  def test_group(self):
+    """Check project group settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-name" path="test-path"/>
+  <project name="extras" path="path" groups="g1,g2,g1"/>
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 2)
+    # Ordering isn't guaranteed.
+    result = {
+        manifest.projects[0].name: manifest.projects[0].groups,
+        manifest.projects[1].name: manifest.projects[1].groups,
+    }
+    project = manifest.projects[0]
+    self.assertCountEqual(
+        result['test-name'],
+        ['name:test-name', 'all', 'path:test-path'])
+    self.assertCountEqual(
+        result['extras'],
+        ['g1', 'g2', 'g1', 'name:extras', 'all', 'path:path'])
+
+  def test_set_revision_id(self):
+    """Check setting of project's revisionId."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="test-name"/>
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 1)
+    project = manifest.projects[0]
+    project.SetRevisionId('ABCDEF')
+    self.assertEqual(
+        manifest.ToXml().toxml(),
+        '<?xml version="1.0" ?><manifest>' +
+        '<remote name="default-remote" fetch="http://localhost"/>' +
+        '<default remote="default-remote" revision="refs/heads/main"/>' +
+        '<project name="test-name" revision="ABCDEF"/>' +
+        '</manifest>')
+
+  def test_trailing_slash(self):
+    """Check handling of trailing slashes in attributes."""
+    def parse(name, path):
+      return self.getXmlManifest(f"""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="{name}" path="{path}" />
+</manifest>
+""")
+
+    manifest = parse('a/path/', 'foo')
+    self.assertEqual(manifest.projects[0].gitdir,
+                     os.path.join(self.tempdir, '.repo/projects/foo.git'))
+    self.assertEqual(manifest.projects[0].objdir,
+                     os.path.join(self.tempdir, '.repo/project-objects/a/path.git'))
+
+    manifest = parse('a/path', 'foo/')
+    self.assertEqual(manifest.projects[0].gitdir,
+                     os.path.join(self.tempdir, '.repo/projects/foo.git'))
+    self.assertEqual(manifest.projects[0].objdir,
+                     os.path.join(self.tempdir, '.repo/project-objects/a/path.git'))
+
+  def test_bad_path_name_checks(self):
+    """Check handling of bad path & name attributes."""
+    def parse(name, path):
+      manifest = self.getXmlManifest(f"""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="{name}" path="{path}" />
+</manifest>
+""")
+      # Force the manifest to be parsed.
+      manifest.ToXml()
+
+    # Verify the parser is valid by default to avoid buggy tests below.
+    parse('ok', 'ok')
+
+    # Handle empty name explicitly because a different codepath rejects it.
+    # Empty path is OK because it defaults to the name field.
+    with self.assertRaises(error.ManifestParseError):
+      parse('', 'ok')
+
+    for path in INVALID_FS_PATHS:
+      if not path or path.endswith('/'):
+        continue
+
+      with self.assertRaises(error.ManifestInvalidPathError):
+        parse(path, 'ok')
+      with self.assertRaises(error.ManifestInvalidPathError):
+        parse('ok', path)
+
+
+class SuperProjectElementTests(ManifestParseTestCase):
   """Tests for <superproject>."""
 
   def test_superproject(self):
