@@ -670,6 +670,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     for node in manifest.childNodes:
       if node.nodeName == 'include':
         name = self._reqatt(node, 'name')
+        msg = self._CheckLocalPath(name)
+        if msg:
+          raise ManifestInvalidPathError(
+              '<include> invalid "name": %s: %s' % (name, msg))
         include_groups = ''
         if parent_groups:
           include_groups = parent_groups
@@ -979,6 +983,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     reads a <project> element from the manifest file
     """
     name = self._reqatt(node, 'name')
+    msg = self._CheckLocalPath(name, dir_ok=True)
+    if msg:
+      raise ManifestInvalidPathError(
+          '<project> invalid "name": %s: %s' % (name, msg))
     if parent:
       name = self._JoinName(parent.name, name)
 
@@ -999,9 +1007,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     path = node.getAttribute('path')
     if not path:
       path = name
-    if path.startswith('/'):
-      raise ManifestParseError("project %s path cannot be absolute in %s" %
-                               (name, self.manifestFile))
+    else:
+      msg = self._CheckLocalPath(path, dir_ok=True)
+      if msg:
+        raise ManifestInvalidPathError(
+            '<project> invalid "path": %s: %s' % (path, msg))
 
     rebase = XmlBool(node, 'rebase', True)
     sync_c = XmlBool(node, 'sync-c', False)
@@ -1124,7 +1134,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def _CheckLocalPath(path, dir_ok=False, cwd_dot_ok=False):
     """Verify |path| is reasonable for use in filesystem paths.
 
-    Used with <copyfile> & <linkfile> elements.
+    Used with <copyfile> & <linkfile> & <project> elements.
 
     This only validates the |path| in isolation: it does not check against the
     current filesystem state.  Thus it is suitable as a first-past in a parser.
