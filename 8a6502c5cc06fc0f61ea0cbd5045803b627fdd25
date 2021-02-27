@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "116049bd_2f108967",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:52:35Z",
+      "side": 1,
+      "message": "i\u0027m not sure that\u0027s an improvement\n\n if syncbuf.Finish():\n   return (True, project, start, time.time())\n else:\n   print(...)\n   return (False, project, start, time.time())\n\nit moves more code inside the try...except block which i try to avoid.  i should move the err message diagnostic out too though.",
+      "parentUuid": "ffb780fc_030ad7dc",
+      "range": {
+        "startLine": 475,
+        "startChar": 6,
+        "endLine": 475,
+        "endChar": 21
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b98cd3f6_4d606a4f",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-02-26T22:03:08Z",
       "side": 1,
       "message": "TODO/nit: I\u0027d eventually like to convert this stuff to use stdlib logging.",
+      "range": {
+        "startLine": 478,
+        "startChar": 6,
+        "endLine": 480,
+        "endChar": 28
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53e7b9d1_1b2b3950",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 480,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:52:35Z",
+      "side": 1,
+      "message": "i\u0027m not entirely sure how that works with multiprocessing when this method is executing in a child process.  locking is tricky :/.",
+      "parentUuid": "b98cd3f6_4d606a4f",
       "range": {
         "startLine": 478,
         "startChar": 6,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcd58228_fead7927",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 526,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:52:35Z",
+      "side": 1,
+      "message": "per our chat, this code appears to be doing what i want:\n\n* create a pool of 4 workers\n* submit 1000 items\n* as soon as the first item fails, stop processing new items even when previously queued, but don\u0027t abort any existing ones\n\ni avoided pool.terminate() because that\u0027ll kill active children which we don\u0027t want ... we want them to finish+exit cleanly.",
+      "parentUuid": "8bd68e46_3d1c0bb5",
+      "range": {
+        "startLine": 526,
+        "startChar": 10,
+        "endLine": 526,
+        "endChar": 22
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b16d33c_ad934d1b",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-02-26T22:03:08Z",
       "side": 1,
       "message": "TODO/nit: the Progress class smells like a context manager to me",
+      "range": {
+        "startLine": 528,
+        "startChar": 4,
+        "endLine": 528,
+        "endChar": 12
+      },
+      "revId": "8a6502c5cc06fc0f61ea0cbd5045803b627fdd25",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55cf0f8b_1c449251",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:52:35Z",
+      "side": 1,
+      "message": "hmm, i hadn\u0027t considered that.  in a python3 world, we can prob switch to that.  i\u0027ll make a note to look.",
+      "parentUuid": "2b16d33c_ad934d1b",
       "range": {
         "startLine": 528,
         "startChar": 4,
