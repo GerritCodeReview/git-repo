@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "da473ed3_2ee69296",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T18:31:44Z",
+      "side": 1,
+      "message": "as it\u0027s written, the children do all their work independently, and then return their output for processing.  if |out| is used directly by the children, we\u0027d need locks over the entire body to make sure only one child is writing to stdout at a time, otherwise we\u0027d have mingled/corrupted output.  in my simple tests, doing the processing in the children saved very little time, and that was without locks.\n\nin terms of code complexity, i\u0027m not seeing it being that much simpler if the body of _ProcessResults was (mostly) inside of _ExecuteOne.  we\u0027d still have largely the same amount of code, but we\u0027d also now have to instantiate \u0026 pass around a lock.\n\nwrt passing locks, it\u0027s kind of a pain.  multiprocessing doesn\u0027t allow you to pass it as an argument to the func from imap/etc... methods, you have to pass it at pool instantiation time, and even then the setup has to go through global scope rather than the object itself.  which was fun to debug as the child would never have self.lock setup ...\n\nalso, if the children do the processing \u0026 output, we\u0027d lose stable ordering that we have today.\n\n   def _ExecuteOne(self, cmd_argv, project):\n     \"\"\"Process one project.\"\"\"\n     try:\n       p \u003d GitCommand(project,\n                      cmd_argv,\n                      bare\u003dFalse,\n                      capture_stdout\u003dTrue,\n                      capture_stderr\u003dTrue)\n     except GitError as e:\n       return (project, -1, None, str(e))\n +\n +   with self.lock.get_lock():\n +     ...do all the same out processing here...\n +\n     return (project, p.Wait(), p.stdout, p.stderr)\n ...\n + def _PassState(self, lock):\n +   Grep.lock \u003d lock\n ...\n -     with multiprocessing.Pool(opt.jobs) as pool:\n +     lock \u003d multiprocessing.Lock()\n +     with multiprocessing.Pool(opt.jobs, self._PassState, [active_jobs]) as pool:\n ...",
+      "parentUuid": "66c59e67_e06c1b78",
+      "revId": "64345501fd6af8e351b34f4335f41b4a76f41c84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "04ef526b_fbd7ae01",
