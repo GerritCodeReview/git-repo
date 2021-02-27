@@ -285,6 +285,9 @@ class GitCommand(object):
     command = [GIT]
     if bare:
       if gitdir:
+        # Git on Windows wants its paths only using / for reliability.
+        if platform_utils.isWindows():
+          gitdir = gitdir.replace('\\', '/')
         env[GIT_DIR] = gitdir
       cwd = None
     command.append(cmdv[0])
