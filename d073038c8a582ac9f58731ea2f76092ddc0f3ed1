@@ -140,6 +140,24 @@
       "parentUuid": "597ff762_577c86de",
       "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55460676_e7a8c665",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T18:17:23Z",
+      "side": 1,
+      "message": "you can try this change instead:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/298622",
+      "parentUuid": "bff1d7f0_eeac6bc5",
+      "revId": "d073038c8a582ac9f58731ea2f76092ddc0f3ed1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
