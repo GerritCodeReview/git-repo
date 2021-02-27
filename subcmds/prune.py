@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import multiprocessing
+
 from color import Coloring
-from command import PagedCommand
+from command import DEFAULT_LOCAL_JOBS, PagedCommand, WORKER_BATCH_SIZE
 
 
 class Prune(PagedCommand):
@@ -22,11 +24,31 @@ class Prune(PagedCommand):
   helpUsage = """
 %prog [<project>...]
 """
+  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+
+  def _ExecuteOne(self, project):
+    """Process one project."""
+    return project.PruneHeads()
 
   def Execute(self, opt, args):
     all_branches = []
-    for project in self.GetProjects(args):
-      all_branches.extend(project.PruneHeads())
+    projects = self.GetProjects(args)
+
+    # NB: Should be able to refactor this module to display summary as results
+    # come back from children.
+    def _ProcessResults(results):
+      for branches in results:
+        all_branches.extend(branches)
+
+    # NB: Multiprocessing is heavy, so don't spin it up for one job.
+    if len(projects) == 1 or opt.jobs == 1:
+      _ProcessResults(self._ExecuteOne(x) for x in projects)
+    else:
+      with multiprocessing.Pool(opt.jobs) as pool:
+        results = pool.imap(
+            self._ExecuteOne, projects,
+            chunksize=WORKER_BATCH_SIZE)
+        _ProcessResults(results)
 
     if not all_branches:
       return
