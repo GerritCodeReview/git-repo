@@ -16,6 +16,24 @@
       "message": "Hi Mike,\n\nI have done some more tests following of your answer.\n\nThe path returned by the Git error is indeed incorrect due to one \".. \" too many.\n\nWith the following command works under Windows\n\n GIT_DIR:\u0027C:\\Users\\Anonymous\\workspace\\tools/..\\.repo\\worktrees\\git-repo.git\\worktrees\\test\u0027 git worktree list\nSo why there is one \"..\" too many under Windows?",
       "revId": "32aadac0274383b211a79d7a2cc4d01e92746c10",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3619f6e1_2c0494c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T14:42:23Z",
+      "side": 1,
+      "message": "lets not duplicate comment threads",
+      "parentUuid": "3c272ebc_d6a1934d",
+      "revId": "32aadac0274383b211a79d7a2cc4d01e92746c10",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
