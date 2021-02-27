@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f075375c_e375925b",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:45:08Z",
+      "side": 1,
+      "message": "this was how the code was written before so i didn\u0027t think about it, just moved it.  but i can drop the list() entirely since project.GetBranches() returns a dict and i can iterate on that directly below.",
+      "parentUuid": "28a40873_10b1cafe",
+      "range": {
+        "startLine": 61,
+        "startChar": 6,
+        "endLine": 63,
+        "endChar": 20
+      },
+      "revId": "b7f5b61f89d784ebca67c048aaeb58097b2d3bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "27977411_e8a561a3",
         "filename": "subcmds/abandon.py",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2021-02-26T22:14:05Z",
       "side": 1,
       "message": "someday this can be a walrus operator",
+      "range": {
+        "startLine": 67,
+        "startChar": 6,
+        "endLine": 68,
+        "endChar": 28
+      },
+      "revId": "b7f5b61f89d784ebca67c048aaeb58097b2d3bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "812d7b31_2367831b",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:45:08Z",
+      "side": 1,
+      "message": "thanks, i hadn\u0027t heard about that.  i\u0027m not sure how i feel about it though ... in C/C++, we\u0027ve been discouraging that style.\n\n if ((foo \u003d bar(...)) !\u003d NULL)\n   ...",
+      "parentUuid": "27977411_e8a561a3",
       "range": {
         "startLine": 67,
         "startChar": 6,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e8564c8_864314db",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:45:08Z",
+      "side": 1,
+      "message": "we noted in the other CL that |pm| is safe",
+      "parentUuid": "a2f64017_58e28b78",
+      "range": {
+        "startLine": 85,
+        "startChar": 8,
+        "endLine": 85,
+        "endChar": 19
+      },
+      "revId": "b7f5b61f89d784ebca67c048aaeb58097b2d3bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a175ac3f_a2907ff5",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-02-26T22:14:05Z",
       "side": 1,
       "message": "nit/opinion: could be a single `max` call with an inner `itertools.chain` but I don\u0027t know it\u0027s that\u0027s better or more readable.",
+      "range": {
+        "startLine": 99,
+        "startChar": 12,
+        "endLine": 100,
+        "endChar": 65
+      },
+      "revId": "b7f5b61f89d784ebca67c048aaeb58097b2d3bda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5b9ded5_2cc3acb6",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-27T19:45:08Z",
+      "side": 1,
+      "message": "the annoying thing about this is the edge case of empty results.  max() doesn\u0027t like it if you pass it empty inputs.\n\nthis code as-is isn\u0027t super readable, so i can switch it to itertools.",
+      "parentUuid": "a175ac3f_a2907ff5",
       "range": {
         "startLine": 99,
         "startChar": 12,
