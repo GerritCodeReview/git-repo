@@ -1081,6 +1081,12 @@ class Project(object):
         _warn("Cannot remove archive %s: %s", tarpath, str(e))
       self._CopyAndLinkFiles()
       return True
+
+    # If the shared object dir already exists, don't try to rebootstrap with a
+    # clone bundle download.  We should have the majority of objects already.
+    if clone_bundle and os.path.exists(self.objdir):
+      clone_bundle = False
+
     if is_new is None:
       is_new = not self.Exists
     if is_new:
