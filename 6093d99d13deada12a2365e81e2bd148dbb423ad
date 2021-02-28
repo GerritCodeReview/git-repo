@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9b25f43_00dd70c7",
+        "filename": "git_refs.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-02-28T02:48:56Z",
+      "side": 0,
+      "message": "i dropped IOError because it\u0027s been merged into OSError in python3",
+      "revId": "6093d99d13deada12a2365e81e2bd148dbb423ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
