@@ -14,9 +14,8 @@
 
 import functools
 import io
-import multiprocessing
 
-from command import DEFAULT_LOCAL_JOBS, PagedCommand, WORKER_BATCH_SIZE
+from command import DEFAULT_LOCAL_JOBS, PagedCommand
 
 
 class Diff(PagedCommand):
@@ -37,7 +36,7 @@ to the Unix 'patch' command.
                  dest='absolute', action='store_true',
                  help='Paths are relative to the repository root')
 
-  def _DiffHelper(self, absolute, project):
+  def _ExecuteOne(self, absolute, project):
     """Obtains the diff for a specific project.
 
     Args:
@@ -52,22 +51,20 @@ to the Unix 'patch' command.
     return (ret, buf.getvalue())
 
   def Execute(self, opt, args):
-    ret = 0
     all_projects = self.GetProjects(args)
 
-    # NB: Multiprocessing is heavy, so don't spin it up for one job.
-    if len(all_projects) == 1 or opt.jobs == 1:
-      for project in all_projects:
-        if not project.PrintWorkTreeDiff(opt.absolute):
+    def _ProcessResults(_pool, _output, results):
+      ret = 0
+      for (state, output) in results:
+        if output:
+          print(output, end='')
+        if not state:
           ret = 1
-    else:
-      with multiprocessing.Pool(opt.jobs) as pool:
-        states = pool.imap(functools.partial(self._DiffHelper, opt.absolute),
-                           all_projects, WORKER_BATCH_SIZE)
-        for (state, output) in states:
-          if output:
-            print(output, end='')
-          if not state:
-            ret = 1
+      return ret
 
-    return ret
+    return self.ExecuteInParallel(
+        opt.jobs,
+        functools.partial(self._ExecuteOne, opt.absolute),
+        all_projects,
+        _ProcessResults,
+        ordered=True)
