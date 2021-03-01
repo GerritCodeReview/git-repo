@@ -16,7 +16,7 @@ import re
 import sys
 
 from command import Command
-from error import GitError
+from error import GitError, NoSuchProjectError
 
 CHANGE_RE = re.compile(r'^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$')
 
@@ -60,6 +60,7 @@ If no project is specified try to use current directory as a project.
       if m:
         if not project:
           project = self.GetProjects(".")[0]
+          print('Defaulting to cwd project', project.name)
         chg_id = int(m.group(1))
         if m.group(2):
           ps_id = int(m.group(2))
@@ -76,7 +77,23 @@ If no project is specified try to use current directory as a project.
                 ps_id = max(int(match.group(1)), ps_id)
         to_get.append((project, chg_id, ps_id))
       else:
-        project = self.GetProjects([a])[0]
+        projects = self.GetProjects([a])
+        if len(projects) > 1:
+          # If the cwd is one of the projects, assume they want that.
+          try:
+            project = self.GetProjects('.')[0]
+          except NoSuchProjectError:
+            project = None
+          if project not in projects:
+            print('error: %s matches too many projects; please re-run inside '
+                  'the project checkout.' % (a,), file=sys.stderr)
+            for project in projects:
+              print('  %s/ @ %s' % (project.relpath, project.revisionExpr),
+                    file=sys.stderr)
+            sys.exit(1)
+        else:
+          project = projects[0]
+          print('Defaulting to cwd project', project.name)
     return to_get
 
   def ValidateOptions(self, opt, args):
