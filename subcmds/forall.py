@@ -115,13 +115,15 @@ without iterating through the remaining projects.
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  @staticmethod
+  def _cmd_option(option, _opt_str, _value, parser):
+    setattr(parser.values, option.dest, list(parser.rargs))
+    while parser.rargs:
+      del parser.rargs[0]
+
   def _Options(self, p):
     super()._Options(p)
 
-    def cmd(option, opt_str, value, parser):
-      setattr(parser.values, option.dest, list(parser.rargs))
-      while parser.rargs:
-        del parser.rargs[0]
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
                  help="Execute the command only on projects matching regex or wildcard expression")
@@ -136,7 +138,7 @@ without iterating through the remaining projects.
                  help='Command (and arguments) to execute',
                  dest='command',
                  action='callback',
-                 callback=cmd)
+                 callback=self._cmd_option)
     p.add_option('-e', '--abort-on-errors',
                  dest='abort_on_errors', action='store_true',
                  help='Abort if a command exits unsuccessfully')
