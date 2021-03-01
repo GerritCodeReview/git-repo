@@ -13,10 +13,9 @@
 # limitations under the License.
 
 import functools
-import multiprocessing
 import sys
 
-from command import Command, DEFAULT_LOCAL_JOBS, WORKER_BATCH_SIZE
+from command import Command, DEFAULT_LOCAL_JOBS
 from progress import Progress
 
 
@@ -50,7 +49,7 @@ The command is equivalent to:
     success = []
     all_projects = self.GetProjects(args[1:])
 
-    def _ProcessResults(results):
+    def _ProcessResults(_pool, pm, results):
       for status, project in results:
         if status is not None:
           if status:
@@ -59,17 +58,12 @@ The command is equivalent to:
             err.append(project)
         pm.update()
 
-    pm = Progress('Checkout %s' % nb, len(all_projects), quiet=opt.quiet)
-    # NB: Multiprocessing is heavy, so don't spin it up for one job.
-    if len(all_projects) == 1 or opt.jobs == 1:
-      _ProcessResults(self._ExecuteOne(nb, x) for x in all_projects)
-    else:
-      with multiprocessing.Pool(opt.jobs) as pool:
-        results = pool.imap_unordered(
-            functools.partial(self._ExecuteOne, nb), all_projects,
-            chunksize=WORKER_BATCH_SIZE)
-        _ProcessResults(results)
-    pm.end()
+    self.ExecuteInParallel(
+        opt.jobs,
+        functools.partial(self._ExecuteOne, nb),
+        all_projects,
+        _ProcessResults,
+        output=Progress('Checkout %s' % (nb,), len(all_projects), quiet=opt.quiet))
 
     if err:
       for p in err:
