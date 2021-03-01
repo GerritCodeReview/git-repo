@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import errno
+import functools
 import io
 import multiprocessing
 import re
@@ -240,8 +241,8 @@ without iterating through the remaining projects.
       config = self.manifest.manifestProject.config
       with multiprocessing.Pool(opt.jobs, InitWorker) as pool:
         results_it = pool.imap(
-            DoWorkWrapper,
-            self.ProjectArgs(projects, mirror, opt, cmd, shell, config),
+            functools.partial(DoWorkWrapper, mirror, opt, cmd, shell, config),
+            enumerate(self._SerializeProject(x) for x in projects),
             chunksize=WORKER_BATCH_SIZE)
         first = True
         for (r, output) in results_it:
@@ -270,21 +271,6 @@ without iterating through the remaining projects.
     if rc != 0:
       sys.exit(rc)
 
-  def ProjectArgs(self, projects, mirror, opt, cmd, shell, config):
-    for cnt, p in enumerate(projects):
-      try:
-        project = self._SerializeProject(p)
-      except Exception as e:
-        print('Project list error on project %s: %s: %s' %
-              (p.name, type(e).__name__, e),
-              file=sys.stderr)
-        return
-      except KeyboardInterrupt:
-        print('Project list interrupted',
-              file=sys.stderr)
-        return
-      yield [mirror, opt, cmd, shell, cnt, config, project]
-
 
 class WorkerKeyboardInterrupt(Exception):
   """ Keyboard interrupt exception for worker processes. """
@@ -294,7 +280,7 @@ def InitWorker():
   signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
-def DoWorkWrapper(args):
+def DoWorkWrapper(mirror, opt, cmd, shell, config, args):
   """ A wrapper around the DoWork() method.
 
   Catch the KeyboardInterrupt exceptions here and re-raise them as a different,
@@ -302,9 +288,9 @@ def DoWorkWrapper(args):
   and making the parent hang indefinitely.
 
   """
-  project = args.pop()
+  cnt, project = args
   try:
-    return DoWork(project, *args)
+    return DoWork(project, mirror, opt, cmd, shell, cnt, config)
   except KeyboardInterrupt:
     print('%s: Worker interrupted' % project['name'])
     raise WorkerKeyboardInterrupt()
