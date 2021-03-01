@@ -13,10 +13,9 @@
 # limitations under the License.
 
 import itertools
-import multiprocessing
 
 from color import Coloring
-from command import DEFAULT_LOCAL_JOBS, PagedCommand, WORKER_BATCH_SIZE
+from command import DEFAULT_LOCAL_JOBS, PagedCommand
 
 
 class Prune(PagedCommand):
@@ -36,18 +35,15 @@ class Prune(PagedCommand):
 
     # NB: Should be able to refactor this module to display summary as results
     # come back from children.
-    def _ProcessResults(results):
+    def _ProcessResults(_pool, _output, results):
       return list(itertools.chain.from_iterable(results))
 
-    # NB: Multiprocessing is heavy, so don't spin it up for one job.
-    if len(projects) == 1 or opt.jobs == 1:
-      all_branches = _ProcessResults(self._ExecuteOne(x) for x in projects)
-    else:
-      with multiprocessing.Pool(opt.jobs) as pool:
-        results = pool.imap(
-            self._ExecuteOne, projects,
-            chunksize=WORKER_BATCH_SIZE)
-        all_branches = _ProcessResults(results)
+    all_branches = self.ExecuteInParallel(
+        opt.jobs,
+        self._ExecuteOne,
+        projects,
+        callback=_ProcessResults,
+        ordered=True)
 
     if not all_branches:
       return
