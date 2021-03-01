@@ -13,10 +13,10 @@
 # limitations under the License.
 
 import itertools
-import multiprocessing
 import sys
+
 from color import Coloring
-from command import Command, DEFAULT_LOCAL_JOBS, WORKER_BATCH_SIZE
+from command import Command, DEFAULT_LOCAL_JOBS
 
 
 class BranchColoring(Coloring):
@@ -102,14 +102,18 @@ is shown, then the branch appears in all projects.
     out = BranchColoring(self.manifest.manifestProject.config)
     all_branches = {}
     project_cnt = len(projects)
-    with multiprocessing.Pool(processes=opt.jobs) as pool:
-      project_branches = pool.imap_unordered(
-          expand_project_to_branches, projects, chunksize=WORKER_BATCH_SIZE)
 
-      for name, b in itertools.chain.from_iterable(project_branches):
+    def _ProcessResults(_pool, _output, results):
+      for name, b in itertools.chain.from_iterable(results):
         if name not in all_branches:
           all_branches[name] = BranchInfo(name)
         all_branches[name].add(b)
+
+    self.ExecuteInParallel(
+        opt.jobs,
+        expand_project_to_branches,
+        projects,
+        callback=_ProcessResults)
 
     names = sorted(all_branches)
 

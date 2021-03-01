@@ -13,11 +13,10 @@
 # limitations under the License.
 
 import functools
-import multiprocessing
 import os
 import sys
 
-from command import Command, DEFAULT_LOCAL_JOBS, WORKER_BATCH_SIZE
+from command import Command, DEFAULT_LOCAL_JOBS
 from git_config import IsImmutable
 from git_command import git
 import gitc_utils
@@ -55,7 +54,7 @@ revision specified in the manifest.
     if not git.check_ref_format('heads/%s' % nb):
       self.OptionParser.error("'%s' is not a valid name" % nb)
 
-  def _ExecuteOne(self, opt, nb, project):
+  def _ExecuteOne(self, revision, nb, project):
     """Start one project."""
     # If the current revision is immutable, such as a SHA1, a tag or
     # a change, then we can't push back to it. Substitute with
@@ -69,7 +68,7 @@ revision specified in the manifest.
 
     try:
       ret = project.StartBranch(
-          nb, branch_merge=branch_merge, revision=opt.revision)
+          nb, branch_merge=branch_merge, revision=revision)
     except Exception as e:
       print('error: unable to checkout %s: %s' % (project.name, e), file=sys.stderr)
       ret = False
@@ -123,23 +122,18 @@ revision specified in the manifest.
         pm.update()
       pm.end()
 
-    def _ProcessResults(results):
+    def _ProcessResults(_pool, pm, results):
       for (result, project) in results:
         if not result:
           err.append(project)
         pm.update()
 
-    pm = Progress('Starting %s' % nb, len(all_projects), quiet=opt.quiet)
-    # NB: Multiprocessing is heavy, so don't spin it up for one job.
-    if len(all_projects) == 1 or opt.jobs == 1:
-      _ProcessResults(self._ExecuteOne(opt, nb, x) for x in all_projects)
-    else:
-      with multiprocessing.Pool(opt.jobs) as pool:
-        results = pool.imap_unordered(
-            functools.partial(self._ExecuteOne, opt, nb), all_projects,
-            chunksize=WORKER_BATCH_SIZE)
-        _ProcessResults(results)
-    pm.end()
+    self.ExecuteInParallel(
+        opt.jobs,
+        functools.partial(self._ExecuteOne, opt.revision, nb),
+        all_projects,
+        callback=_ProcessResults,
+        output=Progress('Starting %s' % (nb,), len(all_projects), quiet=opt.quiet))
 
     if err:
       for p in err:

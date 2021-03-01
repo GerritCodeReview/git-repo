@@ -15,10 +15,9 @@
 from collections import defaultdict
 import functools
 import itertools
-import multiprocessing
 import sys
 
-from command import Command, DEFAULT_LOCAL_JOBS, WORKER_BATCH_SIZE
+from command import Command, DEFAULT_LOCAL_JOBS
 from git_command import git
 from progress import Progress
 
@@ -52,9 +51,9 @@ It is equivalent to "git branch -D <branchname>".
     else:
       args.insert(0, "'All local branches'")
 
-  def _ExecuteOne(self, opt, nb, project):
+  def _ExecuteOne(self, all_branches, nb, project):
     """Abandon one project."""
-    if opt.all:
+    if all_branches:
       branches = project.GetBranches()
     else:
       branches = [nb]
@@ -72,7 +71,7 @@ It is equivalent to "git branch -D <branchname>".
     success = defaultdict(list)
     all_projects = self.GetProjects(args[1:])
 
-    def _ProcessResults(states):
+    def _ProcessResults(_pool, pm, states):
       for (results, project) in states:
         for branch, status in results.items():
           if status:
@@ -81,17 +80,12 @@ It is equivalent to "git branch -D <branchname>".
             err[branch].append(project)
         pm.update()
 
-    pm = Progress('Abandon %s' % nb, len(all_projects), quiet=opt.quiet)
-    # NB: Multiprocessing is heavy, so don't spin it up for one job.
-    if len(all_projects) == 1 or opt.jobs == 1:
-      _ProcessResults(self._ExecuteOne(opt, nb, x) for x in all_projects)
-    else:
-      with multiprocessing.Pool(opt.jobs) as pool:
-        states = pool.imap_unordered(
-            functools.partial(self._ExecuteOne, opt, nb), all_projects,
-            chunksize=WORKER_BATCH_SIZE)
-        _ProcessResults(states)
-    pm.end()
+    self.ExecuteInParallel(
+        opt.jobs,
+        functools.partial(self._ExecuteOne, opt.all, nb),
+        all_projects,
+        callback=_ProcessResults,
+        output=Progress('Abandon %s' % (nb,), len(all_projects), quiet=opt.quiet))
 
     width = max(itertools.chain(
         [25], (len(x) for x in itertools.chain(success, err))))
