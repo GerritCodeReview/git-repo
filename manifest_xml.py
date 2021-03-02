@@ -624,16 +624,22 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         b = b[len(R_HEADS):]
       self.branch = b
 
+      # The manifestFile was specified by the user which is why we allow include
+      # paths to point anywhere.
       nodes = []
-      nodes.append(self._ParseManifestXml(self.manifestFile,
-                                          self.manifestProject.worktree))
+      nodes.append(self._ParseManifestXml(
+          self.manifestFile, self.manifestProject.worktree,
+          restrict_includes=False))
 
       if self._load_local_manifests and self.local_manifests:
         try:
           for local_file in sorted(platform_utils.listdir(self.local_manifests)):
             if local_file.endswith('.xml'):
               local = os.path.join(self.local_manifests, local_file)
-              nodes.append(self._ParseManifestXml(local, self.repodir))
+              # Since local manifests are entirely managed by the user, allow
+              # them to point anywhere the user wants.
+              nodes.append(self._ParseManifestXml(
+                  local, self.repodir, restrict_includes=False))
         except OSError:
           pass
 
@@ -651,7 +657,19 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
       self._loaded = True
 
-  def _ParseManifestXml(self, path, include_root, parent_groups=''):
+  def _ParseManifestXml(self, path, include_root, parent_groups='',
+                        restrict_includes=True):
+    """Parse a manifest XML and return the computed nodes.
+
+    Args:
+      path: The XML file to read & parse.
+      include_root: The path to interpret include "name"s relative to.
+      parent_groups: The groups to apply to this projects.
+      restrict_includes: Whether to constrain the "name" attribute of includes.
+
+    Returns:
+      List of XML nodes.
+    """
     try:
       root = xml.dom.minidom.parse(path)
     except (OSError, xml.parsers.expat.ExpatError) as e:
@@ -670,10 +688,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     for node in manifest.childNodes:
       if node.nodeName == 'include':
         name = self._reqatt(node, 'name')
-        msg = self._CheckLocalPath(name)
-        if msg:
-          raise ManifestInvalidPathError(
-              '<include> invalid "name": %s: %s' % (name, msg))
+        if restrict_includes:
+          msg = self._CheckLocalPath(name)
+          if msg:
+            raise ManifestInvalidPathError(
+                '<include> invalid "name": %s: %s' % (name, msg))
         include_groups = ''
         if parent_groups:
           include_groups = parent_groups
@@ -681,13 +700,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           include_groups = node.getAttribute('groups') + ',' + include_groups
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
-          raise ManifestParseError("include %s doesn't exist or isn't a file"
-                                   % (name,))
+          raise ManifestParseError("include [%s/]%s doesn't exist or isn't a file"
+                                   % (include_root, name))
         try:
           nodes.extend(self._ParseManifestXml(fp, include_root, include_groups))
         # should isolate this to the exact exception, but that's
         # tricky.  actual parsing implementation may vary.
-        except (KeyboardInterrupt, RuntimeError, SystemExit):
+        except (KeyboardInterrupt, RuntimeError, SystemExit, ManifestParseError):
           raise
         except Exception as e:
           raise ManifestParseError(
