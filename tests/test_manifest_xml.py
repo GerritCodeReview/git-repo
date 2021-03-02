@@ -298,14 +298,42 @@ class IncludeElementTests(ManifestParseTestCase):
         # Check level2 proj group not removed.
         self.assertIn('l2g1', proj.groups)
 
-  def test_bad_name_checks(self):
-    """Check handling of bad name attribute."""
+  def test_allow_bad_name_from_user(self):
+    """Check handling of bad name attribute from the user's input."""
     def parse(name):
       manifest = self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <include name="{name}" />
+</manifest>
+""")
+      # Force the manifest to be parsed.
+      manifest.ToXml()
+
+    # Setup target of the include.
+    target = os.path.join(self.tempdir, 'target.xml')
+    with open(target, 'w') as fp:
+      fp.write('<manifest></manifest>')
+
+    # Include with absolute path.
+    parse(os.path.abspath(target))
+
+    # Include with relative path.
+    parse(os.path.relpath(target, self.manifest_dir))
+
+  def test_bad_name_checks(self):
+    """Check handling of bad name attribute."""
+    def parse(name):
+      # Setup target of the include.
+      with open(os.path.join(self.manifest_dir, 'target.xml'), 'w') as fp:
+        fp.write(f'<manifest><include name="{name}"/></manifest>')
+
+      manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <include name="target.xml" />
 </manifest>
 """)
       # Force the manifest to be parsed.

@@ -22,12 +22,12 @@ class ManifestParseError(Exception):
   """
 
 
-class ManifestInvalidRevisionError(Exception):
+class ManifestInvalidRevisionError(ManifestParseError):
   """The revision value in a project is incorrect.
   """
 
 
-class ManifestInvalidPathError(Exception):
+class ManifestInvalidPathError(ManifestParseError):
   """A path used in <copyfile> or <linkfile> is incorrect.
   """
 
