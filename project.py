@@ -1150,7 +1150,7 @@ class Project(object):
         p = GitCommand(self, cmd, bare=True, capture_stdout=bool(output_redir),
                        merge_output=bool(output_redir))
         if p.stdout and output_redir:
-          buf.write(p.stdout)
+          output_redir.write(p.stdout)
         if p.Wait() != 0:
           return False
         platform_utils.remove(alternates_file)
