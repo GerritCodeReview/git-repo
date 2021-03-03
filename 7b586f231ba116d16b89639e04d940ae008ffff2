@@ -16,6 +16,24 @@
       "message": "buf should be output_redir here, buf is not defined",
       "revId": "7b586f231ba116d16b89639e04d940ae008ffff2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1cf6c5b_27270545",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1147,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-03T16:20:30Z",
+      "side": 1,
+      "message": "thanks, posted https://gerrit-review.googlesource.com/c/git-repo/+/298942",
+      "parentUuid": "8aa34568_b5d50467",
+      "revId": "7b586f231ba116d16b89639e04d940ae008ffff2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
