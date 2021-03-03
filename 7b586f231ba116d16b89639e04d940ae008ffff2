@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa34568_b5d50467",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1147,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2021-03-03T07:58:25Z",
+      "side": 1,
+      "message": "buf should be output_redir here, buf is not defined",
+      "revId": "7b586f231ba116d16b89639e04d940ae008ffff2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
