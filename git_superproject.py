@@ -89,6 +89,9 @@ class Superproject(object):
     """
     if not os.path.exists(self._superproject_path):
       os.mkdir(self._superproject_path)
+    if not os.path.exists(self._work_git):
+      print('Performing initial setup for superproject at %s, this process '
+            'may take several minutes.' % self._work_git, file=sys.stderr)
     cmd = ['init', '--bare', self._work_git_name]
     p = GitCommand(None,
                    cmd,
@@ -183,6 +186,8 @@ class Superproject(object):
       return False
     if not self._Fetch(url):
       return False
+    print('Initial setup for superproject at %s completed.' % self._work_git,
+          file=sys.stderr)
     return True
 
   def _GetAllProjectsCommitIds(self):
