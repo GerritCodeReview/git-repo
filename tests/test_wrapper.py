@@ -305,8 +305,8 @@ class Requirements(RepoWrapperTestCase):
     reqs = self.wrapper.Requirements({'python': {'hard': sys.version_info}})
     reqs.assert_all()
 
-  def test_assert_all_old_repo(self):
-    """Check assert_all rejects old repo."""
+  def test_assert_all_old_python(self):
+    """Check assert_all rejects old python."""
     reqs = self.wrapper.Requirements({'python': {'hard': [99999, 0]}})
     with self.assertRaises(SystemExit):
       reqs.assert_all()
