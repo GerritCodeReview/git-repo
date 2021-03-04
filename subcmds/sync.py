@@ -292,7 +292,8 @@ later is required to fix a server side protocol bug.
       Returns path to the overriding manifest file.
     """
     superproject = git_superproject.Superproject(self.manifest,
-                                                 self.repodir)
+                                                 self.repodir,
+                                                 quiet=opt.quiet)
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)

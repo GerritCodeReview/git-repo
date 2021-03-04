@@ -185,10 +185,15 @@ to update the working directory files.
     return {'REPO_MANIFEST_URL': 'manifest_url',
             'REPO_MIRROR_LOCATION': 'reference'}
 
-  def _CloneSuperproject(self):
-    """Clone the superproject based on the superproject's url and branch."""
+  def _CloneSuperproject(self, opt):
+    """Clone the superproject based on the superproject's url and branch.
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+    """
     superproject = git_superproject.Superproject(self.manifest,
-                                                 self.repodir)
+                                                 self.repodir,
+                                                 quiet=opt.quiet)
     if not superproject.Sync():
       print('error: git update of superproject failed', file=sys.stderr)
       sys.exit(1)
@@ -553,7 +558,7 @@ to update the working directory files.
     self._LinkManifest(opt.manifest_name)
 
     if self.manifest.manifestProject.config.GetBoolean('repo.superproject'):
-      self._CloneSuperproject()
+      self._CloneSuperproject(opt)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       if opt.config_name or self._ShouldConfigureUser(opt):
