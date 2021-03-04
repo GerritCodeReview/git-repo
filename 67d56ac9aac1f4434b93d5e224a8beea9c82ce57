@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ce44325_8f5808a1",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-04T18:42:27Z",
+      "side": 1,
+      "message": "this message should be omitted when running in quiet mode.  you\u0027ll have to pass that down from opt.quiet from the caller.",
+      "revId": "67d56ac9aac1f4434b93d5e224a8beea9c82ce57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77d80e3c_49d47910",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-04T18:42:27Z",
+      "side": 1,
+      "message": "for large inputs, prefer to structure things a bit better.  like:\n\n \u0027%s: Performing initial setup for superproject; this might take several minutes\u0027 % self._work_git",
+      "revId": "67d56ac9aac1f4434b93d5e224a8beea9c82ce57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cce76161_4c2a0ea7",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-04T18:42:27Z",
+      "side": 1,
+      "message": "stderr should be for errors, not progress",
+      "revId": "67d56ac9aac1f4434b93d5e224a8beea9c82ce57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "754f8a68_99b93c01",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-04T18:42:27Z",
+      "side": 1,
+      "message": "same feedback as above",
+      "revId": "67d56ac9aac1f4434b93d5e224a8beea9c82ce57",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
