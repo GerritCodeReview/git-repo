@@ -297,6 +297,8 @@ class _Repo(object):
 
       cmd.event_log.FinishEvent(cmd_event, finish,
                                 result is None or result == 0)
+      git_trace2_event_log.DefParamRepoEvents(
+          cmd.manifest.manifestProject.config.GetConfigDict())
       git_trace2_event_log.ExitEvent(result)
 
       if gopts.event_log:

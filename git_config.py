@@ -145,6 +145,18 @@ class GitConfig(object):
     except ValueError:
       return None
 
+  def GetConfigDict(self):
+    """Returns the current configuration dict.
+
+    Returns:
+      dict of {<key>, <value>} for git configuration cache.
+      <value> are strings converted by GetString.
+    """
+    config_dict = {}
+    for key in self._cache:
+      config_dict[key] = self.GetString(key)
+    return config_dict
+
   def GetBoolean(self, name):
     """Returns a boolean from the configuration file.
        None : The value was not defined, or is not a boolean.
