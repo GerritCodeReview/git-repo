@@ -161,6 +161,55 @@ class EventLogTestCase(unittest.TestCase):
     self.assertIn('code', exit_event)
     self.assertEqual(exit_event['code'], 2)
 
+  def test_def_params_event_repo_config(self):
+    """Test 'def_params' event data outputs only repo config keys.
+
+    Expected event log:
+    <version event>
+    <def_param event>
+    <def_param event>
+    """
+    config = {
+        'git.foo': 'bar',
+        'repo.partialclone': 'true',
+        'repo.partialclonefilter': 'blob:none',
+    }
+    self._event_log_module.DefParamRepoEvents(config)
+
+    with tempfile.TemporaryDirectory(prefix='event_log_tests') as tempdir:
+      log_path = self._event_log_module.Write(path=tempdir)
+      self._log_data = self.readLog(log_path)
+
+    self.assertEqual(len(self._log_data), 3)
+    def_param_events = self._log_data[1:]
+    self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
+
+    for event in def_param_events:
+      self.verifyCommonKeys(event, expected_event_name='def_param')
+      # Check for 'def_param' event specific fields.
+      self.assertIn('param', event)
+      self.assertIn('value', event)
+      self.assertTrue(event['param'].startswith('repo.'))
+
+  def test_def_params_event_no_repo_config(self):
+    """Test 'def_params' event data won't output non-repo config keys.
+
+    Expected event log:
+    <version event>
+    """
+    config = {
+        'git.foo': 'bar',
+        'git.core.foo2': 'baz',
+    }
+    self._event_log_module.DefParamRepoEvents(config)
+
+    with tempfile.TemporaryDirectory(prefix='event_log_tests') as tempdir:
+      log_path = self._event_log_module.Write(path=tempdir)
+      self._log_data = self.readLog(log_path)
+
+    self.assertEqual(len(self._log_data), 1)
+    self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
+
   def test_write_with_filename(self):
     """Test Write() with a path to a file exits with None."""
     self.assertIsNone(self._event_log_module.Write(path='path/to/file'))
