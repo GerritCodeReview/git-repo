@@ -318,7 +318,7 @@ def GetParser(gitc_init=False):
                    help='filter for use with --partial-clone '
                         '[default: %default]')
   group.add_option('--worktree', action='store_true',
-                   help=optparse.SUPPRESS_HELP)
+                   help='use git-worktree to manage projects')
   group.add_option('--archive', action='store_true',
                    help='checkout an archive instead of a git repository for '
                         'each project. See git archive.')
