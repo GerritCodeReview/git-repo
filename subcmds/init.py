@@ -127,10 +127,8 @@ to update the working directory files.
     g.add_option('--clone-filter', action='store', default='blob:none',
                  dest='clone_filter',
                  help='filter for use with --partial-clone [default: %default]')
-    # TODO(vapier): Expose option with real help text once this has been in the
-    # wild for a while w/out significant bug reports.  Goal is by ~Sep 2020.
     g.add_option('--worktree', action='store_true',
-                 help=optparse.SUPPRESS_HELP)
+                 help='use git-worktree to manage projects')
     g.add_option('--archive',
                  dest='archive', action='store_true',
                  help='checkout an archive instead of a git repository for '
