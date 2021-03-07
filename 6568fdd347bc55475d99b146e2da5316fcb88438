@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b2eec67_a5534de5",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-07T19:04:27Z",
+      "side": 1,
+      "message": "all of the \"Get\" methods take a key and are expected to operate on a single entry.  this one is not like that at all.\n\nif we look at other modules like json for inspiration, how about \"Dump\" instead of \"Get\" ?",
+      "revId": "6568fdd347bc55475d99b146e2da5316fcb88438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f571e92_cdf0301d",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-07T19:04:27Z",
+      "side": 1,
+      "message": "Add a statement that this is meant for informative purposes only.  i don\u0027t want this to grow into a serialization chain.",
+      "revId": "6568fdd347bc55475d99b146e2da5316fcb88438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bcc1fb8c_1d68ed20",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-07T19:04:27Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "6568fdd347bc55475d99b146e2da5316fcb88438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
