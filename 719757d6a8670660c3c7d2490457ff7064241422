@@ -33,6 +33,23 @@
       "message": "you guys are great",
       "revId": "719757d6a8670660c3c7d2490457ff7064241422",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1df7ab29_6de42640",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1087152
+      },
+      "writtenOn": "2021-03-07T15:42:13Z",
+      "side": 1,
+      "message": "\u003e Patch Set 1:\n\u003e \n\u003e Oh, ok. Not quite sure how this works here, but verified is set.\n\n",
+      "revId": "719757d6a8670660c3c7d2490457ff7064241422",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
