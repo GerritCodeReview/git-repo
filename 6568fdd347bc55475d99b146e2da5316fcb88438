@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fba0278f_a46d6a1f",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-03-08T17:18:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b2eec67_a5534de5",
+      "revId": "6568fdd347bc55475d99b146e2da5316fcb88438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f571e92_cdf0301d",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47897d10_e1dd45b7",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-03-08T17:18:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f571e92_cdf0301d",
+      "revId": "6568fdd347bc55475d99b146e2da5316fcb88438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcc1fb8c_1d68ed20",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-03-07T19:04:27Z",
       "side": 1,
       "message": "period at the end",
+      "revId": "6568fdd347bc55475d99b146e2da5316fcb88438",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1980a168_57e5389e",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-03-08T17:18:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcc1fb8c_1d68ed20",
       "revId": "6568fdd347bc55475d99b146e2da5316fcb88438",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
