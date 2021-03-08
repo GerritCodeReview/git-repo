@@ -51,6 +51,24 @@
       "message": "Hi Mike,\n\nIndeed, https://gerrit-review.googlesource.com/c/git-repo/+/298622 fix the issue",
       "revId": "32aadac0274383b211a79d7a2cc4d01e92746c10",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4be398a5_fe8ca11e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-08T16:40:09Z",
+      "side": 1,
+      "message": "thanks for verifying",
+      "parentUuid": "5583aac8_7245d89f",
+      "revId": "32aadac0274383b211a79d7a2cc4d01e92746c10",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
