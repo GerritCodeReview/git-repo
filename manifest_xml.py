@@ -14,6 +14,7 @@
 
 import itertools
 import os
+import platform
 import re
 import sys
 import xml.dom.minidom
@@ -603,6 +604,17 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   @property
   def HasSubmodules(self):
     return self.manifestProject.config.GetBoolean('repo.submodules')
+
+  def GetDefaultGroupsStr(self):
+    """Returns the default group string for the platform."""
+    return 'default,platform-' + platform.system().lower()
+
+  def GetGroupsStr(self):
+    """Returns the manifest group string that should be synced."""
+    groups = self.manifestProject.config.GetString('manifest.groups')
+    if not groups:
+      groups = self.GetDefaultGroupsStr()
+    return groups
 
   def _Unload(self):
     self._loaded = False
