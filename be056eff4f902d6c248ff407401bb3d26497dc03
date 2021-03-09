@@ -16,6 +16,23 @@
       "message": "Hi Mike,\nI tried to make least number of changes to fix the bug. \n\ncommand.py and gitc_utils.py could share manifest_groups method\n(to avoid duplication of code). If that makes sense, I will make\nthat change in a separate CL.",
       "revId": "be056eff4f902d6c248ff407401bb3d26497dc03",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "852135a4_57d47a8f",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-09T23:51:37Z",
+      "side": 1,
+      "message": "i feel like we\u0027re violating some boundaries here.  gitc should only be used by gitc specific code.  superprojects have no dependencies on gitc.\n\nif we need to improve/expand the common manifest APIs, then lets do that instead.",
+      "revId": "be056eff4f902d6c248ff407401bb3d26497dc03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
