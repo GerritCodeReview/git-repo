@@ -235,7 +235,7 @@ class Superproject(object):
             self._superproject_path,
             file=sys.stderr)
       return None
-    manifest_str = self._manifest.ToXml().toxml()
+    manifest_str = self._manifest.ToXml(groups=self._manifest.GetGroupsStr()).toxml()
     manifest_path = self._manifest_path
     try:
       with open(manifest_path, 'w', encoding='utf-8') as fp:

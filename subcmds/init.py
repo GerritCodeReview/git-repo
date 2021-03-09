@@ -267,7 +267,7 @@ to update the working directory files.
 
     groups = [x for x in groups if x]
     groupstr = ','.join(groups)
-    if opt.platform == 'auto' and groupstr == 'default,platform-' + platform.system().lower():
+    if opt.platform == 'auto' and groupstr == self.manifest.GetDefaultGroupsStr():
       groupstr = None
     m.config.SetString('manifest.groups', groupstr)
 

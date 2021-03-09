@@ -77,22 +77,6 @@ def _set_project_revisions(projects):
       project.revisionExpr = revisionExpr
 
 
-def _manifest_groups(manifest):
-  """Returns the manifest group string that should be synced
-
-  This is the same logic used by Command.GetProjects(), which is used during
-  repo sync
-
-  Args:
-    manifest: The XmlManifest object
-  """
-  mp = manifest.manifestProject
-  groups = mp.config.GetString('manifest.groups')
-  if not groups:
-    groups = 'default,platform-' + platform.system().lower()
-  return groups
-
-
 def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
   """Generate a manifest for shafsd to use for this GITC client.
 
@@ -107,7 +91,7 @@ def generate_gitc_manifest(gitc_manifest, manifest, paths=None):
   if paths is None:
     paths = list(manifest.paths.keys())
 
-  groups = [x for x in re.split(r'[,\s]+', _manifest_groups(manifest)) if x]
+  groups = [x for x in re.split(r'[,\s]+', manifest.GetGroupsStr()) if x]
 
   # Convert the paths to projects, and filter them to the matched groups.
   projects = [manifest.paths[p] for p in paths]
@@ -166,7 +150,7 @@ def save_manifest(manifest, client_dir=None):
   else:
     manifest_file = os.path.join(client_dir, '.manifest')
   with open(manifest_file, 'w') as f:
-    manifest.Save(f, groups=_manifest_groups(manifest))
+    manifest.Save(f, groups=manifest.GetGroupsStr())
   # TODO(sbasi/jorg): Come up with a solution to remove the sleep below.
   # Give the GITC filesystem time to register the manifest changes.
   time.sleep(3)
