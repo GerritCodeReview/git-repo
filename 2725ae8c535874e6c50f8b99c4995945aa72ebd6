@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "ab17d11d_6fa88170",
         "filename": "manifest_xml.py",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "I wondered if we need to support dotfiles as dest at all, but a quick search tells me we do --- e.g. some people use .clang-format as dest.\n\n\"Helpful\" filesystems that do case folding (NTFS, HFS+) and Unicode normalization (HFS+) mean there are more paths we should check. See https://eclipse.googlesource.com/jgit/jgit/+/9110037e3e9461ff4dac22fee84ef3694ed57648/org.eclipse.jgit/src/org/eclipse/jgit/lib/ObjectChecker.java#828 for details.\n\nI hoped for a moment that we wouldn\u0027t have to worry about 8.3 clashes on Windows because this happens before the sync, but that\u0027s only true on *first* sync. So we\u0027d need to check for those, too.\n\nForgive my Python ignorance: is there an easier way? E.g. for each leading component in path:\n* if os.path.exists says it already exists, use os.path.samefile to see whether it\u0027s the same inode as \".git\" or \".repo\"\n* if os.path.exists says it doesn\u0027t already exist, create the directory or file. Use os.path.exists to determine whether we\u0027ve accidentally created a \".git\" dir or file or \".repo\" dir.",
       "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a7de7738_5cd8d15c",
         "filename": "manifest_xml.py",
@@ -32,10 +33,10 @@
       "message": "thanks, forgot about case-insensitive filesystems.  i\u0027ll normalize everything to lowercase before checking.\n\ni wasn\u0027t aware some filesystems did Unicode normalization.  i kind of understand why they did it (don\u0027t want to confuse users), but still seems dumb.  the func in git is enough to declare it was a bad idea:\nhttps://eclipse.googlesource.com/jgit/jgit/+/9110037e3e9461ff4dac22fee84ef3694ed57648/org.eclipse.jgit/src/org/eclipse/jgit/lib/ObjectChecker.java#884\n\nshall we just ban any attempt to use those combining characters at all here ?  i can\u0027t think of a scenario where those would reasonably show up.  that would allow us to keep our code a bit simple (we declare a set of bad codepoints, and then see if any of them are in the manifest setting).",
       "parentUuid": "ab17d11d_6fa88170",
       "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "171a97af_20cac6f5",
         "filename": "manifest_xml.py",
@@ -50,10 +51,10 @@
       "message": "\u003e shall we just ban any attempt to use those combining characters at all here ?\n\nYes. We can also ban ~, to prevent 8.3 related shenanigans on NTFS. So we should be able to keep the check fairly simple. *phew*",
       "parentUuid": "a7de7738_5cd8d15c",
       "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "3a7a29ef_bdb4ae16",
         "filename": "manifest_xml.py",
@@ -68,10 +69,28 @@
       "message": "ok, i\u0027ve kicked out ~ now too",
       "parentUuid": "171a97af_20cac6f5",
       "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "949a4a8a_fa01b3f7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 953,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-09T15:46:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a7a29ef_bdb4ae16",
+      "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "dd4ae81f_5b97b5c9",
         "filename": "manifest_xml.py",
@@ -91,8 +110,31 @@
         "endChar": 38
       },
       "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb7a9ae_59d4811b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-09T15:46:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "dd4ae81f_5b97b5c9",
+      "range": {
+        "startLine": 968,
+        "startChar": 13,
+        "endLine": 968,
+        "endChar": 38
+      },
+      "revId": "2725ae8c535874e6c50f8b99c4995945aa72ebd6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
