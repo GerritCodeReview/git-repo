@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf05be98_4de8359b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-03-09T23:29:22Z",
+      "side": 1,
+      "message": "Hi Mike,\nI tried to make least number of changes to fix the bug. \n\ncommand.py and gitc_utils.py could share manifest_groups method\n(to avoid duplication of code). If that makes sense, I will make\nthat change in a separate CL.",
+      "revId": "be056eff4f902d6c248ff407401bb3d26497dc03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
