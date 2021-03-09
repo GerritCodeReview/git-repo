@@ -252,11 +252,24 @@ name will be prefixed by the parent's.
 The project name must match the name Gerrit knows, if Gerrit is
 being used for code reviews.
 
+"name" must not be empty, and may not be an absolute path or use "." or ".."
+path components.  It is always interpreted relative to the remote's fetch
+settings, so if a different base path is needed, declare a different remote
+with the new settings needed.
+These restrictions are not enforced for [Local Manifests].
+
 Attribute `path`: An optional path relative to the top directory
 of the repo client where the Git working directory for this project
-should be placed.  If not supplied the project name is used.
+should be placed.  If not supplied the project "name" is used.
 If the project has a parent element, its path will be prefixed
 by the parent's.
+
+"path" may not be an absolute path or use "." or ".." path components.
+These restrictions are not enforced for [Local Manifests].
+
+If you want to place files into the root of the checkout (e.g. a README or
+Makefile or another build script), use the [copyfile] or [linkfile] elements
+instead.
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
@@ -419,12 +432,15 @@ target manifest to include - it must be a usable manifest on its own.
 Attribute `name`: the manifest to include, specified relative to
 the manifest repository's root.
 
+"name" may not be an absolute path or use "." or ".." path components.
+These restrictions are not enforced for [Local Manifests].
+
 Attribute `groups`: List of additional groups to which all projects
 in the included manifest belong. This appends and recurses, meaning
 all projects in sub-manifests carry all parent include groups.
 Same syntax as the corresponding element of `project`.
 
-## Local Manifests
+## Local Manifests {#local-manifests}
 
 Additional remotes and projects may be added through local manifest
 files stored in `$TOP_DIR/.repo/local_manifests/*.xml`.
@@ -452,3 +468,8 @@ Manifest files stored in `$TOP_DIR/.repo/local_manifests/*.xml` will
 be loaded in alphabetical order.
 
 The legacy `$TOP_DIR/.repo/local_manifest.xml` path is no longer supported.
+
+
+[copyfile]: #Element-copyfile
+[linkfile]: #Element-linkfile
+[Local Manifests]: #local-manifests
