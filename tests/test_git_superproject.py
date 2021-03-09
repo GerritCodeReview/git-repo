@@ -15,6 +15,7 @@
 """Unittests for the git_superproject.py module."""
 
 import os
+import platform
 import tempfile
 import unittest
 from unittest import mock
@@ -34,6 +35,7 @@ class SuperprojectTestCase(unittest.TestCase):
     self.manifest_file = os.path.join(
         self.repodir, manifest_xml.MANIFEST_FILE_NAME)
     os.mkdir(self.repodir)
+    self.platform = platform.system().lower()
 
     # The manifest parsing really wants a git repo currently.
     gitdir = os.path.join(self.repodir, 'manifests.git')
@@ -48,8 +50,8 @@ class SuperprojectTestCase(unittest.TestCase):
   <remote name="default-remote" fetch="http://localhost" />
   <default remote="default-remote" revision="refs/heads/main" />
   <superproject name="superproject"/>
-  <project path="art" name="platform/art" />
-</manifest>
+  <project path="art" name="platform/art" groups="notdefault,platform-""" + self.platform + """
+  " /></manifest>
 """)
     self._superproject = git_superproject.Superproject(manifest, self.repodir)
 
@@ -142,7 +144,8 @@ class SuperprojectTestCase(unittest.TestCase):
         '<?xml version="1.0" ?><manifest>' +
         '<remote name="default-remote" fetch="http://localhost"/>' +
         '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<project name="platform/art" path="art" revision="ABCDEF"/>' +
+        '<project name="platform/art" path="art" revision="ABCDEF" ' +
+        'groups="notdefault,platform-' + self.platform + '"/>' +
         '<superproject name="superproject"/>' +
         '</manifest>')
 
@@ -169,7 +172,8 @@ class SuperprojectTestCase(unittest.TestCase):
               '<remote name="default-remote" fetch="http://localhost"/>' +
               '<default remote="default-remote" revision="refs/heads/main"/>' +
               '<project name="platform/art" path="art" ' +
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>' +
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" ' +
+              'groups="notdefault,platform-' + self.platform + '"/>' +
               '<superproject name="superproject"/>' +
               '</manifest>')
 
