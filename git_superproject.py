@@ -29,6 +29,7 @@ import sys
 from error import BUG_REPORT_URL
 from git_command import GitCommand
 from git_refs import R_HEADS
+import gitc_utils
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
@@ -235,7 +236,9 @@ class Superproject(object):
             self._superproject_path,
             file=sys.stderr)
       return None
-    manifest_str = self._manifest.ToXml().toxml()
+    manifest = self._manifest
+    groups = gitc_utils.manifest_groups(manifest)
+    manifest_str = manifest.ToXml(groups=groups).toxml()
     manifest_path = self._manifest_path
     try:
       with open(manifest_path, 'w', encoding='utf-8') as fp:
