@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68566cb6_9b1f0e25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2021-03-09T08:59:14Z",
+      "side": 1,
+      "message": "This change unfortunately breaks our following use case:\n* We have a Git repository with CI/CD generated pinned manifests\n* We load that repository in the .repo/manifests/releases folder for users to quickly load the manifests within their workarea through the regular \u0027repo init -m releases/\u003csomething.xml\u003e\u0027 command.\n\n\n",
+      "revId": "04122b7261319dae3abcaf0eb63af7ed937dc463",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
