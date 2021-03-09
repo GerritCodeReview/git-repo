@@ -178,9 +178,7 @@ class Command(object):
     mp = manifest.manifestProject
 
     if not groups:
-      groups = mp.config.GetString('manifest.groups')
-    if not groups:
-      groups = 'default,platform-' + platform.system().lower()
+      groups = manifest.GetGroupsStr()
     groups = [x for x in re.split(r'[,\s]+', groups) if x]
 
     if not args:
