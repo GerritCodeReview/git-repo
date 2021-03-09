@@ -15,6 +15,7 @@
 """Unittests for the manifest_xml.py module."""
 
 import os
+import platform
 import shutil
 import tempfile
 import unittest
@@ -377,6 +378,11 @@ class ProjectElementTests(ManifestParseTestCase):
     self.assertCountEqual(
         result['extras'],
         ['g1', 'g2', 'g1', 'name:extras', 'all', 'path:path'])
+    groupstr = 'default,platform-' + platform.system().lower()
+    self.assertEqual(groupstr, manifest.GetGroupsStr)
+    groupstr = 'g1,g2,g1'
+    manifest.manifestProject.config.SetString('manifest.groups', groupstr)
+    self.assertEqual(groupstr, manifest.GetGroupsStr)
 
   def test_set_revision_id(self):
     """Check setting of project's revisionId."""
