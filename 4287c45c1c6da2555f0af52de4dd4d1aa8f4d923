@@ -16,6 +16,29 @@
       "message": "Sorry for the delay in making changes. PTAL.",
       "revId": "4287c45c1c6da2555f0af52de4dd4d1aa8f4d923",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35df744e_9c61317a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-03-10T20:05:26Z",
+      "side": 1,
+      "message": "I don\u0027t think we want these to be properties, public functions make sense. It makes the usage in other files less obvious.",
+      "range": {
+        "startLine": 608,
+        "startChar": 3,
+        "endLine": 608,
+        "endChar": 11
+      },
+      "revId": "4287c45c1c6da2555f0af52de4dd4d1aa8f4d923",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
