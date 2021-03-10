@@ -34,6 +34,24 @@
       "parentUuid": "68566cb6_9b1f0e25",
       "revId": "04122b7261319dae3abcaf0eb63af7ed937dc463",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3d8a2ee_0a66334a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1010522
+      },
+      "writtenOn": "2021-03-10T08:41:56Z",
+      "side": 1,
+      "message": "That safety issue that is being tried to be solved here by not installing projects in the root directory only holds when there are \u0027repo-hooks\u0027 being used. Given that there is only 1 pre-upload hook available, with a specific use case most users of the repo tool are not using, why not make this check linked to having a \u0027repo-hook\u0027 being defined in the manifest? Extending the functionality of repo-hooks is also close to impossible, so linking it to that dependency would do less harm. Better deprecate the whole hooks mechanism.\n\nNow this functionality that was working for over a decade with no safety issue for most use cases, is now removed without any heads up or pre-announcement or deprecation warning; forced upon users that do not even have the safety risk.\nI also do not see any security risk by installing a repository in .repo/manifests/ subdirectory. If you have a alternative solution for doing the same as I described in our use-case, I would be very interested.\n\nInstalling projects directly in the root was already not working with the --worktree support, because it is not possible to store the Git-dir as a subdirectory of a worktree, so that is brought in sync. Still a limitation for users who did not use worktrees.\nLoading projects in places outside the repo tree looks weird to me too. (like home-directories and so on)\n\nNote that this change breaks loading of pinned manifests that were created to track releases of the last decade. This change just cripples the tool for a safety issue that is not commonly valid for everyone. \nThis change is based on the assumption that everyone is using repo-hooks, and every user has a safety issue. This assumption is simply not valid.",
+      "parentUuid": "e3da9406_17efa9eb",
+      "revId": "04122b7261319dae3abcaf0eb63af7ed937dc463",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
