@@ -52,6 +52,24 @@
       "parentUuid": "e3da9406_17efa9eb",
       "revId": "04122b7261319dae3abcaf0eb63af7ed937dc463",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "464bf8ce_fd7ae183",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-10T15:15:20Z",
+      "side": 1,
+      "message": "your understanding is incorrect.  .repo/ has a lot more attack points like installing custom git hooks.\n\nyour characterization of communication is also incorrect.  it was announced months before it went live.\n\nif you want to discuss things, please use the bug i referenced:  https://crbug.com/gerrit/12318",
+      "parentUuid": "c3d8a2ee_0a66334a",
+      "revId": "04122b7261319dae3abcaf0eb63af7ed937dc463",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
