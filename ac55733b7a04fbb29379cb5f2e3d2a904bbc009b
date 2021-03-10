@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9549e3b5_7d47dbaf",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-10T22:26:50Z",
+      "side": 1,
+      "message": "why not inline this ?  it\u0027s not only used once below.",
+      "revId": "ac55733b7a04fbb29379cb5f2e3d2a904bbc009b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db82d43b_ca9b7099",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-10T22:26:50Z",
+      "side": 1,
+      "message": "add a docstring",
+      "revId": "ac55733b7a04fbb29379cb5f2e3d2a904bbc009b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
