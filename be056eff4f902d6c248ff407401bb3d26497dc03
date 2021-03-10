@@ -51,6 +51,24 @@
       "parentUuid": "852135a4_57d47a8f",
       "revId": "be056eff4f902d6c248ff407401bb3d26497dc03",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5c5760c_d0d4c3ea",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-10T04:13:24Z",
+      "side": 1,
+      "message": "putting it below XmlManifest.HasSubmodules sounds like the best place based on what\u0027s there currently and what we need access to (the manifest project).\n\ni think we want two funcs:\n* GetDefaultGroupsStr() - return \u0027default,platform-\u0027 + platform.system().lower()\n* GetGroupsStr() - the gitc _manifest_groups func\n\ni think that\u0027ll address your current needs, and allow us to collapse the gitc _manifest_groups, command.py::GetProjects, and part of init.py.\n\nwe should clean up these funcs to take structured group data more instead of passing strings around everywhere that need parsing, but we can do that later.",
+      "parentUuid": "4c118c02_f40aefb7",
+      "revId": "be056eff4f902d6c248ff407401bb3d26497dc03",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
