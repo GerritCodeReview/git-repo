@@ -34,8 +34,8 @@ def find_pytest():
   if ret:
     return ret
 
-  print(f'{__file__}: unable to find pytest.', file=sys.stderr)
-  print(f'{__file__}: Try installing: sudo apt-get install python-pytest',
+  print('%s: unable to find pytest.' % (__file__,), file=sys.stderr)
+  print('%s: Try installing: sudo apt-get install python-pytest' % (__file__,),
         file=sys.stderr)
 
 
