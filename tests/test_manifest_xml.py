@@ -32,6 +32,7 @@ INVALID_FS_PATHS = (
     '..',
     '../',
     './',
+    './/',
     'foo/',
     './foo',
     '../foo',
@@ -427,6 +428,28 @@ class ProjectElementTests(ManifestParseTestCase):
     self.assertEqual(manifest.projects[0].objdir,
                      os.path.join(self.tempdir, '.repo/project-objects/a/path.git'))
 
+    manifest = parse('a/path', 'foo//////')
+    self.assertEqual(manifest.projects[0].gitdir,
+                     os.path.join(self.tempdir, '.repo/projects/foo.git'))
+    self.assertEqual(manifest.projects[0].objdir,
+                     os.path.join(self.tempdir, '.repo/project-objects/a/path.git'))
+
+  def test_toplevel_path(self):
+    """Check handling of path=. specially."""
+    def parse(name, path):
+      return self.getXmlManifest(f"""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="{name}" path="{path}" />
+</manifest>
+""")
+
+    for path in ('.', './', './/', './//'):
+      manifest = parse('server/path', path)
+      self.assertEqual(manifest.projects[0].gitdir,
+                       os.path.join(self.tempdir, '.repo/projects/..git'))
+
   def test_bad_path_name_checks(self):
     """Check handling of bad path & name attributes."""
     def parse(name, path):
@@ -454,8 +477,11 @@ class ProjectElementTests(ManifestParseTestCase):
 
       with self.assertRaises(error.ManifestInvalidPathError):
         parse(path, 'ok')
-      with self.assertRaises(error.ManifestInvalidPathError):
-        parse('ok', path)
+
+      # We have a dedicated test for path=".".
+      if path not in {'.'}:
+        with self.assertRaises(error.ManifestInvalidPathError):
+          parse('ok', path)
 
 
 class SuperProjectElementTests(ManifestParseTestCase):
