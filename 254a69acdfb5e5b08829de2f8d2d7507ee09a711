@@ -16,6 +16,24 @@
       "message": "Does this test work on non-Linux platforms? What is it meant to test?\n\nTo get a sense of that, I tried changing platform-linux to platform-darwin in this file and it causes the test to fail.",
       "revId": "254a69acdfb5e5b08829de2f8d2d7507ee09a711",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "633961e6_f06ef907",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-03-11T01:20:04Z",
+      "side": 1,
+      "message": "Many many thanks for catching the bug. IMO, platform should have been dynamically determined (instead of hard coding). Changed the code to get\nthe platform at runtime. I haven\u0027t tested this code on darwin platform.\n\nDone.",
+      "parentUuid": "86164be7_d0efd2f8",
+      "revId": "254a69acdfb5e5b08829de2f8d2d7507ee09a711",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
