@@ -50,7 +50,7 @@ def main(argv):
   os.environ['PYTHONPATH'] = pythonpath
 
   pytest = find_pytest()
-  return subprocess.run([pytest] + argv, check=True)
+  return subprocess.run([pytest] + argv, check=False).returncode
 
 
 if __name__ == '__main__':
