@@ -1227,6 +1227,18 @@ class Project(object):
     self.CleanPublishedCache(all_refs)
     revid = self.GetRevisionId(all_refs)
 
+    # Special case the root of the repo client checkout.  Make sure it doesn't
+    # contain files being checked out to dirs we don't allow.
+    if self.relpath == '.':
+      PROTECTED_PATHS = {'.repo'}
+      paths = set(self.work_git.ls_tree('-z', '--name-only', '--', revid).split('\0'))
+      bad_paths = paths & PROTECTED_PATHS
+      if bad_paths:
+        syncbuf.fail(self,
+                     'Refusing to checkout project that writes to protected '
+                     'paths: %s' % (', '.join(bad_paths),))
+        return
+
     def _doff():
       self._FastForward(revid)
       self._CopyAndLinkFiles()
