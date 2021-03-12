@@ -472,7 +472,8 @@ class ProjectElementTests(ManifestParseTestCase):
       parse('', 'ok')
 
     for path in INVALID_FS_PATHS:
-      if not path or path.endswith('/'):
+      # Allow path='.' in projects
+      if not path or path.endswith('/') or path in {'.'}:
         continue
 
       with self.assertRaises(error.ManifestInvalidPathError):

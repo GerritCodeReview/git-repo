@@ -1014,7 +1014,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     reads a <project> element from the manifest file
     """
     name = self._reqatt(node, 'name')
-    msg = self._CheckLocalPath(name, dir_ok=True)
+    msg = self._CheckLocalPath(name, dir_ok=True, cwd_dot_ok=True)
     if msg:
       raise ManifestInvalidPathError(
           '<project> invalid "name": %s: %s' % (name, msg))
