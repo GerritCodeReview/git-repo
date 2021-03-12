@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ced49d84_f7c7dc82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-12T17:57:12Z",
+      "side": 1,
+      "message": "the commit message needs to explain \"why\".  please see:\nhttps://chris.beams.io/posts/git-commit/",
+      "revId": "4bad3e20c3010d99cee6b8c5e11f8740c8b187e2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8600635_9b9b147c",
