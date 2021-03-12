@@ -1698,6 +1698,11 @@ class Project(object):
         if cb is None or name != cb:
           kill.append(name)
 
+    # Minor optimization: If there's nothing to prune, then don't try to read
+    # any project state.
+    if not kill and not cb:
+      return []
+
     rev = self.GetRevisionId(left)
     if cb is not None \
        and not self._revlist(HEAD + '...' + rev) \
