@@ -20,9 +20,7 @@ import multiprocessing
 import netrc
 from optparse import SUPPRESS_HELP
 import os
-import re
 import socket
-import subprocess
 import sys
 import tempfile
 import time
@@ -51,7 +49,7 @@ except ImportError:
   multiprocessing = None
 
 import event_log
-from git_command import GIT, git_require
+from git_command import git_require
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import git_superproject
@@ -981,12 +979,17 @@ def _PostRepoUpgrade(manifest, quiet=False):
 def _PostRepoFetch(rp, repo_verify=True, verbose=False):
   if rp.HasChanges:
     print('info: A new version of repo is available', file=sys.stderr)
-    print(file=sys.stderr)
-    if not repo_verify or _VerifyTag(rp):
-      syncbuf = SyncBuffer(rp.config)
-      rp.Sync_LocalHalf(syncbuf)
-      if not syncbuf.Finish():
-        sys.exit(1)
+    wrapper = Wrapper()
+    try:
+      rev = rp.bare_git.describe(rp.GetRevisionId())
+    except GitError:
+      rev = None
+    _, new_rev = wrapper.check_repo_rev(rp.gitdir, rev, repo_verify=repo_verify)
+    # See if we're held back due to missing signed tag.
+    current_revid = rp.bare_git.rev_parse('HEAD')
+    new_revid = rp.bare_git.rev_parse('--verify', new_rev)
+    if current_revid != new_revid:
+      rp.work_git.reset('--hard', new_rev)
       print('info: Restarting repo with latest version', file=sys.stderr)
       raise RepoChangedException(['--repo-upgraded'])
     else:
@@ -995,45 +998,6 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
     if verbose:
       print('repo version %s is current' % rp.work_git.describe(HEAD),
             file=sys.stderr)
-
-
-def _VerifyTag(project):
-  gpg_dir = os.path.expanduser('~/.repoconfig/gnupg')
-  if not os.path.exists(gpg_dir):
-    print('warning: GnuPG was not available during last "repo init"\n'
-          'warning: Cannot automatically authenticate repo."""',
-          file=sys.stderr)
-    return True
-
-  try:
-    cur = project.bare_git.describe(project.GetRevisionId())
-  except GitError:
-    cur = None
-
-  if not cur \
-     or re.compile(r'^.*-[0-9]{1,}-g[0-9a-f]{1,}$').match(cur):
-    rev = project.revisionExpr
-    if rev.startswith(R_HEADS):
-      rev = rev[len(R_HEADS):]
-
-    print(file=sys.stderr)
-    print("warning: project '%s' branch '%s' is not signed"
-          % (project.name, rev), file=sys.stderr)
-    return False
-
-  env = os.environ.copy()
-  env['GIT_DIR'] = project.gitdir
-  env['GNUPGHOME'] = gpg_dir
-
-  cmd = [GIT, 'tag', '-v', cur]
-  result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                          env=env, check=False)
-  if result.returncode:
-    print(file=sys.stderr)
-    print(result.stdout, file=sys.stderr)
-    print(file=sys.stderr)
-    return False
-  return True
 
 
 class _FetchTimes(object):
