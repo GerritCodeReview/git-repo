@@ -254,6 +254,7 @@ class _Repo(object):
     cmd_event = cmd.event_log.Add(name, event_log.TASK_COMMAND, start)
     cmd.event_log.SetParent(cmd_event)
     git_trace2_event_log.StartEvent()
+    git_trace2_event_log.CommandEvent(name='repo', subcommands=[name])
 
     try:
       cmd.ValidateOptions(copts, cargs)
