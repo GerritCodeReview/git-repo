@@ -161,6 +161,30 @@ class EventLogTestCase(unittest.TestCase):
     self.assertIn('code', exit_event)
     self.assertEqual(exit_event['code'], 2)
 
+  def test_command_event(self):
+    """Test and validate 'command' event data is valid.
+
+    Expected event log:
+    <version event>
+    <command event>
+    """
+    name = 'repo'
+    subcommands = ['init' 'this']
+    self._event_log_module.CommandEvent(name='repo', subcommands=subcommands)
+    with tempfile.TemporaryDirectory(prefix='event_log_tests') as tempdir:
+      log_path = self._event_log_module.Write(path=tempdir)
+      self._log_data = self.readLog(log_path)
+
+    self.assertEqual(len(self._log_data), 2)
+    command_event = self._log_data[1]
+    self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
+    self.verifyCommonKeys(command_event, expected_event_name='command')
+    # Check for 'command' event specific fields.
+    self.assertIn('name', command_event)
+    self.assertIn('subcommands', command_event)
+    self.assertEqual(command_event['name'], name)
+    self.assertEqual(command_event['subcommands'], subcommands)
+
   def test_def_params_event_repo_config(self):
     """Test 'def_params' event data outputs only repo config keys.
 

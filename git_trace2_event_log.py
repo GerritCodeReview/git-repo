@@ -132,6 +132,18 @@ class EventLog(object):
     exit_event['code'] = result
     self._log.append(exit_event)
 
+  def CommandEvent(self, name, subcommands):
+    """Append a 'command' event to the current log.
+
+    Args:
+      name: Name of the primary command (ex: repo, git)
+      subcommands: List of the sub-commands (ex: version, init, sync)
+    """
+    command_event = self._CreateEventDict('command')
+    command_event['name'] = name
+    command_event['subcommands'] = subcommands
+    self._log.append(command_event)
+
   def DefParamRepoEvents(self, config):
     """Append a 'def_param' event for each repo.* config key to the current log.
 
