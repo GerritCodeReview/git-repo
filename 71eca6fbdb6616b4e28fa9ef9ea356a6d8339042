@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "843318e4_e751a31d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-17T19:47:31Z",
+      "side": 1,
+      "message": "this changes behavior slightly.  before, if there were local changes, it\u0027d abort.  now it clobbers everything.  i think we want to retain the non-clobber logic.",
+      "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
