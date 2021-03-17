@@ -16,6 +16,24 @@
       "message": "Hi Ian,\n  This is a first cut at logging the command. Are these the changes you had in mind?\n\nThanks\nRaman",
       "revId": "a13d37cf2a93f05663bf1cd8ad9af2a11bd689ff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2de8ffcb_c8ca83fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-03-17T17:31:55Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "91dbaeee_7ffa6822",
+      "revId": "a13d37cf2a93f05663bf1cd8ad9af2a11bd689ff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
