@@ -52,6 +52,11 @@ Executes the same shell command in each project.
 The -r option allows running the command only on projects matching
 regex or wildcard expression.
 
+By default, projects are processed non-interactively in parallel.  If you want
+to run interactive commands, make sure to pass --interactive to force --jobs 1.
+While the processing order of projects is not guaranteed, the order of project
+output is stable.
+
 # Output Formatting
 
 The -p option causes '%prog' to bind pipes to the command's stdin,
@@ -154,6 +159,9 @@ without iterating through the remaining projects.
     g.add_option('-v', '--verbose',
                  dest='verbose', action='store_true',
                  help='Show command error messages')
+    p.add_option('--interactive',
+                 action='store_true',
+                 help='force interactive usage')
 
   def WantPager(self, opt):
     return opt.project_header and opt.jobs == 1
@@ -172,6 +180,11 @@ without iterating through the remaining projects.
     if shell:
       cmd.append(cmd[0])
     cmd.extend(opt.command[1:])
+
+    # Historically, forall operated interactively, and in serial.  If the user
+    # has selected 1 job, then default to interacive mode.
+    if opt.jobs == 1:
+      opt.interactive = True
 
     if opt.project_header \
             and not shell \
@@ -313,10 +326,12 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
   else:
     stderr = subprocess.DEVNULL
 
+  stdin = None if opt.interactive else subprocess.DEVNULL
+
   result = subprocess.run(
       cmd, cwd=cwd, shell=shell, env=env, check=False,
       encoding='utf-8', errors='replace',
-      stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=stderr)
+      stdin=stdin, stdout=subprocess.PIPE, stderr=stderr)
 
   output = result.stdout
   if opt.project_header:
