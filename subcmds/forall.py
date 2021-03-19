@@ -44,7 +44,7 @@ class Forall(Command, MirrorSafeCommand):
   helpSummary = "Run a shell command in each project"
   helpUsage = """
 %prog [<project>...] -c <command> [<arg>...]
-%prog -r str1 [str2] ... -c <command> [<arg>...]"
+%prog -r str1 [str2] ... -c <command> [<arg>...]
 """
   helpDescription = """
 Executes the same shell command in each project.
