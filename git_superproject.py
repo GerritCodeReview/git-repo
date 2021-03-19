@@ -121,7 +121,7 @@ class Superproject(object):
       print('git fetch missing drectory: %s' % self._work_git,
             file=sys.stderr)
       return False
-    cmd = ['fetch', url, '--force', '--no-tags', '--filter', 'blob:none']
+    cmd = ['fetch', url, '--depth', '1', '--force', '--no-tags', '--filter', 'blob:none']
     if self._branch:
       cmd += [self._branch + ':' + self._branch]
     p = GitCommand(None,
