@@ -20,7 +20,7 @@ class List(Command, MirrorSafeCommand):
   helpSummary = "List projects and their associated directories"
   helpUsage = """
 %prog [-f] [<project>...]
-%prog [-f] -r str1 [str2]..."
+%prog [-f] -r str1 [str2]...
 """
   helpDescription = """
 List all projects; pass '.' to list the project for the cwd.
