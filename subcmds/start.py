@@ -44,7 +44,8 @@ revision specified in the manifest.
                  help='begin branch in all projects')
     p.add_option('-r', '--rev', '--revision', dest='revision',
                  help='point branch at this revision instead of upstream')
-    p.add_option('--head', dest='revision', action='store_const', const='HEAD',
+    p.add_option('--head', '--HEAD',
+                 dest='revision', action='store_const', const='HEAD',
                  help='abbreviation for --rev HEAD')
 
   def ValidateOptions(self, opt, args):
