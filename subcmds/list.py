@@ -25,6 +25,11 @@ class List(Command, MirrorSafeCommand):
   helpDescription = """
 List all projects; pass '.' to list the project for the cwd.
 
+By default, only projects that currently exist in the checkout are shown.  If
+you to list all projects (using the specified filter settings), use the --all
+option.  If you want to show all projects regardless of the manifest groups,
+then also pass --groups all.
+
 This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
 """
 
@@ -35,6 +40,9 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
     p.add_option('-g', '--groups',
                  dest='groups',
                  help="Filter the project list based on the groups the project is in")
+    p.add_option('-a', '--all',
+                 action='store_true',
+                 help='Show projects regardless of checkout state')
     p.add_option('-f', '--fullpath',
                  dest='fullpath', action='store_true',
                  help="Display the full work tree path instead of the relative path")
@@ -61,7 +69,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
       args: Positional args.  Can be a list of projects to list, or empty.
     """
     if not opt.regex:
-      projects = self.GetProjects(args, groups=opt.groups)
+      projects = self.GetProjects(args, groups=opt.groups, missing_ok=opt.all)
     else:
       projects = self.FindProjects(args)
 
@@ -79,5 +87,6 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
       else:
         lines.append("%s : %s" % (_getpath(project), project.name))
 
-    lines.sort()
-    print('\n'.join(lines))
+    if lines:
+      lines.sort()
+      print('\n'.join(lines))
