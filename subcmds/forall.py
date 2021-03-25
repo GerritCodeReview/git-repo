@@ -24,6 +24,7 @@ import subprocess
 
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS, Command, MirrorSafeCommand, WORKER_BATCH_SIZE
+from error import ManifestInvalidRevisionError
 
 _CAN_COLOR = [
     'branch',
@@ -252,7 +253,7 @@ without iterating through the remaining projects.
       rc = rc or errno.EINTR
     except Exception as e:
       # Catch any other exceptions raised
-      print('Got an error, terminating the pool: %s: %s' %
+      print('forall: unhandled error, terminating the pool: %s: %s' %
             (type(e).__name__, e),
             file=sys.stderr)
       rc = rc or getattr(e, 'errno', 1)
@@ -295,7 +296,13 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
   setenv('REPO_PROJECT', project.name)
   setenv('REPO_PATH', project.relpath)
   setenv('REPO_REMOTE', project.remote.name)
-  setenv('REPO_LREV', '' if mirror else project.GetRevisionId())
+  try:
+    # If we aren't in a fully synced state and we don't have the ref the manifest
+    # wants, then this will fail.  Ignore it for the purposes of this code.
+    lrev = '' if mirror else project.GetRevisionId()
+  except ManifestInvalidRevisionError:
+    lrev = ''
+  setenv('REPO_LREV', lrev)
   setenv('REPO_RREV', project.revisionExpr)
   setenv('REPO_UPSTREAM', project.upstream)
   setenv('REPO_DEST_BRANCH', project.dest_branch)
