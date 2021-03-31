@@ -72,6 +72,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "918f8ee6_6067f7a3",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-03-31T16:41:51Z",
+      "side": 1,
+      "message": "_ProcessResults runs in the main thread.  the text formatting all operates on the |out| object which is also created in the main thread and outputs to the terminal/log.  it\u0027s a bit difficult to decouple that from the individual grep output since we interleave headers/formatting with line-level results.  that\u0027s why i say the children would need to grab a common lock before they could output results.\n\nwe could have each child instantiate a dedicated |out| object and serialize/return that to the main thread for it to join+output, but my tests don\u0027t show doing all of this text processing in the main thread as generally being slow, or hot path at all.  so i think the current code is easier to maintain and the trade-offs not worth the \u003c100ms out of O(seconds) that running `git grep` in every repo incurs.",
+      "parentUuid": "4d85c427_4f68e570",
+      "revId": "64345501fd6af8e351b34f4335f41b4a76f41c84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "04ef526b_fbd7ae01",
