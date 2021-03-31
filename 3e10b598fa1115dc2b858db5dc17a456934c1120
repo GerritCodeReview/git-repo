@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a456e78_ae59271d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-03-31T15:25:33Z",
+      "side": 1,
+      "message": "generally LGTM as long as the Progress object works across processes correctly.",
+      "revId": "3e10b598fa1115dc2b858db5dc17a456934c1120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "387bc2eb_6a000621",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-03-31T15:25:33Z",
+      "side": 1,
+      "message": "Is this some Manager object that handles being cloned across processes correctly?",
+      "range": {
+        "startLine": 356,
+        "startChar": 9,
+        "endLine": 356,
+        "endChar": 17
+      },
+      "revId": "3e10b598fa1115dc2b858db5dc17a456934c1120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6377865e_f8d0ba56",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-03-31T15:25:33Z",
+      "side": 1,
+      "message": "nit: \"workers\" or \"processes\"",
+      "range": {
+        "startLine": 371,
+        "startChar": 34,
+        "endLine": 371,
+        "endChar": 41
+      },
+      "revId": "3e10b598fa1115dc2b858db5dc17a456934c1120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
