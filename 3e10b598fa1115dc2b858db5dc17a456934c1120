@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "627980c1_27030880",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-01T03:03:40Z",
+      "side": 1,
+      "message": "Progress, currently, is very simple.  its state is simple ints/strings, and just takes care of writing to sys.stderr.  that said, it shouldn\u0027t matter too much as it\u0027s only used on the main proc -- it\u0027s instantiated there, and only used by _ProcessResults below.  that\u0027s my lazy way of minimizing interwoven output.",
+      "parentUuid": "387bc2eb_6a000621",
+      "range": {
+        "startLine": 356,
+        "startChar": 9,
+        "endLine": 356,
+        "endChar": 17
+      },
+      "revId": "3e10b598fa1115dc2b858db5dc17a456934c1120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6377865e_f8d0ba56",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-03-31T15:25:33Z",
       "side": 1,
       "message": "nit: \"workers\" or \"processes\"",
+      "range": {
+        "startLine": 371,
+        "startChar": 34,
+        "endLine": 371,
+        "endChar": 41
+      },
+      "revId": "3e10b598fa1115dc2b858db5dc17a456934c1120",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2551388c_e50c7e06",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-01T03:03:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6377865e_f8d0ba56",
       "range": {
         "startLine": 371,
         "startChar": 34,
