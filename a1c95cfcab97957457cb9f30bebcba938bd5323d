@@ -22,6 +22,30 @@
       },
       "revId": "a1c95cfcab97957457cb9f30bebcba938bd5323d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49385dfd_9e4ccf8e",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-01T14:43:05Z",
+      "side": 1,
+      "message": "i get what you mean.  imo they can be helpful for namespace scoping when the func is tightly coupled to the class, or if it\u0027s possible that it might be \"upgraded\" to a standard bound method because we start to use |self|.  i\u0027m not super confident this code will stay this way as-is, so i\u0027m inclined to keep it in the class and not pull it out (yet?).",
+      "parentUuid": "32c9ef17_8acb2e95",
+      "range": {
+        "startLine": 172,
+        "startChar": 2,
+        "endLine": 172,
+        "endChar": 15
+      },
+      "revId": "a1c95cfcab97957457cb9f30bebcba938bd5323d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
