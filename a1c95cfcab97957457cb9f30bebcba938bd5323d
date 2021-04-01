@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32c9ef17_8acb2e95",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-04-01T14:37:00Z",
+      "side": 1,
+      "message": "nit: @staticmethod should basically never be used in python IMO, since it could just be a free function rather than associated with the class. this is pure taste though since it obviously doesn\u0027t affect the behavior one way or the other.",
+      "range": {
+        "startLine": 172,
+        "startChar": 2,
+        "endLine": 172,
+        "endChar": 15
+      },
+      "revId": "a1c95cfcab97957457cb9f30bebcba938bd5323d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
