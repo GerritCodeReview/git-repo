@@ -16,6 +16,23 @@
       "message": "LGTM",
       "revId": "e7f7f3cf87970e40c3538b6cdd76e085c86b249b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0ab433d_f441ed3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-01T14:52:52Z",
+      "side": 1,
+      "message": "i need to polish UX more, but i don\u0027t think this makes it worse, and the perf gain is easily measurable.  so lets keep pushing forward.",
+      "revId": "e7f7f3cf87970e40c3538b6cdd76e085c86b249b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
