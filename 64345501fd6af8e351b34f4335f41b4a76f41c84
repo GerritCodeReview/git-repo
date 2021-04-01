@@ -110,6 +110,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "6aac2476_11f4e914",
+        "filename": "subcmds/grep.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-01T01:40:37Z",
+      "side": 1,
+      "message": "per our chat, i\u0027ve moved this nested func to a static method, and passed in the vars that were used from the enclosing context as func arguments",
+      "parentUuid": "9f24737a_66d0de08",
+      "revId": "64345501fd6af8e351b34f4335f41b4a76f41c84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "04ef526b_fbd7ae01",
         "filename": "subcmds/grep.py",
         "patchSetId": 1
