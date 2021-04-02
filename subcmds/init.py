@@ -124,6 +124,10 @@ to update the working directory files.
                  dest='partial_clone',
                  help='perform partial clone (https://git-scm.com/'
                  'docs/gitrepository-layout#_code_partialclone_code)')
+    g.add_option('--no-partial-clone', action='store_false',
+                 dest='partial_clone',
+                 help='disable use of partial clone (https://git-scm.com/'
+                 'docs/gitrepository-layout#_code_partialclone_code)')
     g.add_option('--clone-filter', action='store', default='blob:none',
                  dest='clone_filter',
                  help='filter for use with --partial-clone [default: %default]')
@@ -316,11 +320,12 @@ to update the working directory files.
         print('fatal: --mirror and --partial-clone are mutually exclusive',
               file=sys.stderr)
         sys.exit(1)
-      m.config.SetBoolean('repo.partialclone', opt.partial_clone)
       if opt.clone_filter:
         m.config.SetString('repo.clonefilter', opt.clone_filter)
     else:
       opt.clone_filter = None
+    # Set repo.partialclone always to persist no-partial-clone option also.
+    m.config.SetBoolean('repo.partialclone', opt.partial_clone)
 
     if opt.clone_bundle is None:
       opt.clone_bundle = False if opt.partial_clone else True
