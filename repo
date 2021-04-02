@@ -147,7 +147,7 @@ if not REPO_REV:
   REPO_REV = 'stable'
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 12)
+VERSION = (2, 14)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -313,6 +313,9 @@ def GetParser(gitc_init=False):
                         'see git clone')
   group.add_option('--partial-clone', action='store_true',
                    help='perform partial clone (https://git-scm.com/'
+                        'docs/gitrepository-layout#_code_partialclone_code)')
+  group.add_option('--no-partial-clone', action='store_false',
+                   help='disable use of partial clone (https://git-scm.com/'
                         'docs/gitrepository-layout#_code_partialclone_code)')
   group.add_option('--clone-filter', action='store', default='blob:none',
                    help='filter for use with --partial-clone '
