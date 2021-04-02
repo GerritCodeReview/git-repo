@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16b14ab3_cabd3f46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-02T18:11:47Z",
+      "side": 1,
+      "message": "Hi Mike,\n  Config seems to preserve the --partial-clone option and it was not persisting --no-partial-clone option. This issue exists for --no-use-superproject also. I took the simplest approach by setting the option to the value that is passed. I am wondering if there is a better way to fix than this.\n\nThanks\nRaman",
+      "revId": "468e0a7df211943de3b1a8b6035563e8fa854360",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
