@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0a99703_3a77bd98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-05T04:50:45Z",
+      "side": 1,
+      "message": "PTAL. Thanks",
+      "revId": "dec53b67909e6a58de98f97b1050d9778eb75d08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ffa60a7_0ef6f7c3",
@@ -14,6 +31,30 @@
       "writtenOn": "2021-04-05T04:34:13Z",
       "side": 1,
       "message": "i think you want to change this to:\n\n elif m.config.GetBoolean(\u0027repo.partialclone\u0027):\n   opt.clone_filter \u003d self.manifestProject.config.GetString(\u0027repo.clonefilter\u0027)\n else:\n   opt.clone_filter \u003d None",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 29
+      },
+      "revId": "dec53b67909e6a58de98f97b1050d9778eb75d08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b49f084_5f6a4c5a",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-05T04:50:45Z",
+      "side": 1,
+      "message": "Slightly different, but made the change and tested it by not passing the \noption to repo init after passing the first time. If repo init is ever initialized with partial-clone, it will be the default until no-partial-clone is used. Hope that is ok.\n\nDone",
+      "parentUuid": "9ffa60a7_0ef6f7c3",
       "range": {
         "startLine": 326,
         "startChar": 0,
