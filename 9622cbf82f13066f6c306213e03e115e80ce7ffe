@@ -22,6 +22,30 @@
       },
       "revId": "9622cbf82f13066f6c306213e03e115e80ce7ffe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8146fa40_5abae014",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-05T03:41:26Z",
+      "side": 1,
+      "message": "Thanks much for the above comment. Testing it is not None, fixed the bug. It is now similar to use-superproject.\n\nDone",
+      "parentUuid": "ed1a799d_baa5ab02",
+      "range": {
+        "startLine": 328,
+        "startChar": 0,
+        "endLine": 329,
+        "endChar": 67
+      },
+      "revId": "9622cbf82f13066f6c306213e03e115e80ce7ffe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
