@@ -63,6 +63,30 @@
       },
       "revId": "dec53b67909e6a58de98f97b1050d9778eb75d08",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72bad9e_93a4d2ee",
+        "filename": "subcmds/init.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-05T05:43:07Z",
+      "side": 1,
+      "message": "sorry, i meant |m.config...|, but copied \u0026 pasted wrong source",
+      "parentUuid": "9b49f084_5f6a4c5a",
+      "range": {
+        "startLine": 326,
+        "startChar": 0,
+        "endLine": 327,
+        "endChar": 29
+      },
+      "revId": "dec53b67909e6a58de98f97b1050d9778eb75d08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
