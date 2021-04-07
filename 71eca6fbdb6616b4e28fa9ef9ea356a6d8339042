@@ -16,6 +16,24 @@
       "message": "this changes behavior slightly.  before, if there were local changes, it\u0027d abort.  now it clobbers everything.  i think we want to retain the non-clobber logic.",
       "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd834070_e9bb00f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-04-07T18:27:51Z",
+      "side": 1,
+      "message": "Do you mean if I explicitly `git checkout` a different version in the repo repository in my `.repo`? I think I would prefer if `repo selfupdate` _does_ clobber that, or at least prints an option to.",
+      "parentUuid": "843318e4_e751a31d",
+      "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
