@@ -52,6 +52,29 @@
       "parentUuid": "cd834070_e9bb00f5",
       "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b210d4c6_d5b83d16",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 992,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-04-08T05:50:26Z",
+      "side": 1,
+      "message": "I think `--keep` here would do most of what we want (carrying forward any local uncommitted changes, like _Checkout does).\n\nThe main thing it\u0027s missing in the detached-head case is the \"discarding %d commits\" message. If we want to only allow fast-forwards, we could instead do `merge(\u0027--ff-only\u0027, new_rev)`.\n\nIf the user is on a named branch, then this is missing the check for unmerged changes, etc.\n\nSo I think we have three options:\n\na. We could encourage users to use a branch other than `main` and always have the tip have a signed tag pointing to it\nb. We could encourage users to disable checking for a signed tag and rely on TLS instead\nc. We could teach Sync_LocalHalf to take a parameter that overrides revid and use that instead of `git reset --hard`\n\n(c) seems simplest.",
+      "range": {
+        "startLine": 992,
+        "startChar": 25,
+        "endLine": 992,
+        "endChar": 31
+      },
+      "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
