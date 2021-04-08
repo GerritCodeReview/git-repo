@@ -34,6 +34,24 @@
       "parentUuid": "843318e4_e751a31d",
       "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aec16abf_9fa05409",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-08T04:18:09Z",
+      "side": 1,
+      "message": "today, repo selfupdate will do fast forwards and even rebases to a degree.  if your checkout is dirty, it will abort.  so in the situation you describe, it will most likely switch back to the last good state.\n\ni\u0027m talking about going into .repo/repo/ and making changes (presumably for testing), and those getting blown away.  today, we don\u0027t do that.",
+      "parentUuid": "cd834070_e9bb00f5",
+      "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
