@@ -275,7 +275,12 @@ def GetParser(gitc_init=False):
     usage = 'repo init [options] [-u] url'
 
   parser = optparse.OptionParser(usage=usage)
+  InitParser(parser, gitc_init=gitc_init)
+  return parser
 
+
+def InitParser(parser, gitc_init=False):
+  """Setup the CLI parser."""
   # Logging.
   group = parser.add_option_group('Logging options')
   group.add_option('-v', '--verbose',
