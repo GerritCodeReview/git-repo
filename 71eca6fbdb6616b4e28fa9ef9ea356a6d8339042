@@ -75,6 +75,30 @@
       },
       "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f0c5da7_b5804acf",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 992,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-08T14:54:06Z",
+      "side": 1,
+      "message": "i like the reset --keep option best.  we need to be able to rollback, and merge/ff-only wouldn\u0027t support that.\n\nwrt signed tags \u0026 TLS, i think the experience thus far is that external people are happy to (ab)use things whenever possible, so i\u0027m not keen on that.  plus, signed tags are nice in that it further restricts who can push a release.  i don\u0027t mean this in a power-grab type of way, but in a way that makes it harder for attackers to push unverified code.  there\u0027s a lot more people who have write access to this git repo than have access to the keys for signing :).",
+      "parentUuid": "b210d4c6_d5b83d16",
+      "range": {
+        "startLine": 992,
+        "startChar": 25,
+        "endLine": 992,
+        "endChar": 31
+      },
+      "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
