@@ -48,13 +48,6 @@ use for this GITC client.
 
   def _Options(self, p):
     super()._Options(p, gitc_init=True)
-    g = p.add_option_group('GITC options')
-    g.add_option('-f', '--manifest-file',
-                 dest='manifest_file',
-                 help='Optional manifest file to use for this GITC client.')
-    g.add_option('-c', '--gitc-client',
-                 dest='gitc_client',
-                 help='The name of the gitc_client instance to create or modify.')
 
   def Execute(self, opt, args):
     gitc_client = gitc_utils.parse_clientdir(os.getcwd())
