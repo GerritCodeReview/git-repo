@@ -128,6 +128,10 @@ to update the working directory files.
                  dest='partial_clone',
                  help='disable use of partial clone (https://git-scm.com/'
                  'docs/gitrepository-layout#_code_partialclone_code)')
+    g.add_option('--partial-clone-exclude', action='store',
+                 dest='partial_clone_exclude',
+                 help='exclude the specifed projects from partial clone '
+                 '(https://git-scm.com/docs/gitrepository-layout#_code_partialclone_code)')
     g.add_option('--clone-filter', action='store', default='blob:none',
                  dest='clone_filter',
                  help='filter for use with --partial-clone [default: %default]')
@@ -328,6 +332,9 @@ to update the working directory files.
     else:
       opt.clone_filter = None
 
+    if opt.partial_clone_exclude is not None:
+      m.config.SetString('repo.partialcloneexclude', opt.partial_clone_exclude)
+
     if opt.clone_bundle is None:
       opt.clone_bundle = False if opt.partial_clone else True
     else:
@@ -343,7 +350,8 @@ to update the working directory files.
                               clone_bundle=opt.clone_bundle,
                               current_branch_only=opt.current_branch_only,
                               tags=opt.tags, submodules=opt.submodules,
-                              clone_filter=opt.clone_filter):
+                              clone_filter=opt.clone_filter,
+                              partial_clone_exclude=opt.partial_clone_exclude):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 

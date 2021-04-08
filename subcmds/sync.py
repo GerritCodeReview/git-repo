@@ -221,6 +221,10 @@ later is required to fix a server side protocol bug.
                  help='enable use of /clone.bundle on HTTP/HTTPS')
     p.add_option('--no-clone-bundle', dest='clone_bundle', action='store_false',
                  help='disable use of /clone.bundle on HTTP/HTTPS')
+    p.add_option('--partial-clone-exclude', action='store',
+                 dest='partial_clone_exclude',
+                 help='exclude the specifed projects from partial clone '
+                 '(https://git-scm.com/docs/gitrepository-layout#_code_partialclone_code)')
     p.add_option('-u', '--manifest-server-username', action='store',
                  dest='manifest_server_username',
                  help='username to authenticate with the manifest server')
@@ -345,7 +349,8 @@ later is required to fix a server side protocol bug.
           optimized_fetch=opt.optimized_fetch,
           retry_fetches=opt.retry_fetches,
           prune=opt.prune,
-          clone_filter=self.manifest.CloneFilter)
+          clone_filter=self.manifest.CloneFilter,
+          partial_clone_exclude=opt.partial_clone_exclude)
 
       output = buf.getvalue()
       if opt.verbose and output:
@@ -713,7 +718,8 @@ later is required to fix a server side protocol bug.
                                     optimized_fetch=opt.optimized_fetch,
                                     retry_fetches=opt.retry_fetches,
                                     submodules=self.manifest.HasSubmodules,
-                                    clone_filter=self.manifest.CloneFilter)
+                                    clone_filter=self.manifest.CloneFilter,
+                                    partial_clone_exclude=opt.partial_clone_exclude)
       finish = time.time()
       self.event_log.AddSync(mp, event_log.TASK_SYNC_NETWORK,
                              start, finish, success)
@@ -768,6 +774,10 @@ later is required to fix a server side protocol bug.
 
     if opt.clone_bundle is None:
       opt.clone_bundle = self.manifest.CloneBundle
+
+    if opt.partial_clone_exclude is None:
+      opt.partial_clone_exclude = self.manifest.manifestProject.config.GetString(
+          'repo.partialcloneexclude')
 
     if opt.smart_sync or opt.smart_tag:
       manifest_name = self._SmartSyncSetup(opt, smart_sync_manifest_path)

@@ -1050,7 +1050,8 @@ class Project(object):
                        retry_fetches=0,
                        prune=False,
                        submodules=False,
-                       clone_filter=None):
+                       clone_filter=None,
+                       partial_clone_exclude=None):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
@@ -1086,6 +1087,12 @@ class Project(object):
     # clone bundle download.  We should have the majority of objects already.
     if clone_bundle and os.path.exists(self.objdir):
       clone_bundle = False
+
+    if partial_clone_exclude and self.relpath in partial_clone_exclude:
+      if not clone_bundle:
+        clone_bundle = True
+      if clone_filter:
+        clone_filter = None
 
     if is_new is None:
       is_new = not self.Exists
