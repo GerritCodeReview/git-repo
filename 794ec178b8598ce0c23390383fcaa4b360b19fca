@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7377709_efe889c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-08T18:12:37Z",
+      "side": 1,
+      "message": "Hi Ian and Mike,\n  I have tested this change and the unpartialled projects remained unparital even though rest of the projects are partially cloned. I would appreciate if you could take a look (IMO, the change is simple, did little bit of plumbing work).\n\nThanks much.",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
