@@ -176,6 +176,11 @@ later is required to fix a server side protocol bug.
       pass
     super()._Options(p)
 
+    p.add_option('--jobs-network', default=None, type=int, metavar='JOBS',
+                 help='number of network jobs to run in parallel (defaults to --jobs)')
+    p.add_option('--jobs-checkout', default=None, type=int, metavar='JOBS',
+                 help='number of local checkout jobs to run in parallel (defaults to --jobs)')
+
     p.add_option('-f', '--force-broken',
                  dest='force_broken', action='store_true',
                  help='obsolete option (to be deleted in the future)')
@@ -366,6 +371,7 @@ later is required to fix a server side protocol bug.
   def _Fetch(self, projects, opt, err_event):
     ret = True
 
+    jobs = opt.jobs_network if opt.jobs_network else self.jobs
     fetched = set()
     pm = Progress('Fetching', len(projects), delay=False)
 
@@ -393,7 +399,7 @@ later is required to fix a server side protocol bug.
       return ret
 
     # NB: Multiprocessing is heavy, so don't spin it up for one job.
-    if len(projects_list) == 1 or opt.jobs == 1:
+    if len(projects_list) == 1 or jobs == 1:
       if not _ProcessResults(self._FetchProjectList(opt, x) for x in projects_list):
         ret = False
     else:
@@ -411,7 +417,7 @@ later is required to fix a server side protocol bug.
       else:
         pm.update(inc=0, msg='warming up')
         chunksize = 4
-      with multiprocessing.Pool(opt.jobs) as pool:
+      with multiprocessing.Pool(jobs) as pool:
         results = pool.imap_unordered(
             functools.partial(self._FetchProjectList, opt),
             projects_list,
@@ -465,6 +471,7 @@ later is required to fix a server side protocol bug.
       err_results: A list of strings, paths to git repos where checkout failed.
     """
     ret = True
+    jobs = opt.jobs_checkout if opt.jobs_checkout else self.jobs
 
     # Only checkout projects with worktrees.
     all_projects = [x for x in all_projects if x.worktree]
@@ -485,11 +492,11 @@ later is required to fix a server side protocol bug.
       return True
 
     # NB: Multiprocessing is heavy, so don't spin it up for one job.
-    if len(all_projects) == 1 or opt.jobs == 1:
+    if len(all_projects) == 1 or jobs == 1:
       if not _ProcessResults(self._CheckoutOne(opt, x) for x in all_projects):
         ret = False
     else:
-      with multiprocessing.Pool(opt.jobs) as pool:
+      with multiprocessing.Pool(jobs) as pool:
         results = pool.imap_unordered(
             functools.partial(self._CheckoutOne, opt),
             all_projects,
