@@ -503,34 +503,39 @@ later is required to fix a server side protocol bug.
     return ret and not err_results
 
   def _GCProjects(self, projects, opt, err_event):
+    pm = Progress('Garbage collecting', len(projects), delay=False)
+    pm.update(inc=0, msg='prescan')
+
     gc_gitdirs = {}
     for project in projects:
       # Make sure pruning never kicks in with shared projects.
       if (not project.use_git_worktrees and
               len(project.manifest.GetProjectsWithName(project.name)) > 1):
         if not opt.quiet:
-          print('%s: Shared project %s found, disabling pruning.' %
+          #pm.update(inc=0, msg='Shared project found')
+          print('\r%s: Shared project %s found, disabling pruning.' %
                 (project.relpath, project.name))
         if git_require((2, 7, 0)):
           project.EnableRepositoryExtension('preciousObjects')
         else:
           # This isn't perfect, but it's the best we can do with old git.
-          print('%s: WARNING: shared projects are unreliable when using old '
+          print('\r%s: WARNING: shared projects are unreliable when using old '
                 'versions of git; please upgrade to git-2.7.0+.'
                 % (project.relpath,),
                 file=sys.stderr)
           project.config.SetString('gc.pruneExpire', 'never')
       gc_gitdirs[project.gitdir] = project.bare_git
 
-    if multiprocessing:
-      cpu_count = multiprocessing.cpu_count()
-    else:
-      cpu_count = 1
+    pm.update(inc=len(projects) - len(gc_gitdirs), msg='warming up')
+
+    cpu_count = os.cpu_count()
     jobs = min(self.jobs, cpu_count)
 
     if jobs < 2:
       for bare_git in gc_gitdirs.values():
+        pm.update(msg=bare_git._project.name)
         bare_git.gc('--auto')
+      pm.end()
       return
 
     config = {'pack.threads': cpu_count // jobs if cpu_count > jobs else 1}
@@ -539,6 +544,7 @@ later is required to fix a server side protocol bug.
     sem = _threading.Semaphore(jobs)
 
     def GC(bare_git):
+      pm.start(bare_git._project.name)
       try:
         try:
           bare_git.gc('--auto', config=config)
@@ -548,6 +554,7 @@ later is required to fix a server side protocol bug.
           err_event.set()
           raise
       finally:
+        pm.finish(bare_git._project.name)
         sem.release()
 
     for bare_git in gc_gitdirs.values():
@@ -561,6 +568,7 @@ later is required to fix a server side protocol bug.
 
     for t in threads:
       t.join()
+    pm.end()
 
   def _ReloadManifest(self, manifest_name=None):
     if manifest_name:
