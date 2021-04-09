@@ -16,6 +16,121 @@
       "message": "Hi Ian and Mike,\n  I have tested this change and the unpartialled projects remained unparital even though rest of the projects are partially cloned. I would appreciate if you could take a look (IMO, the change is simple, did little bit of plumbing work).\n\nThanks much.",
       "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90c9c44a_60752d9d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-09T03:24:46Z",
+      "side": 1,
+      "message": "#famouselastwords ;)",
+      "parentUuid": "e7377709_efe889c7",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b2f5f3c_2ea92acb",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-09T03:24:46Z",
+      "side": 1,
+      "message": "partial_clone_exclude seems to be a string if i\u0027m guessing the intentions correctly.  so this is doing a partial substring match rather than exact.  which means it\u0027s not possible to filter by exact project, and projects with the same leading prefix would get excluded.\n\nfor example, if exclude\u003dfoo/bar, but the manifest has foo/bar foo/bar2 foo/bar-bar, then all will incorrectly match.",
+      "range": {
+        "startLine": 1091,
+        "startChar": 46,
+        "endLine": 1091,
+        "endChar": 70
+      },
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d439022c_bc2b2725",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-09T03:24:46Z",
+      "side": 1,
+      "message": "should this be |name| instead of |relpath| ?\n\nthese options apply to the underlying git repo, not the source checkout right ?  so if you have a project foo/bar checked out to both src/bar \u0026 platform/bar, we\u0027re only going to fetch the foo/bar repo once, and check that out to src/bar \u0026 platform/bar.  so the filter should apply to the project name (on the server) and not wherever it happens to be checked out locally right ?\n\nplus the server path will be a lot more stable than the local checkout path.",
+      "range": {
+        "startLine": 1091,
+        "startChar": 33,
+        "endLine": 1091,
+        "endChar": 45
+      },
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16a3f8d6_25220192",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-09T03:24:46Z",
+      "side": 1,
+      "message": "this clone URL is duplicated three times now.  prob should pull out into a constant in the func.",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aea1ad10_042dadf7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-09T03:24:46Z",
+      "side": 1,
+      "message": "redundant -\u003e delete",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921c28fc_a4bd0419",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-09T03:24:46Z",
+      "side": 1,
+      "message": "specified how ?  is this supposed to be a space delimited string ?  comma delimited ?  use the flag multiple times ?",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
