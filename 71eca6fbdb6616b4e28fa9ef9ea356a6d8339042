@@ -99,6 +99,30 @@
       },
       "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46a9fa37_21f7be4a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 992,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-04-09T01:13:30Z",
+      "side": 1,
+      "message": "FWIW, I like what you have here. :)",
+      "parentUuid": "5f0c5da7_b5804acf",
+      "range": {
+        "startLine": 992,
+        "startChar": 25,
+        "endLine": 992,
+        "endChar": 31
+      },
+      "revId": "71eca6fbdb6616b4e28fa9ef9ea356a6d8339042",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
