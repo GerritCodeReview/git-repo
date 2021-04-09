@@ -298,6 +298,20 @@ def InitParser(parser, gitc_init=False):
                    help='manifest branch or revision (use HEAD for default)')
   group.add_option('-m', '--manifest-name',
                    help='initial manifest file', metavar='NAME.xml')
+  group.add_option('-g', '--groups', default='default',
+                   help='restrict manifest projects to ones with specified '
+                        'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
+                   metavar='GROUP')
+  group.add_option('-p', '--platform', default='auto',
+                   help='restrict manifest projects to ones with a specified '
+                        'platform group [auto|all|none|linux|darwin|...]',
+                   metavar='PLATFORM')
+  group.add_option('--submodules', action='store_true',
+                   help='sync any submodules associated with the manifest repo')
+
+  # Options that only affect manifest project, and not any of the projects
+  # specified in the manifest itself.
+  group = parser.add_option_group('Manifest (only) checkout options')
   cbr_opts = ['--current-branch']
   # The gitc-init subcommand allocates -c itself, but a lot of init users
   # want -c, so try to satisfy both as best we can.
@@ -306,9 +320,23 @@ def InitParser(parser, gitc_init=False):
   group.add_option(*cbr_opts,
                    dest='current_branch_only', action='store_true',
                    help='fetch only current manifest branch from server')
+  group.add_option('--no-tags',
+                   dest='tags', default=True, action='store_false',
+                   help="don't fetch tags in the manifest")
+
+  # These are fundamentally different ways of structuring the checkout.
+  group = parser.add_option_group('Checkout modes')
   group.add_option('--mirror', action='store_true',
                    help='create a replica of the remote repositories '
                         'rather than a client working directory')
+  group.add_option('--archive', action='store_true',
+                   help='checkout an archive instead of a git repository for '
+                        'each project. See git archive.')
+  group.add_option('--worktree', action='store_true',
+                   help='use git-worktree to manage projects')
+
+  # These are fundamentally different ways of structuring the checkout.
+  group = parser.add_option_group('Project checkout optimizations')
   group.add_option('--reference',
                    help='location of mirror directory', metavar='DIR')
   group.add_option('--dissociate', action='store_true',
@@ -325,35 +353,17 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--clone-filter', action='store', default='blob:none',
                    help='filter for use with --partial-clone '
                         '[default: %default]')
-  group.add_option('--worktree', action='store_true',
-                   help='use git-worktree to manage projects')
-  group.add_option('--archive', action='store_true',
-                   help='checkout an archive instead of a git repository for '
-                        'each project. See git archive.')
-  group.add_option('--submodules', action='store_true',
-                   help='sync any submodules associated with the manifest repo')
   group.add_option('--use-superproject', action='store_true', default=None,
                    help='use the manifest superproject to sync projects')
   group.add_option('--no-use-superproject', action='store_false',
                    dest='use_superproject',
                    help='disable use of manifest superprojects')
-  group.add_option('-g', '--groups', default='default',
-                   help='restrict manifest projects to ones with specified '
-                        'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
-                   metavar='GROUP')
-  group.add_option('-p', '--platform', default='auto',
-                   help='restrict manifest projects to ones with a specified '
-                        'platform group [auto|all|none|linux|darwin|...]',
-                   metavar='PLATFORM')
   group.add_option('--clone-bundle', action='store_true',
                    help='enable use of /clone.bundle on HTTP/HTTPS '
                         '(default if not --partial-clone)')
   group.add_option('--no-clone-bundle',
                    dest='clone_bundle', action='store_false',
                    help='disable use of /clone.bundle on HTTP/HTTPS (default if --partial-clone)')
-  group.add_option('--no-tags',
-                   dest='tags', default=True, action='store_false',
-                   help="don't fetch tags in the manifest")
 
   # Tool.
   group = parser.add_option_group('repo Version options')
