@@ -46,7 +46,7 @@ def TempGitTree():
       templatedir = tempfile.mkdtemp(prefix='.test-template')
       with open(os.path.join(templatedir, 'HEAD'), 'w') as fp:
         fp.write('ref: refs/heads/main\n')
-      cmd += ['--template=', templatedir]
+      cmd += ['--template', templatedir]
     subprocess.check_call(cmd, cwd=tempdir)
     yield tempdir
   finally:
