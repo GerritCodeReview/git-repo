@@ -51,6 +51,24 @@
       "parentUuid": "0ac679e3_27cba8f9",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8a7a0c0_6216f878",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-12T16:08:31Z",
+      "side": 1,
+      "message": "i\u0027ve had reports from macOS \u0026 Windows users that they only have `python`\n\nif Debian wants to delete `python`, they can rewrite the shebang when installing `repo` in their deb to use `python3` specifically",
+      "parentUuid": "b995b23f_c6868f99",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
