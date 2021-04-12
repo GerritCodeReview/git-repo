@@ -16,6 +16,7 @@
 
 import os
 import platform
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -139,15 +140,26 @@ class SuperprojectTestCase(unittest.TestCase):
     self.assertIsNotNone(manifest_path)
     with open(manifest_path, 'r') as fp:
       manifest_xml = fp.read()
-    self.assertEqual(
-        manifest_xml,
-        '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
-        '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<project name="platform/art" path="art" revision="ABCDEF" ' +
-        'groups="notdefault,platform-' + self.platform + '"/>' +
-        '<superproject name="superproject"/>' +
-        '</manifest>')
+    if sys.version_info >= (3, 8):
+      self.assertEqual(
+          manifest_xml,
+          '<?xml version="1.0" ?><manifest>' +
+          '<remote name="default-remote" fetch="http://localhost"/>' +
+          '<default remote="default-remote" revision="refs/heads/main"/>' +
+          '<project name="platform/art" path="art" revision="ABCDEF" ' +
+          'groups="notdefault,platform-' + self.platform + '"/>' +
+          '<superproject name="superproject"/>' +
+          '</manifest>')
+    else:
+      self.assertEqual(
+          manifest_xml,
+          '<?xml version="1.0" ?><manifest>' +
+          '<remote fetch="http://localhost" name="default-remote"/>' +
+          '<default remote="default-remote" revision="refs/heads/main"/>' +
+          '<project groups="notdefault,platform-' + self.platform + '" ' +
+          'name="platform/art" path="art" revision="ABCDEF"/>' +
+          '<superproject name="superproject"/>' +
+          '</manifest>')
 
   def test_superproject_update_project_revision_id(self):
     """Test with LsTree being a mock."""
@@ -166,16 +178,28 @@ class SuperprojectTestCase(unittest.TestCase):
           self.assertIsNotNone(manifest_path)
           with open(manifest_path, 'r') as fp:
             manifest_xml = fp.read()
-          self.assertEqual(
-              manifest_xml,
-              '<?xml version="1.0" ?><manifest>' +
-              '<remote name="default-remote" fetch="http://localhost"/>' +
-              '<default remote="default-remote" revision="refs/heads/main"/>' +
-              '<project name="platform/art" path="art" ' +
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" ' +
-              'groups="notdefault,platform-' + self.platform + '"/>' +
-              '<superproject name="superproject"/>' +
-              '</manifest>')
+          if sys.version_info >= (3, 8):
+            self.assertEqual(
+                manifest_xml,
+                '<?xml version="1.0" ?><manifest>' +
+                '<remote name="default-remote" fetch="http://localhost"/>' +
+                '<default remote="default-remote" revision="refs/heads/main"/>' +
+                '<project name="platform/art" path="art" ' +
+                'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" ' +
+                'groups="notdefault,platform-' + self.platform + '"/>' +
+                '<superproject name="superproject"/>' +
+                '</manifest>')
+          else:
+            self.assertEqual(
+                manifest_xml,
+                '<?xml version="1.0" ?><manifest>' +
+                '<remote fetch="http://localhost" name="default-remote"/>' +
+                '<default remote="default-remote" revision="refs/heads/main"/>' +
+                '<project groups="notdefault,platform-' + self.platform + '" '
+                'name="platform/art" path="art" ' +
+                'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>' +
+                '<superproject name="superproject"/>' +
+                '</manifest>')
 
 
 if __name__ == '__main__':
