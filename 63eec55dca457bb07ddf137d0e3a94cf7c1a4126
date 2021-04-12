@@ -33,6 +33,24 @@
       "message": "sorry, but i don\u0027t see this happening.  there are many OS\u0027s beyond Linux, and many distros beyond Debian \u0026 Fedora, so we cannot make changes that require those.  some are only installing `python`, not `python2` or `python3` (where `python` is Python 3).\n\nthis also seems to go against PEP-0394:\nhttps://www.python.org/dev/peps/pep-0394/\n\nthe reason we can migrate all the other shebangs is because they are not executed directly.  only the repo launcher is shipped to end users.  so making the assumption/requirement that `python3` is available isn\u0027t a big deal because the subset of devs hacking on repo are fine with it.",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b995b23f_c6868f99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-04-12T15:46:03Z",
+      "side": 1,
+      "message": "Hm, that PEP says\n\n\u003e Distributors may choose to set the behavior of the python command as follows:\n\u003e \n\u003e * python2,\n\u003e * python3,\n\u003e * not provide python command,\n\u003e * allow python to be configurable by an end user or a system administrator.\n\nso it\u0027s not clear these distros are doing the wrong thing wrt Python\u0027s recommendations. However, the PEP also says\n\n\u003e * When packaging third party Python scripts, distributors are encouraged to change less specific shebangs to more specific ones\n\nand\n\n\u003e For Python script publishers\n\u003e \n\u003e * developers may either use a Python package installation tool that rewrites shebang lines for the installed environment, provide instructions on updating shebang lines interactively, or else use more specific shebang lines that are tailored to the target environment\n\nAll in all, it\u0027s a mess and it seems to permit everyone to do anything. :)\n\nGiven what that PEP says, I\u0027m comfortable saying that distros should be able to patch the shebang lines themselves.\n\nOut of curiosity, which distros are you thinking of that only install Python 3 as `python` and don\u0027t provide a `python3` command?",
+      "parentUuid": "0ac679e3_27cba8f9",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
