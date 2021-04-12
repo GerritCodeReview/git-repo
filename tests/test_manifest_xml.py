@@ -16,6 +16,7 @@
 
 import os
 import platform
+import re
 import shutil
 import tempfile
 import unittest
@@ -62,6 +63,12 @@ INVALID_FS_PATHS = (
 if os.path.sep != '/':
   INVALID_FS_PATHS += tuple(x.replace('/', os.path.sep) for x in INVALID_FS_PATHS)
 
+def sort_attributes(manifest):
+  new_manifest = ''
+  matches = re.findall(r'(<\S+\s*)((?:\S+?="[^"]+"\s*?)*)(\s*[/?]?>)', manifest)
+  for head,attrs,tail in matches:
+    new_manifest += head + ' '. join(sorted(attrs.split())) + tail
+  return new_manifest
 
 class ManifestParseTestCase(unittest.TestCase):
   """TestCase for parsing manifests."""
@@ -254,9 +261,9 @@ class XmlManifestTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['name'], 'superproject')
     self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
     self.assertEqual(
-        manifest.ToXml().toxml(),
+        sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
-        '<remote name="test-remote" fetch="http://localhost"/>'
+        '<remote fetch="http://localhost" name="test-remote"/>'
         '<default remote="test-remote" revision="refs/heads/main"/>'
         '<superproject name="superproject"/>'
         '</manifest>')
@@ -408,9 +415,9 @@ class ProjectElementTests(ManifestParseTestCase):
     project = manifest.projects[0]
     project.SetRevisionId('ABCDEF')
     self.assertEqual(
-        manifest.ToXml().toxml(),
+        sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
-        '<remote name="default-remote" fetch="http://localhost"/>'
+        '<remote fetch="http://localhost" name="default-remote"/>'
         '<default remote="default-remote" revision="refs/heads/main"/>'
         '<project name="test-name" revision="ABCDEF"/>'
         '</manifest>')
@@ -516,9 +523,9 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
     self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/superproject')
     self.assertEqual(
-        manifest.ToXml().toxml(),
+        sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
-        '<remote name="test-remote" fetch="http://localhost"/>'
+        '<remote fetch="http://localhost" name="test-remote"/>'
         '<default remote="test-remote" revision="refs/heads/main"/>'
         '<superproject name="superproject"/>'
         '</manifest>')
@@ -537,10 +544,10 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['remote'].name, 'superproject-remote')
     self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/platform/superproject')
     self.assertEqual(
-        manifest.ToXml().toxml(),
+        sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
-        '<remote name="default-remote" fetch="http://localhost"/>'
-        '<remote name="superproject-remote" fetch="http://localhost"/>'
+        '<remote fetch="http://localhost" name="default-remote"/>'
+        '<remote fetch="http://localhost" name="superproject-remote"/>'
         '<default remote="default-remote" revision="refs/heads/main"/>'
         '<superproject name="platform/superproject" remote="superproject-remote"/>'
         '</manifest>')
@@ -557,9 +564,9 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['name'], 'superproject')
     self.assertEqual(manifest.superproject['remote'].name, 'default-remote')
     self.assertEqual(
-        manifest.ToXml().toxml(),
+        sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
-        '<remote name="default-remote" fetch="http://localhost"/>'
+        '<remote fetch="http://localhost" name="default-remote"/>'
         '<default remote="default-remote" revision="refs/heads/main"/>'
         '<superproject name="superproject"/>'
         '</manifest>')

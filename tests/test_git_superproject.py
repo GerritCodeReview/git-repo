@@ -16,6 +16,7 @@
 
 import os
 import platform
+import re
 import tempfile
 import unittest
 from unittest import mock
@@ -24,6 +25,13 @@ import git_superproject
 import manifest_xml
 import platform_utils
 
+
+def sort_attributes(manifest):
+  new_manifest = ''
+  matches = re.findall(r'(<\S+\s*)((?:\S+?="[^"]+"\s*?)*)(\s*[/?]?>)', manifest)
+  for head,attrs,tail in matches:
+    new_manifest += head + ' '. join(sorted(attrs.split())) + tail
+  return new_manifest
 
 class SuperprojectTestCase(unittest.TestCase):
   """TestCase for the Superproject module."""
@@ -140,12 +148,12 @@ class SuperprojectTestCase(unittest.TestCase):
     with open(manifest_path, 'r') as fp:
       manifest_xml = fp.read()
     self.assertEqual(
-        manifest_xml,
+        sort_attributes(manifest_xml),
         '<?xml version="1.0" ?><manifest>'
-        '<remote name="default-remote" fetch="http://localhost"/>'
+        '<remote fetch="http://localhost" name="default-remote"/>'
         '<default remote="default-remote" revision="refs/heads/main"/>'
-        '<project name="platform/art" path="art" revision="ABCDEF" '
-        'groups="notdefault,platform-' + self.platform + '"/>'
+        '<project groups="notdefault,platform-' + self.platform + '" '
+        'name="platform/art" path="art" revision="ABCDEF"/>'
         '<superproject name="superproject"/>'
         '</manifest>')
 
@@ -167,13 +175,13 @@ class SuperprojectTestCase(unittest.TestCase):
           with open(manifest_path, 'r') as fp:
             manifest_xml = fp.read()
           self.assertEqual(
-              manifest_xml,
+              sort_attributes(manifest_xml),
               '<?xml version="1.0" ?><manifest>'
-              '<remote name="default-remote" fetch="http://localhost"/>'
+              '<remote fetch="http://localhost" name="default-remote"/>'
               '<default remote="default-remote" revision="refs/heads/main"/>'
-              '<project name="platform/art" path="art" '
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" '
-              'groups="notdefault,platform-' + self.platform + '"/>'
+              '<project groups="notdefault,platform-' + self.platform + '" '
+              'name="platform/art" path="art" '
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>'
               '<superproject name="superproject"/>'
               '</manifest>')
 
@@ -208,16 +216,17 @@ class SuperprojectTestCase(unittest.TestCase):
           with open(manifest_path, 'r') as fp:
             manifest_xml = fp.read()
           self.assertEqual(
-              manifest_xml,
+              sort_attributes(manifest_xml),
               '<?xml version="1.0" ?><manifest>'
-              '<remote name="default-remote" fetch="http://localhost"/>'
-              '<remote name="goog" fetch="http://localhost2"/>'
+              '<remote fetch="http://localhost" name="default-remote"/>'
+              '<remote fetch="http://localhost2" name="goog"/>'
               '<default remote="default-remote" revision="refs/heads/main"/>'
-              '<project name="platform/art" path="art" '
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" '
-              'groups="notdefault,platform-' + self.platform + '"/>'
-              '<project name="platform/vendor/x" path="vendor/x" remote="goog" '
-              'revision="master-with-vendor" groups="vendor" clone-depth="1"/>'
+              '<project groups="notdefault,platform-' + self.platform + '" '
+              'name="platform/art" path="art" '
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>'
+              '<project clone-depth="1" groups="vendor" '
+              'name="platform/vendor/x" path="vendor/x" remote="goog" '
+              'revision="master-with-vendor"/>'
               '<superproject name="superproject"/>'
               '</manifest>')
 
