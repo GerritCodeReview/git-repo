@@ -142,10 +142,10 @@ class SuperprojectTestCase(unittest.TestCase):
     self.assertEqual(
         manifest_xml,
         '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
+        '<remote fetch="http://localhost" name="default-remote"/>' +
         '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<project name="platform/art" path="art" revision="ABCDEF" ' +
-        'groups="notdefault,platform-' + self.platform + '"/>' +
+        '<project groups="notdefault,platform-' + self.platform + '" ' +
+        'name="platform/art" path="art" revision="ABCDEF"/>' +
         '<superproject name="superproject"/>' +
         '</manifest>')
 
@@ -169,11 +169,11 @@ class SuperprojectTestCase(unittest.TestCase):
           self.assertEqual(
               manifest_xml,
               '<?xml version="1.0" ?><manifest>' +
-              '<remote name="default-remote" fetch="http://localhost"/>' +
+              '<remote fetch="http://localhost" name="default-remote"/>' +
               '<default remote="default-remote" revision="refs/heads/main"/>' +
-              '<project name="platform/art" path="art" ' +
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" ' +
-              'groups="notdefault,platform-' + self.platform + '"/>' +
+              '<project groups="notdefault,platform-' + self.platform + '" '
+              'name="platform/art" path="art" ' +
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>' +
               '<superproject name="superproject"/>' +
               '</manifest>')
 

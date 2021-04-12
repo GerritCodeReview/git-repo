@@ -271,12 +271,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def _RemoteToXml(self, r, doc, root):
     e = doc.createElement('remote')
     root.appendChild(e)
-    e.setAttribute('name', r.name)
-    e.setAttribute('fetch', r.fetchUrl)
-    if r.pushUrl is not None:
-      e.setAttribute('pushurl', r.pushUrl)
     if r.remoteAlias is not None:
       e.setAttribute('alias', r.remoteAlias)
+    e.setAttribute('fetch', r.fetchUrl)
+    e.setAttribute('name', r.name)
+    if r.pushUrl is not None:
+      e.setAttribute('pushurl', r.pushUrl)
     if r.reviewUrl is not None:
       e.setAttribute('review', r.reviewUrl)
     if r.revision is not None:
@@ -371,6 +371,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
       e = doc.createElement('project')
       parent_node.appendChild(e)
+
+      default_groups = ['all', 'name:%s' % p.name, 'path:%s' % p.relpath]
+      egroups = [g for g in p.groups if g not in default_groups]
+      if egroups:
+        e.setAttribute('groups', ','.join(egroups))
+
       e.setAttribute('name', name)
       if relpath != name:
         e.setAttribute('path', relpath)
@@ -424,11 +430,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         le.setAttribute('src', l.src)
         le.setAttribute('dest', l.dest)
         e.appendChild(le)
-
-      default_groups = ['all', 'name:%s' % p.name, 'path:%s' % p.relpath]
-      egroups = [g for g in p.groups if g not in default_groups]
-      if egroups:
-        e.setAttribute('groups', ','.join(egroups))
 
       for a in p.annotations:
         if a.keep == "true":

@@ -248,7 +248,7 @@ class XmlManifestTests(ManifestParseTestCase):
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>' +
-        '<remote name="test-remote" fetch="http://localhost"/>' +
+        '<remote fetch="http://localhost" name="test-remote"/>' +
         '<default remote="test-remote" revision="refs/heads/main"/>' +
         '<superproject name="superproject"/>' +
         '</manifest>')
@@ -400,7 +400,7 @@ class ProjectElementTests(ManifestParseTestCase):
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
+        '<remote fetch="http://localhost" name="default-remote"/>' +
         '<default remote="default-remote" revision="refs/heads/main"/>' +
         '<project name="test-name" revision="ABCDEF"/>' +
         '</manifest>')
@@ -502,7 +502,7 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>' +
-        '<remote name="test-remote" fetch="http://localhost"/>' +
+        '<remote fetch="http://localhost" name="test-remote"/>' +
         '<default remote="test-remote" revision="refs/heads/main"/>' +
         '<superproject name="superproject"/>' +
         '</manifest>')
@@ -523,8 +523,8 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
-        '<remote name="superproject-remote" fetch="http://localhost"/>' +
+        '<remote fetch="http://localhost" name="default-remote"/>' +
+        '<remote fetch="http://localhost" name="superproject-remote"/>' +
         '<default remote="default-remote" revision="refs/heads/main"/>' +
         '<superproject name="platform/superproject" remote="superproject-remote"/>' +
         '</manifest>')
@@ -543,7 +543,7 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
+        '<remote fetch="http://localhost" name="default-remote"/>' +
         '<default remote="default-remote" revision="refs/heads/main"/>' +
         '<superproject name="superproject"/>' +
         '</manifest>')
