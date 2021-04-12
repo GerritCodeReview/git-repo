@@ -69,6 +69,24 @@
       "parentUuid": "b995b23f_c6868f99",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edf29577_6944359b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-04-12T17:22:57Z",
+      "side": 1,
+      "message": "Is that `python` Python 2.x or 3.x? (Even if it\u0027s 2.x, it\u0027s still a good reason not to merge this change, because using a working python version lets us control the error message we print.)",
+      "parentUuid": "b8a7a0c0_6216f878",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
