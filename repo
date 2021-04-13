@@ -350,6 +350,10 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--no-partial-clone', action='store_false',
                    help='disable use of partial clone (https://git-scm.com/'
                         'docs/gitrepository-layout#_code_partialclone_code)')
+  group.add_option('--partial-clone-exclude', action='store',
+                   help='exclude the specified projects (a comma-delimited '
+                        'project names) from partial clone (https://git-scm.com'
+                        '/docs/gitrepository-layout#_code_partialclone_code)')
   group.add_option('--clone-filter', action='store', default='blob:none',
                    help='filter for use with --partial-clone '
                         '[default: %default]')

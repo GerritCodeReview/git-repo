@@ -348,7 +348,8 @@ later is required to fix a server side protocol bug.
           optimized_fetch=opt.optimized_fetch,
           retry_fetches=opt.retry_fetches,
           prune=opt.prune,
-          clone_filter=self.manifest.CloneFilter)
+          clone_filter=self.manifest.CloneFilter,
+          partial_clone_exclude=self.manifest.PartialCloneExclude)
 
       output = buf.getvalue()
       if opt.verbose and output:
@@ -517,7 +518,6 @@ later is required to fix a server side protocol bug.
       if (not project.use_git_worktrees and
               len(project.manifest.GetProjectsWithName(project.name)) > 1):
         if not opt.quiet:
-          #pm.update(inc=0, msg='Shared project found')
           print('\r%s: Shared project %s found, disabling pruning.' %
                 (project.relpath, project.name))
         if git_require((2, 7, 0)):
@@ -726,7 +726,8 @@ later is required to fix a server side protocol bug.
                                     optimized_fetch=opt.optimized_fetch,
                                     retry_fetches=opt.retry_fetches,
                                     submodules=self.manifest.HasSubmodules,
-                                    clone_filter=self.manifest.CloneFilter)
+                                    clone_filter=self.manifest.CloneFilter,
+                                    partial_clone_exclude=self.manifest.PartialCloneExclude)
       finish = time.time()
       self.event_log.AddSync(mp, event_log.TASK_SYNC_NETWORK,
                              start, finish, success)
