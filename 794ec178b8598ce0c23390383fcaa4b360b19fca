@@ -36,6 +36,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c24df772_51382fba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T04:02:35Z",
+      "side": 1,
+      "message": "Hi Mike,\n  I have messed up my git repository. I have made all the changes in https://gerrit-review.googlesource.com/c/git-repo/+/303162. I hope you won\u0027t mind if I abandon this CL.\n\nReally sorry and thanks much.",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b2f5f3c_2ea92acb",
@@ -82,6 +99,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ec8d9c4_42ff2986",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T04:02:35Z",
+      "side": 1,
+      "message": "Changed it to project\u0027s name.\n\nDone",
+      "parentUuid": "d439022c_bc2b2725",
+      "range": {
+        "startLine": 1091,
+        "startChar": 33,
+        "endLine": 1091,
+        "endChar": 45
+      },
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8f8b851_2993f5c2",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1091,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T04:02:35Z",
+      "side": 1,
+      "message": "My intention was to use a comma separated string partial_clone_exclude. Tested it manually that the above test cases are handled correctly.\n\nDone.",
+      "parentUuid": "5b2f5f3c_2ea92acb",
+      "range": {
+        "startLine": 1091,
+        "startChar": 46,
+        "endLine": 1091,
+        "endChar": 70
+      },
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16a3f8d6_25220192",
@@ -95,6 +160,24 @@
       "writtenOn": "2021-04-09T03:24:46Z",
       "side": 1,
       "message": "this clone URL is duplicated three times now.  prob should pull out into a constant in the func.",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d966428_eebc7ed4",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T04:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "16a3f8d6_25220192",
       "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -116,6 +199,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6a27be6_f012d8c0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T04:02:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aea1ad10_042dadf7",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "921c28fc_a4bd0419",
@@ -129,6 +230,24 @@
       "writtenOn": "2021-04-09T03:24:46Z",
       "side": 1,
       "message": "specified how ?  is this supposed to be a space delimited string ?  comma delimited ?  use the flag multiple times ?",
+      "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7eed8cf_57552d43",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T04:02:35Z",
+      "side": 1,
+      "message": "Added text to say it is a comma separated project names in repo.\n\nDeleted this flag from sync. The PartialCloneExclude persisted in manifest is used (ala CloneFilter).\n\nDone.",
+      "parentUuid": "921c28fc_a4bd0419",
       "revId": "794ec178b8598ce0c23390383fcaa4b360b19fca",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
