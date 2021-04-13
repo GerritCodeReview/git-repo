@@ -81,7 +81,7 @@ It is equivalent to "git branch -D <branchname>".
             err[branch].append(project)
         pm.update()
 
-    pm = Progress('Abandon %s' % nb, len(all_projects))
+    pm = Progress('Abandon %s' % nb, len(all_projects), quiet=opt.quiet)
     # NB: Multiprocessing is heavy, so don't spin it up for one job.
     if len(all_projects) == 1 or opt.jobs == 1:
       _ProcessResults(self._ExecuteOne(opt, nb, x) for x in all_projects)

@@ -106,7 +106,7 @@ revision specified in the manifest.
       if not os.path.exists(os.getcwd()):
         os.chdir(self.manifest.topdir)
 
-      pm = Progress('Syncing %s' % nb, len(all_projects))
+      pm = Progress('Syncing %s' % nb, len(all_projects), quiet=opt.quiet)
       for project in all_projects:
         gitc_project = self.gitc_manifest.paths[project.relpath]
         # Sync projects that have not been opened.
@@ -129,7 +129,7 @@ revision specified in the manifest.
           err.append(project)
         pm.update()
 
-    pm = Progress('Starting %s' % nb, len(all_projects))
+    pm = Progress('Starting %s' % nb, len(all_projects), quiet=opt.quiet)
     # NB: Multiprocessing is heavy, so don't spin it up for one job.
     if len(all_projects) == 1 or opt.jobs == 1:
       _ProcessResults(self._ExecuteOne(opt, nb, x) for x in all_projects)
