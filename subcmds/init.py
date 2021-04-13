@@ -227,6 +227,9 @@ to update the working directory files.
     else:
       opt.clone_filter = None
 
+    if opt.partial_clone_exclude is not None:
+      m.config.SetString('repo.partialcloneexclude', opt.partial_clone_exclude)
+
     if opt.clone_bundle is None:
       opt.clone_bundle = False if opt.partial_clone else True
     else:
@@ -242,7 +245,8 @@ to update the working directory files.
                               clone_bundle=opt.clone_bundle,
                               current_branch_only=opt.current_branch_only,
                               tags=opt.tags, submodules=opt.submodules,
-                              clone_filter=opt.clone_filter):
+                              clone_filter=opt.clone_filter,
+                              partial_clone_exclude=opt.partial_clone_exclude):
       r = m.GetRemote(m.remote.name)
       print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 

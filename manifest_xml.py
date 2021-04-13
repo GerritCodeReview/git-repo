@@ -590,6 +590,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return None
 
   @property
+  def PartialCloneExclude(self):
+    return self.manifest.manifestProject.config.GetString(
+        'repo.partialcloneexclude')
+
+  @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
