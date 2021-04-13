@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1733c50_ddd93014",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-13T04:13:12Z",
+      "side": 1,
+      "message": "first line is much too long\nhttps://chris.beams.io/posts/git-commit/",
+      "revId": "c71b1cde9f787d0d7d218bc1ea17c3b3e66c9c4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea41337a_da9d0ff6",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-13T04:13:12Z",
+      "side": 1,
+      "message": "how about:\n\n Comma-delimited list of project names (not paths) to exclude while using [partial git clones]",
+      "revId": "c71b1cde9f787d0d7d218bc1ea17c3b3e66c9c4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28a2739b_6b7db59d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-13T04:13:12Z",
+      "side": 1,
+      "message": "should this return the parsed settings instead of the raw string ?\n\n return set(\n     x.strip() for x in \n     self.manifest.manifestProject.config.GetString(\n         \u0027repo.partialcloneexclude\u0027).split(\u0027,\u0027))",
+      "revId": "c71b1cde9f787d0d7d218bc1ea17c3b3e66c9c4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
