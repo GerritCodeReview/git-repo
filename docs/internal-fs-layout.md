@@ -147,22 +147,23 @@ repo client checkout.
 Most settings use the `[repo]` section to avoid conflicts with git.
 User controlled settings are initialized when running `repo init`.
 
-| Setting           | `repo init` Option        | Use/Meaning |
-|-------------------|---------------------------|-------------|
-| manifest.groups   | `--groups` & `--platform` | The manifest groups to sync |
-| repo.archive      | `--archive`               | Use `git archive` for checkouts |
-| repo.clonebundle  | `--clone-bundle`          | Whether the initial sync used clone.bundle explicitly |
-| repo.clonefilter  | `--clone-filter`          | Filter setting when using [partial git clones] |
-| repo.depth        | `--depth`                 | Create shallow checkouts when cloning |
-| repo.dissociate   | `--dissociate`            | Dissociate from any reference/mirrors after initial clone |
-| repo.mirror       | `--mirror`                | Checkout is a repo mirror |
-| repo.partialclone | `--partial-clone`         | Create [partial git clones] |
-| repo.reference    | `--reference`             | Reference repo client checkout |
-| repo.submodules   | `--submodules`            | Sync git submodules |
-| repo.superproject | `--use-superproject`      | Sync [superproject] |
-| repo.worktree     | `--worktree`              | Use [git worktree] for checkouts |
-| user.email        | `--config-name`           | User's e-mail address; Copied into `.git/config` when checking out a new project |
-| user.name         | `--config-name`           | User's name; Copied into `.git/config` when checking out a new project |
+| Setting                  | `repo init` Option        | Use/Meaning |
+|-------------------       |---------------------------|-------------|
+| manifest.groups          | `--groups` & `--platform` | The manifest groups to sync |
+| repo.archive             | `--archive`               | Use `git archive` for checkouts |
+| repo.clonebundle         | `--clone-bundle`          | Whether the initial sync used clone.bundle explicitly |
+| repo.clonefilter         | `--clone-filter`          | Filter setting when using [partial git clones] |
+| repo.depth               | `--depth`                 | Create shallow checkouts when cloning |
+| repo.dissociate          | `--dissociate`            | Dissociate from any reference/mirrors after initial clone |
+| repo.mirror              | `--mirror`                | Checkout is a repo mirror |
+| repo.partialclone        | `--partial-clone`         | Create [partial git clones] |
+| repo.partialcloneexclude | `--partial-clone-exclude` | Comma-delimited list of project names (not paths) to exclude while using [partial git clones] |
+| repo.reference           | `--reference`             | Reference repo client checkout |
+| repo.submodules          | `--submodules`            | Sync git submodules |
+| repo.superproject        | `--use-superproject`      | Sync [superproject] |
+| repo.worktree            | `--worktree`              | Use [git worktree] for checkouts |
+| user.email               | `--config-name`           | User's e-mail address; Copied into `.git/config` when checking out a new project |
+| user.name                | `--config-name`           | User's name; Copied into `.git/config` when checking out a new project |
 
 [partial git clones]: https://git-scm.com/docs/gitrepository-layout#_code_partialclone_code
 [superproject]: https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects
