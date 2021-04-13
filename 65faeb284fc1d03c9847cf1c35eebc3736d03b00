@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "701efb39_9b40635b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T15:38:43Z",
+      "side": 1,
+      "message": "+1 to the above comment. Thanks much.\nDone",
+      "parentUuid": "03afac17_5f9d305b",
+      "revId": "65faeb284fc1d03c9847cf1c35eebc3736d03b00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0d6fc3f_5ffd631b",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-04-13T14:41:00Z",
       "side": 1,
       "message": "ugh i didn\u0027t mean to commit this.  you can delete it, or i can take care of it.",
+      "revId": "65faeb284fc1d03c9847cf1c35eebc3736d03b00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1f89704_1a82c57b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T15:38:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0d6fc3f_5ffd631b",
       "revId": "65faeb284fc1d03c9847cf1c35eebc3736d03b00",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
