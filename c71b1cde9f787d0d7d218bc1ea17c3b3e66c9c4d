@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "40f62cce_6c7ca14a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T05:09:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1733c50_ddd93014",
+      "revId": "c71b1cde9f787d0d7d218bc1ea17c3b3e66c9c4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ea41337a_da9d0ff6",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "02e7a305_ca5346f3",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T05:09:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea41337a_da9d0ff6",
+      "revId": "c71b1cde9f787d0d7d218bc1ea17c3b3e66c9c4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28a2739b_6b7db59d",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-04-13T04:13:12Z",
       "side": 1,
       "message": "should this return the parsed settings instead of the raw string ?\n\n return set(\n     x.strip() for x in \n     self.manifest.manifestProject.config.GetString(\n         \u0027repo.partialcloneexclude\u0027).split(\u0027,\u0027))",
+      "revId": "c71b1cde9f787d0d7d218bc1ea17c3b3e66c9c4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d2d1301_0d444e49",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-13T05:09:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28a2739b_6b7db59d",
       "revId": "c71b1cde9f787d0d7d218bc1ea17c3b3e66c9c4d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
