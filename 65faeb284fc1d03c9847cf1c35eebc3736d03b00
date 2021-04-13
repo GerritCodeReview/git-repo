@@ -16,6 +16,40 @@
       "message": "PTAL. Thanks",
       "revId": "65faeb284fc1d03c9847cf1c35eebc3736d03b00",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03afac17_5f9d305b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-13T14:41:00Z",
+      "side": 1,
+      "message": "i don\u0027t think callers need to care about the None sentinel.  if it just returned an empty set, the callers could be simplified.\n\n exclude \u003d self.manifest.manifestProject.config.GetString(\n     \u0027repo.partialcloneexclude\u0027) or \u0027\u0027\n return set(x.strip() for x in exclude.split(\u0027,\u0027))\n...\n if self.name in partial_clone_exclude:",
+      "revId": "65faeb284fc1d03c9847cf1c35eebc3736d03b00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0d6fc3f_5ffd631b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-13T14:41:00Z",
+      "side": 1,
+      "message": "ugh i didn\u0027t mean to commit this.  you can delete it, or i can take care of it.",
+      "revId": "65faeb284fc1d03c9847cf1c35eebc3736d03b00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
