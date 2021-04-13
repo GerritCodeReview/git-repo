@@ -82,8 +82,11 @@ contain a line that matches both expressions:
     if value is not None:
       pt.append(value)
 
+  def _CommonOptions(self, p):
+    """Override common options slightly."""
+    super()._CommonOptions(p, opt_v=False)
+
   def _Options(self, p):
-    super()._Options(p)
     g = p.add_option_group('Sources')
     g.add_option('--cached',
                  action='callback', callback=self._carry_option,

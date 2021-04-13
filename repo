@@ -281,6 +281,8 @@ def GetParser(gitc_init=False):
 
 def InitParser(parser, gitc_init=False):
   """Setup the CLI parser."""
+  # NB: Keep in sync with command.py:_CommonOptions().
+
   # Logging.
   group = parser.add_option_group('Logging options')
   group.add_option('-v', '--verbose',

@@ -84,17 +84,33 @@ class Command(object):
         usage = 'repo %s' % self.NAME
       epilog = 'Run `repo help %s` to view the detailed manual.' % self.NAME
       self._optparse = optparse.OptionParser(usage=usage, epilog=epilog)
+      self._CommonOptions(self._optparse)
       self._Options(self._optparse)
     return self._optparse
 
-  def _Options(self, p):
-    """Initialize the option parser.
+  def _CommonOptions(self, p, opt_v=True):
+    """Initialize the option parser with common options.
+
+    These will show up for *all* subcommands, so use sparingly.
+    NB: Keep in sync with repo:InitParser().
     """
+    g = p.add_option_group('Logging options')
+    opts = ['-v'] if opt_v else []
+    g.add_option(*opts, '--verbose',
+                 dest='output_mode', action='store_true',
+                 help='show all output')
+    g.add_option('-q', '--quiet',
+                 dest='output_mode', action='store_false',
+                 help='only show errors')
+
     if self.PARALLEL_JOBS is not None:
       p.add_option(
           '-j', '--jobs',
           type=int, default=self.PARALLEL_JOBS,
           help='number of jobs to run in parallel (default: %s)' % self.PARALLEL_JOBS)
+
+  def _Options(self, p):
+    """Initialize the option parser with subcommand-specific options."""
 
   def _RegisteredEnvironmentOptions(self):
     """Get options that can be set from environment variables.
@@ -119,6 +135,11 @@ class Command(object):
     """
     self.OptionParser.print_usage()
     sys.exit(1)
+
+  def CommonValidateOptions(self, opt, args):
+    """Validate common options."""
+    opt.quiet = opt.output_mode is False
+    opt.verbose = opt.output_mode is True
 
   def ValidateOptions(self, opt, args):
     """Validate the user options & arguments before executing.

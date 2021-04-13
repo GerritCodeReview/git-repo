@@ -38,7 +38,6 @@ revision specified in the manifest.
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
-    super()._Options(p)
     p.add_option('--all',
                  dest='all', action='store_true',
                  help='begin branch in all projects')

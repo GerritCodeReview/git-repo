@@ -38,7 +38,8 @@ The '%prog' command stages files to prepare the next commit.
 """
 
   def _Options(self, p):
-    p.add_option('-i', '--interactive',
+    g = p.get_option_group('--quiet')
+    g.add_option('-i', '--interactive',
                  dest='interactive', action='store_true',
                  help='use interactive staging')
 

@@ -32,9 +32,6 @@ The change id will be updated, and a reference to the old
 change id will be added.
 """
 
-  def _Options(self, p):
-    pass
-
   def ValidateOptions(self, opt, args):
     if len(args) != 1:
       self.Usage()
