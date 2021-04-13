@@ -80,12 +80,9 @@ the following meanings:
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
-    super()._Options(p)
     p.add_option('-o', '--orphans',
                  dest='orphans', action='store_true',
                  help="include objects in working directory outside of repo projects")
-    p.add_option('-q', '--quiet', action='store_true',
-                 help="only print the name of modified projects")
 
   def _StatusHelper(self, quiet, project):
     """Obtains the status for a specific project.

@@ -257,6 +257,7 @@ class _Repo(object):
     git_trace2_event_log.CommandEvent(name='repo', subcommands=[name])
 
     try:
+      cmd.CommonValidateOptions(copts, cargs)
       cmd.ValidateOptions(copts, cargs)
       result = cmd.Execute(copts, cargs)
     except (DownloadError, ManifestInvalidRevisionError,

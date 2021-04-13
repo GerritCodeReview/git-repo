@@ -167,13 +167,14 @@ later is required to fix a server side protocol bug.
 """
   PARALLEL_JOBS = 1
 
-  def _Options(self, p, show_smart=True):
+  def _CommonOptions(self, p):
     try:
       self.PARALLEL_JOBS = self.manifest.default.sync_j
     except ManifestParseError:
       pass
-    super()._Options(p)
+    super()._CommonOptions(p)
 
+  def _Options(self, p, show_smart=True):
     p.add_option('--jobs-network', default=None, type=int, metavar='JOBS',
                  help='number of network jobs to run in parallel (defaults to --jobs)')
     p.add_option('--jobs-checkout', default=None, type=int, metavar='JOBS',
@@ -211,12 +212,6 @@ later is required to fix a server side protocol bug.
     p.add_option('-c', '--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current branch from server')
-    p.add_option('-v', '--verbose',
-                 dest='output_mode', action='store_true',
-                 help='show all sync output')
-    p.add_option('-q', '--quiet',
-                 dest='output_mode', action='store_false',
-                 help='only show errors')
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
@@ -769,9 +764,6 @@ later is required to fix a server side protocol bug.
     if self.jobs > 1:
       soft_limit, _ = _rlimit_nofile()
       self.jobs = min(self.jobs, (soft_limit - 5) // 3)
-
-    opt.quiet = opt.output_mode is False
-    opt.verbose = opt.output_mode is True
 
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name)

@@ -39,7 +39,8 @@ branch but need to incorporate new upstream changes "underneath" them.
 """
 
   def _Options(self, p):
-    p.add_option('-i', '--interactive',
+    g = p.get_option_group('--quiet')
+    g.add_option('-i', '--interactive',
                  dest="interactive", action="store_true",
                  help="interactive rebase (single project only)")
 
@@ -52,9 +53,6 @@ branch but need to incorporate new upstream changes "underneath" them.
     p.add_option('--no-ff',
                  dest='ff', default=True, action='store_false',
                  help='Pass --no-ff to git rebase')
-    p.add_option('-q', '--quiet',
-                 dest='quiet', action='store_true',
-                 help='Pass --quiet to git rebase')
     p.add_option('--autosquash',
                  dest='autosquash', action='store_true',
                  help='Pass --autosquash to git rebase')

@@ -129,8 +129,6 @@ without iterating through the remaining projects.
       del parser.rargs[0]
 
   def _Options(self, p):
-    super()._Options(p)
-
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
                  help="Execute the command only on projects matching regex or wildcard expression")
@@ -153,13 +151,10 @@ without iterating through the remaining projects.
                  help='Silently skip & do not exit non-zero due missing '
                       'checkouts')
 
-    g = p.add_option_group('Output')
+    g = p.get_option_group('--quiet')
     g.add_option('-p',
                  dest='project_header', action='store_true',
                  help='Show project headers before output')
-    g.add_option('-v', '--verbose',
-                 dest='verbose', action='store_true',
-                 help='Show command error messages')
     p.add_option('--interactive',
                  action='store_true',
                  help='force interactive usage')

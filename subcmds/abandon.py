@@ -37,10 +37,6 @@ It is equivalent to "git branch -D <branchname>".
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
-    super()._Options(p)
-    p.add_option('-q', '--quiet',
-                 action='store_true', default=False,
-                 help='be quiet')
     p.add_option('--all',
                  dest='all', action='store_true',
                  help='delete all branches in all projects')

@@ -32,7 +32,6 @@ to the Unix 'patch' command.
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
-    super()._Options(p)
     p.add_option('-u', '--absolute',
                  dest='absolute', action='store_true',
                  help='Paths are relative to the repository root')

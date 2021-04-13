@@ -79,6 +79,9 @@ manifest, a subsequent `repo sync` (or `repo sync -d`) is necessary
 to update the working directory files.
 """
 
+  def _CommonOptions(self, p):
+    """Disable due to re-use of Wrapper()."""
+
   def _Options(self, p, gitc_init=False):
     Wrapper().InitParser(p, gitc_init=gitc_init)
 
@@ -435,9 +438,6 @@ to update the working directory files.
             'version of git to maintain support.'
             % ('.'.join(str(x) for x in MIN_GIT_VERSION_SOFT),),
             file=sys.stderr)
-
-    opt.quiet = opt.output_mode is False
-    opt.verbose = opt.output_mode is True
 
     rp = self.manifest.repoProject
 
