@@ -366,7 +366,7 @@ later is required to fix a server side protocol bug.
 
     jobs = opt.jobs_network if opt.jobs_network else self.jobs
     fetched = set()
-    pm = Progress('Fetching', len(projects), delay=False)
+    pm = Progress('Fetching', len(projects), delay=False, quiet=opt.quiet)
 
     objdir_project_map = dict()
     for project in projects:
@@ -469,7 +469,7 @@ later is required to fix a server side protocol bug.
     # Only checkout projects with worktrees.
     all_projects = [x for x in all_projects if x.worktree]
 
-    pm = Progress('Checking out', len(all_projects))
+    pm = Progress('Checking out', len(all_projects), quiet=opt.quiet)
 
     def _ProcessResults(results):
       for (success, project, start, finish) in results:
@@ -503,7 +503,7 @@ later is required to fix a server side protocol bug.
     return ret and not err_results
 
   def _GCProjects(self, projects, opt, err_event):
-    pm = Progress('Garbage collecting', len(projects), delay=False)
+    pm = Progress('Garbage collecting', len(projects), delay=False, quiet=opt.quiet)
     pm.update(inc=0, msg='prescan')
 
     gc_gitdirs = {}
