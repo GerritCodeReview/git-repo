@@ -56,6 +56,6 @@ setuptools.setup(
         'Programming Language :: Python :: 3 :: Only',
         'Topic :: Software Development :: Version Control :: Git',
     ],
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     packages=['subcmds'],
 )
