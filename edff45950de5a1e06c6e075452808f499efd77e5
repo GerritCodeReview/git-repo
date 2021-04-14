@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d20389d_74db2a4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-14T15:31:41Z",
+      "side": 1,
+      "message": "thanks!  you\u0027ll want to set Verified+1 to indicate you\u0027ve checked tests pass for you before submitting.",
+      "revId": "edff45950de5a1e06c6e075452808f499efd77e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
