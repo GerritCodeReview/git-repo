@@ -26,9 +26,9 @@ class List(Command, MirrorSafeCommand):
 List all projects; pass '.' to list the project for the cwd.
 
 By default, only projects that currently exist in the checkout are shown.  If
-you to list all projects (using the specified filter settings), use the --all
-option.  If you want to show all projects regardless of the manifest groups,
-then also pass --groups all.
+you want to list all projects (using the specified filter settings), use the
+--all option.  If you want to show all projects regardless of the manifest
+groups, then also pass --groups all.
 
 This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
 """
