@@ -38,9 +38,8 @@
   # Supported Python versions.
   #
   # python-3.6 is in Ubuntu Bionic.
-  # python-3.5 is in Debian Stretch.
   "python": {
-    "hard": [3, 5],
+    "hard": [3, 6],
     "soft": [3, 6]
   },
 

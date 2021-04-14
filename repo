@@ -36,7 +36,7 @@ import sys
 # bit more flexible with older systems.  See that file for more details on the
 # versions we select.
 MIN_PYTHON_VERSION_SOFT = (3, 6)
-MIN_PYTHON_VERSION_HARD = (3, 5)
+MIN_PYTHON_VERSION_HARD = (3, 6)
 
 
 # Keep basic logic in sync with repo_trace.py.
