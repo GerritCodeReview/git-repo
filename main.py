@@ -71,7 +71,7 @@ from subcmds import all_commands
 #
 # python-3.6 is in Ubuntu Bionic.
 MIN_PYTHON_VERSION_SOFT = (3, 6)
-MIN_PYTHON_VERSION_HARD = (3, 5)
+MIN_PYTHON_VERSION_HARD = (3, 6)
 
 if sys.version_info.major < 3:
   print('repo: error: Python 2 is no longer supported; '
