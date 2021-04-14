@@ -22,6 +22,30 @@
       },
       "revId": "e2effe11a57508f04632cca543292d6568572905",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36a693b2_a05f4a86",
+        "filename": "subcmds/list.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-14T03:24:06Z",
+      "side": 1,
+      "message": "thanks, fixed by\nhttps://gerrit-review.googlesource.com/c/git-repo/+/303302",
+      "parentUuid": "9a1fbd3c_aa2ac5f2",
+      "range": {
+        "startLine": 28,
+        "startChar": 75,
+        "endLine": 29,
+        "endChar": 24
+      },
+      "revId": "e2effe11a57508f04632cca543292d6568572905",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
