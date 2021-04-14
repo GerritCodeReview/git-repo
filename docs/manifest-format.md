@@ -21,6 +21,7 @@ following DTD:
 
 ```xml
 <!DOCTYPE manifest [
+
   <!ELEMENT manifest (notice?,
                       remote*,
                       default?,
