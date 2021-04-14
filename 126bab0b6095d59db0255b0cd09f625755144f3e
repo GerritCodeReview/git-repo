@@ -16,6 +16,24 @@
       "message": "we def don\u0027t want to sprinkle version-specific checks like this in the code base.  if you can re-order attributes in a way that it passes all versions, then we can land that right away, and maybe call it a day.\n\nnormally for this kind of situation, we would adjust either the underlying code or the tests such that the result is stable before we compare it.  if that\u0027s not easily doable here, we can punt on it.  at some point i\u0027d like to introduce a \"format\" command, but i haven\u0027t gotten to it yet.",
       "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b6bf6d8_51bd081f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-04-14T21:29:18Z",
+      "side": 1,
+      "message": "Well, I guess I can change the output of the 3.8 version and later to match that of 3.7 if that is preferred. The reason I did it the way I did was because I did not want to modify the output of the code when using 3.8 or later as its order of the attributes seems more natural.",
+      "parentUuid": "f2f10fff_b17c69e2",
+      "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
