@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c07269_22dfe809",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T00:31:31Z",
+      "side": 1,
+      "message": "please see https://gerrit-review.googlesource.com/c/git-repo/+/291502 as an example of documenting which systems we\u0027ll be dropping support for",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a0d63c61_1eb371e9",
