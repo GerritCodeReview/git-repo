@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74ba39d6_3bf4e8ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T19:25:39Z",
+      "side": 1,
+      "message": "we want to only print error.GitError, but other exceptions should still be throwing",
+      "revId": "6032aadd2892c5785406bad7f8f1d91d6c5ff00a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
