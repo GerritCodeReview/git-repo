@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8d3f803_37423981",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-04-15T14:28:37Z",
+      "side": 1,
+      "message": "I hope these versions/dates are about right...",
+      "parentUuid": "77c07269_22dfe809",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a0d63c61_1eb371e9",
@@ -65,6 +83,24 @@
       "writtenOn": "2021-04-15T00:27:39Z",
       "side": 1,
       "message": "we want to leave this at 3.5 as the repo launcher is independent of the code it checks out.  it should be safe at this point to keep allowing Python 3.5 in here.\n\nupdating requirements.json will be sufficient to enforce the check before executing the newer checked out version.",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "456b4f03_d91a2acb",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-04-15T14:28:37Z",
+      "side": 1,
+      "message": "Well, I have done that, but I am not sure I see the benefit. That just means that it will now download the full repository before stopping, rather than stopping immediately. It also means these variables will be set differently compared to main.py. (Side question: why isn\u0027t requirements.json used by main.py?)",
+      "parentUuid": "3c4c1f42_329dcb1a",
       "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
