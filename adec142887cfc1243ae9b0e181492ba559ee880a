@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "644a8910_50bb379c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T16:13:51Z",
+      "side": 1,
+      "message": "could add \"EOS Apr 2021\" (end of standard/support), and refine 2024 to \"Apr 2024\"",
+      "revId": "adec142887cfc1243ae9b0e181492ba559ee880a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3039cc7_1cb0ca3c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T16:13:51Z",
+      "side": 1,
+      "message": "\"Jun 2022\"",
+      "revId": "adec142887cfc1243ae9b0e181492ba559ee880a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

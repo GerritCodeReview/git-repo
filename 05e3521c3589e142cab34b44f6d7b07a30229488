@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "34c7adf8_bff7c0b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T16:13:51Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f8d3f803_37423981",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a0d63c61_1eb371e9",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -66,6 +84,24 @@
       "writtenOn": "2021-04-15T00:22:25Z",
       "side": 1,
       "message": "we had been holding off on this because Ubuntu Xenial LTS still used it:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md#Project-References\n\ni\u0027ll send an announce to repo-discuss@ and wait for feedback.  fortunately it looks like it\u0027s hit \"End of Standard Support\" now in April 2021, so we have a stronger case than when i tried to do this a while back.",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57895d63_03c1384c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T16:13:51Z",
+      "side": 1,
+      "message": "announcement went out:\nhttps://groups.google.com/g/repo-discuss/c/w-wZuZKY2IM/m/TLUZK0-xAQAJ\n\ni\u0027ll prob hold on this until June 2021 just to give people time to object.",
+      "parentUuid": "045b468f_7d0bc025",
       "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -101,6 +137,24 @@
       "side": 1,
       "message": "Well, I have done that, but I am not sure I see the benefit. That just means that it will now download the full repository before stopping, rather than stopping immediately. It also means these variables will be set differently compared to main.py. (Side question: why isn\u0027t requirements.json used by main.py?)",
       "parentUuid": "3c4c1f42_329dcb1a",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9f46111_dbe9e062",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T16:13:51Z",
+      "side": 1,
+      "message": "i think you\u0027re missing 2 important modes:\n\n* new repo launcher can work with old repo versions/sources (which might support Python 3.5)\n* repo launcher running under Python 3.5 will look for \u0026 use a newer Python 3.6+ if available, and thus be able to work with newer repo releases.  some distros have multiple Python versions available, and python3 is Python 3.5 by default.\n\nsince we aren\u0027t going all-in on Python 3.6 in the repo launcher at this point, no need to bump the requirement there.  if we want to start using 3.6 features in there we can reconsider.\n\nthe requirements.json logic is quite new in the scheme of things -- first repo launcher with it was released 22 Mar 2021.  we can prob relax/delete the main.py logic after a year.",
+      "parentUuid": "456b4f03_d91a2acb",
       "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
