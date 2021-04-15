@@ -52,6 +52,24 @@
       "parentUuid": "8b6bf6d8_51bd081f",
       "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7477c7d2_0b7c127c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-04-15T14:59:35Z",
+      "side": 1,
+      "message": "Are you sure you really ran the tests using Python 3.5? Because even if tox uses a venv with Python 3.5, I had to remove all other python3.x from /usr/bin, or repo would reexec itself using a more appropriate Python version.\n\nAs to the implementation, my first version only changed the tests. Yes, it used sys.version_info to adapt the tests, but I believe that is way easier than trying to manipulate the output by sorting the attributes somehow after xml.dom.minidom has written the test manifest. If you cannot accept testing on the Python version, do you have any suggestion as to how you want this solved?",
+      "parentUuid": "46adf9a8_f0a4f7d3",
+      "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
