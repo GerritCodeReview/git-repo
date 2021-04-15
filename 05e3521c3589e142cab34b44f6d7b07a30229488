@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0d63c61_1eb371e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-04-15T00:07:22Z",
+      "side": 1,
+      "message": "The alternative would be to drop the use of the encoding\u003d parameter to subprocess.run(), but that seems pointless. Better to bow to the facts and officially drop support for Python 3.5, than to pretend it works and then instantly cause an exception when a Python 3.6 feature is used.",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
