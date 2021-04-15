@@ -16,6 +16,23 @@
       "message": "The alternative would be to drop the use of the encoding\u003d parameter to subprocess.run(), but that seems pointless. Better to bow to the facts and officially drop support for Python 3.5, than to pretend it works and then instantly cause an exception when a Python 3.6 feature is used.",
       "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "045b468f_7d0bc025",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T00:22:25Z",
+      "side": 1,
+      "message": "we had been holding off on this because Ubuntu Xenial LTS still used it:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md#Project-References\n\ni\u0027ll send an announce to repo-discuss@ and wait for feedback.  fortunately it looks like it\u0027s hit \"End of Standard Support\" now in April 2021, so we have a stronger case than when i tried to do this a while back.",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
