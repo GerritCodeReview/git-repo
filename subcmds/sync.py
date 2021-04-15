@@ -359,6 +359,9 @@ later is required to fix a server side protocol bug.
         print('error: Cannot fetch %s from %s'
               % (project.name, project.remote.url),
               file=sys.stderr)
+    except GitError as e:
+      print('error.GitError: Cannot fetch %s (%s: %s)'
+            % (project.name, type(e).__name__, str(e)), file=sys.stderr)
     except Exception as e:
       print('error: Cannot fetch %s (%s: %s)'
             % (project.name, type(e).__name__, str(e)), file=sys.stderr)
@@ -450,6 +453,10 @@ later is required to fix a server side protocol bug.
     try:
       project.Sync_LocalHalf(syncbuf, force_sync=opt.force_sync)
       success = syncbuf.Finish()
+    except GitError as e:
+      print('error.GitError: Cannot checkout %s: %s: %s' %
+            (project.name, type(e).__name__, str(e)),
+            file=sys.stderr)
     except Exception as e:
       print('error: Cannot checkout %s: %s: %s' %
             (project.name, type(e).__name__, str(e)),
