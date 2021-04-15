@@ -33,6 +33,23 @@
       "message": "we had been holding off on this because Ubuntu Xenial LTS still used it:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md#Project-References\n\ni\u0027ll send an announce to repo-discuss@ and wait for feedback.  fortunately it looks like it\u0027s hit \"End of Standard Support\" now in April 2021, so we have a stronger case than when i tried to do this a while back.",
       "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c4c1f42_329dcb1a",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T00:27:39Z",
+      "side": 1,
+      "message": "we want to leave this at 3.5 as the repo launcher is independent of the code it checks out.  it should be safe at this point to keep allowing Python 3.5 in here.\n\nupdating requirements.json will be sufficient to enforce the check before executing the newer checked out version.",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

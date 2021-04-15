@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63251828_797c045f",
+        "filename": "requirements.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T00:27:39Z",
+      "side": 0,
+      "message": "comment should be updated to note python-3.7 is in Debian Buster",
+      "revId": "cb88eb804cf52d84fc10eac9eaac25b39f58707f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
