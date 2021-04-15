@@ -34,6 +34,24 @@
       "parentUuid": "f2f10fff_b17c69e2",
       "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46adf9a8_f0a4f7d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-15T03:30:01Z",
+      "side": 1,
+      "message": "i\u0027m not super concerned about the prettiness of the inputs/outputs.  as long as the functionality is there, that\u0027s all that really matters.  no one reads tests because they look nice ;).\n\nbut to be clear, we should only be hacking up the tests, not the actual code.  if we need to reformat the test inputs/outputs, that\u0027s fine.  tweaking the order we insert nodes into the DOM in the hopes that the result has some sort of predictable ordering is just setting us up for pain in the future when they change things again.\n\nannoyingly, i just tried the latest version on my system, and the tests pass on py3.5 \u0026 py3.9 as-is.",
+      "parentUuid": "8b6bf6d8_51bd081f",
+      "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
