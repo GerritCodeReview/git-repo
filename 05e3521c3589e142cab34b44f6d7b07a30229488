@@ -157,6 +157,24 @@
       "parentUuid": "456b4f03_d91a2acb",
       "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c0bd4dd_3b42024f",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-04-16T12:14:24Z",
+      "side": 1,
+      "message": "You are correct, I had not considered those use cases.",
+      "parentUuid": "e9f46111_dbe9e062",
+      "revId": "05e3521c3589e142cab34b44f6d7b07a30229488",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
