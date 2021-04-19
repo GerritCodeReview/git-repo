@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1a813eb_ef1c19dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-19T16:25:16Z",
+      "side": 1,
+      "message": "lgtm, but we\u0027ll wait on merging for a bit to not hold up current releases",
+      "revId": "364421cffc9da660dff9d41f101557d86aea6e3c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
