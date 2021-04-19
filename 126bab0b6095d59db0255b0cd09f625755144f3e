@@ -88,6 +88,24 @@
       "parentUuid": "7477c7d2_0b7c127c",
       "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "074b1f53_49387911",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-19T16:43:27Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/git-repo/+/303802 should take care of it again",
+      "parentUuid": "c08aeca9_3f659054",
+      "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
