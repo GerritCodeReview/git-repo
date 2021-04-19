@@ -24,6 +24,10 @@ import sys
 
 def find_pytest():
   """Try to locate a good version of pytest."""
+  # If we're in a virtualenv, assume that it's provided the right pytest.
+  if 'VIRTUAL_ENV' in os.environ:
+    return 'pytest'
+
   # Use the Python 3 version if available.
   ret = shutil.which('pytest-3')
   if ret:
