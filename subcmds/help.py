@@ -20,6 +20,7 @@ from subcmds import all_commands
 from color import Coloring
 from command import PagedCommand, MirrorSafeCommand, GitcAvailableCommand, GitcClientCommand
 import gitc_utils
+from wrapper import Wrapper
 
 
 class Help(PagedCommand, MirrorSafeCommand):
@@ -78,6 +79,7 @@ Displays detailed usage information about a command.
     print(
         "See 'repo help <command>' for more information on a specific command.\n"
         "See 'repo help --all' for a complete list of recognized commands.")
+    print('Bug reports:', Wrapper().BUG_URL)
 
   def _PrintCommandHelp(self, cmd, header_prefix=''):
     class _Out(Coloring):

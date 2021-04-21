@@ -13,10 +13,6 @@
 # limitations under the License.
 
 
-# URL to file bug reports for repo tool issues.
-BUG_REPORT_URL = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
-
-
 class ManifestParseError(Exception):
   """Failed to parse the manifest file.
   """
