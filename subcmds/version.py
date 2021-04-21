@@ -18,6 +18,7 @@ import sys
 from command import Command, MirrorSafeCommand
 from git_command import git, RepoSourceVersion, user_agent
 from git_refs import HEAD
+from wrapper import Wrapper
 
 
 class Version(Command, MirrorSafeCommand):
@@ -62,3 +63,4 @@ class Version(Command, MirrorSafeCommand):
       print('OS %s %s (%s)' % (uname.system, uname.release, uname.version))
       print('CPU %s (%s)' %
             (uname.machine, uname.processor if uname.processor else 'unknown'))
+    print('Bug reports:', Wrapper().BUG_URL)
