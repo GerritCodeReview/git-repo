@@ -16,6 +16,24 @@
       "message": "I must be doing something wrong, but since this change (up to v2.14), everything else being the same, `repo sync` works but `repo sync -q` fails like this:\n\n\u003e $ repo sync -q\n\u003e Traceback (most recent call last):\n\u003e   File \".../.repo/repo/main.py\", line 631, in \u003cmodule\u003e\n\u003e     _Main(sys.argv[1:])\n\u003e   File \".../.repo/repo/main.py\", line 605, in _Main\n\u003e     result \u003d run()\n\u003e   File \".../.repo/repo/main.py\", line 598, in \u003clambda\u003e\n\u003e     run \u003d lambda: repo._Run(name, gopts, argv) or 0\n\u003e   File \".../.repo/repo/main.py\", line 262, in _Run\n\u003e     result \u003d cmd.Execute(copts, cargs)\n\u003e   File \".../.repo/repo/subcmds/sync.py\", line 859, in Execute\n\u003e     success, fetched \u003d self._Fetch(to_fetch, opt, err_event)\n\u003e   File \".../.repo/repo/subcmds/sync.py\", line 412, in _Fetch\n\u003e     chunksize \u003d WORKER_BATCH_SIZE\n\u003e NameError: name \u0027WORKER_BATCH_SIZE\u0027 is not defined",
       "revId": "b2fa30a2b891b22c173c960a67bf38ccbba8de1b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab8c252b_da092030",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-21T03:22:57Z",
+      "side": 1,
+      "message": "thanks for the report.  should be fixed by\nhttps://gerrit-review.googlesource.com/c/git-repo/+/303942",
+      "parentUuid": "f4c47587_e2fe933e",
+      "revId": "b2fa30a2b891b22c173c960a67bf38ccbba8de1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
