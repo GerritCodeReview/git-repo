@@ -51,7 +51,7 @@ import git_superproject
 import gitc_utils
 from project import Project
 from project import RemoteSpec
-from command import Command, MirrorSafeCommand
+from command import Command, MirrorSafeCommand, WORKER_BATCH_SIZE
 from error import RepoChangedException, GitError, ManifestParseError
 import platform_utils
 from project import SyncBuffer
