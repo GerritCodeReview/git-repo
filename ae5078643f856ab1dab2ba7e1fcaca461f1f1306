@@ -16,6 +16,24 @@
       "message": "What\u0027s the symptom of the lack of this? (Seems good to include an example message in the commit message or a link to a bug, to help people stumbling on this commit later.)",
       "revId": "ae5078643f856ab1dab2ba7e1fcaca461f1f1306",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c3698fb_c4fb4157",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-21T04:45:55Z",
+      "side": 1,
+      "message": "added more color to the commit message",
+      "parentUuid": "a94cddb5_0b357dba",
+      "revId": "ae5078643f856ab1dab2ba7e1fcaca461f1f1306",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
