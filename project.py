@@ -1051,7 +1051,7 @@ class Project(object):
                        prune=False,
                        submodules=False,
                        clone_filter=None,
-                       partial_clone_exclude=None):
+                       partial_clone_exclude=set()):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
