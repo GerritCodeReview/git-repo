@@ -52,6 +52,24 @@
       "parentUuid": "2e5d70f8_ed408769",
       "revId": "f32f243ff8aaabe5287235015e1ce189da0123e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "519b8c96_8114fd37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-22T16:18:52Z",
+      "side": 1,
+      "message": "Please ignore my comment. I am able to duplicate it. thanks",
+      "parentUuid": "5ceb6797_35be4e90",
+      "revId": "f32f243ff8aaabe5287235015e1ce189da0123e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
