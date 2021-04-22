@@ -16,6 +16,24 @@
       "message": "With this change (up to v2.14.1), on an existing \"normal\" clone (without partial-clone options) I\u0027m seeing this traceback during `repo selfupdate`:\n\n\u003e Traceback (most recent call last):\n\u003e   File \".../.repo/repo/main.py\", line 630, in \u003cmodule\u003e\n\u003e     _Main(sys.argv[1:])\n\u003e   File \".../.repo/repo/main.py\", line 604, in _Main\n\u003e     result \u003d run()\n\u003e   File \".../.repo/repo/main.py\", line 597, in \u003clambda\u003e\n\u003e     run \u003d lambda: repo._Run(name, gopts, argv) or 0\n\u003e   File \".../.repo/repo/main.py\", line 261, in _Run\n\u003e     result \u003d cmd.Execute(copts, cargs)\n\u003e   File \".../.repo/repo/subcmds/selfupdate.py\", line 54, in Execute\n\u003e     if not rp.Sync_NetworkHalf():\n\u003e   File \".../.repo/repo/project.py\", line 1091, in Sync_NetworkHalf\n\u003e     if self.name in partial_clone_exclude:\n\u003e TypeError: argument of type \u0027NoneType\u0027 is not iterable",
       "revId": "f32f243ff8aaabe5287235015e1ce189da0123e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e5d70f8_ed408769",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-22T15:30:38Z",
+      "side": 1,
+      "message": "Thanks very much for the report Emil Medve. I will upload a patch asap.",
+      "parentUuid": "20144352_e73eea84",
+      "revId": "f32f243ff8aaabe5287235015e1ce189da0123e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
