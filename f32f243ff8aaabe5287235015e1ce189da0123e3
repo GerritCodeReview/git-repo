@@ -34,6 +34,24 @@
       "parentUuid": "20144352_e73eea84",
       "revId": "f32f243ff8aaabe5287235015e1ce189da0123e3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ceb6797_35be4e90",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-22T16:06:56Z",
+      "side": 1,
+      "message": "I am wondering if it is something to do with python version. I was unable to duplicate it. Tested the code with the following. Going to investigate further.\n\n$ python\nPython 3.8.7 (default, Dec 22 2020, 10:37:26) \n[GCC 10.2.0] on linux\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n\u003e\u003e\u003e exclude \u003d \u0027\u0027\n\u003e\u003e\u003e y \u003d set(x.strip() for x in exclude.split(\u0027,\u0027))\n\u003e\u003e\u003e z \u003d \u0027test\u0027\n\u003e\u003e\u003e z in y\nFalse",
+      "parentUuid": "2e5d70f8_ed408769",
+      "revId": "f32f243ff8aaabe5287235015e1ce189da0123e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
