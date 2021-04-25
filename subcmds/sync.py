@@ -614,6 +614,37 @@ later is required to fix a server side protocol bug.
       fd.write('\n')
     return 0
 
+  def UpdateLinkfileList(self):
+    new_linkfile_paths = []
+    for project in self.GetProjects(None, missing_ok=True):
+      if project.linkfiles:
+        for linkfile in project.linkfiles:
+          new_linkfile_paths.append(linkfile.dest)
+
+    linkfile_name = 'linkfile.list'
+    linkfile_path = os.path.join(self.manifest.repodir, linkfile_name)
+    old_linkfile_paths = []
+
+    if os.path.exists(linkfile_path):
+      with open(linkfile_path, 'r') as fd:
+        old_linkfile_paths = fd.read().split('\n')
+      for old_linkfile_path in sorted(old_linkfile_paths, reverse=True):
+        # If old_linkfile_path has been removed, the dest of linkfile
+        # shall be removed too.
+        if old_linkfile_path and old_linkfile_path not in new_linkfile_paths:
+          try:
+            os.remove(old_linkfile_path)
+          except OSError as error:
+            print('error: remove linkfile %s failed.' % old_linkfile_path, file=sys.stderr)
+            return 1
+
+    new_linkfile_paths.sort()
+    # Create linkfile.list, save dest path.
+    with open(linkfile_path, 'w') as fd:
+      fd.write('\n'.join(new_linkfile_paths))
+      fd.write('\n')
+    return 0
+
   def _SmartSyncSetup(self, opt, smart_sync_manifest_path):
     if not self.manifest.manifest_server:
       print('error: cannot smart sync: no manifest server defined in '
@@ -914,6 +945,12 @@ later is required to fix a server side protocol bug.
         print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
         sys.exit(1)
 
+    if self.UpdateLinkfileList():
+      if err_event.isSet():
+        err_update_linkfiles = True
+      print('\nerror: Local update linkfile failed.', file=sys.stderr)
+      sys.exit(1)
+
     err_results = []
     # NB: We don't exit here because this is the last step.
     err_checkout = not self._Checkout(all_projects, opt, err_results)
@@ -932,6 +969,8 @@ later is required to fix a server side protocol bug.
         print('error: Downloading network changes failed.', file=sys.stderr)
       if err_update_projects:
         print('error: Updating local project lists failed.', file=sys.stderr)
+      if err_update_linkfiles:
+        print('error: Updating linkfiles failed.', file=sys.stderr)
       if err_checkout:
         print('error: Checking out local projects failed.', file=sys.stderr)
         if err_results:
