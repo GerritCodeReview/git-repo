@@ -110,6 +110,8 @@ Instead, you should use standard Git workflows like [git worktree] or
 [gitsubmodules] with [superprojects].
 ***
 
+*   `copy-link-files.json`: Tracking file used by `repo sync` to determine when
+    copyfile or linkfile are added or removed and need corresponding updates.
 *   `project.list`: Tracking file used by `repo sync` to determine when projects
     are added or removed and need corresponding updates in the checkout.
 *   `projects/`: Bare checkouts of every project synced by the manifest.  The
