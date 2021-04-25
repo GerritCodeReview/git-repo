@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import errno
 import functools
 import http.cookiejar as cookielib
 import io
@@ -614,6 +615,60 @@ later is required to fix a server side protocol bug.
       fd.write('\n')
     return 0
 
+  def UpdateCopyLinkfileList(self):
+    """Save all dests of copyfile and linkfile, and update them if needed.
+
+    Returns:
+      Whether update was successful.
+    """
+    new_paths = {}
+    new_linkfile_paths = []
+    new_copyfile_paths = []
+    for project in self.GetProjects(None, missing_ok=True):
+      new_linkfile_paths.extend(lfile.dest for lfile in project.linkfiles)
+      new_copyfile_paths.extend(cfile.dest for cfile in project.copyfiles)
+
+    new_paths = {
+      'linkfile': new_linkfile_paths,
+      'copyfile': new_copyfile_paths,
+    }
+
+    copylinkfile_name = 'copy-link-files.json'
+    copylinkfile_path = os.path.join(self.manifest.repodir, copylinkfile_name)
+    old_copylinkfile_paths = {}
+
+    if os.path.exists(copylinkfile_path):
+      with open(copylinkfile_path, 'rb') as fp:
+        try:
+          old_copylinkfile_paths = json.load(fp)
+        except:
+          print('error: %s is not a json formatted file.' %
+                  copylinkfile_path, file=sys.stderr)
+          platform_utils.remove(copylinkfile_path)
+          return False
+
+      need_remove_files = []
+      need_remove_files.extend(
+          set(old_copylinkfile_paths.get('linkfile', [])) -
+          set(new_linkfile_paths))
+      need_remove_files.extend(
+          set(old_copylinkfile_paths.get('copyfile', [])) -
+          set(new_copyfile_paths))
+
+      for need_remove_file in need_remove_files:
+        try:
+          platform_utils.remove(need_remove_file)
+        except OSError as e:
+          if e.errno == errno.ENOENT:
+            # Try to remove the updated copyfile or linkfile.
+            # So, if the file is not exist, nothing need to do.
+            pass
+
+    # Create copy-link-files.json, save dest path of "copyfile" and "linkfile".
+    with open(copylinkfile_path, 'w', encoding='utf-8') as fp:
+      json.dump(new_paths, fp)
+    return True
+
   def _SmartSyncSetup(self, opt, smart_sync_manifest_path):
     if not self.manifest.manifest_server:
       print('error: cannot smart sync: no manifest server defined in '
@@ -914,6 +969,13 @@ later is required to fix a server side protocol bug.
         print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
         sys.exit(1)
 
+    if not self.UpdateCopyLinkfileList():
+      err_event.set()
+      err_update_linkfiles = True
+      if opt.fail_fast:
+        print('\nerror: Local update copyfile or linkfile failed.', file=sys.stderr)
+        sys.exit(1)
+
     err_results = []
     # NB: We don't exit here because this is the last step.
     err_checkout = not self._Checkout(all_projects, opt, err_results)
@@ -932,6 +994,8 @@ later is required to fix a server side protocol bug.
         print('error: Downloading network changes failed.', file=sys.stderr)
       if err_update_projects:
         print('error: Updating local project lists failed.', file=sys.stderr)
+      if err_update_linkfiles:
+        print('error: Updating copyfiles or linkfiles failed.', file=sys.stderr)
       if err_checkout:
         print('error: Checking out local projects failed.', file=sys.stderr)
         if err_results:
