@@ -614,6 +614,51 @@ later is required to fix a server side protocol bug.
       fd.write('\n')
     return 0
 
+  def UpdateCopyLinkfileList(self):
+    new_copylinkfiles_path = {}
+    new_linkfiles_path = []
+    new_copyfiles_path = []
+    for project in self.GetProjects(None, missing_ok=True):
+      if project.linkfiles:
+        for linkfile in project.linkfiles:
+          new_linkfiles_path.append(linkfile.dest)
+      if project.copyfiles:
+        for copyfile in project.copyfiles:
+          new_copyfiles_path.append(copyfile.dest)
+
+    new_copylinkfiles_path['linkfile'] = new_linkfiles_path
+    new_copylinkfiles_path['copyfile'] = new_copyfiles_path
+
+    copylinkfiles_name = 'copy-link-files.json'
+    copylinkfiles_path = os.path.join(self.manifest.repodir, copylinkfiles_name)
+    old_copylinkfiles_path = {}
+
+    if os.path.exists(copylinkfiles_path):
+      with open(copylinkfiles_path, 'r') as fd:
+        old_copylinkfiles_path = json.load(fd)
+      if old_copylinkfiles_path:
+        for old_linkfile_path in old_copylinkfiles_path['linkfile']:
+          if old_linkfile_path and old_linkfile_path not in new_linkfiles_path:
+            try:
+              os.remove(old_linkfile_path)
+            except OSError as error:
+              print('error: remove linkfile %s failed.' % old_linkfile_path,
+                      file=sys.stderr)
+              return 1
+        for old_copyfile_path in old_copylinkfiles_path['copyfile']:
+          if old_copyfile_path and old_copyfile_path not in new_copyfiles_path:
+            try:
+              os.remove(old_copyfile_path)
+            except OSError as error:
+              print('error: remove copyfile %s failed.' % old_copyfile_path,
+                      file=sys.stderr)
+              return 1
+
+    # Create linkfile.list, save dest path.
+    with open(copylinkfiles_path, 'w') as fd:
+      fd.write(json.dumps(new_copylinkfiles_path))
+    return 0
+
   def _SmartSyncSetup(self, opt, smart_sync_manifest_path):
     if not self.manifest.manifest_server:
       print('error: cannot smart sync: no manifest server defined in '
@@ -914,6 +959,12 @@ later is required to fix a server side protocol bug.
         print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
         sys.exit(1)
 
+    if self.UpdateCopyLinkfileList():
+      if err_event.isSet():
+        err_update_linkfiles = True
+      print('\nerror: Local update copyfile or linkfile failed.', file=sys.stderr)
+      sys.exit(1)
+
     err_results = []
     # NB: We don't exit here because this is the last step.
     err_checkout = not self._Checkout(all_projects, opt, err_results)
@@ -932,6 +983,8 @@ later is required to fix a server side protocol bug.
         print('error: Downloading network changes failed.', file=sys.stderr)
       if err_update_projects:
         print('error: Updating local project lists failed.', file=sys.stderr)
+      if err_update_linkfiles:
+        print('error: Updating copyfiles or linkfiles failed.', file=sys.stderr)
       if err_checkout:
         print('error: Checking out local projects failed.', file=sys.stderr)
         if err_results:
