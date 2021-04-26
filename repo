@@ -148,6 +148,9 @@ if not REPO_REV:
 # URL to file bug reports for repo tool issues.
 BUG_URL = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
 
+# URL to file bug reports for Google specific repo tool issues.
+BUG_URL_GOOGLE = 'go/repo-bug'
+
 # increment this whenever we make important changes to this script
 VERSION = (2, 14)
 
