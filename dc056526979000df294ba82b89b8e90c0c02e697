@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "daa4ceaf_abf97179",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-26T22:41:34Z",
+      "side": 1,
+      "message": "we don\u0027t really want merge commits.  just rebase onto the latest tree.",
+      "revId": "dc056526979000df294ba82b89b8e90c0c02e697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
