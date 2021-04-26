@@ -16,6 +16,23 @@
       "message": "Review and try this patch?",
       "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d207454d_843a69ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-26T02:24:06Z",
+      "side": 1,
+      "message": "Review and try this patch?",
+      "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
