@@ -145,6 +145,11 @@ if not REPO_URL:
 REPO_REV = os.environ.get('REPO_REV')
 if not REPO_REV:
   REPO_REV = 'stable'
+# URL to file bug reports for repo tool issues.
+BUG_URL = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
+
+# URL to file bug reports for Google specific repo tool issues.
+BUG_URL_GOOGLE = 'go/repo-bug'
 
 # increment this whenever we make important changes to this script
 VERSION = (2, 14)
@@ -1171,6 +1176,7 @@ The most commonly used repo commands are:
 
 For access to the full online help, install repo ("repo init").
 """)
+  print('Bug reports:', BUG_URL)
   sys.exit(0)
 
 
@@ -1204,6 +1210,7 @@ def _Version():
     print('OS %s %s (%s)' % (uname.system, uname.release, uname.version))
     print('CPU %s (%s)' %
           (uname.machine, uname.processor if uname.processor else 'unknown'))
+  print('Bug reports:', BUG_URL)
   sys.exit(0)
 
 
