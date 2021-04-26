@@ -26,12 +26,14 @@ import hashlib
 import os
 import sys
 
-from error import BUG_REPORT_URL
 from git_command import GitCommand
 from git_refs import R_HEADS
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
+
+# URL to file bug reports for Google specific repo tool issues.
+_BUG_REPORT_GOOGLE_URL = 'go/repo-bug'
 
 
 class Superproject(object):
@@ -272,8 +274,10 @@ class Superproject(object):
       else:
         projects_missing_commit_ids.append(path)
     if projects_missing_commit_ids:
+      # TODO(rtenneti): Come up with a solution to support non-google URL for
+      # filing bug reports.
       print('error: please file a bug using %s to report missing commit_ids for: %s' %
-            (BUG_REPORT_URL, projects_missing_commit_ids), file=sys.stderr)
+            (_BUG_REPORT_GOOGLE_URL, projects_missing_commit_ids), file=sys.stderr)
       return None
 
     manifest_path = self._WriteManfiestFile()
