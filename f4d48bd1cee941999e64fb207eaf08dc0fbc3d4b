@@ -33,6 +33,24 @@
       "message": "as a short term mitigation, this might be OK since superprojects are still in development.  but repo is used by many non-Googlers, and non-Android devs.  so hardcoding an internal URL doesn\u0027t really cut it.\n\ndo we plan on leaving this check/warning in here long term ?  what is the goal of this check ?  it\u0027s not about a bug in repo itself right ?  it\u0027s a problem with the superproject generation ?  do we think we\u0027d change repo behavior to workaround these missing commits, or would it always be on the service maintaining/creating this superproject to fix things ?",
       "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08a29d45_139444df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-26T23:35:23Z",
+      "side": 1,
+      "message": "I agree with the above comments. I will take a shot at answering some of the questions (I could be wrong in my opinion).\n\n\u003e do we plan on leaving this check/warning in here long term ? \nIMO, no.\n\n\u003e what is the goal of this check ? \nWe wanted to know if git submodules doesn\u0027t know of some projects. We had also seen sometimes there was a lag (in sync\u0027ing). This is to point out all the issues before we switch to git submodues.\n\n\u003e  it\u0027s not about a bug in repo itself right ? \nRight. It is not because of a bug in the repo code.\n\n\u003e it\u0027s a problem with the superproject generation ?  \nYes.\n\n\u003e do we think we\u0027d change repo behavior to workaround these missing commits\nAn option could be, we should default to the old behavior if there is a missing commit.\n\n\u003e would it always be on the service maintaining/creating this superproject to fix things ?\n\nIMO, until, we don\u0027t have any reports, we can not make --use-superproject the default. We should revert back to the BUG_URL.\n\nI will add the above comments to the internal bug (and I will write a design document with the above questions). Thanks for asking the above questions.",
+      "parentUuid": "6ab89508_8ad6f8f5",
+      "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
