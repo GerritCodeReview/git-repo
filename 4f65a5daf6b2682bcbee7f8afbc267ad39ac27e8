@@ -33,6 +33,23 @@
       "message": "Review and try this patch?",
       "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c00ea286_9684489b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1026622
+      },
+      "writtenOn": "2021-04-26T15:51:34Z",
+      "side": 1,
+      "message": "Tested-by: Stephen Warren \u003cswarren@nvidia.com\u003e\n\nI tested:\n+ \"repo sync\" with a link in the manifest.\n+ Renaming the link destination in the manifest, repo sync.\n+ Removing the link from the manifest, repo sync.\n+ Add the link back to the manifest, repo sync.\n\nThis version of Gerrit is very different to what I\u0027m used to. I either can\u0027t find the button to set V+1, or don\u0027t have permission to. It was hard to even add this comment, since there doesn\u0027t seem to be the usual button for that; luckily the \"a\" keyboard shortcut is available.",
+      "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
