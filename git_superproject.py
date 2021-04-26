@@ -272,8 +272,10 @@ class Superproject(object):
       else:
         projects_missing_commit_ids.append(path)
     if projects_missing_commit_ids:
+      # TODO(rtenneti): Come up with a solution to support non-google URL for
+      # filing bug reports.
       print('error: please file a bug using %s to report missing commit_ids for: %s' %
-            (Wrapper().BUG_URL, projects_missing_commit_ids), file=sys.stderr)
+            (Wrapper().BUG_URL_GOOGLE, projects_missing_commit_ids), file=sys.stderr)
       return None
 
     manifest_path = self._WriteManfiestFile()
