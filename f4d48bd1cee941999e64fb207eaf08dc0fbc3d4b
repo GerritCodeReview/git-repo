@@ -16,6 +16,23 @@
       "message": "Thanks for your comments Mike. The change is simple, created a new CL (and tested it).",
       "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ab89508_8ad6f8f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-26T23:19:11Z",
+      "side": 1,
+      "message": "as a short term mitigation, this might be OK since superprojects are still in development.  but repo is used by many non-Googlers, and non-Android devs.  so hardcoding an internal URL doesn\u0027t really cut it.\n\ndo we plan on leaving this check/warning in here long term ?  what is the goal of this check ?  it\u0027s not about a bug in repo itself right ?  it\u0027s a problem with the superproject generation ?  do we think we\u0027d change repo behavior to workaround these missing commits, or would it always be on the service maintaining/creating this superproject to fix things ?",
+      "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
