@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ad9a1407_0ce41149",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-27T06:29:03Z",
+      "side": 1,
+      "message": "Uploaded the latest patch-set to support both \"\u003ccopyfile\u003e\" and \u003clinkfile\u003e. And json formatted file \"copy-link-files.json\" was used.\n\nAlso tested if \\n be used in path names, OK for now.\n\nPlease help review, thanks!",
+      "parentUuid": "b811f0aa_1dc39a82",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 16,
+        "endChar": 13
+      },
+      "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "caebfb44_8036f10b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
