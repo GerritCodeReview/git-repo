@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fafbabd1_f06783b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:17:03Z",
+      "side": 1,
+      "message": "overall, the approach lgtm, thanks.  some polishing notes.\n\ncan you update docs/internal-fs-layout.md with a little detail for this new file ?  it doesn\u0027t need to document the format itself, but it would be OK to give a brief overview too.",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "426cfa69_9d435813",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:17:03Z",
+      "side": 1,
+      "message": "please add a docstring to new funcs, even if it\u0027s just a short one-liner",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ee039e4_027786ec",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:17:03Z",
+      "side": 1,
+      "message": "open the file as \u0027rb\u0027.  the json load below can handle bytes, and will take care of encoding for us.",
+      "range": {
+        "startLine": 637,
+        "startChar": 37,
+        "endLine": 637,
+        "endChar": 38
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c6ec9c0_e941df63",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:17:03Z",
+      "side": 1,
+      "message": "i know we\u0027re a little inconsistent, but we use |fp| more than |fd|.  it\u0027s also a little less confusing as open() doesn\u0027t return a file descriptor/int.",
+      "range": {
+        "startLine": 637,
+        "startChar": 44,
+        "endLine": 637,
+        "endChar": 46
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d2887a4_44da360d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:17:03Z",
+      "side": 1,
+      "message": "this should be under an `if opt.fail_fast` check like we do above w/project lists",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 968,
+        "endChar": 0
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
