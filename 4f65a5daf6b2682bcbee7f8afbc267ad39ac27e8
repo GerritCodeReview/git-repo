@@ -108,6 +108,24 @@
       "message": "i know project.list is a newline-delimited list, but i think if we did it again, it wouldn\u0027t, especially considering we allow \\n to be used in path names.  maybe we shouldn\u0027t, but it speaks to the poor serialization.\n\nhow about we use JSON and write it to .repo/copy-link-files.json ?  that way we also have space for adding \u003ccopyfile\u003e when/if we get to it.",
       "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0fa6337_925d8533",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-27T01:44:55Z",
+      "side": 1,
+      "message": "Yesterday, I am considering how to deal with \u003ccopyfile\u003e too. \n\nLet me prepare the next patch with \"copy-link-files.json\".",
+      "parentUuid": "811610b3_4ab8c409",
+      "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
