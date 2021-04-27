@@ -87,6 +87,24 @@
       "parentUuid": "bd8d5a09_c27bec4a",
       "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c89d051d_4ab8cabc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T00:25:30Z",
+      "side": 1,
+      "message": "if we\u0027re confident it\u0027s not a bug in repo, but a problem with the superproject that we can\u0027t recover from, then we could extend the manifest syntax to let people self-register contact info.  in internal Android manifests, we can list the internal bug report URL.\n\nnot sure how hard that would be to plumb through.",
+      "parentUuid": "6e366061_53ec6cfe",
+      "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
