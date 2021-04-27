@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b811f0aa_1dc39a82",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T01:37:57Z",
+      "side": 1,
+      "message": "the code uses \"linkfile.txt\"",
+      "range": {
+        "startLine": 16,
+        "startChar": 1,
+        "endLine": 16,
+        "endChar": 13
+      },
+      "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "caebfb44_8036f10b",
@@ -66,6 +89,23 @@
       "side": 1,
       "message": "Thanks for test!\n\nDo you find any side effects?",
       "parentUuid": "c00ea286_9684489b",
+      "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "811610b3_4ab8c409",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T01:37:57Z",
+      "side": 1,
+      "message": "i know project.list is a newline-delimited list, but i think if we did it again, it wouldn\u0027t, especially considering we allow \\n to be used in path names.  maybe we shouldn\u0027t, but it speaks to the poor serialization.\n\nhow about we use JSON and write it to .repo/copy-link-files.json ?  that way we also have space for adding \u003ccopyfile\u003e when/if we get to it.",
       "revId": "4f65a5daf6b2682bcbee7f8afbc267ad39ac27e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
