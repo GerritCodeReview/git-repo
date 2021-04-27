@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ee5e5bc_a4c413b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "oops, sent comments too soon",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "426cfa69_9d435813",
@@ -31,6 +48,29 @@
       "writtenOn": "2021-04-27T16:17:03Z",
       "side": 1,
       "message": "please add a docstring to new funcs, even if it\u0027s just a short one-liner",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "875f5f2e_b1515c11",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "this func is named \"CopyLink\", so we don\u0027t need to namespace every var in it.  we can get away with shorter names like \"new_paths\".  it makes the code easier to read.",
+      "range": {
+        "startLine": 618,
+        "startChar": 4,
+        "endLine": 618,
+        "endChar": 26
+      },
       "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -77,6 +117,188 @@
         "endLine": 637,
         "endChar": 46
       },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15615a49_7b6814a2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "we should put this under a try...except block in case the file was corrupted.  if it is, we can warn \u0026 delete it, and then return \"pass\".",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "919a363f_c24e4c79",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "i think we can delete this if and change the for loops below to make it a little more robust/simple.\n\n for old_linkfile_path in old_copylinkfiles_path.get(\u0027linkfile\u0027, []):",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2e5c8dd_5b0635f6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "do we need to check for falsey values here ?  isn\u0027t the set check sufficient ?\n\n if old_linkfile_path not in new_linkfiles_path:",
+      "range": {
+        "startLine": 642,
+        "startChar": 13,
+        "endLine": 642,
+        "endChar": 30
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58bead43_74158fa8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "shouldn\u0027t need this check as there shouldn\u0027t be falsey values in the list",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "315fb0d7_6a09a5dc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "should use platform_utils.remove",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "784f1773_929b121a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "we tend to use |e| as the short name for exceptions",
+      "range": {
+        "startLine": 653,
+        "startChar": 30,
+        "endLine": 653,
+        "endChar": 35
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2133f19_867ee6b3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "we shouldn\u0027t error out errno.ENOENT ... the file is already removed, so we can silently ignore that",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bddd33d_9e301ea9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "pass encoding\u003d\u0027utf-8\u0027 to the open call",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a5f22d_f406cd72",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "use json.dump(new_copylinkfiles_path, fd) to simplify",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8205e677_f3b0df49",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-27T16:24:10Z",
+      "side": 1,
+      "message": "the func looks like it returns pass/fail, so we should use True/False instead of 0/1",
       "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
