@@ -52,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a282acda_743cdd62",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 617,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "426cfa69_9d435813",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "875f5f2e_b1515c11",
@@ -65,6 +83,30 @@
       "writtenOn": "2021-04-27T16:24:10Z",
       "side": 1,
       "message": "this func is named \"CopyLink\", so we don\u0027t need to namespace every var in it.  we can get away with shorter names like \"new_paths\".  it makes the code easier to read.",
+      "range": {
+        "startLine": 618,
+        "startChar": 4,
+        "endLine": 618,
+        "endChar": 26
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "000ab6d1_cfadd175",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "875f5f2e_b1515c11",
       "range": {
         "startLine": 618,
         "startChar": 4,
@@ -121,6 +163,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a2de5fd_dca3e342",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c6ec9c0_e941df63",
+      "range": {
+        "startLine": 637,
+        "startChar": 44,
+        "endLine": 637,
+        "endChar": 46
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30f8b0af_e5ac9dd3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ee039e4_027786ec",
+      "range": {
+        "startLine": 637,
+        "startChar": 37,
+        "endLine": 637,
+        "endChar": 38
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "15615a49_7b6814a2",
@@ -138,6 +228,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a1c1787_b4c31bbc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Yes, check is json formatted is necessary. If not json, retrun False and raise \"repo sync\" error, otherwise return True at the end.\n\nLocal test:\n\u003e\u003e\u003e\u003e\u003e\u003e\u003e\u003e\n$ .repo/repo/repo sync -j1 --fail-fast\nerror: /home/mi/workspace/mi-codes/bsp-android-s/.repo/copy-link-files.json is not a json formatted file.\n\nerror: Local update copyfile or linkfile failed.\n\u003e\u003e\u003e\u003e\u003e\u003e\u003e\u003e\n\nOf course, failed. And redo \"repo sync\" will back to normal.",
+      "parentUuid": "15615a49_7b6814a2",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "919a363f_c24e4c79",
@@ -151,6 +259,24 @@
       "writtenOn": "2021-04-27T16:24:10Z",
       "side": 1,
       "message": "i think we can delete this if and change the for loops below to make it a little more robust/simple.\n\n for old_linkfile_path in old_copylinkfiles_path.get(\u0027linkfile\u0027, []):",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e4cfd7_af5e3a8f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "919a363f_c24e4c79",
       "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -178,6 +304,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b851971_97af33e7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e2e5c8dd_5b0635f6",
+      "range": {
+        "startLine": 642,
+        "startChar": 13,
+        "endLine": 642,
+        "endChar": 30
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58bead43_74158fa8",
@@ -195,6 +345,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bc917c0_7480ff27",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58bead43_74158fa8",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "315fb0d7_6a09a5dc",
@@ -208,6 +376,24 @@
       "writtenOn": "2021-04-27T16:24:10Z",
       "side": 1,
       "message": "should use platform_utils.remove",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "358ef256_5ef582ef",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "315fb0d7_6a09a5dc",
       "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -235,6 +421,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16c5b8fd_5c732fca",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "platform_utils.remove() will handle OSError.",
+      "parentUuid": "784f1773_929b121a",
+      "range": {
+        "startLine": 653,
+        "startChar": 30,
+        "endLine": 653,
+        "endChar": 35
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2133f19_867ee6b3",
@@ -248,6 +458,24 @@
       "writtenOn": "2021-04-27T16:24:10Z",
       "side": 1,
       "message": "we shouldn\u0027t error out errno.ENOENT ... the file is already removed, so we can silently ignore that",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e90a8e9_037c49fe",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2133f19_867ee6b3",
       "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -269,6 +497,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71dd4dad_4addb185",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bddd33d_9e301ea9",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "99a5f22d_f406cd72",
@@ -282,6 +528,24 @@
       "writtenOn": "2021-04-27T16:24:10Z",
       "side": 1,
       "message": "use json.dump(new_copylinkfiles_path, fd) to simplify",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb43a9b8_c5143934",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99a5f22d_f406cd72",
       "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -303,6 +567,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b89f3964_d0646465",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8205e677_f3b0df49",
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d2887a4_44da360d",
@@ -316,6 +598,30 @@
       "writtenOn": "2021-04-27T16:17:03Z",
       "side": 1,
       "message": "this should be under an `if opt.fail_fast` check like we do above w/project lists",
+      "range": {
+        "startLine": 966,
+        "startChar": 0,
+        "endLine": 968,
+        "endChar": 0
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89e81c92_a3899ead",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T02:09:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d2887a4_44da360d",
       "range": {
         "startLine": 966,
         "startChar": 0,
