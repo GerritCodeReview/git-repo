@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c77bea20_3fc79764",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7bdda0e_54f7eea9",
+      "range": {
+        "startLine": 621,
+        "startChar": 25,
+        "endLine": 621,
+        "endChar": 36
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e50f6998_493d9f5c",
@@ -41,6 +65,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73188c75_d5b8e0e4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e50f6998_493d9f5c",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa9be01e_8eec82dd",
@@ -54,6 +96,24 @@
       "writtenOn": "2021-04-28T04:50:29Z",
       "side": 1,
       "message": "linkfiles is guaranteed to be a list, so you can drop the if statement.  if it\u0027s an empty list, the for loop will iterate 0 times.",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7644ea4d_fcd72b30",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa9be01e_8eec82dd",
       "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -81,6 +141,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "875614bd_fc25654f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4f72656_5ff49305",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 629,
+        "endChar": 50
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0d9b4008_8a8919f0",
@@ -94,6 +178,24 @@
       "writtenOn": "2021-04-28T04:50:29Z",
       "side": 1,
       "message": "you set new_path to {} above.  can we just merge that here into a single assignment ?\n\n new_paths \u003d {\n     \u0027linkfile\u0027: new_linkfiles_path,\n     \u0027copyfile\u0027: new_copyfiles_path,\n }",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "610ae58e_a933c38e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d9b4008_8a8919f0",
       "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -115,6 +217,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f76b0e5_7cab18cc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6636dc4d_605afefa",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e341bb1a_dbe260ba",
@@ -128,6 +248,30 @@
       "writtenOn": "2021-04-28T04:50:29Z",
       "side": 1,
       "message": "needs space after ,\n\ncomes up below",
+      "range": {
+        "startLine": 652,
+        "startChar": 68,
+        "endLine": 652,
+        "endChar": 71
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edc2f144_8ffff3a7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e341bb1a_dbe260ba",
       "range": {
         "startLine": 652,
         "startChar": 68,
@@ -161,6 +305,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95f61cb0_72d2e212",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Beautiful, Go it!",
+      "parentUuid": "1cfbb93e_6b2178a7",
+      "range": {
+        "startLine": 653,
+        "startChar": 11,
+        "endLine": 653,
+        "endChar": 28
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d448643_48b79642",
@@ -174,6 +342,24 @@
       "writtenOn": "2021-04-28T04:50:29Z",
       "side": 1,
       "message": "you shouldn\u0027t need this if statement.  none of the paths should be falsey.",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd84a4fc_f00d72f0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1135883
+      },
+      "writtenOn": "2021-04-28T07:29:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d448643_48b79642",
       "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
