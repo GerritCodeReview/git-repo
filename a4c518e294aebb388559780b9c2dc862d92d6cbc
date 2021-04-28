@@ -465,6 +465,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5af06a73_59f52e05",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "not exactly.  it handles errno.EACCES, but it will still throw an exception for errno.ENOENT.  so we need to catch \u0026 swallow those specific error types here ourself.\n\nactually since this is Python 3+ only now, we can catch FileNotFoundError specifically and `pass` it.",
+      "parentUuid": "16c5b8fd_5c732fca",
+      "range": {
+        "startLine": 653,
+        "startChar": 30,
+        "endLine": 653,
+        "endChar": 35
+      },
+      "revId": "a4c518e294aebb388559780b9c2dc862d92d6cbc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a2133f19_867ee6b3",
         "filename": "subcmds/sync.py",
         "patchSetId": 12

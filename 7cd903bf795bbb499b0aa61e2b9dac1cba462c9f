@@ -1,0 +1,181 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7bdda0e_54f7eea9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 621,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "\"successful\"",
+      "range": {
+        "startLine": 621,
+        "startChar": 25,
+        "endLine": 621,
+        "endChar": 36
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e50f6998_493d9f5c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "nit: you use \"path\" in many of these vars, but i think they\u0027re all dicts/lists of multiple paths, so you want \"paths\".  i think linkfile_paths makes a little more sense than linkfiles_path.\n\n new_paths ...\n new_linkfile_paths ...",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa9be01e_8eec82dd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "linkfiles is guaranteed to be a list, so you can drop the if statement.  if it\u0027s an empty list, the for loop will iterate 0 times.",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4f72656_5ff49305",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "i think you can one-line this:\n\n new_linkfiles_path.extend(x.dest for x in project.linkfiles)\n\nsame for below",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 629,
+        "endChar": 50
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d9b4008_8a8919f0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 634,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "you set new_path to {} above.  can we just merge that here into a single assignment ?\n\n new_paths \u003d {\n     \u0027linkfile\u0027: new_linkfiles_path,\n     \u0027copyfile\u0027: new_copyfiles_path,\n }",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6636dc4d_605afefa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "indent is off by one space",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e341bb1a_dbe260ba",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 652,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "needs space after ,\n\ncomes up below",
+      "range": {
+        "startLine": 652,
+        "startChar": 68,
+        "endLine": 652,
+        "endChar": 71
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cfbb93e_6b2178a7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "you can just call this |old_path| since it isn\u0027t used outside this\n\nactually, can we one-line this ?  what if we wrote:\n\n need_remove_files.extend(\n     set(old_copylinkfiles_path.get(\u0027linkfile\u0027, [])) -\n     set(new_linkfiles_path))",
+      "range": {
+        "startLine": 653,
+        "startChar": 11,
+        "endLine": 653,
+        "endChar": 28
+      },
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d448643_48b79642",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-28T04:50:29Z",
+      "side": 1,
+      "message": "you shouldn\u0027t need this if statement.  none of the paths should be falsey.",
+      "revId": "7cd903bf795bbb499b0aa61e2b9dac1cba462c9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
