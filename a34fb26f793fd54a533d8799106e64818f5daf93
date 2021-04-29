@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65634673_f401bb59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-29T06:09:03Z",
+      "side": 1,
+      "message": "just style nits",
+      "revId": "a34fb26f793fd54a533d8799106e64818f5daf93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40246c59_be8e47f4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-29T06:09:03Z",
+      "side": 1,
+      "message": "for short iterators like this, prefer using |x| as the throw away name.  it makes things a bit easier to read imo.",
+      "range": {
+        "startLine": 628,
+        "startChar": 47,
+        "endLine": 628,
+        "endChar": 52
+      },
+      "revId": "a34fb26f793fd54a533d8799106e64818f5daf93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9d28a8_c2d4438d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-29T06:09:03Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "a34fb26f793fd54a533d8799106e64818f5daf93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e130cc4_53251b01",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-29T06:09:03Z",
+      "side": 1,
+      "message": "hanging indent is 4 spaces",
+      "revId": "a34fb26f793fd54a533d8799106e64818f5daf93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e45345f1_001798a8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-04-29T06:09:03Z",
+      "side": 1,
+      "message": "unindent to align with ( above",
+      "revId": "a34fb26f793fd54a533d8799106e64818f5daf93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
