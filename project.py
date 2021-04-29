@@ -1214,6 +1214,9 @@ class Project(object):
                                          (self.revisionExpr, self.name))
 
   def SetRevisionId(self, revisionId):
+    if self.clone_depth or self.manifest.manifestProject.config.GetString('repo.depth'):
+      self.upstream = self.revisionExpr
+
     self.revisionId = revisionId
 
   def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
@@ -2134,6 +2137,8 @@ class Project(object):
       # Shallow checkout of a specific commit, fetch from that commit and not
       # the heads only as the commit might be deeper in the history.
       spec.append(branch)
+      if self.upstream:
+        spec.append(self.upstream)
     else:
       if is_sha1:
         branch = self.upstream
