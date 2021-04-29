@@ -123,6 +123,23 @@
       "parentUuid": "c89d051d_4ab8cabc",
       "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f463998_ed342cfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-04-29T18:45:01Z",
+      "side": 1,
+      "message": "This change could be considered temporary change (with a TODO to implement with manifest) to reduce the workload of marking bugs created private (on the other had, I haven\u0027t seen any new reports recently).",
+      "revId": "f4d48bd1cee941999e64fb207eaf08dc0fbc3d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
