@@ -1199,6 +1199,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if '~' in path:
       return '~ not allowed (due to 8.3 filenames on Windows filesystems)'
 
+    path_codepoints = set(path)
+
     # Some filesystems (like Apple's HFS+) try to normalize Unicode codepoints
     # which means there are alternative names for ".git".  Reject paths with
     # these in it as there shouldn't be any reasonable need for them here.
@@ -1222,9 +1224,16 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         u'\u206F',  # NOMINAL DIGIT SHAPES
         u'\uFEFF',  # ZERO WIDTH NO-BREAK SPACE
     }
-    if BAD_CODEPOINTS & set(path):
+    if BAD_CODEPOINTS & path_codepoints:
       # This message is more expansive than reality, but should be fine.
       return 'Unicode combining characters not allowed'
+
+    # Reject newlines as there shouldn't be any legitmate use for them, they'll
+    # be confusing to users, and they can easily break tools that expect to be
+    # able to iterate over newline delimited lists.  This even applies to our
+    # own code like .repo/project.list.
+    if {'\r', '\n'} & path_codepoints:
+      return 'Newlines not allowed'
 
     # Assume paths might be used on case-insensitive filesystems.
     path = path.lower()
