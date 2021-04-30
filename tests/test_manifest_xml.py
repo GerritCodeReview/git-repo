@@ -52,6 +52,9 @@ INVALID_FS_PATHS = (
     'blah/foo~',
     # Block Unicode characters that get normalized out by filesystems.
     u'foo\u200Cbar',
+    # Block newlines.
+    'f\n/bar',
+    'f\r/bar',
 )
 
 # Make sure platforms that use path separators (e.g. Windows) are also
@@ -90,6 +93,11 @@ class ManifestParseTestCase(unittest.TestCase):
     with open(self.manifest_file, 'w') as fp:
       fp.write(data)
     return manifest_xml.XmlManifest(self.repodir, self.manifest_file)
+
+  @staticmethod
+  def encodeXmlAttr(attr):
+    """Encode |attr| using XML escape rules."""
+    return attr.replace('\r', '&#x000d;').replace('\n', '&#x000a;')
 
 
 class ManifestValidateFilePaths(unittest.TestCase):
@@ -303,6 +311,7 @@ class IncludeElementTests(ManifestParseTestCase):
   def test_allow_bad_name_from_user(self):
     """Check handling of bad name attribute from the user's input."""
     def parse(name):
+      name = self.encodeXmlAttr(name)
       manifest = self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
@@ -327,6 +336,7 @@ class IncludeElementTests(ManifestParseTestCase):
   def test_bad_name_checks(self):
     """Check handling of bad name attribute."""
     def parse(name):
+      name = self.encodeXmlAttr(name)
       # Setup target of the include.
       with open(os.path.join(self.manifest_dir, 'target.xml'), 'w') as fp:
         fp.write(f'<manifest><include name="{name}"/></manifest>')
@@ -408,6 +418,8 @@ class ProjectElementTests(ManifestParseTestCase):
   def test_trailing_slash(self):
     """Check handling of trailing slashes in attributes."""
     def parse(name, path):
+      name = self.encodeXmlAttr(name)
+      path = self.encodeXmlAttr(path)
       return self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
@@ -437,6 +449,8 @@ class ProjectElementTests(ManifestParseTestCase):
   def test_toplevel_path(self):
     """Check handling of path=. specially."""
     def parse(name, path):
+      name = self.encodeXmlAttr(name)
+      path = self.encodeXmlAttr(path)
       return self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
@@ -453,6 +467,8 @@ class ProjectElementTests(ManifestParseTestCase):
   def test_bad_path_name_checks(self):
     """Check handling of bad path & name attributes."""
     def parse(name, path):
+      name = self.encodeXmlAttr(name)
+      path = self.encodeXmlAttr(path)
       manifest = self.getXmlManifest(f"""
 <manifest>
   <remote name="default-remote" fetch="http://localhost" />
