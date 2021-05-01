@@ -13,10 +13,11 @@
 # limitations under the License.
 
 import copy
+import functools
 import re
 import sys
 
-from command import InteractiveCommand
+from command import DEFAULT_LOCAL_JOBS, InteractiveCommand
 from editor import Editor
 from error import UploadError
 from git_command import GitCommand
@@ -145,6 +146,7 @@ https://gerrit-review.googlesource.com/Documentation/user-upload.html#notify
 Gerrit Code Review:  https://www.gerritcodereview.com/
 
 """
+  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def _Options(self, p):
     p.add_option('-t',
@@ -165,9 +167,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--cc',
                  type='string', action='append', dest='cc',
                  help='Also send email to these email addresses.')
-    p.add_option('--br',
+    p.add_option('--br', '--branch',
                  type='string', action='store', dest='branch',
-                 help='Branch to upload.')
+                 help='(Local) branch to upload.')
     p.add_option('--cbr', '--current-branch',
                  dest='current_branch', action='store_true',
                  help='Upload current git branch.')
@@ -502,40 +504,46 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     merge_branch = p.stdout.strip()
     return merge_branch
 
+  @staticmethod
+  def _GatherOne(opt, project):
+    """Figure out the upload status for |project|."""
+    if opt.current_branch:
+      cbr = project.CurrentBranch
+      up_branch = project.GetUploadableBranch(cbr)
+      avail = [up_branch] if up_branch else None
+    else:
+      avail = project.GetUploadableBranches(opt.branch)
+    return (project, avail)
+
   def Execute(self, opt, args):
-    project_list = self.GetProjects(args)
-    pending = []
-    reviewers = []
-    cc = []
-    branch = None
+    projects = self.GetProjects(args)
 
-    if opt.branch:
-      branch = opt.branch
-
-    for project in project_list:
-      if opt.current_branch:
-        cbr = project.CurrentBranch
-        up_branch = project.GetUploadableBranch(cbr)
-        if up_branch:
-          avail = [up_branch]
-        else:
-          avail = None
+    def _ProcessResults(_pool, _out, results):
+      pending = []
+      for result in results:
+        project, avail = result
+        if avail is None:
           print('repo: error: %s: Unable to upload branch "%s". '
                 'You might be able to fix the branch by running:\n'
                 '  git branch --set-upstream-to m/%s' %
-                (project.relpath, str(cbr), self.manifest.branch),
+                (project.relpath, project.CurrentBranch, self.manifest.branch),
                 file=sys.stderr)
-      else:
-        avail = project.GetUploadableBranches(branch)
-      if avail:
-        pending.append((project, avail))
+        elif avail:
+          pending.append(result)
+      return pending
+
+    pending = self.ExecuteInParallel(
+        opt.jobs,
+        functools.partial(self._GatherOne, opt),
+        projects,
+        callback=_ProcessResults)
 
     if not pending:
-      if branch is None:
+      if opt.branch is None:
         print('repo: error: no branches ready for upload', file=sys.stderr)
       else:
         print('repo: error: no branches named "%s" ready for upload' %
-              (branch,), file=sys.stderr)
+              (opt.branch,), file=sys.stderr)
       return 1
 
     pending_proj_names = [project.name for (project, available) in pending]
@@ -548,10 +556,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         worktree_list=pending_worktrees):
       return 1
 
-    if opt.reviewers:
-      reviewers = _SplitEmails(opt.reviewers)
-    if opt.cc:
-      cc = _SplitEmails(opt.cc)
+    reviewers = _SplitEmails(opt.reviewers) if opt.reviewers else []
+    cc = _SplitEmails(opt.cc) if opt.cc else []
     people = (reviewers, cc)
 
     if len(pending) == 1 and len(pending[0][1]) == 1:
