@@ -2443,14 +2443,6 @@ class Project(object):
         self.bare_objdir.init()
 
         if self.use_git_worktrees:
-          # Set up the m/ space to point to the worktree-specific ref space.
-          # We'll update the worktree-specific ref space on each checkout.
-          if self.manifest.branch:
-            self.bare_git.symbolic_ref(
-                '-m', 'redirecting to worktree scope',
-                R_M + self.manifest.branch,
-                R_WORKTREE_M + self.manifest.branch)
-
           # Enable per-worktree config file support if possible.  This is more a
           # nice-to-have feature for users rather than a hard requirement.
           if git_require((2, 20, 0)):
@@ -2587,6 +2579,14 @@ class Project(object):
   def _InitMRef(self):
     if self.manifest.branch:
       if self.use_git_worktrees:
+        # Set up the m/ space to point to the worktree-specific ref space.
+        # We'll update the worktree-specific ref space on each checkout.
+        ref = R_M + self.manifest.branch
+        if not self.bare_ref.symref(ref):
+          self.bare_git.symbolic_ref(
+              '-m', 'redirecting to worktree scope',
+              ref, R_WORKTREE_M + self.manifest.branch)
+
         # We can't update this ref with git worktrees until it exists.
         # We'll wait until the initial checkout to set it.
         if not os.path.exists(self.worktree):
