@@ -520,10 +520,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
           avail = [up_branch]
         else:
           avail = None
-          print('repo: error: Unable to upload branch "%s". '
+          print('repo: error: %s: Unable to upload branch "%s". '
                 'You might be able to fix the branch by running:\n'
                 '  git branch --set-upstream-to m/%s' %
-                (str(cbr), self.manifest.branch),
+                (project.relpath, str(cbr), self.manifest.branch),
                 file=sys.stderr)
       else:
         avail = project.GetUploadableBranches(branch)
