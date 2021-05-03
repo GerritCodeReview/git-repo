@@ -37,6 +37,9 @@ are displayed.
     p.add_option('-c', '--current-branch',
                  dest="current_branch", action="store_true",
                  help="Consider only checked out branches")
+    p.add_option('--no-current-branch',
+                 dest='current_branch', action='store_false',
+                 help='consider all local branches')
     # Turn this into a warning & remove this someday.
     p.add_option('-b',
                  dest='current_branch', action='store_true',

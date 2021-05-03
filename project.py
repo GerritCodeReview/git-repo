@@ -1041,7 +1041,7 @@ class Project(object):
                        verbose=False,
                        output_redir=None,
                        is_new=None,
-                       current_branch_only=False,
+                       current_branch_only=None,
                        force_sync=False,
                        clone_bundle=True,
                        tags=True,
@@ -1116,7 +1116,7 @@ class Project(object):
             and self._ApplyCloneBundle(initial=is_new, quiet=quiet, verbose=verbose)):
       is_new = False
 
-    if not current_branch_only:
+    if current_branch_only is None:
       if self.sync_c:
         current_branch_only = True
       elif not self.manifest._loaded:

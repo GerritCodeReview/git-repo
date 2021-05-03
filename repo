@@ -324,6 +324,9 @@ def InitParser(parser, gitc_init=False):
   group.add_option(*cbr_opts,
                    dest='current_branch_only', action='store_true',
                    help='fetch only current manifest branch from server')
+  group.add_option('--no-current-branch',
+                   dest='current_branch_only', action='store_false',
+                   help='fetch all manifest branches from server')
   group.add_option('--no-tags',
                    dest='tags', default=True, action='store_false',
                    help="don't fetch tags in the manifest")
