@@ -327,8 +327,11 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--no-current-branch',
                    dest='current_branch_only', action='store_false',
                    help='fetch all manifest branches from server')
+  group.add_option('--tags',
+                   action='store_true',
+                   help='fetch tags in the manifest')
   group.add_option('--no-tags',
-                   dest='tags', default=True, action='store_false',
+                   dest='tags', action='store_false',
                    help="don't fetch tags in the manifest")
 
   # These are fundamentally different ways of structuring the checkout.
