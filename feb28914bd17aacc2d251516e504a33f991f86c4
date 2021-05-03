@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e480f1d4_9638a376",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-03T18:47:05Z",
+      "side": 1,
+      "message": "As you had mentioned in chat, once the internal bug 181777683 is fixed, \"we\u0027d want single-manifest cases with multiple remotes to use the superproject\".  Will delete the code that skips the projects if remotes don\u0027t match from git_superproject.py (after testing with the local.xml).",
+      "parentUuid": "fe5e2eba_a082b580",
+      "revId": "feb28914bd17aacc2d251516e504a33f991f86c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5f4dece_c866e16f",
