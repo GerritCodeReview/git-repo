@@ -1,0 +1,169 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b15bb35a_2bc19f02",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "i think just \"projects\"",
+      "range": {
+        "startLine": 9,
+        "startChar": 52,
+        "endLine": 9,
+        "endChar": 61
+      },
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6b1ce0b_0bdd87be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "just nits",
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8be6579d_83f5a5e5",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "this could use a comment noting the scenario(s) where this might occur",
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a52f7e_44fdcff1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "only need one blank line",
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8c13d24_81b36c9d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "when referring to vars in descriptions, we use |manifest_name| so it\u0027s clear.  it\u0027s obvious in this case, but can be less obvious if the var had a common name like |path|.",
+      "range": {
+        "startLine": 572,
+        "startChar": 31,
+        "endLine": 572,
+        "endChar": 44
+      },
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eed1a3b9_fa4f1592",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "this comment doesn\u0027t seem to match the code.  the caller is handling this logic, but this specific place is just doing whatever the caller tells it.",
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38106d37_cc975a37",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 816,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "just `not self.manifest.HasLocalManifests` ?",
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16bd37c3_3661a700",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "could use a better description",
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba250837_1122b8ac",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-03T04:30:29Z",
+      "side": 1,
+      "message": "don\u0027t need these + at all here",
+      "revId": "7ad096f5f6a312bc796ce8dd3e44d3b997e953ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
