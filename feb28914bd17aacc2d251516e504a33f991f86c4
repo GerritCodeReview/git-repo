@@ -34,6 +34,24 @@
       "parentUuid": "a5f4dece_c866e16f",
       "revId": "feb28914bd17aacc2d251516e504a33f991f86c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0ba29f0_cda9ea70",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-03T06:02:21Z",
+      "side": 1,
+      "message": "fetchUrl works.\n\nFixed it in https://gerrit-review.googlesource.com/c/git-repo/+/304942\nDone",
+      "parentUuid": "8c40ac30_339adce1",
+      "revId": "feb28914bd17aacc2d251516e504a33f991f86c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
