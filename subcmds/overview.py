@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import optparse
+
 from color import Coloring
 from command import PagedCommand
 
@@ -26,15 +28,19 @@ class Overview(PagedCommand):
 The '%prog' command is used to display an overview of the projects branches,
 and list any local commits that have not yet been merged into the project.
 
-The -b/--current-branch option can be used to restrict the output to only
+The -c/--current-branch option can be used to restrict the output to only
 branches currently checked out in each project.  By default, all branches
 are displayed.
 """
 
   def _Options(self, p):
-    p.add_option('-b', '--current-branch',
+    p.add_option('-c', '--current-branch',
                  dest="current_branch", action="store_true",
                  help="Consider only checked out branches")
+    # Turn this into a warning & remove this someday.
+    p.add_option('-b',
+                 dest='current_branch', action='store_true',
+                 help=optparse.SUPPRESS_HELP)
 
   def Execute(self, opt, args):
     all_branches = []
