@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import optparse
+
 from command import PagedCommand
 from color import Coloring
 from git_refs import R_M, R_HEADS
@@ -25,7 +27,7 @@ class _Coloring(Coloring):
 class Info(PagedCommand):
   common = True
   helpSummary = "Get info on the manifest branch, current branch or unmerged branches"
-  helpUsage = "%prog [-dl] [-o [-b]] [<project>...]"
+  helpUsage = "%prog [-dl] [-o [-c]] [<project>...]"
 
   def _Options(self, p):
     p.add_option('-d', '--diff',
@@ -34,9 +36,13 @@ class Info(PagedCommand):
     p.add_option('-o', '--overview',
                  dest='overview', action='store_true',
                  help='show overview of all local commits')
-    p.add_option('-b', '--current-branch',
+    p.add_option('-c', '--current-branch',
                  dest="current_branch", action="store_true",
                  help="consider only checked out branches")
+    # Turn this into a warning & remove this someday.
+    p.add_option('-b',
+                 dest='current_branch', action='store_true',
+                 help=optparse.SUPPRESS_HELP)
     p.add_option('-l', '--local-only',
                  dest="local", action="store_true",
                  help="Disable all remote operations")

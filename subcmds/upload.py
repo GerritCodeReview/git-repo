@@ -14,6 +14,7 @@
 
 import copy
 import functools
+import optparse
 import re
 import sys
 
@@ -170,9 +171,13 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--br', '--branch',
                  type='string', action='store', dest='branch',
                  help='(Local) branch to upload.')
-    p.add_option('--cbr', '--current-branch',
+    p.add_option('-c', '--current-branch',
                  dest='current_branch', action='store_true',
                  help='Upload current git branch.')
+    # Turn this into a warning & remove this someday.
+    p.add_option('--cbr',
+                 dest='current_branch', action='store_true',
+                 help=optparse.SUPPRESS_HELP)
     p.add_option('--ne', '--no-emails',
                  action='store_false', dest='notify', default=True,
                  help='If specified, do not send emails on upload.')
