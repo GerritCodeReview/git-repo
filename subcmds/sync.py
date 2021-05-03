@@ -213,6 +213,9 @@ later is required to fix a server side protocol bug.
     p.add_option('-c', '--current-branch',
                  dest='current_branch_only', action='store_true',
                  help='fetch only current branch from server')
+    p.add_option('--no-current-branch',
+                 dest='current_branch_only', action='store_false',
+                 help='fetch all branches from server')
     p.add_option('-m', '--manifest-name',
                  dest='manifest_name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')

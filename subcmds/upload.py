@@ -174,6 +174,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-c', '--current-branch',
                  dest='current_branch', action='store_true',
                  help='Upload current git branch.')
+    p.add_option('--no-current-branch',
+                 dest='current_branch', action='store_false',
+                 help='Upload all git branches.')
     # Turn this into a warning & remove this someday.
     p.add_option('--cbr',
                  dest='current_branch', action='store_true',
