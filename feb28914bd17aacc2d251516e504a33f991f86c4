@@ -16,6 +16,24 @@
       "message": "does Android use aliases ?  in CrOS, we do things like:\n\n  \u003cremote name\u003d\"cros\"\n          fetch\u003d\"https://chromium.googlesource.com\"\n          review\u003d\"https://chromium-review.googlesource.com\" /\u003e\n  \u003cremote name\u003d\"chromium\"\n          alias\u003d\"cros\"\n          fetch\u003d\"https://chromium.googlesource.com/\" /\u003e\n\nshould we compare .fetch instead of .name ?",
       "revId": "feb28914bd17aacc2d251516e504a33f991f86c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c40ac30_339adce1",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-03T05:39:55Z",
+      "side": 1,
+      "message": "Android doesn\u0027t seem to be using alias. Fetch is sometimes \"..\". I will switch to comparing .fetch instead of .name. I will upload a CL asap.",
+      "parentUuid": "a5f4dece_c866e16f",
+      "revId": "feb28914bd17aacc2d251516e504a33f991f86c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
