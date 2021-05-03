@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97918618_16eef1e0",
+        "filename": "subcmds/overview.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-03T05:45:20Z",
+      "side": 1,
+      "message": "overly nit: a small question, some of the help commands start with capital letter and other\u0027s don\u0027t seem to. just curious, what is the convention. thanks",
+      "range": {
+        "startLine": 42,
+        "startChar": 23,
+        "endLine": 42,
+        "endChar": 31
+      },
+      "revId": "ca9957c264ec3f5f04e698ba5cde17297575038a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
