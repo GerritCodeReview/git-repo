@@ -262,9 +262,12 @@ class Superproject(object):
       return None
 
     projects_missing_commit_ids = []
+    superproject_remote_name = self._manifest.superproject['remote'].name
     for project in projects:
       path = project.relpath
       if not path:
+        continue
+      if project.remote.name != superproject_remote_name:
         continue
       commit_id = commit_ids.get(path)
       if commit_id:
