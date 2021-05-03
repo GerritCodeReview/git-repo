@@ -234,8 +234,11 @@ later is required to fix a server side protocol bug.
                  help='fetch submodules from server')
     p.add_option('--use-superproject', action='store_true',
                  help='use the manifest superproject to sync projects')
+    p.add_option('--tags',
+                 action='store_false',
+                 help='fetch tags')
     p.add_option('--no-tags',
-                 dest='tags', default=True, action='store_false',
+                 dest='tags', action='store_false',
                  help="don't fetch tags")
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',

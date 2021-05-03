@@ -1044,7 +1044,7 @@ class Project(object):
                        current_branch_only=None,
                        force_sync=False,
                        clone_bundle=True,
-                       tags=True,
+                       tags=None,
                        archive=False,
                        optimized_fetch=False,
                        retry_fetches=0,
@@ -1125,8 +1125,8 @@ class Project(object):
       elif self.manifest.default.sync_c:
         current_branch_only = True
 
-    if not self.sync_tags:
-      tags = False
+    if tags is None:
+      tags = self.sync_tags
 
     if self.clone_depth:
       depth = self.clone_depth
