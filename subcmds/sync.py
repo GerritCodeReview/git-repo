@@ -801,7 +801,7 @@ later is required to fix a server side protocol bug.
                              start, time.time(), clean)
       if not clean:
         sys.exit(1)
-      self._ReloadManifest(opt.manifest_name)
+      self._ReloadManifest(manifest_name)
       if opt.jobs is None:
         self.jobs = self.manifest.default.sync_j
 
