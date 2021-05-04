@@ -2210,7 +2210,7 @@ class Project(object):
 
       # Figure out how long to sleep before the next attempt, if there is one.
       if not verbose:
-        output_redir.write('\n%s:\n%s' % (self.name, gitcmd.stdout), file=sys.stderr)
+        output_redir.write('\n%s:\n%s' % (self.name, gitcmd.stdout))
       if try_n < retry_fetches - 1:
         output_redir.write('sleeping %s seconds before retrying' % retry_cur_sleep)
         time.sleep(retry_cur_sleep)
