@@ -70,6 +70,30 @@
       },
       "revId": "ca9957c264ec3f5f04e698ba5cde17297575038a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b087ad69_f336a384",
+        "filename": "subcmds/overview.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T11:31:39Z",
+      "side": 1,
+      "message": "hrm not sure why Gerrit duplicated this reply",
+      "parentUuid": "d967d234_a35ab499",
+      "range": {
+        "startLine": 42,
+        "startChar": 23,
+        "endLine": 42,
+        "endChar": 31
+      },
+      "revId": "ca9957c264ec3f5f04e698ba5cde17297575038a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
