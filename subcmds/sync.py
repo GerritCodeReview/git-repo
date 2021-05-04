@@ -986,9 +986,9 @@ later is required to fix a server side protocol bug.
         print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
         sys.exit(1)
 
-    if not self.UpdateCopyLinkfileList():
+    err_update_linkfiles = not self.UpdateCopyLinkfileList()
+    if err_update_linkfiles:
       err_event.set()
-      err_update_linkfiles = True
       if opt.fail_fast:
         print('\nerror: Local update copyfile or linkfile failed.', file=sys.stderr)
         sys.exit(1)
