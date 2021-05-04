@@ -31,6 +31,7 @@ following DTD:
                       extend-project*,
                       repo-hooks?,
                       superproject?,
+                      contactinfo?,
                       include*)>
 
   <!ELEMENT notice (#PCDATA)>
@@ -100,9 +101,12 @@ following DTD:
   <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
   <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
 
-  <!ELEMENT superproject (EMPTY)>
+  <!ELEMENT superproject EMPTY>
   <!ATTLIST superproject name    CDATA #REQUIRED>
   <!ATTLIST superproject remote  IDREF #IMPLIED>
+
+  <!ELEMENT contactinfo EMPTY>
+  <!ATTLIST contactinfo bugurl  CDATA #REQUIRED>
 
   <!ELEMENT include EMPTY>
   <!ATTLIST include name   CDATA #REQUIRED>
@@ -405,7 +409,7 @@ Attribute `enabled-list`: List of hooks to use, whitespace or comma separated.
 ### Element superproject
 
 ***
- *Note*: This is currently a WIP.
+*Note*: This is currently a WIP.
 ***
 
 NB: See the [git superprojects documentation](
@@ -423,6 +427,19 @@ same meaning as project's name attribute. See the
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
+
+### Element contactinfo
+
+***
+*Note*: This is currently a WIP.
+***
+
+This element is used to let manifest authors self-register contact info.
+It has "bugurl" as a required atrribute. This element can be repeated,
+and any later entries will clobber earlier ones. This would allow manifest
+authors who extend manifests to specify their own contact info.
+
+Attribute `bugurl`: The URL to file a bug against the manifest owner.
 
 ### Element include
 
