@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3101eb99_a84a54d0",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T23:52:22Z",
+      "side": 1,
+      "message": "while not wrong, you don\u0027t have to merge these.  you can mix string types freely.\n\n    self.assertEqual(\n        manifest.ToXml().toxml(),\n        \u0027........\u0027\n        f\u0027..........\u0027\n        \u0027.......\u0027)",
+      "revId": "1c3f57e8f13d4f6dc818bdf06c3a40f768ef1ce5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
