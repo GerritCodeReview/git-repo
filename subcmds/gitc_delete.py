@@ -33,7 +33,7 @@ and all locally downloaded sources.
   def _Options(self, p):
     p.add_option('-f', '--force',
                  dest='force', action='store_true',
-                 help='Force the deletion (no prompt).')
+                 help='force the deletion (no prompt)')
 
   def Execute(self, opt, args):
     if not opt.force:

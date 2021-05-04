@@ -48,7 +48,7 @@ class Info(PagedCommand):
                  help=optparse.SUPPRESS_HELP)
     p.add_option('-l', '--local-only',
                  dest="local", action="store_true",
-                 help="Disable all remote operations")
+                 help="disable all remote operations")
 
   def Execute(self, opt, args):
     self.out = _Coloring(self.client.globalConfig)

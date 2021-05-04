@@ -169,10 +169,11 @@ later is required to fix a server side protocol bug.
   PARALLEL_JOBS = 1
 
   def _CommonOptions(self, p):
-    try:
-      self.PARALLEL_JOBS = self.manifest.default.sync_j
-    except ManifestParseError:
-      pass
+    if self.manifest:
+      try:
+        self.PARALLEL_JOBS = self.manifest.default.sync_j
+      except ManifestParseError:
+        pass
     super()._CommonOptions(p)
 
   def _Options(self, p, show_smart=True):

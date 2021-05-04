@@ -46,27 +46,27 @@ branch but need to incorporate new upstream changes "underneath" them.
 
     p.add_option('--fail-fast',
                  dest='fail_fast', action='store_true',
-                 help='Stop rebasing after first error is hit')
+                 help='stop rebasing after first error is hit')
     p.add_option('-f', '--force-rebase',
                  dest='force_rebase', action='store_true',
-                 help='Pass --force-rebase to git rebase')
+                 help='pass --force-rebase to git rebase')
     p.add_option('--no-ff',
                  dest='ff', default=True, action='store_false',
-                 help='Pass --no-ff to git rebase')
+                 help='pass --no-ff to git rebase')
     p.add_option('--autosquash',
                  dest='autosquash', action='store_true',
-                 help='Pass --autosquash to git rebase')
+                 help='pass --autosquash to git rebase')
     p.add_option('--whitespace',
                  dest='whitespace', action='store', metavar='WS',
-                 help='Pass --whitespace to git rebase')
+                 help='pass --whitespace to git rebase')
     p.add_option('--auto-stash',
                  dest='auto_stash', action='store_true',
-                 help='Stash local modifications before starting')
+                 help='stash local modifications before starting')
     p.add_option('-m', '--onto-manifest',
                  dest='onto_manifest', action='store_true',
-                 help='Rebase onto the manifest version instead of upstream '
-                      'HEAD.  This helps to make sure the local tree stays '
-                      'consistent if you previously synced to a manifest.')
+                 help='rebase onto the manifest version instead of upstream '
+                      'HEAD (this helps to make sure the local tree stays '
+                      'consistent if you previously synced to a manifest)')
 
   def Execute(self, opt, args):
     all_projects = self.GetProjects(args)
