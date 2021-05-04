@@ -479,6 +479,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         e.setAttribute('remote', remoteName)
       root.appendChild(e)
 
+    if self._contactinfo:
+      root.appendChild(doc.createTextNode(''))
+      e = doc.createElement('contactinfo')
+      e.setAttribute('bugurl', self._contactinfo['bugurl'])
+      root.appendChild(e)
+
     return doc
 
   def ToDict(self, **kwargs):
@@ -490,6 +496,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         'manifest-server',
         'repo-hooks',
         'superproject',
+        'contactinfo',
     }
     # Elements that may be repeated.
     MULTI_ELEMENTS = {
@@ -566,6 +573,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return self._superproject
 
   @property
+  def contactinfo(self):
+    self._Load()
+    return self._contactinfo
+
+  @property
   def notice(self):
     self._Load()
     return self._notice
@@ -634,6 +646,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._default = None
     self._repo_hooks_project = None
     self._superproject = {}
+    self._contactinfo = {}
     self._notice = None
     self.branch = None
     self._manifest_server = None
@@ -876,6 +889,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           raise ManifestParseError("no remote for superproject %s within %s" %
                                    (name, self.manifestFile))
         self._superproject['remote'] = remote.ToRemoteSpec(name)
+      if node.nodeName == 'contactinfo':
+        bugurl = self._reqatt(node, 'bugurl')
+        # This element can be repeated, later entries will clobber earlier ones.
+        self._contactinfo['bugurl'] = bugurl
       if node.nodeName == 'remove-project':
         name = self._reqatt(node, 'name')
 

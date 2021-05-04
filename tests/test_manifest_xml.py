@@ -255,10 +255,10 @@ class XmlManifestTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
     self.assertEqual(
         manifest.ToXml().toxml(),
-        '<?xml version="1.0" ?><manifest>' +
-        '<remote name="test-remote" fetch="http://localhost"/>' +
-        '<default remote="test-remote" revision="refs/heads/main"/>' +
-        '<superproject name="superproject"/>' +
+        '<?xml version="1.0" ?><manifest>'
+        '<remote name="test-remote" fetch="http://localhost"/>'
+        '<default remote="test-remote" revision="refs/heads/main"/>'
+        '<superproject name="superproject"/>'
         '</manifest>')
 
 
@@ -409,10 +409,10 @@ class ProjectElementTests(ManifestParseTestCase):
     project.SetRevisionId('ABCDEF')
     self.assertEqual(
         manifest.ToXml().toxml(),
-        '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
-        '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<project name="test-name" revision="ABCDEF"/>' +
+        '<?xml version="1.0" ?><manifest>'
+        '<remote name="default-remote" fetch="http://localhost"/>'
+        '<default remote="default-remote" revision="refs/heads/main"/>'
+        '<project name="test-name" revision="ABCDEF"/>'
         '</manifest>')
 
   def test_trailing_slash(self):
@@ -517,10 +517,10 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/superproject')
     self.assertEqual(
         manifest.ToXml().toxml(),
-        '<?xml version="1.0" ?><manifest>' +
-        '<remote name="test-remote" fetch="http://localhost"/>' +
-        '<default remote="test-remote" revision="refs/heads/main"/>' +
-        '<superproject name="superproject"/>' +
+        '<?xml version="1.0" ?><manifest>'
+        '<remote name="test-remote" fetch="http://localhost"/>'
+        '<default remote="test-remote" revision="refs/heads/main"/>'
+        '<superproject name="superproject"/>'
         '</manifest>')
 
   def test_remote(self):
@@ -538,11 +538,11 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/platform/superproject')
     self.assertEqual(
         manifest.ToXml().toxml(),
-        '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
-        '<remote name="superproject-remote" fetch="http://localhost"/>' +
-        '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<superproject name="platform/superproject" remote="superproject-remote"/>' +
+        '<?xml version="1.0" ?><manifest>'
+        '<remote name="default-remote" fetch="http://localhost"/>'
+        '<remote name="superproject-remote" fetch="http://localhost"/>'
+        '<default remote="default-remote" revision="refs/heads/main"/>'
+        '<superproject name="platform/superproject" remote="superproject-remote"/>'
         '</manifest>')
 
   def test_defalut_remote(self):
@@ -558,8 +558,25 @@ class SuperProjectElementTests(ManifestParseTestCase):
     self.assertEqual(manifest.superproject['remote'].name, 'default-remote')
     self.assertEqual(
         manifest.ToXml().toxml(),
-        '<?xml version="1.0" ?><manifest>' +
-        '<remote name="default-remote" fetch="http://localhost"/>' +
-        '<default remote="default-remote" revision="refs/heads/main"/>' +
-        '<superproject name="superproject"/>' +
+        '<?xml version="1.0" ?><manifest>'
+        '<remote name="default-remote" fetch="http://localhost"/>'
+        '<default remote="default-remote" revision="refs/heads/main"/>'
+        '<superproject name="superproject"/>'
         '</manifest>')
+
+
+class ContactinfoElementTests(ManifestParseTestCase):
+  """Tests for <contactinfo>."""
+
+  def test_contactinfo(self):
+    """Check contactinfo settings."""
+    bugurl = 'http://localhost/contactinfo'
+    manifest = self.getXmlManifest(f"""
+<manifest>
+  <contactinfo bugurl="{bugurl}"/>
+</manifest>
+""")
+    self.assertEqual(manifest.contactinfo['bugurl'], bugurl)
+    self.assertEqual(
+        manifest.ToXml().toxml(),
+        f"""<?xml version="1.0" ?><manifest><contactinfo bugurl="{bugurl}"/></manifest>""")
