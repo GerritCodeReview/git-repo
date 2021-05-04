@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b56072d_47fb50e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T22:35:51Z",
+      "side": 1,
+      "message": "Thanks very much f-string hint. Made the changes,",
+      "revId": "be314c09f2c2a490c84692e8ee13f37633613962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

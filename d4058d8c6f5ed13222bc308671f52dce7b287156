@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ffa6b86_855a3ce2",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T22:35:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de616188_5b3021e8",
+      "revId": "d4058d8c6f5ed13222bc308671f52dce7b287156",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9676395_7157583c",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-05-04T22:20:41Z",
       "side": 1,
       "message": "can use a f-string here too",
+      "revId": "d4058d8c6f5ed13222bc308671f52dce7b287156",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0db9843_1e3eef91",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T22:35:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9676395_7157583c",
       "revId": "d4058d8c6f5ed13222bc308671f52dce7b287156",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
