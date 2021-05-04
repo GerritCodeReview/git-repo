@@ -459,6 +459,11 @@ def init_ssh():
 def _open_ssh(host, port=None):
   global _ssh_master
 
+  # Bail before grabbing the lock if we already know that we aren't going to
+  # try creating new masters below.
+  if sys.platform in ('win32', 'cygwin'):
+    return False
+
   # Acquire the lock.  This is needed to prevent opening multiple masters for
   # the same host when we're running "repo sync -jN" (for N > 1) _and_ the
   # manifest <remote fetch="ssh://xyz"> specifies a different host from the
@@ -476,11 +481,8 @@ def _open_ssh(host, port=None):
     if key in _master_keys:
       return True
 
-    if (not _ssh_master
-            or 'GIT_SSH' in os.environ
-            or sys.platform in ('win32', 'cygwin')):
-      # failed earlier, or cygwin ssh can't do this
-      #
+    if not _ssh_master or 'GIT_SSH' in os.environ:
+      # Failed earlier, so don't retry.
       return False
 
     # We will make two calls to ssh; this is the common part of both calls.
