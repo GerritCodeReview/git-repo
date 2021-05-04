@@ -887,7 +887,7 @@ later is required to fix a server side protocol bug.
         if previously_missing_set == missing_set:
           break
         previously_missing_set = missing_set
-        success, new_fetched = self._Fetch(to_fetch, opt, err_event)
+        success, new_fetched = self._Fetch(missing, opt, err_event)
         if not success:
           err_event.set()
         fetched.update(new_fetched)
