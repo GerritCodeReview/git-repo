@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17dbac0_9abb0271",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T20:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76811ac2_6c0bcda9",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "520f8160_919f4f7c",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7243f34c_10a8b4f2",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T20:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "520f8160_919f4f7c",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6687b15a_fd35506c",
@@ -65,6 +101,30 @@
       "writtenOn": "2021-05-04T19:55:30Z",
       "side": 1,
       "message": "people-\u003emanifest authors",
+      "range": {
+        "startLine": 437,
+        "startChar": 28,
+        "endLine": 437,
+        "endChar": 34
+      },
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07f3841b_f374df86",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T20:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6687b15a_fd35506c",
       "range": {
         "startLine": 437,
         "startChar": 28,
@@ -98,6 +158,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a410d0_16100cb9",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T20:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ffa4caf_31ee29d8",
+      "range": {
+        "startLine": 438,
+        "startChar": 25,
+        "endLine": 438,
+        "endChar": 65
+      },
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3c2351f_0476764d",
@@ -115,6 +199,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d938898_97f77de2",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T20:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3c2351f_0476764d",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "21625b6f_2701e6ad",
@@ -128,6 +230,24 @@
       "writtenOn": "2021-05-04T19:55:30Z",
       "side": 1,
       "message": "don\u0027t need the + here or below",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4a66ba0_e098ec33",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-04T20:41:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21625b6f_2701e6ad",
       "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
