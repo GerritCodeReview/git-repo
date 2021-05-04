@@ -152,61 +152,61 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
   def _Options(self, p):
     p.add_option('-t',
                  dest='auto_topic', action='store_true',
-                 help='Send local branch name to Gerrit Code Review')
+                 help='send local branch name to Gerrit Code Review')
     p.add_option('--hashtag', '--ht',
                  dest='hashtags', action='append', default=[],
-                 help='Add hashtags (comma delimited) to the review.')
+                 help='add hashtags (comma delimited) to the review')
     p.add_option('--hashtag-branch', '--htb',
                  action='store_true',
-                 help='Add local branch name as a hashtag.')
+                 help='add local branch name as a hashtag')
     p.add_option('-l', '--label',
                  dest='labels', action='append', default=[],
-                 help='Add a label when uploading.')
+                 help='add a label when uploading')
     p.add_option('--re', '--reviewers',
                  type='string', action='append', dest='reviewers',
-                 help='Request reviews from these people.')
+                 help='request reviews from these people')
     p.add_option('--cc',
                  type='string', action='append', dest='cc',
-                 help='Also send email to these email addresses.')
+                 help='also send email to these email addresses')
     p.add_option('--br', '--branch',
                  type='string', action='store', dest='branch',
-                 help='(Local) branch to upload.')
+                 help='(local) branch to upload')
     p.add_option('-c', '--current-branch',
                  dest='current_branch', action='store_true',
-                 help='Upload current git branch.')
+                 help='upload current git branch')
     p.add_option('--no-current-branch',
                  dest='current_branch', action='store_false',
-                 help='Upload all git branches.')
+                 help='upload all git branches')
     # Turn this into a warning & remove this someday.
     p.add_option('--cbr',
                  dest='current_branch', action='store_true',
                  help=optparse.SUPPRESS_HELP)
     p.add_option('--ne', '--no-emails',
                  action='store_false', dest='notify', default=True,
-                 help='If specified, do not send emails on upload.')
+                 help='do not send e-mails on upload')
     p.add_option('-p', '--private',
                  action='store_true', dest='private', default=False,
-                 help='If specified, upload as a private change.')
+                 help='upload as a private change (deprecated; use --wip)')
     p.add_option('-w', '--wip',
                  action='store_true', dest='wip', default=False,
-                 help='If specified, upload as a work-in-progress change.')
+                 help='upload as a work-in-progress change')
     p.add_option('-o', '--push-option',
                  type='string', action='append', dest='push_options',
                  default=[],
-                 help='Additional push options to transmit')
+                 help='additional push options to transmit')
     p.add_option('-D', '--destination', '--dest',
                  type='string', action='store', dest='dest_branch',
                  metavar='BRANCH',
-                 help='Submit for review on this target branch.')
+                 help='submit for review on this target branch')
     p.add_option('-n', '--dry-run',
                  dest='dryrun', default=False, action='store_true',
-                 help='Do everything except actually upload the CL.')
+                 help='do everything except actually upload the CL')
     p.add_option('-y', '--yes',
                  default=False, action='store_true',
-                 help='Answer yes to all safe prompts.')
+                 help='answer yes to all safe prompts')
     p.add_option('--no-cert-checks',
                  dest='validate_certs', action='store_false', default=True,
-                 help='Disable verifying ssl certs (unsafe).')
+                 help='disable verifying ssl certs (unsafe)')
     RepoHook.AddOptionGroup(p, 'pre-upload')
 
   def _SingleBranch(self, opt, branch, people):

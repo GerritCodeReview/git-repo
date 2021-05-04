@@ -131,30 +131,30 @@ without iterating through the remaining projects.
   def _Options(self, p):
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
-                 help="Execute the command only on projects matching regex or wildcard expression")
+                 help='execute the command only on projects matching regex or wildcard expression')
     p.add_option('-i', '--inverse-regex',
                  dest='inverse_regex', action='store_true',
-                 help="Execute the command only on projects not matching regex or "
-                      "wildcard expression")
+                 help='execute the command only on projects not matching regex or '
+                      'wildcard expression')
     p.add_option('-g', '--groups',
                  dest='groups',
-                 help="Execute the command only on projects matching the specified groups")
+                 help='execute the command only on projects matching the specified groups')
     p.add_option('-c', '--command',
-                 help='Command (and arguments) to execute',
+                 help='command (and arguments) to execute',
                  dest='command',
                  action='callback',
                  callback=self._cmd_option)
     p.add_option('-e', '--abort-on-errors',
                  dest='abort_on_errors', action='store_true',
-                 help='Abort if a command exits unsuccessfully')
+                 help='abort if a command exits unsuccessfully')
     p.add_option('--ignore-missing', action='store_true',
-                 help='Silently skip & do not exit non-zero due missing '
+                 help='silently skip & do not exit non-zero due missing '
                       'checkouts')
 
     g = p.get_option_group('--quiet')
     g.add_option('-p',
                  dest='project_header', action='store_true',
-                 help='Show project headers before output')
+                 help='show project headers before output')
     p.add_option('--interactive',
                  action='store_true',
                  help='force interactive usage')

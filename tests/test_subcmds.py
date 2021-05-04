@@ -14,6 +14,7 @@
 
 """Unittests for the subcmds module (mostly __init__.py than subcommands)."""
 
+import optparse
 import unittest
 
 import subcmds
@@ -41,3 +42,32 @@ class AllCommands(unittest.TestCase):
 
       # Reject internal python paths like "__init__".
       self.assertFalse(cmd.startswith('__'))
+
+  def test_help_desc_style(self):
+    """Force some consistency in option descriptions.
+
+    Python's optparse & argparse has a few default options like --help.  Their
+    option description text uses lowercase sentence fragments, so enforce our
+    options follow the same style so UI is consistent.
+
+    We enforce:
+    * Text starts with lowercase.
+    * Text doesn't end with period.
+    """
+    for name, cls in subcmds.all_commands.items():
+      cmd = cls()
+      parser = cmd.OptionParser
+      for option in parser.option_list:
+        if option.help == optparse.SUPPRESS_HELP:
+          continue
+
+        c = option.help[0]
+        self.assertEqual(
+            c.lower(), c,
+            msg=f'subcmds/{name}.py: {option.get_opt_string()}: help text '
+                f'should start with lowercase: "{option.help}"')
+
+        self.assertNotEqual(
+            option.help[-1], '.',
+            msg=f'subcmds/{name}.py: {option.get_opt_string()}: help text '
+                f'should not end in a period: "{option.help}"')

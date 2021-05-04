@@ -36,22 +36,22 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
   def _Options(self, p):
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
-                 help="Filter the project list based on regex or wildcard matching of strings")
+                 help='filter the project list based on regex or wildcard matching of strings')
     p.add_option('-g', '--groups',
                  dest='groups',
-                 help="Filter the project list based on the groups the project is in")
+                 help='filter the project list based on the groups the project is in')
     p.add_option('-a', '--all',
                  action='store_true',
-                 help='Show projects regardless of checkout state')
+                 help='show projects regardless of checkout state')
     p.add_option('-f', '--fullpath',
                  dest='fullpath', action='store_true',
-                 help="Display the full work tree path instead of the relative path")
+                 help='display the full work tree path instead of the relative path')
     p.add_option('-n', '--name-only',
                  dest='name_only', action='store_true',
-                 help="Display only the name of the repository")
+                 help='display only the name of the repository')
     p.add_option('-p', '--path-only',
                  dest='path_only', action='store_true',
-                 help="Display only the path of the repository")
+                 help='display only the path of the repository')
 
   def ValidateOptions(self, opt, args):
     if opt.fullpath and opt.name_only:

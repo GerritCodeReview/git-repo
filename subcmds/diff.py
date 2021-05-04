@@ -33,7 +33,7 @@ to the Unix 'patch' command.
   def _Options(self, p):
     p.add_option('-u', '--absolute',
                  dest='absolute', action='store_true',
-                 help='Paths are relative to the repository root')
+                 help='paths are relative to the repository root')
 
   def _ExecuteOne(self, absolute, project):
     """Obtains the diff for a specific project.

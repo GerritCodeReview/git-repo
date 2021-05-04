@@ -68,10 +68,10 @@ synced and their revisions won't be found.
   def _Options(self, p):
     p.add_option('--raw',
                  dest='raw', action='store_true',
-                 help='Display raw diff.')
+                 help='display raw diff')
     p.add_option('--no-color',
                  dest='color', action='store_false', default=True,
-                 help='does not display the diff in color.')
+                 help='does not display the diff in color')
     p.add_option('--pretty-format',
                  dest='pretty_format', action='store',
                  metavar='<FORMAT>',

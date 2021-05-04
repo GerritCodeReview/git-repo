@@ -53,27 +53,27 @@ to indicate the remote ref to push changes to via 'repo upload'.
   def _Options(self, p):
     p.add_option('-r', '--revision-as-HEAD',
                  dest='peg_rev', action='store_true',
-                 help='Save revisions as current HEAD')
+                 help='save revisions as current HEAD')
     p.add_option('-m', '--manifest-name',
                  help='temporary manifest to use for this sync', metavar='NAME.xml')
     p.add_option('--suppress-upstream-revision', dest='peg_rev_upstream',
                  default=True, action='store_false',
-                 help='If in -r mode, do not write the upstream field.  '
-                 'Only of use if the branch names for a sha1 manifest are '
-                 'sensitive.')
+                 help='if in -r mode, do not write the upstream field '
+                 '(only of use if the branch names for a sha1 manifest are '
+                 'sensitive)')
     p.add_option('--suppress-dest-branch', dest='peg_rev_dest_branch',
                  default=True, action='store_false',
-                 help='If in -r mode, do not write the dest-branch field.  '
-                 'Only of use if the branch names for a sha1 manifest are '
-                 'sensitive.')
+                 help='if in -r mode, do not write the dest-branch field '
+                 '(only of use if the branch names for a sha1 manifest are '
+                 'sensitive)')
     p.add_option('--json', default=False, action='store_true',
-                 help='Output manifest in JSON format (experimental).')
+                 help='output manifest in JSON format (experimental)')
     p.add_option('--pretty', default=False, action='store_true',
-                 help='Format output for humans to read.')
+                 help='format output for humans to read')
     p.add_option('-o', '--output-file',
                  dest='output_file',
                  default='-',
-                 help='File to save the manifest to',
+                 help='file to save the manifest to',
                  metavar='-|NAME.xml')
 
   def _Output(self, opt):

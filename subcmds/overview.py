@@ -36,7 +36,7 @@ are displayed.
   def _Options(self, p):
     p.add_option('-c', '--current-branch',
                  dest="current_branch", action="store_true",
-                 help="Consider only checked out branches")
+                 help="consider only checked out branches")
     p.add_option('--no-current-branch',
                  dest='current_branch', action='store_false',
                  help='consider all local branches')
