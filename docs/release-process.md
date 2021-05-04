@@ -83,7 +83,8 @@ control how repo finds updates:
 *   `--repo-rev`: This tells repo which branch to use for the full project.
     It defaults to the `stable` branch (`REPO_REV` in the launcher script).
 
-Whenever `repo sync` is run, repo will check to see if an update is available.
+Whenever `repo sync` is run, repo will, once every 24 hours, see if an update
+is available.
 It fetches the latest repo-rev from the repo-url.
 Then it verifies that the latest commit in the branch has a valid signed tag
 using `git tag -v` (which uses gpg).
@@ -94,6 +95,11 @@ most recent tag it can find (via `git describe`).
 If that tag is valid, then repo will warn and use that commit instead.
 
 If that tag cannot be verified, it gives up and forces the user to resolve.
+
+### Force an update
+
+The `repo selfupdate` command can be used to force an immediate update.
+It is not subject to the 24 hour limitation.
 
 ## Branch management
 
