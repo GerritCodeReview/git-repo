@@ -22,6 +22,54 @@
       },
       "revId": "ca9957c264ec3f5f04e698ba5cde17297575038a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6588fd17_d0d1db71",
+        "filename": "subcmds/overview.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T11:30:52Z",
+      "side": 1,
+      "message": "we have been pretty bad at this consistency.  because python\u0027s own optparse \u0026 argparse use lowercase w/no trailing period for its builtin options (e.g. --help), i think we\u0027d want to use that style everywhere in order for the entire output to be consistent.\n\ni wonder if i could write a unittest to catch this ... otherwise we\u0027re going to keep merging inconsistent styles",
+      "parentUuid": "97918618_16eef1e0",
+      "range": {
+        "startLine": 42,
+        "startChar": 23,
+        "endLine": 42,
+        "endChar": 31
+      },
+      "revId": "ca9957c264ec3f5f04e698ba5cde17297575038a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d967d234_a35ab499",
+        "filename": "subcmds/overview.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T11:30:52Z",
+      "side": 1,
+      "message": "we have been pretty bad at this consistency.  because python\u0027s own optparse \u0026 argparse use lowercase w/no trailing period for its builtin options (e.g. --help), i think we\u0027d want to use that style everywhere in order for the entire output to be consistent.",
+      "parentUuid": "97918618_16eef1e0",
+      "range": {
+        "startLine": 42,
+        "startChar": 23,
+        "endLine": 42,
+        "endChar": 31
+      },
+      "revId": "ca9957c264ec3f5f04e698ba5cde17297575038a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
