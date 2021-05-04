@@ -16,6 +16,40 @@
       "message": "PTAL. Thanks",
       "revId": "d4058d8c6f5ed13222bc308671f52dce7b287156",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de616188_5b3021e8",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T22:20:41Z",
+      "side": 1,
+      "message": "we\u0027re dropping Python 3.5, so you can use f-strings here\n\n manifest_str \u003d f\"\"\"\n.....\n  \u003ccontactinfo bugurl\u003d\"{bugurl}\"/\u003e\n....\n\nthen you don\u0027t need the format() below.  and you can re-inline the string to the func call if you want.",
+      "revId": "d4058d8c6f5ed13222bc308671f52dce7b287156",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9676395_7157583c",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 584,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T22:20:41Z",
+      "side": 1,
+      "message": "can use a f-string here too",
+      "revId": "d4058d8c6f5ed13222bc308671f52dce7b287156",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
