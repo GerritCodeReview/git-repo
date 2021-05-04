@@ -850,7 +850,7 @@ later is required to fix a server side protocol bug.
           print('error: failed to remove existing smart sync override manifest: %s' %
                 e, file=sys.stderr)
 
-    err_event = _threading.Event()
+    err_event = multiprocessing.Event()
 
     rp = self.manifest.repoProject
     rp.PreSync()
