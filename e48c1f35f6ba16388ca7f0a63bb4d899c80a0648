@@ -16,6 +16,120 @@
       "message": "Hi Mike,\n  I have added the contactinfo tag (as discussed in https://gerrit-review.googlesource.com/c/git-repo/+/304364). PTAL. Thanks much.",
       "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76811ac2_6c0bcda9",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T19:55:30Z",
+      "side": 1,
+      "message": "i think this should just be \"EMPTY\".  same for superproject above actually.",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520f8160_919f4f7c",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T19:55:30Z",
+      "side": 1,
+      "message": "no leading space",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6687b15a_fd35506c",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T19:55:30Z",
+      "side": 1,
+      "message": "people-\u003emanifest authors",
+      "range": {
+        "startLine": 437,
+        "startChar": 28,
+        "endLine": 437,
+        "endChar": 34
+      },
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ffa4caf_31ee29d8",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T19:55:30Z",
+      "side": 1,
+      "message": "i\u0027m inclined to let this element be repeated, and any later entries will clobber earlier ones\n\nthis would allow people who extend manifests to specify their own contact info.  think Android partners or downstream projects ... we\u0027d list Android contact info in the main one, but partners \u0026 downstream would want to set their own stuff.",
+      "range": {
+        "startLine": 438,
+        "startChar": 25,
+        "endLine": 438,
+        "endChar": 65
+      },
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3c2351f_0476764d",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T19:55:30Z",
+      "side": 1,
+      "message": "if you pull the URL out into a var, might be easier to read",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21625b6f_2701e6ad",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 581,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-04T19:55:30Z",
+      "side": 1,
+      "message": "don\u0027t need the + here or below",
+      "revId": "e48c1f35f6ba16388ca7f0a63bb4d899c80a0648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
