@@ -31,6 +31,7 @@ following DTD:
                       extend-project*,
                       repo-hooks?,
                       superproject?,
+                      contactinfo?,
                       include*)>
 
   <!ELEMENT notice (#PCDATA)>
@@ -103,6 +104,9 @@ following DTD:
   <!ELEMENT superproject (EMPTY)>
   <!ATTLIST superproject name    CDATA #REQUIRED>
   <!ATTLIST superproject remote  IDREF #IMPLIED>
+
+  <!ELEMENT contactinfo (EMPTY)>
+  <!ATTLIST contactinfo bugurl  CDATA #REQUIRED>
 
   <!ELEMENT include EMPTY>
   <!ATTLIST include name   CDATA #REQUIRED>
@@ -423,6 +427,18 @@ same meaning as project's name attribute. See the
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
+
+### Element contactinfo
+
+***
+ *Note*: This is currently a WIP.
+***
+
+This element is used to let people self-register contact info. It has "bugurl"
+as a required atrribute. At most one contactinfo may be specified. Attempting
+to redefine it will fail to parse.
+
+Attribute `bugurl`: The URL to file a bug against the manifest owner.
 
 ### Element include
 

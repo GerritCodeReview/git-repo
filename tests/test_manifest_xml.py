@@ -563,3 +563,21 @@ class SuperProjectElementTests(ManifestParseTestCase):
         '<default remote="default-remote" revision="refs/heads/main"/>' +
         '<superproject name="superproject"/>' +
         '</manifest>')
+
+
+class ContactinfoElementTests(ManifestParseTestCase):
+  """Tests for <contactinfo>."""
+
+  def test_contactinfo(self):
+    """Check contactinfo settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <contactinfo bugurl="http://localhost/contactinfo"/>
+</manifest>
+""")
+    self.assertEqual(manifest.contactinfo['bugurl'], 'http://localhost/contactinfo')
+    self.assertEqual(
+        manifest.ToXml().toxml(),
+        '<?xml version="1.0" ?><manifest>' +
+        '<contactinfo bugurl="http://localhost/contactinfo"/>' +
+        '</manifest>')
