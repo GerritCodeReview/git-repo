@@ -520,6 +520,14 @@ class Remote(object):
     return self.url.replace(longest, longestUrl, 1)
 
   def PreConnectFetch(self):
+    """Run any setup for this remote before we connect to it.
+
+    In practice, if the remote is using SSH, we'll attempt to create a new
+    SSH master session to it for reuse across projects.
+
+    Returns:
+      Whether the preconnect phase for this remote was successful.
+    """
     connectionUrl = self._InsteadOf()
     return ssh.preconnect(connectionUrl)
 

@@ -56,7 +56,6 @@ from error import RepoChangedException
 import gitc_utils
 from manifest_xml import GitcClient, RepoClient
 from pager import RunPager, TerminatePager
-import ssh
 from wrapper import WrapperPath, Wrapper
 
 from subcmds import all_commands
@@ -592,20 +591,16 @@ def _Main(argv):
 
   repo = _Repo(opt.repodir)
   try:
-    try:
-      ssh.init()
-      init_http()
-      name, gopts, argv = repo._ParseArgs(argv)
-      run = lambda: repo._Run(name, gopts, argv) or 0
-      if gopts.trace_python:
-        import trace
-        tracer = trace.Trace(count=False, trace=True, timing=True,
-                             ignoredirs=set(sys.path[1:]))
-        result = tracer.runfunc(run)
-      else:
-        result = run()
-    finally:
-      ssh.close()
+    init_http()
+    name, gopts, argv = repo._ParseArgs(argv)
+    run = lambda: repo._Run(name, gopts, argv) or 0
+    if gopts.trace_python:
+      import trace
+      tracer = trace.Trace(count=False, trace=True, timing=True,
+                           ignoredirs=set(sys.path[1:]))
+      result = tracer.runfunc(run)
+    else:
+      result = run()
   except KeyboardInterrupt:
     print('aborted by user', file=sys.stderr)
     result = 1
