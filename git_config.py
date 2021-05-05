@@ -18,25 +18,17 @@ from http.client import HTTPException
 import json
 import os
 import re
-import signal
 import ssl
 import subprocess
 import sys
-try:
-  import threading as _threading
-except ImportError:
-  import dummy_threading as _threading
-import time
 import urllib.error
 import urllib.request
 
 from error import GitError, UploadError
 import platform_utils
 from repo_trace import Trace
-
+import ssh
 from git_command import GitCommand
-from git_command import ssh_sock
-from git_command import terminate_ssh_clients
 from git_refs import R_CHANGES, R_HEADS, R_TAGS
 
 ID_RE = re.compile(r'^[0-9a-f]{40}$')
@@ -440,129 +432,6 @@ class RefSpec(object):
     return s
 
 
-_master_processes = []
-_master_keys = set()
-_ssh_master = True
-_master_keys_lock = None
-
-
-def init_ssh():
-  """Should be called once at the start of repo to init ssh master handling.
-
-  At the moment, all we do is to create our lock.
-  """
-  global _master_keys_lock
-  assert _master_keys_lock is None, "Should only call init_ssh once"
-  _master_keys_lock = _threading.Lock()
-
-
-def _open_ssh(host, port=None):
-  global _ssh_master
-
-  # Bail before grabbing the lock if we already know that we aren't going to
-  # try creating new masters below.
-  if sys.platform in ('win32', 'cygwin'):
-    return False
-
-  # Acquire the lock.  This is needed to prevent opening multiple masters for
-  # the same host when we're running "repo sync -jN" (for N > 1) _and_ the
-  # manifest <remote fetch="ssh://xyz"> specifies a different host from the
-  # one that was passed to repo init.
-  _master_keys_lock.acquire()
-  try:
-
-    # Check to see whether we already think that the master is running; if we
-    # think it's already running, return right away.
-    if port is not None:
-      key = '%s:%s' % (host, port)
-    else:
-      key = host
-
-    if key in _master_keys:
-      return True
-
-    if not _ssh_master or 'GIT_SSH' in os.environ:
-      # Failed earlier, so don't retry.
-      return False
-
-    # We will make two calls to ssh; this is the common part of both calls.
-    command_base = ['ssh',
-                    '-o', 'ControlPath %s' % ssh_sock(),
-                    host]
-    if port is not None:
-      command_base[1:1] = ['-p', str(port)]
-
-    # Since the key wasn't in _master_keys, we think that master isn't running.
-    # ...but before actually starting a master, we'll double-check.  This can
-    # be important because we can't tell that that 'git@myhost.com' is the same
-    # as 'myhost.com' where "User git" is setup in the user's ~/.ssh/config file.
-    check_command = command_base + ['-O', 'check']
-    try:
-      Trace(': %s', ' '.join(check_command))
-      check_process = subprocess.Popen(check_command,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE)
-      check_process.communicate()  # read output, but ignore it...
-      isnt_running = check_process.wait()
-
-      if not isnt_running:
-        # Our double-check found that the master _was_ infact running.  Add to
-        # the list of keys.
-        _master_keys.add(key)
-        return True
-    except Exception:
-      # Ignore excpetions.  We we will fall back to the normal command and print
-      # to the log there.
-      pass
-
-    command = command_base[:1] + ['-M', '-N'] + command_base[1:]
-    try:
-      Trace(': %s', ' '.join(command))
-      p = subprocess.Popen(command)
-    except Exception as e:
-      _ssh_master = False
-      print('\nwarn: cannot enable ssh control master for %s:%s\n%s'
-            % (host, port, str(e)), file=sys.stderr)
-      return False
-
-    time.sleep(1)
-    ssh_died = (p.poll() is not None)
-    if ssh_died:
-      return False
-
-    _master_processes.append(p)
-    _master_keys.add(key)
-    return True
-  finally:
-    _master_keys_lock.release()
-
-
-def close_ssh():
-  global _master_keys_lock
-
-  terminate_ssh_clients()
-
-  for p in _master_processes:
-    try:
-      os.kill(p.pid, signal.SIGTERM)
-      p.wait()
-    except OSError:
-      pass
-  del _master_processes[:]
-  _master_keys.clear()
-
-  d = ssh_sock(create=False)
-  if d:
-    try:
-      platform_utils.rmdir(os.path.dirname(d))
-    except OSError:
-      pass
-
-  # We're done with the lock, so we can delete it.
-  _master_keys_lock = None
-
-
-URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
 URI_ALL = re.compile(r'^([a-z][a-z+-]*)://([^@/]*@?[^/]*)/')
 
 
@@ -614,27 +483,6 @@ def GetUrlCookieFile(url, quiet):
   yield cookiefile, None
 
 
-def _preconnect(url):
-  m = URI_ALL.match(url)
-  if m:
-    scheme = m.group(1)
-    host = m.group(2)
-    if ':' in host:
-      host, port = host.split(':')
-    else:
-      port = None
-    if scheme in ('ssh', 'git+ssh', 'ssh+git'):
-      return _open_ssh(host, port)
-    return False
-
-  m = URI_SCP.match(url)
-  if m:
-    host = m.group(1)
-    return _open_ssh(host)
-
-  return False
-
-
 class Remote(object):
   """Configuration options related to a remote.
   """
@@ -673,7 +521,7 @@ class Remote(object):
 
   def PreConnectFetch(self):
     connectionUrl = self._InsteadOf()
-    return _preconnect(connectionUrl)
+    return ssh.preconnect(connectionUrl)
 
   def ReviewUrl(self, userEmail, validate_certs):
     if self._review_url is None:
