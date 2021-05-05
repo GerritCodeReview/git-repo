@@ -117,7 +117,7 @@ def check_python_version():
 
     # If the python3 version looks like it's new enough, give it a try.
     if (python3_ver and python3_ver >= MIN_PYTHON_VERSION_HARD
-        and python3_ver != (major, minor)):
+            and python3_ver != (major, minor)):
       reexec('python3')
 
     # We're still here, so diagnose things for the user.
@@ -859,11 +859,10 @@ def _DownloadBundle(url, cwd, quiet, verbose):
     try:
       r = urllib.request.urlopen(url)
     except urllib.error.HTTPError as e:
-      if e.code in [401, 403, 404, 501]:
-        return False
-      print('fatal: Cannot get %s' % url, file=sys.stderr)
-      print('fatal: HTTP error %s' % e.code, file=sys.stderr)
-      raise CloneFailure()
+      if e.code not in [400, 401, 403, 404, 501]:
+        print('warning: Cannot get %s' % url, file=sys.stderr)
+        print('warning: HTTP error %s' % e.code, file=sys.stderr)
+      return False
     except urllib.error.URLError as e:
       print('fatal: Cannot get %s' % url, file=sys.stderr)
       print('fatal: error %s' % e.reason, file=sys.stderr)
