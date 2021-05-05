@@ -39,7 +39,7 @@ from color import SetDefaultColoring
 import event_log
 from repo_trace import SetTrace
 from git_command import user_agent
-from git_config import init_ssh, close_ssh, RepoConfig
+from git_config import RepoConfig
 from git_trace2_event_log import EventLog
 from command import InteractiveCommand
 from command import MirrorSafeCommand
@@ -56,6 +56,7 @@ from error import RepoChangedException
 import gitc_utils
 from manifest_xml import GitcClient, RepoClient
 from pager import RunPager, TerminatePager
+import ssh
 from wrapper import WrapperPath, Wrapper
 
 from subcmds import all_commands
@@ -592,7 +593,7 @@ def _Main(argv):
   repo = _Repo(opt.repodir)
   try:
     try:
-      init_ssh()
+      ssh.init()
       init_http()
       name, gopts, argv = repo._ParseArgs(argv)
       run = lambda: repo._Run(name, gopts, argv) or 0
@@ -604,7 +605,7 @@ def _Main(argv):
       else:
         result = run()
     finally:
-      close_ssh()
+      ssh.close()
   except KeyboardInterrupt:
     print('aborted by user', file=sys.stderr)
     result = 1
