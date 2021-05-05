@@ -57,6 +57,7 @@ from error import RepoChangedException, GitError, ManifestParseError
 import platform_utils
 from project import SyncBuffer
 from progress import Progress
+import ssh
 from wrapper import Wrapper
 from manifest_xml import GitcManifest
 
@@ -352,6 +353,7 @@ later is required to fix a server side protocol bug.
           optimized_fetch=opt.optimized_fetch,
           retry_fetches=opt.retry_fetches,
           prune=opt.prune,
+          ssh_proxy=True,
           clone_filter=self.manifest.CloneFilter,
           partial_clone_exclude=self.manifest.PartialCloneExclude)
 
@@ -978,8 +980,12 @@ later is required to fix a server side protocol bug.
 
     self._fetch_times = _FetchTimes(self.manifest)
     if not opt.local_only:
-      self._FetchMain(opt, args, all_projects, err_event, manifest_name,
-                      load_local_manifests)
+      try:
+        ssh.init()
+        self._FetchMain(opt, args, all_projects, err_event, manifest_name,
+                        load_local_manifests)
+      finally:
+        ssh.close()
 
       # If we saw an error, exit with code 1 so that other scripts can check.
       if err_event.is_set():
