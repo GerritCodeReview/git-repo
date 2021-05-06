@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0458c99_ab19b6f7",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2049,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-05-06T19:23:57Z",
+      "side": 1,
+      "message": "Thoughts: \n\nIs the object returned by `remote.PreConnectFetch()` truthy? If so, we will run this command again and clobber the existing object when we re-enter this function down on line 2238. Is that intentional?\n\nAfter reading through `remote.PreConnectFetch()`: Ok I see it\u0027s returning a boolean now so clobbering here is probably okay? Overall just a bit confusing because it\u0027s not obvious what `remote.PreConnectFetch()` or what its return value means based on the name.\n\nAsk:\n\nIs running `remote.PreConnectFetch()` twice on re-entering the function intentional and okay?",
+      "range": {
+        "startLine": 2049,
+        "startChar": 6,
+        "endLine": 2049,
+        "endChar": 42
+      },
+      "revId": "d7be637ec2a0562e99c73176e3c2ece2a1616c3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e8bb2ac_06d1cde1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-05-06T19:23:57Z",
+      "side": 1,
+      "message": "thought/TODO: It really, really smells like a context manager :)",
+      "range": {
+        "startLine": 973,
+        "startChar": 0,
+        "endLine": 974,
+        "endChar": 18
+      },
+      "revId": "d7be637ec2a0562e99c73176e3c2ece2a1616c3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
