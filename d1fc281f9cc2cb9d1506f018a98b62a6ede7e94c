@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9cea784_10d8f684",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-05-06T19:04:44Z",
+      "side": 1,
+      "message": "LGTM with nits",
+      "revId": "d1fc281f9cc2cb9d1506f018a98b62a6ede7e94c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be7dc75_d7dec0f1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-05-06T19:04:44Z",
+      "side": 1,
+      "message": "A docstring with explanation of what the args are (even just what types they are expected to be) would be helpful.",
+      "range": {
+        "startLine": 441,
+        "startChar": 0,
+        "endLine": 443,
+        "endChar": 39
+      },
+      "revId": "d1fc281f9cc2cb9d1506f018a98b62a6ede7e94c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
