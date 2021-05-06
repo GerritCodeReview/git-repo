@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c3ad14e_20e54963",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 863,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-06T23:41:51Z",
+      "side": 1,
+      "message": "only indent by 2 spaces, not 4",
+      "revId": "79e9ecf6e35d1109f8dd5843cc67e5f540ab9fdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
