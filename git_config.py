@@ -27,7 +27,6 @@ import urllib.request
 from error import GitError, UploadError
 import platform_utils
 from repo_trace import Trace
-import ssh
 from git_command import GitCommand
 from git_refs import R_CHANGES, R_HEADS, R_TAGS
 
@@ -519,17 +518,20 @@ class Remote(object):
 
     return self.url.replace(longest, longestUrl, 1)
 
-  def PreConnectFetch(self):
+  def PreConnectFetch(self, ssh_proxy):
     """Run any setup for this remote before we connect to it.
 
     In practice, if the remote is using SSH, we'll attempt to create a new
     SSH master session to it for reuse across projects.
 
+    Args:
+      ssh_proxy: The SSH settings for managing master sessions.
+
     Returns:
       Whether the preconnect phase for this remote was successful.
     """
     connectionUrl = self._InsteadOf()
-    return ssh.preconnect(connectionUrl)
+    return ssh_proxy.preconnect(connectionUrl)
 
   def ReviewUrl(self, userEmail, validate_certs):
     if self._review_url is None:
