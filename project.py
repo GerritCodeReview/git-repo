@@ -2045,8 +2045,8 @@ class Project(object):
       name = self.remote.name
 
     remote = self.GetRemote(name)
-    if not remote.PreConnectFetch():
-      ssh_proxy = False
+    if not remote.PreConnectFetch(ssh_proxy):
+      ssh_proxy = None
 
     if initial:
       if alt_dir and 'objects' == os.path.basename(alt_dir):

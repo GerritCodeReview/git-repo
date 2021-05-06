@@ -21,7 +21,6 @@ from error import GitError
 from git_refs import HEAD
 import platform_utils
 from repo_trace import REPO_TRACE, IsTrace, Trace
-import ssh
 from wrapper import Wrapper
 
 GIT = 'git'
@@ -167,7 +166,7 @@ class GitCommand(object):
                capture_stderr=False,
                merge_output=False,
                disable_editor=False,
-               ssh_proxy=False,
+               ssh_proxy=None,
                cwd=None,
                gitdir=None):
     env = self._GetBasicEnv()
@@ -175,8 +174,8 @@ class GitCommand(object):
     if disable_editor:
       env['GIT_EDITOR'] = ':'
     if ssh_proxy:
-      env['REPO_SSH_SOCK'] = ssh.sock()
-      env['GIT_SSH'] = ssh.proxy()
+      env['REPO_SSH_SOCK'] = ssh_proxy.sock()
+      env['GIT_SSH'] = ssh_proxy.proxy
       env['GIT_SSH_VARIANT'] = 'ssh'
     if 'http_proxy' in env and 'darwin' == sys.platform:
       s = "'http.proxy=%s'" % (env['http_proxy'],)
@@ -259,7 +258,7 @@ class GitCommand(object):
       raise GitError('%s: %s' % (command[1], e))
 
     if ssh_proxy:
-      ssh.add_client(p)
+      ssh_proxy.add_client(p)
 
     self.process = p
     if input:
@@ -271,7 +270,8 @@ class GitCommand(object):
     try:
       self.stdout, self.stderr = p.communicate()
     finally:
-      ssh.remove_client(p)
+      if ssh_proxy:
+        ssh_proxy.remove_client(p)
     self.rc = p.wait()
 
   @staticmethod
