@@ -29,8 +29,8 @@ import wrapper
 class SSHUnitTest(unittest.TestCase):
   """Tests the ssh functions."""
 
-  def test_ssh_version(self):
-    """Check ssh_version() handling."""
+  def test_parse_ssh_version(self):
+    """Check parse_ssh_version() handling."""
     ver = git_command._parse_ssh_version('Unknown\n')
     self.assertEqual(ver, ())
     ver = git_command._parse_ssh_version('OpenSSH_1.0\n')
@@ -39,6 +39,11 @@ class SSHUnitTest(unittest.TestCase):
     self.assertEqual(ver, (6, 6, 1))
     ver = git_command._parse_ssh_version('OpenSSH_7.6p1 Ubuntu-4ubuntu0.3, OpenSSL 1.0.2n  7 Dec 2017\n')
     self.assertEqual(ver, (7, 6))
+
+  def test_ssh_version(self):
+    """Check ssh_version() handling."""
+    with mock.patch('git_command._run_ssh_version', return_value='OpenSSH_1.2\n'):
+      self.assertEqual(git_command.ssh_version(), (1, 2))
 
   def test_ssh_sock(self):
     """Check ssh_sock() function."""
