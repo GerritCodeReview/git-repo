@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f29b83_b8a0d068",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2049,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-06T19:55:18Z",
+      "side": 1,
+      "message": "actually, i\u0027ll tweak this code too since i accidentally changed the semantics a little here",
+      "parentUuid": "5ef80845_75ed1c96",
+      "range": {
+        "startLine": 2049,
+        "startChar": 6,
+        "endLine": 2049,
+        "endChar": 42
+      },
+      "revId": "d7be637ec2a0562e99c73176e3c2ece2a1616c3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e8bb2ac_06d1cde1",
