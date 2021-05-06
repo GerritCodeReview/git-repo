@@ -27,7 +27,6 @@ import urllib.request
 from error import GitError, UploadError
 import platform_utils
 from repo_trace import Trace
-import ssh
 from git_command import GitCommand
 from git_refs import R_CHANGES, R_HEADS, R_TAGS
 
@@ -519,9 +518,9 @@ class Remote(object):
 
     return self.url.replace(longest, longestUrl, 1)
 
-  def PreConnectFetch(self):
+  def PreConnectFetch(self, ssh_proxy):
     connectionUrl = self._InsteadOf()
-    return ssh.preconnect(connectionUrl)
+    return ssh_proxy.preconnect(connectionUrl)
 
   def ReviewUrl(self, userEmail, validate_certs):
     if self._review_url is None:
