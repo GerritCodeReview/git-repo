@@ -39,6 +39,30 @@
       },
       "revId": "d1fc281f9cc2cb9d1506f018a98b62a6ede7e94c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cae32b6b_3c189d86",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-06T19:45:42Z",
+      "side": 1,
+      "message": "yeah, i meant to add that, but got lost in the shuffle",
+      "parentUuid": "2be7dc75_d7dec0f1",
+      "range": {
+        "startLine": 441,
+        "startChar": 0,
+        "endLine": 443,
+        "endChar": 39
+      },
+      "revId": "d1fc281f9cc2cb9d1506f018a98b62a6ede7e94c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
