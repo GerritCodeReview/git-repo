@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import os
 import re
 import sys
@@ -45,7 +46,6 @@ LAST_CWD = None
 _ssh_proxy_path = None
 _ssh_sock_path = None
 _ssh_clients = []
-_ssh_version = None
 
 
 def _run_ssh_version():
@@ -64,16 +64,14 @@ def _parse_ssh_version(ver_str=None):
     return ()
 
 
+@functools.lru_cache(maxsize=None)
 def ssh_version():
   """return ssh version as a tuple"""
-  global _ssh_version
-  if _ssh_version is None:
-    try:
-      _ssh_version = _parse_ssh_version()
-    except subprocess.CalledProcessError:
-      print('fatal: unable to detect ssh version', file=sys.stderr)
-      sys.exit(1)
-  return _ssh_version
+  try:
+    return _parse_ssh_version()
+  except subprocess.CalledProcessError:
+    print('fatal: unable to detect ssh version', file=sys.stderr)
+    sys.exit(1)
 
 
 def ssh_sock(create=True):
@@ -125,18 +123,14 @@ def terminate_ssh_clients():
   _ssh_clients = []
 
 
-_git_version = None
-
-
 class _GitCall(object):
+  @functools.lru_cache(maxsize=None)
   def version_tuple(self):
-    global _git_version
-    if _git_version is None:
-      _git_version = Wrapper().ParseGitVersion()
-      if _git_version is None:
-        print('fatal: unable to detect git version', file=sys.stderr)
-        sys.exit(1)
-    return _git_version
+    ret = Wrapper().ParseGitVersion()
+    if ret is None:
+      print('fatal: unable to detect git version', file=sys.stderr)
+      sys.exit(1)
+    return ret
 
   def __getattr__(self, name):
     name = name.replace('_', '-')
