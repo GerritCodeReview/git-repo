@@ -15,25 +15,20 @@
 """Common SSH management logic."""
 
 import functools
+import multiprocessing
 import os
 import re
 import signal
 import subprocess
 import sys
 import tempfile
-try:
-  import threading as _threading
-except ImportError:
-  import dummy_threading as _threading
 import time
 
 import platform_utils
 from repo_trace import Trace
 
 
-_ssh_proxy_path = None
-_ssh_sock_path = None
-_ssh_clients = []
+PROXY_PATH = os.path.join(os.path.dirname(__file__), 'git_ssh')
 
 
 def _run_ssh_version():
@@ -62,68 +57,104 @@ def version():
     sys.exit(1)
 
 
-def proxy():
-  global _ssh_proxy_path
-  if _ssh_proxy_path is None:
-    _ssh_proxy_path = os.path.join(
-        os.path.dirname(__file__),
-        'git_ssh')
-  return _ssh_proxy_path
+URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
+URI_ALL = re.compile(r'^([a-z][a-z+-]*)://([^@/]*@?[^/]*)/')
 
 
-def add_client(p):
-  _ssh_clients.append(p)
+class ProxyManager:
+  """Manage various ssh clients & masters that we spawn.
 
+  This will take care of sharing state between multiprocessing children, and
+  make sure that if we crash, we don't leak any of the ssh sessions.
 
-def remove_client(p):
-  try:
-    _ssh_clients.remove(p)
-  except ValueError:
-    pass
-
-
-def _terminate_clients():
-  global _ssh_clients
-  for p in _ssh_clients:
-    try:
-      os.kill(p.pid, signal.SIGTERM)
-      p.wait()
-    except OSError:
-      pass
-  _ssh_clients = []
-
-
-_master_processes = []
-_master_keys = set()
-_ssh_master = True
-_master_keys_lock = None
-
-
-def init():
-  """Should be called once at the start of repo to init ssh master handling.
-
-  At the moment, all we do is to create our lock.
+  The code should work with a single-process scenario too, and not add too much
+  overhead due to the manager.
   """
-  global _master_keys_lock
-  assert _master_keys_lock is None, "Should only call init once"
-  _master_keys_lock = _threading.Lock()
 
+  # Path to the ssh program to run which will pass our master settings along.
+  # Set here more as a convenience API.
+  proxy = PROXY_PATH
 
-def _open_ssh(host, port=None):
-  global _ssh_master
+  def __init__(self, manager):
+    # Protect access to the list of active masters.
+    self._lock = multiprocessing.Lock()
+    # List of active masters (pid).  These will be spawned on demand, and we are
+    # responsible for shutting them all down at the end.
+    self._masters = manager.list()
+    # Set of active masters indexed by "host:port" information.
+    # The value isn't used, but multiprocessing doesn't provide a set class.
+    self._master_keys = manager.dict()
+    # Whether ssh masters are known to be broken, so we give up entirely.
+    self._master_broken = manager.Value('b', False)
+    # List of active ssh sesssions.  Clients will be added & removed as
+    # connections finish, so this list is just for safety & cleanup if we crash.
+    self._clients = manager.list()
+    # Path to directory for holding master sockets.
+    self._sock_path = None
 
-  # Bail before grabbing the lock if we already know that we aren't going to
-  # try creating new masters below.
-  if sys.platform in ('win32', 'cygwin'):
-    return False
+  def __enter__(self):
+    """Enter a new context."""
+    return self
 
-  # Acquire the lock.  This is needed to prevent opening multiple masters for
-  # the same host when we're running "repo sync -jN" (for N > 1) _and_ the
-  # manifest <remote fetch="ssh://xyz"> specifies a different host from the
-  # one that was passed to repo init.
-  _master_keys_lock.acquire()
-  try:
+  def __exit__(self, exc_type, exc_value, traceback):
+    """Exit a context & clean up all resources."""
+    self.close()
 
+  def add_client(self, proc):
+    """Track a new ssh session."""
+    self._clients.append(proc.pid)
+
+  def remove_client(self, proc):
+    """Remove a completed ssh session."""
+    try:
+      self._clients.remove(proc.pid)
+    except ValueError:
+      pass
+
+  def add_master(self, proc):
+    """Track a new master connection."""
+    self._masters.append(proc.pid)
+
+  def _terminate(self, procs):
+    """Kill all |procs|."""
+    for pid in procs:
+      try:
+        os.kill(pid, signal.SIGTERM)
+        os.waitpid(pid, 0)
+      except OSError:
+        pass
+
+    # The multiprocessing.list() API doesn't provide many standard list()
+    # methods, so we have to manually clear the list.
+    while True:
+      try:
+        procs.pop(0)
+      except:
+        break
+
+  def close(self):
+    """Close this active ssh session.
+
+    Kill all ssh clients & masters we created, and nuke the socket dir.
+    """
+    self._terminate(self._clients)
+    self._terminate(self._masters)
+
+    d = self.sock(create=False)
+    if d:
+      try:
+        platform_utils.rmdir(os.path.dirname(d))
+      except OSError:
+        pass
+
+  def _open_unlocked(self, host, port=None):
+    """Make sure a ssh master session exists for |host| & |port|.
+
+    If one doesn't exist already, we'll create it.
+
+    We won't grab any locks, so the caller has to do that.  This helps keep the
+    business logic of actually creating the master separate from grabbing locks.
+    """
     # Check to see whether we already think that the master is running; if we
     # think it's already running, return right away.
     if port is not None:
@@ -131,17 +162,15 @@ def _open_ssh(host, port=None):
     else:
       key = host
 
-    if key in _master_keys:
+    if key in self._master_keys:
       return True
 
-    if not _ssh_master or 'GIT_SSH' in os.environ:
+    if self._master_broken.value or 'GIT_SSH' in os.environ:
       # Failed earlier, so don't retry.
       return False
 
     # We will make two calls to ssh; this is the common part of both calls.
-    command_base = ['ssh',
-                    '-o', 'ControlPath %s' % sock(),
-                    host]
+    command_base = ['ssh', '-o', 'ControlPath %s' % self.sock(), host]
     if port is not None:
       command_base[1:1] = ['-p', str(port)]
 
@@ -161,7 +190,7 @@ def _open_ssh(host, port=None):
       if not isnt_running:
         # Our double-check found that the master _was_ infact running.  Add to
         # the list of keys.
-        _master_keys.add(key)
+        self._master_keys[key] = True
         return True
     except Exception:
       # Ignore excpetions.  We we will fall back to the normal command and print
@@ -173,7 +202,7 @@ def _open_ssh(host, port=None):
       Trace(': %s', ' '.join(command))
       p = subprocess.Popen(command)
     except Exception as e:
-      _ssh_master = False
+      self._master_broken.value = True
       print('\nwarn: cannot enable ssh control master for %s:%s\n%s'
             % (host, port, str(e)), file=sys.stderr)
       return False
@@ -183,75 +212,66 @@ def _open_ssh(host, port=None):
     if ssh_died:
       return False
 
-    _master_processes.append(p)
-    _master_keys.add(key)
+    self.add_master(p)
+    self._master_keys[key] = True
     return True
-  finally:
-    _master_keys_lock.release()
 
+  def _open(self, host, port=None):
+    """Make sure a ssh master session exists for |host| & |port|.
 
-def close():
-  global _master_keys_lock
+    If one doesn't exist already, we'll create it.
 
-  _terminate_clients()
+    This will obtain any necessary locks to avoid inter-process races.
+    """
+    # Bail before grabbing the lock if we already know that we aren't going to
+    # try creating new masters below.
+    if sys.platform in ('win32', 'cygwin'):
+      return False
 
-  for p in _master_processes:
-    try:
-      os.kill(p.pid, signal.SIGTERM)
-      p.wait()
-    except OSError:
-      pass
-  del _master_processes[:]
-  _master_keys.clear()
+    # Acquire the lock.  This is needed to prevent opening multiple masters for
+    # the same host when we're running "repo sync -jN" (for N > 1) _and_ the
+    # manifest <remote fetch="ssh://xyz"> specifies a different host from the
+    # one that was passed to repo init.
+    with self._lock:
+      return self._open_unlocked(host, port)
 
-  d = sock(create=False)
-  if d:
-    try:
-      platform_utils.rmdir(os.path.dirname(d))
-    except OSError:
-      pass
+  def preconnect(self, url):
+    """If |uri| will create a ssh connection, setup the ssh master for it."""
+    m = URI_ALL.match(url)
+    if m:
+      scheme = m.group(1)
+      host = m.group(2)
+      if ':' in host:
+        host, port = host.split(':')
+      else:
+        port = None
+      if scheme in ('ssh', 'git+ssh', 'ssh+git'):
+        return self._open(host, port)
+      return False
 
-  # We're done with the lock, so we can delete it.
-  _master_keys_lock = None
+    m = URI_SCP.match(url)
+    if m:
+      host = m.group(1)
+      return self._open(host)
 
-
-URI_SCP = re.compile(r'^([^@:]*@?[^:/]{1,}):')
-URI_ALL = re.compile(r'^([a-z][a-z+-]*)://([^@/]*@?[^/]*)/')
-
-
-def preconnect(url):
-  m = URI_ALL.match(url)
-  if m:
-    scheme = m.group(1)
-    host = m.group(2)
-    if ':' in host:
-      host, port = host.split(':')
-    else:
-      port = None
-    if scheme in ('ssh', 'git+ssh', 'ssh+git'):
-      return _open_ssh(host, port)
     return False
 
-  m = URI_SCP.match(url)
-  if m:
-    host = m.group(1)
-    return _open_ssh(host)
+  def sock(self, create=True):
+    """Return the path to the ssh socket dir.
 
-  return False
-
-def sock(create=True):
-  global _ssh_sock_path
-  if _ssh_sock_path is None:
-    if not create:
-      return None
-    tmp_dir = '/tmp'
-    if not os.path.exists(tmp_dir):
-      tmp_dir = tempfile.gettempdir()
-    if version() < (6, 7):
-      tokens = '%r@%h:%p'
-    else:
-      tokens = '%C'  # hash of %l%h%p%r
-    _ssh_sock_path = os.path.join(
-        tempfile.mkdtemp('', 'ssh-', tmp_dir),
-        'master-' + tokens)
-  return _ssh_sock_path
+    This has all the master sockets so clients can talk to them.
+    """
+    if self._sock_path is None:
+      if not create:
+        return None
+      tmp_dir = '/tmp'
+      if not os.path.exists(tmp_dir):
+        tmp_dir = tempfile.gettempdir()
+      if version() < (6, 7):
+        tokens = '%r@%h:%p'
+      else:
+        tokens = '%C'  # hash of %l%h%p%r
+      self._sock_path = os.path.join(
+          tempfile.mkdtemp('', 'ssh-', tmp_dir),
+          'master-' + tokens)
+    return self._sock_path

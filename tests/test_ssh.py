@@ -14,6 +14,8 @@
 
 """Unittests for the ssh.py module."""
 
+import multiprocessing
+import subprocess
 import unittest
 from unittest import mock
 
@@ -39,14 +41,34 @@ class SshTests(unittest.TestCase):
     with mock.patch('ssh._run_ssh_version', return_value='OpenSSH_1.2\n'):
       self.assertEqual(ssh.version(), (1, 2))
 
+  def test_context_manager_empty(self):
+    """Verify context manager with no clients works correctly."""
+    with multiprocessing.Manager() as manager:
+      with ssh.ProxyManager(manager):
+        pass
+
+  def test_context_manager_child_cleanup(self):
+    """Verify orphaned clients & masters get cleaned up."""
+    with multiprocessing.Manager() as manager:
+      with ssh.ProxyManager(manager) as ssh_proxy:
+        client = subprocess.Popen(['sleep', '964853320'])
+        ssh_proxy.add_client(client)
+        master = subprocess.Popen(['sleep', '964853321'])
+        ssh_proxy.add_master(master)
+    # If the process still exists, these will throw timeout errors.
+    client.wait(0)
+    master.wait(0)
+
   def test_ssh_sock(self):
     """Check sock() function."""
+    manager = multiprocessing.Manager()
+    proxy = ssh.ProxyManager(manager)
     with mock.patch('tempfile.mkdtemp', return_value='/tmp/foo'):
       # old ssh version uses port
       with mock.patch('ssh.version', return_value=(6, 6)):
-        self.assertTrue(ssh.sock().endswith('%p'))
-      ssh._ssh_sock_path = None
+        self.assertTrue(proxy.sock().endswith('%p'))
+
+      proxy._sock_path = None
       # new ssh version uses hash
       with mock.patch('ssh.version', return_value=(6, 7)):
-        self.assertTrue(ssh.sock().endswith('%C'))
-      ssh._ssh_sock_path = None
+        self.assertTrue(proxy.sock().endswith('%C'))
