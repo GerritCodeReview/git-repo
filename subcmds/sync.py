@@ -439,6 +439,53 @@ later is required to fix a server side protocol bug.
 
     return (ret, fetched)
 
+  def _FetchMain(self, opt, args, all_projects, err_event, manifest_name,
+                 load_local_manifests):
+    rp = self.manifest.repoProject
+
+    to_fetch = []
+    now = time.time()
+    if _ONE_DAY_S <= (now - rp.LastFetch):
+      to_fetch.append(rp)
+    to_fetch.extend(all_projects)
+    to_fetch.sort(key=self._fetch_times.Get, reverse=True)
+
+    success, fetched = self._Fetch(to_fetch, opt, err_event)
+    if not success:
+      err_event.set()
+
+    _PostRepoFetch(rp, opt.repo_verify)
+    if opt.network_only:
+      # bail out now; the rest touches the working tree
+      if err_event.is_set():
+        print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
+        sys.exit(1)
+      return
+
+    # Iteratively fetch missing and/or nested unregistered submodules
+    previously_missing_set = set()
+    while True:
+      self._ReloadManifest(manifest_name, load_local_manifests)
+      all_projects = self.GetProjects(args,
+                                      missing_ok=True,
+                                      submodules_ok=opt.fetch_submodules)
+      missing = []
+      for project in all_projects:
+        if project.gitdir not in fetched:
+          missing.append(project)
+      if not missing:
+        break
+      # Stop us from non-stopped fetching actually-missing repos: If set of
+      # missing repos has not been changed from last fetch, we break.
+      missing_set = set(p.name for p in missing)
+      if previously_missing_set == missing_set:
+        break
+      previously_missing_set = missing_set
+      success, new_fetched = self._Fetch(missing, opt, err_event)
+      if not success:
+        err_event.set()
+      fetched.update(new_fetched)
+
   def _CheckoutOne(self, detach_head, force_sync, project):
     """Checkout work tree for one project
 
@@ -921,48 +968,8 @@ later is required to fix a server side protocol bug.
 
     self._fetch_times = _FetchTimes(self.manifest)
     if not opt.local_only:
-      to_fetch = []
-      now = time.time()
-      if _ONE_DAY_S <= (now - rp.LastFetch):
-        to_fetch.append(rp)
-      to_fetch.extend(all_projects)
-      to_fetch.sort(key=self._fetch_times.Get, reverse=True)
-
-      success, fetched = self._Fetch(to_fetch, opt, err_event)
-      if not success:
-        err_event.set()
-
-      _PostRepoFetch(rp, opt.repo_verify)
-      if opt.network_only:
-        # bail out now; the rest touches the working tree
-        if err_event.is_set():
-          print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
-          sys.exit(1)
-        return
-
-      # Iteratively fetch missing and/or nested unregistered submodules
-      previously_missing_set = set()
-      while True:
-        self._ReloadManifest(manifest_name, load_local_manifests)
-        all_projects = self.GetProjects(args,
-                                        missing_ok=True,
-                                        submodules_ok=opt.fetch_submodules)
-        missing = []
-        for project in all_projects:
-          if project.gitdir not in fetched:
-            missing.append(project)
-        if not missing:
-          break
-        # Stop us from non-stopped fetching actually-missing repos: If set of
-        # missing repos has not been changed from last fetch, we break.
-        missing_set = set(p.name for p in missing)
-        if previously_missing_set == missing_set:
-          break
-        previously_missing_set = missing_set
-        success, new_fetched = self._Fetch(missing, opt, err_event)
-        if not success:
-          err_event.set()
-        fetched.update(new_fetched)
+      self._FetchMain(opt, args, all_projects, err_event, manifest_name,
+                      load_local_manifests)
 
       # If we saw an error, exit with code 1 so that other scripts can check.
       if err_event.is_set():
