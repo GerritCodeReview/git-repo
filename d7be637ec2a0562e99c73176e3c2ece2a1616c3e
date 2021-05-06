@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ef80845_75ed1c96",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2049,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-06T19:52:56Z",
+      "side": 1,
+      "message": "i can document the PreConnectFetch function to make it clear what it\u0027s doing.  i\u0027ll fold that into the next CL since the API changes slightly there.\n\nas for calling it multiple times, that\u0027s fine.  if it worked the first time, it\u0027ll cache the results, and that will get used the 2nd time around.  if it failed the first time, it\u0027ll cache the results, and that will get used the 2nd time around.\n\nin general, calling it multiple times is going to happen anyways.  for each remote, we expect there to be many projects, and each project will look up its respective remote and call preconnect on it.  that also hits the same caching logic as the specific recursive _RemoteFetch call.",
+      "parentUuid": "d0458c99_ab19b6f7",
+      "range": {
+        "startLine": 2049,
+        "startChar": 6,
+        "endLine": 2049,
+        "endChar": 42
+      },
+      "revId": "d7be637ec2a0562e99c73176e3c2ece2a1616c3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e8bb2ac_06d1cde1",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-05-06T19:23:57Z",
       "side": 1,
       "message": "thought/TODO: It really, really smells like a context manager :)",
+      "range": {
+        "startLine": 973,
+        "startChar": 0,
+        "endLine": 974,
+        "endChar": 18
+      },
+      "revId": "d7be637ec2a0562e99c73176e3c2ece2a1616c3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11130f76_37949ade",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 974,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-06T19:52:56Z",
+      "side": 1,
+      "message": "see the next CL ;)",
+      "parentUuid": "9e8bb2ac_06d1cde1",
       "range": {
         "startLine": 973,
         "startChar": 0,
