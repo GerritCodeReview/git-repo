@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f703c8e3_0f9f8bdc",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-05-06T19:00:51Z",
+      "side": 1,
+      "message": "Smells like a context manager to me!",
+      "range": {
+        "startLine": 607,
+        "startChar": 0,
+        "endLine": 608,
+        "endChar": 17
+      },
+      "revId": "0ffd065f15ce54c6dcb01bfee84771b46a67715b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
