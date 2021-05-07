@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f86fe6f2_155dbdab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-07T19:07:08Z",
+      "side": 1,
+      "message": "currently sync doesn\u0027t have an --no-use-superproject option, only init does.  do you want to add that first ?",
+      "revId": "dbc1a73d54ac1fa25e93ebab25a5f9ead38c9d13",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
