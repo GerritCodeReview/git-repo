@@ -307,7 +307,8 @@ later is required to fix a server side protocol bug.
                                     submodules_ok=opt.fetch_submodules)
     manifest_path = superproject.UpdateProjectsRevisionId(all_projects)
     if not manifest_path:
-      print('error: Update of revsionId from superproject has failed',
+      print('error: Update of revsionId from superproject has failed. '
+            'Please resync with --no-use-superproject option',
             file=sys.stderr)
       sys.exit(1)
     self._ReloadManifest(manifest_path, load_local_manifests)
