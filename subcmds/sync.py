@@ -235,6 +235,9 @@ later is required to fix a server side protocol bug.
                  help='fetch submodules from server')
     p.add_option('--use-superproject', action='store_true',
                  help='use the manifest superproject to sync projects')
+    p.add_option('--no-use-superproject', action='store_false',
+                 dest='use_superproject',
+                 help='disable use of manifest superprojects')
     p.add_option('--tags',
                  action='store_false',
                  help='fetch tags')
@@ -276,9 +279,8 @@ later is required to fix a server side protocol bug.
 
   def _UseSuperproject(self, opt):
     """Returns True if use-superproject option is enabled"""
-    return (opt.use_superproject or
-            self.manifest.manifestProject.config.GetBoolean(
-                'repo.superproject'))
+    return opt.use_superproject if opt.use_superproject is not None \
+        else self.manifest.manifestProject.config.GetBoolean('repo.superproject')
 
   def _GetCurrentBranchOnly(self, opt):
     """Returns True if current-branch or use-superproject options are enabled."""
