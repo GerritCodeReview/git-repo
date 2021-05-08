@@ -16,6 +16,24 @@
       "message": "while this code is correct, imo it gets harder to read \u0026 reason about when we have to start using multilines like this\n\nwdyt of writing it like:\n\n if opt.use_superproject is not None:\n   return opt.use_superproject\n else:\n   return self.manifest.manifestProject.config.GetBoolean(\u0027repo.superproject\u0027)\n\ni think it\u0027s actually the same number of keywords other than 1 extra \"return\" :)",
       "revId": "f6c9eb7fa9cd805139fe387b09d362d622bead98",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6a56d31_d6ca23a3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-08T00:03:42Z",
+      "side": 1,
+      "message": "+1 to the above approach (that was my first cut at testing).\nDone",
+      "parentUuid": "a10fa303_9769812a",
+      "revId": "f6c9eb7fa9cd805139fe387b09d362d622bead98",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
