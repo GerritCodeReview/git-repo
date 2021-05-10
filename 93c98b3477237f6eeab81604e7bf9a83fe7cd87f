@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f2c8b3a_11965ee0",
+        "filename": "ssh.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1071989
+      },
+      "writtenOn": "2021-05-10T21:12:07Z",
+      "side": 1,
+      "message": "This can just be \n```\nwith self._lock:\n   return \u003cblah\u003e\n```",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 26
+      },
+      "revId": "93c98b3477237f6eeab81604e7bf9a83fe7cd87f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
