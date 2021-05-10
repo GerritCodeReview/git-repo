@@ -33,6 +33,23 @@
       "message": "you\u0027ll want to mark it Verified+1 when you\u0027re ready",
       "revId": "e8be653bba67e42c18c619ee8249d932fd895d0d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "282868ce_2b2e009e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1136315
+      },
+      "writtenOn": "2021-05-10T16:29:59Z",
+      "side": 1,
+      "message": "  py39: commands succeeded",
+      "revId": "e8be653bba67e42c18c619ee8249d932fd895d0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
