@@ -263,6 +263,8 @@ class Superproject(object):
 
     projects_missing_commit_ids = []
     superproject_fetchUrl = self._manifest.superproject['remote'].fetchUrl
+    contactinfo = self._manifest.contactinfo
+    bug_url = contactinfo['bugurl'] if contactinfo else Wrapper().BUG_URL
     for project in projects:
       path = project.relpath
       if not path:
@@ -283,7 +285,7 @@ class Superproject(object):
         projects_missing_commit_ids.append(path)
     if projects_missing_commit_ids:
       print('error: please file a bug using %s to report missing commit_ids for: %s' %
-            (Wrapper().BUG_URL, projects_missing_commit_ids), file=sys.stderr)
+            (bug_url, projects_missing_commit_ids), file=sys.stderr)
       return None
 
     manifest_path = self._WriteManfiestFile()
