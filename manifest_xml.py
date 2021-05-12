@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import collections
 import itertools
 import os
 import platform
@@ -27,10 +28,14 @@ import platform_utils
 from project import RemoteSpec, Project, MetaProject
 from error import (ManifestParseError, ManifestInvalidPathError,
                    ManifestInvalidRevisionError)
+from wrapper import Wrapper
 
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
+
+# ContactInfo has the self-registered bug url, supplied by the manifest authors.
+ContactInfo = collections.namedtuple('ContactInfo', 'bugurl')
 
 # urljoin gets confused if the scheme is not known.
 urllib.parse.uses_relative.extend([
@@ -479,10 +484,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         e.setAttribute('remote', remoteName)
       root.appendChild(e)
 
-    if self._contactinfo:
+    if self._contactinfo.bugurl != Wrapper().BUG_URL:
       root.appendChild(doc.createTextNode(''))
       e = doc.createElement('contactinfo')
-      e.setAttribute('bugurl', self._contactinfo['bugurl'])
+      e.setAttribute('bugurl', self._contactinfo.bugurl)
       root.appendChild(e)
 
     return doc
@@ -646,7 +651,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._default = None
     self._repo_hooks_project = None
     self._superproject = {}
-    self._contactinfo = {}
+    self._contactinfo = ContactInfo(Wrapper().BUG_URL)
     self._notice = None
     self.branch = None
     self._manifest_server = None
@@ -892,7 +897,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if node.nodeName == 'contactinfo':
         bugurl = self._reqatt(node, 'bugurl')
         # This element can be repeated, later entries will clobber earlier ones.
-        self._contactinfo['bugurl'] = bugurl
+        self._contactinfo = ContactInfo(bugurl)
+
       if node.nodeName == 'remove-project':
         name = self._reqatt(node, 'name')
 
