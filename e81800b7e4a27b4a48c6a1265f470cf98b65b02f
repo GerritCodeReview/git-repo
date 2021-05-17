@@ -33,6 +33,24 @@
       "message": "seems like this pattern is going to be repeated whenever we want it.  maybe we should centralize this.\n\nwhat if XmlManifest._Unload set \u0027bugurl\u0027 to Wrapper().BUG_URL ?\n\nfurther, what if contactinfo returned a namedtuple ?\n\nthen this code would be:\n\n bug_url \u003d self._manifest.contactinfo.bugurl",
       "revId": "e81800b7e4a27b4a48c6a1265f470cf98b65b02f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cffd7e1_d5725c4f",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-17T18:33:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cfbb70d_9a1c286d",
+      "revId": "e81800b7e4a27b4a48c6a1265f470cf98b65b02f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

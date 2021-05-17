@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25bd962a_0375fbb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-05-17T18:33:48Z",
+      "side": 1,
+      "message": "Thanks very much for your comments. My desktop machine was down, I just got access to it. PTAL.",
+      "revId": "374697fbc77adefd3ab159b6a9ae0ea9b4487a12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
