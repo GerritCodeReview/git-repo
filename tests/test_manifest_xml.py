@@ -576,7 +576,7 @@ class ContactinfoElementTests(ManifestParseTestCase):
   <contactinfo bugurl="{bugurl}"/>
 </manifest>
 """)
-    self.assertEqual(manifest.contactinfo['bugurl'], bugurl)
+    self.assertEqual(manifest.contactinfo.bugurl, bugurl)
     self.assertEqual(
         manifest.ToXml().toxml(),
         '<?xml version="1.0" ?><manifest>'

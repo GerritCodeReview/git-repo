@@ -28,7 +28,6 @@ import sys
 
 from git_command import GitCommand
 from git_refs import R_HEADS
-from wrapper import Wrapper
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
@@ -263,8 +262,6 @@ class Superproject(object):
 
     projects_missing_commit_ids = []
     superproject_fetchUrl = self._manifest.superproject['remote'].fetchUrl
-    contactinfo = self._manifest.contactinfo
-    bug_url = contactinfo['bugurl'] if contactinfo else Wrapper().BUG_URL
     for project in projects:
       path = project.relpath
       if not path:
@@ -285,7 +282,7 @@ class Superproject(object):
         projects_missing_commit_ids.append(path)
     if projects_missing_commit_ids:
       print('error: please file a bug using %s to report missing commit_ids for: %s' %
-            (bug_url, projects_missing_commit_ids), file=sys.stderr)
+            (self._manifest.contactinfo.bugurl, projects_missing_commit_ids), file=sys.stderr)
       return None
 
     manifest_path = self._WriteManfiestFile()
