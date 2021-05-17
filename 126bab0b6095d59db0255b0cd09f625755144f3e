@@ -106,6 +106,24 @@
       "parentUuid": "c08aeca9_3f659054",
       "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dd9600d_828a0776",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135490
+      },
+      "writtenOn": "2021-05-17T17:21:36Z",
+      "side": 1,
+      "message": "Ok, now I have made a new version. This one sorts the attributes of each element in the generated manifests before comparing them to the expected ones. I have duplicated the sort_attributes() function in both test_manifest_xml.py and test_git_superproject.py since I don\u0027t know if there is a common place to put the function.\n\nI also have a version of the patch for the stable branch, but I do not seem to be able to push a review to refs/for/stable? Since it is a non-trivial backport due to changes to the test cases between stable and main I wonder how you want me to make it available?",
+      "parentUuid": "074b1f53_49387911",
+      "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
