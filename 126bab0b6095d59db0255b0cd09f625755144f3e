@@ -142,6 +142,24 @@
       "parentUuid": "5dd9600d_828a0776",
       "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bbb9fbb_0feb2422",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-18T04:07:36Z",
+      "side": 1,
+      "message": "you should never worry about or use \"stable\" for development.  we only care about \"main\".",
+      "parentUuid": "2220232e_d2494519",
+      "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
