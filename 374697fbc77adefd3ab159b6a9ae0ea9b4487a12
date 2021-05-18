@@ -16,6 +16,40 @@
       "message": "Thanks very much for your comments. My desktop machine was down, I just got access to it. PTAL.",
       "revId": "374697fbc77adefd3ab159b6a9ae0ea9b4487a12",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e28bed61_06802bfb",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-18T02:27:50Z",
+      "side": 1,
+      "message": "just import modules, not members per the style guide",
+      "revId": "374697fbc77adefd3ab159b6a9ae0ea9b4487a12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8982d924_99b3f83a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-18T02:27:50Z",
+      "side": 1,
+      "message": "should add a short description of it",
+      "revId": "374697fbc77adefd3ab159b6a9ae0ea9b4487a12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
