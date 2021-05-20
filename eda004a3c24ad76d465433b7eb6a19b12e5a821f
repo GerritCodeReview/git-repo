@@ -157,6 +157,54 @@
       },
       "revId": "eda004a3c24ad76d465433b7eb6a19b12e5a821f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20fae02a_9931ffed",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T19:13:01Z",
+      "side": 1,
+      "message": "i understand this will match \u003c/manifest\u003e.  i\u0027m asking why you want to do that.  it\u0027ll never have attributes that you need to sort.\n\nlooking here again, i guess it\u0027s because you need this to match every element so the for loop below can reconstruct the full xml file and not skip anything.  that\u0027s worth a comment.",
+      "parentUuid": "e29e2da0_1eaeb50f",
+      "range": {
+        "startLine": 81,
+        "startChar": 27,
+        "endLine": 81,
+        "endChar": 32
+      },
+      "revId": "eda004a3c24ad76d465433b7eb6a19b12e5a821f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16d3a0ea_f0fed887",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T19:13:01Z",
+      "side": 1,
+      "message": "i was thinking the group would be None, not \u0027\u0027\n\ni would recommend using + anyways, but that would break the logic you\u0027re going for where matches yields every element",
+      "parentUuid": "84421cb0_f7081bc9",
+      "range": {
+        "startLine": 81,
+        "startChar": 64,
+        "endLine": 81,
+        "endChar": 65
+      },
+      "revId": "eda004a3c24ad76d465433b7eb6a19b12e5a821f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
