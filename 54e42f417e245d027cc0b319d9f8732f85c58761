@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f89a866_156164f0",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-05-20T17:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "273af7a7_6a24142f",
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d33ac885_ed2856de",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-05-20T14:48:15Z",
       "side": 1,
       "message": "all funcs need at least a one-line docstring\n\nthat will give you the space to document why this is here, references to docs explaining the behavior, and when we can drop it",
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a919d27_13a587c7",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-05-20T17:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d33ac885_ed2856de",
       "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +94,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9408f12_9d1f094e",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-05-20T17:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69ca213b_851e726d",
+      "range": {
+        "startLine": 68,
+        "startChar": 27,
+        "endLine": 68,
+        "endChar": 30
+      },
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "459aa1bd_efc193f6",
@@ -75,6 +135,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f33d8e0_5a193ad6",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-05-20T17:25:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "459aa1bd_efc193f6",
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e872d4d8_a9e18b63",
@@ -88,6 +166,30 @@
       "writtenOn": "2021-05-20T14:48:15Z",
       "side": 1,
       "message": "this works for our examples below, but it\u0027ll fail if any of the values have whitespace in them.  i\u0027d leave a comment here noting that behavior in case we want to extend/fix it in the future so the person hitting the problem doesn\u0027t have to debug this to figure out what\u0027s going on.",
+      "range": {
+        "startLine": 70,
+        "startChar": 44,
+        "endLine": 70,
+        "endChar": 57
+      },
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18053ec0_2eeeb486",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-05-20T17:25:54Z",
+      "side": 1,
+      "message": "I\u0027ll just use re.findall() here as well instead, so this becomes a non-issue.",
+      "parentUuid": "e872d4d8_a9e18b63",
       "range": {
         "startLine": 70,
         "startChar": 44,

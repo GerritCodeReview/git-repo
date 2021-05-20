@@ -16,6 +16,24 @@
       "message": "two blank lines between module-level funcs/classes",
       "revId": "b16b9d26bd2d05d704da3e38f3eee743f2b110c6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcd2e3d0_e0dc82f2",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2021-05-20T17:25:54Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "8cd983aa_3b93ed0c",
+      "revId": "b16b9d26bd2d05d704da3e38f3eee743f2b110c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
