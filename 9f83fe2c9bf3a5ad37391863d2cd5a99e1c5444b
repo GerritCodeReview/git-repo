@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd6dcda_e76afdd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135490
+      },
+      "writtenOn": "2021-05-20T10:49:32Z",
+      "side": 1,
+      "message": "Hmm, I do not seem to have permission to vote Verify +1 anymore?",
+      "revId": "9f83fe2c9bf3a5ad37391863d2cd5a99e1c5444b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
