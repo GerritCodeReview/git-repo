@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "273af7a7_6a24142f",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T14:48:15Z",
+      "side": 1,
+      "message": "import it from test_manifest_xml.py to avoid duplicating\n\n from tests/test_manifest_xml import sort_attributes",
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d33ac885_ed2856de",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T14:48:15Z",
+      "side": 1,
+      "message": "all funcs need at least a one-line docstring\n\nthat will give you the space to document why this is here, references to docs explaining the behavior, and when we can drop it",
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ca213b_851e726d",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T14:48:15Z",
+      "side": 1,
+      "message": "\\S will match \u003c\u003e which is not what you want here.  since we know our tags \u0026 attributes are constrained to [a-z-], should use that to match names instead of \\S.",
+      "range": {
+        "startLine": 68,
+        "startChar": 27,
+        "endLine": 68,
+        "endChar": 30
+      },
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459aa1bd_efc193f6",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T14:48:15Z",
+      "side": 1,
+      "message": "missing space after ,",
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e872d4d8_a9e18b63",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T14:48:15Z",
+      "side": 1,
+      "message": "this works for our examples below, but it\u0027ll fail if any of the values have whitespace in them.  i\u0027d leave a comment here noting that behavior in case we want to extend/fix it in the future so the person hitting the problem doesn\u0027t have to debug this to figure out what\u0027s going on.",
+      "range": {
+        "startLine": 70,
+        "startChar": 44,
+        "endLine": 70,
+        "endChar": 57
+      },
+      "revId": "54e42f417e245d027cc0b319d9f8732f85c58761",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
