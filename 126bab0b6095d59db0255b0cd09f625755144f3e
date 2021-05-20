@@ -196,6 +196,24 @@
       "parentUuid": "f9c2b175_7e16bb2e",
       "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fcd5d0f_7a50401e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135490
+      },
+      "writtenOn": "2021-05-20T10:54:55Z",
+      "side": 1,
+      "message": "Any reason to hold off on merging this given that it only affects the tests? And it is easy to verify that it improves the situation as the tests run with Python 3.6 and Python 3.7 go from red to green when it is applied (see https://github.com/Saur2000/git-repo/actions/runs/860103066 compared to https://github.com/Saur2000/git-repo/actions/runs/860062527).",
+      "parentUuid": "ea329a78_082efa2d",
+      "revId": "126bab0b6095d59db0255b0cd09f625755144f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
