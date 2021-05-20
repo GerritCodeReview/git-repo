@@ -2197,7 +2197,7 @@ class Project(object):
         ret = prunecmd.Wait()
         if ret:
           break
-        output_redir.write('retrying fetch after pruning remote branches')
+        print('retrying fetch after pruning remote branches', file=output_redir)
         # Continue right away so we don't sleep as we shouldn't need to.
         continue
       elif current_branch_only and is_sha1 and ret == 128:
@@ -2210,10 +2210,11 @@ class Project(object):
         break
 
       # Figure out how long to sleep before the next attempt, if there is one.
-      if not verbose:
-        output_redir.write('\n%s:\n%s' % (self.name, gitcmd.stdout))
+      if not verbose and gitcmd.stdout:
+        print('\n%s:\n%s' % (self.name, gitcmd.stdout), end='', file=output_redir)
       if try_n < retry_fetches - 1:
-        output_redir.write('sleeping %s seconds before retrying' % retry_cur_sleep)
+        print('%s: sleeping %s seconds before retrying' % (self.name, retry_cur_sleep),
+              file=output_redir)
         time.sleep(retry_cur_sleep)
         retry_cur_sleep = min(retry_exp_factor * retry_cur_sleep,
                               MAXIMUM_RETRY_SLEEP_SEC)
