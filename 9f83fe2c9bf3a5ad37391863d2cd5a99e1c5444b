@@ -16,6 +16,24 @@
       "message": "Hmm, I do not seem to have permission to vote Verify +1 anymore?",
       "revId": "9f83fe2c9bf3a5ad37391863d2cd5a99e1c5444b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7981bcc2_7a8dfffa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T14:55:44Z",
+      "side": 1,
+      "message": "the change owner should have the ability to mark their own CLs as Verified+1.  it looks like you might have multiple accounts here ... you\u0027re uploading as @axis but trying to review as @gmail.  normally you\u0027d link the email addresses instead of creating separate Gerrit accounts.",
+      "parentUuid": "ffd6dcda_e76afdd9",
+      "revId": "9f83fe2c9bf3a5ad37391863d2cd5a99e1c5444b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
