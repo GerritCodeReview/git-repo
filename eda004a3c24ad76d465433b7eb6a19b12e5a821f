@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7229efb4_e71a48f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T18:33:54Z",
+      "side": 1,
+      "message": "few more minor nits",
+      "revId": "eda004a3c24ad76d465433b7eb6a19b12e5a821f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18bd19b7_6b59eb22",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T18:33:54Z",
+      "side": 1,
+      "message": "starting with \"This\", you\u0027ll want to put it into a paragraph by itself to match PEP257 guidelines\n\n \"\"\"Sort the attributes of all elements alphabetically.\n\n This is ....",
+      "range": {
+        "startLine": 68,
+        "startChar": 58,
+        "endLine": 68,
+        "endChar": 62
+      },
+      "revId": "eda004a3c24ad76d465433b7eb6a19b12e5a821f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bacf55b_f4ef07a8",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T18:33:54Z",
+      "side": 1,
+      "message": "i understand wanting to match a leading ? (so as to get the initial \u003c?xml...\u003e element), but why match a closing tag at the start ?",
+      "range": {
+        "startLine": 81,
+        "startChar": 27,
+        "endLine": 81,
+        "endChar": 32
+      },
+      "revId": "eda004a3c24ad76d465433b7eb6a19b12e5a821f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a30db40a_f7c1f007",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-05-20T18:33:54Z",
+      "side": 1,
+      "message": "pathological, but since it\u0027s easy to address, would change this * to + so the re.findall below doesn\u0027t blow up if there are no attrs to sort.",
+      "range": {
+        "startLine": 81,
+        "startChar": 64,
+        "endLine": 81,
+        "endChar": 65
+      },
+      "revId": "eda004a3c24ad76d465433b7eb6a19b12e5a821f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
