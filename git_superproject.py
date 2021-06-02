@@ -26,7 +26,7 @@ import hashlib
 import os
 import sys
 
-from git_command import GitCommand
+from git_command import git_require, GitCommand
 from git_refs import R_HEADS
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
@@ -120,7 +120,9 @@ class Superproject(object):
       print('git fetch missing drectory: %s' % self._work_git,
             file=sys.stderr)
       return False
-    cmd = ['fetch', url, '--depth', '1', '--force', '--no-tags', '--filter', 'blob:none']
+    cmd = ['fetch', url, '--depth', '1', '--force', '--no-tags']
+    if git_require((2, 28, 0)):
+      cmd += ['--filter', 'blob:none']
     if self._branch:
       cmd += [self._branch + ':' + self._branch]
     p = GitCommand(None,
