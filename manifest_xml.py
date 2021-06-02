@@ -596,10 +596,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return set(x.strip() for x in exclude.split(','))
 
   @property
-  def HasLocalManifests(self):
-    return self._load_local_manifests and self.local_manifests
-
-  @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')
 

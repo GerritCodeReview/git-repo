@@ -277,7 +277,7 @@ later is required to fix a server side protocol bug.
     """Returns True if current-branch or use-superproject options are enabled."""
     return opt.current_branch_only or self._UseSuperproject(opt)
 
-  def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests):
+  def _UpdateProjectsRevisionId(self, opt, args):
     """Update revisionId of every project with the SHA from superproject.
 
     This function updates each project's revisionId with SHA from superproject.
@@ -287,7 +287,6 @@ later is required to fix a server side protocol bug.
       opt: Program options returned from optparse.  See _Options().
       args: Arguments to pass to GetProjects. See the GetProjects
           docstring for details.
-      load_local_manifests: Whether to load local manifests.
 
     Returns:
       Returns path to the overriding manifest file.
@@ -303,7 +302,7 @@ later is required to fix a server side protocol bug.
       print('error: Update of revsionId from superproject has failed',
             file=sys.stderr)
       sys.exit(1)
-    self._ReloadManifest(manifest_path, load_local_manifests)
+    self._ReloadManifest(manifest_path)
     return manifest_path
 
   def _FetchProjectList(self, opt, projects):
@@ -566,18 +565,10 @@ later is required to fix a server side protocol bug.
       t.join()
     pm.end()
 
-  def _ReloadManifest(self, manifest_name=None, load_local_manifests=True):
-    """Reload the manfiest from the file specified by the |manifest_name|.
-
-    It unloads the manifest if |manifest_name| is None.
-
-    Args:
-      manifest_name: Manifest file to be reloaded.
-      load_local_manifests: Whether to load local manifests.
-    """
+  def _ReloadManifest(self, manifest_name=None):
     if manifest_name:
       # Override calls _Unload already
-      self.manifest.Override(manifest_name, load_local_manifests=load_local_manifests)
+      self.manifest.Override(manifest_name)
     else:
       self.manifest._Unload()
 
@@ -866,9 +857,8 @@ later is required to fix a server side protocol bug.
     else:
       self._UpdateManifestProject(opt, mp, manifest_name)
 
-    load_local_manifests = not self.manifest.HasLocalManifests
     if self._UseSuperproject(opt):
-      manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests)
+      manifest_name = self._UpdateProjectsRevisionId(opt, args)
 
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
@@ -936,7 +926,7 @@ later is required to fix a server side protocol bug.
       # Iteratively fetch missing and/or nested unregistered submodules
       previously_missing_set = set()
       while True:
-        self._ReloadManifest(manifest_name, load_local_manifests)
+        self._ReloadManifest(manifest_name)
         all_projects = self.GetProjects(args,
                                         missing_ok=True,
                                         submodules_ok=opt.fetch_submodules)
