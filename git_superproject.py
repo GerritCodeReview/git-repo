@@ -26,7 +26,7 @@ import hashlib
 import os
 import sys
 
-from git_command import GitCommand
+from git_command import git_require, GitCommand
 from git_refs import R_HEADS
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
@@ -119,6 +119,9 @@ class Superproject(object):
     if not os.path.exists(self._work_git):
       print('git fetch missing drectory: %s' % self._work_git,
             file=sys.stderr)
+      return False
+    if not git_require((2, 28, 0)):
+      print('superproject requires a git version 2.28 or later', file=sys.stderr)
       return False
     cmd = ['fetch', url, '--depth', '1', '--force', '--no-tags', '--filter', 'blob:none']
     if self._branch:
