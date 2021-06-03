@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c49539cb_b4414aca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-06-03T01:34:17Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "fd8a6ee650680f986bd78d2bf0e3d8644f689fff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc39121c_cdbf9be1",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-06-03T01:34:17Z",
+      "side": 1,
+      "message": "Two thoughts:\n- should this say NOTICE instead of WARNING?\n- should this say something like \"; report any issues to the address described in `repo version`\" instead of \"and not for general use\"?",
+      "range": {
+        "startLine": 176,
+        "startChar": 11,
+        "endLine": 176,
+        "endChar": 73
+      },
+      "revId": "fd8a6ee650680f986bd78d2bf0e3d8644f689fff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
