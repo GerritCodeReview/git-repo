@@ -39,6 +39,30 @@
       },
       "revId": "fd8a6ee650680f986bd78d2bf0e3d8644f689fff",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02e5714_c4d6fc6d",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-03T03:54:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc39121c_cdbf9be1",
+      "range": {
+        "startLine": 176,
+        "startChar": 11,
+        "endLine": 176,
+        "endChar": 73
+      },
+      "revId": "fd8a6ee650680f986bd78d2bf0e3d8644f689fff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
