@@ -173,8 +173,8 @@ class Superproject(object):
     Returns:
       True if sync of superproject is successful, or False.
     """
-    print('WARNING: --use-superproject is experimental and not '
-          'for general use', file=sys.stderr)
+    print('NOTICE: --use-superproject is in beta; report any issues to the '
+          'address described in `repo version`', file=sys.stderr)
 
     if not self._manifest.superproject:
       print('error: superproject tag is not defined in manifest',
