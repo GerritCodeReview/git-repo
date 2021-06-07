@@ -34,6 +34,9 @@ MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 
+# Add all projects from local manifest into a group.
+LOCAL_MANIFEST_GROUP_PREFIX = 'local:'
+
 # ContactInfo has the self-registered bug url, supplied by the manifest authors.
 ContactInfo = collections.namedtuple('ContactInfo', 'bugurl')
 
@@ -679,7 +682,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
               # Since local manifests are entirely managed by the user, allow
               # them to point anywhere the user wants.
               nodes.append(self._ParseManifestXml(
-                  local, self.repodir, restrict_includes=False))
+                  local, self.repodir,
+                  parent_groups=f'{LOCAL_MANIFEST_GROUP_PREFIX}:{local_file[:-4]}',
+                  restrict_includes=False))
         except OSError:
           pass
 
