@@ -28,6 +28,7 @@ import sys
 
 from git_command import git_require, GitCommand
 from git_refs import R_HEADS
+from manifest_xml import LOCAL_MANIFEST_GROUP
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
@@ -267,6 +268,9 @@ class Superproject(object):
     for project in projects:
       path = project.relpath
       if not path:
+        continue
+      # Skip the project if it comes from local manifest.
+      if any(LOCAL_MANIFEST_GROUP in s for s in project.groups):
         continue
       commit_id = commit_ids.get(path)
       if commit_id:
