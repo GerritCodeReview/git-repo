@@ -485,6 +485,9 @@ these extra projects.
 Manifest files stored in `$TOP_DIR/.repo/local_manifests/*.xml` will
 be loaded in alphabetical order.
 
+Projects from local manifest files are added into
+local::<local manifest filename> group.
+
 The legacy `$TOP_DIR/.repo/local_manifest.xml` path is no longer supported.
 
 
