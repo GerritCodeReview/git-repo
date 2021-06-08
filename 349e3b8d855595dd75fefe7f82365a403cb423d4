@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "654727f6_2b89043a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-08T22:12:37Z",
+      "side": 1,
+      "message": "nitpicking a bit, but i don\u0027t think default.xml is relevant.  different manifest files can have diff superproject settings.  it\u0027s just our own server convention where we\u0027re doing things this way.",
+      "revId": "349e3b8d855595dd75fefe7f82365a403cb423d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dbcebf8_b296895a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-08T22:12:37Z",
+      "side": 1,
+      "message": "\"default.xml\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 47,
+        "endLine": 10,
+        "endChar": 58
+      },
+      "revId": "349e3b8d855595dd75fefe7f82365a403cb423d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
