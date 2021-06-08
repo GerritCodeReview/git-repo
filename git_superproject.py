@@ -264,19 +264,9 @@ class Superproject(object):
       return None
 
     projects_missing_commit_ids = []
-    superproject_fetchUrl = self._manifest.superproject['remote'].fetchUrl
     for project in projects:
       path = project.relpath
       if not path:
-        continue
-      # Some manifests that pull projects from the "chromium" GoB
-      # (remote="chromium"), and have a private manifest that pulls projects
-      # from both the chromium GoB and "chrome-internal" GoB (remote="chrome").
-      # For such projects, one of the remotes will be different from
-      # superproject's remote. Until superproject, supports multiple remotes,
-      # don't update the commit ids of remotes that don't match superproject's
-      # remote.
-      if project.remote.fetchUrl != superproject_fetchUrl:
         continue
       commit_id = commit_ids.get(path)
       if commit_id:
