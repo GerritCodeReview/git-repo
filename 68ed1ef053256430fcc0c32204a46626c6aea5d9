@@ -50,6 +50,23 @@
       "message": "This CL includes bug fixes to reloading local manifests. ReloadManifest wasn\u0027t loading localmanifest. A fix for that is checked in this release.\n\nIMO, we want to back out the change to git_superproject.py that checks if remotes match or not.\n",
       "revId": "68ed1ef053256430fcc0c32204a46626c6aea5d9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6acc22a3_2a768361",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-08T18:01:48Z",
+      "side": 1,
+      "message": "Uploaded https://gerrit-review.googlesource.com/c/git-repo/+/308862 which just reverts superproject changes.",
+      "revId": "68ed1ef053256430fcc0c32204a46626c6aea5d9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
