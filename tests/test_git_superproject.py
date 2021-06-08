@@ -178,51 +178,6 @@ class SuperprojectTestCase(unittest.TestCase):
               '<superproject name="superproject"/>'
               '</manifest>')
 
-  def test_superproject_update_project_revision_id_with_different_remotes(self):
-    """Test update of commit ids of a manifest with mutiple remotes."""
-    manifest = self.getXmlManifest("""
-<manifest>
-  <remote name="default-remote" fetch="http://localhost" />
-  <remote name="goog" fetch="http://localhost2" />
-  <default remote="default-remote" revision="refs/heads/main" />
-  <superproject name="superproject"/>
-  <project path="vendor/x" name="platform/vendor/x" remote="goog" groups="vendor"
-           revision="master-with-vendor" clone-depth="1" />
-  <project path="art" name="platform/art" groups="notdefault,platform-""" + self.platform + """
-  " /></manifest>
-""")
-    self.maxDiff = None
-    self._superproject = git_superproject.Superproject(manifest, self.repodir)
-    self.assertEqual(len(self._superproject._manifest.projects), 2)
-    projects = self._superproject._manifest.projects
-    data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
-            '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tbootable/recovery\x00')
-    with mock.patch.object(self._superproject, '_Init', return_value=True):
-      with mock.patch.object(self._superproject, '_Fetch', return_value=True):
-        with mock.patch.object(self._superproject,
-                               '_LsTree',
-                               return_value=data):
-          # Create temporary directory so that it can write the file.
-          os.mkdir(self._superproject._superproject_path)
-          manifest_path = self._superproject.UpdateProjectsRevisionId(projects)
-          self.assertIsNotNone(manifest_path)
-          with open(manifest_path, 'r') as fp:
-            manifest_xml = fp.read()
-          self.assertEqual(
-              sort_attributes(manifest_xml),
-              '<?xml version="1.0" ?><manifest>'
-              '<remote fetch="http://localhost" name="default-remote"/>'
-              '<remote fetch="http://localhost2" name="goog"/>'
-              '<default remote="default-remote" revision="refs/heads/main"/>'
-              '<project groups="notdefault,platform-' + self.platform + '" '
-              'name="platform/art" path="art" '
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>'
-              '<project clone-depth="1" groups="vendor" '
-              'name="platform/vendor/x" path="vendor/x" remote="goog" '
-              'revision="master-with-vendor"/>'
-              '<superproject name="superproject"/>'
-              '</manifest>')
-
 
 if __name__ == '__main__':
   unittest.main()
