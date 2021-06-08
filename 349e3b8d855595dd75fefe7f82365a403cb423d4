@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8eb5e84_5f0200fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-08T22:43:22Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "654727f6_2b89043a",
+      "revId": "349e3b8d855595dd75fefe7f82365a403cb423d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1dbcebf8_b296895a",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-06-08T22:12:37Z",
       "side": 1,
       "message": "\"default.xml\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 47,
+        "endLine": 10,
+        "endChar": 58
+      },
+      "revId": "349e3b8d855595dd75fefe7f82365a403cb423d4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e5ce04e_d169dc92",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-08T22:43:22Z",
+      "side": 1,
+      "message": "Deleted default.xml from the description and made it general.\n\nDone",
+      "parentUuid": "1dbcebf8_b296895a",
       "range": {
         "startLine": 10,
         "startChar": 47,
