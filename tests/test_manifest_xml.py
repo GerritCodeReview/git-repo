@@ -607,3 +607,28 @@ class ContactinfoElementTests(ManifestParseTestCase):
         '<?xml version="1.0" ?><manifest>'
         f'<contactinfo bugurl="{bugurl}"/>'
         '</manifest>')
+
+class DefaultElementTests(ManifestParseTestCase):
+  """Tests for <default>."""
+
+  def test_default(self):
+    """Check default settings."""
+    a = manifest_xml._Default()
+    a.revisionExpr = 'foo'
+    a.remote = manifest_xml._XmlRemote(name = 'remote')
+    b = manifest_xml._Default()
+    b.revisionExpr = 'bar'
+    self.assertEqual(a, a)
+    self.assertNotEqual(a, b)
+    self.assertNotEqual(a, None)
+
+class RemoteElementTests(ManifestParseTestCase):
+  """Tests for <remote>."""
+
+  def test_remote(self):
+    """Check remote settings."""
+    a = manifest_xml._XmlRemote(name = 'foo')
+    b = manifest_xml._XmlRemote(name = 'bar')
+    self.assertEqual(a, a)
+    self.assertNotEqual(a, b)
+    self.assertNotEqual(a, None)
