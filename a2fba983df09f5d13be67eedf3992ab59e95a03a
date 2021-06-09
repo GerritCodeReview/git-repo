@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c903ee59_4b76f296",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-09T22:14:10Z",
+      "side": 1,
+      "message": "+1\nMeant to do it (had to step away from the computer).\nDone",
+      "parentUuid": "e73ef483_4db5bc48",
+      "revId": "a2fba983df09f5d13be67eedf3992ab59e95a03a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d712ea3a_382529b6",
@@ -54,6 +72,54 @@
       "writtenOn": "2021-06-09T20:52:02Z",
       "side": 1,
       "message": "just 1 : prefix needed",
+      "range": {
+        "startLine": 38,
+        "startChar": 29,
+        "endLine": 38,
+        "endChar": 31
+      },
+      "revId": "a2fba983df09f5d13be67eedf3992ab59e95a03a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc13229b_c8b26b85",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-09T22:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d712ea3a_382529b6",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 20
+      },
+      "revId": "a2fba983df09f5d13be67eedf3992ab59e95a03a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9956ca92_5e1748d6",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-09T22:14:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e846bd47_e822f420",
       "range": {
         "startLine": 38,
         "startChar": 29,
