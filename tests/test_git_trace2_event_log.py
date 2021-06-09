@@ -234,6 +234,30 @@ class EventLogTestCase(unittest.TestCase):
     self.assertEqual(len(self._log_data), 1)
     self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
 
+  def test_error_event(self):
+    """Test and validate 'error' event data is valid.
+
+    Expected event log:
+    <version event>
+    <error event>
+    """
+    msg = 'invalid option: --cahced'
+    fmt = 'invalid option: %s'
+    self._event_log_module.ErrorEvent(msg, fmt)
+    with tempfile.TemporaryDirectory(prefix='event_log_tests') as tempdir:
+      log_path = self._event_log_module.Write(path=tempdir)
+      self._log_data = self.readLog(log_path)
+
+    self.assertEqual(len(self._log_data), 2)
+    error_event = self._log_data[1]
+    self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
+    self.verifyCommonKeys(error_event, expected_event_name='error')
+    # Check for 'error' event specific fields.
+    self.assertIn('msg', error_event)
+    self.assertIn('fmt', error_event)
+    self.assertEqual(error_event['msg'], msg)
+    self.assertEqual(error_event['fmt'], fmt)
+
   def test_write_with_filename(self):
     """Test Write() with a path to a file exits with None."""
     self.assertIsNone(self._event_log_module.Write(path='path/to/file'))
