@@ -119,9 +119,13 @@ class _Default(object):
   sync_tags = True
 
   def __eq__(self, other):
+    if other is None:
+      return False
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
+    if other is None:
+      return False
     return self.__dict__ != other.__dict__
 
 
@@ -144,9 +148,13 @@ class _XmlRemote(object):
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
   def __eq__(self, other):
+    if other is None:
+      return False
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
+    if other is None:
+      return False
     return self.__dict__ != other.__dict__
 
   def _resolveFetchUrl(self):
