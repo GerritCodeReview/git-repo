@@ -33,6 +33,24 @@
       "message": "this is just meant for internal house keeping right ?  project groups are exposed to the user, both directly \u0026 indirectly.  reusing that space for internal markers feels wrong.\n\nideally we\u0027d just put an attribute on an internal python object and check that.  but the point where this is being caught only has access to XML nodes.\n\ninstead of \"local-no-superproject-group\" which doesn\u0027t mean much to most people (especially when most people aren\u0027t using superprojects), how about we create a simple convention that might be useful.  we already do \"path:xxx\" and \"name:xxx\", so what if we did \"local:\u003cname of local manifest file\u003e\" ?  that would be easy for you to implement here as you already have the local file name.\n\n -    local, self.repodir, parent_groups\u003dLOCAL_NO_SUPERPROJECT_GROUP,\n +    local, self.repodir, parent_groups\u003df\u0027local:{local_file[:-4]}\u0027,",
       "revId": "5518172264ec2b91e3a07814ac3291442e852f4a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09eb948c_f0b6f6fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-09T19:07:40Z",
+      "side": 1,
+      "message": "Many many thanks for the above idea. Implemented the above change. PTAL.",
+      "parentUuid": "90ed85e8_a1084507",
+      "revId": "5518172264ec2b91e3a07814ac3291442e852f4a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
