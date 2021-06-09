@@ -159,6 +159,13 @@ class EventLog(object):
       def_param_event['value'] = value
       self._log.append(def_param_event)
 
+  def ErrorEvent(self, msg, fmt):
+    """Append a 'error' event to the current log."""
+    error_event = self._CreateEventDict('error')
+    error_event['msg'] = msg
+    error_event['fmt'] = fmt
+    self._log.append(error_event)
+
   def _GetEventTargetPath(self):
     """Get the 'trace2.eventtarget' path from git configuration.
 
