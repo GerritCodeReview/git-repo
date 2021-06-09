@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "945c9aef_a8a80810",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-09T15:28:22Z",
+      "side": 1,
+      "message": "i think we want type checks instead like\n\n if not isinstance(other, _Default):\n   return False",
+      "revId": "23c68842bd4e5fc4724e6d470a8cacf366c562cd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebc9d0ed_2cf31d8d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 787,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-09T15:28:22Z",
+      "side": 1,
+      "message": "leftover debug code",
+      "revId": "23c68842bd4e5fc4724e6d470a8cacf366c562cd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
