@@ -122,9 +122,13 @@ class _Default(object):
   sync_tags = True
 
   def __eq__(self, other):
+    if not isinstance(other, _Default):
+      return False
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
+    if not isinstance(other, _Default):
+      return True
     return self.__dict__ != other.__dict__
 
 
@@ -147,12 +151,18 @@ class _XmlRemote(object):
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
   def __eq__(self, other):
+    if not isinstance(other, _XmlRemote):
+      return False
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
+    if not isinstance(other, _XmlRemote):
+      return True
     return self.__dict__ != other.__dict__
 
   def _resolveFetchUrl(self):
+    if self.fetchUrl is None:
+      return ''
     url = self.fetchUrl.rstrip('/')
     manifestUrl = self.manifestUrl.rstrip('/')
     # urljoin will gets confused over quite a few things.  The ones we care
