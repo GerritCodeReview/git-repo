@@ -119,9 +119,13 @@ class _Default(object):
   sync_tags = True
 
   def __eq__(self, other):
+    if other is None:
+      return False
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
+    if other is None:
+      return False
     return self.__dict__ != other.__dict__
 
 
@@ -144,9 +148,13 @@ class _XmlRemote(object):
     self.resolvedFetchUrl = self._resolveFetchUrl()
 
   def __eq__(self, other):
+    if other is None:
+      return False
     return self.__dict__ == other.__dict__
 
   def __ne__(self, other):
+    if other is None:
+      return False
     return self.__dict__ != other.__dict__
 
   def _resolveFetchUrl(self):
@@ -776,6 +784,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     for node in itertools.chain(*node_list):
       if node.nodeName == 'default':
         new_default = self._ParseDefault(node)
+        print(node, new_default)
         if self._default is None:
           self._default = new_default
         elif new_default != self._default:
