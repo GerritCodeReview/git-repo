@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9f89274_36a0f3d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-09T20:23:58Z",
+      "side": 1,
+      "message": "just nits",
+      "revId": "ee848e68b865a6c1af2bec42bdda81b843cbd413",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fda5cda_6cfdb30e",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 618,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-09T20:23:58Z",
+      "side": 1,
+      "message": "python style never puts spaces around \u003d with kwargs",
+      "revId": "ee848e68b865a6c1af2bec42bdda81b843cbd413",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b000cb_be591abf",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-09T20:23:58Z",
+      "side": 1,
+      "message": "could compare to an integer literal too for completeness",
+      "revId": "ee848e68b865a6c1af2bec42bdda81b843cbd413",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd1f6ac8_a767522d",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-09T20:23:58Z",
+      "side": 1,
+      "message": "two blank lines",
+      "revId": "ee848e68b865a6c1af2bec42bdda81b843cbd413",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

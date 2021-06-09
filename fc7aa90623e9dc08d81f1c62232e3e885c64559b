@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f0cca1d_954ae473",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-09T20:23:58Z",
+      "side": 0,
+      "message": "missing newline at end of file",
+      "revId": "fc7aa90623e9dc08d81f1c62232e3e885c64559b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
