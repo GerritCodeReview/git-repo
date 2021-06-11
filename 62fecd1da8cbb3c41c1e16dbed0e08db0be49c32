@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93eb8d78_4038d2e3",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-06-11T19:52:45Z",
+      "side": 1,
+      "message": "Yeah, I basically am trying to avoid raising the duplicate default error when one of the defaults is \u003cdefault\u003e\u003c/default\u003e or \u003cdefault /\u003e. I will look more at alternate ways of achieving this.",
+      "parentUuid": "ecfdbdac_dd22f4db",
+      "revId": "62fecd1da8cbb3c41c1e16dbed0e08db0be49c32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6896b62b_171ea337",
         "filename": "manifest_xml.py",
         "patchSetId": 3
