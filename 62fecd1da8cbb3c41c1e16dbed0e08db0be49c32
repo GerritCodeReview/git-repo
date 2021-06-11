@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecfdbdac_dd22f4db",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-11T15:59:32Z",
+      "side": 1,
+      "message": "what does \"is empty\" mean ?  that \"\u003cdefault/\u003e\" was used ?  how is that different from \"\u003cdefault sync-j\u003d1/\u003e\" ?",
+      "revId": "62fecd1da8cbb3c41c1e16dbed0e08db0be49c32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6896b62b_171ea337",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-11T15:59:32Z",
+      "side": 1,
+      "message": "this logic looks very very fragile",
+      "revId": "62fecd1da8cbb3c41c1e16dbed0e08db0be49c32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
