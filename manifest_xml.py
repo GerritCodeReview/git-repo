@@ -118,6 +118,11 @@ class _Default(object):
   sync_s = False
   sync_tags = True
 
+  def isEmpty(self):
+    return (self.revisionExpr is None and self.destBranchExpr is None and
+      self.upstreamExpr is None and self.remote is None and self.sync_j == 1
+      and not self.sync_c and not self.sync_s and self.sync_tags)
+
   def __eq__(self, other):
     if not isinstance(other, _Default):
       return False
@@ -788,7 +793,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         new_default = self._ParseDefault(node)
         if self._default is None:
           self._default = new_default
-        elif new_default != self._default:
+        elif not new_default.isEmpty() and new_default != self._default:
           raise ManifestParseError('duplicate default in %s' %
                                    (self.manifestFile))
 
