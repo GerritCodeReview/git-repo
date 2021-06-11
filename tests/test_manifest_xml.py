@@ -624,6 +624,8 @@ class DefaultElementTests(ManifestParseTestCase):
     self.assertNotEqual(b, a.remote)
     self.assertNotEqual(a, 123)
     self.assertNotEqual(a, None)
+    self.assertFalse(a.isEmpty())
+    self.assertTrue(manifest_xml._Default().isEmpty())
 
 
 class RemoteElementTests(ManifestParseTestCase):
