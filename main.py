@@ -208,7 +208,8 @@ class _Repo(object):
           repodir=self.repodir,
           client=repo_client,
           manifest=repo_client.manifest,
-          gitc_manifest=gitc_manifest)
+          gitc_manifest=gitc_manifest,
+          git_trace2_event_log=git_trace2_event_log)
     except KeyError:
       print("repo: '%s' is not a repo command.  See 'repo help'." % name,
             file=sys.stderr)
