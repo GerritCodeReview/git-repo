@@ -15,7 +15,6 @@
 import multiprocessing
 import os
 import optparse
-import platform
 import re
 import sys
 
@@ -47,6 +46,7 @@ class Command(object):
   event_log = EventLog()
   manifest = None
   _optparse = None
+  git_trace2_event_log = None
 
   # Whether this command supports running in parallel.  If greater than 0,
   # it is the number of parallel jobs to default to.
