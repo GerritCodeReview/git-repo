@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64961b28_ed4def55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-12T01:57:14Z",
+      "side": 1,
+      "message": "This is a first cut at not exiting if a manifest has missing superproject tag and if superproject\nhas missing commit ids. PTAL. Thanks",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
