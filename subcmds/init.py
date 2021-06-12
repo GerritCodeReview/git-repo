@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import optparse
 import os
 import platform
 import re
@@ -97,10 +96,13 @@ to update the working directory files.
     """
     superproject = git_superproject.Superproject(self.manifest,
                                                  self.repodir,
+                                                 self.git_trace2_event_log,
                                                  quiet=opt.quiet)
-    if not superproject.Sync():
+    sync_result = superproject.Sync()
+    if not sync_result.success:
       print('error: git update of superproject failed', file=sys.stderr)
-      sys.exit(1)
+      if sync_result.fatal:
+        sys.exit(1)
 
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
