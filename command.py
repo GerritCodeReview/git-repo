@@ -15,7 +15,6 @@
 import multiprocessing
 import os
 import optparse
-import platform
 import re
 import sys
 
@@ -58,11 +57,13 @@ class Command(object):
   # it is the number of parallel jobs to default to.
   PARALLEL_JOBS = None
 
-  def __init__(self, repodir=None, client=None, manifest=None, gitc_manifest=None):
+  def __init__(self, repodir=None, client=None, manifest=None, gitc_manifest=None,
+               git_trace2_event_log=None):
     self.repodir = repodir
     self.client = client
     self.manifest = manifest
     self.gitc_manifest = gitc_manifest
+    self.git_trace2_event_log = git_trace2_event_log
 
     # Cache for the OptionParser property.
     self._optparse = None
