@@ -207,6 +207,7 @@ class _Repo(object):
     cmd.client = RepoClient(cmd.repodir)
     cmd.manifest = cmd.client.manifest
     cmd.gitc_manifest = None
+    cmd.git_trace2_event_log = git_trace2_event_log
     gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
     if gitc_client_name:
       cmd.gitc_manifest = GitcClient(cmd.repodir, gitc_client_name)
