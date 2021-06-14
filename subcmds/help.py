@@ -138,8 +138,7 @@ Displays detailed usage information about a command.
 
   def _PrintAllCommandHelp(self):
     for name in sorted(all_commands):
-      cmd = all_commands[name]()
-      cmd.manifest = self.manifest
+      cmd = all_commands[name](manifest=self.manifest)
       self._PrintCommandHelp(cmd, header_prefix='[%s] ' % (name,))
 
   def _Options(self, p):
@@ -163,12 +162,11 @@ Displays detailed usage information about a command.
       name = args[0]
 
       try:
-        cmd = all_commands[name]()
+        cmd = all_commands[name](manifest=self.manifest)
       except KeyError:
         print("repo: '%s' is not a repo command." % name, file=sys.stderr)
         sys.exit(1)
 
-      cmd.manifest = self.manifest
       self._PrintCommandHelp(cmd)
 
     else:
