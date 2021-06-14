@@ -33,6 +33,97 @@
       "message": "Hi Ian,\n  I would appreciate if you could take a look at the trace2 event changes and if I have plumbed things properly. Thanks much.",
       "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebdec221_22db5a80",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-14T20:26:55Z",
+      "side": 1,
+      "message": "can delete \"error\" here as it\u0027s just for logging events",
+      "range": {
+        "startLine": 52,
+        "startChar": 58,
+        "endLine": 52,
+        "endChar": 63
+      },
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18512507_461987a2",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-14T20:26:55Z",
+      "side": 1,
+      "message": "APIs like this are hard to use \u0026 get right.  you can return a simple namedtuple instead.\n\n from typing import NamedTuple\n ...\n class SyncResult(NamedTuple):\n   \"\"\"...\"\"\"\n   \n   # Whether the superproject sync was successful.\n   success: bool\n   # Whether the caller should exit.\n   fatal: bool\n ...\n   return SyncResult(False, False)",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cd5f39c_6d640711",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-14T20:26:55Z",
+      "side": 1,
+      "message": "we don\u0027t use format().  you can use f-strings instead now.",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98721933_8fff0aba",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-14T20:26:55Z",
+      "side": 1,
+      "message": "you can just return this ... no need for `if`",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95b6cc91_de55aedf",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-14T20:26:55Z",
+      "side": 1,
+      "message": "we have to get away from this pattern.  i sent you some CLs to fix.",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
