@@ -20,7 +20,7 @@ from progress import Progress
 
 
 class Checkout(Command):
-  common = True
+  COMMON = True
   helpSummary = "Checkout a branch for development"
   helpUsage = """
 %prog <branchname> [<project>...]

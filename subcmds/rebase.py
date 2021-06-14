@@ -27,7 +27,7 @@ class RebaseColoring(Coloring):
 
 
 class Rebase(Command):
-  common = True
+  COMMON = True
   helpSummary = "Rebase local branches on upstream branch"
   helpUsage = """
 %prog {[<project>...] | -i <project>...}

@@ -19,7 +19,7 @@ from command import DEFAULT_LOCAL_JOBS, PagedCommand
 
 
 class Diff(PagedCommand):
-  common = True
+  COMMON = True
   helpSummary = "Show changes between commit and working tree"
   helpUsage = """
 %prog [<project>...]

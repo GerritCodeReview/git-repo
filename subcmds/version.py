@@ -25,7 +25,7 @@ class Version(Command, MirrorSafeCommand):
   wrapper_version = None
   wrapper_path = None
 
-  common = False
+  COMMON = False
   helpSummary = "Display the version of repo"
   helpUsage = """
 %prog

@@ -31,7 +31,7 @@ class Diffmanifests(PagedCommand):
   deeper level.
   """
 
-  common = True
+  COMMON = True
   helpSummary = "Manifest diff utility"
   helpUsage = """%prog manifest1.xml [manifest2.xml] [options]"""
 

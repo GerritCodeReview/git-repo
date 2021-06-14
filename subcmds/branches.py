@@ -62,7 +62,7 @@ class BranchInfo(object):
 
 
 class Branches(Command):
-  common = True
+  COMMON = True
   helpSummary = "View current topic branches"
   helpUsage = """
 %prog [<project>...]

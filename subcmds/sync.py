@@ -66,7 +66,7 @@ _ONE_DAY_S = 24 * 60 * 60
 
 class Sync(Command, MirrorSafeCommand):
   jobs = 1
-  common = True
+  COMMON = True
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
 %prog [<project>...]

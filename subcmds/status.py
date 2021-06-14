@@ -24,7 +24,7 @@ import platform_utils
 
 
 class Status(PagedCommand):
-  common = True
+  COMMON = True
   helpSummary = "Show the working tree status"
   helpUsage = """
 %prog [<project>...]

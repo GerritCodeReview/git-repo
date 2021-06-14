@@ -31,7 +31,7 @@ from wrapper import Wrapper
 
 
 class Init(InteractiveCommand, MirrorSafeCommand):
-  common = True
+  COMMON = True
   helpSummary = "Initialize a repo client checkout in the current directory"
   helpUsage = """
 %prog [options] [manifest url]

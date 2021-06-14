@@ -25,7 +25,7 @@ from project import SyncBuffer
 
 
 class Start(Command):
-  common = True
+  COMMON = True
   helpSummary = "Start a new branch for development"
   helpUsage = """
 %prog <newbranchname> [--all | <project>...]

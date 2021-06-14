@@ -28,7 +28,7 @@ class _ProjectList(Coloring):
 
 
 class Stage(InteractiveCommand):
-  common = True
+  COMMON = True
   helpSummary = "Stage file(s) for commit"
   helpUsage = """
 %prog -i [<project>...]
