@@ -43,9 +43,6 @@ class Command(object):
   """Base class for any command line action in repo.
   """
 
-  manifest = None
-  _optparse = None
-
   # Singleton for all commands to track overall repo command execution and
   # provide event summary to callers.  Only used by sync subcommand currently.
   #
@@ -60,6 +57,15 @@ class Command(object):
   # Whether this command supports running in parallel.  If greater than 0,
   # it is the number of parallel jobs to default to.
   PARALLEL_JOBS = None
+
+  def __init__(self, repodir=None, client=None, manifest=None, gitc_manifest=None):
+    self.repodir = repodir
+    self.client = client
+    self.manifest = manifest
+    self.gitc_manifest = gitc_manifest
+
+    # Cache for the OptionParser property.
+    self._optparse = None
 
   def WantPager(self, _opt):
     return False
