@@ -24,7 +24,7 @@ from wrapper import Wrapper
 
 
 class Help(PagedCommand, MirrorSafeCommand):
-  common = False
+  COMMON = False
   helpSummary = "Display detailed help on a command"
   helpUsage = """
 %prog [--all|command]
@@ -73,7 +73,7 @@ Displays detailed usage information about a command.
 
     commandNames = list(sorted([name
                                 for name, command in all_commands.items()
-                                if command.common and gitc_supported(command)]))
+                                if command.COMMON and gitc_supported(command)]))
     self._PrintCommands(commandNames)
 
     print(

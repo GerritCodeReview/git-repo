@@ -29,7 +29,7 @@ class GrepColoring(Coloring):
 
 
 class Grep(PagedCommand):
-  common = True
+  COMMON = True
   helpSummary = "Print lines matching a pattern"
   helpUsage = """
 %prog {pattern | -e pattern} [<project>...]

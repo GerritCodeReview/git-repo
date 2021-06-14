@@ -25,7 +25,7 @@ class _Coloring(Coloring):
 
 
 class Info(PagedCommand):
-  common = True
+  COMMON = True
   helpSummary = "Get info on the manifest branch, current branch or unmerged branches"
   helpUsage = "%prog [-dl] [-o [-c]] [<project>...]"
 

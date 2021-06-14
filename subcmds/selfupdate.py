@@ -21,7 +21,7 @@ from subcmds.sync import _PostRepoFetch
 
 
 class Selfupdate(Command, MirrorSafeCommand):
-  common = False
+  COMMON = False
   helpSummary = "Update repo to the latest version"
   helpUsage = """
 %prog

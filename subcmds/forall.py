@@ -41,7 +41,7 @@ class ForallColoring(Coloring):
 
 
 class Forall(Command, MirrorSafeCommand):
-  common = False
+  COMMON = False
   helpSummary = "Run a shell command in each project"
   helpUsage = """
 %prog [<project>...] -c <command> [<arg>...]

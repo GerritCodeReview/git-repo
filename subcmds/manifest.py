@@ -20,7 +20,7 @@ from command import PagedCommand
 
 
 class Manifest(PagedCommand):
-  common = False
+  COMMON = False
   helpSummary = "Manifest inspection utility"
   helpUsage = """
 %prog [-o {-|NAME.xml}] [-m MANIFEST.xml] [-r]

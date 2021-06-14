@@ -19,7 +19,7 @@ from command import DEFAULT_LOCAL_JOBS, PagedCommand
 
 
 class Prune(PagedCommand):
-  common = True
+  COMMON = True
   helpSummary = "Prune (delete) already merged topics"
   helpUsage = """
 %prog [<project>...]

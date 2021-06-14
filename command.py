@@ -43,10 +43,14 @@ class Command(object):
   """Base class for any command line action in repo.
   """
 
-  common = False
   event_log = EventLog()
   manifest = None
   _optparse = None
+
+  # Whether this command is a "common" one, i.e. whether the user would commonly
+  # use it or it's a more uncommon command.  This is used by the help command to
+  # show short-vs-full summaries.
+  COMMON = False
 
   # Whether this command supports running in parallel.  If greater than 0,
   # it is the number of parallel jobs to default to.
