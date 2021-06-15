@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce8b6d1_9c7e77b9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-15T15:21:55Z",
+      "side": 1,
+      "message": "👍",
+      "revId": "41b509bd55728d76acf7f2ae37ff58622ccb863a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
