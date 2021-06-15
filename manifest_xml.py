@@ -791,9 +791,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     for node in itertools.chain(*node_list):
       if node.nodeName == 'default':
         new_default = self._ParseDefault(node)
+        emptyDefault = not node.hasAttributes() and not node.hasChildNodes()
         if self._default is None:
           self._default = new_default
-        elif new_default != self._default:
+        elif not emptyDefault and new_default != self._default:
           raise ManifestParseError('duplicate default in %s' %
                                    (self.manifestFile))
 
