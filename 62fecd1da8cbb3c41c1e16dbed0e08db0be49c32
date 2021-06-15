@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39af1e3a_ffe10f2e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-06-15T14:31:14Z",
+      "side": 1,
+      "message": "Changed logic.",
+      "parentUuid": "93eb8d78_4038d2e3",
+      "revId": "62fecd1da8cbb3c41c1e16dbed0e08db0be49c32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6896b62b_171ea337",
@@ -49,6 +67,24 @@
       "writtenOn": "2021-06-11T15:59:32Z",
       "side": 1,
       "message": "this logic looks very very fragile",
+      "revId": "62fecd1da8cbb3c41c1e16dbed0e08db0be49c32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e8973eb_dc584b94",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-06-15T14:31:14Z",
+      "side": 1,
+      "message": "Changed logic.",
+      "parentUuid": "6896b62b_171ea337",
       "revId": "62fecd1da8cbb3c41c1e16dbed0e08db0be49c32",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
