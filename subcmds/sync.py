@@ -278,16 +278,9 @@ later is required to fix a server side protocol bug.
       branch = branch[len(R_HEADS):]
     return branch
 
-  def _UseSuperproject(self, opt):
-    """Returns True if use-superproject option is enabled"""
-    if opt.use_superproject is not None:
-      return opt.use_superproject
-    else:
-      return self.manifest.manifestProject.config.GetBoolean('repo.superproject')
-
   def _GetCurrentBranchOnly(self, opt):
     """Returns True if current-branch or use-superproject options are enabled."""
-    return opt.current_branch_only or self._UseSuperproject(opt)
+    return opt.current_branch_only or git_superproject.UseSuperproject(opt, self.manifest)
 
   def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests):
     """Update revisionId of every project with the SHA from superproject.
@@ -964,7 +957,7 @@ later is required to fix a server side protocol bug.
       self._UpdateManifestProject(opt, mp, manifest_name)
 
     load_local_manifests = not self.manifest.HasLocalManifests
-    if self._UseSuperproject(opt):
+    if git_superproject.UseSuperproject(opt, self.manifest):
       new_manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests)
       if not new_manifest_name:
         manifest_name = new_manifest_name
