@@ -75,7 +75,8 @@ def RepoSourceVersion():
     proj = os.path.dirname(os.path.abspath(__file__))
     env[GIT_DIR] = os.path.join(proj, '.git')
     result = subprocess.run([GIT, 'describe', HEAD], stdout=subprocess.PIPE,
-                            encoding='utf-8', env=env, check=False)
+                            stderr=subprocess.DEVNULL, encoding='utf-8',
+                            env=env, check=False)
     if result.returncode == 0:
       ver = result.stdout.strip()
       if ver.startswith('v'):

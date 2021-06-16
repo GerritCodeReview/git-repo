@@ -65,6 +65,15 @@ class GitConfig(object):
 
   _USER_CONFIG = '~/.gitconfig'
 
+  _ForSystem = None
+  _SYSTEM_CONFIG = '/etc/gitconfig'
+
+  @classmethod
+  def ForSystem(cls):
+    if cls._ForSystem is None:
+      cls._ForSystem = cls(configfile=cls._SYSTEM_CONFIG)
+    return cls._ForSystem
+
   @classmethod
   def ForUser(cls):
     if cls._ForUser is None:
@@ -356,7 +365,10 @@ class GitConfig(object):
     return c
 
   def _do(self, *args):
-    command = ['config', '--file', self.file, '--includes']
+    if self.file == self._SYSTEM_CONFIG:
+      command = ['config', '--system', '--includes']
+    else:
+      command = ['config', '--file', self.file, '--includes']
     command.extend(args)
 
     p = GitCommand(None,
