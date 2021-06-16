@@ -58,6 +58,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c9e11b0_bb12e22b",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-16T01:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebdec221_22db5a80",
+      "range": {
+        "startLine": 52,
+        "startChar": 58,
+        "endLine": 52,
+        "endChar": 63
+      },
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18512507_461987a2",
@@ -71,6 +95,24 @@
       "writtenOn": "2021-06-14T20:26:55Z",
       "side": 1,
       "message": "APIs like this are hard to use \u0026 get right.  you can return a simple namedtuple instead.\n\n from typing import NamedTuple\n ...\n class SyncResult(NamedTuple):\n   \"\"\"...\"\"\"\n   \n   # Whether the superproject sync was successful.\n   success: bool\n   # Whether the caller should exit.\n   fatal: bool\n ...\n   return SyncResult(False, False)",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e660e02_ac2fe3e6",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-16T01:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "18512507_461987a2",
       "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +134,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b627b6cb_3086f2d3",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-16T01:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cd5f39c_6d640711",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98721933_8fff0aba",
@@ -109,6 +169,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17c2a3d2_b9e70308",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-16T01:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98721933_8fff0aba",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95b6cc91_de55aedf",
@@ -122,6 +200,24 @@
       "writtenOn": "2021-06-14T20:26:55Z",
       "side": 1,
       "message": "we have to get away from this pattern.  i sent you some CLs to fix.",
+      "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15683de2_ff69a040",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-06-16T01:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95b6cc91_de55aedf",
       "revId": "547cd9427b840456dd026fc8c38a1a820ecd1eee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
