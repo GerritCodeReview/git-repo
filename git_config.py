@@ -372,7 +372,15 @@ class GitConfig(object):
 class RepoConfig(GitConfig):
   """User settings for repo itself."""
 
+  _ForSystem = None
   _USER_CONFIG = '~/.repoconfig/config'
+  _SYSTEM_CONFIG = '/usr/share/git-repo/config'
+
+  @classmethod
+  def ForSystem(cls):
+    if cls._ForSystem is None:
+      cls._ForSystem = cls(configfile=(cls._SYSTEM_CONFIG))
+    return cls._ForSystem
 
 
 class RefSpec(object):

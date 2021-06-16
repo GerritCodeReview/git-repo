@@ -25,9 +25,11 @@ Examples:
 import hashlib
 import os
 import sys
+import time
 from typing import NamedTuple
 
 from git_command import git_require, GitCommand
+from git_config import RepoConfig
 from git_refs import R_HEADS
 from manifest_xml import LOCAL_MANIFEST_GROUP_PREFIX
 
@@ -340,3 +342,75 @@ class Superproject(object):
 
     manifest_path = self._WriteManfiestFile()
     return UpdateProjectsResult(manifest_path, False)
+
+def _UseSuperprojectFromConfiguration():
+  """Returns the user choice of whether to use superproject"""
+  user_value = RepoConfig.ForUser().GetBoolean('repo.superprojectchoice')
+  if user_value is not None:
+    user_expiration = RepoConfig.ForUser().GetInt('repo.superprojectchoiceexpire')
+    time_now = int(time.time())
+    if user_expiration is not None and (user_expiration == 0 or user_expiration >= time_now):
+      if not _UseSuperprojectFromConfiguration.prompted:
+        prompt = ('You are currently enrolled in Git submodules experiment '
+                  '(go/android-submodules-quickstart).  Use --no-use-superproject '
+                  'to override.\n')
+        print(prompt, file=sys.stderr)
+        _UseSuperprojectFromConfiguration.prompted = True
+      return user_value
+
+  # We don't have an unexpired choice, ask for one
+  system_value = RepoConfig.ForSystem().GetBoolean('repo.superprojectchoice')
+  if system_value == True:
+    # The system configuration is proposing that we should enable the
+    # use of superproject. Present this to user for confirmation if we
+    # are on a TTY, or, when we are not on a TTY, accept the system
+    # default for this time only.
+    prompt = ('Repo can now use Git submodules (go/android-submodules-quickstart) '
+              'instead of manifests to represent the state of the Android '
+              'superproject, which results in faster syncs and better atomicity.\n\n')
+    if sys.stdout.isatty():
+      prompt += 'Would you like to opt in for two weeks (Y/N)? '
+      response = input(prompt).lower()
+      time_choiceexpire = int(time.time()) + (86400 * 14)
+      if response in ('y', 'yes'):
+        userchoice = True
+      elif response in ('a', 'always'):
+        userchoice = True
+        time_choiceexpire = 0
+      elif response == 'never':
+        userchoice = False
+        time_choiceexpire = 0
+      elif response in ('n', 'no'):
+        userchoice = False
+      else:
+        userchoice = False
+        time_choiceexpire = int(time.time()) + 7200
+
+      RepoConfig.ForUser().SetString('repo.superprojectchoiceexpire', ("%s" % time_choiceexpire))
+      RepoConfig.ForUser().SetBoolean('repo.superprojectchoice', userchoice)
+      _UseSuperprojectFromConfiguration.prompted = True
+
+      return userchoice
+    else:
+      if not _UseSuperprojectFromConfiguration.prompted:
+        prompt += 'Accepting once since we are not on a TTY'
+        print(prompt, file=sys.stderr)
+        _UseSuperproject.prompted = True
+        return True
+
+  # For all other cases, we would not use superproject by default.
+  return False
+
+_UseSuperprojectFromConfiguration.prompted = False
+
+def _UseSuperproject(opt, manifest):
+  """Returns a tuple if user-superproject option is enabled, and whether it was from user configuration"""
+
+  if opt.use_superproject is not None:
+    return (opt.use_superproject, False)
+  else:
+    client_value = manifest.manifestProject.config.GetBoolean('repo.superproject')
+    if client_value is not None:
+      return (opt.use_superproject, False)
+    else:
+      return (_UseSuperprojectFromConfiguration(), True)
