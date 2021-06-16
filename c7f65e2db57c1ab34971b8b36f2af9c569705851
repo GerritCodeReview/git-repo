@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af5ea868_524abf82",
+        "filename": "command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-16T04:00:47Z",
+      "side": 1,
+      "message": "let\u0027s omit \"trace2\".  i think \"git_event_log\" is clear enough.  and hopefully we\u0027ll never have a trace3.",
+      "revId": "c7f65e2db57c1ab34971b8b36f2af9c569705851",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6675622f_f69683a2",
+        "filename": "git_superproject.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-16T04:00:47Z",
+      "side": 1,
+      "message": "we can just say SyncResult and omit the remaining details.  the docs can be found in the respective objects.\n\nsame with funcs below and new structured results.",
+      "revId": "c7f65e2db57c1ab34971b8b36f2af9c569705851",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
