@@ -64,6 +64,7 @@ class GitConfig(object):
   _ForUser = None
 
   _USER_CONFIG = '~/.gitconfig'
+  _SYSTEM_CONFIG = '/usr/share/git-core/config'
 
   @classmethod
   def ForUser(cls):
@@ -76,9 +77,16 @@ class GitConfig(object):
     return cls(configfile=os.path.join(gitdir, 'config'),
                defaults=defaults)
 
-  def __init__(self, configfile, defaults=None, jsonFile=None):
+  @classmethod
+  def ForSystem(cls):
+    if cls._ForSystem is None:
+      cls._ForSystem = cls(configfile=cls._SYSTEM_CONFIG, readonly=True)
+    return cls._ForSystem
+
+  def __init__(self, configfile, defaults=None, jsonFile=None, readonly=False):
     self.file = configfile
     self.defaults = defaults
+    self.readonly = readonly
     self._cache_dict = None
     self._section_dict = None
     self._remotes = {}
@@ -204,6 +212,9 @@ class GitConfig(object):
        The supplied value should be either a string,
        or a list of strings (to store multiple values).
     """
+    if self.readonly:
+      raise AttributeError("Can't write read-only configuration")
+
     key = _key(name)
 
     try:
@@ -323,6 +334,9 @@ class GitConfig(object):
       return None
 
   def _SaveJson(self, cache):
+    if self.readonly:
+      return
+
     try:
       with open(self._json, 'w') as fd:
         json.dump(cache, fd, indent=2)
@@ -372,7 +386,9 @@ class GitConfig(object):
 class RepoConfig(GitConfig):
   """User settings for repo itself."""
 
+  _ForSystem = None
   _USER_CONFIG = '~/.repoconfig/config'
+  _SYSTEM_CONFIG = '/usr/share/git-repo/config'
 
 
 class RefSpec(object):
