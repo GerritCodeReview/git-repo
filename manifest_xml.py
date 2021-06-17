@@ -621,6 +621,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return self.manifestProject.config.GetBoolean('repo.mirror')
 
   @property
+  def IsShallowMirror(self):
+    return self.manifestProject.config.GetBoolean('repo.shallowmirror')
+
+  @property
   def UseGitWorktrees(self):
     return self.manifestProject.config.GetBoolean('repo.worktree')
 
