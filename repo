@@ -339,6 +339,8 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--mirror', action='store_true',
                    help='create a replica of the remote repositories '
                         'rather than a client working directory')
+  group.add_option('--shallow-mirror', action='store_true',
+                   help='adhear to manifest clone depth when using --mirror')
   group.add_option('--archive', action='store_true',
                    help='checkout an archive instead of a git repository for '
                         'each project. See git archive.')

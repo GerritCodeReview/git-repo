@@ -2008,7 +2008,7 @@ class Project(object):
     # it will result in a shallow repository that cannot be cloned or
     # fetched from.
     # The repo project should also never be synced with partial depth.
-    if self.manifest.IsMirror or self.relpath == '.repo/repo':
+    if (self.manifest.IsMirror and not self.manifest.IsShallowMirror) or self.relpath == '.repo/repo':
       depth = None
 
     if depth:

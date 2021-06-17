@@ -217,6 +217,17 @@ to update the working directory files.
               'in another location.', file=sys.stderr)
         sys.exit(1)
 
+    # TODO: Add a --no-shallow-mirror instead??
+    if opt.shallow_mirror:
+      if is_new:
+        m.config.SetBoolean('repo.shallowmirror', opt.shallow_mirror)
+      else:
+        print('fatal: --shallow_mirror is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
+        sys.exit(1)
+
     if opt.partial_clone is not None:
       if opt.mirror:
         print('fatal: --mirror and --partial-clone are mutually exclusive',
