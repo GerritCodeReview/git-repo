@@ -1047,6 +1047,7 @@ class Project(object):
                        tags=None,
                        archive=False,
                        optimized_fetch=False,
+                       shallow_mirror=False,
                        retry_fetches=0,
                        prune=False,
                        submodules=False,
@@ -1142,7 +1143,7 @@ class Project(object):
               initial=is_new,
               quiet=quiet, verbose=verbose, output_redir=output_redir,
               alt_dir=alt_dir, current_branch_only=current_branch_only,
-              tags=tags, prune=prune, depth=depth,
+              tags=tags, prune=prune, depth=depth, shallow_mirror=shallow_mirror,
               submodules=submodules, force_sync=force_sync,
               ssh_proxy=ssh_proxy,
               clone_filter=clone_filter, retry_fetches=retry_fetches):
@@ -1995,6 +1996,7 @@ class Project(object):
                    tags=True,
                    prune=False,
                    depth=None,
+                   shallow_mirror=False,
                    submodules=False,
                    ssh_proxy=None,
                    force_sync=False,
@@ -2008,7 +2010,7 @@ class Project(object):
     # it will result in a shallow repository that cannot be cloned or
     # fetched from.
     # The repo project should also never be synced with partial depth.
-    if self.manifest.IsMirror or self.relpath == '.repo/repo':
+    if (self.manifest.IsMirror and not shallow_mirror) or self.relpath == '.repo/repo':
       depth = None
 
     if depth:

@@ -248,6 +248,9 @@ later is required to fix a server side protocol bug.
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
+    p.add_option('--shallow-mirror',
+                 dest='shallow_mirror', action='store_true',
+                 help='adhere to clone depth settings even for a mirror')
     p.add_option('--retry-fetches',
                  default=0, action='store', type='int',
                  help='number of times to retry fetches on transient errors')
@@ -356,6 +359,7 @@ later is required to fix a server side protocol bug.
           clone_bundle=opt.clone_bundle,
           tags=opt.tags, archive=self.manifest.IsArchive,
           optimized_fetch=opt.optimized_fetch,
+          shallow_mirror=opt.shallow_mirror,
           retry_fetches=opt.retry_fetches,
           prune=opt.prune,
           ssh_proxy=self.ssh_proxy,
@@ -865,6 +869,7 @@ later is required to fix a server side protocol bug.
                                     force_sync=opt.force_sync,
                                     tags=opt.tags,
                                     optimized_fetch=opt.optimized_fetch,
+                                    shallow_mirror=opt.shallow_mirror,
                                     retry_fetches=opt.retry_fetches,
                                     submodules=self.manifest.HasSubmodules,
                                     clone_filter=self.manifest.CloneFilter,
