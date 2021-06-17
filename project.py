@@ -2008,7 +2008,7 @@ class Project(object):
     # it will result in a shallow repository that cannot be cloned or
     # fetched from.
     # The repo project should also never be synced with partial depth.
-    if self.manifest.IsMirror or self.relpath == '.repo/repo':
+    if (self.manifest.IsMirror and not self.manifest.IsShallowMirror) or self.relpath == '.repo/repo':
       depth = None
 
     if depth:
@@ -2133,7 +2133,7 @@ class Project(object):
       branch = None
     else:
       branch = self.revisionExpr
-    if (not self.manifest.IsMirror and is_sha1 and depth
+    if ((not self.manifest.IsMirror or self.manifest.IsShallowMirror) and is_sha1 and depth
             and git_require((1, 8, 3))):
       # Shallow checkout of a specific commit, fetch from that commit and not
       # the heads only as the commit might be deeper in the history.
