@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+
+import os
+import shutil
+import subprocess
+import sys
+
+BINDIR = os.path.dirname(os.path.abspath(__file__))
+REPODIR = os.path.normpath(os.path.join(BINDIR, '..'))
+MANDIR = os.path.join(REPODIR, 'docs/manpages')
+
+# load repo local modules
+sys.path.append(REPODIR)
+import wrapper
+import subcmds
+
+VERSION = '.'.join(str(x) for x in wrapper.Wrapper().VERSION)
+TMP = '/tmp/repo_help2man'
+
+if not shutil.which('help2man'):
+  print('Please install help2man to continue.')
+  sys.exit(1)
+
+shutil.copytree(REPODIR, os.path.join(TMP, '.repo/repo'))
+os.chdir(TMP)
+allcmds=subcmds.all_commands
+
+# "repo branch" is an alias for "repo branches"
+del allcmds['branch']
+cmdlist = [['help2man', '-N', '-n', 'repo ' + cmd + ' - manual page for repo ' + cmd,
+  '-S', 'repo ' + cmd, '-m', 'Repo Manual', '--version-string=' + VERSION,
+  '-o', os.path.join(MANDIR, 'repo-' + cmd + '.1'), os.path.join(REPODIR, 'repo'),
+  '-h', 'help ' + cmd] for cmd in allcmds]
+cmdlist.append(['help2man', '-N', '-n', 'repository management tool built on top of git',
+  '-S', 'repo', '-m', 'Repo Manual', '--version-string=' + VERSION,
+  '-o', os.path.join(MANDIR, 'repo.1'), os.path.join(REPODIR, 'repo'),
+  '-h', 'help --all'])
+
+# run all cmd in parallel, and wait them until finish
+for p in [ subprocess.Popen(cmd) for cmd in cmdlist ]:
+  p.wait()
+
+os.chdir(MANDIR)
+os.symlink('repo-branches.1', 'repo-branch.1')
+shutil.rmtree(TMP)
