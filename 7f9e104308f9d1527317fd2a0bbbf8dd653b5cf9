@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d686abb_877ddcce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-20T15:48:23Z",
+      "side": 1,
+      "message": "i like the idea.  some high level thoughts:\n\n* the description \u0026 similar chapters are not being emitted correctly.  look at repo-init as an example.  can we tune the output to get help2man to process these correctly ?\n* we\u0027d prefer python scripts over shell scripts.  i know update-manpages is a bit simple, but i don\u0027t want to give a style/correctness review on it because it won\u0027t be pretty ;).\n* running these in serial takes ~10 sec.  running them in parallel on my system takes ~1 sec.  i know these won\u0027t be updated regularly, but if we could process them in parallel, it\u0027d be nicer for local testing \u0026 spot checks.",
+      "revId": "7f9e104308f9d1527317fd2a0bbbf8dd653b5cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff57906_7f8c3389",
+        "filename": "docs/manpages/repo-branches.1",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-20T15:48:23Z",
+      "side": 1,
+      "message": "branch \u0026 branches are the same command.  we should special case this and add a .so link instead.",
+      "revId": "7f9e104308f9d1527317fd2a0bbbf8dd653b5cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
