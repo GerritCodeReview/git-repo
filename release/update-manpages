@@ -1,0 +1,68 @@
+#!/usr/bin/env python3
+# Copyright (C) 2021 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""Helper tool for generating manual page for all repo commands.
+
+This is intended to be run before every official Repo release.
+"""
+import os
+import shutil
+import subprocess
+import sys
+
+BINDIR = os.path.dirname(os.path.abspath(__file__))
+REPODIR = os.path.normpath(os.path.join(BINDIR, '..'))
+MANDIR = os.path.join(REPODIR, 'docs/manpages')
+TMP = '/tmp/repo_help2man'
+
+# load repo local modules
+sys.path.append(REPODIR)
+import wrapper
+import subcmds
+
+VERSION = '.'.join(str(x) for x in wrapper.Wrapper().VERSION)
+
+if not shutil.which('help2man'):
+  print('Please install help2man to continue.')
+  sys.exit(1)
+
+shutil.copytree(REPODIR, os.path.join(TMP, '.repo/repo'))
+os.chdir(TMP)
+allcmds=subcmds.all_commands
+
+# "repo branch" is an alias for "repo branches"
+del allcmds['branch']
+cmdlist = [['help2man', '-N', '-n', 'repo ' + cmd + ' - manual page for repo ' + cmd,
+  '-S', 'repo ' + cmd, '-m', 'Repo Manual', '--version-string=' + VERSION,
+  '-o', os.path.join(MANDIR, 'repo-' + cmd + '.1'), os.path.join(REPODIR, 'repo'),
+  '-h', 'help ' + cmd] for cmd in allcmds]
+cmdlist.append(['help2man', '-N', '-n', 'repository management tool built on top of git',
+  '-S', 'repo', '-m', 'Repo Manual', '--version-string=' + VERSION,
+  '-o', os.path.join(MANDIR, 'repo.1'), os.path.join(REPODIR, 'repo'),
+  '-h', 'help --all'])
+
+# run all cmd in parallel, and wait them until finish
+for p in [ subprocess.Popen(cmd) for cmd in cmdlist ]:
+  p.wait()
+
+os.chdir(MANDIR)
+subprocess.run("sed -i s/^\.IP/.SS/ *.1", shell=True)
+subprocess.run("sed -i -z 's/\\n\.PP\\nDescription\\n/\\n.SS More Info\\n/' *.1", shell=True)
+try:
+  os.remove('repo-branch.1')
+except FileNotFoundError:
+  pass
+os.symlink('repo-branches.1', 'repo-branch.1')
+shutil.rmtree(TMP)
