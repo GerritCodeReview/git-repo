@@ -1,0 +1,30 @@
+#!/bin/sh -x
+
+BINDIR=$(dirname $0)
+MANDIR=$(realpath ${BINDIR}/../docs/manpages)
+REPODIR=$(realpath ${BINDIR}/..)
+VERSION=$(git describe --tags 2>/dev/null|cut -d- -f1)
+TMP=/tmp/repo_help2man
+
+if ! which help2man 2>&1 >/dev/null; then
+  echo Please install help2man to continue.
+  exit 1
+fi
+
+mkdir -p $TMP/.repo $MANDIR
+cp -a $REPODIR $TMP/.repo/
+cd $TMP
+for cmd in $(${REPODIR}/repo help --all|grep ^'  '|cut -d' ' -f3); do
+  # "repo branch" is an alias for "repo branches"
+  [ $cmd = "branch" ] && continue
+  help2man -N -n "repo $cmd - manual page for repo $cmd" \
+    -S "repo $cmd" -m "Repo Manual" --version-string="$VERSION" \
+    -o ${MANDIR}/repo-${cmd}.1 ${REPODIR}/repo -h "help $cmd" &
+done
+help2man -N -n "repository management tool built on top of git" \
+  -S repo -m "Repo Manual" --version-string="$VERSION" \
+  -o ${MANDIR}/repo.1 ${REPODIR}/repo -h "help --all" &
+wait
+cd $MANDIR
+ln -sf repo-branches.1 repo-branch.1
+rm -rf $TMP
