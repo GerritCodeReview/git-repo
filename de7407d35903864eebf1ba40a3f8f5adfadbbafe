@@ -1,0 +1,340 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dd34a8c_1a5cd4ca",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "/usr paths are meant for package defaults rather than config files.  if you want a path for optional configs, /etc/repoconfig would be the right path to align with /etc/gitconfig.",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f094ee59_3de9d44f",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "as noted above, git has a system config too, so this func could be hoisted to GitConfig and you could set _SYSTEM_CONFIG \u003d \u0027/etc/gitconfig\u0027 there for parity\n\nthe other issue here is that ForSystem exposes Set APIs.  i know the files shouldn\u0027t be writable, but i\u0027d still be happier if we had checks in place.  for example, the automatic cache logic with self._json always fires and attempts to write to the path.  users shouldn\u0027t be running as root, but users make bad decisions all the time.\n\nto keep it simple, ForSystem could set a flag like \"read-only\" or \"is_system\", and then the various methods could check that and return quickly (in case of the cache logic) or throw an error (in case we try to call Set).",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56fde656_eb18413a",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "inner parens aren\u0027t needed",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb45014d_dd7085c1",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "2 blank lines between module-level funcs/classes",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dacdf98d_3bed545d",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "you\u0027ll want to use snake case to make these settings readable",
+      "range": {
+        "startLine": 348,
+        "startChar": 53,
+        "endLine": 348,
+        "endChar": 71
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a21251aa_9a2cb568",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "if you were only touching one setting, it\u0027d be fine to inline the call like this, but you\u0027re using it many times over.  i know ForUser/ForSystem cache their results to avoid recalculating on every call, but if only for readability, you should store these in a local var.\n\n user_cfg \u003d RepoConfig.ForUser()\n system_cfg \u003d RepoConfig.ForSystem()",
+      "range": {
+        "startLine": 350,
+        "startChar": 22,
+        "endLine": 350,
+        "endChar": 40
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02a895c8_7a623e7d",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "in Python you\u0027d normally write \"not user_expiration\"\n\nalthough, since it\u0027s a signed int, should you test for \u003c\u003d 0 ?",
+      "range": {
+        "startLine": 352,
+        "startChar": 40,
+        "endLine": 352,
+        "endChar": 60
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe58afe9_06129983",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "you only use this once, so i would just inline it in the print call below",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2621254_232e3d02",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "i\u0027m not keen on using go/ links in repo as it\u0027s an open source project.  we can probably let it slide as a temporary thing, but this needs a TODO(bug) to remove it once we start rollout.",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d22f28c8_18c0666c",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "comments are full sentences, so period at the end please",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e610ae1_dcd0b538",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "the Y/N should be capitalized based on the default (when they hit enter).  so i think you want \"y/N\" ?\n\nalso, since you accept \"always\", maybe \"yes/always/NO\" would be better ?",
+      "range": {
+        "startLine": 372,
+        "startChar": 57,
+        "endLine": 372,
+        "endChar": 60
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63e06794_01ffeba8",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "can you use time_now ?  and below ...",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84c3c780_2e30c276",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "should add a comment explaining this default block",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad785f16_9a218e2d",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "just use str(...)",
+      "range": {
+        "startLine": 389,
+        "startChar": 70,
+        "endLine": 389,
+        "endChar": 96
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6efc76c5_e4a76b1a",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "did you mean _UseSuperprojectFromConfiguration.prompted ?",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dd5a0c3_6e9c0915",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "i think you can just use @functools.lru_cache(maxsize\u003dNone) rather than maintain this yourself",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff1a5ce0_ae51553c",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "you\u0027re exporting this API to other modules, so you want to drop the leading _",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29f1266c_5793a1ff",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-21T21:28:11Z",
+      "side": 1,
+      "message": "afaict, the callers only ever check the first element of the tuple, so do you really need to return both ?",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
