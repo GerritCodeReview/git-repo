@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3451e46b_1aadca78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-06-21T16:56:01Z",
+      "side": 1,
+      "message": "- yes, not perfect manpages, but still better than none.\n- to me, shell script is more straightforward.\n- see patchset 3, which runs all help2man in background, and wait them to finish.\n- \"repo-branches.1\" is now a symbolic link.",
+      "parentUuid": "0d686abb_877ddcce",
+      "revId": "7f9e104308f9d1527317fd2a0bbbf8dd653b5cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bff57906_7f8c3389",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-06-20T15:48:23Z",
       "side": 1,
       "message": "branch \u0026 branches are the same command.  we should special case this and add a .so link instead.",
+      "revId": "7f9e104308f9d1527317fd2a0bbbf8dd653b5cf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ded2f133_3d02d05a",
+        "filename": "docs/manpages/repo-branches.1",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-06-21T16:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bff57906_7f8c3389",
       "revId": "7f9e104308f9d1527317fd2a0bbbf8dd653b5cf9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
