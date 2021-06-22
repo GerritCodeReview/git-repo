@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "94837a06_03bec195",
         "filename": "subcmds/sync.py",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "Why does this print not match the format of the one above?",
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "30a952b6_bff4c6e8",
         "filename": "subcmds/sync.py",
@@ -32,10 +33,10 @@
       "message": "having the project name (path on the remote server) doesn\u0027t seem useful here.  but prefixing the messages with the local path to keep them identified does.",
       "parentUuid": "94837a06_03bec195",
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "78059027_4bdf22f6",
         "filename": "subcmds/sync.py",
@@ -50,10 +51,10 @@
       "message": "here\u0027s example output in case it helps:\n\n src/third_party/coreboot: Shared project chromiumos/third_party/coreboot found, disabling pruning.\n src/third_party/coreboot: WARNING: shared projects are unreliable when using old versions of git; please upgrade to git-2.7.0+.\n src/third_party/coreboot-zork: Shared project chromiumos/third_party/coreboot found, disabling pruning.\n src/third_party/coreboot-zork: WARNING: shared projects are unreliable when using old versions of git; please upgrade to git-2.7.0+.\n\ni debated only issuing the warning once and omitting the project entirely, but i figured this way users would know which local projects to watch out for.  having the remote project name isn\u0027t that useful to most people as they won\u0027t really know how to lookup \"what local git repos are cloning from the remote chromiumos/third_party/coreboot project\".",
       "parentUuid": "30a952b6_bff4c6e8",
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "9e95598a_5fc69d55",
         "filename": "subcmds/sync.py",
@@ -68,10 +69,10 @@
       "message": "Sorry, I meant this totally as nit-picking the coding style.\n\nOne is:\n... %\n(xyz)\n\nOne is:\n...\n% (xyz,)",
       "parentUuid": "78059027_4bdf22f6",
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "16c48f14_22bebb99",
         "filename": "subcmds/sync.py",
@@ -86,8 +87,25 @@
       "message": "i wordsmithed the output on both a few times which caused the % to wrap at one point and i didn\u0027t put it back.  it\u0027s one aspect i don\u0027t notice/keep track of too much.\n\ni can put it back, or i can just submit it and avoid resetting the CR bits ;)",
       "parentUuid": "9e95598a_5fc69d55",
       "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fded236_6e18abcb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-06-22T22:17:50Z",
+      "side": 1,
+      "message": "Looks fine to me. (Closing out the thread to tie up this loose end.)",
+      "parentUuid": "16c48f14_22bebb99",
+      "revId": "694c62f5a32e6ca4482b566906906c03a63f60cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
