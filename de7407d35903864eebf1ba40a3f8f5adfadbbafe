@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "80ce4714_06fa0f84",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "This is somewhat different (probably a better name would be _SYSTEMWIDE_DEFAULT_CONFIG instead?) as the intention was to push the configuration instead of allowing local modification.",
+      "parentUuid": "4dd34a8c_1a5cd4ca",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f094ee59_3de9d44f",
         "filename": "git_config.py",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2021-06-21T21:28:11Z",
       "side": 1,
       "message": "as noted above, git has a system config too, so this func could be hoisted to GitConfig and you could set _SYSTEM_CONFIG \u003d \u0027/etc/gitconfig\u0027 there for parity\n\nthe other issue here is that ForSystem exposes Set APIs.  i know the files shouldn\u0027t be writable, but i\u0027d still be happier if we had checks in place.  for example, the automatic cache logic with self._json always fires and attempts to write to the path.  users shouldn\u0027t be running as root, but users make bad decisions all the time.\n\nto keep it simple, ForSystem could set a flag like \"read-only\" or \"is_system\", and then the various methods could check that and return quickly (in case of the cache logic) or throw an error (in case we try to call Set).",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d0925ed_b237814c",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f094ee59_3de9d44f",
       "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe4ae27_4280b624",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56fde656_eb18413a",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb45014d_dd7085c1",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b32941c_b6f9fb07",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb45014d_dd7085c1",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dacdf98d_3bed545d",
@@ -82,6 +154,30 @@
       "writtenOn": "2021-06-21T21:28:11Z",
       "side": 1,
       "message": "you\u0027ll want to use snake case to make these settings readable",
+      "range": {
+        "startLine": 348,
+        "startChar": 53,
+        "endLine": 348,
+        "endChar": 71
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c15baa4_866c4341",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "git config doesn\u0027t really like underscores (it only permits letter, number and -).  What about camel case, like superprojectChoice here?",
+      "parentUuid": "dacdf98d_3bed545d",
       "range": {
         "startLine": 348,
         "startChar": 53,
@@ -115,6 +211,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a3e6ce4_8f9d81fc",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a21251aa_9a2cb568",
+      "range": {
+        "startLine": 350,
+        "startChar": 22,
+        "endLine": 350,
+        "endChar": 40
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02a895c8_7a623e7d",
@@ -128,6 +248,30 @@
       "writtenOn": "2021-06-21T21:28:11Z",
       "side": 1,
       "message": "in Python you\u0027d normally write \"not user_expiration\"\n\nalthough, since it\u0027s a signed int, should you test for \u003c\u003d 0 ?",
+      "range": {
+        "startLine": 352,
+        "startChar": 40,
+        "endLine": 352,
+        "endChar": 60
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "469e6ff6_aeb6ac25",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 352,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02a895c8_7a623e7d",
       "range": {
         "startLine": 352,
         "startChar": 40,
@@ -155,6 +299,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74c96d17_99485326",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe58afe9_06129983",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2621254_232e3d02",
@@ -172,6 +334,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f8f684_3871149b",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2621254_232e3d02",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d22f28c8_18c0666c",
@@ -185,6 +365,24 @@
       "writtenOn": "2021-06-21T21:28:11Z",
       "side": 1,
       "message": "comments are full sentences, so period at the end please",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4df17161_93cd8cff",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d22f28c8_18c0666c",
       "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -212,6 +410,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30966575_23617855",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Let\u0027s go with y/N (as we want to know if the user remained or decided to opt-out after two weeks).",
+      "parentUuid": "7e610ae1_dcd0b538",
+      "range": {
+        "startLine": 372,
+        "startChar": 57,
+        "endLine": 372,
+        "endChar": 60
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63e06794_01ffeba8",
@@ -229,6 +451,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "988a7766_59ed681f",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63e06794_01ffeba8",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "84c3c780_2e30c276",
@@ -242,6 +482,24 @@
       "writtenOn": "2021-06-21T21:28:11Z",
       "side": 1,
       "message": "should add a comment explaining this default block",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a574563_50a8bec5",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "84c3c780_2e30c276",
       "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -269,6 +527,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2689d69_f1ff1fa7",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad785f16_9a218e2d",
+      "range": {
+        "startLine": 389,
+        "startChar": 70,
+        "endLine": 389,
+        "endChar": 96
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6efc76c5_e4a76b1a",
@@ -282,6 +564,24 @@
       "writtenOn": "2021-06-21T21:28:11Z",
       "side": 1,
       "message": "did you mean _UseSuperprojectFromConfiguration.prompted ?",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da8656fc_94bf6285",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6efc76c5_e4a76b1a",
       "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -303,6 +603,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d04c01c_4aaac080",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3dd5a0c3_6e9c0915",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff1a5ce0_ae51553c",
@@ -320,6 +638,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bcc0f8c_74f71929",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff1a5ce0_ae51553c",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29f1266c_5793a1ff",
@@ -333,6 +669,24 @@
       "writtenOn": "2021-06-21T21:28:11Z",
       "side": 1,
       "message": "afaict, the callers only ever check the first element of the tuple, so do you really need to return both ?",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf76a142_1ed16e74",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-22T10:03:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29f1266c_5793a1ff",
       "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
