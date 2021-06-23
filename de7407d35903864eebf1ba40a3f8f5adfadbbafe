@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0fbe815b_229215f9",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-23T16:07:27Z",
+      "side": 1,
+      "message": "/usr is not for pushing configs.  think of /usr as the read-only place that could be shared among many systems.  /etc holds config files for the specific system.  if you\u0027re worried about users editing files in there, if they have that power, then they can just as easily edit files in /usr.  i\u0027ll note that /etc is how we\u0027re pushing configs today to all gLinux systems like sshd settings.\n\nif we want to provide independent knobs between site-specific configs (coming from the local sysadmin) and knobs pushed by global sysadmins (i.e. enterprise policies), we could add a bit more structure.  but i\u0027m guessing you don\u0027t want to spend a whole lot of time on this ...\n\n* if /etc/repoconfig exists, load it\n* if /etc/repoconfig.d/ exists, scan it for *.conf files (skipping ones that start with a \".\"), sort it, and then load them in order\n\nthat would let you push an /etc/repoconfig.d/50-google.conf setting that everyone would load.",
+      "parentUuid": "80ce4714_06fa0f84",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f094ee59_3de9d44f",
         "filename": "git_config.py",
         "patchSetId": 1
@@ -178,6 +196,30 @@
       "side": 1,
       "message": "git config doesn\u0027t really like underscores (it only permits letter, number and -).  What about camel case, like superprojectChoice here?",
       "parentUuid": "dacdf98d_3bed545d",
+      "range": {
+        "startLine": 348,
+        "startChar": 53,
+        "endLine": 348,
+        "endChar": 71
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d74b86f7_4123345f",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-06-23T16:07:27Z",
+      "side": 1,
+      "message": "sorry, i had meant to say camel case",
+      "parentUuid": "7c15baa4_866c4341",
       "range": {
         "startLine": 348,
         "startChar": 53,
