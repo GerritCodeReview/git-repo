@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "221600d2_dcf70e72",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2021-06-24T16:12:47Z",
+      "side": 1,
+      "message": "Please use a full bug URL because `repo` has switched bug trackers from time to time in its history without retaining the same numbering.",
+      "revId": "a68688c4c568c2dcd6e19839a3da645a30a8bef2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "265d9eae_74f5456f",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
