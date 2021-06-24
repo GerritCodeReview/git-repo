@@ -968,6 +968,7 @@ later is required to fix a server side protocol bug.
       new_manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests)
       if not new_manifest_name:
         manifest_name = new_manifest_name
+      self._ReloadManifest(manifest_name, load_local_manifests)
 
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
