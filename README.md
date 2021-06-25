@@ -49,6 +49,10 @@ $ curl https://storage.googleapis.com/git-repo-downloads/repo > ~/.bin/repo
 $ chmod a+rx ~/.bin/repo
 ```
 
+You could also download repo from the upstream project
+```sh
+$ git clone https://gerrit.googlesource.com/git-repo -b main
+```
 
 [new-bug]: https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue
 [issue tracker]: https://bugs.chromium.org/p/gerrit/issues/list?q=component:repo
