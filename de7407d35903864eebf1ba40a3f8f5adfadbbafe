@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b8e16c_aa6ba9bf",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-25T19:52:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fbe815b_229215f9",
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f094ee59_3de9d44f",
@@ -220,6 +238,30 @@
       "side": 1,
       "message": "sorry, i had meant to say camel case",
       "parentUuid": "7c15baa4_866c4341",
+      "range": {
+        "startLine": 348,
+        "startChar": 53,
+        "endLine": 348,
+        "endChar": 71
+      },
+      "revId": "de7407d35903864eebf1ba40a3f8f5adfadbbafe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2501f0fa_30a2e619",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-06-25T19:52:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d74b86f7_4123345f",
       "range": {
         "startLine": 348,
         "startChar": 53,
