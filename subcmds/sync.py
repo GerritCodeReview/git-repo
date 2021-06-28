@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
 import errno
 import functools
 import http.cookiejar as cookielib
@@ -953,6 +954,7 @@ later is required to fix a server side protocol bug.
               file=sys.stderr)
 
     mp = self.manifest.manifestProject
+    prev_sync_time = mp.config.GetString('repo.latestsynctime')
     mp.PreSync()
 
     if opt.repo_upgraded:
@@ -1081,6 +1083,10 @@ later is required to fix a server side protocol bug.
             file=sys.stderr)
       sys.exit(1)
 
+    now = datetime.utcnow()
+    latest_sync_time = now.strftime("%d/%m/%Y %H:%M:%S")
+    mp.config.SetString('repo.prevsynctime', prev_sync_time)
+    mp.config.SetString('repo.latestsynctime', latest_sync_time)
     if not opt.quiet:
       print('repo sync has finished successfully.')
 
