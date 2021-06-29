@@ -437,7 +437,7 @@ class ProjectElementTests(ManifestParseTestCase):
         '<?xml version="1.0" ?><manifest>'
         '<remote fetch="http://localhost" name="default-remote"/>'
         '<default remote="default-remote" revision="refs/heads/main"/>'
-        '<project name="test-name" revision="ABCDEF"/>'
+        '<project name="test-name" revision="ABCDEF" upstream="refs/heads/main"/>'
         '</manifest>')
 
   def test_trailing_slash(self):

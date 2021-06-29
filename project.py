@@ -1216,7 +1216,7 @@ class Project(object):
                                          (self.revisionExpr, self.name))
 
   def SetRevisionId(self, revisionId):
-    if self.clone_depth or self.manifest.manifestProject.config.GetString('repo.depth'):
+    if self.revisionExpr:
       self.upstream = self.revisionExpr
 
     self.revisionId = revisionId
@@ -1967,6 +1967,10 @@ class Project(object):
       # throws an error.
       self.bare_git.rev_list('-1', '--missing=allow-any',
                              '%s^0' % self.revisionExpr, '--')
+      if self.upstream:
+        rev = self.GetRemote(self.remote.name).ToLocal(self.upstream)
+        self.bare_git.rev_list('-1', '--missing=allow-any',
+                               '%s^0' % rev, '--')
       return True
     except GitError:
       # There is no such persistent revision. We have to fetch it.

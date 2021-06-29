@@ -213,7 +213,7 @@ class SuperprojectTestCase(unittest.TestCase):
         '<remote fetch="http://localhost" name="default-remote"/>'
         '<default remote="default-remote" revision="refs/heads/main"/>'
         '<project groups="notdefault,platform-' + self.platform + '" '
-        'name="platform/art" path="art" revision="ABCDEF"/>'
+        'name="platform/art" path="art" revision="ABCDEF" upstream="refs/heads/main"/>'
         '<superproject name="superproject"/>'
         '</manifest>')
 
@@ -242,7 +242,7 @@ class SuperprojectTestCase(unittest.TestCase):
               '<default remote="default-remote" revision="refs/heads/main"/>'
               '<project groups="notdefault,platform-' + self.platform + '" '
               'name="platform/art" path="art" '
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>'
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" upstream="refs/heads/main"/>'
               '<superproject name="superproject"/>'
               '</manifest>')
 
@@ -271,7 +271,7 @@ class SuperprojectTestCase(unittest.TestCase):
         '<?xml version="1.0" ?><manifest>'
         '<remote fetch="http://localhost" name="default-remote"/>'
         '<default remote="default-remote" revision="refs/heads/main"/>'
-        '<project name="test-name" revision="ABCDEF"/>'
+        '<project name="test-name" revision="ABCDEF" upstream="refs/heads/main"/>'
         '</manifest>')
 
   def test_superproject_update_project_revision_id_from_local_manifest_group(self):
@@ -316,7 +316,7 @@ class SuperprojectTestCase(unittest.TestCase):
               '<default remote="default-remote" revision="refs/heads/main"/>'
               '<project groups="notdefault,platform-' + self.platform + '" '
               'name="platform/art" path="art" '
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>'
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" upstream="refs/heads/main"/>'
               '<project clone-depth="1" groups="' + local_group + '" '
               'name="platform/vendor/x" path="vendor/x" remote="goog" '
               'revision="master-with-vendor"/>'
@@ -363,9 +363,9 @@ class SuperprojectTestCase(unittest.TestCase):
               '<default remote="default-remote" revision="refs/heads/main"/>'
               '<project groups="notdefault,platform-' + self.platform + '" '
               'name="platform/art" path="art" '
-              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>'
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" upstream="refs/heads/main"/>'
               '<project name="platform/vendor/x" path="vendor/x" '
-              'revision="e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06"/>'
+              'revision="e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06" upstream="refs/heads/main"/>'
               '<project name="platform/vendor/y" path="vendor/y" '
               'revision="52d3c9f7c107839ece2319d077de0cd922aa9d8f"/>'
               '<superproject name="superproject"/>'
