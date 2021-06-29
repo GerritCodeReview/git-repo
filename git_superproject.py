@@ -298,6 +298,9 @@ class Superproject(object):
     path = project.relpath
     if not path:
       return True
+    # Skip the project with revisionId.
+    if project.revisionId:
+      return True
     # Skip the project if it comes from the local manifest.
     return any(s.startswith(LOCAL_MANIFEST_GROUP_PREFIX) for s in project.groups)
 
