@@ -294,8 +294,7 @@ class SuperprojectTestCase(unittest.TestCase):
                                                        self.git_event_log)
     self.assertEqual(len(self._superproject._manifest.projects), 2)
     projects = self._superproject._manifest.projects
-    data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
-            '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tbootable/recovery\x00')
+    data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00')
     with mock.patch.object(self._superproject, '_Init', return_value=True):
       with mock.patch.object(self._superproject, '_Fetch', return_value=True):
         with mock.patch.object(self._superproject,
@@ -321,6 +320,54 @@ class SuperprojectTestCase(unittest.TestCase):
               '<project clone-depth="1" groups="' + local_group + '" '
               'name="platform/vendor/x" path="vendor/x" remote="goog" '
               'revision="master-with-vendor"/>'
+              '<superproject name="superproject"/>'
+              '</manifest>')
+
+  def test_superproject_update_project_revision_id_with_pinned_manifest(self):
+    """Test update of commit ids of a pinned manifest."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <superproject name="superproject"/>
+  <project path="vendor/x" name="platform/vendor/x" revision="" />
+  <project path="vendor/y" name="platform/vendor/y"
+           revision="52d3c9f7c107839ece2319d077de0cd922aa9d8f" />
+  <project path="art" name="platform/art" groups="notdefault,platform-""" + self.platform + """
+  " /></manifest>
+""")
+    self.maxDiff = None
+    self._superproject = git_superproject.Superproject(manifest, self.repodir,
+                                                       self.git_event_log)
+    self.assertEqual(len(self._superproject._manifest.projects), 3)
+    projects = self._superproject._manifest.projects
+    data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
+            '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tvendor/x\x00')
+    with mock.patch.object(self._superproject, '_Init', return_value=True):
+      with mock.patch.object(self._superproject, '_Fetch', return_value=True):
+        with mock.patch.object(self._superproject,
+                               '_LsTree',
+                               return_value=data):
+          # Create temporary directory so that it can write the file.
+          os.mkdir(self._superproject._superproject_path)
+          update_result = self._superproject.UpdateProjectsRevisionId(projects)
+          self.assertIsNotNone(update_result.manifest_path)
+          self.assertFalse(update_result.fatal)
+          with open(update_result.manifest_path, 'r') as fp:
+            manifest_xml_data = fp.read()
+          # Verify platform/vendor/x's project revision hasn't changed.
+          self.assertEqual(
+              sort_attributes(manifest_xml_data),
+              '<?xml version="1.0" ?><manifest>'
+              '<remote fetch="http://localhost" name="default-remote"/>'
+              '<default remote="default-remote" revision="refs/heads/main"/>'
+              '<project groups="notdefault,platform-' + self.platform + '" '
+              'name="platform/art" path="art" '
+              'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea"/>'
+              '<project name="platform/vendor/x" path="vendor/x" '
+              'revision="e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06"/>'
+              '<project name="platform/vendor/y" path="vendor/y" '
+              'revision="52d3c9f7c107839ece2319d077de0cd922aa9d8f"/>'
               '<superproject name="superproject"/>'
               '</manifest>')
 
