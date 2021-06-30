@@ -22,7 +22,7 @@ import xml.dom.minidom
 import urllib.parse
 
 import gitc_utils
-from git_config import GitConfig, IsId
+from git_config import GitConfig, RepoConfig, IsId
 from git_refs import R_HEADS, HEAD
 import platform_utils
 from project import RemoteSpec, Project, MetaProject
@@ -833,6 +833,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       for subproject in project.subprojects:
         recursively_add_projects(subproject)
 
+    graceful_remove = RepoConfig.ForRepository(self.repodir).GetBoolean(
+       'repo.graceful-remove-project' )
+
     for node in itertools.chain(*node_list):
       if node.nodeName == 'project':
         project = self._ParseProject(node)
@@ -924,18 +927,18 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if node.nodeName == 'remove-project':
         name = self._reqatt(node, 'name')
 
-        if name not in self._projects:
+        if name in self._projects:
+          for p in self._projects[name]:
+            del self._paths[p.relpath]
+          del self._projects[name]
+
+          # If the manifest removes the hooks project, treat it as if it deleted
+          # the repo-hooks element too.
+          if self._repo_hooks_project and (self._repo_hooks_project.name == name):
+            self._repo_hooks_project = None
+        elif not graceful_remove:
           raise ManifestParseError('remove-project element specifies non-existent '
                                    'project: %s' % name)
-
-        for p in self._projects[name]:
-          del self._paths[p.relpath]
-        del self._projects[name]
-
-        # If the manifest removes the hooks project, treat it as if it deleted
-        # the repo-hooks element too.
-        if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-          self._repo_hooks_project = None
 
   def _AddMetaProjectMirror(self, m):
     name = None
