@@ -924,18 +924,18 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if node.nodeName == 'remove-project':
         name = self._reqatt(node, 'name')
 
-        if name not in self._projects:
+        if name in self._projects:
+          for p in self._projects[name]:
+            del self._paths[p.relpath]
+          del self._projects[name]
+
+          # If the manifest removes the hooks project, treat it as if it deleted
+          # the repo-hooks element too.
+          if self._repo_hooks_project and (self._repo_hooks_project.name == name):
+            self._repo_hooks_project = None
+        elif not XmlBool(node, 'optional', False):
           raise ManifestParseError('remove-project element specifies non-existent '
                                    'project: %s' % name)
-
-        for p in self._projects[name]:
-          del self._paths[p.relpath]
-        del self._projects[name]
-
-        # If the manifest removes the hooks project, treat it as if it deleted
-        # the repo-hooks element too.
-        if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-          self._repo_hooks_project = None
 
   def _AddMetaProjectMirror(self, m):
     name = None
