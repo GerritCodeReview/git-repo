@@ -638,3 +638,53 @@ class RemoteElementTests(ManifestParseTestCase):
     self.assertNotEqual(a, manifest_xml._Default())
     self.assertNotEqual(a, 123)
     self.assertNotEqual(a, None)
+
+
+class RemoveProjectElementTests(ManifestParseTestCase):
+  """Tests for <remove-project>."""
+
+  def test_remove_one_project(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <remove-project name="myproject" />
+</manifest>
+""")
+    self.assertEqual(manifest.projects, [])
+
+  def test_remove_one_project_one_remains(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <project name="yourproject" />
+  <remove-project name="myproject" />
+</manifest>
+""")
+
+    self.assertEqual(len(manifest.projects), 1)
+    self.assertEqual(manifest.projects[0].name, 'yourproject')
+
+  def test_remove_one_project_doesnt_exist(self):
+    with self.assertRaises(manifest_xml.ManifestParseError):
+      manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <remove-project name="myproject" />
+</manifest>
+""")
+      manifest.projects
+
+  def test_remove_one_optional_project_doesnt_exist(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <remove-project name="myproject" optional="true" />
+</manifest>
+""")
+    self.assertEqual(manifest.projects, [])
