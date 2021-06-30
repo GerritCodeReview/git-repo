@@ -96,6 +96,7 @@ following DTD:
 
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name  CDATA #REQUIRED>
+  <!ATTLIST remove-project optional  CDATA #IMPLIED>
 
   <!ELEMENT repo-hooks EMPTY>
   <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
@@ -392,6 +393,9 @@ replace the project with a different source.
 This element is mostly useful in a local manifest file, where
 the user can remove a project, and possibly replace it with their
 own definition.
+
+Attribute `optional`: Set to true to ignore remove-project elements with no
+matching `project` element.
 
 ### Element repo-hooks
 
