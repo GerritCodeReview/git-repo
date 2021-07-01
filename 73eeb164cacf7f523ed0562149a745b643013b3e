@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e8a4f69_35f0b8a4",
+        "filename": "git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T15:41:54Z",
+      "side": 1,
+      "message": "2 blank lines between module-level funcs/classes",
+      "revId": "73eeb164cacf7f523ed0562149a745b643013b3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c438fc0_83c6a333",
+        "filename": "git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T15:41:54Z",
+      "side": 1,
+      "message": "time.time() already returns an int, so why the int() cast ?",
+      "revId": "73eeb164cacf7f523ed0562149a745b643013b3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bf51034_bbb1fccd",
+        "filename": "git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T15:41:54Z",
+      "side": 1,
+      "message": "do you expect these config settings to be long-lived, or just as part of the rollout ?  if you want to keep them around \"forever\", need to update docs/internal-fs-layout.md.",
+      "range": {
+        "startLine": 357,
+        "startChar": 41,
+        "endLine": 357,
+        "endChar": 59
+      },
+      "revId": "73eeb164cacf7f523ed0562149a745b643013b3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a907a97_cc157ae1",
+        "filename": "git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T15:41:54Z",
+      "side": 1,
+      "message": "omit the \"\u003d\u003d True\"",
+      "revId": "73eeb164cacf7f523ed0562149a745b643013b3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec0f2fce_32ee0e3c",
+        "filename": "git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T15:41:54Z",
+      "side": 1,
+      "message": "needs update",
+      "revId": "73eeb164cacf7f523ed0562149a745b643013b3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
