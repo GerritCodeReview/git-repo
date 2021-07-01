@@ -499,7 +499,8 @@ later is required to fix a server side protocol bug.
     # Iteratively fetch missing and/or nested unregistered submodules
     previously_missing_set = set()
     while True:
-      self._ReloadManifest(manifest_name, load_local_manifests)
+      if manifest_name:
+        self._ReloadManifest(manifest_name, load_local_manifests)
       all_projects = self.GetProjects(args,
                                       missing_ok=True,
                                       submodules_ok=opt.fetch_submodules)
