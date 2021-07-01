@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2502484_eb81b582",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T16:20:12Z",
+      "side": 1,
+      "message": "rather than a repoconfig setting, i think it\u0027d make more sense as an attribute on the \u003cremove-project\u003e element.  optional\u003d\"true\" or something.",
+      "revId": "7a1e116bc464fc74d39bbba9227d1848090b6813",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
