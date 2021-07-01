@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffe6e380_13ac15a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T15:55:51Z",
+      "side": 1,
+      "message": "does this make sense to be part of `repo sync` ?  that\u0027d require people to always remember to use the flag, and forgetting just once would be expensive \u0026 irreparable.\n\nwhat if it were part of `repo init` and sticky as a result ?",
+      "revId": "d522b838ed2b91fb49dba25555fb904ab1f2d6ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
