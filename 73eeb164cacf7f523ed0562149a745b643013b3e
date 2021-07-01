@@ -71,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf09ba3_43c347a0",
+        "filename": "git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T16:21:24Z",
+      "side": 1,
+      "message": "ah, thanks",
+      "parentUuid": "6aaaffb5_b402065f",
+      "revId": "73eeb164cacf7f523ed0562149a745b643013b3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bf51034_bbb1fccd",
