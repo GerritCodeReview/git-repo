@@ -113,11 +113,11 @@ If no project is specified try to use current directory as a project.
               file=sys.stderr)
         sys.exit(1)
 
-      if not opt.revert and not dl.commits:
-        print('[%s] change %d/%d has already been merged'
-              % (project.name, change_id, ps_id),
-              file=sys.stderr)
-        continue
+      # if not opt.revert and not dl.commits:
+      #   print('[%s] change %d/%d has already been merged'
+      #         % (project.name, change_id, ps_id),
+      #         file=sys.stderr)
+      #   continue
 
       if len(dl.commits) > 1:
         print('[%s] %d/%d depends on %d unmerged changes:'
