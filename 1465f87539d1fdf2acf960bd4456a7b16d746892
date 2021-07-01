@@ -16,6 +16,24 @@
       "message": "With patchset 5, script converted to python.\nContent of manpages may be improved in the future, so I guess there\u0027s no blocker to merge this improvement, right?\nThank you!",
       "revId": "1465f87539d1fdf2acf960bd4456a7b16d746892",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5000b73d_c7cc5358",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "being in Python will also make it easier to do post-processing on the pages to fix the incorrect chapter output (assuming we can\u0027t make it work better with help2man directly)",
+      "parentUuid": "aa1a0f97_f8aca370",
+      "revId": "1465f87539d1fdf2acf960bd4456a7b16d746892",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

@@ -16,6 +16,285 @@
       "message": "Add License into script, and improve indent of description.\nHope this version can get merged into mainline. Thanks!",
       "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f45a23a3_ac45c31e",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "blank line between the module docstring and imports",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3011a7b_b4a0bfc8",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "use pathlib\n\n from pathlib import Path\n ...\n TOPDIR \u003d Path(__file__).resolve().parent.parent",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "869e41c5_ecef4270",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "i\u0027m inclined to go with \u0027man\u0027 in the root rather than under docs.  i think this better aligns with how most packages work.\n\n MANDIR \u003d TOPDIR / \u0027man\u0027",
+      "range": {
+        "startLine": 27,
+        "startChar": 32,
+        "endLine": 27,
+        "endChar": 45
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3d3e8ff_ab256974",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "use tempfile.TemporaryDirectory instead of hardcoding a path\n\n with tempfile.TemporaryDirectory() as tempdir:\n   ...do stuff w/tempdir...",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c64d167_0b193bb5",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "prob should search it first\n\n sys.path.insert(0, str(TOPDIR))",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f135baab_1d8a6d37",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "define a main() func to put everything into.  see release/sign-tag.py as an example.",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b60eb435_e77eed4a",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "use RepoSourceVersion()",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2a959e6_dcc18c1a",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "you can merge these\n\n sys.exit(\u0027...\u0027)",
+      "range": {
+        "startLine": 38,
+        "startChar": 1,
+        "endLine": 39,
+        "endChar": 13
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83a9795e_76ea6080",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "hmm, this is problematic when the current tree has a lot of random files (like tox virtualenvs).\n\nif we used `git archive` it\u0027d easily grab all the files, but only in the state as committed which isn\u0027t ideal for testing.\n\npassing symlinks\u003dTrue would help this.  also should pass ignore\u003dshutil.ignore_patterns(\u0027.*\u0027) to skip those hidden dirs.",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "263cd732_4fecf252",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "you use |allcmds| twice, so doesnt\u0027 seem like you really need a variable for it ?",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b869362f_e674f62a",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "use f-strings rather than + to construct these\n\n f\u0027repo {cmd} - manual page for repo {cmd}\u0027",
+      "range": {
+        "startLine": 47,
+        "startChar": 37,
+        "endLine": 47,
+        "endChar": 62
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "089f2536_679dc206",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "if you use a multiprocessing.Pool, that will take care of limiting by cpu count so we don\u0027t swamp smaller systems\n\n def worker(cmd):\n   subprocess.run(cmd)\n ...\n with multiprocessing.Pool() as pool:\n   pool.map(cmdlist)",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99886eae_b3dfb58d",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "you can do this in Python pretty easily\n\n for path in MANDIR.glob(\u0027*.1\u0027):\n   data \u003d path.read_text()\n   data \u003d re.sub(r\u0027^\\.IP\u0027, \u0027.SS\u0027, data, flags\u003dre.M)\n   path.write_text(data)",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ea136aa_6934d0c5",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "should be able to merge this into the suggested for loop above",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faa1496d_2bba05b6",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-01T19:57:16Z",
+      "side": 1,
+      "message": "use a .so instead to avoid symlinks\n\n Path(\u0027repo-branch.1\u0027).write_text(\u0027.so man1/repo-branches.1\u0027)",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 46
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
