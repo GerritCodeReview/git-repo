@@ -360,7 +360,7 @@ later is required to fix a server side protocol bug.
           partial_clone_exclude=self.manifest.PartialCloneExclude)
 
       output = buf.getvalue()
-      if opt.verbose and output:
+      if (opt.verbose or not success) and output:
         print('\n' + output.rstrip())
 
       if not success:
