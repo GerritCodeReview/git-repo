@@ -70,6 +70,8 @@ to indicate the remote ref to push changes to via 'repo upload'.
                  help='output manifest in JSON format (experimental)')
     p.add_option('--pretty', default=False, action='store_true',
                  help='format output for humans to read')
+    p.add_option('--no-local-manifests', default=False, action='store_true',
+                 dest='ignore_local_manifests', help='ignore local manifests')
     p.add_option('-o', '--output-file',
                  dest='output_file',
                  default='-',
@@ -85,6 +87,9 @@ to indicate the remote ref to push changes to via 'repo upload'.
       fd = sys.stdout
     else:
       fd = open(opt.output_file, 'w')
+
+    self.manifest.SetUseLocalManifests(not opt.ignore_local_manifests)
+
     if opt.json:
       print('warning: --json is experimental!', file=sys.stderr)
       doc = self.manifest.ToDict(peg_rev=opt.peg_rev,
