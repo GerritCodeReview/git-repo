@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e54a243_2d5e49c7",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f45a23a3_ac45c31e",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3011a7b_b4a0bfc8",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-07-01T19:57:16Z",
       "side": 1,
       "message": "use pathlib\n\n from pathlib import Path\n ...\n TOPDIR \u003d Path(__file__).resolve().parent.parent",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e5df6f5_ca1244fa",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3011a7b_b4a0bfc8",
       "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -75,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4065f7cc_af1826d2",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "869e41c5_ecef4270",
+      "range": {
+        "startLine": 27,
+        "startChar": 32,
+        "endLine": 27,
+        "endChar": 45
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3d3e8ff_ab256974",
@@ -88,6 +148,24 @@
       "writtenOn": "2021-07-01T19:57:16Z",
       "side": 1,
       "message": "use tempfile.TemporaryDirectory instead of hardcoding a path\n\n with tempfile.TemporaryDirectory() as tempdir:\n   ...do stuff w/tempdir...",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69211bca_154a05ab",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3d3e8ff_ab256974",
       "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -109,6 +187,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9260a637_35060e45",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c64d167_0b193bb5",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f135baab_1d8a6d37",
@@ -126,6 +222,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83a151f3_5a13a873",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f135baab_1d8a6d37",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b60eb435_e77eed4a",
@@ -139,6 +253,24 @@
       "writtenOn": "2021-07-01T19:57:16Z",
       "side": 1,
       "message": "use RepoSourceVersion()",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9aeca24_49b49a97",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b60eb435_e77eed4a",
       "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -166,6 +298,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bedb526_72ff739c",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2a959e6_dcc18c1a",
+      "range": {
+        "startLine": 38,
+        "startChar": 1,
+        "endLine": 39,
+        "endChar": 13
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83a9795e_76ea6080",
@@ -183,6 +339,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d18503d_06fa4fd0",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "I like \"git archive\" idea. So just implemented. Thanks for the advice!",
+      "parentUuid": "83a9795e_76ea6080",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "263cd732_4fecf252",
@@ -196,6 +370,24 @@
       "writtenOn": "2021-07-01T19:57:16Z",
       "side": 1,
       "message": "you use |allcmds| twice, so doesnt\u0027 seem like you really need a variable for it ?",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa505f39_a7a8d731",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "263cd732_4fecf252",
       "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -223,6 +415,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78e1ba8d_e28814e7",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b869362f_e674f62a",
+      "range": {
+        "startLine": 47,
+        "startChar": 37,
+        "endLine": 47,
+        "endChar": 62
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "089f2536_679dc206",
@@ -236,6 +452,24 @@
       "writtenOn": "2021-07-01T19:57:16Z",
       "side": 1,
       "message": "if you use a multiprocessing.Pool, that will take care of limiting by cpu count so we don\u0027t swamp smaller systems\n\n def worker(cmd):\n   subprocess.run(cmd)\n ...\n with multiprocessing.Pool() as pool:\n   pool.map(cmdlist)",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8abff910_254cc174",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "089f2536_679dc206",
       "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -257,6 +491,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88c0bd45_5634b0d2",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99886eae_b3dfb58d",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5ea136aa_6934d0c5",
@@ -274,6 +526,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "058e207a_a47449eb",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5ea136aa_6934d0c5",
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "faa1496d_2bba05b6",
@@ -287,6 +557,30 @@
       "writtenOn": "2021-07-01T19:57:16Z",
       "side": 1,
       "message": "use a .so instead to avoid symlinks\n\n Path(\u0027repo-branch.1\u0027).write_text(\u0027.so man1/repo-branches.1\u0027)",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 46
+      },
+      "revId": "6395e84a35306b96cb5bbb3ec712564296842d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f75743_91da295e",
+        "filename": "release/update-manpages",
+        "patchSetId": 6
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-02T11:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "faa1496d_2bba05b6",
       "range": {
         "startLine": 63,
         "startChar": 0,
