@@ -16,6 +16,23 @@
       "message": "I\u0027m not sure if bare LFS repositories will still be broken, but breaking all LFS repositories is pretty bad. Shouldn\u0027t the select few who use bare repositories do something locally instead of breaking it for everyone on LFS?",
       "revId": "6d3d2ef60049f05c62314073fb66099389317412",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33354758_e93e682a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1138291
+      },
+      "writtenOn": "2021-07-03T02:35:38Z",
+      "side": 1,
+      "message": "Verified that LFS repositories sync in their entirety after this change.",
+      "revId": "6d3d2ef60049f05c62314073fb66099389317412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
