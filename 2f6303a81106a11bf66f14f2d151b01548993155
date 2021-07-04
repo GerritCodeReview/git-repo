@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91208be0_e9353cab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-04T02:31:15Z",
+      "side": 1,
+      "message": "no longer relevant ?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 64
+      },
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13bc0496_1a191850",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-04T02:31:15Z",
+      "side": 1,
+      "message": "can you add a unittest too ?",
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3cc6611_8b32a45d",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-04T02:31:15Z",
+      "side": 1,
+      "message": "copy \u0026 paste error",
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e0ee4d8_88f6ac87",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-04T02:31:15Z",
+      "side": 1,
+      "message": "period at the end of sentences",
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
