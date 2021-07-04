@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de2e36e0_67a28138",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21fb1ec3_61210655",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "abf141d1_401136ef",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-07-04T03:02:18Z",
       "side": 1,
       "message": "for module constants like this, you want UPPERCASE names",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75246eea_9dcbb5fe",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abf141d1_401136ef",
       "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +122,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e1a2d57_a98271e3",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9ad51d1_9f180a30",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68783164_40b89c48",
@@ -99,6 +153,30 @@
       "writtenOn": "2021-07-04T03:02:18Z",
       "side": 1,
       "message": "these should be in module scope above",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 43
+      },
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7898d6b5_9017b202",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68783164_40b89c48",
       "range": {
         "startLine": 40,
         "startChar": 0,
@@ -126,6 +204,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3f720ab_719de75e",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d2e8a9f_2dc31418",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ba799e6_7ddb5869",
@@ -139,6 +235,24 @@
       "writtenOn": "2021-07-04T03:02:18Z",
       "side": 1,
       "message": "period at the end",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cca607bb_89008d33",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ba799e6_7ddb5869",
       "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -183,6 +297,48 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd08c684_0492b81a",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "882f4773_574d875b",
+      "range": {
+        "startLine": 61,
+        "startChar": 40,
+        "endLine": 61,
+        "endChar": 50
+      },
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2e4c098_e6fb46c8",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "313e41dc_c39b02ec",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3faf41d9_a872f5f1",
@@ -196,6 +352,24 @@
       "writtenOn": "2021-07-04T03:02:18Z",
       "side": 1,
       "message": "we try to avoid chdir in general as it\u0027s like a global variable.  you don\u0027t need to if you pass cwd\u003dtempdir here.\n\nyou should also pass check\u003dTrue as newer Python versions warn if it isn\u0027t explicitly specified.",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "076aa89c_5c69bc38",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Patchset 8 addressed all suggestions except this one.\nI tried patchset 9, but it didn\u0027t work well.\nCan kindly you help on this? Thank you!",
+      "parentUuid": "3faf41d9_a872f5f1",
       "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -217,6 +391,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a87f279_ee35ff76",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be4afc79_d160482a",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11e895e2_2d92d74a",
@@ -230,6 +422,24 @@
       "writtenOn": "2021-07-04T03:02:18Z",
       "side": 1,
       "message": "pass sys.argv[1:] here\n\nthen use main(argv) above\n\nthen you should do at the top of the main func:\n\n parser \u003d argparse.ArgumentParser(description\u003d__doc__)\n _opts \u003d parser.parse_args(argv)\n\nthis will allow people to run `./release/update-manpages --help` and see what this thing is about.  currently if you try that the script just runs and the user has to view the source to find out what just happened.",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b03d255_6dac9b1d",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11e895e2_2d92d74a",
       "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

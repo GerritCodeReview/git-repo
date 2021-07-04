@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f87d904a_4a507e8f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-04T12:00:14Z",
+      "side": 1,
+      "message": "As feedbacked below, patchset 8 is lack of one improvement (but script runs well), and patchset 9 doesn\u0027t work well.\nSo I ask for help here. Thank you!",
+      "revId": "8cb1998a70348df90b642f807019b16feb86fa4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
