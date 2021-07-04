@@ -50,6 +50,24 @@
       "message": "the commit message needs to explain *why* we\u0027re reverting previous commits.  has something changed ?  we disabled these because people were having problems.",
       "revId": "6d3d2ef60049f05c62314073fb66099389317412",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17a9a518_e9600428",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1138291
+      },
+      "writtenOn": "2021-07-04T05:48:18Z",
+      "side": 1,
+      "message": "It does explain why, it broke LFS. Understandably those commits were introduced with full knowledge it breaks LFS but the reason behind it, breaking bare repositories, isn\u0027t sufficient enough a reason in my opinion. If the repositories being synced are empty then just, don\u0027t sync them if they have nothing in them?\n\nThe original decision to do that was made in 2016, could it not be reconsidered?",
+      "parentUuid": "e74db28a_9fd63796",
+      "revId": "6d3d2ef60049f05c62314073fb66099389317412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
