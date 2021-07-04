@@ -33,6 +33,23 @@
       "message": "Verified that LFS repositories sync in their entirety after this change.",
       "revId": "6d3d2ef60049f05c62314073fb66099389317412",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e74db28a_9fd63796",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-04T03:14:37Z",
+      "side": 1,
+      "message": "the commit message needs to explain *why* we\u0027re reverting previous commits.  has something changed ?  we disabled these because people were having problems.",
+      "revId": "6d3d2ef60049f05c62314073fb66099389317412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
