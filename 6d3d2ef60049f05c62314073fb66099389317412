@@ -68,6 +68,24 @@
       "parentUuid": "e74db28a_9fd63796",
       "revId": "6d3d2ef60049f05c62314073fb66099389317412",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500b97da_41e580c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1138291
+      },
+      "writtenOn": "2021-07-04T05:49:51Z",
+      "side": 1,
+      "message": "Or do you mean you want the gist of this comment in the commit message?",
+      "parentUuid": "17a9a518_e9600428",
+      "revId": "6d3d2ef60049f05c62314073fb66099389317412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
