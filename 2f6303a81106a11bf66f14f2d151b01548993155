@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e35caa62_e1c216ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:24:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91208be0_e9353cab",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 64
+      },
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "13bc0496_1a191850",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -37,6 +61,24 @@
       "writtenOn": "2021-07-04T02:31:15Z",
       "side": 1,
       "message": "can you add a unittest too ?",
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce42fb7_2e741e1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:24:24Z",
+      "side": 1,
+      "message": "Any pointers as to which tests would be relevant here? I admittedly haven\u0027t looked at the unit tests at all, but I\u0027m not seeing anything specific to remove-project or local manifests.",
+      "parentUuid": "13bc0496_1a191850",
       "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2249be8a_15397d9d",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:24:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c3cc6611_8b32a45d",
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e0ee4d8_88f6ac87",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-07-04T02:31:15Z",
       "side": 1,
       "message": "period at the end of sentences",
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "756101b5_67703efc",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:24:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e0ee4d8_88f6ac87",
       "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
