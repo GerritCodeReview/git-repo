@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a1459b6_860ffc41",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:31:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b1b2e30_9b5b006f",
+      "revId": "5155a2a13886f27596d8a03b0d6ee5215881a6a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a4e1627_2deefe8a",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-07-04T03:11:48Z",
       "side": 1,
       "message": "\"decouple\"",
+      "range": {
+        "startLine": 16,
+        "startChar": 50,
+        "endLine": 16,
+        "endChar": 59
+      },
+      "revId": "5155a2a13886f27596d8a03b0d6ee5215881a6a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb455167_7aadde57",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:31:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a4e1627_2deefe8a",
       "range": {
         "startLine": 16,
         "startChar": 50,
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dee46d25_cd020b74",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:31:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ca76341_577dbb57",
+      "revId": "5155a2a13886f27596d8a03b0d6ee5215881a6a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff7ff6de_ae983ad0",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-07-04T03:11:48Z",
       "side": 1,
       "message": "how about \"--no-local-manifests\" ?  that seems to be more inline with our existing --no-xxx conventions.\n\nyou\u0027ll want to set dest\u003d\u0027local_manifests\u0027 or something similar to avoid negative variable names.",
+      "revId": "5155a2a13886f27596d8a03b0d6ee5215881a6a8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64c27b39_052dc009",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-05T20:31:03Z",
+      "side": 1,
+      "message": "I\u0027ll name the dest `ignore_local_manifests`.  `not opt.local_manifests` feels like it\u0027d be easy to misread.",
+      "parentUuid": "ff7ff6de_ae983ad0",
       "revId": "5155a2a13886f27596d8a03b0d6ee5215881a6a8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
