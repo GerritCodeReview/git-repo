@@ -34,6 +34,24 @@
       "parentUuid": "ffe6e380_13ac15a4",
       "revId": "d522b838ed2b91fb49dba25555fb904ab1f2d6ac",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd65d79d_f280b8ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-06T02:12:11Z",
+      "side": 1,
+      "message": "the manifest_xml.py::XmlManifest class provides simple config settings so you don\u0027t need to access it directly.  look for \"repo.clonebundle\" as examples.\n\nthe current sync logic is meant to ignore clone-depth\u003d setting from the manifest:\nhttps://gerrit.googlesource.com/git-repo/+/9bc422f1301a54aaabc6ac279989970c4b6f5137\n\nwe also need to make sure to handle manifests that specify a specific revision:\nhttps://gerrit.googlesource.com/git-repo/+/6c5944606af3c52626745b5256e9e5f0d5c362a2\n\notherwise, respecting the depth option specified at repo init time should be fine w/out a specific command line option.",
+      "parentUuid": "e9e69a34_12cdebc6",
+      "revId": "d522b838ed2b91fb49dba25555fb904ab1f2d6ac",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
