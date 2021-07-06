@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31fa7da3_86a0ac8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-06T02:21:23Z",
+      "side": 1,
+      "message": "look at tests/test_manifest_xml.py.  i don\u0027t think you need local manifests to verify this ... i think \u003cremove-project\u003e in a single manifest would work.  normally it wouldn\u0027t make sense, but for testing purposes, it should be OK.",
+      "parentUuid": "4ce42fb7_2e741e1c",
+      "revId": "2f6303a81106a11bf66f14f2d151b01548993155",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3cc6611_8b32a45d",
         "filename": "docs/manifest-format.md",
         "patchSetId": 4
