@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d456b731_8184d0d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-07T04:37:56Z",
+      "side": 1,
+      "message": "Hi Mike,\n  This is a cut at printing friendly error messages and logging critical error\n  messages via trace event logs and not halting init or sync for fatal errors and\n  fall back to sync\u0027ing as a non superproject sync. PTAL. Thanks much.",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
