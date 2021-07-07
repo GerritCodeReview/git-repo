@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffaf82b9_f428c3fd",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-07T21:06:25Z",
+      "side": 0,
+      "message": "Should we create a new flag or can we make fast-fail option in repo init also? (if so, can or should fast-fail be a global option?)",
+      "revId": "58929732123780497ba08ed9c2d24f4bc65971a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

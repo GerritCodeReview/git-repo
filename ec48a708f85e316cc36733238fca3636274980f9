@@ -16,6 +16,57 @@
       "message": "Hi Mike,\n  This is a cut at printing friendly error messages and logging critical error\n  messages via trace event logs and not halting init or sync for fatal errors and\n  fall back to sync\u0027ing as a non superproject sync. PTAL. Thanks much.",
       "revId": "ec48a708f85e316cc36733238fca3636274980f9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "effa3582_f3ea3aff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-07T21:06:25Z",
+      "side": 1,
+      "message": "Hi Amith and Mike,\n  Would appreciate your comments on my comments. Thanks much.",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8d40c5e_dfb4f04c",
+        "filename": "git_superproject.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-07T21:06:25Z",
+      "side": 1,
+      "message": "As we are logging Init and Fetch failures (or whenever we do a trace log of an error, should that error be non-fatal? Here as well as other locations below).",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f55314c_fcff9ae9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-07T21:06:25Z",
+      "side": 1,
+      "message": "should we create a new flag for superproject failures? Thanks",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
