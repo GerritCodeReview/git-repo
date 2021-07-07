@@ -100,8 +100,12 @@ to update the working directory files.
                                                  quiet=opt.quiet)
     sync_result = superproject.Sync()
     if not sync_result.success:
-      print('error: git update of superproject failed', file=sys.stderr)
-      if sync_result.fatal:
+      print('warning: git update of superproject failed, repo sync will not '
+            'use superproject to fetch source; while this error is not fatal, '
+            'and you can continue to run repo sync, please run repo init with '
+            'the --no-use-superproject option to stop seeing this warning',
+            file=sys.stderr)
+      if sync_result.fatal and opt.use_superproject is not None:
         sys.exit(1)
 
   def _SyncManifest(self, opt):
