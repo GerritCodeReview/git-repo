@@ -309,10 +309,11 @@ later is required to fix a server side protocol bug.
     if manifest_path:
       self._ReloadManifest(manifest_path, load_local_manifests)
     else:
-      print('error: Update of revsionId from superproject has failed. '
-            'Please resync with --no-use-superproject option',
+      print('warning: Update of revisionId from superproject has failed, '
+            'repo sync will not use superproject to fetch the source. ',
+            'Please resync with the --no-use-superproject option to avoid this repo warning.',
             file=sys.stderr)
-      if update_result.fatal:
+      if update_result.fatal and opt.use_superproject is not None:
         sys.exit(1)
     return manifest_path
 
