@@ -110,6 +110,8 @@ credentials.
 
 By default, all projects will be synced. The --fail-fast option can be used
 to halt syncing as soon as possible when the first project fails to sync.
+This option will also halt syncing if getting commit ids for superproject
+fails fatally.
 
 The --force-sync option can be used to overwrite existing git
 directories if they have previously been linked to a different
@@ -309,10 +311,10 @@ later is required to fix a server side protocol bug.
     if manifest_path:
       self._ReloadManifest(manifest_path, load_local_manifests)
     else:
-      print('error: Update of revsionId from superproject has failed. '
-            'Please resync with --no-use-superproject option',
+      print('warning: Update of revsionId from superproject has failed. '
+            'Please resync with --no-use-superproject option to avoid the repo warning.',
             file=sys.stderr)
-      if update_result.fatal:
+      if update_result.fatal and opt.fail_fast:
         sys.exit(1)
     return manifest_path
 
