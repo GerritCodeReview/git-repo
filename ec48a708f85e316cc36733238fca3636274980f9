@@ -54,6 +54,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7c5d848_cd0e6dd0",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1029192
+      },
+      "writtenOn": "2021-07-08T16:55:16Z",
+      "side": 1,
+      "message": "instead of \"... while this error is not fatal and you can continue to run repo sync please ...\" use \"... while this error is not fatal, and you can continue to run repo sync, please ...\"",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11c6596d_534c19a7",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1029192
+      },
+      "writtenOn": "2021-07-08T16:55:16Z",
+      "side": 1,
+      "message": "instead of \"... to avoid the repo warning\" use \"... to stop seeing this warning\"",
+      "range": {
+        "startLine": 106,
+        "startChar": 55,
+        "endLine": 106,
+        "endChar": 58
+      },
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f55314c_fcff9ae9",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -65,6 +105,29 @@
       "writtenOn": "2021-07-07T21:06:25Z",
       "side": 1,
       "message": "should we create a new flag for superproject failures? Thanks",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee97a71d_50a88c8b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 1029192
+      },
+      "writtenOn": "2021-07-08T16:55:16Z",
+      "side": 1,
+      "message": "instead of \"the\" use \"this\"\n\nShould we also update this to say\n\n\"warning: Update of revisionId from superproject has failed, repo sync will not use superproject to fetch the source. Please resync with the --no-use-superproject option to avoid this repo warning\"\n\n?",
+      "range": {
+        "startLine": 315,
+        "startChar": 70,
+        "endLine": 315,
+        "endChar": 73
+      },
       "revId": "ec48a708f85e316cc36733238fca3636274980f9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
