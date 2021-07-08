@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "931d9a24_a5e56709",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-08T06:14:15Z",
+      "side": 1,
+      "message": "you\u0027ll want to add Verified+1 once you\u0027re ready to merge",
+      "revId": "93eaad6797e9795d49214d8a781cf0fba7ecae7b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
