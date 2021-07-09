@@ -70,6 +70,24 @@
       "parentUuid": "8fb9eff1_72873c85",
       "revId": "58929732123780497ba08ed9c2d24f4bc65971a1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa4d6b9c_6e3eaebf",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-09T21:55:02Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "6b5bb766_e8ade144",
+      "revId": "58929732123780497ba08ed9c2d24f4bc65971a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

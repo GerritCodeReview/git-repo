@@ -52,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84a43e35_652a4048",
+        "filename": "git_superproject.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-09T21:55:02Z",
+      "side": 1,
+      "message": "Will make the change in a different CL (if needed after talking with the team).",
+      "parentUuid": "c8d40c5e_dfb4f04c",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7c5d848_cd0e6dd0",
@@ -147,6 +165,24 @@
       "writtenOn": "2021-07-07T21:06:25Z",
       "side": 1,
       "message": "should we create a new flag for superproject failures? Thanks",
+      "revId": "ec48a708f85e316cc36733238fca3636274980f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d52992e_bd70baba",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-09T21:55:02Z",
+      "side": 1,
+      "message": "When --use-superproject is specified on the command line it will exit for fatal errors.\n\nDone",
+      "parentUuid": "1f55314c_fcff9ae9",
       "revId": "ec48a708f85e316cc36733238fca3636274980f9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
