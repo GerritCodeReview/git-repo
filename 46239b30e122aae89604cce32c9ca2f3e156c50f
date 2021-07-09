@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99b723de_c575c4c3",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-09T01:13:04Z",
+      "side": 1,
+      "message": "the reason for the msg\u003d pattern in other places is because we would use the message more than once.  you don\u0027t do that here.  you should just inline it if it\u0027s only used once.",
+      "revId": "46239b30e122aae89604cce32c9ca2f3e156c50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4135be50_32d45d60",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-09T01:13:04Z",
+      "side": 1,
+      "message": "the parens aren\u0027t needed for single lines like this",
+      "revId": "46239b30e122aae89604cce32c9ca2f3e156c50f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
