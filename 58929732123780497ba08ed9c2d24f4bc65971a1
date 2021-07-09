@@ -52,6 +52,24 @@
       "parentUuid": "662d0fec_548ef221",
       "revId": "58929732123780497ba08ed9c2d24f4bc65971a1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b5bb766_e8ade144",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-09T13:24:23Z",
+      "side": 0,
+      "message": "we know whether the setting is coming from the user or from the system, so we can change behavior based on that",
+      "parentUuid": "8fb9eff1_72873c85",
+      "revId": "58929732123780497ba08ed9c2d24f4bc65971a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
