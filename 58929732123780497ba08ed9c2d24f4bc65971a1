@@ -34,6 +34,24 @@
       "parentUuid": "ffaf82b9_f428c3fd",
       "revId": "58929732123780497ba08ed9c2d24f4bc65971a1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8fb9eff1_72873c85",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-09T04:23:11Z",
+      "side": 0,
+      "message": "My understanding is, we are going to enable superproject by pushing config. User doesn\u0027t know that they are using superproject. Because of that reason, it was suggested that user\u0027s shouldn\u0027t be impacted.",
+      "parentUuid": "662d0fec_548ef221",
+      "revId": "58929732123780497ba08ed9c2d24f4bc65971a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
