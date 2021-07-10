@@ -105,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61a7afda_5e6a557f",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-10T05:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7d587d1_8ca03aac",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9ad51d1_9f180a30",
@@ -388,6 +406,24 @@
       "side": 1,
       "message": "i think the issue is with your callback\n\n  def worker(cmd, **kwargs):\n -  subprocess.run(cmd, kwargs)\n +  subprocess.run(cmd, **kwargs)\n\nyou\u0027ll need to delete shell\u003dTrue too",
       "parentUuid": "076aa89c_5c69bc38",
+      "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "297445fc_13663a2d",
+        "filename": "release/update-manpages",
+        "patchSetId": 7
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-10T05:55:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9fec736_e4274b87",
       "revId": "601ce94d5acab8d3ea03df6126f63a6af548418c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
