@@ -33,6 +33,24 @@
       "message": "Can the commit message say a little more about the issue? I.e., under what conditions does it occur, what is the symptom, and how does this change fix it?\n\nAlternatively, if it\u0027s straightforward to include a test illustrating the problem, that\u0027s even better.",
       "revId": "9d965200ebd66adf3f7c23028fa6ebffe23573f5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d9b7f6_5c05f161",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-07-13T22:01:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed420afe_11d4e6e9",
+      "revId": "9d965200ebd66adf3f7c23028fa6ebffe23573f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
