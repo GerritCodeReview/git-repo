@@ -960,7 +960,7 @@ later is required to fix a server side protocol bug.
     if git_superproject.UseSuperproject(opt, self.manifest):
       new_manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests)
       if not new_manifest_name:
-        manifest_name = new_manifest_name
+        manifest_name = opt.manifest_name
 
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
