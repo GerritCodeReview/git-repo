@@ -959,9 +959,7 @@ later is required to fix a server side protocol bug.
 
     load_local_manifests = not self.manifest.HasLocalManifests
     if git_superproject.UseSuperproject(opt, self.manifest):
-      new_manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests)
-      if not new_manifest_name:
-        manifest_name = opt.manifest_name
+      manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests) or opt.manifest_name
 
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
