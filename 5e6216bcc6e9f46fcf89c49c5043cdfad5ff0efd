@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d889bf_e5f6a8e3",
+        "filename": "release/update-manpages",
+        "patchSetId": 11
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-16T07:05:42Z",
+      "side": 1,
+      "message": "hanging indent like this should be 4 space rather than 2",
+      "revId": "5e6216bcc6e9f46fcf89c49c5043cdfad5ff0efd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
