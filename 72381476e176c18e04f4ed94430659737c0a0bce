@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a268d280_9a634dff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-16T07:24:01Z",
+      "side": 1,
+      "message": "won\u0027t this get checkouts into a bad state ?  if you\u0027re checked out to one commit, then call `git reset` to a diff one, it will mess with the index.\n\n`git clone --no-checkout` works because it\u0027s only the initial checkout operation.  `repo sync` is like both `git clone` \u0026 `git pull`, but --no-checkout only makes sense with the former operation, not the latter.",
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8764f96_99c1c881",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-16T07:24:01Z",
+      "side": 1,
+      "message": "we don\u0027t want negative variables as it makes code hard to read.  you can invert this with action\u003dstore_false and default\u003dTrue.",
+      "range": {
+        "startLine": 213,
+        "startChar": 23,
+        "endLine": 213,
+        "endChar": 34
+      },
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
