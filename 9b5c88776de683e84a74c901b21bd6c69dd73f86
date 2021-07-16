@@ -16,6 +16,24 @@
       "message": "resolved the last comment, and added review info into footer of commit-msg.\nthanks!",
       "revId": "9b5c88776de683e84a74c901b21bd6c69dd73f86",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce02dd50_42b3290e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-16T16:04:59Z",
+      "side": 1,
+      "message": "Gerrit normally takes care of filling out those values so you don\u0027t have to\n\nyou\u0027ll want to mark this Verified+1 so we can merge it",
+      "parentUuid": "4767ebc6_06622332",
+      "revId": "9b5c88776de683e84a74c901b21bd6c69dd73f86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
