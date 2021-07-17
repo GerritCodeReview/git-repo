@@ -33,6 +33,40 @@
       "message": "..",
       "revId": "98d2360188364844f03e878619b1fcd9f119c486",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963604fb_48ec221a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-17T05:10:33Z",
+      "side": 1,
+      "message": "please update docs/manifest-format.md and add unittests",
+      "revId": "98d2360188364844f03e878619b1fcd9f119c486",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04d9df89_c891c8d7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-17T05:10:33Z",
+      "side": 1,
+      "message": "this doesn\u0027t work well if |path| is omitted and |name| matches more than one project.  i think you need to assert that, if |path| is omitted, then |name| only matches one project.",
+      "revId": "98d2360188364844f03e878619b1fcd9f119c486",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
