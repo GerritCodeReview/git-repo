@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import contextlib
+from datetime import datetime
 import errno
 from http.client import HTTPException
 import json
@@ -261,6 +262,18 @@ class GitConfig(object):
       b = Branch(self, name)
       self._branches[b.name] = b
     return b
+
+  def GetSyncState(self):
+    """Get the state sync object."""
+    return self._syncState
+
+  def SetSyncState(self, sync_state):
+    """Update Config's SyncState object with the new |sync_state| object.
+
+    Args:
+      sync_state: Current SyncState object.
+    """
+    self._syncState = sync_state
 
   def GetSubSections(self, section):
     """List all subsection names matching $section.*.*
@@ -716,4 +729,54 @@ class Branch(object):
 
   def _Get(self, key, all_keys=False):
     key = 'branch.%s.%s' % (self.name, key)
+    return self._config.GetString(key, all_keys=all_keys)
+
+
+class SyncState(object):
+  """Configuration options related Sync object.
+  """
+
+  def __init__(self, config, options, superproject):
+    """Initializes SyncState.
+
+    Saves argv, |options|, superproject and repo.*, branch.* and remote.*
+    parameters from |config| object. It also saves current time as synctime.
+
+    This object is versioned.
+
+    Args:
+      config: GitConfig object to store all options.
+      options: Options passed to sync returned from optparse. See _Options().
+      superproject: A dictionary of superproject configuration parameters.
+    """
+    self._config = config
+    now = datetime.utcnow()
+    self._Set('synctime', now.strftime('%d/%m/%Y %H:%M:%S'))
+    self._Set('version', '1.0')
+    self._Set('argv', sys.argv)
+    self._SetDictionary(superproject)
+    for key, value in options.__dict__.items():
+      self._Set(key, value)
+    config_items = config.DumpConfigDict().items()
+    self._SetDictionary({k: v for k, v in config_items if k.startswith('repo.')})
+    self._SetDictionary({k: v for k, v in config_items if k.startswith('branch.')})
+    self._SetDictionary({k: v for k, v in config_items if k.startswith('remote.')})
+
+  def _SetDictionary(self, config_dict):
+    for key, value in config_dict.items():
+      self._Set(key, value)
+
+  def _Set(self, key, value):
+    if value is None:
+      return None
+    key = 'syncstate.%s' % (key)
+    if isinstance(value, str):
+      return self._config.SetString(key, value)
+    elif isinstance(value, bool):
+      return self._config.SetBoolean(key, value)
+    else:
+      return self._config.SetString(key, str(value))
+
+  def _Get(self, key, all_keys=False):
+    key = 'syncstate.%s' % (key)
     return self._config.GetString(key, all_keys=all_keys)
