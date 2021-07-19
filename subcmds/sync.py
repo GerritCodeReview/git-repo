@@ -46,7 +46,7 @@ except ImportError:
 
 import event_log
 from git_command import git_require
-from git_config import GetUrlCookieFile
+from git_config import GetUrlCookieFile, SyncState
 from git_refs import R_HEADS, HEAD
 import git_superproject
 import gitc_utils
@@ -958,7 +958,8 @@ later is required to fix a server side protocol bug.
       self._UpdateManifestProject(opt, mp, manifest_name)
 
     load_local_manifests = not self.manifest.HasLocalManifests
-    if git_superproject.UseSuperproject(opt, self.manifest):
+    self.use_superproject = git_superproject.UseSuperproject(opt, self.manifest)
+    if self.use_superproject:
       manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests) or opt.manifest_name
 
     if self.gitc_manifest:
@@ -1072,6 +1073,15 @@ later is required to fix a server side protocol bug.
       print('Try re-running with "-j1 --fail-fast" to exit at the first error.',
             file=sys.stderr)
       sys.exit(1)
+
+    # Log the previous sync state from the config.
+    self.git_event_log.AddSyncStateEvents(mp.config.DumpConfigDict(), 'previous_sync_state')
+
+    # Update and log with the new sync state.
+    superproject = self.use_superproject if self.use_superproject else False
+    sync_state = SyncState(config=mp.config, options=opt, superproject=superproject)
+    mp.config.SetSyncState(sync_state)
+    self.git_event_log.AddSyncStateEvents(mp.config.DumpConfigDict(), 'current_sync_state')
 
     if not opt.quiet:
       print('repo sync has finished successfully.')
