@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from datetime import datetime
 import errno
 import functools
 import http.cookiejar as cookielib
@@ -46,7 +47,7 @@ except ImportError:
 
 import event_log
 from git_command import git_require
-from git_config import GetUrlCookieFile
+from git_config import GetUrlCookieFile, SyncState
 from git_refs import R_HEADS, HEAD
 import git_superproject
 import gitc_utils
@@ -1072,6 +1073,18 @@ later is required to fix a server side protocol bug.
       print('Try re-running with "-j1 --fail-fast" to exit at the first error.',
             file=sys.stderr)
       sys.exit(1)
+
+    # Log the previous sync state from the config.
+    self.git_event_log.DefParamSyncStateEvents(
+        mp.config.DumpConfigDict(), 'previous_sync_state')
+
+    # Update config with new sync state and log it
+    now = datetime.utcnow()
+    latest_sync_time = now.strftime("%d/%m/%Y %H:%M:%S")
+    sync_state = SyncState(opt, latest_sync_time)
+    mp.config.SetSyncState(sync_state)
+    self.git_event_log.DefParamSyncStateEvents(
+        mp.config.DumpConfigDict(), 'latest_sync_state')
 
     if not opt.quiet:
       print('repo sync has finished successfully.')

@@ -262,6 +262,18 @@ class GitConfig(object):
       self._branches[b.name] = b
     return b
 
+  def GetSyncState(self):
+    """Get the state of last sync."""
+    return self._syncState
+
+  def SetSyncState(self, sync_state):
+    """Update Config's SyncState object with the new |sync_state| object.
+
+    Args:
+      sync_state: Current sync_state object.
+    """
+    self._syncState = SyncState(self, options, sync_time)
+
   def GetSubSections(self, section):
     """List all subsection names matching $section.*.*
     """
@@ -716,4 +728,27 @@ class Branch(object):
 
   def _Get(self, key, all_keys=False):
     key = 'branch.%s.%s' % (self.name, key)
+    return self._config.GetString(key, all_keys=all_keys)
+
+
+class SyncState(object):
+  """Configuration options and command line parameters of sync."""
+
+  def __init__(self, config, options, sync_time):
+    self._config = config
+    self._Set('synctime', sync_time)
+    for opt, value in options.__dict__.items():
+      self._Set(opt, value)
+
+  def _Set(self, key, value):
+    key = 'syncstate.%s' % (key)
+    if isinstance(value, str):
+      return self._config.SetString(key, value)
+    elif isinstance(value, bool):
+      return self._config.SetBoolean(key, value)
+    else:
+      return self._config.SetString(key, str(value))
+
+  def _Get(self, key, all_keys=False):
+    key = 'syncstate.%s' % (key)
     return self._config.GetString(key, all_keys=all_keys)
