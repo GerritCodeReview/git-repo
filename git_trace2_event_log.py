@@ -144,6 +144,19 @@ class EventLog(object):
     command_event['subcommands'] = subcommands
     self._log.append(command_event)
 
+  def _LogConfigEvents(self, config, event_dict_name):
+    """Append a |event_dict_name| event for each config key in |config| to the current log.
+
+    Args:
+      config: Configuration dictionary
+      event_dict_name: Name of the event dictionary for items to be logged under.
+    """
+    for param, value in config.items():
+      event = self._CreateEventDict(event_dict_name)
+      event['param'] = param
+      event['value'] = value
+      self._log.append(event)
+
   def DefParamRepoEvents(self, config):
     """Append a 'def_param' event for each repo.* config key to the current log.
 
@@ -152,12 +165,18 @@ class EventLog(object):
     """
     # Only output the repo.* config parameters.
     repo_config = {k: v for k, v in config.items() if k.startswith('repo.')}
+    self._LogConfigEvents(repo_config, 'def_param')
 
-    for param, value in repo_config.items():
-      def_param_event = self._CreateEventDict('def_param')
-      def_param_event['param'] = param
-      def_param_event['value'] = value
-      self._log.append(def_param_event)
+  def AddSyncStateEvents(self, config, event_dict_name):
+    """Append a log event for each syncstate.* config key to the current log.
+
+    Args:
+      config: SyncState configuration dictionary
+      event_dict_name: Name of the event dictionary for items to be logged under.
+    """
+    # Only output syncstate.* config parameters.
+    sync_config = {k: v for k, v in config.items() if k.startswith('syncstate.')}
+    self._LogConfigEvents(sync_config, event_dict_name)
 
   def ErrorEvent(self, msg, fmt):
     """Append a 'error' event to the current log."""
