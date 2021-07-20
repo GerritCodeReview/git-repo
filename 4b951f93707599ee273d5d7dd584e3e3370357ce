@@ -16,6 +16,24 @@
       "message": "don\u0027t put spaces around the arg",
       "revId": "4b951f93707599ee273d5d7dd584e3e3370357ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "162cd4a3_652109f2",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-20T04:38:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4edfe0c5_0414c414",
+      "revId": "4b951f93707599ee273d5d7dd584e3e3370357ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
