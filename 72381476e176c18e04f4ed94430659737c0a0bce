@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fcd803af_1d0958dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-20T04:54:54Z",
+      "side": 1,
+      "message": "Yes, this is a challenging case to deal with.\n\nThe intent is to be able to update the state of HEAD without actually updating the working tree so as to provision the underlying source tree from elsewhere, including in non-clone scenarios.\n\nMy memory is a bit foggy on the behaviour of git-repo in this _doff() case, but does this not also touch the index or does the index get ignored here?  In this case, is it more reasonable to do a \u0027reset --soft\u0027 to deal with it? \n\nI seem to recall that there are some behaviours I found unexpected if we have something checked out (eg: I seem to recall that \u0027repo sync\u0027 will send you back to the new upstream HEAD?)\n\nAny suggestions on better approaches would be much appreciated.",
+      "parentUuid": "a268d280_9a634dff",
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8764f96_99c1c881",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -31,6 +49,30 @@
       "writtenOn": "2021-07-16T07:24:01Z",
       "side": 1,
       "message": "we don\u0027t want negative variables as it makes code hard to read.  you can invert this with action\u003dstore_false and default\u003dTrue.",
+      "range": {
+        "startLine": 213,
+        "startChar": 23,
+        "endLine": 213,
+        "endChar": 34
+      },
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "271f8871_13fa068d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-20T04:54:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8764f96_99c1c881",
       "range": {
         "startLine": 213,
         "startChar": 23,
