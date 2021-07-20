@@ -1971,6 +1971,7 @@ class Project(object):
         rev = self.GetRemote(self.remote.name).ToLocal(self.upstream)
         self.bare_git.rev_list('-1', '--missing=allow-any',
                                '%s^0' % rev, '--')
+        self.bare_git.merge_base('--is-ancestor', self.revisionExpr, rev)
       return True
     except GitError:
       # There is no such persistent revision. We have to fetch it.
