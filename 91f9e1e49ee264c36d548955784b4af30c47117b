@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ca6fb2e_bf4cf52f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-20T20:59:02Z",
+      "side": 1,
+      "message": "This breaks the transitive property if if you don\u0027t do this and try to `repo init` in an existing checkout with the new code, you get the following error:\n```\njackneus@jneus:~/clean_chromiumos/.repo$ repo manifest\nfatal: remote cros already exists with different attributes\njackneus@jneus:~/clean_chromiumos/.repo$ repo init\nremote: Finding sources: 100% (1985/1985)\nremote: Total 1985 (delta 1229), reused 1977 (delta 1229)\nproject .repo/manifests/\nUpdating dca10b3c59..53ef3208f4\nFast-forward\n\nfatal: manifest \u0027default.xml\u0027 not available\nfatal: remote cros already exists with different attributes\n```\nWould appreciate any advice here.",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
