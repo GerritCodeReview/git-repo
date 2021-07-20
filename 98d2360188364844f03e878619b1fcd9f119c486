@@ -139,6 +139,24 @@
       "parentUuid": "f05509ee_03ed6b67",
       "revId": "98d2360188364844f03e878619b1fcd9f119c486",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cec9aab1_38c33d0a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-20T06:58:39Z",
+      "side": 1,
+      "message": "This actually seems like a good use case for some sort of `alias` for the initial project tag, in fact.",
+      "parentUuid": "18691e84_cc955f4d",
+      "revId": "98d2360188364844f03e878619b1fcd9f119c486",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
