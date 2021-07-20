@@ -52,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72485e34_69ecc413",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-20T04:37:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "963604fb_48ec221a",
+      "revId": "98d2360188364844f03e878619b1fcd9f119c486",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04d9df89_c891c8d7",
@@ -65,6 +83,24 @@
       "writtenOn": "2021-07-17T05:10:33Z",
       "side": 1,
       "message": "this doesn\u0027t work well if |path| is omitted and |name| matches more than one project.  i think you need to assert that, if |path| is omitted, then |name| only matches one project.",
+      "revId": "98d2360188364844f03e878619b1fcd9f119c486",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66bed4cb_0ad9a32f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-20T04:37:02Z",
+      "side": 1,
+      "message": "Which path are we referring to here? relpath? dest_path?",
+      "parentUuid": "04d9df89_c891c8d7",
       "revId": "98d2360188364844f03e878619b1fcd9f119c486",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
