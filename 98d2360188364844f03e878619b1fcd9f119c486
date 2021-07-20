@@ -121,6 +121,24 @@
       "parentUuid": "66bed4cb_0ad9a32f",
       "revId": "98d2360188364844f03e878619b1fcd9f119c486",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18691e84_cc955f4d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-07-20T05:24:42Z",
+      "side": 1,
+      "message": "Gotcha.  I\u0027ll take a look at the tests around this and see what can be done.  Will likely push another change this evening.",
+      "parentUuid": "f05509ee_03ed6b67",
+      "revId": "98d2360188364844f03e878619b1fcd9f119c486",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
