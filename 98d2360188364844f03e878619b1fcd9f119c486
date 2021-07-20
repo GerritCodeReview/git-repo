@@ -103,6 +103,24 @@
       "parentUuid": "04d9df89_c891c8d7",
       "revId": "98d2360188364844f03e878619b1fcd9f119c486",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f05509ee_03ed6b67",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-20T05:20:29Z",
+      "side": 1,
+      "message": "when writing |var|, i\u0027m referring to a variable.  so |path| is referring to line 847 above that is the \"path\" variable.\n\nmanifests can refer to the same remote project but to different local paths.  like:\n\n \u003cproject name\u003d\"chromiumos/chromite\" path\u003d\"chromite\"/\u003e\n \u003cproject name\u003d\"chromiumos/chromite\" path\u003d\"infra/chromite-HEAD\"/\u003e\n\nso if you tried to write this, it would match both of those, and things would blow up.\n\n \u003cextend-project name\u003d\"chromiumos/chromite\" dest-path\u003d\"blah\"/\u003e\n\nanother good unittest ;).",
+      "parentUuid": "66bed4cb_0ad9a32f",
+      "revId": "98d2360188364844f03e878619b1fcd9f119c486",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
