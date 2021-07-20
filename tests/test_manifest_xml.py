@@ -286,6 +286,25 @@ class XmlManifestTests(ManifestParseTestCase):
         '<superproject name="superproject"/>'
         '</manifest>')
 
+  def test_remote_annotations(self):
+    """Check remote settings."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost">
+    <annotation name="foo" value="bar"/>
+  </remote>
+</manifest>
+""")
+    self.assertEqual(manifest.remotes['test-remote'].annotations[0].name, 'foo')
+    self.assertEqual(manifest.remotes['test-remote'].annotations[0].value, 'bar')
+    self.assertEqual(
+        sort_attributes(manifest.ToXml().toxml()),
+        '<?xml version="1.0" ?><manifest>'
+        '<remote fetch="http://localhost" name="test-remote">'
+        '<annotation name="foo" value="bar"/>'
+        '</remote>'
+        '</manifest>')
+
 
 class IncludeElementTests(ManifestParseTestCase):
   """Tests for <include>."""
@@ -632,9 +651,17 @@ class RemoteElementTests(ManifestParseTestCase):
   def test_remote(self):
     """Check remote settings."""
     a = manifest_xml._XmlRemote(name='foo')
-    b = manifest_xml._XmlRemote(name='bar')
+    a.AddAnnotation('key1', 'value1', 'true')
+    b = manifest_xml._XmlRemote(name='foo')
+    b.AddAnnotation('key2', 'value1', 'true')
+    c = manifest_xml._XmlRemote(name='foo')
+    c.AddAnnotation('key1', 'value2', 'true')
+    d = manifest_xml._XmlRemote(name='foo')
+    d.AddAnnotation('key1', 'value1', 'false')
     self.assertEqual(a, a)
     self.assertNotEqual(a, b)
+    self.assertNotEqual(a, c)
+    self.assertNotEqual(a, d)
     self.assertNotEqual(a, manifest_xml._Default())
     self.assertNotEqual(a, 123)
     self.assertNotEqual(a, None)
