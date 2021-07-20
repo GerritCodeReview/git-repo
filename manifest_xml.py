@@ -25,7 +25,7 @@ import gitc_utils
 from git_config import GitConfig, IsId
 from git_refs import R_HEADS, HEAD
 import platform_utils
-from project import RemoteSpec, Project, MetaProject
+from project import _Annotation, RemoteSpec, Project, MetaProject
 from error import (ManifestParseError, ManifestInvalidPathError,
                    ManifestInvalidRevisionError)
 from wrapper import Wrapper
@@ -131,7 +131,6 @@ class _Default(object):
       return True
     return self.__dict__ != other.__dict__
 
-
 class _XmlRemote(object):
   def __init__(self,
                name,
@@ -149,16 +148,27 @@ class _XmlRemote(object):
     self.reviewUrl = review
     self.revision = revision
     self.resolvedFetchUrl = self._resolveFetchUrl()
+    self.annotations = []
+
+  def _annotations_eq(self, other):
+    # If one object doesn't have annotations, return true so as to not break
+    # existing checkouts.
+    if (len(self.__dict__.get('annotations', [])) == 0 or 
+      len(other.__dict__.get('annotations', [])) == 0):
+      return True
+    return sorted(self.annotations) == sorted(other.annotations)
+
+  def _dict_no_annotations(self):
+    return {k: v for k, v in self.__dict__.items() if k != 'annotations'}
 
   def __eq__(self, other):
     if not isinstance(other, _XmlRemote):
       return False
-    return self.__dict__ == other.__dict__
+    return (self._annotations_eq(other) and 
+      self._dict_no_annotations() == other._dict_no_annotations())
 
   def __ne__(self, other):
-    if not isinstance(other, _XmlRemote):
-      return True
-    return self.__dict__ != other.__dict__
+    return not self.__eq__(other)
 
   def _resolveFetchUrl(self):
     if self.fetchUrl is None:
@@ -191,6 +201,8 @@ class _XmlRemote(object):
                       orig_name=self.name,
                       fetchUrl=self.fetchUrl)
 
+  def AddAnnotation(self, name, value, keep):
+    self.annotations.append(_Annotation(name, value, keep))
 
 class XmlManifest(object):
   """manages the repo configuration file"""
@@ -299,6 +311,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       e.setAttribute('review', r.reviewUrl)
     if r.revision is not None:
       e.setAttribute('revision', r.revision)
+
+    for a in r.annotations:
+      if a.keep == "true":
+        ae = doc.createElement('annotation')
+        ae.setAttribute('name', a.name)
+        ae.setAttribute('value', a.value)
+        e.appendChild(ae)
 
   def _ParseList(self, field):
     """Parse fields that contain flattened lists.
@@ -995,7 +1014,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if revision == '':
       revision = None
     manifestUrl = self.manifestProject.config.GetString('remote.origin.url')
-    return _XmlRemote(name, alias, fetch, pushUrl, manifestUrl, review, revision)
+
+    remote = _XmlRemote(name, alias, fetch, pushUrl, manifestUrl, review, revision)
+
+    for n in node.childNodes:
+      if n.nodeName == 'annotation':
+        self._ParseAnnotation(remote, n)
+
+    return remote
 
   def _ParseDefault(self, node):
     """
@@ -1362,7 +1388,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       self._ValidateFilePaths('linkfile', src, dest)
       project.AddLinkFile(src, dest, self.topdir)
 
-  def _ParseAnnotation(self, project, node):
+  def _ParseAnnotation(self, element, node):
     name = self._reqatt(node, 'name')
     value = self._reqatt(node, 'value')
     try:
@@ -1372,7 +1398,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if keep != "true" and keep != "false":
       raise ManifestParseError('optional "keep" attribute must be '
                                '"true" or "false"')
-    project.AddAnnotation(name, value, keep)
+    element.AddAnnotation(name, value, keep)
 
   def _get_remote(self, node):
     name = node.getAttribute('remote')

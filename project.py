@@ -258,6 +258,19 @@ class _Annotation(object):
     self.value = value
     self.keep = keep
 
+  def __eq__(self, other):
+    if not isinstance(other, _Annotation):
+      return False
+    return self.__dict__ == other.__dict__
+
+  def __lt__(self, other):
+    if not isinstance(other, _Annotation):
+      raise ValueError('comparison is not between two _Annotation objects')
+    if self.name == other.name:
+      if self.value == other.value:
+        return self.keep < other.keep
+      return self.value < other.value
+    return self.name < other.name
 
 def _SafeExpandPath(base, subpath, skipfinal=False):
   """Make sure |subpath| is completely safe under |base|.
