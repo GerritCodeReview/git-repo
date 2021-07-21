@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "62525998_c4b14997",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "675872e0_255e0b3a",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "913f1739_5bb8552b",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-07-21T00:37:48Z",
       "side": 1,
       "message": "we shouldn\u0027t import _ prefixed things.  if you want to do this, it needs to be renamed to formalize.",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8333cc9_35ca7fd9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "913f1739_5bb8552b",
       "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -70,6 +106,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "749586be_dd3067f2",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 1,
+      "message": "Doh, turns out I just had a bug in this new code (_Annotation didn\u0027t have __eq__ so was just comparing memory addrs). Fixed, and simplified code a bunch.",
+      "parentUuid": "494080e1_ffac0497",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "41b984de_f811f635",
@@ -83,6 +137,24 @@
       "writtenOn": "2021-07-21T00:37:48Z",
       "side": 1,
       "message": "i think you can write this simpler:\n\n if (not self.__dict__.get(\u0027annotations\u0027) or\n     not other.__dict__.get(\u0027annotations\u0027)):\n\nalthough i\u0027m not sure why you need to go through __dict__ at all.  you always initialize annotations to [] above, so why wouldn\u0027t the attribute exist ?  should this check be even simpler ?\n\n if not self.annotations or not other.annotations:",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e977b060_9ec51686",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 1,
+      "message": "Moot point now, don\u0027t need this logic.",
+      "parentUuid": "41b984de_f811f635",
       "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -104,6 +176,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf6c125a_eae0e7dd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a29dff5f_aae3073f",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "732b6b85_1a376930",
@@ -117,6 +207,24 @@
       "writtenOn": "2021-07-21T00:37:48Z",
       "side": 1,
       "message": "use single quotes",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79adb818_8e43a4b2",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "732b6b85_1a376930",
       "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

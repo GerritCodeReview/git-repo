@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "704489e6_979f2b21",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "fa2be102_f8b01ffb",
+      "revId": "c34b91c9d80d6d6510c500cb8a8a9ee448963f09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3783b08b_2582289e",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f7390d1_953bddd3",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "3783b08b_2582289e",
+      "revId": "c34b91c9d80d6d6510c500cb8a8a9ee448963f09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d473c949_1e2f455c",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-07-21T00:37:48Z",
       "side": 0,
       "message": "keep 2 blank lines between module-level classes",
+      "revId": "c34b91c9d80d6d6510c500cb8a8a9ee448963f09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12145541_cd09135a",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-21T18:19:12Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "d473c949_1e2f455c",
       "revId": "c34b91c9d80d6d6510c500cb8a8a9ee448963f09",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
