@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "675872e0_255e0b3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 1,
+      "message": "you\u0027ll need to update docs/manifest-format.md too",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "913f1739_5bb8552b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 1,
+      "message": "we shouldn\u0027t import _ prefixed things.  if you want to do this, it needs to be renamed to formalize.",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4ca6fb2e_bf4cf52f",
         "filename": "manifest_xml.py",
         "patchSetId": 3
@@ -14,6 +48,75 @@
       "writtenOn": "2021-07-20T20:59:02Z",
       "side": 1,
       "message": "This breaks the transitive property if if you don\u0027t do this and try to `repo init` in an existing checkout with the new code, you get the following error:\n```\njackneus@jneus:~/clean_chromiumos/.repo$ repo manifest\nfatal: remote cros already exists with different attributes\njackneus@jneus:~/clean_chromiumos/.repo$ repo init\nremote: Finding sources: 100% (1985/1985)\nremote: Total 1985 (delta 1229), reused 1977 (delta 1229)\nproject .repo/manifests/\nUpdating dca10b3c59..53ef3208f4\nFast-forward\n\nfatal: manifest \u0027default.xml\u0027 not available\nfatal: remote cros already exists with different attributes\n```\nWould appreciate any advice here.",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "494080e1_ffac0497",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 1,
+      "message": "did you add attributes to the remote first ?  or are you seeing this error w/out any attributes on the remotes ?",
+      "parentUuid": "4ca6fb2e_bf4cf52f",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b984de_f811f635",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 1,
+      "message": "i think you can write this simpler:\n\n if (not self.__dict__.get(\u0027annotations\u0027) or\n     not other.__dict__.get(\u0027annotations\u0027)):\n\nalthough i\u0027m not sure why you need to go through __dict__ at all.  you always initialize annotations to [] above, so why wouldn\u0027t the attribute exist ?  should this check be even simpler ?\n\n if not self.annotations or not other.annotations:",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a29dff5f_aae3073f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 1,
+      "message": "indent should be aligned with ( above",
+      "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "732b6b85_1a376930",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 1,
+      "message": "use single quotes",
       "revId": "91f9e1e49ee264c36d548955784b4af30c47117b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

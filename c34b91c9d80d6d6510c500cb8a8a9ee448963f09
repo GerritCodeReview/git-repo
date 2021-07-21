@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa2be102_f8b01ffb",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 0,
+      "message": "keep 2 blank lines between module-level classes",
+      "revId": "c34b91c9d80d6d6510c500cb8a8a9ee448963f09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3783b08b_2582289e",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 0,
+      "message": "keep 2 blank lines between module-level classes",
+      "revId": "c34b91c9d80d6d6510c500cb8a8a9ee448963f09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d473c949_1e2f455c",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 642,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-21T00:37:48Z",
+      "side": 0,
+      "message": "keep 2 blank lines between module-level classes",
+      "revId": "c34b91c9d80d6d6510c500cb8a8a9ee448963f09",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
