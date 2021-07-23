@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66de147a_e5ebc904",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-23T17:59:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "484dcfac_d37b5478",
+      "range": {
+        "startLine": 353,
+        "startChar": 53,
+        "endLine": 353,
+        "endChar": 59
+      },
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ce226ab_a3f53709",
@@ -37,6 +61,24 @@
       "writtenOn": "2021-07-23T16:40:54Z",
       "side": 1,
       "message": "these methods are only used by __eq__.  i\u0027m inclined to inline them since the APIs aren\u0027t great for reuse.",
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "452c024d_292a57ed",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-23T17:59:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ce226ab_a3f53709",
       "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75729778_5d47f0f2",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-23T17:59:21Z",
+      "side": 1,
+      "message": "Switched to a blocky explicit compare between relevant fields.",
+      "parentUuid": "f75c23fe_15e405f8",
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fc2bd2ae_79525ce7",
@@ -71,6 +131,24 @@
       "writtenOn": "2021-07-23T16:40:54Z",
       "side": 1,
       "message": "i guess you need this just for sorting purposes.  should add a docstring explaining why it\u0027s here.  at face value, having a \u003c operator for annotations doesn\u0027t make sense.",
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04c873cd_e9cf685c",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-07-23T17:59:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fc2bd2ae_79525ce7",
       "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
