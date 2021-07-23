@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "484dcfac_d37b5478",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-23T16:40:54Z",
+      "side": 1,
+      "message": "while you\u0027re here, can you update this to `REPO__`",
+      "range": {
+        "startLine": 353,
+        "startChar": 53,
+        "endLine": 353,
+        "endChar": 59
+      },
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ce226ab_a3f53709",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-23T16:40:54Z",
+      "side": 1,
+      "message": "these methods are only used by __eq__.  i\u0027m inclined to inline them since the APIs aren\u0027t great for reuse.",
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f75c23fe_15e405f8",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-23T16:40:54Z",
+      "side": 1,
+      "message": "i know the use of __dict__ isn\u0027t coming from you.  so if we want to do it in a follow up CL, that\u0027s fine.\n\ni\u0027m not a fan of __dict__ for complicated classes.  for simple container objects with no other logic (e.g. what we have with Annotations now) it\u0027s fine, but it seems dangerous with more complicated ones.  if we were to add a private field for tracking internal state (e.g. self._foo), that would automatically be included in __dict__ which we don\u0027t want.\n\neven now, self.resolvedFetchUrl is a bit pointless to compare.  it\u0027s calculated from other object properties which we\u0027re comparing here.  also, i don\u0027t think comparing manifestUrl makes sense if i\u0027m understanding it correctly.  it\u0027ll always be the same.",
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc2bd2ae_79525ce7",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-23T16:40:54Z",
+      "side": 1,
+      "message": "i guess you need this just for sorting purposes.  should add a docstring explaining why it\u0027s here.  at face value, having a \u003c operator for annotations doesn\u0027t make sense.",
+      "revId": "5908531c1f20d2132b536a9dc13a603b90fdf115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
