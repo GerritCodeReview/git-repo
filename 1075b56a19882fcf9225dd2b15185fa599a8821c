@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94a5f8b6_aff91ebb",
+        "filename": "manifest_xml.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-23T18:01:04Z",
+      "side": 1,
+      "message": "this should also have \"and not path\"\n\nif name \u0026 path are specified, then you should only have one match",
+      "revId": "1075b56a19882fcf9225dd2b15185fa599a8821c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
