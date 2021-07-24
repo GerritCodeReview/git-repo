@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5b4708f_7decf850",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T09:08:46Z",
+      "side": 1,
+      "message": "the revisionId \u0026 revisionExpr split has been such a mess.  how about renaming this to \"SetRevision\" and pass in the value ?\n\n set SetRevision(self, revExpr, revId\u003dNone):\n   self.revisionExpr \u003d revExpr\n   if revId is None and revExpr and IsId(revExpr):\n     self.revisionId \u003d revExpr\n   else:\n     self.revisionId \u003d revId",
+      "range": {
+        "startLine": 539,
+        "startChar": 6,
+        "endLine": 539,
+        "endChar": 20
+      },
+      "revId": "5331ba3c22a61f656ce2c46cb4ac13da5ba5140a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0404397_6090379e",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T09:08:46Z",
+      "side": 1,
+      "message": "all funcs should have a docstring.  i know we\u0027re missing a bunch with the current code, but we want to fix that in new code.",
+      "revId": "5331ba3c22a61f656ce2c46cb4ac13da5ba5140a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79e6a090_afcb6bd6",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T09:08:46Z",
+      "side": 1,
+      "message": "we never want to use \\ in new code, so please change this to () while you\u0027re here",
+      "revId": "5331ba3c22a61f656ce2c46cb4ac13da5ba5140a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
