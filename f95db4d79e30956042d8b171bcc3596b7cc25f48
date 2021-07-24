@@ -1,0 +1,334 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7564e6dd_fd0b8298",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "please use \"sync:\" tag styles rather than \"sync -\"",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85608700_a847d06c",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "just \"import datetime\".  having to guess which \"datetime\" is which when reading code is difficult.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44114a7e_c03ecb82",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "this isn\u0027t used anywhere ...",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a614c7f_55985368",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "i\u0027m not seeing self._syncState initialized in __init__, or used anywhere ...",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "030a08b7_41e6ae93",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "you can omit \"object\" in python 3",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7682630_fd5db59c",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "this is super generic and doesn\u0027t really convey what this is for.  at a glance, \"sync state\" could be interpreted in many different ways, and people might expect it to be usable in different ways (is this a record of state that we could rollback to?).\n\nthe only purpose of this is to throw into logs for later analysis right ?  how about \"SyncLogInfo\" or \"SyncAnalysisState\" or something like that ?",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e254864_2a33a801",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "cuddle this up to the previous line",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a556235_042f6509",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "this should be in the object docstring.  __init__ should only focus on the initialization behavior, not the overall object behavior.",
+      "range": {
+        "startLine": 742,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 29
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f08ab9c4_c19ca2ed",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "what is the goal of this date stamp ?  for humans to read ?  or bots to parse ?  this is a bit of a non-standard form, and is ambiguous especially in the US.\n\nif it\u0027s only meant for humans to read, i\u0027d recommend RFC 2822.  for example: Wed, 20 Feb 2013 15:25:15 -0500 (EST)\n\nif it\u0027s meant for bots to parse, then the now.isoformat() + \u0027Z\u0027 would be better.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c83a5f_9e96dbc7",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "stick to integers.  no need to get into floating point.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8353c91_535a5709",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 765,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "please add docstrings for each of these methods",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2421527_b0938a1e",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "it\u0027s unclear why \"syncstate.\" is being forced here.  the docstring should cover this detail.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e42222ea_4e08a21b",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "why return the value ?  this is a \"set\" function which is normally \"void\", and none of the callers are checking it.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccb2a7d9_34b76ac1",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "use f-strings",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b089743_1027e5e5",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "i think you can omit \"to the current log\" as that\u0027s a bit obvious right ?",
+      "range": {
+        "startLine": 148,
+        "startChar": 72,
+        "endLine": 148,
+        "endChar": 91
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32d78f25_cf8197cc",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cbc6a8a_73a2f5ff",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "this is just bool(manifest_path)",
+      "range": {
+        "startLine": 309,
+        "startChar": 54,
+        "endLine": 309,
+        "endChar": 86
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aeaaf8b_b45162c1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-24T08:53:47Z",
+      "side": 1,
+      "message": "this is a Superproject object.  don\u0027t treat it like a dict.",
+      "range": {
+        "startLine": 309,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 51
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
