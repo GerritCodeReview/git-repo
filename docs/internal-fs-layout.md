@@ -157,6 +157,7 @@ User controlled settings are initialized when running `repo init`.
 | Setting                  | `repo init` Option        | Use/Meaning |
 |-------------------       |---------------------------|-------------|
 | manifest.groups          | `--groups` & `--platform` | The manifest groups to sync |
+| manifest.standalone      | `--standalone-manifest`   | Download manifest as static file instead of creating checkout |
 | repo.archive             | `--archive`               | Use `git archive` for checkouts |
 | repo.clonebundle         | `--clone-bundle`          | Whether the initial sync used clone.bundle explicitly |
 | repo.clonefilter         | `--clone-filter`          | Filter setting when using [partial git clones] |

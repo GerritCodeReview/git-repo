@@ -104,6 +104,10 @@ class GitConfig(object):
           os.path.dirname(self.file),
           '.repo_' + os.path.basename(self.file) + '.json')
 
+  def ClearCache(self):
+    """Clear the in-memory cache of config."""
+    self._cache_dict = None
+
   def Has(self, name, include_defaults=True):
     """Return true if this configuration file has the key.
     """
@@ -399,7 +403,7 @@ class GitConfig(object):
     if p.Wait() == 0:
       return p.stdout
     else:
-      GitError('git config %s: %s' % (str(args), p.stderr))
+      raise GitError('git config %s: %s' % (str(args), p.stderr))
 
 
 class RepoConfig(GitConfig):
