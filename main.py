@@ -118,6 +118,10 @@ global_options.add_option('--time',
 global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
+global_options.add_option('--show-toplevel',
+                          action='store_true',
+                          help='display the path of the top-level directory of '
+                               'the repo client checkout')
 global_options.add_option('--event-log',
                           dest='event_log', action='store',
                           help='filename of event log to append timeline to')
@@ -202,6 +206,9 @@ class _Repo(object):
     elif gopts.show_version:
       # Always allow global --version regardless of subcommand validity.
       name = 'version'
+    elif gopts.show_toplevel:
+      print(os.path.dirname(self.repodir))
+      return 0
     elif not name:
       # No subcommand specified, so show the help/subcommand.
       self._PrintHelp(short=True)
