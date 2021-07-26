@@ -104,6 +104,24 @@ class GitConfigReadOnlyTests(unittest.TestCase):
     for key, value in TESTS:
       self.assertEqual(value, self.config.GetInt('section.%s' % (key,)))
 
+  def test_GetSyncAnalysisStateData(self):
+    """
+    Test config entries with a sync state analysis data.
+    """
+    superproject_logging_data = {}
+    superproject_logging_data['test'] = False
+    options = type('options', (object,), {})()
+    options.verbose = 'true'
+    TESTS = (
+        ('superproject.test', 'false'),
+        ('options.verbose', 'true'),
+        ('main.version', '1'),
+    )
+    self.config.UpdateSyncAnalysisState(options, superproject_logging_data)
+    sync_data = self.config.GetSyncAnalysisStateData()
+    for key, value in TESTS:
+      self.assertEqual(sync_data[f'{git_config.SYNC_STATE_PREFIX}{key}'], value)
+    self.assertTrue(len(sync_data[f'{git_config.SYNC_STATE_PREFIX}main.synctime']))
 
 class GitConfigReadWriteTests(unittest.TestCase):
   """Read/write tests of the GitConfig class."""
