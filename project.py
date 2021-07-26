@@ -573,6 +573,8 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+    self.standalone_manifest = False
+
   @property
   def Derived(self):
     return self.is_derived
