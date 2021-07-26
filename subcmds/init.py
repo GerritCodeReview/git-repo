@@ -15,6 +15,7 @@
 import os
 import platform
 import re
+import subprocess
 import sys
 import urllib.parse
 
@@ -24,6 +25,7 @@ from error import ManifestParseError
 from project import SyncBuffer
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
+import fetch
 import git_superproject
 import platform_utils
 from wrapper import Wrapper
@@ -52,6 +54,12 @@ branch is used.  This is equivalent to using -b HEAD.
 The optional -m argument can be used to specify an alternate manifest
 to be used. If no manifest is specified, the manifest default.xml
 will be used.
+
+If the --standalone-manifest argument is set, the manifest will be downloaded
+directly from the specified --manifest-url as a static file (rather than
+setting up a manifest git checkout). With --standalone-manifest, the manifest
+will be fully static and will not be re-downloaded during subsesquent
+`repo init` and `repo sync` calls.
 
 The --reference option can be used to point to a directory that
 has the content of a --mirror sync. This will make the working
@@ -110,8 +118,25 @@ to update the working directory files.
 
   def _SyncManifest(self, opt):
     m = self.manifest.manifestProject
-    is_new = not m.Exists
 
+    # If standalone_manifest is set, mark the project as "standalone" -- we'll
+    # still do much of the manifests.git set up, but will avoid actual syncs to
+    # a remote.
+    was_standalone_manifest = (
+      m.Exists and m.config.GetBoolean('repo.standalone_manifest'))
+    standalone_manifest = bool(opt.standalone_manifest)
+    if standalone_manifest:
+      m.config.SetBoolean('repo.standalone_manifest', True)
+      m.config.SetString('remote.origin.url', '')
+
+    # If we were previously a standalone manifest and we're not any more, or
+    # vice versa, do some clean up so that is_new is True and the appropriate
+    # setup is done.
+    if was_standalone_manifest != standalone_manifest:
+      if m.gitdir and os.path.exists(m.gitdir):
+        platform_utils.rmtree(m.gitdir)
+
+    is_new = not m.Exists
     if is_new:
       if not opt.manifest_url:
         print('fatal: manifest url is required.', file=sys.stderr)
@@ -134,7 +159,8 @@ to update the working directory files.
           mirrored_manifest_git = os.path.join(opt.reference,
                                                '.repo/manifests.git')
 
-      m._InitGitDir(mirror_git=mirrored_manifest_git)
+      if not standalone_manifest:
+        m._InitGitDir(mirror_git=mirrored_manifest_git)
 
     self._ConfigureDepth(opt)
 
@@ -145,22 +171,23 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
-    if opt.manifest_branch:
-      if opt.manifest_branch == 'HEAD':
-        opt.manifest_branch = m.ResolveRemoteHead()
-        if opt.manifest_branch is None:
-          print('fatal: unable to resolve HEAD', file=sys.stderr)
-          sys.exit(1)
-      m.revisionExpr = opt.manifest_branch
-    else:
-      if is_new:
-        default_branch = m.ResolveRemoteHead()
-        if default_branch is None:
-          # If the remote doesn't have HEAD configured, default to master.
-          default_branch = 'refs/heads/master'
-        m.revisionExpr = default_branch
+    if not standalone_manifest:
+      if opt.manifest_branch:
+        if opt.manifest_branch == 'HEAD':
+          opt.manifest_branch = m.ResolveRemoteHead()
+          if opt.manifest_branch is None:
+            print('fatal: unable to resolve HEAD', file=sys.stderr)
+            sys.exit(1)
+        m.revisionExpr = opt.manifest_branch
       else:
-        m.PreSync()
+        if is_new:
+          default_branch = m.ResolveRemoteHead()
+          if default_branch is None:
+            # If the remote doesn't have HEAD configured, default to master.
+            default_branch = 'refs/heads/master'
+          m.revisionExpr = default_branch
+        else:
+          m.PreSync()
 
     groups = re.split(r'[,\s]+', opt.groups)
     all_platforms = ['linux', 'darwin', 'windows']
@@ -249,6 +276,15 @@ to update the working directory files.
 
     if opt.use_superproject is not None:
       m.config.SetBoolean('repo.superproject', opt.use_superproject)
+
+    if standalone_manifest:
+      manifest_data = fetch.fetch_file(opt.manifest_url)
+      dest = os.path.join(m.worktree, os.path.basename(opt.manifest_url))
+      os.makedirs(os.path.dirname(dest), exist_ok=True)
+      with open(dest, 'wb') as f:
+        f.write(manifest_data)
+      opt.manifest_name = os.path.basename(opt.manifest_url)
+      return
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,

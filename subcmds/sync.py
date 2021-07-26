@@ -872,6 +872,7 @@ later is required to fix a server side protocol bug.
 
   def _UpdateManifestProject(self, opt, mp, manifest_name):
     """Fetch & update the local manifest project."""
+
     if not opt.local_only:
       start = time.time()
       success = mp.Sync_NetworkHalf(quiet=opt.quiet, verbose=opt.verbose,
