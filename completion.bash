@@ -37,6 +37,7 @@ __complete_repo_list_branches() {
 __complete_repo_list_projects() {
   local repo=${COMP_WORDS[0]}
   "${repo}" list -n 2>/dev/null
+  "${repo}" list -p --relative-to=. 2>/dev/null
 }
 
 # Complete the repo <command> argument.
