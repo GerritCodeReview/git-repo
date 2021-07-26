@@ -15,6 +15,7 @@
 import os
 import platform
 import re
+import subprocess
 import sys
 import urllib.parse
 
@@ -113,13 +114,16 @@ to update the working directory files.
     is_new = not m.Exists
 
     if is_new:
-      if not opt.manifest_url:
-        print('fatal: manifest url is required.', file=sys.stderr)
+      if not opt.manifest_url and not opt.manifest_gs_uri:
+        print('fatal: manifest url or manifest_gs_uri_is required.', file=sys.stderr)
+        sys.exit(1)
+      if opt.manifest_url and opt.manifest_gs_uri:
+        print('fatal: manifest url and manifest_gs_uri_is both set.', file=sys.stderr)
         sys.exit(1)
 
       if not opt.quiet:
-        print('Downloading manifest from %s' %
-              (GitConfig.ForUser().UrlInsteadOf(opt.manifest_url),),
+        from_path = opt.manifest_gs_uri if opt.manifest_gs_uri else (GitConfig.ForUser().UrlInsteadOf(opt.manifest_url),)
+        print('Downloading manifest from %s' % from_path,
               file=sys.stderr)
 
       # The manifest project object doesn't keep track of the path on the
@@ -144,23 +148,36 @@ to update the working directory files.
       r.url = opt.manifest_url
       r.ResetFetch()
       r.Save()
-
-    if opt.manifest_branch:
-      if opt.manifest_branch == 'HEAD':
-        opt.manifest_branch = m.ResolveRemoteHead()
-        if opt.manifest_branch is None:
-          print('fatal: unable to resolve HEAD', file=sys.stderr)
-          sys.exit(1)
-      m.revisionExpr = opt.manifest_branch
+    
+    # If manifest_gs_uri is set, mark the project as "synthetic" -- we'll still
+    # do much of the manifests.git set up, but will avoid actual syncs to a
+    # remote.
+    is_synthetic = False
+    if is_new:
+      if opt.manifest_gs_uri:
+        is_synthetic = True
+        m.config.SetBoolean('repo.synthetic', True)
+        m.config.SetString('remote.origin.url', '')
     else:
-      if is_new:
-        default_branch = m.ResolveRemoteHead()
-        if default_branch is None:
-          # If the remote doesn't have HEAD configured, default to master.
-          default_branch = 'refs/heads/master'
-        m.revisionExpr = default_branch
+      is_synthetic = m.config.GetBoolean('repo.synthetic')
+
+    if not is_synthetic:
+      if opt.manifest_branch:
+        if opt.manifest_branch == 'HEAD':
+          opt.manifest_branch = m.ResolveRemoteHead()
+          if opt.manifest_branch is None:
+            print('fatal: unable to resolve HEAD', file=sys.stderr)
+            sys.exit(1)
+        m.revisionExpr = opt.manifest_branch
       else:
-        m.PreSync()
+        if is_new:
+          default_branch = m.ResolveRemoteHead()
+          if default_branch is None:
+            # If the remote doesn't have HEAD configured, default to master.
+            default_branch = 'refs/heads/master'
+          m.revisionExpr = default_branch
+        else:
+          m.PreSync()
 
     groups = re.split(r'[,\s]+', opt.groups)
     all_platforms = ['linux', 'darwin', 'windows']
@@ -249,6 +266,21 @@ to update the working directory files.
 
     if opt.use_superproject is not None:
       m.config.SetBoolean('repo.superproject', opt.use_superproject)
+
+    if is_synthetic:
+      dest = m.worktree + ('/' if m.worktree[-1] != '/' else '')
+      if not os.path.exists(dest):
+        os.mkdir(dest)
+      cmd = 'gsutil cp %s %s' % (opt.manifest_gs_uri, dest)
+      try:
+          output = subprocess.check_output(
+              cmd, stderr=subprocess.STDOUT, shell=True,
+              universal_newlines=True)
+      except subprocess.CalledProcessError as exc:
+          print('fatal: error running "%s": %s' % (cmd[0], exc.output), file=sys.stderr)
+          sys.exit(1)
+      opt.manifest_name = os.path.basename(opt.manifest_gs_uri)
+      return
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,

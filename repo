@@ -302,6 +302,8 @@ def InitParser(parser, gitc_init=False):
                    help='manifest branch or revision (use HEAD for default)')
   group.add_option('-m', '--manifest-name', default='default.xml',
                    help='initial manifest file', metavar='NAME.xml')
+  group.add_option('--manifest-gs-uri',
+                   help='manifest repository location', metavar='GS_URI')
   group.add_option('-g', '--groups', default='default',
                    help='restrict manifest projects to ones with specified '
                         'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
