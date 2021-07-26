@@ -15,6 +15,7 @@
 import os
 import platform
 import re
+import subprocess
 import sys
 import urllib.parse
 
@@ -24,6 +25,7 @@ from error import ManifestParseError
 from project import SyncBuffer
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
+import fetch
 import git_superproject
 import platform_utils
 from wrapper import Wrapper
@@ -52,6 +54,14 @@ branch is used.  This is equivalent to using -b HEAD.
 The optional -m argument can be used to specify an alternate manifest
 to be used. If no manifest is specified, the manifest default.xml
 will be used.
+
+If the --standalone-manifest argument is set, the manifest will be downloaded
+directly from the specified --manifest-url as a static file (rather than
+setting up a manifest repo checkout).
+If set, the manifest will be downloaded from the given GS uri instead of
+from git. If --standalone-manifest is set, the manifest will be fully static
+and will not be re-downloaded during subsesquent `repo init` and `repo sync`
+calls.
 
 The --reference option can be used to point to a directory that
 has the content of a --mirror sync. This will make the working
@@ -112,10 +122,21 @@ to update the working directory files.
     m = self.manifest.manifestProject
     is_new = not m.Exists
 
+    # If manifest_gs_uri is set, mark the project as "standalone" -- we'll still
+    # do much of the manifests.git set up, but will avoid actual syncs to a
+    # remote.
+    standalone_manifest = False
+    if is_new:
+      if opt.standalone_manifest:
+        standalone_manifest = True
+        m.config.SetBoolean('repo.standalone_manifest', True)
+        m.config.SetString('remote.origin.url', '')
+    else:
+      standalone_manifest = m.config.GetBoolean('repo.standalone_manifest')
+
     if is_new:
       if not opt.manifest_url:
         print('fatal: manifest url is required.', file=sys.stderr)
-        sys.exit(1)
 
       if not opt.quiet:
         print('Downloading manifest from %s' %
@@ -134,7 +155,8 @@ to update the working directory files.
           mirrored_manifest_git = os.path.join(opt.reference,
                                                '.repo/manifests.git')
 
-      m._InitGitDir(mirror_git=mirrored_manifest_git)
+      if not standalone_manifest:
+        m._InitGitDir(mirror_git=mirrored_manifest_git)
 
     self._ConfigureDepth(opt)
 
@@ -145,22 +167,23 @@ to update the working directory files.
       r.ResetFetch()
       r.Save()
 
-    if opt.manifest_branch:
-      if opt.manifest_branch == 'HEAD':
-        opt.manifest_branch = m.ResolveRemoteHead()
-        if opt.manifest_branch is None:
-          print('fatal: unable to resolve HEAD', file=sys.stderr)
-          sys.exit(1)
-      m.revisionExpr = opt.manifest_branch
-    else:
-      if is_new:
-        default_branch = m.ResolveRemoteHead()
-        if default_branch is None:
-          # If the remote doesn't have HEAD configured, default to master.
-          default_branch = 'refs/heads/master'
-        m.revisionExpr = default_branch
+    if not standalone_manifest:
+      if opt.manifest_branch:
+        if opt.manifest_branch == 'HEAD':
+          opt.manifest_branch = m.ResolveRemoteHead()
+          if opt.manifest_branch is None:
+            print('fatal: unable to resolve HEAD', file=sys.stderr)
+            sys.exit(1)
+        m.revisionExpr = opt.manifest_branch
       else:
-        m.PreSync()
+        if is_new:
+          default_branch = m.ResolveRemoteHead()
+          if default_branch is None:
+            # If the remote doesn't have HEAD configured, default to master.
+            default_branch = 'refs/heads/master'
+          m.revisionExpr = default_branch
+        else:
+          m.PreSync()
 
     groups = re.split(r'[,\s]+', opt.groups)
     all_platforms = ['linux', 'darwin', 'windows']
@@ -249,6 +272,18 @@ to update the working directory files.
 
     if opt.use_superproject is not None:
       m.config.SetBoolean('repo.superproject', opt.use_superproject)
+
+    if standalone_manifest:
+      if is_new:
+        manifest_data = fetch.fetch_standalone_manifest(opt.manifest_url)
+        dest = os.path.join(m.worktree, os.path.basename(opt.manifest_url))
+        if not os.path.exists(os.path.dirname(dest)):
+          os.mkdir(os.path.dirname(dest))
+        f = open(dest, "w")
+        f.write(manifest_data)
+        f.close()
+      opt.manifest_name = os.path.basename(opt.manifest_url)
+      return
 
     if not m.Sync_NetworkHalf(is_new=is_new, quiet=opt.quiet, verbose=opt.verbose,
                               clone_bundle=opt.clone_bundle,
@@ -467,8 +502,11 @@ to update the working directory files.
       # Older versions of git supported worktree, but had dangerous gc bugs.
       git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
 
-    self._SyncManifest(opt)
-    self._LinkManifest(opt.manifest_name)
+    # If repo.standalone_manifest is already set, then we don't need to repeat
+    # set up.
+    if not self.manifest.manifestProject.config.GetBoolean('repo.standalone_manifest'):
+      self._SyncManifest(opt)
+      self._LinkManifest(opt.manifest_name)
 
     if self.manifest.manifestProject.config.GetBoolean('repo.superproject'):
       self._CloneSuperproject(opt)
