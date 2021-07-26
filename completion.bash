@@ -118,4 +118,6 @@ __complete_repo() {
   return 0
 }
 
-complete -F __complete_repo repo
+# Fallback to the default complete methods if we aren't able to provide anything
+# useful.  This will allow e.g. local paths to be used when it makes sense.
+complete -F __complete_repo -o bashdefault -o default repo
