@@ -14,6 +14,9 @@
 
 # Programmable bash completion.  https://github.com/scop/bash-completion
 
+# TODO: Handle interspersed options.  We handle `repo h<tab>`, but not
+# `repo --time h<tab>`.
+
 # Complete the list of repo subcommands.
 __complete_repo_list_commands() {
   local repo=${COMP_WORDS[0]}
@@ -79,6 +82,23 @@ __complete_repo_command_help() {
   fi
 }
 
+# Complete `repo forall`.
+__complete_repo_command_forall() {
+  local current=$1
+  # CWORD=1 is "forall".
+  # CWORD=2+ are <projects> *until* we hit the -c option.
+  local i
+  for (( i = 0; i < COMP_CWORD; ++i )); do
+    if [[ "${COMP_WORDS[i]}" == "-c" ]]; then
+      return 0
+    fi
+  done
+
+  COMPREPLY=(
+    $(compgen -W "$(__complete_repo_list_projects)" -- "${current}")
+  )
+}
+
 # Complete `repo start`.
 __complete_repo_command_start() {
   local current=$1
@@ -112,7 +132,7 @@ __complete_repo_arg() {
     return 0
     ;;
 
-  help|start)
+  help|start|forall)
     __complete_repo_command_${command} "${current}"
     return 0
     ;;
