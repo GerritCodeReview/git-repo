@@ -66,6 +66,31 @@ __complete_repo_command_projects() {
   COMPREPLY=($(compgen -W "$(__complete_repo_list_projects)" -- "${current}"))
 }
 
+# Complete `repo help`.
+__complete_repo_command_help() {
+  local current=$1
+  # CWORD=1 is "start".
+  # CWORD=2 is the <subcommand> which we complete here.
+  if [[ ${COMP_CWORD} -eq 2 ]]; then
+    COMPREPLY=(
+      $(compgen -W "$(__complete_repo_list_commands)" -- "${current}")
+    )
+  fi
+}
+
+# Complete `repo start`.
+__complete_repo_command_start() {
+  local current=$1
+  # CWORD=1 is "start".
+  # CWORD=2 is the <branch> which we don't complete.
+  # CWORD=3+ are <projects> which we complete here.
+  if [[ ${COMP_CWORD} -gt 2 ]]; then
+    COMPREPLY=(
+      $(compgen -W "$(__complete_repo_list_projects)" -- "${current}")
+    )
+  fi
+}
+
 # Complete the repo subcommand arguments.
 __complete_repo_arg() {
   if [[ ${COMP_CWORD} -le 1 ]]; then
@@ -86,21 +111,8 @@ __complete_repo_arg() {
     return 0
     ;;
 
-  help)
-    if [[ ${COMP_CWORD} -eq 2 ]]; then
-      COMPREPLY=(
-        $(compgen -W "$(__complete_repo_list_commands)" -- "${current}")
-      )
-    fi
-    return 0
-    ;;
-
-  start)
-    if [[ ${COMP_CWORD} -gt 2 ]]; then
-      COMPREPLY=(
-        $(compgen -W "$(__complete_repo_list_projects)" -- "${current}")
-      )
-    fi
+  help|start)
+    __complete_repo_command_${command} "${current}"
     return 0
     ;;
 
