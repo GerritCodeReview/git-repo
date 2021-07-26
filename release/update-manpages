@@ -47,6 +47,10 @@ def main(argv):
   if not shutil.which('help2man'):
     sys.exit('Please install help2man to continue.')
 
+  # Let repo know we're generating man pages so it can avoid some dynamic
+  # behavior (like probing active number of CPUs).
+  os.environ['%_REPO_GENERATE_MANPAGES_%'] = 'true'
+
   # "repo branch" is an alias for "repo branches".
   del subcmds.all_commands['branch']
   (MANDIR / 'repo-branch.1').write_text('.so man1/repo-branches.1')
