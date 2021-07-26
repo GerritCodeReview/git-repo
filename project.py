@@ -573,12 +573,16 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+    self.synthetic_project = False
+
+
   @property
   def Derived(self):
     return self.is_derived
 
   @property
   def Exists(self):
+    print(self.gitdir, self.objdir)
     return platform_utils.isdir(self.gitdir) and platform_utils.isdir(self.objdir)
 
   @property
