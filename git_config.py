@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import contextlib
-from datetime import datetime
+import datetime
 import errno
 from http.client import HTTPException
 import json
@@ -30,6 +30,8 @@ import platform_utils
 from repo_trace import Trace
 from git_command import GitCommand
 from git_refs import R_CHANGES, R_HEADS, R_TAGS
+
+_SYNC_STATE_PREFIX = 'syncstate.'
 
 ID_RE = re.compile(r'^[0-9a-f]{40}$')
 
@@ -263,17 +265,21 @@ class GitConfig(object):
       self._branches[b.name] = b
     return b
 
-  def GetSyncState(self):
-    """Get the state sync object."""
-    return self._syncState
+  def GetSyncAnalysisStateData(self):
+    """Returns data to be logged for the analysis of sync performance."""
+    return {k: v for k, v in self.DumpConfigDict().items() if k.startswith(_SYNC_STATE_PREFIX)}
 
-  def SetSyncState(self, sync_state):
-    """Update Config's SyncState object with the new |sync_state| object.
+  def UpdateSyncAnalysisState(self, options, superproject_logging_data):
+    """Update Config's SyncAnalysisState with the latest sync data.
+
+    Creates SyncAnalysisState object with |options| and |superproject_logging_data|
+    which in turn persists the data into the |self| object.
 
     Args:
-      sync_state: Current SyncState object.
+      options: Options passed to sync returned from optparse. See _Options().
+      superproject_logging_data: A dictionary of superproject data that is to be logged.
     """
-    self._syncState = sync_state
+    self._syncState = SyncAnalysisState(self, options, superproject_logging_data)
 
   def GetSubSections(self, section):
     """List all subsection names matching $section.*.*
@@ -732,12 +738,13 @@ class Branch(object):
     return self._config.GetString(key, all_keys=all_keys)
 
 
-class SyncState(object):
-  """Configuration options related Sync object.
-  """
+class SyncAnalysisState():
+  """Configuration options related to logging of Sync state for analysis.
 
-  def __init__(self, config, options, superproject):
-    """Initializes SyncState.
+  This object is versioned.
+  """
+  def __init__(self, config, options, superproject_logging_data):
+    """Initializes SyncAnalysisState.
 
     Saves argv, |options|, superproject and repo.*, branch.* and remote.*
     parameters from |config| object. It also saves current time as synctime.
@@ -747,36 +754,45 @@ class SyncState(object):
     Args:
       config: GitConfig object to store all options.
       options: Options passed to sync returned from optparse. See _Options().
-      superproject: A dictionary of superproject configuration parameters.
+      superproject_logging_data: A dictionary of superproject data that is to be logged.
     """
     self._config = config
-    now = datetime.utcnow()
-    self._Set('synctime', now.strftime('%d/%m/%Y %H:%M:%S'))
-    self._Set('version', '1.0')
-    self._Set('argv', sys.argv)
-    self._SetDictionary(superproject)
+    now = datetime.datetime.utcnow()
+    self._Set('main.synctime', now.isoformat() + 'Z')
+    self._Set('main.version', '1')
+    self._Set('sys.argv', sys.argv)
+    for key, value in superproject_logging_data.items():
+      self._Set(f'superproject.{key}', value)
     for key, value in options.__dict__.items():
-      self._Set(key, value)
+      self._Set(f'options.{key}', value)
     config_items = config.DumpConfigDict().items()
     self._SetDictionary({k: v for k, v in config_items if k.startswith('repo.')})
     self._SetDictionary({k: v for k, v in config_items if k.startswith('branch.')})
     self._SetDictionary({k: v for k, v in config_items if k.startswith('remote.')})
 
-  def _SetDictionary(self, config_dict):
-    for key, value in config_dict.items():
+  def _SetDictionary(self, data):
+    """Save all key/value pairs of |data| dictionary.
+
+    Args:
+      data: A dictionary whose key/value are to be saved,
+    """
+    for key, value in data.items():
       self._Set(key, value)
 
   def _Set(self, key, value):
-    if value is None:
-      return None
-    key = 'syncstate.%s' % (key)
-    if isinstance(value, str):
-      return self._config.SetString(key, value)
-    elif isinstance(value, bool):
-      return self._config.SetBoolean(key, value)
-    else:
-      return self._config.SetString(key, str(value))
+    """Set the |value| for a |key| in the |_config| member.
 
-  def _Get(self, key, all_keys=False):
-    key = 'syncstate.%s' % (key)
-    return self._config.GetString(key, all_keys=all_keys)
+    Args:
+      key: Name of the key.
+      value: |value| could be of any type. If it is 'bool', it will be saved
+             as a Boolean and for all other types, it will be saved as a String.
+    """
+    if value is None:
+      return
+    key = f'{_SYNC_STATE_PREFIX}.{key}'
+    if isinstance(value, str):
+      self._config.SetString(key, value)
+    elif isinstance(value, bool):
+      self._config.SetBoolean(key, value)
+    else:
+      self._config.SetString(key, str(value))

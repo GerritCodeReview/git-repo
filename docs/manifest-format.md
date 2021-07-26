@@ -36,7 +36,7 @@ following DTD:
 
   <!ELEMENT notice (#PCDATA)>
 
-  <!ELEMENT remote EMPTY>
+  <!ELEMENT remote (annotation*)>
   <!ATTLIST remote name         ID    #REQUIRED>
   <!ATTLIST remote alias        CDATA #IMPLIED>
   <!ATTLIST remote fetch        CDATA #REQUIRED>
@@ -348,12 +348,12 @@ project.  Same syntax as the corresponding element of `project`.
 ### Element annotation
 
 Zero or more annotation elements may be specified as children of a
-project element. Each element describes a name-value pair that will be
-exported into each project's environment during a 'forall' command,
-prefixed with REPO__.  In addition, there is an optional attribute
-"keep" which accepts the case insensitive values "true" (default) or
-"false".  This attribute determines whether or not the annotation will
-be kept when exported with the manifest subcommand.
+project or remote element. Each element describes a name-value pair.
+For projects, this name-value pair will be exported into each project's
+environment during a 'forall' command, prefixed with `REPO__`.  In addition,
+there is an optional attribute "keep" which accepts the case insensitive values
+"true" (default) or "false".  This attribute determines whether or not the
+annotation will be kept when exported with the manifest subcommand.
 
 ### Element copyfile
 

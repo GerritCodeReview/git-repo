@@ -145,10 +145,10 @@ class EventLog(object):
     self._log.append(command_event)
 
   def _LogConfigEvents(self, config, event_dict_name):
-    """Append a |event_dict_name| event for each config key in |config| to the current log.
+    """Append a |event_dict_name| event for each config key in |config|.
 
     Args:
-      config: Configuration dictionary
+      config: Configuration dictionary.
       event_dict_name: Name of the event dictionary for items to be logged under.
     """
     for param, value in config.items():
@@ -167,16 +167,14 @@ class EventLog(object):
     repo_config = {k: v for k, v in config.items() if k.startswith('repo.')}
     self._LogConfigEvents(repo_config, 'def_param')
 
-  def AddSyncStateEvents(self, config, event_dict_name):
-    """Append a log event for each syncstate.* config key to the current log.
+  def AddSyncAnalysisStateEvents(self, config, event_dict_name):
+    """Append log events for all the data in |config|'s SyncAnalysisState object.
 
     Args:
-      config: SyncState configuration dictionary
+      config: GitConfig object which has SyncAnalysisState data.
       event_dict_name: Name of the event dictionary for items to be logged under.
     """
-    # Only output syncstate.* config parameters.
-    sync_config = {k: v for k, v in config.items() if k.startswith('syncstate.')}
-    self._LogConfigEvents(sync_config, event_dict_name)
+    self._LogConfigEvents(config.GetSyncAnalysisStateData(), event_dict_name)
 
   def ErrorEvent(self, msg, fmt):
     """Append a 'error' event to the current log."""

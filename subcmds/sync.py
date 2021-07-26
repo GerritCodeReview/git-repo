@@ -46,7 +46,7 @@ except ImportError:
 
 import event_log
 from git_command import git_require
-from git_config import GetUrlCookieFile, SyncState
+from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import git_superproject
 import gitc_utils
@@ -282,7 +282,7 @@ later is required to fix a server side protocol bug.
     """Returns True if current-branch or use-superproject options are enabled."""
     return opt.current_branch_only or git_superproject.UseSuperproject(opt, self.manifest)
 
-  def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests):
+  def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests, superproject_logging_data):
     """Update revisionId of every project with the SHA from superproject.
 
     This function updates each project's revisionId with SHA from superproject.
@@ -293,6 +293,7 @@ later is required to fix a server side protocol bug.
       args: Arguments to pass to GetProjects. See the GetProjects
           docstring for details.
       load_local_manifests: Whether to load local manifests.
+      superproject_logging_data: A dictionary of superproject data that is to be logged.
 
     Returns:
       Returns path to the overriding manifest file instead of None.
@@ -306,7 +307,7 @@ later is required to fix a server side protocol bug.
                                     submodules_ok=opt.fetch_submodules)
     update_result = superproject.UpdateProjectsRevisionId(all_projects)
     manifest_path = update_result.manifest_path
-    self.superproject['superprojectSyncSuccessful'] = True if manifest_path else False
+    superproject_logging_data['updatedrevisionid'] = bool(manifest_path)
     if manifest_path:
       self._ReloadManifest(manifest_path, load_local_manifests)
     else:
@@ -959,12 +960,13 @@ later is required to fix a server side protocol bug.
       self._UpdateManifestProject(opt, mp, manifest_name)
 
     load_local_manifests = not self.manifest.HasLocalManifests
-    self.superproject = {}
+    superproject_logging_data = {}
     use_superproject = git_superproject.UseSuperproject(opt, self.manifest)
-    self.superproject['superproject'] = use_superproject
-    self.superproject['hasLocalManifests'] = True if self.manifest.HasLocalManifests else False
+    superproject_logging_data['superproject'] = use_superproject
+    superproject_logging_data['haslocalmanifests'] = bool(self.manifest.HasLocalManifests)
     if use_superproject:
-      manifest_name = self._UpdateProjectsRevisionId(opt, args, load_local_manifests) or opt.manifest_name
+      manifest_name = self._UpdateProjectsRevisionId(
+          opt, args, load_local_manifests, superproject_logging_data) or opt.manifest_name
 
     if self.gitc_manifest:
       gitc_manifest_projects = self.GetProjects(args,
@@ -1079,12 +1081,11 @@ later is required to fix a server side protocol bug.
       sys.exit(1)
 
     # Log the previous sync state from the config.
-    self.git_event_log.AddSyncStateEvents(mp.config.DumpConfigDict(), 'previous_sync_state')
+    self.git_event_log.AddSyncAnalysisStateEvents(mp.config, 'previous_sync_state')
 
     # Update and log with the new sync state.
-    sync_state = SyncState(config=mp.config, options=opt, superproject=self.superproject)
-    mp.config.SetSyncState(sync_state)
-    self.git_event_log.AddSyncStateEvents(mp.config.DumpConfigDict(), 'current_sync_state')
+    mp.config.UpdateSyncAnalysisState(opt, superproject_logging_data)
+    self.git_event_log.AddSyncAnalysisStateEvents(mp.config, 'current_sync_state')
 
     if not opt.quiet:
       print('repo sync has finished successfully.')
