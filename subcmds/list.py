@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+
 from command import Command, MirrorSafeCommand
 
 
@@ -43,19 +45,25 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
     p.add_option('-a', '--all',
                  action='store_true',
                  help='show projects regardless of checkout state')
-    p.add_option('-f', '--fullpath',
-                 dest='fullpath', action='store_true',
-                 help='display the full work tree path instead of the relative path')
     p.add_option('-n', '--name-only',
                  dest='name_only', action='store_true',
                  help='display only the name of the repository')
     p.add_option('-p', '--path-only',
                  dest='path_only', action='store_true',
                  help='display only the path of the repository')
+    p.add_option('-f', '--fullpath',
+                 dest='fullpath', action='store_true',
+                 help='display the full work tree path instead of the relative path')
+    p.add_option('--relative-to', metavar='PATH',
+                 help='display paths relative to this one (default: top of repo client checkout)')
 
   def ValidateOptions(self, opt, args):
     if opt.fullpath and opt.name_only:
       self.OptionParser.error('cannot combine -f and -n')
+
+    # Resolve any symlinks so the output is stable.
+    if opt.relative_to:
+      opt.relative_to = os.path.realpath(opt.relative_to)
 
   def Execute(self, opt, args):
     """List all projects and the associated directories.
@@ -76,6 +84,8 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
     def _getpath(x):
       if opt.fullpath:
         return x.worktree
+      if opt.relative_to:
+        return os.path.relpath(x.worktree, opt.relative_to)
       return x.relpath
 
     lines = []
