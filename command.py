@@ -24,6 +24,10 @@ from error import InvalidProjectGroupsError
 import progress
 
 
+# Are we generating man-pages?
+GENERATE_MANPAGES = os.environ.get('_REPO_GENERATE_MANPAGES_') == ' indeed! '
+
+
 # Number of projects to submit to a single worker process at a time.
 # This number represents a tradeoff between the overhead of IPC and finer
 # grained opportunity for parallelism. This particular value was chosen by
@@ -122,10 +126,14 @@ class Command(object):
                  help='only show errors')
 
     if self.PARALLEL_JOBS is not None:
+      default = 'based on number of CPU cores'
+      if not GENERATE_MANPAGES:
+        # Only include active cpu count if we aren't generating man pages.
+        default = f'%default; {default}'
       p.add_option(
           '-j', '--jobs',
           type=int, default=self.PARALLEL_JOBS,
-          help='number of jobs to run in parallel (default: %s)' % self.PARALLEL_JOBS)
+          help=f'number of jobs to run in parallel (default: {default})')
 
   def _Options(self, p):
     """Initialize the option parser with subcommand-specific options."""
