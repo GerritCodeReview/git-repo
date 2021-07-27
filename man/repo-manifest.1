@@ -36,6 +36,9 @@ output manifest in JSON format (experimental)
 \fB\-\-pretty\fR
 format output for humans to read
 .TP
+\fB\-\-no\-local\-manifests\fR
+ignore local manifests
+.TP
 \fB\-o\fR \-|NAME.xml, \fB\-\-output\-file\fR=\fI\,\-\/\fR|NAME.xml
 file to save the manifest to
 .SS Logging options:
@@ -95,7 +98,7 @@ include*)>
 .IP
 <!ELEMENT notice (#PCDATA)>
 .IP
-<!ELEMENT remote EMPTY>
+<!ELEMENT remote (annotation*)>
 <!ATTLIST remote name         ID    #REQUIRED>
 <!ATTLIST remote alias        CDATA #IMPLIED>
 <!ATTLIST remote fetch        CDATA #REQUIRED>
@@ -393,13 +396,13 @@ Same syntax as the corresponding element of `project`.
 .PP
 Element annotation
 .PP
-Zero or more annotation elements may be specified as children of a project
-element. Each element describes a name\-value pair that will be exported into
-each project's environment during a 'forall' command, prefixed with REPO__. In
-addition, there is an optional attribute "keep" which accepts the case
-insensitive values "true" (default) or "false". This attribute determines
-whether or not the annotation will be kept when exported with the manifest
-subcommand.
+Zero or more annotation elements may be specified as children of a project or
+remote element. Each element describes a name\-value pair. For projects, this
+name\-value pair will be exported into each project's environment during a
+\&'forall' command, prefixed with `REPO__`. In addition, there is an optional
+attribute "keep" which accepts the case insensitive values "true" (default) or
+"false". This attribute determines whether or not the annotation will be kept
+when exported with the manifest subcommand.
 .PP
 Element copyfile
 .PP
