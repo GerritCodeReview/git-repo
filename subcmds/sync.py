@@ -301,6 +301,12 @@ later is required to fix a server side protocol bug.
                                                  self.repodir,
                                                  self.git_event_log,
                                                  quiet=opt.quiet)
+    if opt.local_only:
+      manifest_path = superproject.manifest_path
+      if manifest_path:
+        self._ReloadManifest(manifest_path, load_local_manifests)
+      return manifest_path
+
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
