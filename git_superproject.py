@@ -106,6 +106,11 @@ class Superproject(object):
     """Returns a dictionary of projects and their commit ids."""
     return self._project_commit_ids
 
+  @property
+  def manifest_path(self):
+    """Returns the manifest path if the path exsits or None."""
+    return self._manifest_path if os.path.exists(self._manifest_path) else None
+
   def _GetBranch(self):
     """Returns the branch name for getting the approved manifest."""
     p = self._manifest.manifestProject
