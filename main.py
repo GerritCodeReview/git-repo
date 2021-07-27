@@ -185,9 +185,7 @@ class _Repo(object):
       print('\nRun `repo help <command>` for command-specific details.')
       return 0
     elif gopts.show_version:
-      if name and name != 'help':
-        print('fatal: invalid usage of --version', file=sys.stderr)
-        return 1
+      # Always allow global --version regardless of subcommand validity.
       name = 'version'
     elif not name:
       # No subcommand specified, so show the help/subcommand.
