@@ -130,32 +130,21 @@ class _Repo(object):
 
   def _ParseArgs(self, argv):
     """Parse the main `repo` command line options."""
-    name = None
-    glob = []
-
-    for i in range(len(argv)):
-      if not argv[i].startswith('-'):
-        name = argv[i]
-        if i > 0:
-          glob = argv[:i]
+    for i, arg in enumerate(argv):
+      if not arg.startswith('-'):
+        name = arg
+        glob = argv[:i]
         argv = argv[i + 1:]
         break
-    if not name:
+    else:
+      name = None
       glob = argv
-      name = 'help'
       argv = []
     gopts, _gargs = global_options.parse_args(glob)
 
-    name, alias_args = self._ExpandAlias(name)
-    argv = alias_args + argv
-
-    if gopts.help:
-      global_options.print_help()
-      commands = ' '.join(sorted(self.commands))
-      wrapped_commands = textwrap.wrap(commands, width=77)
-      print('\nAvailable commands:\n  %s' % ('\n  '.join(wrapped_commands),))
-      print('\nRun `repo help <command>` for command-specific details.')
-      global_options.exit()
+    if name:
+      name, alias_args = self._ExpandAlias(name)
+      argv = alias_args + argv
 
     return (name, gopts, argv)
 
@@ -186,12 +175,23 @@ class _Repo(object):
 
     if gopts.trace:
       SetTrace()
-    if gopts.show_version:
-      if name == 'help':
-        name = 'version'
-      else:
+
+    # Handle options that terminate quickly first.
+    if gopts.help:
+      global_options.print_help()
+      commands = ' '.join(sorted(self.commands))
+      wrapped_commands = textwrap.wrap(commands, width=77)
+      print('\nAvailable commands:\n  %s' % ('\n  '.join(wrapped_commands),))
+      print('\nRun `repo help <command>` for command-specific details.')
+      return 0
+    elif gopts.show_version:
+      if name and name != 'help':
         print('fatal: invalid usage of --version', file=sys.stderr)
         return 1
+      name = 'version'
+    elif not name:
+      # No subcommand specified, so show the help/subcommand.
+      name = 'help'
 
     SetDefaultColoring(gopts.color)
 
