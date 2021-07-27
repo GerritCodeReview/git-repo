@@ -411,7 +411,9 @@ def _UseSuperprojectFromConfiguration():
 def UseSuperproject(opt, manifest):
   """Returns a boolean if use-superproject option is enabled."""
 
-  if opt.use_superproject is not None:
+  if opt.local_only:
+    return False
+  elif opt.use_superproject is not None:
     return opt.use_superproject
   else:
     client_value = manifest.manifestProject.config.GetBoolean('repo.superproject')
