@@ -95,6 +95,8 @@ global_options = optparse.OptionParser(
     add_help_option=False)
 global_options.add_option('-h', '--help', action='store_true',
                           help='show this help message and exit')
+global_options.add_option('--help-all', action='store_true',
+                          help='show this help message with all subcommands and exit')
 global_options.add_option('-p', '--paginate',
                           dest='pager', action='store_true',
                           help='display command output in the pager')
@@ -127,6 +129,23 @@ class _Repo(object):
   def __init__(self, repodir):
     self.repodir = repodir
     self.commands = all_commands
+
+  def _PrintHelp(self, short: bool = False, all_commands: bool = False):
+    """Show --help screen."""
+    global_options.print_help()
+    print()
+    if short:
+      commands = ' '.join(sorted(self.commands))
+      wrapped_commands = textwrap.wrap(commands, width=77)
+      print('Available commands:\n  %s' % ('\n  '.join(wrapped_commands),))
+      print('\nRun `repo help <command>` for command-specific details.')
+      print('Bug reports:', Wrapper().BUG_URL)
+    else:
+      cmd = self.commands['help']()
+      if all_commands:
+        cmd.PrintAllCommandsBody()
+      else:
+        cmd.PrintCommonCommandsBody()
 
   def _ParseArgs(self, argv):
     """Parse the main `repo` command line options."""
@@ -177,19 +196,16 @@ class _Repo(object):
       SetTrace()
 
     # Handle options that terminate quickly first.
-    if gopts.help:
-      global_options.print_help()
-      commands = ' '.join(sorted(self.commands))
-      wrapped_commands = textwrap.wrap(commands, width=77)
-      print('\nAvailable commands:\n  %s' % ('\n  '.join(wrapped_commands),))
-      print('\nRun `repo help <command>` for command-specific details.')
+    if gopts.help or gopts.help_all:
+      self._PrintHelp(short=False, all_commands=gopts.help_all)
       return 0
     elif gopts.show_version:
       # Always allow global --version regardless of subcommand validity.
       name = 'version'
     elif not name:
       # No subcommand specified, so show the help/subcommand.
-      name = 'help'
+      self._PrintHelp(short=True)
+      return 1
 
     SetDefaultColoring(gopts.color)
 
