@@ -146,7 +146,12 @@ Instead, you should use standard Git workflows like [git worktree] or
 
 The `.repo/manifests.git/config` file is used to track settings for the entire
 repo client checkout.
+
 Most settings use the `[repo]` section to avoid conflicts with git.
+
+Everything under `[repo.syncstate.*]` is used to keep track of sync details for logging
+purposes.
+
 User controlled settings are initialized when running `repo init`.
 
 | Setting                  | `repo init` Option        | Use/Meaning |
