@@ -18,6 +18,41 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b88758fa_d27e22d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7564e6dd_fd0b8298",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9683e76d_4eb9f077",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Hi Mike,\n  I have fixed all the comments in https://gerrit-review.googlesource.com/c/git-repo/+/313123. \n  My git-repo got corrupted and thus uploaded the changes as another CL.\n  \n  Abandoning this CL.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85608700_a847d06c",
@@ -31,6 +66,24 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "just \"import datetime\".  having to guess which \"datetime\" is which when reading code is difficult.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "679cbc40_0e73dd11",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85608700_a847d06c",
       "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e10dc7cf_2594251c",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44114a7e_c03ecb82",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a614c7f_55985368",
@@ -65,6 +136,24 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "i\u0027m not seeing self._syncState initialized in __init__, or used anywhere ...",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81a8623c_e8f7db18",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a614c7f_55985368",
       "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e95368b_5ca05677",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 735,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "030a08b7_41e6ae93",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7682630_fd5db59c",
@@ -103,6 +210,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "594a23fc_2bc63811",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 736,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "\u003e the only purpose of this is to throw into logs for later analysis right ?\nYou are right. Changed it to SyncAnalysisState.\n\nDone",
+      "parentUuid": "c7682630_fd5db59c",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e254864_2a33a801",
@@ -116,6 +241,24 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "cuddle this up to the previous line",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e02cb76f_07b331df",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e254864_2a33a801",
       "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -143,6 +286,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7039b376_0d5efd8e",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a556235_042f6509",
+      "range": {
+        "startLine": 742,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 29
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f08ab9c4_c19ca2ed",
@@ -156,6 +323,24 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "what is the goal of this date stamp ?  for humans to read ?  or bots to parse ?  this is a bit of a non-standard form, and is ambiguous especially in the US.\n\nif it\u0027s only meant for humans to read, i\u0027d recommend RFC 2822.  for example: Wed, 20 Feb 2013 15:25:15 -0500 (EST)\n\nif it\u0027s meant for bots to parse, then the now.isoformat() + \u0027Z\u0027 would be better.",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bf85cdc_11cb6650",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "\u003eif it\u0027s meant for bots to parse\n\nIt is meant for scripts (or bots) to parse.\n\nDone",
+      "parentUuid": "f08ab9c4_c19ca2ed",
       "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -177,6 +362,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "66a4e34b_08ce236c",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6c83a5f_9e96dbc7",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d8353c91_535a5709",
@@ -190,6 +393,24 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "please add docstrings for each of these methods",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29c23ef1_52dc55cb",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 765,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8353c91_535a5709",
       "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -211,6 +432,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9652b1d1_2c29f6f3",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2421527_b0938a1e",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e42222ea_4e08a21b",
@@ -228,6 +467,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f424ce5d_6273a862",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e42222ea_4e08a21b",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccb2a7d9_34b76ac1",
@@ -241,6 +498,24 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "use f-strings",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eed4d6c_55687ce9",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 781,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccb2a7d9_34b76ac1",
       "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -268,6 +543,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df1e9fa0_394ce3d4",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b089743_1027e5e5",
+      "range": {
+        "startLine": 148,
+        "startChar": 72,
+        "endLine": 148,
+        "endChar": 91
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32d78f25_cf8197cc",
@@ -281,6 +580,24 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "period at the end",
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "125bcadc_5bd0d495",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32d78f25_cf8197cc",
       "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -321,6 +638,54 @@
       "writtenOn": "2021-07-24T08:53:47Z",
       "side": 1,
       "message": "this is a Superproject object.  don\u0027t treat it like a dict.",
+      "range": {
+        "startLine": 309,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 51
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b1a0c98_109f6408",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7cbc6a8a_73a2f5ff",
+      "range": {
+        "startLine": 309,
+        "startChar": 54,
+        "endLine": 309,
+        "endChar": 86
+      },
+      "revId": "f95db4d79e30956042d8b171bcc3596b7cc25f48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d5869bb_6c89fcf7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:04:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8aeaaf8b_b45162c1",
       "range": {
         "startLine": 309,
         "startChar": 4,
