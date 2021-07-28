@@ -11,3 +11,12 @@
 	intk = 10k
 	intm = 10m
 	intg = 10g
+[syncstate "main"]
+	synctime = 2021-07-28T21:58:20.570327Z
+	version = 1
+[syncstate "sys"]
+	argv = ['/usr/bin/pytest-3']
+[syncstate "superproject"]
+	test = false
+[syncstate "options"]
+	verbose = true
