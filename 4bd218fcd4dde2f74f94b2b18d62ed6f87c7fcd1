@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e80d7ef_6beb16cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-28T22:10:03Z",
+      "side": 1,
+      "message": "This is a cut at logging sync state data for analysis. Fixed all the earlier comments from Mike in this CL. PTAL. Thanks",
+      "revId": "4bd218fcd4dde2f74f94b2b18d62ed6f87c7fcd1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
