@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import contextlib
+import datetime
 import errno
 from http.client import HTTPException
 import json
@@ -29,6 +30,10 @@ import platform_utils
 from repo_trace import Trace
 from git_command import GitCommand
 from git_refs import R_CHANGES, R_HEADS, R_TAGS
+
+# Prefix that is prepended to all the keys of SyncAnalysisState's data
+# that is saved in the config.
+SYNC_STATE_PREFIX = 'repo.syncstate.'
 
 ID_RE = re.compile(r'^[0-9a-f]{40}$')
 
@@ -261,6 +266,22 @@ class GitConfig(object):
       b = Branch(self, name)
       self._branches[b.name] = b
     return b
+
+  def GetSyncAnalysisStateData(self):
+    """Returns data to be logged for the analysis of sync performance."""
+    return {k: v for k, v in self.DumpConfigDict().items() if k.startswith(SYNC_STATE_PREFIX)}
+
+  def UpdateSyncAnalysisState(self, options, superproject_logging_data):
+    """Update Config's SYNC_STATE_PREFIX* data with the latest sync data.
+
+    Args:
+      options: Options passed to sync returned from optparse. See _Options().
+      superproject_logging_data: A dictionary of superproject data that is to be logged.
+
+    Returns:
+      SyncAnalysisState object.
+    """
+    return SyncAnalysisState(self, options, superproject_logging_data)
 
   def GetSubSections(self, section):
     """List all subsection names matching $section.*.*
@@ -717,3 +738,69 @@ class Branch(object):
   def _Get(self, key, all_keys=False):
     key = 'branch.%s.%s' % (self.name, key)
     return self._config.GetString(key, all_keys=all_keys)
+
+
+class SyncAnalysisState:
+  """Configuration options related to logging of sync state for analysis.
+
+  This object is versioned.
+  """
+  def __init__(self, config, options, superproject_logging_data):
+    """Initializes SyncAnalysisState.
+
+    Saves the following data into the |config| object.
+    - sys.argv, options, superproject's logging data.
+    - repo.*, branch.* and remote.* parameters from config object.
+    - Current time as synctime.
+    - Version number of the object.
+
+    All the keys saved by this object are prepended with SYNC_STATE_PREFIX.
+
+    Args:
+      config: GitConfig object to store all options.
+      options: Options passed to sync returned from optparse. See _Options().
+      superproject_logging_data: A dictionary of superproject data that is to be logged.
+    """
+    self._config = config
+    now = datetime.datetime.utcnow()
+    self._Set('main.synctime', now.isoformat() + 'Z')
+    self._Set('main.version', '1')
+    self._Set('sys.argv', sys.argv)
+    for key, value in superproject_logging_data.items():
+      self._Set(f'superproject.{key}', value)
+    for key, value in options.__dict__.items():
+      self._Set(f'options.{key}', value)
+    config_items = config.DumpConfigDict().items()
+    EXTRACT_NAMESPACES = {'repo', 'branch', 'remote'}
+    self._SetDictionary({k: v for k, v in config_items
+                         if not k.startswith(SYNC_STATE_PREFIX) and
+                         k.split('.', 1)[0] in EXTRACT_NAMESPACES})
+
+  def _SetDictionary(self, data):
+    """Save all key/value pairs of |data| dictionary.
+
+    Args:
+      data: A dictionary whose key/value are to be saved.
+    """
+    for key, value in data.items():
+      self._Set(key, value)
+
+  def _Set(self, key, value):
+    """Set the |value| for a |key| in the |_config| member.
+
+    |key| is prepended with the value of SYNC_STATE_PREFIX constant.
+
+    Args:
+      key: Name of the key.
+      value: |value| could be of any type. If it is 'bool', it will be saved
+             as a Boolean and for all other types, it will be saved as a String.
+    """
+    if value is None:
+      return
+    sync_key = f'{SYNC_STATE_PREFIX}{key}'
+    if isinstance(value, str):
+      self._config.SetString(sync_key, value)
+    elif isinstance(value, bool):
+      self._config.SetBoolean(sync_key, value)
+    else:
+      self._config.SetString(sync_key, str(value))
