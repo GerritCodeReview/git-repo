@@ -14,6 +14,9 @@
 
 # Programmable bash completion.  https://github.com/scop/bash-completion
 
+# TODO: Handle interspersed options.  We handle `repo h<tab>`, but not
+# `repo --time h<tab>`.
+
 # Complete the list of repo subcommands.
 __complete_repo_list_commands() {
   local repo=${COMP_WORDS[0]}
@@ -37,6 +40,7 @@ __complete_repo_list_branches() {
 __complete_repo_list_projects() {
   local repo=${COMP_WORDS[0]}
   "${repo}" list -n 2>/dev/null
+  "${repo}" list -p --relative-to=. 2>/dev/null
 }
 
 # Complete the repo <command> argument.
@@ -66,6 +70,48 @@ __complete_repo_command_projects() {
   COMPREPLY=($(compgen -W "$(__complete_repo_list_projects)" -- "${current}"))
 }
 
+# Complete `repo help`.
+__complete_repo_command_help() {
+  local current=$1
+  # CWORD=1 is "start".
+  # CWORD=2 is the <subcommand> which we complete here.
+  if [[ ${COMP_CWORD} -eq 2 ]]; then
+    COMPREPLY=(
+      $(compgen -W "$(__complete_repo_list_commands)" -- "${current}")
+    )
+  fi
+}
+
+# Complete `repo forall`.
+__complete_repo_command_forall() {
+  local current=$1
+  # CWORD=1 is "forall".
+  # CWORD=2+ are <projects> *until* we hit the -c option.
+  local i
+  for (( i = 0; i < COMP_CWORD; ++i )); do
+    if [[ "${COMP_WORDS[i]}" == "-c" ]]; then
+      return 0
+    fi
+  done
+
+  COMPREPLY=(
+    $(compgen -W "$(__complete_repo_list_projects)" -- "${current}")
+  )
+}
+
+# Complete `repo start`.
+__complete_repo_command_start() {
+  local current=$1
+  # CWORD=1 is "start".
+  # CWORD=2 is the <branch> which we don't complete.
+  # CWORD=3+ are <projects> which we complete here.
+  if [[ ${COMP_CWORD} -gt 2 ]]; then
+    COMPREPLY=(
+      $(compgen -W "$(__complete_repo_list_projects)" -- "${current}")
+    )
+  fi
+}
+
 # Complete the repo subcommand arguments.
 __complete_repo_arg() {
   if [[ ${COMP_CWORD} -le 1 ]]; then
@@ -86,21 +132,8 @@ __complete_repo_arg() {
     return 0
     ;;
 
-  help)
-    if [[ ${COMP_CWORD} -eq 2 ]]; then
-      COMPREPLY=(
-        $(compgen -W "$(__complete_repo_list_commands)" -- "${current}")
-      )
-    fi
-    return 0
-    ;;
-
-  start)
-    if [[ ${COMP_CWORD} -gt 2 ]]; then
-      COMPREPLY=(
-        $(compgen -W "$(__complete_repo_list_projects)" -- "${current}")
-      )
-    fi
+  help|start|forall)
+    __complete_repo_command_${command} "${current}"
     return 0
     ;;
 
@@ -118,4 +151,6 @@ __complete_repo() {
   return 0
 }
 
-complete -F __complete_repo repo
+# Fallback to the default complete methods if we aren't able to provide anything
+# useful.  This will allow e.g. local paths to be used when it makes sense.
+complete -F __complete_repo -o bashdefault -o default repo

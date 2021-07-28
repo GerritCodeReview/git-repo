@@ -27,15 +27,19 @@ project is in
 \fB\-a\fR, \fB\-\-all\fR
 show projects regardless of checkout state
 .TP
-\fB\-f\fR, \fB\-\-fullpath\fR
-display the full work tree path instead of the
-relative path
-.TP
 \fB\-n\fR, \fB\-\-name\-only\fR
 display only the name of the repository
 .TP
 \fB\-p\fR, \fB\-\-path\-only\fR
 display only the path of the repository
+.TP
+\fB\-f\fR, \fB\-\-fullpath\fR
+display the full work tree path instead of the
+relative path
+.TP
+\fB\-\-relative\-to\fR=\fI\,PATH\/\fR
+display paths relative to this one (default: top of
+repo client checkout)
 .SS Logging options:
 .TP
 \fB\-v\fR, \fB\-\-verbose\fR

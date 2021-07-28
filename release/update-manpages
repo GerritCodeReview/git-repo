@@ -59,7 +59,7 @@ def main(argv):
   cmdlist.append(['help2man', '-N', '-n', 'repository management tool built on top of git',
     '-S', 'repo', '-m', 'Repo Manual', f'--version-string={version}',
     '-o', MANDIR.joinpath('repo.1'), TOPDIR.joinpath('repo'),
-    '-h', 'help --all'])
+    '-h', '--help-all'])
 
   with tempfile.TemporaryDirectory() as tempdir:
     repo_dir = Path(tempdir) / '.repo'

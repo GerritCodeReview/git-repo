@@ -2,9 +2,48 @@
 .TH REPO "1" "July 2021" "repo" "Repo Manual"
 .SH NAME
 repo \- repository management tool built on top of git
-.SH DESCRIPTION
-usage: repo COMMAND [ARGS]
-The complete list of recognized repo commands are:
+.SH SYNOPSIS
+.B repo
+[\fI\,-p|--paginate|--no-pager\/\fR] \fI\,COMMAND \/\fR[\fI\,ARGS\/\fR]
+.SH OPTIONS
+.TP
+\fB\-h\fR, \fB\-\-help\fR
+show this help message and exit
+.TP
+\fB\-\-help\-all\fR
+show this help message with all subcommands and exit
+.TP
+\fB\-p\fR, \fB\-\-paginate\fR
+display command output in the pager
+.TP
+\fB\-\-no\-pager\fR
+disable the pager
+.TP
+\fB\-\-color\fR=\fI\,COLOR\/\fR
+control color usage: auto, always, never
+.TP
+\fB\-\-trace\fR
+trace git command execution (REPO_TRACE=1)
+.TP
+\fB\-\-trace\-python\fR
+trace python command execution
+.TP
+\fB\-\-time\fR
+time repo command execution
+.TP
+\fB\-\-version\fR
+display this version of repo
+.TP
+\fB\-\-show\-toplevel\fR
+display the path of the top\-level directory of the
+repo client checkout
+.TP
+\fB\-\-event\-log\fR=\fI\,EVENT_LOG\/\fR
+filename of event log to append timeline to
+.TP
+\fB\-\-git\-trace2\-event\-log\fR=\fI\,GIT_TRACE2_EVENT_LOG\/\fR
+directory to write git trace2 event log to
+.SS "The complete list of recognized repo commands are:"
 .TP
 abandon
 Permanently abandon a development branch
@@ -91,3 +130,4 @@ version
 Display the version of repo
 .PP
 See 'repo help <command>' for more information on a specific command.
+Bug reports: https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue

@@ -95,6 +95,8 @@ global_options = optparse.OptionParser(
     add_help_option=False)
 global_options.add_option('-h', '--help', action='store_true',
                           help='show this help message and exit')
+global_options.add_option('--help-all', action='store_true',
+                          help='show this help message with all subcommands and exit')
 global_options.add_option('-p', '--paginate',
                           dest='pager', action='store_true',
                           help='display command output in the pager')
@@ -116,6 +118,10 @@ global_options.add_option('--time',
 global_options.add_option('--version',
                           dest='show_version', action='store_true',
                           help='display this version of repo')
+global_options.add_option('--show-toplevel',
+                          action='store_true',
+                          help='display the path of the top-level directory of '
+                               'the repo client checkout')
 global_options.add_option('--event-log',
                           dest='event_log', action='store',
                           help='filename of event log to append timeline to')
@@ -128,34 +134,40 @@ class _Repo(object):
     self.repodir = repodir
     self.commands = all_commands
 
+  def _PrintHelp(self, short: bool = False, all_commands: bool = False):
+    """Show --help screen."""
+    global_options.print_help()
+    print()
+    if short:
+      commands = ' '.join(sorted(self.commands))
+      wrapped_commands = textwrap.wrap(commands, width=77)
+      print('Available commands:\n  %s' % ('\n  '.join(wrapped_commands),))
+      print('\nRun `repo help <command>` for command-specific details.')
+      print('Bug reports:', Wrapper().BUG_URL)
+    else:
+      cmd = self.commands['help']()
+      if all_commands:
+        cmd.PrintAllCommandsBody()
+      else:
+        cmd.PrintCommonCommandsBody()
+
   def _ParseArgs(self, argv):
     """Parse the main `repo` command line options."""
-    name = None
-    glob = []
-
-    for i in range(len(argv)):
-      if not argv[i].startswith('-'):
-        name = argv[i]
-        if i > 0:
-          glob = argv[:i]
+    for i, arg in enumerate(argv):
+      if not arg.startswith('-'):
+        name = arg
+        glob = argv[:i]
         argv = argv[i + 1:]
         break
-    if not name:
+    else:
+      name = None
       glob = argv
-      name = 'help'
       argv = []
     gopts, _gargs = global_options.parse_args(glob)
 
-    name, alias_args = self._ExpandAlias(name)
-    argv = alias_args + argv
-
-    if gopts.help:
-      global_options.print_help()
-      commands = ' '.join(sorted(self.commands))
-      wrapped_commands = textwrap.wrap(commands, width=77)
-      print('\nAvailable commands:\n  %s' % ('\n  '.join(wrapped_commands),))
-      print('\nRun `repo help <command>` for command-specific details.')
-      global_options.exit()
+    if name:
+      name, alias_args = self._ExpandAlias(name)
+      argv = alias_args + argv
 
     return (name, gopts, argv)
 
@@ -186,12 +198,21 @@ class _Repo(object):
 
     if gopts.trace:
       SetTrace()
-    if gopts.show_version:
-      if name == 'help':
-        name = 'version'
-      else:
-        print('fatal: invalid usage of --version', file=sys.stderr)
-        return 1
+
+    # Handle options that terminate quickly first.
+    if gopts.help or gopts.help_all:
+      self._PrintHelp(short=False, all_commands=gopts.help_all)
+      return 0
+    elif gopts.show_version:
+      # Always allow global --version regardless of subcommand validity.
+      name = 'version'
+    elif gopts.show_toplevel:
+      print(os.path.dirname(self.repodir))
+      return 0
+    elif not name:
+      # No subcommand specified, so show the help/subcommand.
+      self._PrintHelp(short=True)
+      return 1
 
     SetDefaultColoring(gopts.color)
 

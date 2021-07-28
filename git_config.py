@@ -31,7 +31,8 @@ from repo_trace import Trace
 from git_command import GitCommand
 from git_refs import R_CHANGES, R_HEADS, R_TAGS
 
-# Prefix Add all the data of SyncAnalysisState object.
+# Prefix that is prepended to all the keys of SyncAnalysisState's data
+# that is saved in the config.
 SYNC_STATE_PREFIX = 'syncstate.'
 
 ID_RE = re.compile(r'^[0-9a-f]{40}$')
@@ -271,10 +272,7 @@ class GitConfig(object):
     return {k: v for k, v in self.DumpConfigDict().items() if k.startswith(SYNC_STATE_PREFIX)}
 
   def UpdateSyncAnalysisState(self, options, superproject_logging_data):
-    """Update Config's SyncAnalysisState with the latest sync data.
-
-    Creates SyncAnalysisState object with |options| and |superproject_logging_data|
-    which in turn persists the data into the |self| object.
+    """Update Config's SYNC_STATE_PREFIX* data with the latest sync data.
 
     Args:
       options: Options passed to sync returned from optparse. See _Options().
@@ -743,7 +741,7 @@ class Branch(object):
 
 
 class SyncAnalysisState():
-  """Configuration options related to logging of Sync state for analysis.
+  """Configuration options related to logging of sync state for analysis.
 
   This object is versioned.
   """
@@ -786,7 +784,7 @@ class SyncAnalysisState():
   def _Set(self, key, value):
     """Set the |value| for a |key| in the |_config| member.
 
-    Every key is stored by prepending the value of SYNC_STATE_PREFIX constant to it.
+    |key| is prepended with the value of SYNC_STATE_PREFIX constant.
 
     Args:
       key: Name of the key.

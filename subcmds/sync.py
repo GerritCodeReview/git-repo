@@ -302,6 +302,12 @@ later is required to fix a server side protocol bug.
                                                  self.repodir,
                                                  self.git_event_log,
                                                  quiet=opt.quiet)
+    if opt.local_only:
+      manifest_path = superproject.manifest_path
+      if manifest_path:
+        self._ReloadManifest(manifest_path, load_local_manifests)
+      return manifest_path
+
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
@@ -1080,11 +1086,11 @@ later is required to fix a server side protocol bug.
             file=sys.stderr)
       sys.exit(1)
 
-    # Log the previous sync state from the config.
+    # Log the previous sync analysis state from the config.
     self.git_event_log.LogConfigEvents(mp.config.GetSyncAnalysisStateData(),
                                        'previous_sync_state')
 
-    # Update and log with the new sync state.
+    # Update and log with the new sync analysis state.
     mp.config.UpdateSyncAnalysisState(opt, superproject_logging_data)
     self.git_event_log.LogConfigEvents(mp.config.GetSyncAnalysisStateData(),
                                        'current_sync_state')

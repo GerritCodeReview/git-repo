@@ -50,14 +50,21 @@ Displays detailed usage information about a command.
 
   def _PrintAllCommands(self):
     print('usage: repo COMMAND [ARGS]')
+    self.PrintAllCommandsBody()
+
+  def PrintAllCommandsBody(self):
     print('The complete list of recognized repo commands are:')
     commandNames = list(sorted(all_commands))
     self._PrintCommands(commandNames)
     print("See 'repo help <command>' for more information on a "
           'specific command.')
+    print('Bug reports:', Wrapper().BUG_URL)
 
   def _PrintCommonCommands(self):
     print('usage: repo COMMAND [ARGS]')
+    self.PrintCommonCommandsBody()
+
+  def PrintCommonCommandsBody(self):
     print('The most commonly used repo commands are:')
 
     def gitc_supported(cmd):
