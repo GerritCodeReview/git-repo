@@ -86,6 +86,24 @@
       "parentUuid": "17a9a518_e9600428",
       "revId": "6d3d2ef60049f05c62314073fb66099389317412",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7606400a_e387c847",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T16:18:53Z",
+      "side": 1,
+      "message": "the feedback i\u0027ve had from other people is that LFS is often not usable as-is without additional setup (which repo isn\u0027t going to do), or people might not want to have LFS enabled on a per-project basis.\n\ni\u0027m not against reconsidering decisions, but care has to be taken, and things well documented, when we\u0027re undoing changes that were very clearly put in to block the thing you want to do now.\n\nthat means clear commit messages discussions ramifications, the state of the world before \u0026 after, and possible scenarios that will play out.\n\nRemy for example has been thinking about this in https://gerrit-review.googlesource.com/c/git-repo/+/277563.",
+      "parentUuid": "500b97da_41e580c1",
+      "revId": "6d3d2ef60049f05c62314073fb66099389317412",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
