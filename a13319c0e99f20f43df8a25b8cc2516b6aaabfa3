@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab7ed90_45dd4ff7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T06:32:58Z",
+      "side": 1,
+      "message": "some high level thoughts first\n\nwe don\u0027t want to tie ourselves to a specific protocol.  we\u0027ll also want to be able to download files from http:// and https://, and use file:// and local paths.\n\nthe repo init interface is already fairly complicated.  i\u0027d like to keep the basics the same if possible.  so i\u0027d prefer to keep the -u option as how you specify the path, and the new CLI option is a bool to tell repo how to treat the argument.\n\ni\u0027m trying not to bikeshed \"synthetic\", but i\u0027m trying to have options be a little self-explanatory when people come across them, either in source or in docs, and to have names be consistent between UX (i.e. CLI options) and internal save state.\n\nso taken together, what if the new option was \"--standalone-manifest\" ?  or something else to indicate \"the URI is a single file, not in git, that we\u0027ll download and use directly\".\n\nalso, make sure to update docs/internal-fs-layout.md with any new settings repo.xxx, and re-run ./release/update-manpages whenever updating the CLI.",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ef9e9e8_e791361b",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T06:32:58Z",
+      "side": 1,
+      "message": "only 1 blank line between class methods",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac382bb5_ec3bb6f9",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T06:32:58Z",
+      "side": 1,
+      "message": "delete debug code",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c007106_01a32e4b",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T06:32:58Z",
+      "side": 1,
+      "message": "this fetch logic would prob be better as a dedicated method, or even a dedicated module ... \"fetch.py\" maybe ?\n\nproject.py has some complicated logic built on top of curl for fetching https files that we could merge in to get http/https URI support.  don\u0027t have to do that refactor as part of this CL ... i\u0027m just future proofing it a little as i know we\u0027ll want that functionality shortly.",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "936f4a4b_a5e833ef",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T06:32:58Z",
+      "side": 1,
+      "message": "i think this would be simpler if you used `gsutil cat`.  then you can capture the output, create the right path easily, and then write the file yourself exactly where it needs to be.",
+      "range": {
+        "startLine": 282,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 61
+      },
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bac2c67_fc99d6b2",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T06:32:58Z",
+      "side": 1,
+      "message": "check_output is rarely a good idea.  use subprocess.run() with check\u003dTrue instead.",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "649e4344_732c205f",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-28T06:32:58Z",
+      "side": 1,
+      "message": "never use shell\u003dTrue.  use of that option is a strong code smell and almost always means you need to step back and rethink what you\u0027re doing.\n\nin this specific case, you don\u0027t even need it as you\u0027re just running a single program directly, so you can write the argv above as a list.",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
