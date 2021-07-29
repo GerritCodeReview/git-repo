@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf0dcba1_c3f53e12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T02:48:54Z",
+      "side": 1,
+      "message": "please update docs/internal-fs-layout.md.  it doesn\u0027t have to document all the keys, just the namespace should be fine.",
+      "revId": "d9fc6ef4325ba34bb0212dad35af057d4d6ac12f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f96691_af27719a",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 743,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T02:48:54Z",
+      "side": 1,
+      "message": "omit the () entirely",
+      "revId": "d9fc6ef4325ba34bb0212dad35af057d4d6ac12f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66724145_9af7d49b",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T02:48:54Z",
+      "side": 1,
+      "message": "how about:\n\n EXTRACT_NAMESPACES \u003d {\u0027repo\u0027, \u0027branch\u0027, \u0027remote\u0027}\n self._SetDictionary({k: v for k, v in config_items\n                      if k.split(\u0027.\u0027, 1)[0] in EXTRACT_NAMESPACES})",
+      "range": {
+        "startLine": 774,
+        "startChar": 0,
+        "endLine": 776,
+        "endChar": 83
+      },
+      "revId": "d9fc6ef4325ba34bb0212dad35af057d4d6ac12f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4656297_e78b6120",
+        "filename": "git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 782,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T02:48:54Z",
+      "side": 1,
+      "message": "use a . instead of a ,",
+      "range": {
+        "startLine": 782,
+        "startChar": 56,
+        "endLine": 782,
+        "endChar": 57
+      },
+      "revId": "d9fc6ef4325ba34bb0212dad35af057d4d6ac12f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e14dede6_c01ba45b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 971,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T02:48:54Z",
+      "side": 1,
+      "message": "merge the decl \u0026 assignments to get simpler code\n\n superproject_logging_data \u003d {\n     \u0027superproject\u0027: use_superproject,\n     ....\n }",
+      "revId": "d9fc6ef4325ba34bb0212dad35af057d4d6ac12f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b1bb23_86bf81f7",
+        "filename": "tests/test_git_config.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T02:48:54Z",
+      "side": 1,
+      "message": "one line it",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 7
+      },
+      "revId": "d9fc6ef4325ba34bb0212dad35af057d4d6ac12f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
