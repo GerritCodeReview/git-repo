@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73f6201d_d46237b4",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-29T19:20:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "261fe9fa_090dcefa",
+      "range": {
+        "startLine": 150,
+        "startChar": 17,
+        "endLine": 150,
+        "endChar": 26
+      },
+      "revId": "7dc75a5694d8bf13ad467d61ac63a037703745e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "774610a8_3f6b8235",
@@ -41,6 +65,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c581a411_112c0661",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 776,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-29T19:20:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "774610a8_3f6b8235",
+      "revId": "7dc75a5694d8bf13ad467d61ac63a037703745e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef2d581f_7f820958",
@@ -54,6 +96,24 @@
       "writtenOn": "2021-07-29T17:47:15Z",
       "side": 1,
       "message": "i guess you want to just assert the value exists ?  you can drop len() and leave the string value to be treated as a bool.",
+      "revId": "7dc75a5694d8bf13ad467d61ac63a037703745e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68fa99de_de72ce48",
+        "filename": "tests/test_git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-07-29T19:20:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef2d581f_7f820958",
       "revId": "7dc75a5694d8bf13ad467d61ac63a037703745e9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
