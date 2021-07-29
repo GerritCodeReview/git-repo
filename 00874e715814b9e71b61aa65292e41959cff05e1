@@ -16,6 +16,40 @@
       "message": "Thanks for the code review. Made all the changes. PTAL.",
       "revId": "00874e715814b9e71b61aa65292e41959cff05e1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0e811df_f8716bd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T05:54:17Z",
+      "side": 1,
+      "message": "sorry, i missed that this was creating a new top-level.  i think we want to stay under repo.* from now on.\n\nif you use \"repo.syncstate\" as the prefix, things should still work fine.  the config would look like:\n\n [repo \"syncstate.sys\"]\n   argv \u003d [...]",
+      "revId": "00874e715814b9e71b61aa65292e41959cff05e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49ddd429_08f01643",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T05:54:17Z",
+      "side": 1,
+      "message": "i wouldn\u0027t bother getting into this level of detail.  you can just say something like \"everything under syncstate.* is used to keep track of sync details for logging purposes\".",
+      "revId": "00874e715814b9e71b61aa65292e41959cff05e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
