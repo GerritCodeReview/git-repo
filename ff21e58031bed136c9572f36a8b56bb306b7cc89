@@ -16,6 +16,24 @@
       "message": "Nice catch!\nYes, it\u0027s better not to inform exact thread number, since it depends on target system.\n\nBTW. Is it possible to provide the formula in manpage, such as $(nproc) or $(($(nproc)*2)) ?\nnproc command is \"required\" on debian and ubuntu system. So we can suppose it exists on each install.\nThank you!",
       "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "526383ac_678025d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-29T17:27:08Z",
+      "side": 1,
+      "message": "i left it vague because it actually depends on each subcommand :x.  the default for most is max(nproc,8), but for sync specifically it\u0027s still 1.  i struggled to express that succinctly.",
+      "parentUuid": "647ff3d5_4555709c",
+      "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
