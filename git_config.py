@@ -798,6 +798,7 @@ class SyncAnalysisState:
     if value is None:
       return
     sync_key = f'{SYNC_STATE_PREFIX}{key}'
+    sync_key = sync_key.replace('_', '')
     if isinstance(value, str):
       self._config.SetString(sync_key, value)
     elif isinstance(value, bool):
