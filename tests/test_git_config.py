@@ -110,9 +110,11 @@ class GitConfigReadOnlyTests(unittest.TestCase):
     superproject_logging_data['test'] = False
     options = type('options', (object,), {})()
     options.verbose = 'true'
+    options.mp_update = 'false'
     TESTS = (
         ('superproject.test', 'false'),
         ('options.verbose', 'true'),
+        ('options.mpupdate', 'false'),
         ('main.version', '1'),
     )
     self.config.UpdateSyncAnalysisState(options, superproject_logging_data)
