@@ -77,6 +77,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db280462_b36d3f0a",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-30T21:04:20Z",
+      "side": 1,
+      "message": "i\u0027m using Debian and it\u0027s working fine.  the env var isn\u0027t something that shells can parse, but it should get passed through normally fine.  maybe it\u0027s something to do with help2man and the version of perl.\n\ni can drop the % as they\u0027re not super important ... was just being defensive since the code is checked in releases too.",
+      "parentUuid": "645b363d_cb5f38a8",
+      "range": {
+        "startLine": 28,
+        "startChar": 36,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fff8d8ed_dc9531f3",
@@ -90,6 +114,30 @@
       "writtenOn": "2021-07-30T11:31:44Z",
       "side": 1,
       "message": "confirmed to work if removing both \u0027%\u0027.\n\ncode:\nos.environ[\u0027_REPO_GENERATE_MANPAGES_\u0027]",
+      "range": {
+        "startLine": 52,
+        "startChar": 2,
+        "endLine": 52,
+        "endChar": 42
+      },
+      "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b7159a5_cc71539f",
+        "filename": "release/update-manpages",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-30T21:04:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fff8d8ed_dc9531f3",
       "range": {
         "startLine": 52,
         "startChar": 2,
