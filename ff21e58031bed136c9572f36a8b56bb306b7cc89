@@ -34,6 +34,70 @@
       "parentUuid": "647ff3d5_4555709c",
       "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f105a758_82481901",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-30T11:31:44Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "526383ac_678025d6",
+      "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "645b363d_cb5f38a8",
+        "filename": "command.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-30T11:31:44Z",
+      "side": 1,
+      "message": "I tried on my debian environment, and found that it only works if removing both \u0027%\u0027.\n\ncode: get(\u0027_REPO_GENERATE_MANPAGES_\u0027)\n\nOtherwise, GENERATE_MANPAGES is always False when being called.",
+      "range": {
+        "startLine": 28,
+        "startChar": 36,
+        "endLine": 28,
+        "endChar": 62
+      },
+      "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff8d8ed_dc9531f3",
+        "filename": "release/update-manpages",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-30T11:31:44Z",
+      "side": 1,
+      "message": "confirmed to work if removing both \u0027%\u0027.\n\ncode:\nos.environ[\u0027_REPO_GENERATE_MANPAGES_\u0027]",
+      "range": {
+        "startLine": 52,
+        "startChar": 2,
+        "endLine": 52,
+        "endChar": 42
+      },
+      "revId": "ff21e58031bed136c9572f36a8b56bb306b7cc89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
