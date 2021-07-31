@@ -277,6 +277,11 @@ Things in italics are things we used to care about but probably don't anymore.
 | Nov 2019 |              | 2.24.0       |
 | Jan 2020 |              | 2.25.0       |                 | **20.04 Focal** |
 | Apr 2020 | **Apr 2030** |              |                 | **20.04 Focal**      | 2.25.0   | 2.7.17 3.7.5 |
+| Oct 2020 | **Oct 2025** |              | 3.9.0           | 21.04 Hirsute / **Bullseye** |
+| Dec 2020 |              | 2.30.0       |                 | 21.04 Hirsute / **Bullseye** |
+| Apr 2021 | *Jan 2022*   |              |                 | 21.04 Hirsute        | 2.30.2   | 2.7.18 3.9.4 |
+| Aug 2021 | **Aug 2026** |              |                 | **Debian 11 Bullseye** | 2.30.2 | 2.7.18 3.9.2 |
+| **Date** |   **EOL**    | **[Git][rel-g]** | **[Python][rel-p]** | **[Ubuntu][rel-u] / [Debian][rel-d]** | **Git** | **Python** |
 
 
 [contact]: ../README.md#contact
