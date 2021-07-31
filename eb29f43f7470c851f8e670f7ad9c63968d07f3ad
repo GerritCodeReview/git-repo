@@ -16,6 +16,24 @@
       "message": "Works well in my environment.\nThanks!",
       "revId": "eb29f43f7470c851f8e670f7ad9c63968d07f3ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b7f0bf1_2ecad5dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-07-31T11:39:27Z",
+      "side": 1,
+      "message": "thanks for checking",
+      "parentUuid": "a9257f96_09ce9aae",
+      "revId": "eb29f43f7470c851f8e670f7ad9c63968d07f3ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
