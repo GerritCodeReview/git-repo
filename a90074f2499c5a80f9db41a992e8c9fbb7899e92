@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "725b4a9f_8a0e35ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1082085
+      },
+      "writtenOn": "2021-07-31T10:21:30Z",
+      "side": 1,
+      "message": "set WIP and hope can be submitted after Debian 11 Bullseye gets released on mid-August.\nThank you!",
+      "revId": "a90074f2499c5a80f9db41a992e8c9fbb7899e92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
