@@ -124,8 +124,9 @@ class Superproject(object):
 
   def _LogError(self, message):
     """Logs message to stderr and _git_event_log."""
-    print(message, file=sys.stderr)
-    self._git_event_log.ErrorEvent(message, '')
+    log_message = f'repo superproject warning: {message}'
+    print(log_message, file=sys.stderr)
+    self._git_event_log.ErrorEvent(log_message, '')
 
   def _Init(self):
     """Sets up a local Git repository to get a copy of a superproject.
@@ -146,7 +147,7 @@ class Superproject(object):
                    capture_stderr=True)
     retval = p.Wait()
     if retval:
-      self._LogError(f'repo: error: git init call failed, command: git {cmd}, '
+      self._LogError(f'git init call failed, command: git {cmd}, '
                      f'return code: {retval}, stderr: {p.stderr}')
       return False
     return True
@@ -176,7 +177,7 @@ class Superproject(object):
                    capture_stderr=True)
     retval = p.Wait()
     if retval:
-      self._LogError(f'repo: error: git fetch call failed, command: git {cmd}, '
+      self._LogError(f'git fetch call failed, command: git {cmd}, '
                      f'return code: {retval}, stderr: {p.stderr}')
       return False
     return True
@@ -205,7 +206,7 @@ class Superproject(object):
     if retval == 0:
       data = p.stdout
     else:
-      self._LogError(f'repo: error: git ls-tree call failed, command: git {cmd}, '
+      self._LogError(f'git ls-tree call failed, command: git {cmd}, '
                      f'return code: {retval}, stderr: {p.stderr}')
     return data
 
@@ -219,14 +220,14 @@ class Superproject(object):
           'address described in `repo version`', file=sys.stderr)
 
     if not self._manifest.superproject:
-      self._LogError(f'repo error: superproject tag is not defined in manifest: '
+      self._LogError(f'superproject tag is not defined in manifest: '
                      f'{self._manifest.manifestFile}')
       return SyncResult(False, False)
 
     should_exit = True
     url = self._manifest.superproject['remote'].url
     if not url:
-      self._LogError(f'repo error: superproject URL is not defined in manifest: '
+      self._LogError(f'superproject URL is not defined in manifest: '
                      f'{self._manifest.manifestFile}')
       return SyncResult(False, should_exit)
 
@@ -277,7 +278,7 @@ class Superproject(object):
       manifest_path: Path name of the file into which manifest is written instead of None.
     """
     if not os.path.exists(self._superproject_path):
-      self._LogError(f'error: missing superproject directory: {self._superproject_path}')
+      self._LogError(f'missing superproject directory: {self._superproject_path}')
       return None
     manifest_str = self._manifest.ToXml(groups=self._manifest.GetGroupsStr()).toxml()
     manifest_path = self._manifest_path
@@ -285,7 +286,7 @@ class Superproject(object):
       with open(manifest_path, 'w', encoding='utf-8') as fp:
         fp.write(manifest_str)
     except IOError as e:
-      self._LogError(f'error: cannot write manifest to : {manifest_path} {e}')
+      self._LogError(f'cannot write manifest to : {manifest_path} {e}')
       return None
     return manifest_path
 
@@ -336,7 +337,7 @@ class Superproject(object):
     # If superproject doesn't have a commit id for a project, then report an
     # error event and continue as if do not use superproject is specified.
     if projects_missing_commit_ids:
-      self._LogError(f'error: please file a bug using {self._manifest.contactinfo.bugurl} '
+      self._LogError(f'please file a bug using {self._manifest.contactinfo.bugurl} '
                      f'to report missing commit_ids for: {projects_missing_commit_ids}')
       return UpdateProjectsResult(None, False)
 
