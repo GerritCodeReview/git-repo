@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fb6840f_8a9db966",
+        "filename": "git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1119370
+      },
+      "writtenOn": "2021-08-11T17:46:35Z",
+      "side": 1,
+      "message": "For truly exceptional things I think we still want them to be considered errors (such as an IOError)",
+      "range": {
+        "startLine": 289,
+        "startChar": 6,
+        "endLine": 289,
+        "endChar": 10
+      },
+      "revId": "cc8bc2de4b6ae09a6bcdc1830cdf13fcd09434bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
