@@ -203,7 +203,7 @@ class SuperprojectTestCase(unittest.TestCase):
     project.SetRevisionId('ABCDEF')
     # Create temporary directory so that it can write the file.
     os.mkdir(self._superproject._superproject_path)
-    manifest_path = self._superproject._WriteManfiestFile()
+    manifest_path = self._superproject._WriteManifestFile()
     self.assertIsNotNone(manifest_path)
     with open(manifest_path, 'r') as fp:
       manifest_xml_data = fp.read()

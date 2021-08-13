@@ -12,10 +12,10 @@
 	intm = 10m
 	intg = 10g
 [repo "syncstate.main"]
-	synctime = 2021-08-11T17:54:14.530286Z
+	synctime = 2021-08-13T18:37:43.928600Z
 	version = 1
 [repo "syncstate.sys"]
-	argv = ['/usr/bin/pytest-3', '-v']
+	argv = ['/usr/bin/pytest-3']
 [repo "syncstate.superproject"]
 	test = false
 [repo "syncstate.options"]
