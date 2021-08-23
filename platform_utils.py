@@ -124,7 +124,7 @@ def rename(src, dst):
       else:
         raise
   else:
-    os.rename(src, dst)
+    shutil.move(src, dst)
 
 
 def remove(path):
