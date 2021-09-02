@@ -128,7 +128,7 @@ class Superproject(object):
     """Logs message to stderr and _git_event_log."""
     if self._print_messages:
       print(message, file=sys.stderr)
-    self._git_event_log.ErrorEvent(message, '')
+    self._git_event_log.ErrorEvent(message, f'{message}')
 
   def _LogError(self, message):
     """Logs error message to stderr and _git_event_log."""
