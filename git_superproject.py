@@ -369,9 +369,14 @@ def _UseSuperprojectFromConfiguration():
     if user_expiration is not None and (user_expiration <= 0 or user_expiration >= time_now):
       # TODO(b/190688390) - Remove prompt when we are comfortable with the new
       # default value.
-      print(('You are currently enrolled in Git submodules experiment '
-             '(go/android-submodules-quickstart).  Use --no-use-superproject '
-             'to override.\n'), file=sys.stderr)
+      if user_value:
+        print(('You are currently enrolled in Git submodules experiment '
+               '(go/android-submodules-quickstart).  Use --no-use-superproject '
+               'to override.\n'), file=sys.stderr)
+      else:
+        print(('You are not currently enrolled in Git submodules experiment '
+               '(go/android-submodules-quickstart).  Use --use-superproject '
+               'to override.\n'), file=sys.stderr)
     return user_value
 
   # We don't have an unexpired choice, ask for one.
