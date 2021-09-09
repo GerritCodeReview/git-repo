@@ -103,8 +103,9 @@ following DTD:
   <!ATTLIST repo-hooks enabled-list CDATA #REQUIRED>
 
   <!ELEMENT superproject EMPTY>
-  <!ATTLIST superproject name    CDATA #REQUIRED>
-  <!ATTLIST superproject remote  IDREF #IMPLIED>
+  <!ATTLIST superproject name     CDATA #REQUIRED>
+  <!ATTLIST superproject remote   IDREF #IMPLIED>
+  <!ATTLIST superproject revision CDATA #IMPLIED>
 
   <!ELEMENT contactinfo EMPTY>
   <!ATTLIST contactinfo bugurl  CDATA #REQUIRED>
@@ -431,6 +432,11 @@ same meaning as project's name attribute. See the
 
 Attribute `remote`: Name of a previously defined remote element.
 If not supplied the remote given by the default element is used.
+
+Attribute `revision`: Name of the Git branch the manifest wants
+to track for this superproject. If not supplied the revision given
+by the remote element is used if applicable, else the default
+element is used.
 
 ### Element contactinfo
 

@@ -90,7 +90,6 @@ class Superproject(object):
     self._git_event_log = git_event_log
     self._quiet = quiet
     self._print_messages = print_messages
-    self._branch = self._GetBranch()
     self._repodir = os.path.abspath(repodir)
     self._superproject_dir = superproject_dir
     self._superproject_path = os.path.join(self._repodir, superproject_dir)
@@ -100,6 +99,7 @@ class Superproject(object):
     if self._manifest.superproject:
       remote_name = self._manifest.superproject['remote'].name
       git_name = hashlib.md5(remote_name.encode('utf8')).hexdigest() + '-'
+      self._branch = self._manifest.superproject['revision']
     self._work_git_name = git_name + _SUPERPROJECT_GIT_NAME
     self._work_git = os.path.join(self._superproject_path, self._work_git_name)
 
@@ -112,17 +112,6 @@ class Superproject(object):
   def manifest_path(self):
     """Returns the manifest path if the path exists or None."""
     return self._manifest_path if os.path.exists(self._manifest_path) else None
-
-  def _GetBranch(self):
-    """Returns the branch name for getting the approved manifest."""
-    p = self._manifest.manifestProject
-    b = p.GetBranch(p.CurrentBranch)
-    if not b:
-      return None
-    branch = b.merge
-    if branch and branch.startswith(R_HEADS):
-      branch = branch[len(R_HEADS):]
-    return branch
 
   def _LogMessage(self, message):
     """Logs message to stderr and _git_event_log."""
