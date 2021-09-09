@@ -41,6 +41,48 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a1d5e3_7738f39b",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-09T05:26:17Z",
+      "side": 1,
+      "message": "Seems reasonable.  I deliberately left out the places where we\u0027re setting revisionId directly as I\u0027m not 100% sure of the correctness of changing those",
+      "parentUuid": "d5b4708f_7decf850",
+      "range": {
+        "startLine": 539,
+        "startChar": 6,
+        "endLine": 539,
+        "endChar": 20
+      },
+      "revId": "5331ba3c22a61f656ce2c46cb4ac13da5ba5140a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "688f688f_8d58d9c6",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 539,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-09T05:26:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0404397_6090379e",
+      "revId": "5331ba3c22a61f656ce2c46cb4ac13da5ba5140a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79e6a090_afcb6bd6",
@@ -54,6 +96,24 @@
       "writtenOn": "2021-07-24T09:08:46Z",
       "side": 1,
       "message": "we never want to use \\ in new code, so please change this to () while you\u0027re here",
+      "revId": "5331ba3c22a61f656ce2c46cb4ac13da5ba5140a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f26e2c5d_d85b272c",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-09T05:26:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79e6a090_afcb6bd6",
       "revId": "5331ba3c22a61f656ce2c46cb4ac13da5ba5140a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
