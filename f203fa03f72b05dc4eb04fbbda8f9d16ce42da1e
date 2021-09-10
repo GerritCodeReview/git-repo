@@ -16,6 +16,24 @@
       "message": "Raman, could you please take a look at this proposed change?\n\nOne most notable (and possibly undesirable) behavior change would be that instead of trying to infer the branch via _GetBranch(), the code now will make superproject behave more like regular projects, where \u0027default\u0027 revision would be used instead of using the manifest branch\u0027s revision (previously, if the manifest have a \u0027default\u0027 object, the revision is largely ignored and the manifest branch is used).",
       "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fcbdf0b_ce169abc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-09-10T18:18:34Z",
+      "side": 1,
+      "message": "+ vapier@\n\nI think it is okay to get the branch from self._manifest.superproject[\u0027revision\u0027].\n\nWe have added how to get branch per the following comment.\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/296382/10..15/subcmds/init.py#b542\n\n\"the superproject is tied to the manifest branch exactly ... whenever the manifest branch changes, so does the superproject branch. \"",
+      "parentUuid": "fbc3bd99_979f2f8d",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
