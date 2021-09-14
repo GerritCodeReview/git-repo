@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dac0f408_96e3bc25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-14T15:24:43Z",
+      "side": 1,
+      "message": "Changed to use -u regardless and change behavior based on --standalone-manifest. Updated doc pages as well.",
+      "parentUuid": "5ab7ed90_45dd4ff7",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ef9e9e8_e791361b",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-07-28T06:32:58Z",
       "side": 1,
       "message": "only 1 blank line between class methods",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79fcb4a9_36139ad0",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-14T15:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ef9e9e8_e791361b",
       "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c100246_acce36bf",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-14T15:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac382bb5_ec3bb6f9",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c007106_01a32e4b",
@@ -65,6 +119,24 @@
       "writtenOn": "2021-07-28T06:32:58Z",
       "side": 1,
       "message": "this fetch logic would prob be better as a dedicated method, or even a dedicated module ... \"fetch.py\" maybe ?\n\nproject.py has some complicated logic built on top of curl for fetching https files that we could merge in to get http/https URI support.  don\u0027t have to do that refactor as part of this CL ... i\u0027m just future proofing it a little as i know we\u0027ll want that functionality shortly.",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbf745e0_60e772ba",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-14T15:24:43Z",
+      "side": 1,
+      "message": "Created fetch.py, moved fetch logic there. We can add additional protocols (e.g. http://) as needed.",
+      "parentUuid": "7c007106_01a32e4b",
       "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -92,6 +164,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1bc748b_3abd14a4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-14T15:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "936f4a4b_a5e833ef",
+      "range": {
+        "startLine": 282,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 61
+      },
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bac2c67_fc99d6b2",
@@ -109,6 +205,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2891d73_8d80c0f6",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-14T15:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bac2c67_fc99d6b2",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "649e4344_732c205f",
@@ -122,6 +236,24 @@
       "writtenOn": "2021-07-28T06:32:58Z",
       "side": 1,
       "message": "never use shell\u003dTrue.  use of that option is a strong code smell and almost always means you need to step back and rethink what you\u0027re doing.\n\nin this specific case, you don\u0027t even need it as you\u0027re just running a single program directly, so you can write the argv above as a list.",
+      "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "971905c4_0e2e1b4b",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-14T15:24:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "649e4344_732c205f",
       "revId": "a13319c0e99f20f43df8a25b8cc2516b6aaabfa3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
