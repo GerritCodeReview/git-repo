@@ -1092,13 +1092,13 @@ later is required to fix a server side protocol bug.
       sys.exit(1)
 
     # Log the previous sync analysis state from the config.
-    self.git_event_log.LogConfigEvents(mp.config.GetSyncAnalysisStateData(),
-                                       'previous_sync_state')
+    self.git_event_log.LogDataConfigEvents(mp.config.GetSyncAnalysisStateData(),
+                                           'previous_sync_state')
 
     # Update and log with the new sync analysis state.
     mp.config.UpdateSyncAnalysisState(opt, superproject_logging_data)
-    self.git_event_log.LogConfigEvents(mp.config.GetSyncAnalysisStateData(),
-                                       'current_sync_state')
+    self.git_event_log.LogDataConfigEvents(mp.config.GetSyncAnalysisStateData(),
+                                           'current_sync_state')
 
     if not opt.quiet:
       print('repo sync has finished successfully.')

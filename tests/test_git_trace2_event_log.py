@@ -234,6 +234,39 @@ class EventLogTestCase(unittest.TestCase):
     self.assertEqual(len(self._log_data), 1)
     self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
 
+  def test_data_event_config(self):
+    """Test 'data' event data outputs all config keys.
+
+    Expected event log:
+    <version event>
+    <data event>
+    <data event>
+    """
+    config = {
+        'git.foo': 'bar',
+        'repo.partialclone': 'false',
+        'repo.syncstate.superproject.hassuperprojecttag': 'true',
+    }
+    prefix_value = 'prefix'
+    self._event_log_module.LogDataConfigEvents(config, prefix_value)
+
+    with tempfile.TemporaryDirectory(prefix='event_log_tests') as tempdir:
+      log_path = self._event_log_module.Write(path=tempdir)
+      self._log_data = self.readLog(log_path)
+
+    self.assertEqual(len(self._log_data), 4)
+    data_events = self._log_data[1:]
+    self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
+
+    for event in data_events:
+      self.verifyCommonKeys(event, expected_event_name='data')
+      # Check for 'data' event specific fields.
+      self.assertIn('key', event)
+      self.assertIn('value', event)
+      key = event['key'].removeprefix(f'{prefix_value}/')
+      value = event['value']
+      self.assertTrue(key in config and value == config[key])
+
   def test_error_event(self):
     """Test and validate 'error' event data is valid.
 
