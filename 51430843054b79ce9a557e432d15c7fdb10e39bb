@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5700a494_347d365c",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2021-09-14T17:10:17Z",
+      "side": 1,
+      "message": "Sorry, I was not very clear in my message earlier. The prefix should be applied to the key here.",
+      "range": {
+        "startLine": 183,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 42
+      },
+      "revId": "51430843054b79ce9a557e432d15c7fdb10e39bb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
