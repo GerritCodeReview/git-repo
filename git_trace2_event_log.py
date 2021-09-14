@@ -167,6 +167,22 @@ class EventLog(object):
     repo_config = {k: v for k, v in config.items() if k.startswith('repo.')}
     self.LogConfigEvents(repo_config, 'def_param')
 
+  def LogDataConfigEvents(self, config, prefix):
+    """Append a 'data' event for each config key/value in |config| to the current log.
+
+    For each keyX and valueX of the config, "key" field of the event is '|prefix|/keyX'
+    and the "value" of the "key" field is valueX.
+
+    Args:
+      config: Configuration dictionary.
+      prefix: Prefix for each key that is logged.
+    """
+    for key, value in config.items():
+      event = self._CreateEventDict('data')
+      event['key'] = f'{prefix}/{key}'
+      event['value'] = value
+      self._log.append(event)
+
   def ErrorEvent(self, msg, fmt):
     """Append a 'error' event to the current log."""
     error_event = self._CreateEventDict('error')
