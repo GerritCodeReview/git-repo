@@ -98,8 +98,11 @@ class Superproject(object):
                                        _SUPERPROJECT_MANIFEST_NAME)
     git_name = ''
     if self._manifest.superproject:
-      remote_name = self._manifest.superproject['remote'].name
-      git_name = hashlib.md5(remote_name.encode('utf8')).hexdigest() + '-'
+      remote = self._manifest.superproject['remote']
+      git_name = hashlib.md5(remote.name.encode('utf8')).hexdigest() + '-'
+      self._remote_url = remote.url
+    else:
+      self._remote_url = None
     self._work_git_name = git_name + _SUPERPROJECT_GIT_NAME
     self._work_git = os.path.join(self._superproject_path, self._work_git_name)
 
@@ -130,13 +133,17 @@ class Superproject(object):
       print(message, file=sys.stderr)
     self._git_event_log.ErrorEvent(message, f'{message}')
 
+  def _LogMessagePrefix(self):
+    """Returns the prefix string to be logged in each log message"""
+    return f'repo superproject branch: {self._branch} url: {self._remote_url}'
+
   def _LogError(self, message):
     """Logs error message to stderr and _git_event_log."""
-    self._LogMessage(f'repo superproject error: {message}')
+    self._LogMessage(f'{self._LogMessagePrefix()} error: {message}')
 
   def _LogWarning(self, message):
     """Logs warning message to stderr and _git_event_log."""
-    self._LogMessage(f'repo superproject warning: {message}')
+    self._LogMessage(f'{self._LogMessagePrefix()} warning: {message}')
 
   def _Init(self):
     """Sets up a local Git repository to get a copy of a superproject.
@@ -162,11 +169,8 @@ class Superproject(object):
       return False
     return True
 
-  def _Fetch(self, url):
-    """Fetches a local copy of a superproject for the manifest based on url.
-
-    Args:
-      url: superproject's url.
+  def _Fetch(self):
+    """Fetches a local copy of a superproject for the manifest based on |_remote_url|.
 
     Returns:
       True if fetch is successful, or False.
@@ -177,7 +181,8 @@ class Superproject(object):
     if not git_require((2, 28, 0)):
       self._LogWarning('superproject requires a git version 2.28 or later')
       return False
-    cmd = ['fetch', url, '--depth', '1', '--force', '--no-tags', '--filter', 'blob:none']
+    cmd = ['fetch', self._remote_url, '--depth', '1', '--force', '--no-tags',
+           '--filter', 'blob:none']
     if self._branch:
       cmd += [self._branch + ':' + self._branch]
     p = GitCommand(None,
@@ -234,15 +239,14 @@ class Superproject(object):
     print('NOTICE: --use-superproject is in beta; report any issues to the '
           'address described in `repo version`', file=sys.stderr)
     should_exit = True
-    url = self._manifest.superproject['remote'].url
-    if not url:
+    if not self._remote_url:
       self._LogWarning(f'superproject URL is not defined in manifest: '
                        f'{self._manifest.manifestFile}')
       return SyncResult(False, should_exit)
 
     if not self._Init():
       return SyncResult(False, should_exit)
-    if not self._Fetch(url):
+    if not self._Fetch():
       return SyncResult(False, should_exit)
     if not self._quiet:
       print('%s: Initial setup for superproject completed.' % self._work_git)
@@ -260,7 +264,7 @@ class Superproject(object):
 
     data = self._LsTree()
     if not data:
-      self._LogWarning(f'warning: git ls-tree failed to return data for manifest: '
+      self._LogWarning(f'git ls-tree failed to return data for manifest: '
                        f'{self._manifest.manifestFile}')
       return CommitIdsResult(None, True)
 
