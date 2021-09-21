@@ -885,33 +885,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
               p.revisionId = None
           if remote:
             p.remote = remote.ToRemoteSpec(name)
-      if node.nodeName == 'repo-hooks':
-        # Get the name of the project and the (space-separated) list of enabled.
-        repo_hooks_project = self._reqatt(node, 'in-project')
-        enabled_repo_hooks = self._ParseList(self._reqatt(node, 'enabled-list'))
-
-        # Only one project can be the hooks project
-        if self._repo_hooks_project is not None:
-          raise ManifestParseError(
-              'duplicate repo-hooks in %s' %
-              (self.manifestFile))
-
-        # Store a reference to the Project.
-        try:
-          repo_hooks_projects = self._projects[repo_hooks_project]
-        except KeyError:
-          raise ManifestParseError(
-              'project %s not found for repo-hooks' %
-              (repo_hooks_project))
-
-        if len(repo_hooks_projects) != 1:
-          raise ManifestParseError(
-              'internal error parsing repo-hooks in %s' %
-              (self.manifestFile))
-        self._repo_hooks_project = repo_hooks_projects[0]
-
-        # Store the enabled hooks in the Project object.
-        self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
       if node.nodeName == 'superproject':
         name = self._reqatt(node, 'name')
         # There can only be one superproject.
@@ -949,6 +922,35 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         elif not XmlBool(node, 'optional', False):
           raise ManifestParseError('remove-project element specifies non-existent '
                                    'project: %s' % name)
+
+    for node in itertools.chain(*node_list):
+      if node.nodeName == 'repo-hooks':
+        # Get the name of the project and the (space-separated) list of enabled.
+        repo_hooks_project = self._reqatt(node, 'in-project')
+        enabled_repo_hooks = self._ParseList(self._reqatt(node, 'enabled-list'))
+
+        # Only one project can be the hooks project
+        if self._repo_hooks_project is not None:
+          raise ManifestParseError(
+              'duplicate repo-hooks in %s' %
+              (self.manifestFile))
+
+        # Store a reference to the Project.
+        try:
+          repo_hooks_projects = self._projects[repo_hooks_project]
+        except KeyError:
+          raise ManifestParseError(
+              'project %s not found for repo-hooks' %
+              (repo_hooks_project))
+
+        if len(repo_hooks_projects) != 1:
+          raise ManifestParseError(
+              'internal error parsing repo-hooks in %s' %
+              (self.manifestFile))
+        self._repo_hooks_project = repo_hooks_projects[0]
+
+        # Store the enabled hooks in the Project object.
+        self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
 
   def _AddMetaProjectMirror(self, m):
     name = None
