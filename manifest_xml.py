@@ -852,6 +852,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       for subproject in project.subprojects:
         recursively_add_projects(subproject)
 
+    repo_hooks_project = None
+    enabled_repo_hooks = None
     for node in itertools.chain(*node_list):
       if node.nodeName == 'project':
         project = self._ParseProject(node)
@@ -886,32 +888,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           if remote:
             p.remote = remote.ToRemoteSpec(name)
       if node.nodeName == 'repo-hooks':
-        # Get the name of the project and the (space-separated) list of enabled.
-        repo_hooks_project = self._reqatt(node, 'in-project')
-        enabled_repo_hooks = self._ParseList(self._reqatt(node, 'enabled-list'))
-
         # Only one project can be the hooks project
-        if self._repo_hooks_project is not None:
+        if repo_hooks_project is not None:
           raise ManifestParseError(
               'duplicate repo-hooks in %s' %
               (self.manifestFile))
 
-        # Store a reference to the Project.
-        try:
-          repo_hooks_projects = self._projects[repo_hooks_project]
-        except KeyError:
-          raise ManifestParseError(
-              'project %s not found for repo-hooks' %
-              (repo_hooks_project))
-
-        if len(repo_hooks_projects) != 1:
-          raise ManifestParseError(
-              'internal error parsing repo-hooks in %s' %
-              (self.manifestFile))
-        self._repo_hooks_project = repo_hooks_projects[0]
-
-        # Store the enabled hooks in the Project object.
-        self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
+        # Get the name of the project and the (space-separated) list of enabled.
+        repo_hooks_project = self._reqatt(node, 'in-project')
+        enabled_repo_hooks = self._ParseList(self._reqatt(node, 'enabled-list'))
       if node.nodeName == 'superproject':
         name = self._reqatt(node, 'name')
         # There can only be one superproject.
@@ -944,11 +929,29 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
           # If the manifest removes the hooks project, treat it as if it deleted
           # the repo-hooks element too.
-          if self._repo_hooks_project and (self._repo_hooks_project.name == name):
-            self._repo_hooks_project = None
+          if repo_hooks_project == name:
+            repo_hooks_project = None
         elif not XmlBool(node, 'optional', False):
           raise ManifestParseError('remove-project element specifies non-existent '
                                    'project: %s' % name)
+
+    # Store repo hooks project information.
+    if repo_hooks_project:
+      # Store a reference to the Project.
+      try:
+        repo_hooks_projects = self._projects[repo_hooks_project]
+      except KeyError:
+        raise ManifestParseError(
+            'project %s not found for repo-hooks' %
+            (repo_hooks_project))
+
+      if len(repo_hooks_projects) != 1:
+        raise ManifestParseError(
+            'internal error parsing repo-hooks in %s' %
+            (self.manifestFile))
+      self._repo_hooks_project = repo_hooks_projects[0]
+      # Store the enabled hooks in the Project object.
+      self._repo_hooks_project.enabled_repo_hooks = enabled_repo_hooks
 
   def _AddMetaProjectMirror(self, m):
     name = None
