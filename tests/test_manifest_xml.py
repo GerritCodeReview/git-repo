@@ -265,6 +265,19 @@ class XmlManifestTests(ManifestParseTestCase):
     self.assertEqual(manifest.repo_hooks_project.name, 'repohooks')
     self.assertEqual(manifest.repo_hooks_project.enabled_repo_hooks, ['a', 'b'])
 
+  def test_repo_hooks_unordered(self):
+    """Check repo-hooks settings work even if the project def comes second."""
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <repo-hooks in-project="repohooks" enabled-list="a, b"/>
+  <project name="repohooks" path="src/repohooks"/>
+</manifest>
+""")
+    self.assertEqual(manifest.repo_hooks_project.name, 'repohooks')
+    self.assertEqual(manifest.repo_hooks_project.enabled_repo_hooks, ['a', 'b'])
+
   def test_unknown_tags(self):
     """Check superproject settings."""
     manifest = self.getXmlManifest("""
