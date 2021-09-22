@@ -59,11 +59,11 @@ def main(argv):
   version = RepoSourceVersion()
   cmdlist = [['help2man', '-N', '-n', f'repo {cmd} - manual page for repo {cmd}',
     '-S', f'repo {cmd}', '-m', 'Repo Manual', f'--version-string={version}',
-    '-o', MANDIR.joinpath(f'repo-{cmd}.1'), TOPDIR.joinpath('repo'),
+    '-o', MANDIR.joinpath(f'repo-{cmd}.1.tmp'), TOPDIR.joinpath('repo'),
     '-h', f'help {cmd}'] for cmd in subcmds.all_commands]
   cmdlist.append(['help2man', '-N', '-n', 'repository management tool built on top of git',
     '-S', 'repo', '-m', 'Repo Manual', f'--version-string={version}',
-    '-o', MANDIR.joinpath('repo.1'), TOPDIR.joinpath('repo'),
+    '-o', MANDIR.joinpath('repo.1.tmp'), TOPDIR.joinpath('repo'),
     '-h', '--help-all'])
 
   with tempfile.TemporaryDirectory() as tempdir:
@@ -80,11 +80,23 @@ def main(argv):
       (r'^\.IP\n(.*:)\n', '.SS \g<1>\n'),
       (r'^\.PP\nDescription', '.SH DETAILS'),
   )
-  for path in MANDIR.glob('*.1'):
-    data = path.read_text()
+  for tmp_path in MANDIR.glob('*.1.tmp'):
+    path = tmp_path.parent / tmp_path.stem
+    old_data = path.read_text() if path.exists() else ''
+
+    data = tmp_path.read_text()
+    tmp_path.unlink()
+
     for pattern, replacement in regex:
       data = re.sub(pattern, replacement, data, flags=re.M)
-    path.write_text(data)
+
+    # If the only thing that changed was the date, don't refresh.  This avoids
+    # a lot of noise when only one file actually updates.
+    old_data = re.sub(r'^(\.TH REPO "1" ")([^"]+)', r'\1', old_data, flags=re.M)
+    new_data = re.sub(r'^(\.TH REPO "1" ")([^"]+)', r'\1', data, flags=re.M)
+    if old_data != new_data:
+      path.write_text(data)
+
 
 if __name__ == '__main__':
   sys.exit(main(sys.argv[1:]))
