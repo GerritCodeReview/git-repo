@@ -193,6 +193,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5685c5fe_fe8808b8",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:54:58Z",
+      "side": 1,
+      "message": "It took some tweaking but I got switching working in both directions.\nTurns out calling `m.config.GetBoolean(...)` too early in the set up screws up repo and makes it fail with `error.GitError: Cannot initialize work tree for manifests` for the standard non-standalone use case. \n\nAre there any plans to add functional tests for subcmds like `repo init`? I manually tested this change, but it\u0027s unclear what\u0027s preventing a regression in the case where a dev makes the same mistake I did with GetBoolean.",
+      "parentUuid": "c0c794e3_e6fa5e82",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66a93429_e31efa08",
