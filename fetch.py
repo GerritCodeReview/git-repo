@@ -35,4 +35,7 @@ def fetch_file(url):
       print('fatal: error running "gsutil": %s' % e.output,
             file=sys.stderr)
     sys.exit(1)
+  if scheme == 'file':
+    with open(url[len('file://'):], 'rb') as f:
+      return f.read()
   raise ValueError('unsupported url %s' % url)
