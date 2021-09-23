@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71c9caff_3768eac1",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93c3fa06_3079cb51",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ef86145_1bcea1ce",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-09-23T16:29:33Z",
       "side": 1,
       "message": "bad indentation, and the content goes on the next line",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95c3ae96_4a4f0571",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ef86145_1bcea1ce",
       "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94010576_093b84cf",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb4a90c7_48b7cd0f",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd5e9641_b559f000",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1725fd1a_a36ead7c",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:33:33Z",
+      "side": 1,
+      "message": "Ack, I switched everything to use bytes. I haven\u0027t added `encoding` as an optional kwarg, but if you think this is an important feature I can add it.",
+      "parentUuid": "cd5e9641_b559f000",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "adc01828_f25ef904",
@@ -82,6 +154,24 @@
       "writtenOn": "2021-09-23T16:29:33Z",
       "side": 1,
       "message": "move this down below --submodules.  the current ordering of options is based on expected freq of use, and i expect this will be quite low.",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f69dd13_3d7292f5",
+        "filename": "repo",
+        "patchSetId": 7
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "adc01828_f25ef904",
       "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -126,6 +216,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1bdd61f_164a4b12",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66a93429_e31efa08",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 41
+      },
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "70bdbfc5_2d57c2c4",
@@ -139,6 +253,24 @@
       "writtenOn": "2021-09-23T16:29:33Z",
       "side": 1,
       "message": "use single quotes\n\nthis will be subject to runtime encoding issues.  i would open it as bytes and write it out as bytes.",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db998296_400cf3ec",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T21:33:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70bdbfc5_2d57c2c4",
       "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
