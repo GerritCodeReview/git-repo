@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d6260b0_6e24c7c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:19:40Z",
+      "side": 1,
+      "message": "this is the \"repo\" project.  you\u0027re touching just the manifest code, so \"manifest:\" is prob a better prefix.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "46bc680c6988a27a0b73ac6176b3f8437623ccc3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7217e54b_97cb75ac",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:19:40Z",
+      "side": 1,
+      "message": "this will walk the entire manifest a 2nd time.  prob not a big deal, but it\u0027s trivial to avoid.\n\nset repo_hooks_project to None before the parsing loop above.  keep the nodeName \u0027repo-hooks\u0027 check \u0026 save the repo_hooks_project reference (including the duplicate check, but using repo_hooks_project) in the loop as it was.\n\nthen down here use repo_hooks_project to save the project reference.",
+      "revId": "46bc680c6988a27a0b73ac6176b3f8437623ccc3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
