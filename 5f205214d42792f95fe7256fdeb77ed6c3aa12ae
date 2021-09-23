@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93c3fa06_3079cb51",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "module docstrings go before imports\n\nalso, no leading spaces",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ef86145_1bcea1ce",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "bad indentation, and the content goes on the next line",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb4a90c7_48b7cd0f",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "hmm this module uses 4 space indent.  the rest of the project uses 2 space.  we prob want to switch to 4 space at some point, but right now lets keep the project consistent.",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd5e9641_b559f000",
+        "filename": "fetch.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "thinking a bit more on how this is and will be used, we probably want to make this into an argument to the fetch func, and have it default to None.  that way this func will return bytes (which is OK as we\u0027ll want to write it as bytes to disk -- see my later comment).",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adc01828_f25ef904",
+        "filename": "repo",
+        "patchSetId": 7
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "move this down below --submodules.  the current ordering of options is based on expected freq of use, and i expect this will be quite low.",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0c794e3_e6fa5e82",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "hmm, so this is interesting.  i guess this means that the standalone option cannot be used with an existing checkout ?  so if you `repo init` to a standard git manifest, then run `repo init` again but with the standalone option, this will silently be ignored ?  or going in the opposite direction (standalone and then a git manifest) ?\n\nnormally we want `repo init` even in an existing client checkout to be able to work (when reasonable).  i think it\u0027s possible in this case to make switching work ... wdyt ?",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66a93429_e31efa08",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "if you use os.makedirs(..., exist_ok\u003dTrue) you can drop the if check",
+      "range": {
+        "startLine": 279,
+        "startChar": 0,
+        "endLine": 280,
+        "endChar": 41
+      },
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70bdbfc5_2d57c2c4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T16:29:33Z",
+      "side": 1,
+      "message": "use single quotes\n\nthis will be subject to runtime encoding issues.  i would open it as bytes and write it out as bytes.",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
