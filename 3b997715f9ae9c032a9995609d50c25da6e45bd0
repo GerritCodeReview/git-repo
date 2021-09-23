@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17bfd53_9b9efd5a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "needs updating",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "698a1510_4c551b39",
@@ -14,6 +31,267 @@
       "writtenOn": "2021-09-20T21:24:30Z",
       "side": 1,
       "message": "This change is ready for review.",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef474d12_e7b4b8f5",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "all modules need a docstring",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "188aeb39_de1b30d9",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "there\u0027s nothing in this func that is specific to the manifest afaict.  so you can generalize the func \u0026 argument names.",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a68064_f1156465",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "bad docstring style",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f14110d4_b17a1737",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "use urllib.parse and check the schema is \u0027gs\u0027",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db8b5241_4148d66e",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "pref |ret| or |result| over |res|",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e36724d9_fd66fac7",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "capture_output \u0026 text are new to Python 3.7.  we support Python 3.6.  so change to stdout\u003dsubprocess.PIPE stderr\u003dsubprocess.STDOUT encoding\u003d\u0027utf-8\u0027.",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "913651a4_19877c0a",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "is this needed for something ?",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69ea8498_d9b3c3e1",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "we tend to use |e| in this codebase",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bede203e_098f0285",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "should include the URI in the exception\n\n raise ValueError(f\u0027unsupported URI: {uri}\u0027)",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d3a1fc8_784bfa62",
+        "filename": "man/repo-abandon.1",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "please rebase \u0026 rerun the regen script.  it should drop updates for most man pages.",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bebd3e56_97cdb267",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "i couldn\u0027t seem to find why we need this attribute on Projects ...",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af0cd727_f345f0b8",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "repo-\u003egit",
+      "range": {
+        "startLine": 60,
+        "startChar": 22,
+        "endLine": 60,
+        "endChar": 26
+      },
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b33644fe_f6eb842e",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "seems to repeat what was said already ?  and it\u0027s not GS specific ?",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99a1131d_438011c7",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "outdated comment",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfe07944_63bf02fa",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-23T10:40:30Z",
+      "side": 1,
+      "message": "use context managers instead\n\n with open(...) as f:",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
