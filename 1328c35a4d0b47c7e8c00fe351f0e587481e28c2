@@ -16,6 +16,24 @@
       "message": "why ?",
       "revId": "1328c35a4d0b47c7e8c00fe351f0e587481e28c2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b46af50_06b237cd",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 0,
+      "message": "Oops, I rearranged this logic several times so it must have gotten dropped at some point.",
+      "parentUuid": "67ba774e_8836dc39",
+      "revId": "1328c35a4d0b47c7e8c00fe351f0e587481e28c2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

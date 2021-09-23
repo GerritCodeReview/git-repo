@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0bb8ac5b_a5493e9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d17bfd53_9b9efd5a",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "698a1510_4c551b39",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a1dd74e_0afa3516",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef474d12_e7b4b8f5",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "188aeb39_de1b30d9",
@@ -65,6 +101,24 @@
       "writtenOn": "2021-09-23T10:40:30Z",
       "side": 1,
       "message": "there\u0027s nothing in this func that is specific to the manifest afaict.  so you can generalize the func \u0026 argument names.",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbbce55d_5653c2ff",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "188aeb39_de1b30d9",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +140,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09a554ab_505a72a9",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5a68064_f1156465",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f14110d4_b17a1737",
@@ -99,6 +171,24 @@
       "writtenOn": "2021-09-23T10:40:30Z",
       "side": 1,
       "message": "use urllib.parse and check the schema is \u0027gs\u0027",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e40b011_969d7c75",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f14110d4_b17a1737",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -120,6 +210,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49f3aeec_c47bfe6d",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db8b5241_4148d66e",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e36724d9_fd66fac7",
@@ -133,6 +241,24 @@
       "writtenOn": "2021-09-23T10:40:30Z",
       "side": 1,
       "message": "capture_output \u0026 text are new to Python 3.7.  we support Python 3.6.  so change to stdout\u003dsubprocess.PIPE stderr\u003dsubprocess.STDOUT encoding\u003d\u0027utf-8\u0027.",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "236bcefa_a6484903",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e36724d9_fd66fac7",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -154,6 +280,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "38bb08fd_828e162d",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "913651a4_19877c0a",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69ea8498_d9b3c3e1",
@@ -167,6 +311,24 @@
       "writtenOn": "2021-09-23T10:40:30Z",
       "side": 1,
       "message": "we tend to use |e| in this codebase",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f7029e_45339cb2",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69ea8498_d9b3c3e1",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -188,6 +350,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "567778d0_2c133af2",
+        "filename": "fetch.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bede203e_098f0285",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d3a1fc8_784bfa62",
@@ -205,6 +385,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9204f2fb_4e8587ba",
+        "filename": "man/repo-abandon.1",
+        "patchSetId": 5
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d3a1fc8_784bfa62",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bebd3e56_97cdb267",
@@ -218,6 +416,24 @@
       "writtenOn": "2021-09-23T10:40:30Z",
       "side": 1,
       "message": "i couldn\u0027t seem to find why we need this attribute on Projects ...",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c1682b_164d9f37",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bebd3e56_97cdb267",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -245,6 +461,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dafd94bc_23a693d7",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af0cd727_f345f0b8",
+      "range": {
+        "startLine": 60,
+        "startChar": 22,
+        "endLine": 60,
+        "endChar": 26
+      },
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b33644fe_f6eb842e",
@@ -258,6 +498,24 @@
       "writtenOn": "2021-09-23T10:40:30Z",
       "side": 1,
       "message": "seems to repeat what was said already ?  and it\u0027s not GS specific ?",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b30c5cb0_0d639fe0",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "removed.",
+      "parentUuid": "b33644fe_f6eb842e",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -279,6 +537,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80e29fec_0059a44f",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "99a1131d_438011c7",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfe07944_63bf02fa",
@@ -292,6 +568,24 @@
       "writtenOn": "2021-09-23T10:40:30Z",
       "side": 1,
       "message": "use context managers instead\n\n with open(...) as f:",
+      "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b5a7916_05cfb194",
+        "filename": "subcmds/init.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-23T13:54:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cfe07944_63bf02fa",
       "revId": "3b997715f9ae9c032a9995609d50c25da6e45bd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
