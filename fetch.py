@@ -21,6 +21,8 @@ from urllib.parse import urlparse
 def fetch_file(url):
     """Fetch a file from the specified source using the appropriate protocol.
 
+        Currently supported protocols: gs://, file://
+
         Returns: (str) the contents of the file.
     """
     scheme = urlparse(url).scheme
@@ -35,4 +37,7 @@ def fetch_file(url):
             print('fatal: error running "gsutil": %s' % e.output,
                   file=sys.stderr)
             sys.exit(1)
+    if scheme == 'file':
+        with open(url[len('file://'):], 'r') as f:
+            return f.read()
     raise ValueError('unsupported url %s' % url)
