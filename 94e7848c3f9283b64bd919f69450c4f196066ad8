@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfa7d770_596e62d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T07:01:14Z",
+      "side": 1,
+      "message": "because cherry picking an existing commit can be confusing if it either conflicts or it results in no changes",
+      "revId": "94e7848c3f9283b64bd919f69450c4f196066ad8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "634e20c9_78634f43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T07:01:14Z",
+      "side": 1,
+      "message": "what scenario are you trying to address here ?  please document your use case in the commit message.",
+      "revId": "94e7848c3f9283b64bd919f69450c4f196066ad8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
