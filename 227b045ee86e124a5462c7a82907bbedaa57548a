@@ -243,6 +243,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b91060f8_06979d49",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T21:01:38Z",
+      "side": 1,
+      "message": "Where in code is manifest_url saved/retrieved in the event that -u is not specified on a re-init? `repo init -u https://chrome-internal.googlesource.com/chromeos/manifest-internal/` and `repo init -g default,foo` works, but doing the same with `/usr/local/google/home/jackneus/git-repo/repo` does not. Would like to dig into this a bit more.\n\nAlso echoing 2) -- wouldn\u0027t it be\n* !url: throw an error (this happens already)\n* url \u0026\u0026 standalone \u0026\u0026 !previously_standalone: transition\n* url \u0026\u0026 !standalone \u0026\u0026 previuosly_standalone: transition\n* url \u0026\u0026 standalone \u003d\u003d previously_standalone: logic should just work out, don\u0027t need to delete gitdir",
+      "parentUuid": "0cdcd894_9704380a",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c09b7a19_5740bb31",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
