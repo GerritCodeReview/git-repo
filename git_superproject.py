@@ -371,7 +371,7 @@ def _UseSuperprojectFromConfiguration():
         print(('You are not currently enrolled in Git submodules experiment '
                '(go/android-submodules-quickstart).  Use --use-superproject '
                'to override.\n'), file=sys.stderr)
-    return user_value
+      return user_value
 
   # We don't have an unexpired choice, ask for one.
   system_cfg = RepoConfig.ForSystem()
