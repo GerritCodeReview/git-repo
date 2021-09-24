@@ -34,6 +34,75 @@
       "parentUuid": "fbc3bd99_979f2f8d",
       "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d887ca81_c81dcf39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T07:28:55Z",
+      "side": 1,
+      "message": "this seems like a fine update",
+      "parentUuid": "5fcbdf0b_ce169abc",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f021b55_ce1e8d6b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T07:28:55Z",
+      "side": 1,
+      "message": "single quotes",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58ed6ccd_2af195aa",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T07:28:55Z",
+      "side": 1,
+      "message": "bad indentation",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d751d05_50a26260",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T07:28:55Z",
+      "side": 1,
+      "message": "only one blank line here",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
