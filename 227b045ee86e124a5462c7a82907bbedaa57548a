@@ -207,6 +207,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f04e70a_e9d4de5c",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T18:38:07Z",
+      "side": 1,
+      "message": "A few things:\n1. When I run `repo init -g foo` I get `error: manifest url is required`. Could you elaborate on this use case?\n2. The way I have it right now, --standalone-manifest is a boolean flag used to supplement -u. -u is required in all cases (standalone or not), so in the above logic bool(opt.manifest_url) is always true.",
+      "parentUuid": "18512b42_99b57a9d",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c09b7a19_5740bb31",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
