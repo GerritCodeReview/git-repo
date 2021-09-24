@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ee3590f_8eafd8a7",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "615e4a5a_8f8a847c",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f62efa3a_d3b17010",
@@ -31,6 +49,30 @@
       "writtenOn": "2021-09-24T06:59:43Z",
       "side": 1,
       "message": "\"as bytes\" is the more common nomenclature",
+      "range": {
+        "startLine": 25,
+        "startChar": 30,
+        "endLine": 25,
+        "endChar": 45
+      },
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "821b619e_35872772",
+        "filename": "fetch.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f62efa3a_d3b17010",
       "range": {
         "startLine": 25,
         "startChar": 30,
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29e1100e_8dd69617",
+        "filename": "fetch.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61dc3418_c5806428",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffbf7065_2fb89e25",
@@ -75,6 +135,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6683f7f3_35da2388",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ffbf7065_2fb89e25",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c69168c_704be980",
@@ -88,6 +166,24 @@
       "writtenOn": "2021-09-24T06:59:43Z",
       "side": 1,
       "message": "should we set this (or perhaps manifest.standalone) to the URI where we fetched the manifest ?  that\u0027ll leave a nice breadcrumb for users \u0026 tools.\n\nfor example, what does `repo version` show when using a standalone manifest ?",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e072f9fc_87b5af3c",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T18:33:58Z",
+      "side": 1,
+      "message": "ack, it looks like it gets set upstream anyways in `repo` so I just won\u0027t mess with it.\n\nI don\u0027t see any difference in `repo version` with or without this line of code: https://paste.googleplex.com/6644807729414144",
+      "parentUuid": "8c69168c_704be980",
       "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -122,6 +218,24 @@
       "writtenOn": "2021-09-24T06:59:43Z",
       "side": 1,
       "message": "unrelated ?",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5feb3fe7_164c2478",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-24T18:33:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c09b7a19_5740bb31",
       "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
