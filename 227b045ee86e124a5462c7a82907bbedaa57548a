@@ -1,0 +1,129 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "615e4a5a_8f8a847c",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "since this is about the manifest, using manifest.standalone seems to better align with existing conventions",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f62efa3a_d3b17010",
+        "filename": "fetch.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "\"as bytes\" is the more common nomenclature",
+      "range": {
+        "startLine": 25,
+        "startChar": 30,
+        "endLine": 25,
+        "endChar": 45
+      },
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61dc3418_c5806428",
+        "filename": "fetch.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "4 space hanging indent",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffbf7065_2fb89e25",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "4 space hanging indent",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c69168c_704be980",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "should we set this (or perhaps manifest.standalone) to the URI where we fetched the manifest ?  that\u0027ll leave a nice breadcrumb for users \u0026 tools.\n\nfor example, what does `repo version` show when using a standalone manifest ?",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18512b42_99b57a9d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "i think this is a little more tricky.  if you run just `repo init -g foo`, it should only touch the groups, not change anything else.\n\nyou should use bool(opt.manifest_url) to indicate \"switch to a git manifest checkout\" and bool(standalone_manifest) to indicate \"switch to standalone manifest\".  so the expanded logic is:\n\n* !url !standalone !new: don\u0027t mess with anything\n* !url !standalone new: throw an error (i think this already works below)\n* url !standalone !new: transition\n* !url standalone !new: transition",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c09b7a19_5740bb31",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "unrelated ?",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

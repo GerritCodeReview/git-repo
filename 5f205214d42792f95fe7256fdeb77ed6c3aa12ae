@@ -211,6 +211,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f0ec8d5_ce92e171",
+        "filename": "subcmds/init.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T06:59:43Z",
+      "side": 1,
+      "message": "we were working towards that in https://gerrit-review.googlesource.com/c/git-repo/+/243588 but it stalled out",
+      "parentUuid": "5685c5fe_fe8808b8",
+      "revId": "5f205214d42792f95fe7256fdeb77ed6c3aa12ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "66a93429_e31efa08",
