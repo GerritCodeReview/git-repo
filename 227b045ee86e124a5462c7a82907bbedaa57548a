@@ -225,6 +225,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0cdcd894_9704380a",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-24T18:41:21Z",
+      "side": 1,
+      "message": "it\u0027s working for me ...\n\n $ repo init -g default,foo\n Your identity is: Mike Frysinger \u003cvapier@chromium.org\u003e\n If you want to change this, please re-run \u0027repo init\u0027 with --config-name\n repo has been initialized in /usr/local/src/chromiumos\n\njust to be clear, this is about re-initing in an existing client checkout.  if you\u0027re trying it in an empty dir, then yes, you\u0027d get the -u error.",
+      "parentUuid": "1f04e70a_e9d4de5c",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c09b7a19_5740bb31",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
