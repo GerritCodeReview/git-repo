@@ -261,6 +261,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83d4c9ae_255798e1",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-25T04:05:54Z",
+      "side": 1,
+      "message": "you\u0027re already looking at the code -- _SyncManifest has it at its top.  look at the version in the tree w/out this CL.\n\n  def _SyncManifest(self, opt):\n    m \u003d self.manifest.manifestProject\n    is_new \u003d not m.Exists\n\n    if is_new:\n      if not opt.manifest_url:\n        print(\u0027fatal: manifest url is required.\u0027, file\u003dsys.stderr)\n        sys.exit(1)\n...\n    # Set the remote URL before the remote branch as we might need it below.\n    if opt.manifest_url:\n      r \u003d m.GetRemote(m.remote.name)\n      r.url \u003d opt.manifest_url\n      r.ResetFetch()\n      r.Save()\n\nnothing after this point uses opt.manifest_url.  it\u0027s running git operations, and that looks at the saved .git/config settings in the manifest checkout.\n\nwe aren\u0027t throwing errors today if the repo client has already been initialized and url isn\u0027t specified.  hence !new !url is OK, and we shouldn\u0027t attempt a transition in that case.\n\nfrom reading the CL, it seems like this scenario is incorrect:\n\n repo init -u \u003curl\u003e --standalone-manifest\n repo init -g foo\n\nin the 2nd run, standalone_manifest\u003dFalse was_standalone_manifest\u003dTrue, so the code will tear everything down and then abort.",
+      "parentUuid": "b91060f8_06979d49",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c09b7a19_5740bb31",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
