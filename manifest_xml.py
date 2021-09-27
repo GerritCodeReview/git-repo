@@ -507,6 +507,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if not d.remote or remote.orig_name != remoteName:
         remoteName = remote.orig_name
         e.setAttribute('remote', remoteName)
+      revision = remote.revision or d.revisionExpr
+      if not revision or revision != self._superproject['revision']:
+        e.setAttribute('revision', self._superproject['revision'])
       root.appendChild(e)
 
     if self._contactinfo.bugurl != Wrapper().BUG_URL:
@@ -914,6 +917,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           raise ManifestParseError("no remote for superproject %s within %s" %
                                    (name, self.manifestFile))
         self._superproject['remote'] = remote.ToRemoteSpec(name)
+        revision = node.getAttribute('revision') or remote.revision
+        if not revision:
+          revision = self._default.revisionExpr
+        if not revision:
+          raise ManifestParseError('no revision for superproject %s within %s' %
+                                   (name, self.manifestFile))
+        self._superproject['revision'] = revision
       if node.nodeName == 'contactinfo':
         bugurl = self._reqatt(node, 'bugurl')
         # This element can be repeated, later entries will clobber earlier ones.
