@@ -16,6 +16,24 @@
       "message": "should we be hardcoding based on the name ?  or should we be doing introspection ?  so the code below would pick based on type like isinstance(value, (list, tuple)) ?",
       "revId": "956f7363d100abe6c1f58b36d7aea59b9e41cd04",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7aaa5421_08afebf0",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-09-27T22:46:50Z",
+      "side": 1,
+      "message": "All values from are strings. argv is \"[\u0027a\u0027, \u0027b\u0027, \u0027c\u0027]\"\n\n \u003e should we be doing introspection ? \n +1 to the above. Uploaded the following change (I hope the following code is not too expensive).\n \n https://gerrit-review.googlesource.com/c/git-repo/+/319075",
+      "parentUuid": "763e9045_81ea13dc",
+      "revId": "956f7363d100abe6c1f58b36d7aea59b9e41cd04",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
