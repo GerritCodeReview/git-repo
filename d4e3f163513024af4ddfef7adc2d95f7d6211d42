@@ -16,6 +16,23 @@
       "message": "Hi All,\n  I thought of using json.loads to load the value and check if it is an instance of list and then use data-json. That solution is more general, but is expensive (I thought) and we only have one parameter we wanted to log as data-json, thus added explicit check for that parameter.\n  \n   Should we use use json.loads? Thanks",
       "revId": "d4e3f163513024af4ddfef7adc2d95f7d6211d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "104c6e7d_7e384898",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-09-27T19:11:01Z",
+      "side": 1,
+      "message": "Hi Mike,\n  I will fix your comments in the next release. Would like to have this change go out with the new repo release. Thanks.",
+      "revId": "d4e3f163513024af4ddfef7adc2d95f7d6211d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
