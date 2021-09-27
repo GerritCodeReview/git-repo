@@ -167,6 +167,10 @@ class EventLog(object):
     repo_config = {k: v for k, v in config.items() if k.startswith('repo.')}
     self.LogConfigEvents(repo_config, 'def_param')
 
+  def GetDataEventName(self, key):
+    """Returns the 'data-json' if the key is argv else returns 'data'."""
+    return 'data-json' if key.endswith('sys.argv') else 'data'
+
   def LogDataConfigEvents(self, config, prefix):
     """Append a 'data' event for each config key/value in |config| to the current log.
 
@@ -178,7 +182,7 @@ class EventLog(object):
       prefix: Prefix for each key that is logged.
     """
     for key, value in config.items():
-      event = self._CreateEventDict('data')
+      event = self._CreateEventDict(self.GetDataEventName(key))
       event['key'] = f'{prefix}/{key}'
       event['value'] = value
       self._log.append(event)

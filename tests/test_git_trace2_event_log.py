@@ -42,7 +42,7 @@ class EventLogTestCase(unittest.TestCase):
     self._event_log_module = git_trace2_event_log.EventLog(env=env)
     self._log_data = None
 
-  def verifyCommonKeys(self, log_entry, expected_event_name, full_sid=True):
+  def verifyCommonKeys(self, log_entry, expected_event_name=None, full_sid=True):
     """Helper function to verify common event log keys."""
     self.assertIn('event', log_entry)
     self.assertIn('sid', log_entry)
@@ -50,7 +50,8 @@ class EventLogTestCase(unittest.TestCase):
     self.assertIn('time', log_entry)
 
     # Do basic data format validation.
-    self.assertEqual(expected_event_name, log_entry['event'])
+    if expected_event_name:
+      self.assertEqual(expected_event_name, log_entry['event'])
     if full_sid:
       self.assertRegex(log_entry['sid'], self.FULL_SID_REGEX)
     else:
@@ -246,6 +247,7 @@ class EventLogTestCase(unittest.TestCase):
         'git.foo': 'bar',
         'repo.partialclone': 'false',
         'repo.syncstate.superproject.hassuperprojecttag': 'true',
+        'repo.syncstate.superproject.sys.argv': ['--', 'sync', 'protobuf'],
     }
     prefix_value = 'prefix'
     self._event_log_module.LogDataConfigEvents(config, prefix_value)
@@ -254,17 +256,18 @@ class EventLogTestCase(unittest.TestCase):
       log_path = self._event_log_module.Write(path=tempdir)
       self._log_data = self.readLog(log_path)
 
-    self.assertEqual(len(self._log_data), 4)
+    self.assertEqual(len(self._log_data), 5)
     data_events = self._log_data[1:]
     self.verifyCommonKeys(self._log_data[0], expected_event_name='version')
 
     for event in data_events:
-      self.verifyCommonKeys(event, expected_event_name='data')
+      self.verifyCommonKeys(event)
       # Check for 'data' event specific fields.
       self.assertIn('key', event)
       self.assertIn('value', event)
       key = event['key'].removeprefix(f'{prefix_value}/')
       value = event['value']
+      self.assertEqual(self._event_log_module.GetDataEventName(key), event['event'])
       self.assertTrue(key in config and value == config[key])
 
   def test_error_event(self):
