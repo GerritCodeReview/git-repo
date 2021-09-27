@@ -267,7 +267,7 @@ class EventLogTestCase(unittest.TestCase):
       self.assertIn('value', event)
       key = event['key'].removeprefix(f'{prefix_value}/')
       value = event['value']
-      self.assertEqual(self._event_log_module.GetDataEventName(key), event['event'])
+      self.assertEqual(self._event_log_module.GetDataEventName(value), event['event'])
       self.assertTrue(key in config and value == config[key])
 
   def test_error_event(self):
