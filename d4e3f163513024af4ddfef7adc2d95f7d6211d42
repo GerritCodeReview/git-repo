@@ -34,5 +34,108 @@
       "revId": "d4e3f163513024af4ddfef7adc2d95f7d6211d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
+  ],
+  "submitRequirementResults": [
+    {
+      "submitRequirement": {
+        "name": "Code-Review",
+        "description": {},
+        "applicabilityExpression": {},
+        "submittabilityExpression": {
+          "expressionString": "label:Code-Review\u003dMAX -label:Code-Review\u003dMIN"
+        },
+        "overrideExpression": {},
+        "allowOverrideInChildProjects": true
+      },
+      "applicabilityExpressionResult": {},
+      "submittabilityExpressionResult": {
+        "expression": {
+          "expressionString": "label:Code-Review\u003dMAX -label:Code-Review\u003dMIN"
+        },
+        "status": "PASS",
+        "errorMessage": {},
+        "passingAtoms": [
+          "label:Code-Review\u003dMAX",
+          "-label:Code-Review\u003dMIN"
+        ],
+        "failingAtoms": []
+      },
+      "overrideExpressionResult": {},
+      "patchSetCommitId": {
+        "w1": -723259037,
+        "w2": 1362109615,
+        "w3": 1306521466,
+        "w4": -600992265,
+        "w5": -702472894
+      },
+      "legacy": true
+    },
+    {
+      "submitRequirement": {
+        "name": "Verified",
+        "description": {},
+        "applicabilityExpression": {},
+        "submittabilityExpression": {
+          "expressionString": "label:Verified\u003dMAX -label:Verified\u003dMIN"
+        },
+        "overrideExpression": {},
+        "allowOverrideInChildProjects": true
+      },
+      "applicabilityExpressionResult": {},
+      "submittabilityExpressionResult": {
+        "expression": {
+          "expressionString": "label:Verified\u003dMAX -label:Verified\u003dMIN"
+        },
+        "status": "PASS",
+        "errorMessage": {},
+        "passingAtoms": [
+          "label:Verified\u003dMAX",
+          "-label:Verified\u003dMIN"
+        ],
+        "failingAtoms": []
+      },
+      "overrideExpressionResult": {},
+      "patchSetCommitId": {
+        "w1": -723259037,
+        "w2": 1362109615,
+        "w3": 1306521466,
+        "w4": -600992265,
+        "w5": -702472894
+      },
+      "legacy": true
+    },
+    {
+      "submitRequirement": {
+        "name": "checks~ChecksSubmitRule",
+        "description": {},
+        "applicabilityExpression": {},
+        "submittabilityExpression": {
+          "expressionString": "rule:checks~ChecksSubmitRule"
+        },
+        "overrideExpression": {},
+        "allowOverrideInChildProjects": false
+      },
+      "applicabilityExpressionResult": {},
+      "submittabilityExpressionResult": {
+        "expression": {
+          "expressionString": "rule:checks~ChecksSubmitRule"
+        },
+        "status": "PASS",
+        "errorMessage": {},
+        "passingAtoms": [
+          "checks~ChecksSubmitRule"
+        ],
+        "failingAtoms": []
+      },
+      "overrideExpressionResult": {},
+      "patchSetCommitId": {
+        "w1": -723259037,
+        "w2": 1362109615,
+        "w3": 1306521466,
+        "w4": -600992265,
+        "w5": -702472894
+      },
+      "legacy": true
+    }
   ]
 }
