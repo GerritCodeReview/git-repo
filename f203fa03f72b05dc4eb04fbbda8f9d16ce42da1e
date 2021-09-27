@@ -71,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a08e18e_ecaf45bd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-09-27T06:35:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f021b55_ce1e8d6b",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58ed6ccd_2af195aa",
@@ -88,6 +106,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed4d9c91_b56bb13b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 940,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-09-27T06:35:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58ed6ccd_2af195aa",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6d751d05_50a26260",
@@ -101,6 +137,24 @@
       "writtenOn": "2021-09-24T07:28:55Z",
       "side": 1,
       "message": "only one blank line here",
+      "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64784fd9_b2d2238f",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 637,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-09-27T06:35:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d751d05_50a26260",
       "revId": "f203fa03f72b05dc4eb04fbbda8f9d16ce42da1e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
