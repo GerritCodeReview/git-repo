@@ -277,6 +277,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9988d987_cbf77efa",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-27T21:40:30Z",
+      "side": 1,
+      "message": "OK! I was a bit confused, in part because of an error in git_config.py (we create a GitError but then throw it out because we\u0027re missing the `raise` keyword).\n\nMy logic is a bit different than what you suggested: If !new, if standalone_manifest we always teardown and start anew (this seems like appropriate behavior for the new use case). Otherwise (so !standalone_manifest), if -u and was_standalone_manifest, we teardown and start over. If !u and !was_standalone_manifest, we don\u0027t do anything new and leverage the existing logic.\n\nI tested with \n```\nrepo init -u gs://... --standalone-manifest\nrepo init -g foo\nrepo init -u https://chrome-internal...\nrepo init -g foo\nrepo init -u gs://... --standalone-manifest\nrepo init -g foo\n```\nand everything seemed to work OK.",
+      "parentUuid": "83d4c9ae_255798e1",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c09b7a19_5740bb31",

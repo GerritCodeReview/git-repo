@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5af7f2a5_ba86b3d4",
+        "filename": "git_config.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-27T21:40:30Z",
+      "side": 1,
+      "message": "I wish I could say this didn\u0027t take me 6 hours of debugging to figure out",
+      "range": {
+        "startLine": 107,
+        "startChar": 6,
+        "endLine": 107,
+        "endChar": 16
+      },
+      "revId": "ac61143d31d5207ae9a528a22a73f6c651c0b1f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
