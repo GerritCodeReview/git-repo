@@ -157,7 +157,7 @@ class SuperprojectTestCase(unittest.TestCase):
 """)
     self._superproject = git_superproject.Superproject(manifest, self.repodir,
                                                        self.git_event_log)
-    with mock.patch.object(self._superproject, '_GetBranch', return_value='junk'):
+    with mock.patch.object(self._superproject, '_branch', 'junk'):
       sync_result = self._superproject.Sync()
       self.assertFalse(sync_result.success)
       self.assertTrue(sync_result.fatal)
