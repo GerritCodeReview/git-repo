@@ -295,6 +295,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "065d4804_614cdb6d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-27T21:59:32Z",
+      "side": 1,
+      "message": "and lo, and expert was born",
+      "parentUuid": "9988d987_cbf77efa",
+      "revId": "227b045ee86e124a5462c7a82907bbedaa57548a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c09b7a19_5740bb31",

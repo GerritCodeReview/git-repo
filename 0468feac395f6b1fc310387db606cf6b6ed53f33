@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bbbc3ae_d6c09561",
+        "filename": "git_config.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-27T21:59:32Z",
+      "side": 0,
+      "message": "keep the 2 blank lines",
+      "revId": "0468feac395f6b1fc310387db606cf6b6ed53f33",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
