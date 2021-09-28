@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b483725_c12ece43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T20:22:50Z",
+      "side": 1,
+      "message": "i\u0027m thinking our next release will be 2.17 rather than 2.16.x since a lot more changes have been merged beyond superproject tweaks",
+      "revId": "83dfc412db9fd2914ff6c0da172e5982812c2ef9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
