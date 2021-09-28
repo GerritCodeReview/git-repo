@@ -371,9 +371,10 @@ class GitConfig(object):
 
     """
     c = {}
-    d = self._do('--null', '--list')
-    if d is None:
+    if not os.path.exists(self.file):
       return c
+
+    d = self._do('--null', '--list')
     for line in d.rstrip('\0').split('\0'):
       if '\n' in line:
         key, val = line.split('\n', 1)
