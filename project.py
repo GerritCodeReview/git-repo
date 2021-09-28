@@ -1182,10 +1182,8 @@ class Project(object):
       self._InitMRef()
     else:
       self._InitMirrorHead()
-      try:
-        platform_utils.remove(os.path.join(self.gitdir, 'FETCH_HEAD'))
-      except OSError:
-        pass
+      platform_utils.remove(os.path.join(self.gitdir, 'FETCH_HEAD'),
+                            missing_ok=True)
     return True
 
   def PostRepoUpgrade(self):
@@ -2307,15 +2305,12 @@ class Project(object):
     cmd.append('+refs/tags/*:refs/tags/*')
 
     ok = GitCommand(self, cmd, bare=True).Wait() == 0
-    if os.path.exists(bundle_dst):
-      platform_utils.remove(bundle_dst)
-    if os.path.exists(bundle_tmp):
-      platform_utils.remove(bundle_tmp)
+    platform_utils.remove(bundle_dst, missing_ok=True)
+    platform_utils.remove(bundle_tmp, missing_ok=True)
     return ok
 
   def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet, verbose):
-    if os.path.exists(dstPath):
-      platform_utils.remove(dstPath)
+    platform_utils.remove(dstPath, missing_ok=True)
 
     cmd = ['curl', '--fail', '--output', tmpPath, '--netrc', '--location']
     if quiet:
@@ -2739,10 +2734,7 @@ class Project(object):
         # If the source file doesn't exist, ensure the destination
         # file doesn't either.
         if name in symlink_files and not os.path.lexists(src):
-          try:
-            platform_utils.remove(dst)
-          except OSError:
-            pass
+          platform_utils.remove(dst, missing_ok=True)
 
       except OSError as e:
         if e.errno == errno.EPERM:

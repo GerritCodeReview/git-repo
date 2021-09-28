@@ -767,13 +767,9 @@ later is required to fix a server side protocol bug.
           set(new_copyfile_paths))
 
       for need_remove_file in need_remove_files:
-        try:
-          platform_utils.remove(need_remove_file)
-        except OSError as e:
-          if e.errno == errno.ENOENT:
-            # Try to remove the updated copyfile or linkfile.
-            # So, if the file is not exist, nothing need to do.
-            pass
+        # Try to remove the updated copyfile or linkfile.
+        # So, if the file is not exist, nothing need to do.
+        platform_utils.remove(need_remove_file, missing_ok=True)
 
     # Create copy-link-files.json, save dest path of "copyfile" and "linkfile".
     with open(copylinkfile_path, 'w', encoding='utf-8') as fp:
@@ -1171,10 +1167,7 @@ class _FetchTimes(object):
         with open(self._path) as f:
           self._times = json.load(f)
       except (IOError, ValueError):
-        try:
-          platform_utils.remove(self._path)
-        except OSError:
-          pass
+        platform_utils.remove(self._path, missing_ok=True)
         self._times = {}
 
   def Save(self):
@@ -1192,10 +1185,7 @@ class _FetchTimes(object):
       with open(self._path, 'w') as f:
         json.dump(self._times, f, indent=2)
     except (IOError, TypeError):
-      try:
-        platform_utils.remove(self._path)
-      except OSError:
-        pass
+      platform_utils.remove(self._path, missing_ok=True)
 
 # This is a replacement for xmlrpc.client.Transport using urllib2
 # and supporting persistent-http[s]. It cannot change hosts from

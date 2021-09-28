@@ -352,8 +352,8 @@ class GitConfig(object):
       Trace(': parsing %s', self.file)
       with open(self._json) as fd:
         return json.load(fd)
-    except (IOError, ValueError):
-      platform_utils.remove(self._json)
+    except (IOError, ValueErrorl):
+      platform_utils.remove(self._json, missing_ok=True)
       return None
 
   def _SaveJson(self, cache):
@@ -361,8 +361,7 @@ class GitConfig(object):
       with open(self._json, 'w') as fd:
         json.dump(cache, fd, indent=2)
     except (IOError, TypeError):
-      if os.path.exists(self._json):
-        platform_utils.remove(self._json)
+      platform_utils.remove(self._json, missing_ok=True)
 
   def _ReadGit(self):
     """
