@@ -34,6 +34,24 @@
       "parentUuid": "35a73e14_ad32b5bc",
       "revId": "6448a4f2af53c241594b5d12eb0d03b18f889eda",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "025e1375_3cc4c323",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-09-28T21:44:11Z",
+      "side": 1,
+      "message": "key \u003d event[\u0027key\u0027].removeprefix(f\u0027{prefix_value}/\u0027)\n  E       AttributeError: \u0027str\u0027 object has no attribute \u0027removeprefix\u0027\n  \n  It seems to be failing with the above call. Will find an alternative way to do the above.",
+      "parentUuid": "e360b0c2_c9f4df21",
+      "revId": "6448a4f2af53c241594b5d12eb0d03b18f889eda",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
