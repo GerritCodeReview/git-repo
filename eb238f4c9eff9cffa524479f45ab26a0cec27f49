@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4daeaee_6659b128",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-28T20:01:56Z",
+      "side": 1,
+      "message": "Hah. My bad. Thanks for the patience.",
+      "parentUuid": "3932b2c4_06e1404b",
+      "revId": "eb238f4c9eff9cffa524479f45ab26a0cec27f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "98f0755d_266ee667",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cd5d081_da69f385",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-28T20:01:56Z",
+      "side": 1,
+      "message": "my bad.",
+      "parentUuid": "98f0755d_266ee667",
+      "revId": "eb238f4c9eff9cffa524479f45ab26a0cec27f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b25730b0_826170ec",
@@ -48,6 +84,24 @@
       "writtenOn": "2021-09-28T18:51:29Z",
       "side": 1,
       "message": "we prefer single quotes for stand alone strings like this (and below)\n\nalthough we use double quotes when using triple-quoted strings",
+      "revId": "eb238f4c9eff9cffa524479f45ab26a0cec27f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbfddabf_4e93009b",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-28T20:01:56Z",
+      "side": 1,
+      "message": "My bad.  Switching between languages too much. 😊",
+      "parentUuid": "b25730b0_826170ec",
       "revId": "eb238f4c9eff9cffa524479f45ab26a0cec27f49",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
