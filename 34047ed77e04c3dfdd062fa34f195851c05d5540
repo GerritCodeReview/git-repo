@@ -46,6 +46,30 @@
       },
       "revId": "34047ed77e04c3dfdd062fa34f195851c05d5540",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13c86769_74575909",
+        "filename": "tests/fixtures/test.gitconfig",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-09-28T16:03:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c26f2bd_63c42938",
+      "range": {
+        "startLine": 18,
+        "startChar": 10,
+        "endLine": 18,
+        "endChar": 60
+      },
+      "revId": "34047ed77e04c3dfdd062fa34f195851c05d5540",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
