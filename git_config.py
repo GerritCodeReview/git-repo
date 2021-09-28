@@ -370,10 +370,10 @@ class GitConfig(object):
     This internal method populates the GitConfig cache.
 
     """
+    if not os.path.exists(self.file):
+      return None
     c = {}
     d = self._do('--null', '--list')
-    if d is None:
-      return c
     for line in d.rstrip('\0').split('\0'):
       if '\n' in line:
         key, val = line.split('\n', 1)
