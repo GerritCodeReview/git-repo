@@ -127,28 +127,27 @@ def rename(src, dst):
     shutil.move(src, dst)
 
 
-def remove(path):
+def remove(path, missing_ok=False):
   """Remove (delete) the file path. This is a replacement for os.remove that
   allows deleting read-only files on Windows, with support for long paths and
   for deleting directory symbolic links.
 
   Availability: Unix, Windows."""
-  if isWindows():
-    longpath = _makelongpath(path)
-    try:
-      os.remove(longpath)
-    except OSError as e:
-      if e.errno == errno.EACCES:
-        os.chmod(longpath, stat.S_IWRITE)
-        # Directory symbolic links must be deleted with 'rmdir'.
-        if islink(longpath) and isdir(longpath):
-          os.rmdir(longpath)
-        else:
-          os.remove(longpath)
+  longpath = _makelongpath(path) if isWindows() else path
+  try:
+    os.remove(longpath)
+  except OSError as e:
+    if e.errno == errno.EACCES:
+      os.chmod(longpath, stat.S_IWRITE)
+      # Directory symbolic links must be deleted with 'rmdir'.
+      if islink(longpath) and isdir(longpath):
+        os.rmdir(longpath)
       else:
-        raise
-  else:
-    os.remove(path)
+        os.remove(longpath)
+    elif missing_ok and e.errno == errno.ENOENT:
+      pass
+    else:
+      raise
 
 
 def walk(top, topdown=True, onerror=None, followlinks=False):

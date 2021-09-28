@@ -270,8 +270,7 @@ class XmlManifest(object):
     self.Override(name)
 
     # Old versions of repo would generate symlinks we need to clean up.
-    if os.path.lexists(self.manifestFile):
-      platform_utils.remove(self.manifestFile)
+    platform_utils.remove(self.manifestFile, missing_ok=True)
     # This file is interpreted as if it existed inside the manifest repo.
     # That allows us to use <include> with the relative file name.
     with open(self.manifestFile, 'w') as fp:
