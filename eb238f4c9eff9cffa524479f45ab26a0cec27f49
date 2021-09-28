@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3932b2c4_06e1404b",
+        "filename": "project.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T18:51:29Z",
+      "side": 1,
+      "message": "cuddle up to the previous line ;)",
+      "revId": "eb238f4c9eff9cffa524479f45ab26a0cec27f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f0755d_266ee667",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T18:51:29Z",
+      "side": 1,
+      "message": "usually we put a blank line after class docstrings",
+      "revId": "eb238f4c9eff9cffa524479f45ab26a0cec27f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b25730b0_826170ec",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 814,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T18:51:29Z",
+      "side": 1,
+      "message": "we prefer single quotes for stand alone strings like this (and below)\n\nalthough we use double quotes when using triple-quoted strings",
+      "revId": "eb238f4c9eff9cffa524479f45ab26a0cec27f49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
