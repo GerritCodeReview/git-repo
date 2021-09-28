@@ -24,6 +24,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e824d33_5f4ab1e6",
+        "filename": "git_config.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T20:02:39Z",
+      "side": 1,
+      "message": "oof, this bug dates back to the start of the project release in 2008.  unfortunately, fixing it has triggered errors elsewhere :/.\n\nhttps://gerrit-review.googlesource.com/c/git-repo/+/319295 should fix the first one.  i did a scan of this code for \"is None\" checks and that seems like the only obvious one.",
+      "revId": "ac61143d31d5207ae9a528a22a73f6c651c0b1f9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a4c852e_222aaf72",
