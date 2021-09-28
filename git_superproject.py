@@ -410,4 +410,6 @@ def UseSuperproject(opt, manifest):
     if client_value is not None:
       return client_value
     else:
+      if not manifest.superproject:
+        return False
       return _UseSuperprojectFromConfiguration()
