@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "534fdda2_b88541a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T16:12:33Z",
+      "side": 1,
+      "message": "largely just nits, thanks",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eac59846_059ead66",
+        "filename": "manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T16:12:33Z",
+      "side": 1,
+      "message": "i think if you re-order this check, it\u0027ll be a bit tidier \u0026 faster (due to short circuit logic)\n\n if dest_path and not path and len(self._projects[name]) \u003e 1:",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "609e08ee_01246034",
+        "filename": "project.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T16:12:33Z",
+      "side": 1,
+      "message": "please add docstrings to all new funcs",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de0444e0_9ef56508",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T16:12:33Z",
+      "side": 1,
+      "message": "2 blanks lines between module level classes",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f15c35df_db2b9e6c",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T16:12:33Z",
+      "side": 1,
+      "message": "please add a docstring to the class (see RemoveProjectElementTests above for an example).  these docstrings are shown when listing/inspecting tests on the CLI.",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
