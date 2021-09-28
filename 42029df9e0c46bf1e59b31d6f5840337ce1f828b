@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "961791e5_06722081",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T02:27:55Z",
+      "side": 1,
+      "message": "ah, we really never want to use `eval` in Python.  it means you could put arbitrary code in here and we\u0027ll execute it.\n\nwhat if we just check if first byte is [ or ( ?  would that have any false positives ?",
+      "revId": "42029df9e0c46bf1e59b31d6f5840337ce1f828b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
