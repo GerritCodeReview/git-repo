@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a40a31e4_b5569253",
+        "filename": "manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-28T18:37:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eac59846_059ead66",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "609e08ee_01246034",
@@ -48,6 +66,24 @@
       "writtenOn": "2021-09-28T16:12:33Z",
       "side": 1,
       "message": "please add docstrings to all new funcs",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f2d6781_725ceba2",
+        "filename": "project.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-28T18:37:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "609e08ee_01246034",
       "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d55619a9_3b262632",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-28T18:37:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de0444e0_9ef56508",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f15c35df_db2b9e6c",
@@ -82,6 +136,24 @@
       "writtenOn": "2021-09-28T16:12:33Z",
       "side": 1,
       "message": "please add a docstring to the class (see RemoveProjectElementTests above for an example).  these docstrings are shown when listing/inspecting tests on the CLI.",
+      "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4028bb2e_d887fe4a",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 16
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-28T18:37:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f15c35df_db2b9e6c",
       "revId": "2d1b51c2e04ed53a07c834e0e1a6051fd3ad60ca",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
