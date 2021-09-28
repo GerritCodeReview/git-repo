@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dced66a_81ba7c1c",
+        "filename": "subcmds/init.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T02:20:06Z",
+      "side": 1,
+      "message": "manifest-name defaults to default.xml, so i don\u0027t think you need to be explicit about it.  what\u0027s why i recommended you use that name ;).",
+      "range": {
+        "startLine": 299,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 61
+      },
+      "revId": "64ed1a434c1a13537f93a5d4870fd767f164b3bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1b4a170_e5cc07d1",
+        "filename": "subcmds/init.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-28T02:20:06Z",
+      "side": 1,
+      "message": "don\u0027t need the +",
+      "revId": "64ed1a434c1a13537f93a5d4870fd767f164b3bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
