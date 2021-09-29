@@ -41,6 +41,48 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c31148c_be34b7bb",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-09-29T21:24:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4af1ef1b_deb8dad6",
+      "revId": "c584e60c9edc82dc83fb73b5f68a04d7b0e45546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c427e54_2de69643",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-09-29T21:24:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65027412_35f2fd8a",
+      "range": {
+        "startLine": 69,
+        "startChar": 26,
+        "endLine": 69,
+        "endChar": 31
+      },
+      "revId": "c584e60c9edc82dc83fb73b5f68a04d7b0e45546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e9dbaf52_5ef8662d",
@@ -54,6 +96,24 @@
       "writtenOn": "2021-09-29T01:05:55Z",
       "side": 1,
       "message": "don\u0027t need [:] here -- strings are immutable in python already",
+      "revId": "c584e60c9edc82dc83fb73b5f68a04d7b0e45546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c10c406_1797b1e8",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-09-29T21:24:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9dbaf52_5ef8662d",
       "revId": "c584e60c9edc82dc83fb73b5f68a04d7b0e45546",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
