@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65027412_35f2fd8a",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-29T01:05:55Z",
+      "side": 1,
+      "message": "|input| is a builtin, so call it |s| instead (since |str| is also a builtin)",
+      "range": {
+        "startLine": 69,
+        "startChar": 26,
+        "endLine": 69,
+        "endChar": 31
+      },
+      "revId": "c584e60c9edc82dc83fb73b5f68a04d7b0e45546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4af1ef1b_deb8dad6",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-29T01:05:55Z",
+      "side": 1,
+      "message": "add a docstring please",
+      "revId": "c584e60c9edc82dc83fb73b5f68a04d7b0e45546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9dbaf52_5ef8662d",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-29T01:05:55Z",
+      "side": 1,
+      "message": "don\u0027t need [:] here -- strings are immutable in python already",
+      "revId": "c584e60c9edc82dc83fb73b5f68a04d7b0e45546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
