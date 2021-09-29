@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ffa9d288_35febe13",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-29T04:00:21Z",
+      "side": 1,
+      "message": "we do something roughly similar for Chrome OS (one system is responsible for keeping a central cached checkout up-to-date, and the rest mount that), but to handle the write aspect, we use overlayfs so as to not dirty the original cache.\n\nalso to help with the initial checkout, Google googlesource services provide clone bundles, and repo will fetch those automatically when using --clone-bundle.  that way large initial checkouts get seeded over CDNs (http), and partial updates fallback to git.\nhttps://git-scm.com/docs/git-bundle\n\nbut back to what you want to do.\n\ni\u0027m not sure where you\u0027re drawing the lines between \"source tree\" and \"git repository state\".  lets use an example repo client checkout for discussion.\n\n checkout/\n |-- .repo/\n |   |-- manifests*\n |   |-- project-objects/\n |   |-- projects/\n |   `-- repo/\n |-- chromite/\n |   |-- \u003crandom files\u003e\n |   `-- .git/\n |       `-- \u003cfiles \u0026 symlinks to .repo/ paths\u003e\n `-- src/\n     |-- third_party/...\n     |-- platform/...\n     ....\n\nwhich parts are being centrally provisioned \u0026 shipped to the builders ?\n\nwhat kinds of commands do you run on the central provision system ?\nwhat kinds of commands do you run on the builders themselves ?",
+      "parentUuid": "4a8977fe_2732f0e7",
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8764f96_99c1c881",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
