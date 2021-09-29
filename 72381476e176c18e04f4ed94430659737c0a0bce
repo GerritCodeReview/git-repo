@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c790db72_d8a7bab3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-09-29T01:50:50Z",
+      "side": 1,
+      "message": "i\u0027m pretty sure if HEAD moves but the source checkout doesn\u0027t, git will (rightly so) consider the tree dirty, and will basically be impossible for people to recover without doing a full `git checkout -f` (or equiv).\n\nyou can test this locally:\n\n # Checkout a detached head.\n $ git checkout -f HEAD^\n $ git status\n \u003cclean\u003e\n $ rev\u003d$(git rev-parse HEAD^)\n $ echo $rev \u003e .git/HEAD\n $ git status\n \u003clots of modified files\u003e\n\ni\u0027m still having a hard time understanding what practical use this is by itself.  it seems like you\u0027d still have to run a custom set of commands to get the checkout back into a good/usable state.",
+      "parentUuid": "fcd803af_1d0958dd",
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8764f96_99c1c881",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
