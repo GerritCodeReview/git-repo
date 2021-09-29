@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4a8977fe_2732f0e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-09-29T02:42:21Z",
+      "side": 1,
+      "message": "I can give you an example of how it\u0027s being used to see if that makes much sense 😊\n\nIn our build environment we have scenarios where the source tree is not provisioned directly from our Gerrit instance, it may be provisioned as a base from a container image instead (there is a few other scenarios for us, but the container image is most obvious) which will be shared between build workspaces, but because the git repository state may have user specific configuration it is provisioned at runtime instead.  This helps us to significantly reduce backend load as well as workspace setup time with a large source tree.\n\nTo generalize, if you pre-populate the source tree but need to initialize the repo working environment separate from this, this may be useful.",
+      "parentUuid": "c790db72_d8a7bab3",
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8764f96_99c1c881",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
