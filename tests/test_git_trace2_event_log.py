@@ -66,6 +66,13 @@ class EventLogTestCase(unittest.TestCase):
         log_data.append(json.loads(line))
     return log_data
 
+  def remove_prefix(self, s, prefix):
+    """Return a copy string after removing |prefix| from |s|, if present or the original string."""
+    if s.startswith(prefix):
+        return s[len(prefix):]
+    else:
+        return s
+
   def test_initial_state_with_parent_sid(self):
     """Test initial state when 'GIT_TRACE2_PARENT_SID' is set by parent."""
     self.assertRegex(self._event_log_module.full_sid, self.FULL_SID_REGEX)
@@ -265,7 +272,8 @@ class EventLogTestCase(unittest.TestCase):
       # Check for 'data' event specific fields.
       self.assertIn('key', event)
       self.assertIn('value', event)
-      key = event['key'].removeprefix(f'{prefix_value}/')
+      key = event['key']
+      key = self.remove_prefix(key, f'{prefix_value}/')
       value = event['value']
       self.assertEqual(self._event_log_module.GetDataEventName(value), event['event'])
       self.assertTrue(key in config and value == config[key])
