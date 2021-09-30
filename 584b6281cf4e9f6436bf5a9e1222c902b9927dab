@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fab350fb_a9aa5da0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-09-30T19:01:39Z",
+      "side": 1,
+      "message": "(For context -- we would like to create two merge CLs that acts as \"bridges\" for older repo releases to enable them to fast forward to the latest version of repo when doing selfupdate).",
+      "revId": "584b6281cf4e9f6436bf5a9e1222c902b9927dab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
