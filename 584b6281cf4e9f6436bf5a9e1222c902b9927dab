@@ -34,6 +34,24 @@
       "parentUuid": "fab350fb_a9aa5da0",
       "revId": "584b6281cf4e9f6436bf5a9e1222c902b9927dab",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eb68214_09697ee4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2021-09-30T21:05:57Z",
+      "side": 1,
+      "message": "No, I think Gerrit would not recognize the tags as known commits, e.g.:\n\n```\nremote: ERROR: commit 0ae9503: email address vapier@google.com is not registered in your account, and you lack \u0027forge committer\u0027 permission.\nremote: The following addresses are currently registered:\nremote:    delphij@google.com\nremote: To register an email address, visit:\nremote: https://gerrit-review.googlesource.com/settings#EmailAddresses\n```\n\nThe merge would be:\n\n```\ncommit d5f0065e5ced54b02a374773e59d48061ebab300 (HEAD -\u003e main)\nMerge: 436bde5 148e1ce\nAuthor: Xin Li \u003cdelphij@google.com\u003e\nDate:   Thu Sep 30 11:52:50 2021 -0700\n\n    Merge history of v2.14.5.\n    \n    For older versions of repo, this would make it easier for it to perform\n    a self update by making it a fast-forward from the following tags:\n    \n      v2.14.3, v2.14.4, v2.14.5\n    \n    Change-Id: I6668d775d12fb5993ede4ae800ee9890ba43b59d\n\ncommit 436bde51371611f013a5056afd143bf45b4828b7\nMerge: 4f88206 d92076d\nAuthor: Xin Li \u003cdelphij@google.com\u003e\nDate:   Thu Sep 30 11:49:08 2021 -0700\n\n    Merge history of v1.13.11.\n    \n    For older versions of repo, this would make it easier for it to perform\n    a self update by making it a fast-forward from the following tags:\n    \n      v1.13.9.2, v1.13.9.3, v1.13.9.4, v1.13.10, v1.13.11\n    \n    Change-Id: Ia75776312eaf802a150db8bd7c0a6dce57914580\n```",
+      "parentUuid": "ff0f1cd4_15e8705b",
+      "revId": "584b6281cf4e9f6436bf5a9e1222c902b9927dab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
