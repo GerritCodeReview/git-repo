@@ -20,6 +20,7 @@ This is intended to be run only by the official Repo release managers.
 
 import argparse
 import os
+import re
 import subprocess
 import sys
 
@@ -49,18 +50,37 @@ def check(opts):
   util.run(opts, ['gpg', '--verify', f'{opts.launcher}.asc'])
 
 
-def postmsg(opts):
+def get_version(opts):
+  """Get the version from |launcher|."""
+  # Make sure we don't search $PATH when signing the "repo" file in the cwd.
+  launcher = os.path.join('.', opts.launcher)
+  cmd = [launcher, '--version']
+  ret = util.run(opts, cmd, encoding='utf-8', stdout=subprocess.PIPE)
+  m = re.search(r'repo launcher version ([0-9.]+)', ret.stdout)
+  if not m:
+    sys.exit(f'{opts.launcher}: unable to detect repo version')
+  return m.group(1)
+
+
+def postmsg(opts, version):
   """Helpful info to show at the end for release manager."""
   print(f"""
 Repo launcher bucket:
   gs://git-repo-downloads/
 
-To upload this launcher directly:
-  gsutil cp -a public-read {opts.launcher} {opts.launcher}.asc gs://git-repo-downloads/
+You should first upload it with a specific version:
+  gsutil cp -a public-read {opts.launcher} gs://git-repo-downloads/repo-{version}
+  gsutil cp -a public-read {opts.launcher}.asc gs://git-repo-downloads/repo-{version}.asc
 
-NB: You probably want to upload it with a specific version first, e.g.:
-  gsutil cp -a public-read {opts.launcher} gs://git-repo-downloads/repo-3.0
-  gsutil cp -a public-read {opts.launcher}.asc gs://git-repo-downloads/repo-3.0.asc
+Then to make it the public default:
+  gsutil cp -a public-read gs://git-repo-downloads/repo-{version} gs://git-repo-downloads/repo
+  gsutil cp -a public-read gs://git-repo-downloads/repo-{version}.asc gs://git-repo-downloads/repo.asc
+
+NB: If a rollback is necessary, the GS bucket archives old versions, and may be
+    accessed by specifying their unique id number.
+  gsutil ls -la gs://git-repo-downloads/repo gs://git-repo-downloads/repo.asc
+  gsutil cp -a public-read gs://git-repo-downloads/repo#<unique id> gs://git-repo-downloads/repo
+  gsutil cp -a public-read gs://git-repo-downloads/repo.asc#<unique id> gs://git-repo-downloads/repo.asc
 """)
 
 
@@ -103,9 +123,10 @@ def main(argv):
     opts.keys = [util.KEYID_DSA, util.KEYID_RSA, util.KEYID_ECC]
     util.import_release_key(opts)
 
+  version = get_version(opts)
   sign(opts)
   check(opts)
-  postmsg(opts)
+  postmsg(opts, version)
 
   return 0
 
