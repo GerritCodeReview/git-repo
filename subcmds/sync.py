@@ -622,6 +622,7 @@ later is required to fix a server side protocol bug.
                 % (project.relpath,),
                 file=sys.stderr)
           project.config.SetString('gc.pruneExpire', 'never')
+      project.config.SetString('gc.autoDetach', 'false')
       gc_gitdirs[project.gitdir] = project.bare_git
 
     pm.update(inc=len(projects) - len(gc_gitdirs), msg='warming up')
