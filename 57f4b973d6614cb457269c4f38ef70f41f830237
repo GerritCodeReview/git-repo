@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b85d677_9f9950e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-10-04T16:23:38Z",
+      "side": 1,
+      "message": "https://crbug.com/gerrit/15113 is a bit shorter fwiw",
+      "revId": "57f4b973d6614cb457269c4f38ef70f41f830237",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
