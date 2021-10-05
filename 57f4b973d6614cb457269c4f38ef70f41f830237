@@ -16,6 +16,24 @@
       "message": "https://crbug.com/gerrit/15113 is a bit shorter fwiw",
       "revId": "57f4b973d6614cb457269c4f38ef70f41f830237",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d90610d_b0a66dcd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1112056
+      },
+      "writtenOn": "2021-10-05T14:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b85d677_9f9950e6",
+      "revId": "57f4b973d6614cb457269c4f38ef70f41f830237",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
