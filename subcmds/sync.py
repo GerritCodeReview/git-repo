@@ -606,6 +606,7 @@ later is required to fix a server side protocol bug.
     pm.update(inc=0, msg='prescan')
 
     gc_gitdirs = {}
+    packrefs_gitdirs = {}
     for project in projects:
       # Make sure pruning never kicks in with shared projects.
       if (not project.use_git_worktrees and
@@ -623,9 +624,14 @@ later is required to fix a server side protocol bug.
                 file=sys.stderr)
           project.config.SetString('gc.pruneExpire', 'never')
       project.config.SetString('gc.autoDetach', 'false')
-      gc_gitdirs[project.gitdir] = project.bare_git
+      # Only call git gc once per objdir, but call pack-refs for the remainder.
+      if project.objdir not in gc_gitdirs:
+        gc_gitdirs[project.objdir] = project.bare_git
+      else:
+        packrefs_gitdirs[project.gitdir] = project.bare_git
 
-    pm.update(inc=len(projects) - len(gc_gitdirs), msg='warming up')
+    pm.update(inc=len(projects) - len(gc_gitdirs) - len(packrefs_gitdirs),
+              msg='warming up')
 
     cpu_count = os.cpu_count()
     jobs = min(self.jobs, cpu_count)
@@ -634,6 +640,9 @@ later is required to fix a server side protocol bug.
       for bare_git in gc_gitdirs.values():
         pm.update(msg=bare_git._project.name)
         bare_git.gc('--auto')
+      for bare_git in packrefs_gitdirs.values():
+        pm.update(msg=bare_git._project.name)
+        bare_git.pack_refs()
       pm.end()
       return
 
@@ -656,11 +665,33 @@ later is required to fix a server side protocol bug.
         pm.finish(bare_git._project.name)
         sem.release()
 
+    def PACK_REFS(bare_git):
+        pm.start(bare_git._project.name)
+        try:
+            try:
+                bare_git.pack_refs(config=config)
+            except GitError:
+                err_event.set()
+            except Exception:
+                err_event.set()
+                raise
+        finally:
+            pm.finish(bare_git._project.name)
+            sem.release()
+
     for bare_git in gc_gitdirs.values():
       if err_event.is_set() and opt.fail_fast:
         break
       sem.acquire()
       t = _threading.Thread(target=GC, args=(bare_git,))
+      t.daemon = True
+      threads.add(t)
+      t.start()
+    for bare_git in packrefs_gitdirs.values():
+      if err_event.is_set() and opt.fail_fast:
+        break
+      sem.acquire()
+      t = _threading.Thread(target=PACK_REFS, args=(bare_git,))
       t.daemon = True
       threads.add(t)
       t.start()
