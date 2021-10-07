@@ -605,7 +605,7 @@ later is required to fix a server side protocol bug.
     pm = Progress('Garbage collecting', len(projects), delay=False, quiet=opt.quiet)
     pm.update(inc=0, msg='prescan')
 
-    gc_gitdirs = {}
+    tidy_dirs = {}
     for project in projects:
       # Make sure pruning never kicks in with shared projects.
       if (not project.use_git_worktrees and
@@ -623,17 +623,30 @@ later is required to fix a server side protocol bug.
                 file=sys.stderr)
           project.config.SetString('gc.pruneExpire', 'never')
       project.config.SetString('gc.autoDetach', 'false')
-      gc_gitdirs[project.gitdir] = project.bare_git
+      # Only call git gc once per objdir, but call pack-refs for the remainder.
+      if project.objdir not in tidy_dirs:
+        tidy_dirs[project.objdir] = (
+          True,  # Run a full gc
+          project.bare_git
+        )
+      else:
+        tidy_dirs[project.gitdir] = (
+          False,  # Do not run a full gc; just run pack-refs.
+          project.bare_git
+        )
 
-    pm.update(inc=len(projects) - len(gc_gitdirs), msg='warming up')
+    pm.update(inc=len(projects) - len(tidy_dirs), msg='warming up')
 
     cpu_count = os.cpu_count()
     jobs = min(self.jobs, cpu_count)
 
     if jobs < 2:
-      for bare_git in gc_gitdirs.values():
+      for (run_gc, bare_git) in tidy_dirs.values():
         pm.update(msg=bare_git._project.name)
-        bare_git.gc('--auto')
+        if run_gc:
+          bare_git.gc('--auto')
+        else:
+          bare_git.pack_refs()
       pm.end()
       return
 
@@ -642,11 +655,14 @@ later is required to fix a server side protocol bug.
     threads = set()
     sem = _threading.Semaphore(jobs)
 
-    def GC(bare_git):
+    def TIDY_UP(run_gc, bare_git):
       pm.start(bare_git._project.name)
       try:
         try:
-          bare_git.gc('--auto', config=config)
+          if run_gc:
+            bare_git.gc('--auto', config=config)
+          else:
+            bare_git.pack_refs(config=config)
         except GitError:
           err_event.set()
         except Exception:
@@ -656,11 +672,11 @@ later is required to fix a server side protocol bug.
         pm.finish(bare_git._project.name)
         sem.release()
 
-    for bare_git in gc_gitdirs.values():
+    for (run_gc, bare_git) in tidy_dirs.values():
       if err_event.is_set() and opt.fail_fast:
         break
       sem.acquire()
-      t = _threading.Thread(target=GC, args=(bare_git,))
+      t = _threading.Thread(target=TIDY_UP, args=(run_gc, bare_git,))
       t.daemon = True
       threads.add(t)
       t.start()
