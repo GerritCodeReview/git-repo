@@ -127,6 +127,11 @@ to update the working directory files.
     # anew.
     if not is_new:
       was_standalone_manifest = m.config.GetString('manifest.standalone')
+      if was_standalone_manifest and not opt.manifest_url:
+        print('fatal: repo was initialized with a standlone manifest, '
+              'cannot be re-initialized without --manifest-url/-u')
+        sys.exit(1)
+
       if opt.standalone_manifest or (
           was_standalone_manifest and opt.manifest_url):
         m.config.ClearCache()
