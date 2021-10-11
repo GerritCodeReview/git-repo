@@ -34,6 +34,24 @@
       "parentUuid": "dc015477_a16348e0",
       "revId": "0c800ffbf5ddcb0665ce9e4fdc4059365db9b641",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea3947b2_f7fe647e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-10-11T18:07:03Z",
+      "side": 1,
+      "message": "Actually, I was able to change the logic to answer the question \"am I in standalone mode\" by looking at config only if both -u AND -b are not set (previously it only checked !u). This fixes the use case in the bug:\n```\nbad-repo init -u -u https://android.googlesource.com/platform/manifest\nupdate_depot_tools / equivalent update repo\ngood-repo init -b studio-main\nrepo info points to correct branch\n```",
+      "parentUuid": "fda8fbd0_829ac6ff",
+      "revId": "0c800ffbf5ddcb0665ce9e4fdc4059365db9b641",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
