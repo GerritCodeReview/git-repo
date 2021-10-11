@@ -171,7 +171,8 @@ to update the working directory files.
       # standalone mode. Otherwise, use config to infer what we were in the last
       # init.
       standalone_manifest = bool(m.config.GetString('manifest.standalone'))
-    m.config.SetString('manifest.standalone', opt.manifest_url)
+    if standalone_manifest:
+      m.config.SetString('manifest.standalone', opt.manifest_url)
 
     self._ConfigureDepth(opt)
 
