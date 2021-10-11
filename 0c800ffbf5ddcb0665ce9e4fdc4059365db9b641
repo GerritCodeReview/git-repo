@@ -16,6 +16,24 @@
       "message": "is this wedging existing checkouts ?  do we need to do something to unwedge them ?  or does a re-init fix things ?",
       "revId": "0c800ffbf5ddcb0665ce9e4fdc4059365db9b641",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fda8fbd0_829ac6ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-10-11T18:05:13Z",
+      "side": 1,
+      "message": "I corrected my fix and did some additional testing, unfortunately this does wedge checkouts created with the original v2.17 (as once manifest.standalone is erroneously set in config, it takes a -u to get repo to turn off manifest.standalone).",
+      "parentUuid": "dc015477_a16348e0",
+      "revId": "0c800ffbf5ddcb0665ce9e4fdc4059365db9b641",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
