@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c9440bd_f5295224",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2021-10-12T18:14:59Z",
+      "side": 1,
+      "message": "I incorrectly remembered what we\u0027re doing in our environment here (eg: we still have to init the state in .repo from Gerrit so this isn\u0027t saving us load on Gerrit, it\u0027s just saving us a lot of local I/O).  That said, I\u0027m thinking that the internal use case we have might be too specific to upstream right now so I\u0027m going to abandon this change for the time being.",
+      "parentUuid": "ffa9d288_35febe13",
+      "revId": "72381476e176c18e04f4ed94430659737c0a0bce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f8764f96_99c1c881",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
