@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e95aa029_0332cfc2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1112056
+      },
+      "writtenOn": "2021-10-12T19:30:27Z",
+      "side": 1,
+      "message": "I am not 100% sure that there isn\u0027t a way to write a repo manifest that shares the same gitdir between two checkouts.",
+      "parentUuid": "e09cd7f0_a4a37ded",
+      "revId": "64e3f1344aa6923ac112a35c50d1cd21ebb5d249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8d07b14_2a8a493b",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2021-10-10T04:28:54Z",
       "side": 1,
       "message": "these funcs are the same except for the gc-vs-pack_refs call.  seems like if we tidy up the data structure a bit, we could collapse this stuff ?\n\nby repo internal fs design, we know the set of project.objdir values will never intersect with the set of project.bare_git or project.gitdir.  so if we did something like above:\n\n tidy_dirs \u003d {}\n ...\n   if project.objdir not in tidy_dirs:\n     tidy_dirs[project.objdir] \u003d (True, project.bare_git)\n   else:\n     tidy_dirs[project.gitdir] \u003d (False, project.bare_git)\n\nthen below we do:\n\n  for run_gc, bare_git in tidy_dirs.values():\n    ...\n    t \u003d _threading.Thread(target\u003dtidy_up, args\u003d(run_gc, bare_git))\n    ...\n\nthen above we rename GC to tidy_up and have it take those args and decide whether to call gc or pack-refs.",
+      "revId": "64e3f1344aa6923ac112a35c50d1cd21ebb5d249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d616fe53_db54f877",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1112056
+      },
+      "writtenOn": "2021-10-12T19:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8d07b14_2a8a493b",
       "revId": "64e3f1344aa6923ac112a35c50d1cd21ebb5d249",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -65,6 +101,24 @@
       "writtenOn": "2021-10-10T04:28:54Z",
       "side": 1,
       "message": "this code base still uses 2 space indent instead of 4",
+      "revId": "64e3f1344aa6923ac112a35c50d1cd21ebb5d249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f2f18d8_d592632c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 669,
+      "author": {
+        "id": 1112056
+      },
+      "writtenOn": "2021-10-12T19:30:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d534cd37_fa7d7f8e",
       "revId": "64e3f1344aa6923ac112a35c50d1cd21ebb5d249",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
