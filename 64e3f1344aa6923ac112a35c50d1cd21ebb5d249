@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc3fccf9_c4451396",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 633,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-10-13T06:30:52Z",
+      "side": 1,
+      "message": "objdir: a one-to-one mapping from local dir to remote git project.  no matter how a manifest checks things out locally, this local path always matches the remote server layout.\ne.g. .repo/project-objects/chromiumos/chromite.git -\u003e https://chromium.googlesource.com/chromiumos/chromite\n\ngitdir: a one-to-one mapping from check out path in the manifest.  will have a many-to-one mapping to objdir (multiple gitdir\u0027s link to a single objdir).\ne.g. .repo/projects/chromite.git -\u003e chromite/\n\nworktree: the checkout source diretory.\ne.g. chromite/\n\nthere is no way to have a manifest where gitdir will be the same between multiple \u003cproject\u003e entries because the internal FS layout bans it.  there is no way to have a manifest where objdir will be the same between different remote repositories (multiple \u003cproject\u003e can map to a single objdir, but it would only be to checkout the same git repo to diff paths using diff commits/branches e.g. the CrOS kernel).\n\nso len(set(x.gitdir for x in projects)) will always be len(projects), and len(set(x.objdir for x in projects)) can be \u003c\u003d len(projects).\n\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/internal-fs-layout.md#Project-objects\n\nfwiw, git worktrees don\u0027t change the equation either.  we\u0027d still have the same uniqueness constraints as above, albeit with a diff internal FS structure.",
+      "parentUuid": "e95aa029_0332cfc2",
+      "revId": "64e3f1344aa6923ac112a35c50d1cd21ebb5d249",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b8d07b14_2a8a493b",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
