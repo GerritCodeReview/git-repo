@@ -969,14 +969,16 @@ later is required to fix a server side protocol bug.
               file=sys.stderr)
 
     mp = self.manifest.manifestProject
-    mp.PreSync()
+    is_standalone_manifest = mp.config.GetString('manifest.standalone')
+    if not is_standalone_manifest:
+      mp.PreSync()
 
     if opt.repo_upgraded:
       _PostRepoUpgrade(self.manifest, quiet=opt.quiet)
 
     if not opt.mp_update:
       print('Skipping update of local manifest project.')
-    else:
+    elif not is_standalone_manifest:
       self._UpdateManifestProject(opt, mp, manifest_name)
 
     load_local_manifests = not self.manifest.HasLocalManifests
