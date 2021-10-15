@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68dc18f0_3160e237",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-10-15T17:14:52Z",
+      "side": 1,
+      "message": "this is the repo project, so using \"repo:\" for everything isn\u0027t terribly useful.  when modifying a specific subcommand, we tend to use that.  so you want \"sync:\" here.\n\n(i noticed after the fact we should have done this in some of your previous commits too)",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "100adfbe5f56b43856a4b36fc0360577ee2af4a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
