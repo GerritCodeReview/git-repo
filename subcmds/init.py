@@ -298,7 +298,7 @@ to update the working directory files.
     if standalone_manifest:
       if is_new:
         manifest_name = 'default.xml'
-        manifest_data = fetch.fetch_file(opt.manifest_url)
+        manifest_data = fetch.fetch_file(opt.manifest_url, verbose=opt.verbose)
         dest = os.path.join(m.worktree, manifest_name)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         with open(dest, 'wb') as f:
