@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a68dd3_68821b1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-10-25T22:42:02Z",
+      "side": 1,
+      "message": "Once we submit this would you mind tagging it 2.18 so we can get the fix out to partners?",
+      "revId": "63ed069acf8ce5157615ab371a4c4897f689fdbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
