@@ -29,10 +29,13 @@ def fetch_file(url):
     cmd = ['gsutil', 'cat', url]
     try:
       result = subprocess.run(
-          cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+          cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+          check = True)
+      if result.stderr:
+        print('gsutil stderr: %s' % result.stderr)
       return result.stdout
     except subprocess.CalledProcessError as e:
-      print('fatal: error running "gsutil": %s' % e.output,
+      print('fatal: error running "gsutil": %s' % e.stderr,
             file=sys.stderr)
     sys.exit(1)
   if scheme == 'file':
