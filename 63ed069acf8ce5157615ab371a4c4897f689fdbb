@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4813697e_11e6a91b",
+        "filename": "fetch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-10-26T16:22:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55219a0b_c67e13a0",
+      "revId": "63ed069acf8ce5157615ab371a4c4897f689fdbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da906741_3a0aa6fd",
@@ -66,6 +84,24 @@
       "writtenOn": "2021-10-26T05:09:44Z",
       "side": 1,
       "message": "if it didn\u0027t fail, is showing error output useful ?  or should we just throw it away ?  i imagine the only things that\u0027d show up here would be retry warnings ?",
+      "revId": "63ed069acf8ce5157615ab371a4c4897f689fdbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fc65fa9_31eee3c7",
+        "filename": "fetch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-10-26T16:22:45Z",
+      "side": 1,
+      "message": "The impetus for this change was a partner getting the following error:\n```\nWARNING: Proxy configuration is present in both the http_proxy environment variable and boto configuration, but configuration differs. boto configuration proxy values will be used. Differences detected:\n```\nI thought it might be useful to display such warnings, but then again they\u0027re not really actionable so maybe they\u0027re not useful to show.\n\nWhat do you think?",
+      "parentUuid": "da906741_3a0aa6fd",
       "revId": "63ed069acf8ce5157615ab371a4c4897f689fdbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
