@@ -52,6 +52,9 @@ def version():
   """return ssh version as a tuple"""
   try:
     return _parse_ssh_version()
+  except FileNotFoundError:
+    print('fatal: ssh not installed', file=sys.stderr)
+    sys.exit(1)
   except subprocess.CalledProcessError:
     print('fatal: unable to detect ssh version', file=sys.stderr)
     sys.exit(1)
