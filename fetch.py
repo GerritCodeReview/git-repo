@@ -17,6 +17,8 @@
 import subprocess
 import sys
 from urllib.parse import urlparse
+from urllib.request import urlopen
+
 
 def fetch_file(url):
   """Fetch a file from the specified source using the appropriate protocol.
@@ -35,7 +37,5 @@ def fetch_file(url):
       print('fatal: error running "gsutil": %s' % e.output,
             file=sys.stderr)
     sys.exit(1)
-  if scheme == 'file':
-    with open(url[len('file://'):], 'rb') as f:
-      return f.read()
-  raise ValueError('unsupported url %s' % url)
+  with urlopen(url) as f:
+    return f.read()
