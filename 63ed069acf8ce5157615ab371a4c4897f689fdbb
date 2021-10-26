@@ -122,6 +122,24 @@
       "parentUuid": "7fc65fa9_31eee3c7",
       "revId": "63ed069acf8ce5157615ab371a4c4897f689fdbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fa4faf4_52014ec1",
+        "filename": "fetch.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-10-26T20:46:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09e66e27_5029f164",
+      "revId": "63ed069acf8ce5157615ab371a4c4897f689fdbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
