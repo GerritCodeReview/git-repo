@@ -16,6 +16,24 @@
       "message": "write it to stderr like you can see below with file\u003d",
       "revId": "37e6c0e4bea8468d65bcc216b4faa9530683a6e1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbfffd8f_a01d2a58",
+        "filename": "fetch.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1127785
+      },
+      "writtenOn": "2021-10-26T21:59:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee3f98ec_a52189ca",
+      "revId": "37e6c0e4bea8468d65bcc216b4faa9530683a6e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
