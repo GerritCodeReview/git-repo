@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91524be5_dad81470",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-11-01T21:58:19Z",
+      "side": 1,
+      "message": "Hi Mike,\n  I hope I have made the change you have suggested in the bug: 15208#c1. Thanks.",
+      "revId": "2b89fe8795d57f6d26882a30b98d9b1280e3f2df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
