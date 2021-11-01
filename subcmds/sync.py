@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import errno
 import functools
 import http.cookiejar as cookielib
 import io
@@ -235,7 +234,7 @@ later is required to fix a server side protocol bug.
                  dest='fetch_submodules', action='store_true',
                  help='fetch submodules from server')
     p.add_option('--use-superproject', action='store_true',
-                 help='use the manifest superproject to sync projects')
+                 help='use the manifest superproject to sync projects; implies -c')
     p.add_option('--no-use-superproject', action='store_false',
                  dest='use_superproject',
                  help='disable use of manifest superprojects')
