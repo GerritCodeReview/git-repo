@@ -372,7 +372,7 @@ def InitParser(parser, gitc_init=False):
                    help='filter for use with --partial-clone '
                         '[default: %default]')
   group.add_option('--use-superproject', action='store_true', default=None,
-                   help='use the manifest superproject to sync projects')
+                   help='use the manifest superproject to sync projects; implies -c')
   group.add_option('--no-use-superproject', action='store_false',
                    dest='use_superproject',
                    help='disable use of manifest superprojects')
