@@ -734,7 +734,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       self._loaded = True
 
   def _ParseManifestXml(self, path, include_root, parent_groups='',
-                        restrict_includes=True):
+                        restrict_includes=True, path_prefix=''):
     """Parse a manifest XML and return the computed nodes.
 
     Args:
@@ -742,6 +742,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       include_root: The path to interpret include "name"s relative to.
       parent_groups: The groups to apply to this projects.
       restrict_includes: Whether to constrain the "name" attribute of includes.
+      path_prefix: Any prefix to apply to paths in the manifest.
 
     Returns:
       List of XML nodes.
@@ -774,12 +775,22 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           include_groups = parent_groups
         if node.hasAttribute('groups'):
           include_groups = node.getAttribute('groups') + ',' + include_groups
+        include_path = path_prefix
+        if node.hasAttribute('path'):
+          _path = node.getAttribute('path')
+          msg = self._CheckLocalPath(_path)
+          if msg:
+            raise ManifestInvalidPathError(
+                '<include name="%s"> invalid "path": %s: %s' %
+                (name, _path, msg))
+          include_path = os.path.join(path_prefix, _path)
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
           raise ManifestParseError("include [%s/]%s doesn't exist or isn't a file"
                                    % (include_root, name))
         try:
-          nodes.extend(self._ParseManifestXml(fp, include_root, include_groups))
+          nodes.extend(self._ParseManifestXml(fp, include_root, include_groups,
+                                              path_prefix=include_path))
         # should isolate this to the exact exception, but that's
         # tricky.  actual parsing implementation may vary.
         except (KeyboardInterrupt, RuntimeError, SystemExit, ManifestParseError):
@@ -788,6 +799,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           raise ManifestParseError(
               "failed parsing included manifest %s: %s" % (name, e))
       else:
+        if path_prefix:
+          if node.nodeName in ('repo-hooks', ):
+            node.nodeName = 'comment'
+        if path_prefix and node.nodeName == 'project':
+          if node.hasAttribute('_path_prefix'):
+            raise ManifestParseError('%s incorrectly specifies _path_prefix'
+                                     % (name))
+          else:
+            node.setAttribute('_path_prefix', path_prefix)
         if parent_groups and node.nodeName == 'project':
           nodeGroups = parent_groups
           if node.hasAttribute('groups'):
@@ -899,7 +919,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             self._paths[p.relpath] = p
 
       if node.nodeName == 'repo-hooks':
-        # Only one project can be the hooks project
+        # Only one project can be the hooks project.
         if repo_hooks_project is not None:
           raise ManifestParseError(
               'duplicate repo-hooks in %s' %
@@ -1131,6 +1151,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       raise ManifestParseError("no revision for project %s within %s" %
                                (name, self.manifestFile))
 
+    path_prefix = node.getAttribute('_path_prefix')
     path = node.getAttribute('path')
     if not path:
       path = name
@@ -1141,6 +1162,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         raise ManifestInvalidPathError(
             '<project> invalid "path": %s: %s' % (path, msg))
 
+    path = os.path.join(path_prefix or '', path)
     rebase = XmlBool(node, 'rebase', True)
     sync_c = XmlBool(node, 'sync-c', False)
     sync_s = XmlBool(node, 'sync-s', self._default.sync_s)
@@ -1198,9 +1220,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
-        self._ParseCopyFile(project, n)
+        self._ParseCopyFile(project, n, path_prefix)
       if n.nodeName == 'linkfile':
-        self._ParseLinkFile(project, n)
+        self._ParseLinkFile(project, n, path_prefix)
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
@@ -1382,9 +1404,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       raise ManifestInvalidPathError(
           '<%s> invalid "src": %s: %s' % (element, src, msg))
 
-  def _ParseCopyFile(self, project, node):
+  def _ParseCopyFile(self, project, node, path_prefix):
     src = self._reqatt(node, 'src')
-    dest = self._reqatt(node, 'dest')
+    dest = os.path.join(path_prefix, self._reqatt(node, 'dest'))
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree.
@@ -1392,9 +1414,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       self._ValidateFilePaths('copyfile', src, dest)
       project.AddCopyFile(src, dest, self.topdir)
 
-  def _ParseLinkFile(self, project, node):
+  def _ParseLinkFile(self, project, node, path_prefix):
     src = self._reqatt(node, 'src')
-    dest = self._reqatt(node, 'dest')
+    dest = os.path.join(path_prefix, self._reqatt(node, 'dest'))
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree.
