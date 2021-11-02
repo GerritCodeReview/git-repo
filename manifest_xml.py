@@ -120,6 +120,7 @@ class _Default(object):
   sync_c = False
   sync_s = False
   sync_tags = True
+  path_prefix = ''
 
   def __eq__(self, other):
     if not isinstance(other, _Default):
@@ -592,7 +593,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   @property
   def default(self):
     self._Load()
-    return self._default
+    return self._default.get('')
 
   @property
   def repo_hooks_project(self):
@@ -682,7 +683,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._projects = {}
     self._paths = {}
     self._remotes = {}
-    self._default = None
+    self._default = {'': None}
     self._repo_hooks_project = None
     self._superproject = {}
     self._contactinfo = ContactInfo(Wrapper().BUG_URL)
@@ -734,7 +735,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       self._loaded = True
 
   def _ParseManifestXml(self, path, include_root, parent_groups='',
-                        restrict_includes=True):
+                        restrict_includes=True, path_prefix=''):
     """Parse a manifest XML and return the computed nodes.
 
     Args:
@@ -742,6 +743,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       include_root: The path to interpret include "name"s relative to.
       parent_groups: The groups to apply to this projects.
       restrict_includes: Whether to constrain the "name" attribute of includes.
+      path_prefix: Any prefix to apply to paths in the manifest.
 
     Returns:
       List of XML nodes.
@@ -774,12 +776,22 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           include_groups = parent_groups
         if node.hasAttribute('groups'):
           include_groups = node.getAttribute('groups') + ',' + include_groups
+        include_path = path_prefix
+        if node.hasAttribute('path'):
+          _path = node.getAttribute('path')
+          msg = self._CheckLocalPath(_path)
+          if msg:
+            raise ManifestInvalidPathError(
+                '<include name="%s"> invalid "path": %s: %s' %
+                (name, _path, msg))
+          include_path = os.path.join(path_prefix, _path)
         fp = os.path.join(include_root, name)
         if not os.path.isfile(fp):
           raise ManifestParseError("include [%s/]%s doesn't exist or isn't a file"
                                    % (include_root, name))
         try:
-          nodes.extend(self._ParseManifestXml(fp, include_root, include_groups))
+          nodes.extend(self._ParseManifestXml(fp, include_root, include_groups,
+                                              path_prefix=include_path))
         # should isolate this to the exact exception, but that's
         # tricky.  actual parsing implementation may vary.
         except (KeyboardInterrupt, RuntimeError, SystemExit, ManifestParseError):
@@ -788,6 +800,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
           raise ManifestParseError(
               "failed parsing included manifest %s: %s" % (name, e))
       else:
+        if path_prefix:
+          if node.nodeName in ('repo-hooks', 'manifest-server', 'superproject'):
+            node.nodeName = 'comment'
+        if node.nodeName in ('project', 'default', 'superproject'):
+          if node.hasAttribute('_path_prefix'):
+            raise ManifestParseError('%s incorrectly specifies _path_prefix'
+                                     % (name))
+          else:
+            node.setAttribute('_path_prefix', path_prefix)
         if parent_groups and node.nodeName == 'project':
           nodeGroups = parent_groups
           if node.hasAttribute('groups'):
@@ -813,14 +834,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if node.nodeName == 'default':
         new_default = self._ParseDefault(node)
         emptyDefault = not node.hasAttributes() and not node.hasChildNodes()
-        if self._default is None:
-          self._default = new_default
-        elif not emptyDefault and new_default != self._default:
+        old_default = self._default.get(new_default.path_prefix)
+        if old_default is None:
+          self._default[new_default.path_prefix] = new_default
+        elif not emptyDefault and new_default != old_default:
           raise ManifestParseError('duplicate default in %s' %
                                    (self.manifestFile))
 
-    if self._default is None:
-      self._default = _Default()
+    if not self._default['']:
+      self._default[''] = _Default()
 
     for node in itertools.chain(*node_list):
       if node.nodeName == 'notice':
@@ -899,7 +921,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             self._paths[p.relpath] = p
 
       if node.nodeName == 'repo-hooks':
-        # Only one project can be the hooks project
+        # Only one project can be the hooks project.
         if repo_hooks_project is not None:
           raise ManifestParseError(
               'duplicate repo-hooks in %s' %
@@ -909,6 +931,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         repo_hooks_project = self._reqatt(node, 'in-project')
         enabled_repo_hooks = self._ParseList(self._reqatt(node, 'enabled-list'))
       if node.nodeName == 'superproject':
+        path_prefix = self._reqatt(node, '_path_prefix')
         name = self._reqatt(node, 'name')
         # There can only be one superproject.
         if self._superproject.get('name'):
@@ -918,7 +941,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._superproject['name'] = name
         remote_name = node.getAttribute('remote')
         if not remote_name:
-          remote = self._default.remote
+          remote = self._default.get(path_prefix, _Default()).remote
         else:
           remote = self._get_remote(node)
         if remote is None:
@@ -927,7 +950,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._superproject['remote'] = remote.ToRemoteSpec(name)
         revision = node.getAttribute('revision') or remote.revision
         if not revision:
-          revision = self._default.revisionExpr
+          revision = self._default.get(path_prefix, _Default()).revisionExpr
         if not revision:
           raise ManifestParseError('no revision for superproject %s within %s' %
                                    (name, self.manifestFile))
@@ -957,7 +980,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if repo_hooks_project:
       # Store a reference to the Project.
       try:
-        repo_hooks_projects = self._projects[repo_hooks_project]
+        repo_hooks_projects = [
+            x for x in self._projects[repo_hooks_project] if not x.path_prefix]
       except KeyError:
         raise ManifestParseError(
             'project %s not found for repo-hooks' %
@@ -977,12 +1001,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if m_url.endswith('/.git'):
       raise ManifestParseError('refusing to mirror %s' % m_url)
 
-    if self._default and self._default.remote:
-      url = self._default.remote.resolvedFetchUrl
+    if self._default[''] and self._default[''].remote:
+      url = self._default[''].remote.resolvedFetchUrl
       if not url.endswith('/'):
         url += '/'
       if m_url.startswith(url):
-        remote = self._default.remote
+        remote = self._default[''].remote
         name = m_url[len(url):]
 
     if name is None:
@@ -1043,6 +1067,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     """
     d = _Default()
     d.remote = self._get_remote(node)
+    d.path_prefix = node.getAttribute('_path_prefix')
     d.revisionExpr = node.getAttribute('revision')
     if d.revisionExpr == '':
       d.revisionExpr = None
@@ -1110,6 +1135,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     reads a <project> element from the manifest file
     """
     name = self._reqatt(node, 'name')
+    path_prefix = node.getAttribute('_path_prefix')
     msg = self._CheckLocalPath(name, dir_ok=True)
     if msg:
       raise ManifestInvalidPathError(
@@ -1119,18 +1145,19 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     remote = self._get_remote(node)
     if remote is None:
-      remote = self._default.remote
+      remote = self._default.get(path_prefix, _Default()).remote
     if remote is None:
       raise ManifestParseError("no remote for project %s within %s" %
                                (name, self.manifestFile))
 
     revisionExpr = node.getAttribute('revision') or remote.revision
     if not revisionExpr:
-      revisionExpr = self._default.revisionExpr
+      revisionExpr = self._default.get(path_prefix, _Default()).revisionExpr
     if not revisionExpr:
       raise ManifestParseError("no revision for project %s within %s" %
                                (name, self.manifestFile))
 
+    path_prefix = node.getAttribute('_path_prefix')
     path = node.getAttribute('path')
     if not path:
       path = name
@@ -1141,19 +1168,20 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         raise ManifestInvalidPathError(
             '<project> invalid "path": %s: %s' % (path, msg))
 
+    path = os.path.join(path_prefix or '', path)
     rebase = XmlBool(node, 'rebase', True)
     sync_c = XmlBool(node, 'sync-c', False)
-    sync_s = XmlBool(node, 'sync-s', self._default.sync_s)
-    sync_tags = XmlBool(node, 'sync-tags', self._default.sync_tags)
+    sync_s = XmlBool(node, 'sync-s', self._default.get(path_prefix, _Default()).sync_s)
+    sync_tags = XmlBool(node, 'sync-tags', self._default.get(path_prefix, _Default()).sync_tags)
 
     clone_depth = XmlInt(node, 'clone-depth')
     if clone_depth is not None and clone_depth <= 0:
       raise ManifestParseError('%s: clone-depth must be greater than 0, not "%s"' %
                                (self.manifestFile, clone_depth))
 
-    dest_branch = node.getAttribute('dest-branch') or self._default.destBranchExpr
+    dest_branch = node.getAttribute('dest-branch') or self._default.get(path_prefix, _Default()).destBranchExpr
 
-    upstream = node.getAttribute('upstream') or self._default.upstreamExpr
+    upstream = node.getAttribute('upstream') or self._default.get(path_prefix, _Default()).upstreamExpr
 
     groups = ''
     if node.hasAttribute('groups'):
@@ -1194,13 +1222,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                       parent=parent,
                       dest_branch=dest_branch,
                       use_git_worktrees=use_git_worktrees,
+                      path_prefix=path_prefix,
                       **extra_proj_attrs)
 
     for n in node.childNodes:
       if n.nodeName == 'copyfile':
-        self._ParseCopyFile(project, n)
+        self._ParseCopyFile(project, n, path_prefix)
       if n.nodeName == 'linkfile':
-        self._ParseLinkFile(project, n)
+        self._ParseLinkFile(project, n, path_prefix)
       if n.nodeName == 'annotation':
         self._ParseAnnotation(project, n)
       if n.nodeName == 'project':
@@ -1382,9 +1411,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       raise ManifestInvalidPathError(
           '<%s> invalid "src": %s: %s' % (element, src, msg))
 
-  def _ParseCopyFile(self, project, node):
+  def _ParseCopyFile(self, project, node, path_prefix):
     src = self._reqatt(node, 'src')
-    dest = self._reqatt(node, 'dest')
+    dest = os.path.join(path_prefix, self._reqatt(node, 'dest'))
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree.
@@ -1392,9 +1421,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       self._ValidateFilePaths('copyfile', src, dest)
       project.AddCopyFile(src, dest, self.topdir)
 
-  def _ParseLinkFile(self, project, node):
+  def _ParseLinkFile(self, project, node, path_prefix):
     src = self._reqatt(node, 'src')
-    dest = self._reqatt(node, 'dest')
+    dest = os.path.join(path_prefix, self._reqatt(node, 'dest'))
     if not self.IsMirror:
       # src is project relative;
       # dest is relative to the top of the tree.

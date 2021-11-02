@@ -486,7 +486,8 @@ class Project(object):
                dest_branch=None,
                optimized_fetch=False,
                retry_fetches=0,
-               old_revision=None):
+               old_revision=None,
+               path_prefix=''):
     """Init a Project object.
 
     Args:
@@ -515,6 +516,7 @@ class Project(object):
       retry_fetches: Retry remote fetches n times upon receiving transient error
                      with exponential backoff and jitter.
       old_revision: saved git commit id for open GITC projects.
+      path_prefix: any multi-tree prefix applied to the path.
     """
     self.client = self.manifest = manifest
     self.name = name
@@ -545,6 +547,7 @@ class Project(object):
     self.annotations = []
     self.dest_branch = dest_branch
     self.old_revision = old_revision
+    self.path_prefix = path_prefix
 
     # This will be filled in if a project is later identified to be the
     # project containing repo hooks.
