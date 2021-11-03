@@ -2440,7 +2440,7 @@ class Project(object):
     if quiet:
       cmd.append('-q')
     if GitCommand(self, cmd).Wait() != 0:
-      raise GitError('%s submodule update --init --recursive %s ' % self.name)
+      raise GitError('%s submodule update --init --recursive ' % self.name)
 
   def _Rebase(self, upstream, onto=None):
     cmd = ['rebase']
