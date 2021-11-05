@@ -238,9 +238,8 @@ later is required to fix a server side protocol bug.
     p.add_option('--no-use-superproject', action='store_false',
                  dest='use_superproject',
                  help='disable use of manifest superprojects')
-    p.add_option('--tags',
-                 action='store_false',
-                 help='fetch tags')
+    p.add_option('--tags', action='store_true',
+                 help='fetch tags (default)')
     p.add_option('--no-tags',
                  dest='tags', action='store_false',
                  help="don't fetch tags")
