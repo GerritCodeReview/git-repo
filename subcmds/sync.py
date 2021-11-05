@@ -243,15 +243,17 @@ later is required to fix a server side protocol bug.
                  help='fetch tags')
     p.add_option('--no-tags',
                  dest='tags', action='store_false',
-                 help="don't fetch tags")
+                 help="don't fetch tags (default)")
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
     p.add_option('--retry-fetches',
                  default=0, action='store', type='int',
                  help='number of times to retry fetches on transient errors')
-    p.add_option('--prune', dest='prune', action='store_true',
-                 help='delete refs that no longer exist on the remote')
+    p.add_option('--prune', action='store_true',
+                 help='delete refs that no longer exist on the remote (default)')
+    p.add_option('--no-prune', dest='prune', action='store_false',
+                 help='do not delete refs that no longer exist on the remote')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -927,6 +929,9 @@ later is required to fix a server side protocol bug.
         self.OptionParser.error('-u and -p may only be combined with -s or -t')
       if None in [opt.manifest_server_username, opt.manifest_server_password]:
         self.OptionParser.error('both -u and -p must be given')
+
+    if opt.prune is None:
+      opt.prune = True
 
   def Execute(self, opt, args):
     if opt.jobs:
