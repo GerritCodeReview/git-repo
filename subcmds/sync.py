@@ -238,12 +238,11 @@ later is required to fix a server side protocol bug.
     p.add_option('--no-use-superproject', action='store_false',
                  dest='use_superproject',
                  help='disable use of manifest superprojects')
-    p.add_option('--tags',
-                 action='store_false',
+    p.add_option('--tags', action='store_true',
                  help='fetch tags')
     p.add_option('--no-tags',
                  dest='tags', action='store_false',
-                 help="don't fetch tags")
+                 help="don't fetch tags (default)")
     p.add_option('--optimized-fetch',
                  dest='optimized_fetch', action='store_true',
                  help='only fetch projects fixed to sha1 if revision does not exist locally')
