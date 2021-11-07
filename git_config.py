@@ -352,7 +352,7 @@ class GitConfig(object):
       Trace(': parsing %s', self.file)
       with open(self._json) as fd:
         return json.load(fd)
-    except (IOError, ValueErrorl):
+    except (IOError, ValueError):
       platform_utils.remove(self._json, missing_ok=True)
       return None
 
