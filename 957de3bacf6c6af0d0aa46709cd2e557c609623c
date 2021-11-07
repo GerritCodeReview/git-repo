@@ -16,6 +16,23 @@
       "message": "well that\u0027s embarrassing\n\nplease mark Verified+1 and then we can merge it",
       "revId": "957de3bacf6c6af0d0aa46709cd2e557c609623c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84cb788d_74fc6b63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1054952
+      },
+      "writtenOn": "2021-11-07T01:49:23Z",
+      "side": 1,
+      "message": "thx guys. this error will cause the task terminated.\nAnd I verified at my local side.",
+      "revId": "957de3bacf6c6af0d0aa46709cd2e557c609623c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
