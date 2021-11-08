@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1e7d3da_dbcb221a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-08T17:22:02Z",
+      "side": 1,
+      "message": "reverting in this repo doesn\u0027t help CrOS.  i rolled back our repo to fix infra staging.  let me take a look here.",
+      "revId": "7d1b4abd0857f29167469b26e7e6e0acc9c37281",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
