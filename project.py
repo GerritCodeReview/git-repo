@@ -2044,8 +2044,11 @@ class Project(object):
 
     if current_branch_only:
       if self.revisionExpr.startswith(R_TAGS):
-        # this is a tag and its sha1 value should never change
+        # This is a tag and its commit id should never change.
         tag_name = self.revisionExpr[len(R_TAGS):]
+      elif self.upstream and self.upstream.startswith(R_TAGS):
+        # This is a tag and its commit id should never change.
+        tag_name = self.upstream[len(R_TAGS):]
 
       if is_sha1 or tag_name is not None:
         if self._CheckForImmutableRevision():
