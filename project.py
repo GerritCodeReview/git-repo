@@ -459,9 +459,6 @@ class Project(object):
   # These objects can be shared between several working trees.
   shareable_files = ['description', 'info']
   shareable_dirs = ['hooks', 'objects', 'rr-cache', 'svn']
-  # These objects can only be used by a single working tree.
-  working_tree_files = ['config', 'packed-refs', 'shallow']
-  working_tree_dirs = ['logs', 'refs']
 
   def __init__(self,
                manifest,
@@ -2483,10 +2480,9 @@ class Project(object):
           os.makedirs(self.gitdir)
 
         if init_obj_dir or init_git_dir:
-          self._ReferenceGitDir(self.objdir, self.gitdir, share_refs=False,
-                                copy_all=True)
+          self._ReferenceGitDir(self.objdir, self.gitdir, copy_all=True)
         try:
-          self._CheckDirReference(self.objdir, self.gitdir, share_refs=False)
+          self._CheckDirReference(self.objdir, self.gitdir)
         except GitError as e:
           if force_sync:
             print("Retrying clone after deleting %s" %
@@ -2650,39 +2646,18 @@ class Project(object):
         else:
           active_git.symbolic_ref('-m', msg, ref, dst)
 
-  def _CheckDirReference(self, srcdir, destdir, share_refs):
+  def _CheckDirReference(self, srcdir, destdir):
     # Git worktrees don't use symlinks to share at all.
     if self.use_git_worktrees:
       return
 
     symlink_files = self.shareable_files[:]
     symlink_dirs = self.shareable_dirs[:]
-    if share_refs:
-      symlink_files += self.working_tree_files
-      symlink_dirs += self.working_tree_dirs
     to_symlink = symlink_files + symlink_dirs
     for name in set(to_symlink):
       # Try to self-heal a bit in simple cases.
       dst_path = os.path.join(destdir, name)
       src_path = os.path.join(srcdir, name)
-
-      if name in self.working_tree_dirs:
-        # If the dir is missing under .repo/projects/, create it.
-        if not os.path.exists(src_path):
-          os.makedirs(src_path)
-
-      elif name in self.working_tree_files:
-        # If it's a file under the checkout .git/ and the .repo/projects/ has
-        # nothing, move the file under the .repo/projects/ tree.
-        if not os.path.exists(src_path) and os.path.isfile(dst_path):
-          platform_utils.rename(dst_path, src_path)
-
-      # If the path exists under the .repo/projects/ and there's no symlink
-      # under the checkout .git/, recreate the symlink.
-      if name in self.working_tree_dirs or name in self.working_tree_files:
-        if os.path.exists(src_path) and not os.path.exists(dst_path):
-          platform_utils.symlink(
-              os.path.relpath(src_path, os.path.dirname(dst_path)), dst_path)
 
       dst = platform_utils.realpath(dst_path)
       if os.path.lexists(dst):
@@ -2696,22 +2671,17 @@ class Project(object):
                          ' use `repo sync --force-sync {0}` to '
                          'proceed.'.format(self.relpath))
 
-  def _ReferenceGitDir(self, gitdir, dotgit, share_refs, copy_all):
+  def _ReferenceGitDir(self, gitdir, dotgit, copy_all):
     """Update |dotgit| to reference |gitdir|, using symlinks where possible.
 
     Args:
       gitdir: The bare git repository. Must already be initialized.
       dotgit: The repository you would like to initialize.
-      share_refs: If true, |dotgit| will store its refs under |gitdir|.
-          Only one work tree can store refs under a given |gitdir|.
       copy_all: If true, copy all remaining files from |gitdir| -> |dotgit|.
           This saves you the effort of initializing |dotgit| yourself.
     """
     symlink_files = self.shareable_files[:]
     symlink_dirs = self.shareable_dirs[:]
-    if share_refs:
-      symlink_files += self.working_tree_files
-      symlink_dirs += self.working_tree_dirs
     to_symlink = symlink_files + symlink_dirs
 
     to_copy = []
