@@ -16,6 +16,7 @@
 
 import contextlib
 import os
+from pathlib import Path
 import shutil
 import subprocess
 import tempfile
@@ -335,3 +336,52 @@ class LinkFile(CopyLinkTestCase):
     platform_utils.symlink(self.tempdir, dest)
     lf._Link()
     self.assertEqual(os.path.join('git-project', 'foo.txt'), os.readlink(dest))
+
+
+class MigrateWorkTreeTests(unittest.TestCase):
+  """Check _MigrateOldWorkTreeGitDir handling."""
+
+  _SYMLINKS = {
+      'config', 'description', 'hooks', 'info', 'logs', 'objects',
+      'packed-refs', 'refs', 'rr-cache', 'shallow', 'svn',
+  }
+  _FILES = {
+      'COMMIT_EDITMSG', 'FETCH_HEAD', 'HEAD', 'index', 'ORIG_HEAD',
+  }
+
+  @classmethod
+  @contextlib.contextmanager
+  def _simple_layout(cls):
+    """Create a simple repo client checkout to test against."""
+    with tempfile.TemporaryDirectory() as tempdir:
+      tempdir = Path(tempdir)
+
+      gitdir = tempdir / '.repo/projects/src/test.git'
+      gitdir.mkdir(parents=True)
+      cmd = ['git', 'init', '--bare', str(gitdir)]
+      subprocess.check_call(cmd)
+
+      dotgit = tempdir / 'src/test/.git'
+      dotgit.mkdir(parents=True)
+      for name in cls._SYMLINKS:
+        (dotgit / name).symlink_to(f'../../../.repo/projects/src/test.git/{name}')
+      for name in cls._FILES:
+        (dotgit / name).write_text(name)
+
+      subprocess.run(['tree', '-a', str(dotgit)])
+      yield tempdir
+
+  def test_standard(self):
+    """Migrate a standard checkout that we expect."""
+    with self._simple_layout() as tempdir:
+      dotgit = tempdir / 'src/test/.git'
+      project.Project._MigrateOldWorkTreeGitDir(str(dotgit))
+
+      # Make sure the dir was transformed into a symlink.
+      self.assertTrue(dotgit.is_symlink())
+      self.assertEqual(str(dotgit.readlink()), '../../.repo/projects/src/test.git')
+
+      # Make sure files were moved over.
+      gitdir = tempdir / '.repo/projects/src/test.git'
+      for name in self._FILES:
+        self.assertEqual(name, (gitdir / name).read_text())
