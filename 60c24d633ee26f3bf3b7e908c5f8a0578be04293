@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35ced19b_67c70819",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-14T05:08:28Z",
+      "side": 1,
+      "message": "we don\u0027t use \"fix\" or whatever tags.  instead, scope it to the code/module in question.  in this case, \"sync:\" is prob most appropriate since you\u0027re fixing logic that is purely related to `repo sync`.",
+      "revId": "60c24d633ee26f3bf3b7e908c5f8a0578be04293",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43564e55_6382a0ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-14T05:08:28Z",
+      "side": 1,
+      "message": "lines are much too long.  please see:\nhttps://chris.beams.io/posts/git-commit/",
+      "revId": "60c24d633ee26f3bf3b7e908c5f8a0578be04293",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1794db14_f361ffeb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-14T05:08:28Z",
+      "side": 1,
+      "message": "you can just refer to the file name, not the full URL",
+      "revId": "60c24d633ee26f3bf3b7e908c5f8a0578be04293",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23c81232_da23fd03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-14T05:08:28Z",
+      "side": 1,
+      "message": "thanks for the fix.  the change seems fine, but just some style nits to sort out first.",
+      "revId": "60c24d633ee26f3bf3b7e908c5f8a0578be04293",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b30ecfb7_1d29f1cc",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2050,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-14T05:08:28Z",
+      "side": 1,
+      "message": "i know the comment above is written poorly, but please fix in newer code\n\n # This is a tag and its commit id should never change.",
+      "revId": "60c24d633ee26f3bf3b7e908c5f8a0578be04293",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
