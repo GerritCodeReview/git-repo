@@ -1121,6 +1121,15 @@ later is required to fix a server side protocol bug.
 
 
 def _PostRepoUpgrade(manifest, quiet=False):
+  # Link the docs for the internal .repo/ layout for people
+  link = os.path.join(manifest.repodir, 'internal-fs-layout.md')
+  if not platform_utils.islink(link):
+    target = os.path.join('repo', 'docs', 'internal-fs-layout.md')
+    try:
+      platform_utils.symlink(target, link)
+    except:
+      pass
+
   wrapper = Wrapper()
   if wrapper.NeedSetupGnuPG():
     wrapper.SetupGnuPG(quiet)
