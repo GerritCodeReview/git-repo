@@ -2466,6 +2466,8 @@ class Project(object):
         os.makedirs(self.objdir)
         self.bare_objdir.init()
 
+        self._UpdateHooks(quiet=quiet)
+
         if self.use_git_worktrees:
           # Enable per-worktree config file support if possible.  This is more a
           # nice-to-have feature for users rather than a hard requirement.
@@ -2526,8 +2528,6 @@ class Project(object):
             _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
                     os.path.join(ref_dir, 'objects') + '\n')
 
-        self._UpdateHooks(quiet=quiet)
-
         m = self.manifest.manifestProject.config
         for key in ['user.name', 'user.email']:
           if m.Has(key, include_defaults=False):
@@ -2543,11 +2543,11 @@ class Project(object):
       raise
 
   def _UpdateHooks(self, quiet=False):
-    if os.path.exists(self.gitdir):
+    if os.path.exists(self.objdir):
       self._InitHooks(quiet=quiet)
 
   def _InitHooks(self, quiet=False):
-    hooks = platform_utils.realpath(self._gitdir_path('hooks'))
+    hooks = platform_utils.realpath(os.path.join(self.objdir, 'hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
     for stock_hook in _ProjectHooks():
@@ -2830,9 +2830,6 @@ class Project(object):
               'https://github.com/git-for-windows/git/wiki/Symbolic-Links '
               'for other options.')
     return 'filesystem must support symlinks'
-
-  def _gitdir_path(self, path):
-    return platform_utils.realpath(os.path.join(self.gitdir, path))
 
   def _revlist(self, *args, **kw):
     a = []
