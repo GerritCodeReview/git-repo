@@ -16,6 +16,24 @@
       "message": "You are welcome, thanks for the prompt review. Should all be addressed.",
       "revId": "127b11f43eea580b0c0ccef4d1cfe0fa9aa7065c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0820469_b15c936f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-15T03:02:44Z",
+      "side": 1,
+      "message": "you\u0027ll want to set Verified+1 label before we can merge",
+      "parentUuid": "f7958090_3d20310a",
+      "revId": "127b11f43eea580b0c0ccef4d1cfe0fa9aa7065c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
