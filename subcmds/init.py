@@ -132,8 +132,8 @@ to update the working directory files.
               'cannot be re-initialized without --manifest-url/-u')
         sys.exit(1)
 
-      if opt.standalone_manifest or (
-          was_standalone_manifest and opt.manifest_url):
+      if opt.standalone_manifest or (was_standalone_manifest and
+                                     opt.manifest_url):
         m.config.ClearCache()
         if m.gitdir and os.path.exists(m.gitdir):
           platform_utils.rmtree(m.gitdir)
@@ -478,11 +478,19 @@ to update the working directory files.
 
     # Check this here, else manifest will be tagged "not new" and init won't be
     # possible anymore without removing the .repo/manifests directory.
+    if opt.mirror:
+      if opt.archive:
+        self.OptionParser.error('--mirror and --archive cannot be used '
+                                'together.')
+      if opt.use_superproject is not None:
+        self.OptionParser.error('--mirror and --use-superproject cannot be '
+                                'used together.')
+
     if opt.archive and opt.mirror:
       self.OptionParser.error('--mirror and --archive cannot be used together.')
 
-    if opt.standalone_manifest and (
-        opt.manifest_branch or opt.manifest_name != 'default.xml'):
+    if opt.standalone_manifest and (opt.manifest_branch or
+                                    opt.manifest_name != 'default.xml'):
       self.OptionParser.error('--manifest-branch and --manifest-name cannot'
                               ' be used with --standalone-manifest.')
 
