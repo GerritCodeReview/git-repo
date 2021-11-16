@@ -448,8 +448,8 @@ later is required to fix a server side protocol bug.
       else:
         pm.update(inc=0, msg='warming up')
         chunksize = 4
-      with multiprocessing.Pool(
-          jobs, initializer=self._FetchInitChild, initargs=(ssh_proxy,)) as pool:
+      with multiprocessing.Pool(jobs, initializer=self._FetchInitChild,
+                                initargs=(ssh_proxy,)) as pool:
         results = pool.imap_unordered(
             functools.partial(self._FetchProjectList, opt),
             projects_list,
@@ -767,7 +767,7 @@ later is required to fix a server side protocol bug.
       with open(copylinkfile_path, 'rb') as fp:
         try:
           old_copylinkfile_paths = json.load(fp)
-        except:
+        except Exception:
           print('error: %s is not a json formatted file.' %
                 copylinkfile_path, file=sys.stderr)
           platform_utils.remove(copylinkfile_path)
@@ -986,6 +986,10 @@ later is required to fix a server side protocol bug.
 
     load_local_manifests = not self.manifest.HasLocalManifests
     use_superproject = git_superproject.UseSuperproject(opt, self.manifest)
+    if self.manifest.IsMirror or self.manifest.IsArchive:
+      # Don't use superproject, because we have no working tree.
+      use_superproject = False
+      print('Defaulting to no-use-superproject because there is no working tree.')
     superproject_logging_data = {
         'superproject': use_superproject,
         'haslocalmanifests': bool(self.manifest.HasLocalManifests),
@@ -1127,7 +1131,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
     target = os.path.join('repo', 'docs', 'internal-fs-layout.md')
     try:
       platform_utils.symlink(target, link)
-    except:
+    except Exception:
       pass
 
   wrapper = Wrapper()
