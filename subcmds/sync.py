@@ -986,6 +986,10 @@ later is required to fix a server side protocol bug.
 
     load_local_manifests = not self.manifest.HasLocalManifests
     use_superproject = git_superproject.UseSuperproject(opt, self.manifest)
+    if self.manifest.IsMirror or self.manifest.IsArchive:
+      # Don't use superproject, because we have no working tree.
+      use_superproject = False
+      print('Defaulting to no-use-superproject because there is no working tree.')
     superproject_logging_data = {
         'superproject': use_superproject,
         'haslocalmanifests': bool(self.manifest.HasLocalManifests),
