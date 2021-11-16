@@ -478,8 +478,13 @@ to update the working directory files.
 
     # Check this here, else manifest will be tagged "not new" and init won't be
     # possible anymore without removing the .repo/manifests directory.
-    if opt.archive and opt.mirror:
-      self.OptionParser.error('--mirror and --archive cannot be used together.')
+    if opt.mirror:
+      if opt.archive:
+        self.OptionParser.error('--mirror and --archive cannot be used '
+                                'together.')
+      if opt.use_superproject is not None:
+        self.OptionParser.error('--mirror and --use-superproject cannot be '
+                                'used together.')
 
     if opt.standalone_manifest and (
         opt.manifest_branch or opt.manifest_name != 'default.xml'):
