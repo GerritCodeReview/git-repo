@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c71acbe_a55d73c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-11-17T18:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e52d7ba_b221c4a8",
+      "revId": "66f976a4b149f2bed95104bcdb1011ca24bed471",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a343f07e_6a5e143e",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-11-17T02:52:50Z",
       "side": 1,
       "message": "this should be in ValidateOptions below",
+      "revId": "66f976a4b149f2bed95104bcdb1011ca24bed471",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df92a2b7_cd513952",
+        "filename": "subcmds/init.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-11-17T18:57:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a343f07e_6a5e143e",
       "revId": "66f976a4b149f2bed95104bcdb1011ca24bed471",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
