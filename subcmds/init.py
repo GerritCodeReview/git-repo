@@ -85,11 +85,23 @@ manifest, a subsequent `repo sync` (or `repo sync -d`) is necessary
 to update the working directory files.
 """
 
+  # Multi-tree is currently handled in main.py
+  multi_tree_support = False
+
   def _CommonOptions(self, p):
     """Disable due to re-use of Wrapper()."""
 
   def _Options(self, p, gitc_init=False):
     Wrapper().InitParser(p, gitc_init=gitc_init)
+    m = p.add_option_group('Multi-tree')
+    m.add_option('--parent-tree', dest='no_parent_tree', action='store_false',
+                 help='operate on parent (outer) trees')
+    m.add_option('--no-parent-tree', action='store_true', default=None,
+                 help='do not operate on parent (outer) trees')
+    m.add_option('--this-tree-only', action='store_true', default=None,
+                 help='only operate on this (inner or outer) tree')
+    m.add_option('--no-this-tree-only', '--all-trees', dest='this_tree_only',
+                 action='store_false', help='operate inner and outer trees')
 
   def _RegisteredEnvironmentOptions(self):
     return {'REPO_MANIFEST_URL': 'manifest_url',
