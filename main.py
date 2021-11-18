@@ -24,7 +24,9 @@ import getpass
 import netrc
 import optparse
 import os
+import re
 import shlex
+import subprocess
 import sys
 import textwrap
 import time
@@ -127,6 +129,8 @@ global_options.add_option('--event-log',
                           help='filename of event log to append timeline to')
 global_options.add_option('--git-trace2-event-log', action='store',
                           help='directory to write git trace2 event log to')
+global_options.add_option('--submanifest-path', action='store',
+                          metavar="REL_PATH", help="submanifest path")
 
 
 class _Repo(object):
@@ -192,6 +196,59 @@ class _Repo(object):
       args = []
     return name, args
 
+  def _RunParentTree(self, cmd, gopts, argv):
+    """Execute the requested subcommand in the parent tree"""
+    m = cmd.outer_manifest
+
+    # Re-run the command in the parent directory.
+    args = self._RunGatherArgs(cmd, gopts, argv)
+    res = subprocess.run(args, cwd=m.topdir, check=True)
+    return res.returncode
+
+  def _RunGatherArgs(self, cmd, gopts, argv, submanifest_path=''):
+    """Collect common arguments for spawning ourselves."""
+    run_args=[sys.executable, os.path.join(cmd.manifest.repodir, 'repo', 'repo')]
+    # Reconstruct the global arguments from gopts.
+    for k, v in gopts.__dict__.items():
+      if v is not None and k in ('event_log', 'git_trace2_event_log'):
+        run_args.extend(('--' + k.replace('_', '-'), v))
+      elif k == 'submanifest_path':
+        pass
+      elif v is True:
+        run_args.append('--' + k.replace('_', '-'))
+    if submanifest_path:
+      run_args.append(f'--submanifest-path={submanifest_path}')
+    run_args.append(cmd.NAME)
+    run_args.extend(argv)
+    return run_args
+
+  def _RunSubmanifests(self, cmd, gopts, argv, copts, cargs):
+    """Execute the requested subcommand in all submanifests"""
+    result = 0
+    m = cmd.manifest
+
+    if m.IsMirror:
+      return 0
+
+    for name in m.submanifests:
+      tree = m.submanifests[name]
+      spec = tree.ToSubmanifestSpec(root=m)
+
+      inner_args = self._RunGatherArgs(cmd, gopts, argv, tree.relpath)
+      inner_args.append('--no-parent-tree')
+      # Lastly, override the manifest arguments for the submanifest.
+      if hasattr(copts, 'manifest_url'):
+        inner_args.extend(['--manifest-url', spec.manifestUrl])
+      if hasattr(copts, 'manifest_name'):
+        inner_args.extend(['--manifest-name', spec.manifestName])
+      if hasattr(copts, 'manifest_branch'):
+        inner_args.extend(['--manifest-branch', spec.revision])
+      print('[%s] Running %s' % (spec.name, ' '.join(inner_args)),
+            file=sys.stderr)
+      res = subprocess.run(inner_args, check=True)
+      result = result or res.returncode
+    return result
+
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
     result = 0
@@ -217,7 +274,11 @@ class _Repo(object):
     SetDefaultColoring(gopts.color)
 
     git_trace2_event_log = EventLog()
-    repo_client = RepoClient(self.repodir)
+    outer_client = RepoClient(self.repodir)
+    repo_client = outer_client
+    if gopts.submanifest_path:
+      repo_client = RepoClient(self.repodir, submanifest_path=gopts.submanifest_path,
+                               outer_client=outer_client)
     gitc_manifest = None
     gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
     if gitc_client_name:
@@ -229,6 +290,8 @@ class _Repo(object):
           repodir=self.repodir,
           client=repo_client,
           manifest=repo_client.manifest,
+          outer_client=outer_client,
+          outer_manifest=outer_client.manifest,
           gitc_manifest=gitc_manifest,
           git_event_log=git_trace2_event_log)
     except KeyError:
@@ -283,7 +346,24 @@ class _Repo(object):
     try:
       cmd.CommonValidateOptions(copts, cargs)
       cmd.ValidateOptions(copts, cargs)
-      result = cmd.Execute(copts, cargs)
+      # All commands support multi-tree unless specifically marked.
+      multi_tree_support = getattr(cmd, 'multi_tree_support', True)
+      this_tree_only = getattr(copts, 'this_tree_only', None)
+      parent_tree = (not getattr(copts, 'no_parent_tree', False) and
+                     not multi_tree_support)
+      has_parent = repo_client.manifest.path_prefix != ''
+      if multi_tree_support or this_tree_only:
+        result = cmd.Execute(copts, cargs)
+      elif parent_tree and has_parent:
+        # This is a submanifest, and the command does not support multi-tree.
+        # Run the command in the topmost parent, which will (eventually) run the
+        # command in this tree, with --no-parent-tree.
+        result = self._RunParentTree(cmd, gopts, argv)
+      else:
+        # No multi-tree support. Run the command in the current tree, and in
+        # the submanifests.
+        result = cmd.Execute(copts, cargs)
+        result = self._RunSubmanifests(cmd, gopts, argv, copts, cargs) or result
     except (DownloadError, ManifestInvalidRevisionError,
             NoManifestException) as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
