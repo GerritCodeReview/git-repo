@@ -26,6 +26,7 @@ following DTD:
                       remote*,
                       default?,
                       manifest-server?,
+                      submanifest*?,
                       remove-project*,
                       project*,
                       extend-project*,
@@ -56,6 +57,15 @@ following DTD:
 
   <!ELEMENT manifest-server EMPTY>
   <!ATTLIST manifest-server url CDATA #REQUIRED>
+
+  <!ELEMENT submanifest EMPTY>
+  <!ATTLIST submanifest name           ID #REQUIRED>
+  <!ATTLIST submanifest remote         IDREF #IMPLIED>
+  <!ATTLIST submanifest project        CDATA #IMPLIED>
+  <!ATTLIST submanifest manifest-name  CDATA #IMPLIED>
+  <!ATTLIST submanifest revision       CDATA #IMPLIED>
+  <!ATTLIST submanifest path           CDATA #IMPLIED>
+  <!ATTLIST submanifest groups         CDATA #IMPLIED>
 
   <!ELEMENT project (annotation*,
                      project*,
@@ -234,6 +244,37 @@ should choose a reasonable default target.
 Return a manifest in which each project is pegged to the revision at
 the specified tag. This is used by repo sync when the --smart-tag option
 is given.
+
+
+### Element submanifest
+
+One or more submanifest elements may be specified.  Each element describes a
+single manifest to be checked out as a child.
+
+Attribute `name`: A unique name for this submanifest.
+
+Attribute `remote`: Name of a previously defined remote element.
+If not supplied the remote given by the default element is used.
+
+Attribute `project`: The manifest project.  If not supplied the remote and
+project for this manifest will be used.
+
+Attribute `manifest-name`: The manifest filename in the manifest project.  If
+not supplied, `default.xml` is used.
+
+Attribute `revision`: Name of a Git branch (e.g. `main` or
+`refs/heads/main`).  If not supplied, `name` is used.
+
+Attribute `path`: An optional path relative to the top directory
+of the repo client where the submanifest repo client top directory
+should be placed.  If not supplied the submanifest "revision" is used.
+
+"path" may not be an absolute path or use "." or ".." path components.
+
+Attribute `groups`: List of additional groups to which all projects
+in the included submanifest belong. This appends and recurses, meaning
+all projects in sub-manifests carry all parent submanifest groups.
+Same syntax as the corresponding element of `project`.
 
 
 ### Element project
