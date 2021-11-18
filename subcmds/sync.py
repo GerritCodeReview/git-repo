@@ -66,6 +66,7 @@ _ONE_DAY_S = 24 * 60 * 60
 class Sync(Command, MirrorSafeCommand):
   jobs = 1
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = False
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
 %prog [<project>...]
@@ -931,6 +932,9 @@ later is required to fix a server side protocol bug.
 
     if opt.prune is None:
       opt.prune = True
+
+    if not opt.this_manifest_only and args:
+      self.OptionParser.error('partial syncs must use --this-manifest-only')
 
   def Execute(self, opt, args):
     if opt.jobs:

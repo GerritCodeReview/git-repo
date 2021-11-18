@@ -24,6 +24,7 @@ import wrapper
 
 class GitcInit(init.Init, GitcAvailableCommand):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = False
   helpSummary = "Initialize a GITC Client."
   helpUsage = """
 %prog [options] [client name]
