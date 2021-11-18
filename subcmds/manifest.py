@@ -40,6 +40,8 @@ when the manifest was generated.  The 'dest-branch' attribute is set
 to indicate the remote ref to push changes to via 'repo upload'.
 """
 
+  this_tree_only = True
+
   @property
   def helpDescription(self):
     helptext = self._helpDescription + '\n'

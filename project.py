@@ -455,6 +455,34 @@ class RemoteSpec(object):
     self.fetchUrl = fetchUrl
 
 
+def MatchesGroups(groups, manifest_groups):
+  """Returns true if the manifest groups specified at init should cause
+     this project to be synced.
+     Prefixing a manifest group with "-" inverts the meaning of a group.
+     All projects are implicitly labelled with "all".
+
+     labels are resolved in order.  In the example case of
+     project_groups: "all,group1,group2"
+     manifest_groups: "-group1,group2"
+     the project will be matched.
+
+     The special manifest group "default" will match any project that
+     does not have the special project group "notdefault"
+  """
+  expanded_manifest_groups = manifest_groups or ['default']
+  expanded_project_groups = ['all'] + (groups or [])
+  if 'notdefault' not in expanded_project_groups:
+    expanded_project_groups += ['default']
+
+  matched = False
+  for group in expanded_manifest_groups:
+    if group.startswith('-') and group[1:] in expanded_project_groups:
+      matched = False
+    elif group in expanded_project_groups:
+      matched = True
+
+  return matched
+
 class Project(object):
   # These objects can be shared between several working trees.
   shareable_files = ['description', 'info']
@@ -704,19 +732,7 @@ class Project(object):
        The special manifest group "default" will match any project that
        does not have the special project group "notdefault"
     """
-    expanded_manifest_groups = manifest_groups or ['default']
-    expanded_project_groups = ['all'] + (self.groups or [])
-    if 'notdefault' not in expanded_project_groups:
-      expanded_project_groups += ['default']
-
-    matched = False
-    for group in expanded_manifest_groups:
-      if group.startswith('-') and group[1:] in expanded_project_groups:
-        matched = False
-      elif group in expanded_project_groups:
-        matched = True
-
-    return matched
+    return MatchesGroups(self.groups, manifest_groups)
 
 # Status Display ##
   def UncommitedFiles(self, get_all=True):
