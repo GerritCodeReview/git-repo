@@ -25,7 +25,8 @@ import gitc_utils
 from git_config import GitConfig, IsId
 from git_refs import R_HEADS, HEAD
 import platform_utils
-from project import Annotation, RemoteSpec, Project, MetaProject
+from project import (Annotation, RemoteSpec, Project, MetaProject,
+                     MatchesGroups)
 from error import (ManifestParseError, ManifestInvalidPathError,
                    ManifestInvalidRevisionError)
 from wrapper import Wrapper
@@ -33,6 +34,7 @@ from wrapper import Wrapper
 MANIFEST_FILE_NAME = 'manifest.xml'
 LOCAL_MANIFEST_NAME = 'local_manifest.xml'
 LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
+HAS_PARENT_FILE_NAME = 'has_parent'
 
 # Add all projects from local manifest into a group.
 LOCAL_MANIFEST_GROUP_PREFIX = 'local:'
@@ -197,10 +199,86 @@ class _XmlRemote(object):
     self.annotations.append(Annotation(name, value, keep))
 
 
+class _XmlInnertree(object):
+  def __init__(self,
+               name,
+               remote=None,
+               project=None,
+               revision=None,
+               manifestName=None,
+               groups=None,
+               path=None):
+    self.name = name
+    self.remote = remote
+    self.project = project
+    self.revision = revision
+    self.manifestName = manifestName
+    self.groups = groups
+    self.path = path
+    self.annotations = []
+    self.repo_client = None
+    self.present = True
+
+  def __eq__(self, other):
+    if not isinstance(other, _XmlInnertree):
+      return False
+    return (sorted(self.annotations) == sorted(other.annotations) and
+      self.manifestName == other.manifestName and self.path == other.path and
+      self.project == other.project and self.revision == other.revision and
+      self.remote == other.remote and self.groups == other.groups and
+      self.name == other.name)
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
+
+  def ToInnertreeSpec(self, root):
+    d = root.default
+    mp = root.manifestProject
+    remote = root.remotes[self.remote or d.remote.name]
+    # If a project was given, generate the url from the remote and project.
+    # If not, use this manifestProject's url.
+    if self.project:
+      manifestUrl = remote.ToRemoteSpec(self.project).url
+    else:
+      manifestUrl = mp.GetRemote(mp.remote.name).url
+    revision = self.revision or self.name
+    manifestName = self.manifestName or 'default.xml'
+    path = self.path or revision.split('/')[-1]
+
+    return InnertreeSpec(self.name, manifestUrl, manifestName, revision, path)
+
+  def GetGroupsStr(self):
+    if self.groups:
+      return ','.join(self.groups)
+    return ''
+
+  def MatchesGroups(self, manifest_groups):
+    return MatchesGroups(self.groups, manifest_groups)
+
+  def AddAnnotation(self, name, value, keep):
+    self.annotations.append(Annotation(name, value, keep))
+
+
+class InnertreeSpec(object):
+
+  def __init__(self,
+               name,
+               manifestUrl,
+               manifestName,
+               revision=None,
+               path=None):
+    self.name = name
+    self.manifestUrl = manifestUrl
+    self.manifestName = manifestName
+    self.revision = revision
+    self.path = path
+
+
 class XmlManifest(object):
   """manages the repo configuration file"""
 
-  def __init__(self, repodir, manifest_file, local_manifests=None):
+  def __init__(self, repodir, manifest_file, local_manifests=None,
+               outer_client=None):
     """Initialize.
 
     Args:
@@ -210,6 +288,7 @@ class XmlManifest(object):
           be |repodir|/|MANIFEST_FILE_NAME|.
       local_manifests: Full path to the directory of local override manifests.
           This will usually be |repodir|/|LOCAL_MANIFESTS_DIR_NAME|.
+      outer_client: RepoClient of the outertree.
     """
     # TODO(vapier): Move this out of this class.
     self.globalConfig = GitConfig.ForUser()
@@ -219,6 +298,34 @@ class XmlManifest(object):
     self.manifestFile = manifest_file
     self.local_manifests = local_manifests
     self._load_local_manifests = True
+
+    if outer_client and self.__class__.__name__ != 'RepoClient':
+      raise ManifestParseError('Multi-tree is incompatible with `git-init`')
+
+    if not outer_client and self.__class__.__name__ == 'RepoClient':
+      outer_client = self
+      exists = lambda *x : os.path.exists(os.path.join(*x))
+      has_parent = lambda *x : exists(*x, HAS_PARENT_FILE_NAME)
+      if has_parent(self.repodir):
+        # Initialize outer_client
+        topdir = self.topdir
+        oldtopdir = topdir
+        while has_parent(topdir, '.repo'):
+          # Find the parent repo instance.
+          oldtopdir = topdir
+          topdir = os.path.dirname(topdir)
+          while topdir != oldtopdir and not exists(topdir, '.repo', 'repo'):
+            oldtopdir = topdir
+            topdir = os.path.dirname(topdir)
+
+        if oldtopdir == topdir:
+          raise ManifestParseError("Failed to find outer tree.")
+
+        outer_client = RepoClient(os.path.join(topdir, '.repo'))
+
+    # If self._outer_client is None, this is not a checkout that supports
+    # multi-tree. (IOW, it is not RepoClient.)
+    self._outer_client = outer_client
 
     self.repoProject = MetaProject(self, 'repo',
                                    gitdir=os.path.join(repodir, 'repo/.git'),
@@ -311,6 +418,31 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         ae.setAttribute('value', a.value)
         e.appendChild(ae)
 
+  def _InnertreeToXml(self, r, doc, root):
+    e = doc.createElement('innertree')
+    root.appendChild(e)
+    e.setAttribute('name', r.name)
+    if r.remote is not None:
+      e.setAttribute('remote', r.remote)
+    if r.project is not None:
+      e.setAttribute('project', r.project)
+    if r.revision is not None:
+      e.setAttribute('revision', r.revision)
+    if r.manifestName is not None:
+      e.setAttribute('manifest-name', r.manifestName)
+    if r.groups:
+      e.setAttribute('groups', r.GetGroupsStr())
+    if r.path is not None:
+      e.setAttribute('path', r.path)
+
+    for a in r.annotations:
+      if a.keep == 'true':
+        ae = doc.createElement('annotation')
+        ae.setAttribute('name', a.name)
+        ae.setAttribute('value', a.value)
+        e.appendChild(ae)
+
+
   def _ParseList(self, field):
     """Parse fields that contain flattened lists.
 
@@ -381,6 +513,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       e = doc.createElement('manifest-server')
       e.setAttribute('url', self._manifest_server)
       root.appendChild(e)
+      root.appendChild(doc.createTextNode(''))
+
+    for r in sorted(self.innertrees):
+      self._InnertreeToXml(self.innertrees[r], doc, root)
+    if self.innertrees:
       root.appendChild(doc.createTextNode(''))
 
     def output_projects(parent, parent_node, projects):
@@ -575,6 +712,33 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     """Manifests can modify e if they support extra project attributes."""
 
   @property
+  def is_innertree(self):
+    self._Load()
+    return self._outer_client and self._outer_client != self
+
+  @property
+  def outer_client(self):
+    self._Load()
+    return self._outer_client
+
+  @property
+  def all_trees(self):
+    self._Load()
+    outer = self._outer_client
+    yield outer
+    for tree in outer.all_children:
+      yield tree
+
+  @property
+  def all_children(self):
+    self._Load()
+    for child in self._innertrees.values():
+      if child.repo_client:
+        yield child.repo_client
+        for tree in child.repo_client.all_children:
+          yield tree
+
+  @property
   def paths(self):
     self._Load()
     return self._paths
@@ -593,6 +757,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def default(self):
     self._Load()
     return self._default
+
+  @property
+  def innertrees(self):
+    self._Load()
+    return self._innertrees
 
   @property
   def repo_hooks_project(self):
@@ -683,6 +852,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._paths = {}
     self._remotes = {}
     self._default = None
+    self._innertrees = {}
     self._repo_hooks_project = None
     self._superproject = {}
     self._contactinfo = ContactInfo(Wrapper().BUG_URL)
@@ -690,8 +860,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self.branch = None
     self._manifest_server = None
 
-  def _Load(self):
+  def _Load(self, initial_client=None):
     if not self._loaded:
+      if self._outer_client and self._outer_client != self:
+        # This will load all clients.
+        self._outer_client._Load(initial_client=self)
+
       m = self.manifestProject
       b = m.GetBranch(m.CurrentBranch).merge
       if b is not None and b.startswith(R_HEADS):
@@ -732,6 +906,27 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._AddMetaProjectMirror(self.manifestProject)
 
       self._loaded = True
+
+      # Now that we have loaded the current manifest, load any innertree
+      # manifests as well.  We need to do this after self._loaded is set to
+      # avoid looping.
+      if self._outer_client:
+        for name in self._innertrees:
+          tree = self._innertrees[name]
+          spec = tree.ToInnertreeSpec(self)
+          innerdir = os.path.join(self.topdir, spec.path)
+          repodir = os.path.join(innerdir, '.repo')
+          present = os.path.exists(os.path.join(repodir, MANIFEST_FILE_NAME))
+          if present and tree.present and not tree.repo_client:
+            if initial_client and initial_client.topdir == self.topdir:
+              tree.repo_client = self
+            elif os.path.exists(repodir):
+              tree.repo_client = RepoClient(
+                  repodir, outer_client=self._outer_client)
+            else:
+              tree.present = False
+          if tree.repo_client:
+            tree.repo_client._Load(initial_client=initial_client)
 
   def _ParseManifestXml(self, path, include_root, parent_groups='',
                         restrict_includes=True):
@@ -821,6 +1016,18 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     if self._default is None:
       self._default = _Default()
+
+    for node in itertools.chain(*node_list):
+      if node.nodeName == 'innertree':
+        innertree = self._ParseInnertree(node)
+        if innertree:
+          if innertree.name in self._innertrees:
+            if innertree != self._innertrees[innertree.name]:
+              raise ManifestParseError(
+                  'innertree %s already exists with different attributes' %
+                  (innertree.name))
+          else:
+            self._innertrees[innertree.name] = innertree
 
     for node in itertools.chain(*node_list):
       if node.nodeName == 'notice':
@@ -1098,6 +1305,54 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       del cleanLines[-1]
 
     return '\n'.join(cleanLines)
+
+  def _ParseInnertree(self, node):
+    """
+    reads a <innertree> element from the manifest file
+    """
+    name = self._reqatt(node, 'name')
+    remote = node.getAttribute('remote')
+    if remote == '':
+      remote = None
+    project = node.getAttribute('project')
+    if project == '':
+      project = None
+    revision = node.getAttribute('revision')
+    if revision == '':
+      revision = None
+    manifestName = node.getAttribute('manifest-name')
+    if manifestName == '':
+      manifestName = None
+    groups = ''
+    if node.hasAttribute('groups'):
+      groups = node.getAttribute('groups')
+    groups = self._ParseList(groups)
+    path = node.getAttribute('path')
+    if path == '':
+      path = None
+      if revision:
+        msg = self._CheckLocalPath(revision.split('/')[-1])
+        if msg:
+          raise ManifestInnertreePathError(
+              '<innertree> invalid "revision": %s: %s' % (revision, msg))
+      else:
+        msg = self._CheckLocalPath(name)
+        if msg:
+          raise ManifestInnertreePathError(
+              '<innertree> invalid "name": %s: %s' % (name, msg))
+    else:
+      msg = self._CheckLocalPath(path)
+      if msg:
+        raise ManifestInnertreePathError(
+            '<innertree> invalid "path": %s: %s' % (path, msg))
+
+    inner = _XmlInnertree(name, remote, project, revision, manifestName, groups, path)
+
+    for n in node.childNodes:
+      if n.nodeName == 'annotation':
+        self._ParseAnnotation(inner, n)
+
+    return inner
 
   def _JoinName(self, parent_name, name):
     return os.path.join(parent_name, name)
@@ -1488,7 +1743,7 @@ class GitcManifest(XmlManifest):
 class RepoClient(XmlManifest):
   """Manages a repo client checkout."""
 
-  def __init__(self, repodir, manifest_file=None):
+  def __init__(self, repodir, manifest_file=None, outer_client=None):
     self.isGitcClient = False
 
     if os.path.exists(os.path.join(repodir, LOCAL_MANIFEST_NAME)):
@@ -1500,7 +1755,8 @@ class RepoClient(XmlManifest):
     if manifest_file is None:
       manifest_file = os.path.join(repodir, MANIFEST_FILE_NAME)
     local_manifests = os.path.abspath(os.path.join(repodir, LOCAL_MANIFESTS_DIR_NAME))
-    super().__init__(repodir, manifest_file, local_manifests)
+    super().__init__(repodir, manifest_file, local_manifests,
+                     outer_client=outer_client)
 
     # TODO: Completely separate manifest logic out of the client.
     self.manifest = self
