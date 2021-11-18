@@ -32,6 +32,9 @@ The change id will be updated, and a reference to the old
 change id will be added.
 """
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def ValidateOptions(self, opt, args):
     if len(args) != 1:
       self.Usage()
