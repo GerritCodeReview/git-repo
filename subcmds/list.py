@@ -35,6 +35,9 @@ groups, then also pass --groups all.
 This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
 """
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     p.add_option('-r', '--regex',
                  dest='regex', action='store_true',
@@ -77,16 +80,17 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
       args: Positional args.  Can be a list of projects to list, or empty.
     """
     if not opt.regex:
-      projects = self.GetProjects(args, groups=opt.groups, missing_ok=opt.all)
+      projects = self.GetProjects(args, groups=opt.groups, missing_ok=opt.all,
+                                  all_trees=not opt.this_tree_only)
     else:
-      projects = self.FindProjects(args)
+      projects = self.FindProjects(args, all_trees=not opt.this_tree_only)
 
     def _getpath(x):
       if opt.fullpath:
         return x.worktree
       if opt.relative_to:
         return os.path.relpath(x.worktree, opt.relative_to)
-      return x.relpath
+      return x.RelPath(opt.this_tree_only)
 
     lines = []
     for project in projects:

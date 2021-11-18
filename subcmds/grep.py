@@ -64,6 +64,9 @@ contain a line that matches both expressions:
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   @staticmethod
   def _carry_option(_option, opt_str, value, parser):
     pt = getattr(parser.values, 'cmd_argv', None)
@@ -172,15 +175,16 @@ contain a line that matches both expressions:
     return (project, p.Wait(), p.stdout, p.stderr)
 
   @staticmethod
-  def _ProcessResults(full_name, have_rev, _pool, out, results):
+  def _ProcessResults(full_name, have_rev, opt, _pool, out, results):
     git_failed = False
     bad_rev = False
     have_match = False
+    _RelPath = lambda p: p.RelPath(opt.this_tree_only)
 
     for project, rc, stdout, stderr in results:
       if rc < 0:
         git_failed = True
-        out.project('--- project %s ---' % project.relpath)
+        out.project('--- project %s ---' % _RelPath(project))
         out.nl()
         out.fail('%s', stderr)
         out.nl()
@@ -192,7 +196,7 @@ contain a line that matches both expressions:
           if have_rev and 'fatal: ambiguous argument' in stderr:
             bad_rev = True
           else:
-            out.project('--- project %s ---' % project.relpath)
+            out.project('--- project %s ---' % _RelPath(project))
             out.nl()
             out.fail('%s', stderr.strip())
             out.nl()
@@ -208,13 +212,13 @@ contain a line that matches both expressions:
           rev, line = line.split(':', 1)
           out.write("%s", rev)
           out.write(':')
-          out.project(project.relpath)
+          out.project(_RelPath(project))
           out.write('/')
           out.write("%s", line)
           out.nl()
       elif full_name:
         for line in r:
-          out.project(project.relpath)
+          out.project(_RelPath(project))
           out.write('/')
           out.write("%s", line)
           out.nl()
@@ -239,7 +243,7 @@ contain a line that matches both expressions:
       cmd_argv.append(args[0])
       args = args[1:]
 
-    projects = self.GetProjects(args)
+    projects = self.GetProjects(args, all_trees=not opt.this_tree_only)
 
     full_name = False
     if len(projects) > 1:
@@ -259,7 +263,7 @@ contain a line that matches both expressions:
         opt.jobs,
         functools.partial(self._ExecuteOne, cmd_argv),
         projects,
-        callback=functools.partial(self._ProcessResults, full_name, have_rev),
+        callback=functools.partial(self._ProcessResults, full_name, have_rev, opt),
         output=out,
         ordered=True)
 

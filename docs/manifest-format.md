@@ -26,6 +26,7 @@ following DTD:
                       remote*,
                       default?,
                       manifest-server?,
+                      innertree*?,
                       remove-project*,
                       project*,
                       extend-project*,
@@ -56,6 +57,18 @@ following DTD:
 
   <!ELEMENT manifest-server EMPTY>
   <!ATTLIST manifest-server url CDATA #REQUIRED>
+
+  <!ELEMENT innertree EMPTY>
+  <!ATTLIST innertree name           ID #REQUIRED>
+  <!ATTLIST innertree remote         IDREF #IMPLIED>
+  <!ATTLIST innertree project        CDATA #IMPLIED>
+  <!ATTLIST innertree label          CDATA "">
+  <!ATTLIST innertree manifest-name  CDATA #IMPLIED>
+  <!ATTLIST innertree revision       CDATA #IMPLIED>
+  <!ATTLIST innertree sharing        CDATA "no">
+  <!ATTLIST innertree path           CDATA #IMPLIED>
+  <!ATTLIST innertree groups         CDATA #IMPLIED>
+  <!ATTLIST innertree default-groups CDATA #IMPLIED>
 
   <!ELEMENT project (annotation*,
                      project*,
@@ -234,6 +247,52 @@ should choose a reasonable default target.
 Return a manifest in which each project is pegged to the revision at
 the specified tag. This is used by repo sync when the --smart-tag option
 is given.
+
+
+### Element innertree
+
+One or more innertree elements may be specified.  Each element describes a
+single manifest to be checked out as a child.
+
+Attribute `name`: A unique name for this innertree.
+
+Attribute `remote`: Name of a previously defined remote element.
+If not supplied the remote given by the default element is used.
+
+Attribute `project`: The manifest project.  If not supplied the remote and
+project for this manifest will be used.
+
+Attribute `label`: The label for sharing.  Required if `sharing` is not "no",
+not permitted when `sharing` is "no".
+
+Attribute `manifest-name`: The manifest filename in the manifest project.  If
+not supplied, `default.xml` is used.
+
+Attribute `revision`: Name of a Git branch (e.g. `main` or
+`refs/heads/main`).  If not supplied, `name` is used.
+
+Attribut `sharing`: The direction of sharing.  One of "no", "export", or
+"import".  When set to "import", neither `remote` nor `project` may be given:
+the "export" innertree with the same `label` and `revision` will be mapped to
+the `path` given for this tree.
+
+Attribute `path`: An optional path relative to the top directory
+of the repo client where the innertree repo client top directory
+should be placed.  If not supplied the innertree "revision" is used.
+
+"path" may not be an absolute path or use "." or ".." path components.
+
+Attribute `groups`: List of groups to which this innertree belongs,
+whitespace or comma separated.  All innertrees belong to the group
+"all", and each innertree automatically belongs to a group of
+its revision:`revision` and path:`path`.  E.g. for
+`<innertree name="monkeys" path="barrel-of"/>`, that innertree
+definition is implicitly in the following manifest groups:
+default, name:monkeys, and path:barrel-of.  If you place an innertree in the
+group "notdefault", it will not be automatically downloaded by repo.
+
+Attribute `default-groups`: List of (innertree) groups to sync by default.  If
+not supplied, "default" is used.
 
 
 ### Element project

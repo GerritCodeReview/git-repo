@@ -78,6 +78,9 @@ the following meanings:
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     p.add_option('-o', '--orphans',
                  dest='orphans', action='store_true',
@@ -117,7 +120,7 @@ the following meanings:
       outstring.append(''.join([status_header, item, '/']))
 
   def Execute(self, opt, args):
-    all_projects = self.GetProjects(args)
+    all_projects = self.GetProjects(args, all_trees=not opt.this_tree_only)
 
     def _ProcessResults(_pool, _output, results):
       ret = 0
@@ -141,9 +144,10 @@ the following meanings:
     if opt.orphans:
       proj_dirs = set()
       proj_dirs_parents = set()
-      for project in self.GetProjects(None, missing_ok=True):
-        proj_dirs.add(project.relpath)
-        (head, _tail) = os.path.split(project.relpath)
+      for project in self.GetProjects(None, missing_ok=True, all_trees=not opt.this_tree_only):
+        relpath = project.RelPath(opt.this_tree_only)
+        proj_dirs.add(relpath)
+        (head, _tail) = os.path.split(relpath)
         while head != "":
           proj_dirs_parents.add(head)
           (head, _tail) = os.path.split(head)
