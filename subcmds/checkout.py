@@ -47,7 +47,7 @@ The command is equivalent to:
     nb = args[0]
     err = []
     success = []
-    all_projects = self.GetProjects(args[1:])
+    all_projects = self.GetProjects(args[1:], all_manifests=not opt.this_manifest_only)
 
     def _ProcessResults(_pool, pm, results):
       for status, project in results:

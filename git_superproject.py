@@ -92,7 +92,8 @@ class Superproject(object):
     self._branch = manifest.branch
     self._repodir = os.path.abspath(repodir)
     self._superproject_dir = superproject_dir
-    self._superproject_path = os.path.join(self._repodir, superproject_dir)
+    self._superproject_path = manifest.SubmanifestInfoDir(manifest.path_prefix,
+                                                          superproject_dir)
     self._manifest_path = os.path.join(self._superproject_path,
                                        _SUPERPROJECT_MANIFEST_NAME)
     git_name = ''
