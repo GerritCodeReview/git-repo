@@ -168,6 +168,10 @@ later is required to fix a server side protocol bug.
 """
   PARALLEL_JOBS = 1
 
+  # This subcommand "supports" multi-tree checkouts by restricting the arguments
+  # permitted.
+  multi_tree_support = True
+
   def _CommonOptions(self, p):
     if self.manifest:
       try:
@@ -931,6 +935,9 @@ later is required to fix a server side protocol bug.
 
     if opt.prune is None:
       opt.prune = True
+
+    if not opt.this_tree_only and args:
+      self.OptionParser.error('partial syncs must use --this-tree-only')
 
   def Execute(self, opt, args):
     if opt.jobs:

@@ -37,6 +37,9 @@ class Stage(InteractiveCommand):
 The '%prog' command stages files to prepare the next commit.
 """
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     g = p.get_option_group('--quiet')
     g.add_option('-i', '--interactive',
@@ -50,7 +53,8 @@ The '%prog' command stages files to prepare the next commit.
       self.Usage()
 
   def _Interactive(self, opt, args):
-    all_projects = [p for p in self.GetProjects(args) if p.IsDirty()]
+    all_projects = [p for p in self.GetProjects(args, all_trees=not opt.this_tree_only)
+                    if p.IsDirty()]
     if not all_projects:
       print('no projects have uncommitted modifications', file=sys.stderr)
       return
@@ -62,7 +66,7 @@ The '%prog' command stages files to prepare the next commit.
 
       for i in range(len(all_projects)):
         project = all_projects[i]
-        out.write('%3d:    %s', i + 1, project.relpath + '/')
+        out.write('%3d:    %s', i + 1, project.RelPath(opt.this_tree_only) + '/')
         out.nl()
       out.nl()
 
@@ -99,7 +103,7 @@ The '%prog' command stages files to prepare the next commit.
           _AddI(all_projects[a_index - 1])
           continue
 
-      projects = [p for p in all_projects if a in [p.name, p.relpath]]
+      projects = [p for p in all_projects if a in [p.name, p.RelPath(opt.this_tree_only)]]
       if len(projects) == 1:
         _AddI(projects[0])
         continue

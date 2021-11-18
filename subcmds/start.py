@@ -36,6 +36,9 @@ revision specified in the manifest.
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     p.add_option('--all',
                  dest='all', action='store_true',
@@ -84,7 +87,8 @@ revision specified in the manifest.
         projects = ['.']  # start it in the local project by default
 
     all_projects = self.GetProjects(projects,
-                                    missing_ok=bool(self.gitc_manifest))
+                                    missing_ok=bool(self.gitc_manifest),
+                                    all_trees=not opt.this_tree_only)
 
     # This must happen after we find all_projects, since GetProjects may need
     # the local directory, which will disappear once we save the GITC manifest.
@@ -137,6 +141,6 @@ revision specified in the manifest.
 
     if err:
       for p in err:
-        print("error: %s/: cannot start %s" % (p.relpath, nb),
+        print("error: %s/: cannot start %s" % (p.RelPath(opt.this_tree_only), nb),
               file=sys.stderr)
       sys.exit(1)
