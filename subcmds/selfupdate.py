@@ -22,6 +22,7 @@ from subcmds.sync import _PostRepoFetch
 
 class Selfupdate(Command, MirrorSafeCommand):
   COMMON = False
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Update repo to the latest version"
   helpUsage = """
 %prog

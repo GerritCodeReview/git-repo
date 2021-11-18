@@ -32,6 +32,7 @@ class Diffmanifests(PagedCommand):
   """
 
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Manifest diff utility"
   helpUsage = """%prog manifest1.xml [manifest2.xml] [options]"""
 
@@ -64,6 +65,7 @@ been initialized with all the groups, in which case some projects won't be
 synced and their revisions won't be found.
 
 """
+  MULTI_MANIFEST_SUPPORT = True
 
   def _Options(self, p):
     p.add_option('--raw',
@@ -179,6 +181,9 @@ synced and their revisions won't be found.
   def ValidateOptions(self, opt, args):
     if not args or len(args) > 2:
       self.OptionParser.error('missing manifests to diff')
+    if opt.this_manifest_only is False:
+      raise self.OptionParser.error(
+          '`diffmanifest` only supports the current tree')
 
   def Execute(self, opt, args):
     self.out = _Coloring(self.client.globalConfig)
