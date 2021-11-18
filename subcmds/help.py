@@ -33,6 +33,9 @@ class Help(PagedCommand, MirrorSafeCommand):
 Displays detailed usage information about a command.
 """
 
+  # If not specified on the command line, only provide help in the current tree.
+  this_tree_only = True
+
   def _PrintCommands(self, commandNames):
     """Helper to display |commandNames| summaries."""
     maxlen = 0
