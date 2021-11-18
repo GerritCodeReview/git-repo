@@ -32,6 +32,7 @@ from wrapper import Wrapper
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = False
   helpSummary = "Initialize a repo client checkout in the current directory"
   helpUsage = """
 %prog [options] [manifest url]
@@ -90,6 +91,15 @@ to update the working directory files.
 
   def _Options(self, p, gitc_init=False):
     Wrapper().InitParser(p, gitc_init=gitc_init)
+    m = p.add_option_group('Multi-tree')
+    m.add_option('--parent-manifest', dest='no_parent_manifest', action='store_false',
+                 help='operate on parent (outer) trees')
+    m.add_option('--no-parent-manifest', action='store_true', default=None,
+                 help='do not operate on parent (outer) trees')
+    m.add_option('--this-manifest-only', action='store_true', default=None,
+                 help='only operate on this (inner or outer) tree')
+    m.add_option('--no-this-manifest-only', '--all-trees', dest='this_manifest_only',
+                 action='store_false', help='operate inner and outer trees')
 
   def _RegisteredEnvironmentOptions(self):
     return {'REPO_MANIFEST_URL': 'manifest_url',

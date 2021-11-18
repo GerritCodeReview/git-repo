@@ -66,6 +66,7 @@ _ONE_DAY_S = 24 * 60 * 60
 class Sync(Command, MirrorSafeCommand):
   jobs = 1
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = False
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
 %prog [<project>...]
@@ -704,7 +705,7 @@ later is required to fix a server side protocol bug.
       if project.relpath:
         new_project_paths.append(project.relpath)
     file_name = 'project.list'
-    file_path = os.path.join(self.repodir, file_name)
+    file_path = os.path.join(self.subdir, file_name)
     old_project_paths = []
 
     if os.path.exists(file_path):
@@ -760,7 +761,7 @@ later is required to fix a server side protocol bug.
     }
 
     copylinkfile_name = 'copy-link-files.json'
-    copylinkfile_path = os.path.join(self.manifest.repodir, copylinkfile_name)
+    copylinkfile_path = os.path.join(self.manifest.subdir, copylinkfile_name)
     old_copylinkfile_paths = {}
 
     if os.path.exists(copylinkfile_path):
@@ -931,6 +932,9 @@ later is required to fix a server side protocol bug.
 
     if opt.prune is None:
       opt.prune = True
+
+    if self.manifest.is_multimanifest and not opt.this_manifest_only and args:
+      self.OptionParser.error('partial syncs must use --this-manifest-only')
 
   def Execute(self, opt, args):
     if opt.jobs:

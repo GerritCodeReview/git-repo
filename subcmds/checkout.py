@@ -21,6 +21,7 @@ from progress import Progress
 
 class Checkout(Command):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Checkout a branch for development"
   helpUsage = """
 %prog <branchname> [<project>...]
@@ -47,7 +48,7 @@ The command is equivalent to:
     nb = args[0]
     err = []
     success = []
-    all_projects = self.GetProjects(args[1:])
+    all_projects = self.GetProjects(args[1:], all_manifests=not opt.this_manifest_only)
 
     def _ProcessResults(_pool, pm, results):
       for status, project in results:

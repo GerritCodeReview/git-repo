@@ -25,6 +25,7 @@ from wrapper import Wrapper
 
 class Help(PagedCommand, MirrorSafeCommand):
   COMMON = False
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Display detailed help on a command"
   helpUsage = """
 %prog [--all|command]
