@@ -50,7 +50,7 @@ to the Unix 'patch' command.
     return (ret, buf.getvalue())
 
   def Execute(self, opt, args):
-    all_projects = self.GetProjects(args)
+    all_projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
 
     def _ProcessResults(_pool, _output, results):
       ret = 0

@@ -84,7 +84,8 @@ revision specified in the manifest.
         projects = ['.']  # start it in the local project by default
 
     all_projects = self.GetProjects(projects,
-                                    missing_ok=bool(self.gitc_manifest))
+                                    missing_ok=bool(self.gitc_manifest),
+                                    all_manifests=not opt.this_manifest_only)
 
     # This must happen after we find all_projects, since GetProjects may need
     # the local directory, which will disappear once we save the GITC manifest.
@@ -137,6 +138,6 @@ revision specified in the manifest.
 
     if err:
       for p in err:
-        print("error: %s/: cannot start %s" % (p.relpath, nb),
+        print("error: %s/: cannot start %s" % (p.RelPath(local=opt.this_manifest_only), nb),
               file=sys.stderr)
       sys.exit(1)

@@ -48,7 +48,7 @@ If no project is specified try to use current directory as a project.
                  dest='ffonly', action='store_true',
                  help="force fast-forward merge")
 
-  def _ParseChangeIds(self, args):
+  def _ParseChangeIds(self, opt, args):
     if not args:
       self.Usage()
 
@@ -77,7 +77,7 @@ If no project is specified try to use current directory as a project.
                 ps_id = max(int(match.group(1)), ps_id)
         to_get.append((project, chg_id, ps_id))
       else:
-        projects = self.GetProjects([a])
+        projects = self.GetProjects([a], all_manifests=not opt.this_manifest_only)
         if len(projects) > 1:
           # If the cwd is one of the projects, assume they want that.
           try:
@@ -88,8 +88,8 @@ If no project is specified try to use current directory as a project.
             print('error: %s matches too many projects; please re-run inside '
                   'the project checkout.' % (a,), file=sys.stderr)
             for project in projects:
-              print('  %s/ @ %s' % (project.relpath, project.revisionExpr),
-                    file=sys.stderr)
+              print('  %s/ @ %s' % (project.RelPath(local=opt.this_manifest_only),
+                                    project.revisionExpr), file=sys.stderr)
             sys.exit(1)
         else:
           project = projects[0]
@@ -105,7 +105,7 @@ If no project is specified try to use current directory as a project.
         self.OptionParser.error('-x and --ff are mutually exclusive options')
 
   def Execute(self, opt, args):
-    for project, change_id, ps_id in self._ParseChangeIds(args):
+    for project, change_id, ps_id in self._ParseChangeIds(opt, args):
       dl = project.DownloadPatchSet(change_id, ps_id)
       if not dl:
         print('[%s] change %d/%d not found'

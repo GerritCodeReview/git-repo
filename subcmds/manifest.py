@@ -15,6 +15,7 @@
 import json
 import os
 import sys
+import optparse
 
 from command import PagedCommand
 
@@ -75,7 +76,7 @@ to indicate the remote ref to push changes to via 'repo upload'.
     p.add_option('-o', '--output-file',
                  dest='output_file',
                  default='-',
-                 help='file to save the manifest to',
+                 help='file to save the manifest to. (Filename prefix for multi-tree.)',
                  metavar='-|NAME.xml')
 
   def _Output(self, opt):
@@ -83,36 +84,45 @@ to indicate the remote ref to push changes to via 'repo upload'.
     if opt.manifest_name:
       self.manifest.Override(opt.manifest_name, False)
 
-    if opt.output_file == '-':
-      fd = sys.stdout
-    else:
-      fd = open(opt.output_file, 'w')
+    for manifest in self.ManifestList(opt):
+      output_file = opt.output_file
+      if output_file == '-':
+        fd = sys.stdout
+      else:
+        if manifest.path_prefix:
+          output_file = f'{opt.output_file}:{manifest.path_prefix.replace("/", "%2f")}'
+        fd = open(output_file, 'w')
 
-    self.manifest.SetUseLocalManifests(not opt.ignore_local_manifests)
+      manifest.SetUseLocalManifests(not opt.ignore_local_manifests)
 
-    if opt.json:
-      print('warning: --json is experimental!', file=sys.stderr)
-      doc = self.manifest.ToDict(peg_rev=opt.peg_rev,
-                                 peg_rev_upstream=opt.peg_rev_upstream,
-                                 peg_rev_dest_branch=opt.peg_rev_dest_branch)
+      if opt.json:
+        print('warning: --json is experimental!', file=sys.stderr)
+        doc = manifest.ToDict(peg_rev=opt.peg_rev,
+                                   peg_rev_upstream=opt.peg_rev_upstream,
+                                   peg_rev_dest_branch=opt.peg_rev_dest_branch)
 
-      json_settings = {
-          # JSON style guide says Uunicode characters are fully allowed.
-          'ensure_ascii': False,
-          # We use 2 space indent to match JSON style guide.
-          'indent': 2 if opt.pretty else None,
-          'separators': (',', ': ') if opt.pretty else (',', ':'),
-          'sort_keys': True,
-      }
-      fd.write(json.dumps(doc, **json_settings))
-    else:
-      self.manifest.Save(fd,
-                         peg_rev=opt.peg_rev,
-                         peg_rev_upstream=opt.peg_rev_upstream,
-                         peg_rev_dest_branch=opt.peg_rev_dest_branch)
-    fd.close()
-    if opt.output_file != '-':
-      print('Saved manifest to %s' % opt.output_file, file=sys.stderr)
+        json_settings = {
+            # JSON style guide says Uunicode characters are fully allowed.
+            'ensure_ascii': False,
+            # We use 2 space indent to match JSON style guide.
+            'indent': 2 if opt.pretty else None,
+            'separators': (',', ': ') if opt.pretty else (',', ':'),
+            'sort_keys': True,
+        }
+        fd.write(json.dumps(doc, **json_settings))
+      else:
+        manifest.Save(fd,
+                      peg_rev=opt.peg_rev,
+                      peg_rev_upstream=opt.peg_rev_upstream,
+                      peg_rev_dest_branch=opt.peg_rev_dest_branch)
+      if output_file != '-':
+        fd.close()
+        if manifest.path_prefix:
+          print(f'Saved {manifest.path_prefix} submanifest to {output_file}',
+                file=sys.stderr)
+        else:
+          print(f'Saved manifest to {output_file}', file=sys.stderr)
+
 
   def ValidateOptions(self, opt, args):
     if args:

@@ -546,6 +546,18 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+  def RelPath(self, local=True):
+    """Return the path for the project relative to a manifest.
+
+    Args:
+      local: a boolean, if True, the path is relative to the local
+             (sub)manifest.  If false, the path is relative to the
+             outermost manifest.
+    """
+    if local:
+      return self.relpath
+    return os.path.join(self.manifest.path_prefix, self.relpath)
+
   def SetRevision(self, revisionExpr, revisionId=None):
     """Set revisionId based on revision expression and id"""
     self.revisionExpr = revisionExpr
@@ -2503,22 +2515,21 @@ class Project(object):
         mp = self.manifest.manifestProject
         ref_dir = mp.config.GetString('repo.reference') or ''
 
-        if ref_dir or mirror_git:
-          if not mirror_git:
-            mirror_git = os.path.join(ref_dir, self.name + '.git')
-          repo_git = os.path.join(ref_dir, '.repo', 'project-objects',
-                                  self.name + '.git')
-          worktrees_git = os.path.join(ref_dir, '.repo', 'worktrees',
-                                       self.name + '.git')
+        def _expanded_ref_dirs():
+          """Iterate through the possible git reference directory paths."""
+          name = self.name + '.git'
+          yield mirror_git or os.path.join(ref_dir, name)
+          for prefix in '', self.remote.name:
+            yield os.path.join(ref_dir, '.repo', 'project-objects', prefix, name)
+            yield os.path.join(ref_dir, '.repo', 'worktrees', prefix, name)
 
-          if os.path.exists(mirror_git):
-            ref_dir = mirror_git
-          elif os.path.exists(repo_git):
-            ref_dir = repo_git
-          elif os.path.exists(worktrees_git):
-            ref_dir = worktrees_git
-          else:
-            ref_dir = None
+        if ref_dir or mirror_git:
+          found_ref_dir = None
+          for path in _expanded_ref_dirs():
+            if os.path.exists(path):
+              found_ref_dir = path
+              break
+          ref_dir = found_ref_dir
 
           if ref_dir:
             if not os.path.isabs(ref_dir):

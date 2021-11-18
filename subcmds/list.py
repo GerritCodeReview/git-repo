@@ -77,16 +77,17 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
       args: Positional args.  Can be a list of projects to list, or empty.
     """
     if not opt.regex:
-      projects = self.GetProjects(args, groups=opt.groups, missing_ok=opt.all)
+      projects = self.GetProjects(args, groups=opt.groups, missing_ok=opt.all,
+                                  all_manifests=not opt.this_manifest_only)
     else:
-      projects = self.FindProjects(args)
+      projects = self.FindProjects(args, all_manifests=not opt.this_manifest_only)
 
     def _getpath(x):
       if opt.fullpath:
         return x.worktree
       if opt.relative_to:
         return os.path.relpath(x.worktree, opt.relative_to)
-      return x.relpath
+      return x.RelPath(local=opt.this_manifest_only)
 
     lines = []
     for project in projects:

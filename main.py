@@ -127,6 +127,8 @@ global_options.add_option('--event-log',
                           help='filename of event log to append timeline to')
 global_options.add_option('--git-trace2-event-log', action='store',
                           help='directory to write git trace2 event log to')
+global_options.add_option('--submanifest-path', action='store',
+                          metavar='REL_PATH', help='submanifest path')
 
 
 class _Repo(object):
@@ -217,7 +219,12 @@ class _Repo(object):
     SetDefaultColoring(gopts.color)
 
     git_trace2_event_log = EventLog()
-    repo_client = RepoClient(self.repodir)
+    outer_client = RepoClient(self.repodir)
+    repo_client = outer_client
+    if gopts.submanifest_path:
+      repo_client = RepoClient(self.repodir,
+                               submanifest_path=gopts.submanifest_path,
+                               outer_client=outer_client)
     gitc_manifest = None
     gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
     if gitc_client_name:
@@ -229,6 +236,8 @@ class _Repo(object):
           repodir=self.repodir,
           client=repo_client,
           manifest=repo_client.manifest,
+          outer_client=outer_client,
+          outer_manifest=outer_client.manifest,
           gitc_manifest=gitc_manifest,
           git_event_log=git_trace2_event_log)
     except KeyError:
@@ -283,7 +292,37 @@ class _Repo(object):
     try:
       cmd.CommonValidateOptions(copts, cargs)
       cmd.ValidateOptions(copts, cargs)
-      result = cmd.Execute(copts, cargs)
+
+      this_manifest_only = copts.this_manifest_only
+      # If not specified, default to using the outer manifest.
+      outer_manifest = copts.outer_manifest is not False
+      if cmd.MULTI_MANIFEST_SUPPORT or this_manifest_only:
+        result = cmd.Execute(copts, cargs)
+      elif outer_manifest and repo_client.manifest.is_submanifest:
+        # The command does not support multi-manifest, we are using a
+        # submanifest, and the command line is for the outermost manifest.
+        # Re-run using the outermost manifest, which will recurse through the
+        # submanifests.
+        gopts.submanifest_path = ''
+        result = self._Run(name, gopts, argv)
+      else:
+        # No multi-manifest support. Run the command in the current
+        # (sub)manifest, and then any child submanifests.
+        result = cmd.Execute(copts, cargs)
+        for submanifest in repo_client.manifest.submanifests.values():
+          spec = submanifest.ToSubmanifestSpec(root=repo_client.outer_client)
+          gopts.submanifest_path = submanifest.repo_client.path_prefix
+          child_argv = argv[:]
+          child_argv.append('--no-outer-manifest')
+          # Not all subcommands support the 3 manifest options, so only add them
+          # if the original command includes them.
+          if hasattr(copts, 'manifest_url'):
+            child_argv.extend(['--manifest-url', spec.manifestUrl])
+          if hasattr(copts, 'manifest_name'):
+            child_argv.extend(['--manifest-name', spec.manifestName])
+          if hasattr(copts, 'manifest_branch'):
+            child_argv.extend(['--manifest-branch', spec.revision])
+          result = self._Run(name, gopts, child_argv) or result
     except (DownloadError, ManifestInvalidRevisionError,
             NoManifestException) as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
