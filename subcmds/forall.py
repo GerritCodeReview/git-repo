@@ -122,6 +122,9 @@ without iterating through the remaining projects.
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   @staticmethod
   def _cmd_option(option, _opt_str, _value, parser):
     setattr(parser.values, option.dest, list(parser.rargs))
@@ -168,6 +171,7 @@ without iterating through the remaining projects.
 
   def Execute(self, opt, args):
     cmd = [opt.command[0]]
+    all_trees = not opt.this_tree_only
 
     shell = True
     if re.compile(r'^[a-z0-9A-Z_/\.-]+$').match(cmd[0]):
@@ -213,11 +217,11 @@ without iterating through the remaining projects.
       self.manifest.Override(smart_sync_manifest_path)
 
     if opt.regex:
-      projects = self.FindProjects(args)
+      projects = self.FindProjects(args, all_trees=all_trees)
     elif opt.inverse_regex:
-      projects = self.FindProjects(args, inverse=True)
+      projects = self.FindProjects(args, inverse=True, all_trees=all_trees)
     else:
-      projects = self.GetProjects(args, groups=opt.groups)
+      projects = self.GetProjects(args, groups=opt.groups, all_trees=all_trees)
 
     os.environ['REPO_COUNT'] = str(len(projects))
 
@@ -290,6 +294,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
 
   setenv('REPO_PROJECT', project.name)
   setenv('REPO_PATH', project.relpath)
+  setenv('REPO_OUTERPATH', project.RelPath(opt.this_tree_only))
   setenv('REPO_REMOTE', project.remote.name)
   try:
     # If we aren't in a fully synced state and we don't have the ref the manifest
@@ -320,7 +325,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     output = ''
     if ((opt.project_header and opt.verbose)
             or not opt.project_header):
-      output = 'skipping %s/' % project.relpath
+      output = 'skipping %s/' % project.RelPath(opt.this_tree_only)
     return (1, output)
 
   if opt.verbose:
@@ -344,7 +349,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
       if mirror:
         project_header_path = project.name
       else:
-        project_header_path = project.relpath
+        project_header_path = project.RelPath(opt.this_tree_only)
       out.project('project %s/' % project_header_path)
       out.nl()
       buf.write(output)

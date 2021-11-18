@@ -35,6 +35,9 @@ The command is equivalent to:
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def ValidateOptions(self, opt, args):
     if not args:
       self.Usage()
@@ -47,7 +50,7 @@ The command is equivalent to:
     nb = args[0]
     err = []
     success = []
-    all_projects = self.GetProjects(args[1:])
+    all_projects = self.GetProjects(args[1:], all_trees=not opt.this_tree_only)
 
     def _ProcessResults(_pool, pm, results):
       for status, project in results:

@@ -29,6 +29,9 @@ class Info(PagedCommand):
   helpSummary = "Get info on the manifest branch, current branch or unmerged branches"
   helpUsage = "%prog [-dl] [-o [-c]] [<project>...]"
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     p.add_option('-d', '--diff',
                  dest='all', action='store_true',
@@ -61,6 +64,8 @@ class Info(PagedCommand):
 
     self.opt = opt
 
+    if not opt.this_tree_only:
+      self.manifest = self.manifest.outer_client
     manifestConfig = self.manifest.manifestProject.config
     mergeBranch = manifestConfig.GetBranch("default").merge
     manifestGroups = (manifestConfig.GetString('manifest.groups')
@@ -80,17 +85,17 @@ class Info(PagedCommand):
     self.printSeparator()
 
     if not opt.overview:
-      self.printDiffInfo(args)
+      self.printDiffInfo(opt, args)
     else:
-      self.printCommitOverview(args)
+      self.printCommitOverview(opt, args)
 
   def printSeparator(self):
     self.text("----------------------------")
     self.out.nl()
 
-  def printDiffInfo(self, args):
+  def printDiffInfo(self, opt, args):
     # We let exceptions bubble up to main as they'll be well structured.
-    projs = self.GetProjects(args)
+    projs = self.GetProjects(args, all_trees=not opt.this_tree_only)
 
     for p in projs:
       self.heading("Project: ")
@@ -179,9 +184,9 @@ class Info(PagedCommand):
       self.text(" ".join(split[1:]))
       self.out.nl()
 
-  def printCommitOverview(self, args):
+  def printCommitOverview(self, opt, args):
     all_branches = []
-    for project in self.GetProjects(args):
+    for project in self.GetProjects(args, all_trees=not opt.this_tree_only):
       br = [project.GetUploadableBranch(x)
             for x in project.GetBranches()]
       br = [x for x in br if x]
@@ -200,7 +205,7 @@ class Info(PagedCommand):
       if project != branch.project:
         project = branch.project
         self.out.nl()
-        self.headtext(project.relpath)
+        self.headtext(project.RelPath(opt.this_tree_only))
         self.out.nl()
 
       commits = branch.commits
