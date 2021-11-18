@@ -15,6 +15,7 @@
 import json
 import os
 import sys
+from optparse import OptionError
 
 from command import PagedCommand
 
@@ -39,6 +40,11 @@ In this case, the 'upstream' attribute is set to the ref we were on
 when the manifest was generated.  The 'dest-branch' attribute is set
 to indicate the remote ref to push changes to via 'repo upload'.
 """
+
+  # This subcommand "supports" multi-tree checkouts by only generating the
+  # manifest for the current tree.  A subsequent revision will add support for
+  # generating the full-depth manifest.
+  multi_tree_support = True
 
   @property
   def helpDescription(self):
@@ -115,6 +121,10 @@ to indicate the remote ref to push changes to via 'repo upload'.
       print('Saved manifest to %s' % opt.output_file, file=sys.stderr)
 
   def ValidateOptions(self, opt, args):
+    if opt.this_tree_only is False:
+      raise self.OptionParser.error(
+          '`manifest` only supports the current tree')
+
     if args:
       self.Usage()
 

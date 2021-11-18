@@ -31,6 +31,11 @@ class Version(Command, MirrorSafeCommand):
 %prog
 """
 
+  # This subcommand supports multi-tree checkouts by only running in the current
+  # tree.  All of the trees share the same repodir, so we don't need to print it
+  # N times.
+  multi_tree_support = True
+
   def Execute(self, opt, args):
     rp = self.manifest.repoProject
     rem = rp.GetRemote(rp.remote.name)

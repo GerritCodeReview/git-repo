@@ -546,6 +546,11 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+  def RelPath(self, local=True):
+    if local:
+      return self.relpath
+    return os.path.join(self.manifest.path_prefix, self.relpath)
+
   def SetRevision(self, revisionExpr, revisionId=None):
     """Set revisionId based on revision expression and id"""
     self.revisionExpr = revisionExpr

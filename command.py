@@ -62,12 +62,14 @@ class Command(object):
   PARALLEL_JOBS = None
 
   def __init__(self, repodir=None, client=None, manifest=None, gitc_manifest=None,
-               git_event_log=None):
+               git_event_log=None, outer_client=None, outer_manifest=None):
     self.repodir = repodir
     self.client = client
+    self.outer_client = outer_client or client
     self.manifest = manifest
     self.gitc_manifest = gitc_manifest
     self.git_event_log = git_event_log
+    self.outer_manifest = outer_manifest
 
     # Cache for the OptionParser property.
     self._optparse = None
@@ -134,6 +136,16 @@ class Command(object):
           '-j', '--jobs',
           type=int, default=self.PARALLEL_JOBS,
           help=f'number of jobs to run in parallel (default: {default})')
+
+    m = p.add_option_group('Multi-tree')
+    m.add_option('--parent-tree', dest='no_parent_tree', action='store_false',
+                 help='operate on parent (outer) trees')
+    m.add_option('--no-parent-tree', action='store_true', default=None,
+                 help='do not operate on parent (outer) trees')
+    m.add_option('--this-tree-only', action='store_true', default=None,
+                 help='only operate on this (inner or outer) tree')
+    m.add_option('--no-this-tree-only', '--all-trees', dest='this_tree_only',
+                 action='store_false', help='operate inner and outer trees')
 
   def _Options(self, p):
     """Initialize the option parser with subcommand-specific options."""
@@ -252,15 +264,18 @@ class Command(object):
     return project
 
   def GetProjects(self, args, manifest=None, groups='', missing_ok=False,
-                  submodules_ok=False):
+                  submodules_ok=False, all_manifests=False):
     """A list of projects that match the arguments.
     """
-    if not manifest:
-      manifest = self.manifest
-    all_projects_list = manifest.projects
+    if all_manifests:
+      if not manifest:
+        manifest = self.manifest.outer_client
+      all_projects_list = manifest.all_projects
+    else:
+      if not manifest:
+        manifest = self.manifest
+      all_projects_list = manifest.projects
     result = []
-
-    mp = manifest.manifestProject
 
     if not groups:
       groups = manifest.GetGroupsStr()
@@ -282,12 +297,19 @@ class Command(object):
       for arg in args:
         # We have to filter by manifest groups in case the requested project is
         # checked out multiple times or differently based on them.
-        projects = [project for project in manifest.GetProjectsWithName(arg)
+        projects = [project for project in manifest.GetProjectsWithName(
+                        arg, all_manifests=all_manifests)
                     if project.MatchesGroups(groups)]
 
         if not projects:
           path = os.path.abspath(arg).replace('\\', '/')
-          project = self._GetProjectByPath(manifest, path)
+          tree = manifest
+          if all_manifests:
+            # Look for the deepest matching submanifest.
+            for tree in reversed(list(manifest.all_manifests)):
+              if path.startswith(tree.topdir):
+                break
+          project = self._GetProjectByPath(tree, path)
 
           # If it's not a derived project, update path->project mapping and
           # search again, as arg might actually point to a derived subproject.
@@ -319,12 +341,15 @@ class Command(object):
     result.sort(key=_getpath)
     return result
 
-  def FindProjects(self, args, inverse=False):
+  def FindProjects(self, args, inverse=False, all_manifests=False):
     result = []
     patterns = [re.compile(r'%s' % a, re.IGNORECASE) for a in args]
-    for project in self.GetProjects(''):
+    for project in self.GetProjects('', all_manifests=all_manifests):
+      paths = [project.name, project.relpath]
+      if all_manifests:
+        paths.append(os.path.join(project.manifest.path_prefix, project.relpath))
       for pattern in patterns:
-        match = pattern.search(project.name) or pattern.search(project.relpath)
+        match = any(pattern.search(x) for x in paths)
         if not inverse and match:
           result.append(project)
           break
@@ -333,7 +358,7 @@ class Command(object):
       else:
         if inverse:
           result.append(project)
-    result.sort(key=lambda project: project.relpath)
+    result.sort(key=lambda project: (project.manifest.path_prefix, project.relpath))
     return result
 
 
