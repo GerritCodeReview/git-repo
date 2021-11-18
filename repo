@@ -306,6 +306,10 @@ def InitParser(parser, gitc_init=False):
                    help='restrict manifest projects to ones with specified '
                         'group(s) [default|all|G1,G2,G3|G4,-G5,-G6]',
                    metavar='GROUP')
+  group.add_option('--innertree', action='append',
+                   help='specify groups to use for an innertree. '
+                        '[name:NAME, path:PATH, name:NAME:G1,G2,-G3]',
+                   metavar='INNERTREE_GROUPS')
   group.add_option('-p', '--platform', default='auto',
                    help='restrict manifest projects to ones with a specified '
                         'platform group [auto|all|none|linux|darwin|...]',

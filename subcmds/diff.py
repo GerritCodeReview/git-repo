@@ -30,6 +30,9 @@ to the Unix 'patch' command.
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     p.add_option('-u', '--absolute',
                  dest='absolute', action='store_true',
@@ -50,7 +53,7 @@ to the Unix 'patch' command.
     return (ret, buf.getvalue())
 
   def Execute(self, opt, args):
-    all_projects = self.GetProjects(args)
+    all_projects = self.GetProjects(args, all_trees=not opt.this_tree_only)
 
     def _ProcessResults(_pool, _output, results):
       ret = 0

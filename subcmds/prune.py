@@ -26,12 +26,15 @@ class Prune(PagedCommand):
 """
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _ExecuteOne(self, project):
     """Process one project."""
     return project.PruneHeads()
 
   def Execute(self, opt, args):
-    projects = self.GetProjects(args)
+    projects = self.GetProjects(args, all_trees=not opt.this_tree_only)
 
     # NB: Should be able to refactor this module to display summary as results
     # come back from children.
@@ -63,7 +66,7 @@ class Prune(PagedCommand):
       if project != branch.project:
         project = branch.project
         out.nl()
-        out.project('project %s/' % project.relpath)
+        out.project('project %s/' % project.RelPath(opt.this_tree_only))
         out.nl()
 
       print('%s %-33s ' % (
