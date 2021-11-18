@@ -15,7 +15,6 @@
 import os
 import platform
 import re
-import subprocess
 import sys
 import urllib.parse
 
@@ -132,8 +131,8 @@ to update the working directory files.
               'cannot be re-initialized without --manifest-url/-u')
         sys.exit(1)
 
-      if opt.standalone_manifest or (
-          was_standalone_manifest and opt.manifest_url):
+      if opt.standalone_manifest or (was_standalone_manifest and
+                                     opt.manifest_url):
         m.config.ClearCache()
         if m.gitdir and os.path.exists(m.gitdir):
           platform_utils.rmtree(m.gitdir)
@@ -486,8 +485,8 @@ to update the working directory files.
         self.OptionParser.error('--mirror and --use-superproject cannot be '
                                 'used together.')
 
-    if opt.standalone_manifest and (
-        opt.manifest_branch or opt.manifest_name != 'default.xml'):
+    if opt.standalone_manifest and (opt.manifest_branch or
+                                    opt.manifest_name != 'default.xml'):
       self.OptionParser.error('--manifest-branch and --manifest-name cannot'
                               ' be used with --standalone-manifest.')
 
