@@ -26,6 +26,7 @@ following DTD:
                       remote*,
                       default?,
                       manifest-server?,
+                      submanifest*?,
                       remove-project*,
                       project*,
                       extend-project*,
@@ -56,6 +57,15 @@ following DTD:
 
   <!ELEMENT manifest-server EMPTY>
   <!ATTLIST manifest-server url CDATA #REQUIRED>
+
+  <!ELEMENT submanifest EMPTY>
+  <!ATTLIST submanifest name           ID #REQUIRED>
+  <!ATTLIST submanifest remote         IDREF #IMPLIED>
+  <!ATTLIST submanifest project        CDATA #IMPLIED>
+  <!ATTLIST submanifest manifest-name  CDATA #IMPLIED>
+  <!ATTLIST submanifest revision       CDATA #IMPLIED>
+  <!ATTLIST submanifest path           CDATA #IMPLIED>
+  <!ATTLIST submanifest groups         CDATA #IMPLIED>
 
   <!ELEMENT project (annotation*,
                      project*,
@@ -234,6 +244,60 @@ should choose a reasonable default target.
 Return a manifest in which each project is pegged to the revision at
 the specified tag. This is used by repo sync when the --smart-tag option
 is given.
+
+
+### Element submanifest
+
+One or more submanifest elements may be specified.  Each element describes a
+single manifest to be checked out as a child.
+
+Attribute `name`: A unique name (within the current (sub)manifest) for this
+submanifest. It acts as a default for `revision` below.  The same name can be
+used for submanifests with different parent (sub)manifests.
+
+Attribute `remote`: Name of a previously defined remote element.
+If not supplied the remote given by the default element is used.
+
+Attribute `project`: The manifest project name.  The project's name is appended
+onto its remote's fetch URL to generate the actual URL to configure the Git
+remote with.  The URL gets formed as:
+
+    ${remote_fetch}/${project_name}.git
+
+where ${remote_fetch} is the remote's fetch attribute and
+${project_name} is the project's name attribute.  The suffix ".git"
+is always appended as repo assumes the upstream is a forest of
+bare Git repositories.  If the project has a parent element, its
+name will be prefixed by the parent's.
+
+The project name must match the name Gerrit knows, if Gerrit is
+being used for code reviews.
+
+`project` must not be empty, and may not be an absolute path or use "." or ".."
+path components.  It is always interpreted relative to the remote's fetch
+settings, so if a different base path is needed, declare a different remote
+with the new settings needed.
+
+If not supplied the remote and project for this manifest will be used: `remote`
+cannot be supplied.
+
+Attribute `manifest-name`: The manifest filename in the manifest project.  If
+not supplied, `default.xml` is used.
+
+Attribute `revision`: Name of a Git branch (e.g. "main" or "refs/heads/main"),
+tag (e.g. "refs/tags/stable"), or a commit hash.  If not supplied, `name` is
+used.
+
+Attribute `path`: An optional path relative to the top directory
+of the repo client where the submanifest repo client top directory
+should be placed.  If not supplied, `revision` is used.
+
+`path` may not be an absolute path or use "." or ".." path components.
+
+Attribute `groups`: List of additional groups to which all projects
+in the included submanifest belong. This appends and recurses, meaning
+all projects in submanifests carry all parent submanifest groups.
+Same syntax as the corresponding element of `project`.
 
 
 ### Element project
@@ -471,7 +535,7 @@ These restrictions are not enforced for [Local Manifests].
 
 Attribute `groups`: List of additional groups to which all projects
 in the included manifest belong. This appends and recurses, meaning
-all projects in sub-manifests carry all parent include groups.
+all projects in included manifests carry all parent include groups.
 Same syntax as the corresponding element of `project`.
 
 ## Local Manifests {#local-manifests}

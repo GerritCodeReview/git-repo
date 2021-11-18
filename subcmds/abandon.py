@@ -69,7 +69,8 @@ It is equivalent to "git branch -D <branchname>".
     nb = args[0]
     err = defaultdict(list)
     success = defaultdict(list)
-    all_projects = self.GetProjects(args[1:])
+    all_projects = self.GetProjects(args[1:], all_manifests=not opt.this_manifest_only)
+    _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
 
     def _ProcessResults(_pool, pm, states):
       for (results, project) in states:
@@ -94,7 +95,7 @@ It is equivalent to "git branch -D <branchname>".
         err_msg = "error: cannot abandon %s" % br
         print(err_msg, file=sys.stderr)
         for proj in err[br]:
-          print(' ' * len(err_msg) + " | %s" % proj.relpath, file=sys.stderr)
+          print(' ' * len(err_msg) + " | %s" % _RelPath(proj), file=sys.stderr)
       sys.exit(1)
     elif not success:
       print('error: no project has local branch(es) : %s' % nb,
@@ -110,5 +111,5 @@ It is equivalent to "git branch -D <branchname>".
           result = "all project"
         else:
           result = "%s" % (
-              ('\n' + ' ' * width + '| ').join(p.relpath for p in success[br]))
+              ('\n' + ' ' * width + '| ').join(_RelPath(p) for p in success[br]))
         print("%s%s| %s\n" % (br, ' ' * (width - len(br)), result))

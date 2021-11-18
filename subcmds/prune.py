@@ -31,7 +31,7 @@ class Prune(PagedCommand):
     return project.PruneHeads()
 
   def Execute(self, opt, args):
-    projects = self.GetProjects(args)
+    projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
 
     # NB: Should be able to refactor this module to display summary as results
     # come back from children.
@@ -63,7 +63,7 @@ class Prune(PagedCommand):
       if project != branch.project:
         project = branch.project
         out.nl()
-        out.project('project %s/' % project.relpath)
+        out.project('project %s/' % project.RelPath(local=opt.this_manifest_only))
         out.nl()
 
       print('%s %-33s ' % (

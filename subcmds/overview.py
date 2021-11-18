@@ -47,7 +47,7 @@ are displayed.
 
   def Execute(self, opt, args):
     all_branches = []
-    for project in self.GetProjects(args):
+    for project in self.GetProjects(args, all_manifests=not opt.this_manifest_only):
       br = [project.GetUploadableBranch(x)
             for x in project.GetBranches()]
       br = [x for x in br if x]
@@ -76,7 +76,7 @@ are displayed.
       if project != branch.project:
         project = branch.project
         out.nl()
-        out.project('project %s/' % project.relpath)
+        out.project('project %s/' % project.RelPath(local=opt.this_manifest_only))
         out.nl()
 
       commits = branch.commits
