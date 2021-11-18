@@ -2794,6 +2794,35 @@ class Project(object):
         else:
           raise
 
+  def _InitialCheckoutStart(self):
+    """Called when checking out a project for the first time.
+
+    This will use temporary non-visible paths so we can be safely interrupted
+    without leaving incomplete state behind.
+    """
+    paths = [f'{x}.tmp' for x in (self.relpath, self.worktree, self.gitdir, self.objdir)]
+    for p in paths:
+      platform_utils.rmtree(p, ignore_errors=True)
+    self.UpdatePaths(*paths)
+
+  def _InitialCheckoutFinalizeNetworkHalf(self):
+    """Finalize the object dirs after network syncing works."""
+    # Once the network half finishes, we can move the objects into the right
+    # place by removing the ".tmp" suffix on the dirs.
+    platform_utils.rmtree(self.gitdir[:-4], ignore_errors=True)
+    os.rename(self.gitdir, self.gitdir[:-4])
+    self.UpdatePaths(self.relpath, self.worktree, self.gitdir[:-4], self.objdir[:-4])
+
+  def _InitialCheckoutFinalizeLocalHalf(self):
+    """Finalize the initial checkout and make it available."""
+    assert self.gitdir == self.objdir
+    # Once the local half finishes, we can move the manifest dir into the right
+    # place by removing the ".tmp" suffix on the dirs.
+    platform_utils.rmtree(self.worktree[:-4], ignore_errors=True)
+    os.rename(self.worktree, self.worktree[:-4])
+    self.UpdatePaths(
+        self.relpath[:-4], self.worktree[:-4], self.gitdir, self.objdir)
+
   def _InitGitWorktree(self):
     """Init the project using git worktrees."""
     self.bare_git.worktree('prune')
@@ -3680,6 +3709,8 @@ class ManifestProject(MetaProject):
               (GitConfig.ForUser().UrlInsteadOf(manifest_url),),
               file=sys.stderr)
 
+      self._InitialCheckoutStart()
+
       # The manifest project object doesn't keep track of the path on the
       # server where this git is located, so let's save that here.
       mirrored_manifest_git = None
@@ -3839,15 +3870,13 @@ class ManifestProject(MetaProject):
           partial_clone_exclude=self.manifest.PartialCloneExclude):
         r = self.GetRemote()
         print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
-
-        # Better delete the manifest git dir if we created it; otherwise next
-        # time (when user fixes problems) we won't go through the "is_new" logic.
-        if is_new:
-          platform_utils.rmtree(self.gitdir)
         return False
 
       if manifest_branch:
         self.MetaBranchSwitch(submodules=submodules)
+
+      if is_new:
+        self._InitialCheckoutFinalizeNetworkHalf()
 
       syncbuf = SyncBuffer(self.config)
       self.Sync_LocalHalf(syncbuf, submodules=submodules)
@@ -3870,6 +3899,9 @@ class ManifestProject(MetaProject):
       os.makedirs(os.path.dirname(dest), exist_ok=True)
       with open(dest, 'wb') as f:
         f.write(manifest_data)
+
+    if is_new:
+      self._InitialCheckoutFinalizeLocalHalf()
 
     try:
       self.manifest.Link(manifest_name)
