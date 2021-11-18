@@ -24,7 +24,9 @@ import getpass
 import netrc
 import optparse
 import os
+import re
 import shlex
+import subprocess
 import sys
 import textwrap
 import time
@@ -54,7 +56,7 @@ from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
 import gitc_utils
-from manifest_xml import GitcClient, RepoClient
+from manifest_xml import GitcClient, RepoClient, HAS_PARENT_FILE_NAME
 from pager import RunPager, TerminatePager
 from wrapper import WrapperPath, Wrapper
 
@@ -192,6 +194,74 @@ class _Repo(object):
       args = []
     return name, args
 
+  def _RunParentTree(self, cmd, gopts, argv):
+    """Execute the requested subcommand in the parent tree"""
+    m = cmd.manifest
+
+    # Re-run the command in the parent directory.
+    args = self._RunGatherArgs(cmd, gopts, argv)
+    res = subprocess.run(args, cwd=os.path.join(m.topdir, '..'), check=True)
+    return res.returncode
+
+  def _RunGatherArgs(self, cmd, gopts, argv):
+    """Collect common arguments for spawning ourselves."""
+    run_args=[sys.executable, os.path.join(cmd.manifest.repodir, 'repo', 'repo')]
+    # Reconstruct the global arguments from gopts.
+    for k, v in gopts.__dict__.items():
+      if v is not None and k in ('event_log', 'git_trace2_event_log'):
+        run_args.extend('--' + k.replace('_', '-'), v)
+      elif v is True:
+        run_args.append('--' + k.replace('_', '-'))
+    run_args.append(cmd.NAME)
+    run_args.extend(argv)
+    return run_args
+
+  def _RunInnertrees(self, cmd, gopts, argv, copts, cargs):
+    """Execute the requested subcommand in all innertrees"""
+    result = 0
+    m = cmd.manifest
+    if m.IsMirror:
+      return 0
+
+    manifest_groups = m.GetGroupsStr()
+    manifest_groups = [x for x in re.split(r'[,\s]+', manifest_groups) if x]
+
+    for name in m.innertrees:
+      tree = m.innertrees[name]
+      spec = tree.ToInnertreeSpec(m)
+      if not tree.MatchesGroups(manifest_groups):
+        # If this innertree does not match the manifest groups, skip it.
+        continue
+
+      # Bootstrap innertrees on `init`.
+      # The inner tree's .repo/repo should point to our .repo/repo.
+      innerdir = os.path.join(m.topdir, spec.path)
+      repodir = os.path.join(innerdir, '.repo')
+      if cmd.NAME == 'init' and not os.path.exists(repodir):
+        os.makedirs(repodir)
+        # Share the checked out `repo` code with the parent tree.
+        os.symlink(
+            os.path.relpath(os.path.join(m.repodir, 'repo'), repodir),
+            os.path.join(repodir, 'repo'))
+        with open(os.path.join(repodir, HAS_PARENT_FILE_NAME), 'w') as f:
+          f.write('%s' % m.topdir)
+
+      if os.path.exists(repodir):
+        inner_args = self._RunGatherArgs(cmd, gopts, argv)
+        inner_args.append('--no-parent-tree')
+        # Lastly, override the manifest arguments for the innertree.
+        if hasattr(copts, 'manifest_url'):
+          inner_args.extend(['--manifest-url', spec.manifestUrl])
+        if hasattr(copts, 'manifest_name'):
+          inner_args.extend(['--manifest-name', spec.manifestName])
+        if hasattr(copts, 'manifest_branch'):
+          inner_args.extend(['--manifest-branch', spec.revision])
+        print('[%s] Running %s' % (spec.name, ' '.join(inner_args)),
+              file=sys.stderr)
+        res = subprocess.run(inner_args, cwd=innerdir, check=True)
+        result = result or res.returncode
+    return result
+
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
     result = 0
@@ -283,7 +353,31 @@ class _Repo(object):
     try:
       cmd.CommonValidateOptions(copts, cargs)
       cmd.ValidateOptions(copts, cargs)
-      result = cmd.Execute(copts, cargs)
+      multi_tree_support = getattr(cmd, 'multi_tree_support', None)
+      # If this_tree_only was not given on the command line, allow the
+      # subcommand to specify a default.
+      this_tree_only = getattr(copts, 'this_tree_only', None)
+      if this_tree_only is None:
+        this_tree_only = getattr(cmd, 'this_tree_only', False)
+      parent_tree = (not getattr(copts, 'no_parent_tree', False) and
+                     not multi_tree_support)
+      has_parent = os.path.exists(os.path.join(self.repodir, HAS_PARENT_FILE_NAME))
+      if multi_tree_support:
+        result = cmd.Execute(copts, cargs)
+      elif this_tree_only:
+        result = cmd.Execute(copts, cargs)
+        if getattr(copts, 'verbose', None):
+          print('info: skipping innertree elements.', file=sys.stderr)
+      elif parent_tree and has_parent:
+        # We are an innertree, and the command does not support multi-tree.
+        # Run the command in the topmost parent, which will (eventually) run the
+        # command in this tree, with --no-parent-tree.
+        result = self._RunParentTree(cmd, gopts, argv)
+      else:
+        # We are not in an innertree, and the command does not support
+        # multi-tree.  Also run the command in the innertrees.
+        result = cmd.Execute(copts, cargs)
+        result = self._RunInnertrees(cmd, gopts, argv, copts, cargs) or result
     except (DownloadError, ManifestInvalidRevisionError,
             NoManifestException) as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),

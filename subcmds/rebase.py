@@ -38,6 +38,9 @@ the HEAD of the upstream history, useful when you have made commits in a topic
 branch but need to incorporate new upstream changes "underneath" them.
 """
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     g = p.get_option_group('--quiet')
     g.add_option('-i', '--interactive',
@@ -69,7 +72,7 @@ branch but need to incorporate new upstream changes "underneath" them.
                       'consistent if you previously synced to a manifest)')
 
   def Execute(self, opt, args):
-    all_projects = self.GetProjects(args)
+    all_projects = self.GetProjects(args, all_trees=not opt.this_tree_only)
     one_project = len(all_projects) == 1
 
     if opt.interactive and not one_project:
@@ -98,6 +101,7 @@ branch but need to incorporate new upstream changes "underneath" them.
     config = self.manifest.manifestProject.config
     out = RebaseColoring(config)
     out.redirect(sys.stdout)
+    _RelPath = lambda p: p.RelPath(opt.this_tree_only)
 
     ret = 0
     for project in all_projects:
@@ -107,7 +111,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       cb = project.CurrentBranch
       if not cb:
         if one_project:
-          print("error: project %s has a detached HEAD" % project.relpath,
+          print("error: project %s has a detached HEAD" % _RelPath(project),
                 file=sys.stderr)
           return 1
         # ignore branches with detatched HEADs
@@ -117,7 +121,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       if not upbranch.LocalMerge:
         if one_project:
           print("error: project %s does not track any remote branches"
-                % project.relpath, file=sys.stderr)
+                % _RelPath(project), file=sys.stderr)
           return 1
         # ignore branches without remotes
         continue
@@ -130,7 +134,7 @@ branch but need to incorporate new upstream changes "underneath" them.
       args.append(upbranch.LocalMerge)
 
       out.project('project %s: rebasing %s -> %s',
-                  project.relpath, cb, upbranch.LocalMerge)
+                  _RelPath(project), cb, upbranch.LocalMerge)
       out.nl()
       out.flush()
 

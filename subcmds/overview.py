@@ -33,6 +33,9 @@ branches currently checked out in each project.  By default, all branches
 are displayed.
 """
 
+  # This subcommand supports multi-tree checkouts.
+  multi_tree_support = True
+
   def _Options(self, p):
     p.add_option('-c', '--current-branch',
                  dest="current_branch", action="store_true",
@@ -47,7 +50,7 @@ are displayed.
 
   def Execute(self, opt, args):
     all_branches = []
-    for project in self.GetProjects(args):
+    for project in self.GetProjects(args, all_trees=not opt.this_tree_only):
       br = [project.GetUploadableBranch(x)
             for x in project.GetBranches()]
       br = [x for x in br if x]
@@ -76,7 +79,7 @@ are displayed.
       if project != branch.project:
         project = branch.project
         out.nl()
-        out.project('project %s/' % project.relpath)
+        out.project('project %s/' % project.RelPath(opt.this_tree_only))
         out.nl()
 
       commits = branch.commits
