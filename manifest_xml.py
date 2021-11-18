@@ -197,6 +197,68 @@ class _XmlRemote(object):
     self.annotations.append(Annotation(name, value, keep))
 
 
+class _XmlInnertree(object):
+  def __init__(self,
+               name,
+               remote=None,
+               project=None,
+               revision=None,
+               manifestName=None,
+               groups=None,
+               path=None):
+    self.name = name
+    self.remote = remote
+    self.project = project
+    self.revision = revision
+    self.manifestName = manifestName
+    self.groups = groups
+    self.path = path
+    self.annotations = []
+
+  def __eq__(self, other):
+    if not isinstance(other, _XmlInnertree):
+      return False
+    return (sorted(self.annotations) == sorted(other.annotations) and
+      self.manifestName == other.manifestName and self.path == other.path and
+      self.project == other.project and self.revision == other.revision and
+      self.remote == other.remote and self.groups == other.groups and
+      self.name == other.name)
+
+  def __ne__(self, other):
+    return not self.__eq__(other)
+
+  def ToInnertreeSpec(self, root):
+    d = root.default
+    mp = root.manifestProject
+    project = self.project # TODO: or manifest project
+    remote = root.remotes[self.remote or d.remote.name]
+    remoteSpec = remote.ToRemoteSpec(project)
+    manifestUrl = remoteSpec.url
+    revision = self.revision or self.name
+    manifestName = self.manifestName or 'default.xml'
+    path = self.path or revision.split('/')[-1]
+
+    return InnertreeSpec(self.name, manifestUrl, manifestName, revision, path)
+
+  def AddAnnotation(self, name, value, keep):
+    self.annotations.append(Annotation(name, value, keep))
+
+
+class InnertreeSpec(object):
+
+  def __init__(self,
+               name,
+               manifestUrl,
+               manifestName,
+               revision=None,
+               path=None):
+    self.name = name
+    self.manifestUrl = manifestUrl
+    self.manifestName = manifestName
+    self.revision = revision
+    self.path = path
+
+
 class XmlManifest(object):
   """manages the repo configuration file"""
 
@@ -311,6 +373,31 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         ae.setAttribute('value', a.value)
         e.appendChild(ae)
 
+  def _InnertreeToXml(self, r, doc, root):
+    e = doc.createElement('innertree')
+    root.appendChild(e)
+    e.setAttribute('name', r.name)
+    if r.remote is not None:
+      e.setAttribute('remote', r.remote)
+    if r.project is not None:
+      e.setAttribute('project', r.project)
+    if r.revision is not None:
+      e.setAttribute('revision', r.revision)
+    if r.manifestName is not None:
+      e.setAttribute('manifest-name', r.manifestName)
+    if r.groups is not None:
+      e.setAttribute('groups', r.groups)
+    if r.path is not None:
+      e.setAttribute('path', r.path)
+
+    for a in r.annotations:
+      if a.keep == 'true':
+        ae = doc.createElement('annotation')
+        ae.setAttribute('name', a.name)
+        ae.setAttribute('value', a.value)
+        e.appendChild(ae)
+
+
   def _ParseList(self, field):
     """Parse fields that contain flattened lists.
 
@@ -381,6 +468,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       e = doc.createElement('manifest-server')
       e.setAttribute('url', self._manifest_server)
       root.appendChild(e)
+      root.appendChild(doc.createTextNode(''))
+
+    for r in sorted(self.innertrees):
+      self._InnertreeToXml(self.innertrees[r], doc, root)
+    if self.innertrees:
       root.appendChild(doc.createTextNode(''))
 
     def output_projects(parent, parent_node, projects):
@@ -595,6 +687,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return self._default
 
   @property
+  def innertrees(self):
+    self._Load()
+    return self._innertrees
+
+  @property
   def repo_hooks_project(self):
     self._Load()
     return self._repo_hooks_project
@@ -683,6 +780,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._paths = {}
     self._remotes = {}
     self._default = None
+    self._innertrees = {}
     self._repo_hooks_project = None
     self._superproject = {}
     self._contactinfo = ContactInfo(Wrapper().BUG_URL)
@@ -821,6 +919,18 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     if self._default is None:
       self._default = _Default()
+
+    for node in itertools.chain(*node_list):
+      if node.nodeName == 'innertree':
+        innertree = self._ParseInnertree(node)
+        if innertree:
+          if innertree.name in self._innertrees:
+            if innertree != self._innertrees[innertree.name]:
+              raise ManifestParseError(
+                  'innertree %s already exists with different attributes' %
+                  (innertree.name))
+          else:
+            self._innertrees[innertree.name] = innertree
 
     for node in itertools.chain(*node_list):
       if node.nodeName == 'notice':
@@ -1098,6 +1208,53 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       del cleanLines[-1]
 
     return '\n'.join(cleanLines)
+
+  def _ParseInnertree(self, node):
+    """
+    reads a <innertree> element from the manifest file
+    """
+    name = self._reqatt(node, 'name')
+    remote = node.getAttribute('remote')
+    if remote == '':
+      remote = None
+    project = node.getAttribute('project')
+    if project == '':
+      project = None
+    revision = node.getAttribute('revision')
+    if revision == '':
+      revision = None
+    manifestName = node.getAttribute('manifest-name')
+    if manifestName == '':
+      manifestName = None
+    groups = node.getAttribute('groups')
+    if groups == '':
+      groups = None
+    path = node.getAttribute('path')
+    if path == '':
+      path = None
+      if revision:
+        msg = self._CheckLocalPath(revision.split('/')[-1])
+        if msg:
+          raise ManifestInnertreePathError(
+              '<innertree> invalid "revision": %s: %s' % (revision, msg))
+      else:
+        msg = self._CheckLocalPath(name)
+        if msg:
+          raise ManifestInnertreePathError(
+              '<innertree> invalid "name": %s: %s' % (name, msg))
+    else:
+      msg = self._CheckLocalPath(path)
+      if msg:
+        raise ManifestInnertreePathError(
+            '<innertree> invalid "path": %s: %s' % (path, msg))
+
+    inner = _XmlInnertree(name, remote, project, revision, manifestName, groups, path)
+
+    for n in node.childNodes:
+      if n.nodeName == 'annotation':
+        self._ParseAnnotation(inner, n)
+
+    return inner
 
   def _JoinName(self, parent_name, name):
     return os.path.join(parent_name, name)

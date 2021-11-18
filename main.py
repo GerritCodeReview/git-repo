@@ -25,6 +25,7 @@ import netrc
 import optparse
 import os
 import shlex
+import subprocess
 import sys
 import textwrap
 import time
@@ -127,6 +128,11 @@ global_options.add_option('--event-log',
                           help='filename of event log to append timeline to')
 global_options.add_option('--git-trace2-event-log', action='store',
                           help='directory to write git trace2 event log to')
+global_options.add_option('--this-tree-only', action='store_true', default=None,
+                          help='only operate on this (inner or outer) tree')
+global_options.add_option('--no-this-tree-only', '--all-trees',
+                          dest='this_tree_only', action='store_false',
+                          help='operate inner and outer trees')
 
 
 class _Repo(object):
@@ -191,6 +197,47 @@ class _Repo(object):
     else:
       args = []
     return name, args
+
+  def _RunInnertrees(self, cmd, gopts, argv, copts, cargs):
+    """Execute the requested subcommand in all innertrees"""
+    result = 0
+    m = cmd.manifest
+    if m.IsMirror:
+      return 0
+
+    for name in m.innertrees:
+      tree = m.innertrees[name]
+      spec = tree.ToInnertreeSpec(m)
+      # The inner tree's .repo/repo should point to our .repo/repo
+      innerdir = os.path.join(m.topdir, spec.path)
+      repodir = os.path.join(innerdir, '.repo')
+      if cmd.NAME == 'init' and not os.path.exists(repodir):
+        # Bootstrap innertrees on `init`.
+        os.makedirs(repodir)
+        os.symlink(
+            os.path.relpath(os.path.join(m.repodir, 'repo'), repodir),
+            os.path.join(repodir, 'repo'))
+      if os.path.exists(repodir):
+        # Only run innertrees if they have been bootstrapped.
+        inner_args=['python3', os.path.join(m.repodir, 'repo', 'repo')]
+        for k, v in gopts.__dict__.items():
+          if v is not None and k in ('event_log', 'git_trace2_event_log'):
+            inner_args.extend('--' + k.replace('_', '-'), v)
+          elif v is True:
+            inner_args.append('--' + k.replace('_', '-'))
+        inner_args.append(cmd.NAME)
+        inner_args.extend(argv)
+        # Lastly, override the innertree arguments.
+        if hasattr(copts, 'manifest_url'):
+          inner_args.extend(['--manifest-url', spec.manifestUrl])
+        if hasattr(copts, 'manifest_name'):
+          inner_args.extend(['--manifest-name', spec.manifestName])
+        if hasattr(copts, 'manifest_branch'):
+          inner_args.extend(['--manifest-branch', spec.revision])
+        print('[%s] Running %s' % (spec.name, ' '.join(inner_args)), file=sys.stderr)
+        res = subprocess.run(inner_args, cwd=innerdir, check=True)
+        result = result or res.returncode
+    return result
 
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
@@ -284,6 +331,13 @@ class _Repo(object):
       cmd.CommonValidateOptions(copts, cargs)
       cmd.ValidateOptions(copts, cargs)
       result = cmd.Execute(copts, cargs)
+      this_tree_only = getattr(gopts, 'this_tree_only', None)
+      if this_tree_only is None:
+        this_tree_only = getattr(cmd, 'this_tree_only', False)
+      if this_tree_only is False:
+        result = self._RunInnertrees(cmd, gopts, argv, copts, cargs) or result
+      elif getattr(copts, 'verbose', None):
+        print('info: skipping innertree elements.', file=sys.stderr)
     except (DownloadError, ManifestInvalidRevisionError,
             NoManifestException) as e:
       print('error: in `%s`: %s' % (' '.join([name] + argv), str(e)),
