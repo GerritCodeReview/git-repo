@@ -92,8 +92,10 @@ class Superproject(object):
     self._print_messages = print_messages
     self._branch = manifest.branch
     self._repodir = os.path.abspath(repodir)
+    prefix = manifest.path_prefix
+    prefix = f'submanifests/{prefix}' if prefix else prefix
     self._superproject_dir = superproject_dir
-    self._superproject_path = os.path.join(self._repodir, superproject_dir)
+    self._superproject_path = os.path.join(self._repodir, prefix, superproject_dir)
     self._manifest_path = os.path.join(self._superproject_path,
                                        _SUPERPROJECT_MANIFEST_NAME)
     git_name = ''
