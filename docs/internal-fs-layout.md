@@ -50,6 +50,10 @@ For example, if you want to change the manifest branch, you can simply run
 For more documentation on the manifest format, including the local_manifests
 support, see the [manifest-format.md] file.
 
+*   `submanifests/{submanifest.path}/`: The path prefix to the manifest state of
+    a submanifest included in a multi-manifest checkout.  The outermost manifest
+    manifest state is found adjacent to `submanifests/`.
+
 *   `manifests/`: A git checkout of the manifest project.  Its `.git/` state
     points to the `manifest.git` bare checkout (see below).  It tracks the git
     branch specified at `repo init` time via `--manifest-branch`.
