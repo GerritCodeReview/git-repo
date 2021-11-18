@@ -20,6 +20,7 @@ import platform_utils
 
 class GitcDelete(Command, GitcClientCommand):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   visible_everywhere = False
   helpSummary = "Delete a GITC Client."
   helpUsage = """
