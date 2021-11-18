@@ -135,6 +135,16 @@ class Command(object):
           type=int, default=self.PARALLEL_JOBS,
           help=f'number of jobs to run in parallel (default: {default})')
 
+    m = p.add_option_group('Multi-tree')
+    m.add_option('--parent-tree', dest='no_parent_tree', action='store_false',
+                 help='operate on parent (outer) trees')
+    m.add_option('--no-parent-tree', action='store_true', default=None,
+                 help='do not operate on parent (outer) trees')
+    m.add_option('--this-tree-only', action='store_true', default=None,
+                 help='only operate on this (inner or outer) tree')
+    m.add_option('--no-this-tree-only', '--all-trees', dest='this_tree_only',
+                 action='store_false', help='operate inner and outer trees')
+
   def _Options(self, p):
     """Initialize the option parser with subcommand-specific options."""
 
