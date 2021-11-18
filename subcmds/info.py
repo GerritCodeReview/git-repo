@@ -26,6 +26,7 @@ class _Coloring(Coloring):
 
 class Info(PagedCommand):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Get info on the manifest branch, current branch or unmerged branches"
   helpUsage = "%prog [-dl] [-o [-c]] [<project>...]"
 
@@ -61,6 +62,8 @@ class Info(PagedCommand):
 
     self.opt = opt
 
+    if not opt.this_manifest_only:
+      self.manifest = self.manifest.outer_client
     manifestConfig = self.manifest.manifestProject.config
     mergeBranch = manifestConfig.GetBranch("default").merge
     manifestGroups = (manifestConfig.GetString('manifest.groups')
@@ -80,17 +83,17 @@ class Info(PagedCommand):
     self.printSeparator()
 
     if not opt.overview:
-      self.printDiffInfo(args)
+      self._printDiffInfo(opt, args)
     else:
-      self.printCommitOverview(args)
+      self._printCommitOverview(opt, args)
 
   def printSeparator(self):
     self.text("----------------------------")
     self.out.nl()
 
-  def printDiffInfo(self, args):
+  def _printDiffInfo(self, opt, args):
     # We let exceptions bubble up to main as they'll be well structured.
-    projs = self.GetProjects(args)
+    projs = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
 
     for p in projs:
       self.heading("Project: ")
@@ -179,9 +182,9 @@ class Info(PagedCommand):
       self.text(" ".join(split[1:]))
       self.out.nl()
 
-  def printCommitOverview(self, args):
+  def _printCommitOverview(self, opt, args):
     all_branches = []
-    for project in self.GetProjects(args):
+    for project in self.GetProjects(args, all_manifests=not opt.this_manifest_only):
       br = [project.GetUploadableBranch(x)
             for x in project.GetBranches()]
       br = [x for x in br if x]
@@ -200,7 +203,7 @@ class Info(PagedCommand):
       if project != branch.project:
         project = branch.project
         self.out.nl()
-        self.headtext(project.relpath)
+        self.headtext(project.RelPath(local=opt.this_manifest_only))
         self.out.nl()
 
       commits = branch.commits

@@ -17,6 +17,7 @@ from subcmds.sync import Sync
 
 class Smartsync(Sync):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Update working tree to the latest known good revision"
   helpUsage = """
 %prog [<project>...]

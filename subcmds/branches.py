@@ -63,6 +63,7 @@ class BranchInfo(object):
 
 class Branches(Command):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "View current topic branches"
   helpUsage = """
 %prog [<project>...]
@@ -98,7 +99,7 @@ is shown, then the branch appears in all projects.
   PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
   def Execute(self, opt, args):
-    projects = self.GetProjects(args)
+    projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
     out = BranchColoring(self.manifest.manifestProject.config)
     all_branches = {}
     project_cnt = len(projects)
@@ -147,6 +148,7 @@ is shown, then the branch appears in all projects.
       hdr('%c%c %-*s' % (current, published, width, name))
       out.write(' |')
 
+      _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
       if in_cnt < project_cnt:
         fmt = out.write
         paths = []
@@ -154,19 +156,20 @@ is shown, then the branch appears in all projects.
         if i.IsSplitCurrent or (in_cnt <= project_cnt - in_cnt):
           in_type = 'in'
           for b in i.projects:
+            relpath = b.project.relpath
             if not i.IsSplitCurrent or b.current:
-              paths.append(b.project.relpath)
+              paths.append(_RelPath(b.project))
             else:
-              non_cur_paths.append(b.project.relpath)
+              non_cur_paths.append(_RelPath(b.project))
         else:
           fmt = out.notinproject
           in_type = 'not in'
           have = set()
           for b in i.projects:
-            have.add(b.project.relpath)
+            have.add(_RelPath(b.project))
           for p in projects:
-            if p.relpath not in have:
-              paths.append(p.relpath)
+            if _RelPath(p) not in have:
+              paths.append(_RelPath(p))
 
         s = ' %s %s' % (in_type, ', '.join(paths))
         if not i.IsSplitCurrent and (width + 7 + len(s) < 80):

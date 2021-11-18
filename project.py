@@ -546,6 +546,18 @@ class Project(object):
     # project containing repo hooks.
     self.enabled_repo_hooks = []
 
+  def RelPath(self, local=True):
+    """Return the path for the project relative to a manifest.
+
+    Args:
+      local: a boolean, if True, the path is relative to the local
+             (sub)manifest.  If false, the path is relative to the
+             outermost manifest.
+    """
+    if local:
+      return self.relpath
+    return os.path.join(self.manifest.path_prefix, self.relpath)
+
   def SetRevision(self, revisionExpr, revisionId=None):
     """Set revisionId based on revision expression and id"""
     self.revisionExpr = revisionExpr

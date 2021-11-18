@@ -22,6 +22,7 @@ CHANGE_ID_RE = re.compile(r'^\s*Change-Id: I([0-9a-f]{40})\s*$')
 
 class CherryPick(Command):
   COMMON = True
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Cherry-pick a change."
   helpUsage = """
 %prog <sha1>
