@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13f05c01_22cfbb21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2021-11-20T00:39:06Z",
+      "side": 1,
+      "message": "Still very much proof-of-concept level code quality.",
+      "revId": "896986e0a777d0869df6772e2cbe5f4ac360dc17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49903cff_ddec5101",
+        "filename": "main.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2021-11-20T00:39:06Z",
+      "side": 1,
+      "message": "I would like to find a cleaner way to do this, which may be as simple as extending global_options to have it produce the args, or saving them before stripping them out.",
+      "revId": "896986e0a777d0869df6772e2cbe5f4ac360dc17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
