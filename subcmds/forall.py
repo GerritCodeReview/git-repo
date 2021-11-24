@@ -93,6 +93,8 @@ revision to a locally executed git command, use REPO_LREV.
 REPO_RREV is the name of the revision from the manifest, exactly
 as written in the manifest.
 
+REPO_CLONE_DEPTH is the clone depth from the manifest.
+
 REPO_COUNT is the total number of projects being iterated.
 
 REPO_I is the current (1-based) iteration count. Can be used in
@@ -288,6 +290,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
       val = ''
     env[name] = val
 
+  setenv('REPO_CLONE_DEPTH', str(project.clone_depth) if project.clone_depth else project.clone_depth)
   setenv('REPO_PROJECT', project.name)
   setenv('REPO_PATH', project.relpath)
   setenv('REPO_REMOTE', project.remote.name)
