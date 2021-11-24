@@ -291,6 +291,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
   setenv('REPO_PROJECT', project.name)
   setenv('REPO_PATH', project.relpath)
   setenv('REPO_REMOTE', project.remote.name)
+  setenv('REPO_CLONE_DEPTH', str(project.clone_depth))
   try:
     # If we aren't in a fully synced state and we don't have the ref the manifest
     # wants, then this will fail.  Ignore it for the purposes of this code.
