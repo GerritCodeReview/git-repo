@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d0dbb2b_91834dfa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-25T01:15:16Z",
+      "side": 1,
+      "message": "this is only touching the forall command, so use \"forall:\" prefix here",
+      "revId": "2d83c2f5559d5cdc0161edcac81256cb73f78c11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "771468d1_48df4ad5",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-25T01:15:16Z",
+      "side": 1,
+      "message": "keep sorted please",
+      "revId": "2d83c2f5559d5cdc0161edcac81256cb73f78c11",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
