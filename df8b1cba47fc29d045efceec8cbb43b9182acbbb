@@ -16,6 +16,24 @@
       "message": "please update the docs\n\nthen rerun ./release/update-manpages and include the updated man page",
       "revId": "df8b1cba47fc29d045efceec8cbb43b9182acbbb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fad50933_0b913479",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1132953
+      },
+      "writtenOn": "2021-11-25T22:48:41Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "25ca2e4b_9d883d62",
+      "revId": "df8b1cba47fc29d045efceec8cbb43b9182acbbb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
