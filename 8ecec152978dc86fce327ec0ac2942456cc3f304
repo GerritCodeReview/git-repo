@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f63c60e_ecb37a83",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-29T16:21:39Z",
+      "side": 1,
+      "message": "how about:\n\n REPO_CLONE_DEPTH is the project\u0027s configured clone depth.",
+      "revId": "8ecec152978dc86fce327ec0ac2942456cc3f304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a393ff80_4c0d696d",
         "filename": "subcmds/forall.py",
         "patchSetId": 3
@@ -14,6 +31,24 @@
       "writtenOn": "2021-11-25T22:48:41Z",
       "side": 1,
       "message": "Changed this implementation to feed None into setenv so that it\u0027s converted to \u0027\u0027, rather than \"None\".",
+      "revId": "8ecec152978dc86fce327ec0ac2942456cc3f304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26093912_d7dcac40",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 294,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-11-29T16:21:39Z",
+      "side": 1,
+      "message": "how about we move the str() logic into the setenv helper ?  then your call here will stay simple.\n\n env[name] \u003d str(val)",
+      "parentUuid": "a393ff80_4c0d696d",
       "revId": "8ecec152978dc86fce327ec0ac2942456cc3f304",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
