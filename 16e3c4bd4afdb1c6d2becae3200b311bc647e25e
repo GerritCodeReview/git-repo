@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "697b683e_66b9ac72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1143373
+      },
+      "writtenOn": "2021-12-06T07:42:01Z",
+      "side": 1,
+      "message": "Tested by:\n\nrun_tests\nflake8 git_config.py",
+      "revId": "16e3c4bd4afdb1c6d2becae3200b311bc647e25e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
