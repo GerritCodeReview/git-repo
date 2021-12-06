@@ -531,7 +531,9 @@ class Remote(object):
     self.review = self._Get('review')
     self.projectname = self._Get('projectname')
     self.fetch = list(map(RefSpec.FromString,
-                          self._Get('fetch', all_keys=True)))
+                          # ignore negative refspec
+                          filter(lambda s: not s.startswith('^'),
+                                 self._Get('fetch', all_keys=True))))
     self._review_url = None
 
   def _InsteadOf(self):
