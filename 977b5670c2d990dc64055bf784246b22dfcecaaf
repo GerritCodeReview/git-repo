@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e42660bd_450b8e50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-07T04:39:39Z",
+      "side": 1,
+      "message": "\"sync:\", not \"sync -\"",
+      "revId": "977b5670c2d990dc64055bf784246b22dfcecaaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
