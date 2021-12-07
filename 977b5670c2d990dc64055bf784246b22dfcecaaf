@@ -16,6 +16,24 @@
       "message": "\"sync:\", not \"sync -\"",
       "revId": "977b5670c2d990dc64055bf784246b22dfcecaaf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39447d11_30ea07df",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2021-12-07T16:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e42660bd_450b8e50",
+      "revId": "977b5670c2d990dc64055bf784246b22dfcecaaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
