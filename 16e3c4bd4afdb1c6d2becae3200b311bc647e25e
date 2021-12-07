@@ -33,6 +33,24 @@
       "message": "wouldn\u0027t it be better to teach RefSpec how to handle negative refspecs ?",
       "revId": "16e3c4bd4afdb1c6d2becae3200b311bc647e25e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d1150f1_24b46d8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1143373
+      },
+      "writtenOn": "2021-12-07T06:41:43Z",
+      "side": 1,
+      "message": "I agree, but IIUC, negative refspec wasn\u0027t used in this file, and we need to add more assertions on if a RefSpec is a negative one at where it\u0027s used (E.g., spec.DestMatches, spec.MapSource, etc.). I\u0027m not sure if it\u0027s worth to do so.",
+      "parentUuid": "118453d0_8cafdad5",
+      "revId": "16e3c4bd4afdb1c6d2becae3200b311bc647e25e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
