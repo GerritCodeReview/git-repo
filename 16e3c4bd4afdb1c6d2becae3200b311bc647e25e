@@ -51,6 +51,24 @@
       "parentUuid": "118453d0_8cafdad5",
       "revId": "16e3c4bd4afdb1c6d2becae3200b311bc647e25e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56ed460b_652d9cb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-08T20:12:58Z",
+      "side": 1,
+      "message": "if repo isn\u0027t utilizing the negative refspec, then declaring it in the first place isn\u0027t useful since repo sync isn\u0027t going to use it.  so if it\u0027s ignored, why use it in the first place ?\n\nthe commit message \u0026 the bug don\u0027t really explain \"why\".",
+      "parentUuid": "5d1150f1_24b46d8d",
+      "revId": "16e3c4bd4afdb1c6d2becae3200b311bc647e25e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
