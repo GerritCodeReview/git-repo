@@ -457,7 +457,6 @@ class RemoteSpec(object):
 
 class Project(object):
   # These objects can be shared between several working trees.
-  shareable_files = []
   shareable_dirs = ['hooks', 'objects', 'rr-cache']
 
   def __init__(self,
@@ -2651,10 +2650,7 @@ class Project(object):
     if self.use_git_worktrees:
       return
 
-    symlink_files = self.shareable_files[:]
-    symlink_dirs = self.shareable_dirs[:]
-    to_symlink = symlink_files + symlink_dirs
-    for name in set(to_symlink):
+    for name in self.shareable_dirs:
       # Try to self-heal a bit in simple cases.
       dst_path = os.path.join(destdir, name)
       src_path = os.path.join(srcdir, name)
@@ -2680,9 +2676,8 @@ class Project(object):
       copy_all: If true, copy all remaining files from |gitdir| -> |dotgit|.
           This saves you the effort of initializing |dotgit| yourself.
     """
-    symlink_files = self.shareable_files[:]
     symlink_dirs = self.shareable_dirs[:]
-    to_symlink = symlink_files + symlink_dirs
+    to_symlink = symlink_dirs
 
     to_copy = []
     if copy_all:
@@ -2709,11 +2704,6 @@ class Project(object):
             shutil.copytree(src, dst)
           elif os.path.isfile(src):
             shutil.copy(src, dst)
-
-        # If the source file doesn't exist, ensure the destination
-        # file doesn't either.
-        if name in symlink_files and not os.path.lexists(src):
-          platform_utils.remove(dst, missing_ok=True)
 
       except OSError as e:
         if e.errno == errno.EPERM:
