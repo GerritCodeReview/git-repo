@@ -458,7 +458,7 @@ class RemoteSpec(object):
 class Project(object):
   # These objects can be shared between several working trees.
   shareable_files = ['description', 'info']
-  shareable_dirs = ['hooks', 'objects', 'rr-cache', 'svn']
+  shareable_dirs = ['hooks', 'objects', 'rr-cache']
 
   def __init__(self,
                manifest,
