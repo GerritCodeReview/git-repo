@@ -464,10 +464,7 @@ class Project(object):
   @property
   def shareable_dirs(self):
     """Return the shareable directories"""
-    if self.UseAlternates:
-      return ['hooks', 'rr-cache']
-    else:
-      return ['hooks', 'objects', 'rr-cache']
+    return ['hooks', 'rr-cache']
 
   def __init__(self,
                manifest,
@@ -596,14 +593,6 @@ class Project(object):
     self.bare_git = self._GitGetByExec(self, bare=True, gitdir=self.gitdir)
     self.bare_ref = GitRefs(self.gitdir)
     self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=self.objdir)
-
-  @property
-  def UseAlternates(self):
-    """Whether git alternates are in use.
-
-    This will be removed once migration to alternates is complete.
-    """
-    return True
 
   @property
   def Derived(self):
@@ -1163,16 +1152,15 @@ class Project(object):
       self._UpdateHooks(quiet=quiet)
     self._InitRemote()
 
-    if self.UseAlternates:
-      # If gitdir/objects is a symlink, migrate it from the old layout.
-      gitdir_objects = os.path.join(self.gitdir, 'objects')
-      if platform_utils.islink(gitdir_objects):
-        platform_utils.remove(gitdir_objects, missing_ok=True)
-      gitdir_alt = os.path.join(self.gitdir, 'objects/info/alternates')
-      if not os.path.exists(gitdir_alt):
-        os.makedirs(os.path.dirname(gitdir_alt), exist_ok=True)
-        _lwrite(gitdir_alt, os.path.join(
-            os.path.relpath(self.objdir, gitdir_objects), 'objects') + '\n')
+    # If gitdir/objects is a symlink, migrate it from the old layout.
+    gitdir_objects = os.path.join(self.gitdir, 'objects')
+    if platform_utils.islink(gitdir_objects):
+      platform_utils.remove(gitdir_objects, missing_ok=True)
+    gitdir_alt = os.path.join(self.gitdir, 'objects/info/alternates')
+    if not os.path.exists(gitdir_alt):
+      os.makedirs(os.path.dirname(gitdir_alt), exist_ok=True)
+      _lwrite(gitdir_alt, os.path.join(
+          os.path.relpath(self.objdir, gitdir_objects), 'objects') + '\n')
 
     if is_new:
       alt = os.path.join(self.objdir, 'objects/info/alternates')
