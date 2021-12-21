@@ -51,7 +51,7 @@ RETRY_JITTER_PERCENT = 0.1
 
 # Whether to use alternates.
 # TODO(vapier): Remove knob once behavior is verified.
-_ALTERNATES = os.environ.get('REPO_USE_ALTERNATES') == '1'
+_ALTERNATES = not os.environ.get('REPO_USE_ALTERNATES') == '0'
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
