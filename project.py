@@ -49,9 +49,6 @@ MAXIMUM_RETRY_SLEEP_SEC = 3600.0
 # +-10% random jitter is added to each Fetches retry sleep duration.
 RETRY_JITTER_PERCENT = 0.1
 
-# Whether to use alternates.
-# TODO(vapier): Remove knob once behavior is verified.
-_ALTERNATES = os.environ.get('REPO_USE_ALTERNATES') == '1'
 
 def _lwrite(path, content):
   lock = '%s.lock' % path
@@ -599,7 +596,7 @@ class Project(object):
 
     This will be removed once migration to alternates is complete.
     """
-    return _ALTERNATES or self.manifest.is_multimanifest
+    return True
 
   @property
   def Derived(self):
