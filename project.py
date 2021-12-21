@@ -1120,7 +1120,7 @@ class Project(object):
     self._InitRemote()
 
     if is_new:
-      alt = os.path.join(self.gitdir, 'objects/info/alternates')
+      alt = os.path.join(self.objdir, 'objects/info/alternates')
       try:
         with open(alt) as fd:
           # This works for both absolute and relative alternate directories.
@@ -1169,7 +1169,7 @@ class Project(object):
     mp = self.manifest.manifestProject
     dissociate = mp.config.GetBoolean('repo.dissociate')
     if dissociate:
-      alternates_file = os.path.join(self.gitdir, 'objects/info/alternates')
+      alternates_file = os.path.join(self.objdir, 'objects/info/alternates')
       if os.path.exists(alternates_file):
         cmd = ['repack', '-a', '-d']
         p = GitCommand(self, cmd, bare=True, capture_stdout=bool(output_redir),
@@ -2504,8 +2504,8 @@ class Project(object):
         if ref_dir or mirror_git:
           if not mirror_git:
             mirror_git = os.path.join(ref_dir, self.name + '.git')
-          repo_git = os.path.join(ref_dir, '.repo', 'projects',
-                                  self.relpath + '.git')
+          repo_git = os.path.join(ref_dir, '.repo', 'project-objects',
+                                  self.name + '.git')
           worktrees_git = os.path.join(ref_dir, '.repo', 'worktrees',
                                        self.name + '.git')
 
@@ -2523,7 +2523,7 @@ class Project(object):
               # The alternate directory is relative to the object database.
               ref_dir = os.path.relpath(ref_dir,
                                         os.path.join(self.objdir, 'objects'))
-            _lwrite(os.path.join(self.gitdir, 'objects/info/alternates'),
+            _lwrite(os.path.join(self.objdir, 'objects/info/alternates'),
                     os.path.join(ref_dir, 'objects') + '\n')
 
         m = self.manifest.manifestProject.config
