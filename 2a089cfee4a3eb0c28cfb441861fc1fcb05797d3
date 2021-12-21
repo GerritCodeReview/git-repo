@@ -22,6 +22,30 @@
       },
       "revId": "2a089cfee4a3eb0c28cfb441861fc1fcb05797d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a388481_cb8f0bc6",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2831,
+      "author": {
+        "id": 1143860
+      },
+      "writtenOn": "2021-12-21T18:41:37Z",
+      "side": 1,
+      "message": "I managed to recover everything by manually creating the .git symlink and fixing the submodule paths in my worktree config.",
+      "parentUuid": "a85511f3_1fbfb044",
+      "range": {
+        "startLine": 2831,
+        "startChar": 6,
+        "endLine": 2831,
+        "endChar": 31
+      },
+      "revId": "2a089cfee4a3eb0c28cfb441861fc1fcb05797d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
