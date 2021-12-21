@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a85511f3_1fbfb044",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2831,
+      "author": {
+        "id": 1143860
+      },
+      "writtenOn": "2021-12-21T16:47:38Z",
+      "side": 1,
+      "message": "Hrmm, this somehow affected my coreboot repo and left it in a broken state.\n\nMy coreboot repo had a manually created worktree that was tracking coreboot upstream. I unfortunately no longer have the previous state since my scrollback lost it. But it looked like most of the symlinks were deleted, but not all of them. I suspect there was an error thrown. I don\u0027t know what it was since I run `repo sync` in a cron job...\n\nThis is more of an FYI, in case anyone else runs into problems.",
+      "range": {
+        "startLine": 2831,
+        "startChar": 6,
+        "endLine": 2831,
+        "endChar": 31
+      },
+      "revId": "2a089cfee4a3eb0c28cfb441861fc1fcb05797d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
