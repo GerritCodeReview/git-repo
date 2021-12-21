@@ -457,7 +457,7 @@ class RemoteSpec(object):
 
 class Project(object):
   # These objects can be shared between several working trees.
-  shareable_dirs = ['hooks', 'objects', 'rr-cache']
+  shareable_dirs = ['hooks', 'rr-cache']
 
   def __init__(self,
                manifest,
@@ -1118,6 +1118,16 @@ class Project(object):
     else:
       self._UpdateHooks(quiet=quiet)
     self._InitRemote()
+
+    # If gitdir/objects is a symlink, migrate it from the old layout.
+    gitdir_objects = os.path.join(self.gitdir, 'objects')
+    if platform_utils.islink(gitdir_objects):
+      platform_utils.remove(gitdir_objects, missing_ok=True)
+    gitdir_alt = os.path.join(self.gitdir, 'objects/info/alternates')
+    if not os.path.exists(gitdir_alt):
+      os.makedirs(os.path.dirname(gitdir_alt), exist_ok=True)
+      _lwrite(gitdir_alt, os.path.join(
+          os.path.relpath(self.objdir, gitdir_objects), 'objects') + '\n')
 
     if is_new:
       alt = os.path.join(self.objdir, 'objects/info/alternates')
