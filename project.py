@@ -2548,6 +2548,11 @@ class Project(object):
     hooks = platform_utils.realpath(os.path.join(self.objdir, 'hooks'))
     if not os.path.exists(hooks):
       os.makedirs(hooks)
+
+    # Delete sample hooks.  They're noise.
+    for hook in glob.glob(os.path.join(hooks, '*.sample')):
+      platform_utils.remove(hook, missing_ok=True)
+
     for stock_hook in _ProjectHooks():
       name = os.path.basename(stock_hook)
 
