@@ -46,6 +46,30 @@
       },
       "revId": "2a089cfee4a3eb0c28cfb441861fc1fcb05797d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55f05bfb_8a947c10",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2831,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-22T03:42:24Z",
+      "side": 1,
+      "message": "the code is designed to abort rather than delete data.  none of your data is lost since all the refs \u0026 objects live inside .repo/, and this code doesn\u0027t really touch that.\n\nthe only thing i\u0027d need to know is what files or symlinks still existed under the .git/ dir.\n\ndeleting the project checkout, or changing the .git to a symlink manually, should in practice be all you need to get sync working again.",
+      "parentUuid": "6a388481_cb8f0bc6",
+      "range": {
+        "startLine": 2831,
+        "startChar": 6,
+        "endLine": 2831,
+        "endChar": 31
+      },
+      "revId": "2a089cfee4a3eb0c28cfb441861fc1fcb05797d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
