@@ -552,6 +552,9 @@ later is required to fix a server side protocol bug.
     try:
       project.Sync_LocalHalf(syncbuf, force_sync=force_sync)
       success = syncbuf.Finish()
+    except IOError as e:
+      print('Cannot checkout %s: %s' %
+            (project.name, str(e)), file=sys.stderr)
     except GitError as e:
       print('error.GitError: Cannot checkout %s: %s' %
             (project.name, str(e)), file=sys.stderr)
