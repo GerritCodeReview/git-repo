@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c3f3441_c876ae95",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-23T20:49:26Z",
+      "side": 1,
+      "message": "you\u0027ve changed the behavior a bit.  the old way would process links/copies only if the checkout worked \u0026 was up-to-date.  if it was unable to checkout the latest version, it\u0027d skip the copy \u0026 link state.  if a project was in the middle of a rebase to very old state, it could copy old data, or create a symlink at a path that only works with latest tree state.\n\nso if you want to disconnect the phases, you\u0027ll need to make up for that.  maybe as easy as checking to see if the current branch is behind at all (ahead is fine), and if so, warn but don\u0027t process.",
+      "revId": "2c143221c3d0d4744f096c6f880cd48545e836dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8320e502_2afbc8d2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-23T20:49:26Z",
+      "side": 1,
+      "message": "pretty sure this doesn\u0027t work.  the callback is fairly immediate, and most likely before most jobs have finished.  the point of the process loop is to process results as they become available (as documented in ExecuteInParallel\u0027s docstring).\n\nmost likely will be easier to extract it from _Checkout() entirely and give it a distinct stage.",
+      "revId": "2c143221c3d0d4744f096c6f880cd48545e836dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
