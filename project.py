@@ -2192,8 +2192,10 @@ class Project(object):
     retry_cur_sleep = retry_sleep_initial_sec
     ok = prune_tried = False
     for try_n in range(retry_fetches):
-      gitcmd = GitCommand(self, cmd, bare=True, ssh_proxy=ssh_proxy,
-                          merge_output=True, capture_stdout=quiet or bool(output_redir))
+      gitcmd = GitCommand(
+          self, cmd, bare=True, objdir=os.path.join(self.objdir, 'objects'),
+          ssh_proxy=ssh_proxy,
+          merge_output=True, capture_stdout=quiet or bool(output_redir))
       if gitcmd.stdout and not quiet and output_redir:
         output_redir.write(gitcmd.stdout)
       ret = gitcmd.Wait()
@@ -2309,7 +2311,8 @@ class Project(object):
       cmd.append(str(f))
     cmd.append('+refs/tags/*:refs/tags/*')
 
-    ok = GitCommand(self, cmd, bare=True).Wait() == 0
+    ok = GitCommand(
+        self, cmd, bare=True, objdir=os.path.join(self.objdir, 'objects')).Wait() == 0
     platform_utils.remove(bundle_dst, missing_ok=True)
     platform_utils.remove(bundle_tmp, missing_ok=True)
     return ok

@@ -169,7 +169,8 @@ class GitCommand(object):
                disable_editor=False,
                ssh_proxy=None,
                cwd=None,
-               gitdir=None):
+               gitdir=None,
+               objdir=None):
     env = self._GetBasicEnv()
 
     if disable_editor:
@@ -194,13 +195,24 @@ class GitCommand(object):
         cwd = project.worktree
       if not gitdir:
         gitdir = project.gitdir
+    # Git on Windows wants its paths only using / for reliability.
+    if platform_utils.isWindows():
+      if objdir:
+        objdir = objdir.replace('\\', '/')
+      if gitdir:
+        gitdir = gitdir.replace('\\', '/')
+
+    if objdir:
+      # Set to the place we want to save the objects.
+      env['GIT_OBJECT_DIRECTORY'] = objdir
+      if gitdir:
+        # Allow git to search the original place in case of local or unique refs
+        # that git will attempt to resolve even if we aren't fetching them.
+        env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = gitdir + '/objects'
 
     command = [GIT]
     if bare:
       if gitdir:
-        # Git on Windows wants its paths only using / for reliability.
-        if platform_utils.isWindows():
-          gitdir = gitdir.replace('\\', '/')
         env[GIT_DIR] = gitdir
       cwd = None
     command.append(cmdv[0])
@@ -233,6 +245,11 @@ class GitCommand(object):
           dbg += '\n'
         dbg += ': export GIT_DIR=%s\n' % env[GIT_DIR]
         LAST_GITDIR = env[GIT_DIR]
+
+      if 'GIT_OBJECT_DIRECTORY' in env:
+        dbg += ': export GIT_OBJECT_DIRECTORY=%s\n' % env['GIT_OBJECT_DIRECTORY']
+      if 'GIT_ALTERNATE_OBJECT_DIRECTORIES' in env:
+        dbg += ': export GIT_ALTERNATE_OBJECT_DIRECTORIES=%s\n' % env['GIT_ALTERNATE_OBJECT_DIRECTORIES']
 
       dbg += ': '
       dbg += ' '.join(command)
