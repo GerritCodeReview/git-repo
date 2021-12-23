@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f150b2b_ec309271",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-23T19:52:06Z",
+      "side": 1,
+      "message": "use the \"sync:\" prefix since this only applies to the sync subcommand",
+      "revId": "c1f531029129efca1f53e2c7b7bcf039f89acba1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee51bd81_6c9eee33",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-23T19:52:06Z",
+      "side": 1,
+      "message": "add a Bug: tag linking to your report.  this should be a bunch of examples in the history.",
+      "revId": "c1f531029129efca1f53e2c7b7bcf039f89acba1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fbbe790_83e8c66b",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-23T19:52:06Z",
+      "side": 1,
+      "message": "do you really need explicit messages for each of these ?  seems like a single block is sufficient already, and what you\u0027re trying to do is largely accomplished with adding the `raise`.",
+      "revId": "c1f531029129efca1f53e2c7b7bcf039f89acba1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bde7ed89_ec3cc168",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 406,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-23T19:52:06Z",
+      "side": 1,
+      "message": "use |e| as the short name in small exception handlers like this",
+      "revId": "c1f531029129efca1f53e2c7b7bcf039f89acba1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7e58e6_c9393263",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2021-12-23T19:52:06Z",
+      "side": 1,
+      "message": "this should have \"error: \" prefix on the message",
+      "revId": "c1f531029129efca1f53e2c7b7bcf039f89acba1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
