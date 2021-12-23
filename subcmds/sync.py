@@ -580,6 +580,12 @@ later is required to fix a server side protocol bug.
     # Only checkout projects with worktrees.
     all_projects = [x for x in all_projects if x.worktree]
 
+    def _HandleCopyAndLink(projects, pool, pm, results):
+      print("handling copyfile and linkfile elements for all projects")
+      for project in projects:
+        project.CopyAndLinkFiles()
+      return _ProcessResults(pool, pm, results)
+
     def _ProcessResults(pool, pm, results):
       ret = True
       for (success, project, start, finish) in results:
@@ -601,7 +607,7 @@ later is required to fix a server side protocol bug.
         opt.jobs_checkout if opt.jobs_checkout else self.jobs,
         functools.partial(self._CheckoutOne, opt.detach_head, opt.force_sync),
         all_projects,
-        callback=_ProcessResults,
+        callback=functools.partial(_HandleCopyAndLink, all_projects),
         output=Progress('Checking out', len(all_projects), quiet=opt.quiet)) and not err_results
 
   def _GCProjects(self, projects, opt, err_event):
@@ -905,6 +911,7 @@ later is required to fix a server side protocol bug.
       syncbuf = SyncBuffer(mp.config)
       start = time.time()
       mp.Sync_LocalHalf(syncbuf, submodules=self.manifest.HasSubmodules)
+      mp.CopyAndLinkFiles()
       clean = syncbuf.Finish()
       self.event_log.AddSync(mp, event_log.TASK_SYNC_LOCAL,
                              start, time.time(), clean)

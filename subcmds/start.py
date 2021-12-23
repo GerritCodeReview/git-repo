@@ -118,6 +118,7 @@ revision specified in the manifest.
           project.Sync_NetworkHalf()
           sync_buf = SyncBuffer(self.manifest.manifestProject.config)
           project.Sync_LocalHalf(sync_buf)
+          project.CopyAndLinkFiles()
           project.revisionId = gitc_project.old_revision
         pm.update()
       pm.end()

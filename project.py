@@ -1115,7 +1115,7 @@ class Project(object):
         platform_utils.remove(tarpath)
       except OSError as e:
         _warn("Cannot remove archive %s: %s", tarpath, str(e))
-      self._CopyAndLinkFiles()
+      self.CopyAndLinkFiles()
       return True
 
     # If the shared object dir already exists, don't try to rebootstrap with a
@@ -1207,7 +1207,7 @@ class Project(object):
   def PostRepoUpgrade(self):
     self._InitHooks()
 
-  def _CopyAndLinkFiles(self):
+  def CopyAndLinkFiles(self):
     if self.client.isGitcClient:
       return
     for copyfile in self.copyfiles:
@@ -1283,7 +1283,6 @@ class Project(object):
 
     def _doff():
       self._FastForward(revid)
-      self._CopyAndLinkFiles()
 
     def _dosubmodules():
       self._SyncSubmodules(quiet=True)
@@ -1312,7 +1311,6 @@ class Project(object):
         #
         if not syncbuf.detach_head:
           # The copy/linkfile config may have changed.
-          self._CopyAndLinkFiles()
           return
       else:
         lost = self._revlist(not_rev(revid), HEAD)
@@ -1326,14 +1324,10 @@ class Project(object):
       except GitError as e:
         syncbuf.fail(self, e)
         return
-      self._CopyAndLinkFiles()
       return
 
     if head == revid:
       # No changes; don't do anything further.
-      #
-      # The copy/linkfile config may have changed.
-      self._CopyAndLinkFiles()
       return
 
     branch = self.GetBranch(branch)
@@ -1352,7 +1346,6 @@ class Project(object):
       except GitError as e:
         syncbuf.fail(self, e)
         return
-      self._CopyAndLinkFiles()
       return
 
     upstream_gain = self._revlist(not_rev(HEAD), revid)
@@ -1437,7 +1430,7 @@ class Project(object):
 
     if cnt_mine > 0 and self.rebase:
       def _docopyandlink():
-        self._CopyAndLinkFiles()
+        self.CopyAndLinkFiles()
 
       def _dorebase():
         self._Rebase(upstream='%s^1' % last_mine, onto=revid)
@@ -1450,7 +1443,6 @@ class Project(object):
         self._ResetHard(revid)
         if submodules:
           self._SyncSubmodules(quiet=True)
-        self._CopyAndLinkFiles()
       except GitError as e:
         syncbuf.fail(self, e)
         return
@@ -2816,7 +2808,7 @@ class Project(object):
     if self.use_git_worktrees:
       if init_dotgit:
         self._InitGitWorktree()
-        self._CopyAndLinkFiles()
+        self.CopyAndLinkFiles()
     else:
       if not init_dotgit:
         # See if the project has changed.
@@ -2837,7 +2829,7 @@ class Project(object):
 
         if submodules:
           self._SyncSubmodules(quiet=True)
-        self._CopyAndLinkFiles()
+        self.CopyAndLinkFiles()
 
   @classmethod
   def _MigrateOldWorkTreeGitDir(cls, dotgit):
@@ -3331,6 +3323,7 @@ class MetaProject(Project):
     # branch to take over
     syncbuf = SyncBuffer(self.config, detach_head=True)
     self.Sync_LocalHalf(syncbuf, submodules=submodules)
+    self.CopyAndLinkFiles()
     syncbuf.Finish()
 
     return GitCommand(self,

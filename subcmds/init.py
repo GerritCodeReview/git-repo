@@ -324,6 +324,7 @@ to update the working directory files.
 
     syncbuf = SyncBuffer(m.config)
     m.Sync_LocalHalf(syncbuf, submodules=opt.submodules)
+    m.CopyAndLinkFiles()
     syncbuf.Finish()
 
     if is_new or m.CurrentBranch is None:
