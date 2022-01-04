@@ -226,6 +226,8 @@ class Superproject(object):
                        f'{self._manifest.manifestFile}')
       return SyncResult(False, False)
 
+    print('NOTICE: --use-superproject is in beta; report any issues to the '
+          'address described in `repo version`', file=sys.stderr)
     should_exit = True
     if not self._remote_url:
       self._LogWarning(f'superproject URL is not defined in manifest: '
