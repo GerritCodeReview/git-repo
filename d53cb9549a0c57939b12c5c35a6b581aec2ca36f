@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e2e1b24_0565f905",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-04T21:01:41Z",
+      "side": 1,
+      "message": "if it isn\u0027t in beta, that means the docs have been written, it\u0027s ready for anyone (not just Android or Google) to use, and there\u0027s no references to internal websites.  afaict, that is not the case.",
+      "revId": "d53cb9549a0c57939b12c5c35a6b581aec2ca36f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
