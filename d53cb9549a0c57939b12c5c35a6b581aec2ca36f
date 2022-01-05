@@ -52,6 +52,24 @@
       "parentUuid": "611376a8_5a1ac9e3",
       "revId": "d53cb9549a0c57939b12c5c35a6b581aec2ca36f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db84edd7_3f2dacc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-05T07:14:10Z",
+      "side": 1,
+      "message": "i would expect at least bread crumbs in subcmds/{init,sync}.py for these flags, and a file under docs/ explaining in a bit more detail as to what these things are and how they come together.  i don\u0027t think terms like \"superproject\" are that common even within in the git community let alone in random projects that use repo.\n\nrepo has historically had a bad track record of \"the code is the documentation\" and \"this is documented in non-public docs only\" and \"only the specific dev or two implementing the feature really understands its design goals and intentions\".",
+      "parentUuid": "e2baa584_91ffdad0",
+      "revId": "d53cb9549a0c57939b12c5c35a6b581aec2ca36f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
