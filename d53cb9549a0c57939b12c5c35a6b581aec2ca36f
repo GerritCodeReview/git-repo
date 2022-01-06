@@ -70,6 +70,24 @@
       "parentUuid": "e2baa584_91ffdad0",
       "revId": "d53cb9549a0c57939b12c5c35a6b581aec2ca36f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "387a7413_71cec1cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-01-06T06:55:53Z",
+      "side": 1,
+      "message": "Thanks much! I agree; filed as crbug.com/gerrit/15527 with some more elaboration.",
+      "parentUuid": "db84edd7_3f2dacc8",
+      "revId": "d53cb9549a0c57939b12c5c35a6b581aec2ca36f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
