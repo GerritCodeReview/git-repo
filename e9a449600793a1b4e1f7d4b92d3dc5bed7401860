@@ -34,6 +34,24 @@
       "parentUuid": "7c5a9f82_d1f33812",
       "revId": "e9a449600793a1b4e1f7d4b92d3dc5bed7401860",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ac0c3d8_fb5ad43e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-01-06T07:03:39Z",
+      "side": 1,
+      "message": "Thanks! Updated the commit message.\n\nFeel free to file additional bugs for other requirements --- I don\u0027t mean to say that crbug.com/gerrit/15527 has to be the only one. :)",
+      "parentUuid": "362248a0_8b44909a",
+      "revId": "e9a449600793a1b4e1f7d4b92d3dc5bed7401860",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
