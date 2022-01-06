@@ -16,6 +16,24 @@
       "message": "nit: long line",
       "revId": "ca769858ac2f6643e73c4f315139cf668821469a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ab26eb_0ddb0c41",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-06T08:33:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad56bfeb_3b3ce573",
+      "revId": "ca769858ac2f6643e73c4f315139cf668821469a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
