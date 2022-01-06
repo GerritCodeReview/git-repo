@@ -2818,24 +2818,30 @@ class Project(object):
     }
     # Paths that we know will be in both, but are safe to clobber in .repo/projects/.
     SAFE_TO_CLOBBER = {
-        'COMMIT_EDITMSG', 'FETCH_HEAD', 'HEAD', 'index', 'ORIG_HEAD',
+        'COMMIT_EDITMSG', 'COMMIT_EDITMSG~', 'FETCH_HEAD', 'HEAD', 'gitk.cache',
+        'index', 'ORIG_HEAD',
     }
+
+    # First see if we'd succeed before starting the migration.
+    for name in platform_utils.listdir(dotgit):
+      dotgit_path = os.path.join(dotgit, name)
+      if name in KNOWN_LINKS:
+        if not platform_utils.islink(dotgit_path):
+          raise GitError(f'{dotgit_path}: should be a symlink')
+      else:
+        gitdir_path = os.path.join(gitdir, name)
+        if name not in SAFE_TO_CLOBBER and os.path.exists(gitdir_path):
+          raise GitError(f'{dotgit_path}: unknown file; please file a bug')
 
     # Now walk the paths and sync the .git/ to .repo/projects/.
     for name in platform_utils.listdir(dotgit):
       dotgit_path = os.path.join(dotgit, name)
       if name in KNOWN_LINKS:
-        if platform_utils.islink(dotgit_path):
-          platform_utils.remove(dotgit_path)
-        else:
-          raise GitError(f'{dotgit_path}: should be a symlink')
+        platform_utils.remove(dotgit_path)
       else:
         gitdir_path = os.path.join(gitdir, name)
-        if name in SAFE_TO_CLOBBER or not os.path.exists(gitdir_path):
-          platform_utils.remove(gitdir_path, missing_ok=True)
-          platform_utils.rename(dotgit_path, gitdir_path)
-        else:
-          raise GitError(f'{dotgit_path}: unknown file; please file a bug')
+        platform_utils.remove(gitdir_path, missing_ok=True)
+        platform_utils.rename(dotgit_path, gitdir_path)
 
     # Now that the dir should be empty, clear it out, and symlink it over.
     platform_utils.rmdir(dotgit)
