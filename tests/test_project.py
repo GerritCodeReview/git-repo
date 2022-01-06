@@ -347,6 +347,10 @@ class MigrateWorkTreeTests(unittest.TestCase):
   }
   _FILES = {
       'COMMIT_EDITMSG', 'FETCH_HEAD', 'HEAD', 'index', 'ORIG_HEAD',
+      'unknown-file-should-be-migrated',
+  }
+  _CLEAN_FILES = {
+      'a-vim-temp-file~', '#an-emacs-temp-file#',
   }
 
   @classmethod
@@ -365,10 +369,9 @@ class MigrateWorkTreeTests(unittest.TestCase):
       dotgit.mkdir(parents=True)
       for name in cls._SYMLINKS:
         (dotgit / name).symlink_to(f'../../../.repo/projects/src/test.git/{name}')
-      for name in cls._FILES:
+      for name in cls._FILES | cls._CLEAN_FILES:
         (dotgit / name).write_text(name)
 
-      subprocess.run(['tree', '-a', str(dotgit)])
       yield tempdir
 
   def test_standard(self):
@@ -385,3 +388,24 @@ class MigrateWorkTreeTests(unittest.TestCase):
       gitdir = tempdir / '.repo/projects/src/test.git'
       for name in self._FILES:
         self.assertEqual(name, (gitdir / name).read_text())
+      # Make sure files were removed.
+      for name in self._CLEAN_FILES:
+        self.assertFalse((gitdir / name).exists())
+
+  def test_unknown(self):
+    """A checkout with unknown files should abort."""
+    with self._simple_layout() as tempdir:
+      dotgit = tempdir / 'src/test/.git'
+      (tempdir / '.repo/projects/src/test.git/random-file').write_text('one')
+      (dotgit / 'random-file').write_text('two')
+      with self.assertRaises(error.GitError):
+        project.Project._MigrateOldWorkTreeGitDir(str(dotgit))
+
+      # Make sure no content was actually changed.
+      self.assertTrue(dotgit.is_dir())
+      for name in self._FILES:
+        self.assertTrue((dotgit / name).is_file())
+      for name in self._CLEAN_FILES:
+        self.assertTrue((dotgit / name).is_file())
+      for name in self._SYMLINKS:
+        self.assertTrue((dotgit / name).is_symlink())
