@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebcabe39_037a638e",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2821,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-06T19:30:42Z",
+      "side": 1,
+      "message": "i debated having the code ignore/clobber any file ending in \u0027~\u0027.  think that\u0027s a terrible idea ?  if i did that, it\u0027d be easier to ignore any \u0027#*#\u0027 file too.",
+      "parentUuid": "324bf64b_3ff77464",
+      "range": {
+        "startLine": 2821,
+        "startChar": 27,
+        "endLine": 2821,
+        "endChar": 42
+      },
+      "revId": "93eddc081b2707f476d959691808ab0a2e8d58f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5eafca71_2dc85b70",
         "filename": "project.py",
         "patchSetId": 1
@@ -37,6 +61,24 @@
       "writtenOn": "2022-01-06T18:58:25Z",
       "side": 1,
       "message": "As long as you\u0027re iterating over all the directories, is it worth collecting all the errors and reporting them together, possibly with a cap on maximum number of errors?  Otherwise the user may have to do an iterative repo sync + fix single error, with no idea when it is going to stop.",
+      "revId": "93eddc081b2707f476d959691808ab0a2e8d58f3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d92dbf3_57a151fd",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2834,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-06T19:30:42Z",
+      "side": 1,
+      "message": "sure, that should be easy enough",
+      "parentUuid": "5eafca71_2dc85b70",
       "revId": "93eddc081b2707f476d959691808ab0a2e8d58f3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
