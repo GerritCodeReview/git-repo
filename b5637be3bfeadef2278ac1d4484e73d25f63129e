@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6d01a83_8e1162ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-01-06T16:55:20Z",
+      "side": 1,
+      "message": "Changing my +2 to a +1 to signal that I\u0027d appreciate a +2 from someone else as well (if only because it will avoid \"change was merged without approval from someone other than the one who uploaded it\" alerts :)).",
+      "revId": "b5637be3bfeadef2278ac1d4484e73d25f63129e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
