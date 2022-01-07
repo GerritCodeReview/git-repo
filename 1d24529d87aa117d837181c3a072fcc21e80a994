@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db02984d_28fa78ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-07T04:59:40Z",
+      "side": 1,
+      "message": "expanded the test coverage too to make sure aborted migrations work",
+      "revId": "1d24529d87aa117d837181c3a072fcc21e80a994",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
