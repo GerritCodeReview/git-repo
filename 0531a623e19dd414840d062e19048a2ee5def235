@@ -16,6 +16,23 @@
       "message": "g",
       "revId": "0531a623e19dd414840d062e19048a2ee5def235",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7718d279_e7197952",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1144210
+      },
+      "writtenOn": "2022-01-09T14:35:14Z",
+      "side": 1,
+      "message": "This is not he default behavior of \u0027repo\u0027 prior v.2.18.\nChanging the behavior to \u0027--prune (default)\u0027 when executing \u0027repo sync\u0027 caused to a deletion of a branch that is on a mirror (repo init --mirror \u003curl\u003e) but not on remote. \nIs this the intended behavior? if so, it should come with a BIG WARNING.",
+      "revId": "0531a623e19dd414840d062e19048a2ee5def235",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
