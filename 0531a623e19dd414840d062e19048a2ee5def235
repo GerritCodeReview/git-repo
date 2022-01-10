@@ -51,6 +51,24 @@
       "parentUuid": "7718d279_e7197952",
       "revId": "0531a623e19dd414840d062e19048a2ee5def235",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ead62541_641df9cd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1144210
+      },
+      "writtenOn": "2022-01-10T09:37:48Z",
+      "side": 1,
+      "message": "Mike, Thank you. \nWhat component to choose is the bug tracker? is it \"Chrome OS Public Tracker \u003e Services \u003e Infra \u003e Build\"?\nThe use case scenario is\n1. mirror a \u003cmaster-repo\u003e\nrepo init --mirror -u \u003cmaster-repo\u003e -m \u003cmanifest\u003e -b \u003cbranch\u003e ; repo sync\n2. create a working copy from \u003cmirrored-repo\u003e\nrepo init \u003cmirrored-repo\u003e ; repo sync; create branch X and push to \u003cmirrored-repo\u003e, this branch is never pushed \u003cmaster-repo\u003e.\n3. update the \u003cmirror-repo\u003e from \u003cmaster-repo\u003e will result in loss of branch X\nrepo sync (if used without --no-prune)\nI think there should be a clear warning.",
+      "parentUuid": "39ec7153_602dd780",
+      "revId": "0531a623e19dd414840d062e19048a2ee5def235",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
