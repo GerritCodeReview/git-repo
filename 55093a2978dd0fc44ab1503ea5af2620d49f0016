@@ -33,6 +33,24 @@
       "message": "don\u0027t need the str() logic anymore since os.readlink returns a str",
       "revId": "55093a2978dd0fc44ab1503ea5af2620d49f0016",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff04b9cb_31fcce63",
+        "filename": "tests/test_project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1144193
+      },
+      "writtenOn": "2022-01-11T20:06:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02c233a6_792fc34d",
+      "revId": "55093a2978dd0fc44ab1503ea5af2620d49f0016",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
