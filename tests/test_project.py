@@ -382,7 +382,7 @@ class MigrateWorkTreeTests(unittest.TestCase):
 
       # Make sure the dir was transformed into a symlink.
       self.assertTrue(dotgit.is_symlink())
-      self.assertEqual(str(dotgit.readlink()), '../../.repo/projects/src/test.git')
+      self.assertEqual(str(os.readlink(dotgit)), '../../.repo/projects/src/test.git')
 
       # Make sure files were moved over.
       gitdir = tempdir / '.repo/projects/src/test.git'
