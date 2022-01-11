@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d03d0664_a406f4c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-11T19:54:58Z",
+      "side": 1,
+      "message": "thx for the fix",
+      "revId": "55093a2978dd0fc44ab1503ea5af2620d49f0016",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02c233a6_792fc34d",
+        "filename": "tests/test_project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-11T19:54:58Z",
+      "side": 1,
+      "message": "don\u0027t need the str() logic anymore since os.readlink returns a str",
+      "revId": "55093a2978dd0fc44ab1503ea5af2620d49f0016",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
