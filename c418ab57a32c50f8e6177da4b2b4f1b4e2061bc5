@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "6da2d253_1fb2605d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-01-13T21:48:30Z",
+      "side": 1,
+      "message": "There is some ongoing discussion of whether the import should be done by `repo`, or by the build process.  Once that gets resolved, I\u0027ll add the appropriate code.",
+      "revId": "c418ab57a32c50f8e6177da4b2b4f1b4e2061bc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "41e05723_c0deac8b",
