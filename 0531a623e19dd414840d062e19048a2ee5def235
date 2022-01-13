@@ -87,6 +87,24 @@
       "parentUuid": "ead62541_641df9cd",
       "revId": "0531a623e19dd414840d062e19048a2ee5def235",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4b97d4b_bfe0bb01",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1144210
+      },
+      "writtenOn": "2022-01-13T08:49:06Z",
+      "side": 1,
+      "message": "Mike, thank you. created issue \nhttps://bugs.chromium.org/p/gerrit/issues/detail?id\u003d15552",
+      "parentUuid": "7033dd16_525c7e3e",
+      "revId": "0531a623e19dd414840d062e19048a2ee5def235",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
