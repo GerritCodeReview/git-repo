@@ -151,7 +151,7 @@ is shown, then the branch appears in all projects.
         fmt = out.write
         paths = []
         non_cur_paths = []
-        if i.IsSplitCurrent or (in_cnt < project_cnt - in_cnt):
+        if i.IsSplitCurrent or (in_cnt <= project_cnt - in_cnt):
           in_type = 'in'
           for b in i.projects:
             if not i.IsSplitCurrent or b.current:
@@ -163,9 +163,9 @@ is shown, then the branch appears in all projects.
           in_type = 'not in'
           have = set()
           for b in i.projects:
-            have.add(b.project)
+            have.add(b.project.relpath)
           for p in projects:
-            if p not in have:
+            if p.relpath not in have:
               paths.append(p.relpath)
 
         s = ' %s %s' % (in_type, ', '.join(paths))
