@@ -382,6 +382,8 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--no-clone-bundle',
                    dest='clone_bundle', action='store_false',
                    help='disable use of /clone.bundle on HTTP/HTTPS (default if --partial-clone)')
+  group.add_option('--git-lfs', action='store_true',
+                   help='enable Git LFS support')
 
   # Tool.
   group = parser.add_option_group('repo Version options')
