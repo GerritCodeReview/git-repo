@@ -291,6 +291,13 @@ to update the working directory files.
     if opt.submodules:
       m.config.SetBoolean('repo.submodules', opt.submodules)
 
+    if opt.git_lfs is not None:
+      git_require((2, 17, 0), fail=True, msg='Git LFS support')
+      m.config.SetBoolean('repo.git-lfs', opt.git_lfs)
+      if not is_new:
+        print('warning: Changing --git-lfs settings will only affect new project checkouts.\n'
+              '         Existing projects will require manual updates.\n', file=sys.stderr)
+
     if opt.use_superproject is not None:
       m.config.SetBoolean('repo.superproject', opt.use_superproject)
 
