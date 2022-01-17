@@ -666,6 +666,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def HasSubmodules(self):
     return self.manifestProject.config.GetBoolean('repo.submodules')
 
+  @property
+  def EnableGitLfs(self):
+    return self.manifestProject.config.GetBoolean('repo.git-lfs')
+
   def GetDefaultGroupsStr(self):
     """Returns the default group string for the platform."""
     return 'default,platform-' + platform.system().lower()

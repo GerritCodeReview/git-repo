@@ -149,7 +149,7 @@ if not REPO_REV:
 BUG_URL = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 17)
+VERSION = (2, 21)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -382,6 +382,11 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--no-clone-bundle',
                    dest='clone_bundle', action='store_false',
                    help='disable use of /clone.bundle on HTTP/HTTPS (default if --partial-clone)')
+  group.add_option('--git-lfs', action='store_true',
+                   help='enable Git LFS support')
+  group.add_option('--no-git-lfs',
+                   dest='git_lfs', action='store_false',
+                   help='disable Git LFS support')
 
   # Tool.
   group = parser.add_option_group('repo Version options')

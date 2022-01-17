@@ -163,6 +163,7 @@ User controlled settings are initialized when running `repo init`.
 | repo.clonefilter         | `--clone-filter`          | Filter setting when using [partial git clones] |
 | repo.depth               | `--depth`                 | Create shallow checkouts when cloning |
 | repo.dissociate          | `--dissociate`            | Dissociate from any reference/mirrors after initial clone |
+| repo.git-lfs             | `--git-lfs`               | Enable [Git LFS] support |
 | repo.mirror              | `--mirror`                | Checkout is a repo mirror |
 | repo.partialclone        | `--partial-clone`         | Create [partial git clones] |
 | repo.partialcloneexclude | `--partial-clone-exclude` | Comma-delimited list of project names (not paths) to exclude while using [partial git clones] |
@@ -254,6 +255,7 @@ Repo will create & maintain a few files in the user's home directory.
 
 
 [git-config]: https://git-scm.com/docs/git-config
+[Git LFS]: https://git-lfs.github.com/
 [git worktree]: https://git-scm.com/docs/git-worktree
 [gitsubmodules]: https://git-scm.com/docs/gitsubmodules
 [manifest-format.md]: ./manifest-format.md
