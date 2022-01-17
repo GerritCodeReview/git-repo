@@ -291,6 +291,16 @@ to update the working directory files.
     if opt.submodules:
       m.config.SetBoolean('repo.submodules', opt.submodules)
 
+    if opt.enable_git_lfs_filter:
+      if is_new:
+        m.config.SetBoolean('repo.lfsfilter', opt.enable_git_lfs_filter)
+      else:
+        print('fatal: --enable-git-lfs-filter is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
+        sys.exit(1)
+
     if opt.use_superproject is not None:
       m.config.SetBoolean('repo.superproject', opt.use_superproject)
 
