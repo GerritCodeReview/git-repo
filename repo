@@ -382,6 +382,10 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--no-clone-bundle',
                    dest='clone_bundle', action='store_false',
                    help='disable use of /clone.bundle on HTTP/HTTPS (default if --partial-clone)')
+  group.add_option('--enable-git-lfs-filter', action='store_true',
+                   help='enable git-lfs filters (if installed), to automate '
+                        'large file management; it is not working with some '
+                        'old versions of git and git-lfs')
 
   # Tool.
   group = parser.add_option_group('repo Version options')
