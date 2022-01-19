@@ -16,6 +16,24 @@
       "message": "I can\u0027t say I fully understand what\u0027s going on here, but code generally LGTM",
       "revId": "71c41b8c498d92ac53152677fef57859be641520",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "496a2043_eecda731",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-19T17:24:48Z",
+      "side": 1,
+      "message": "confidence!",
+      "parentUuid": "3c2bd462_1282077e",
+      "revId": "71c41b8c498d92ac53152677fef57859be641520",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
