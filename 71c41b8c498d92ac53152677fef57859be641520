@@ -35,5 +35,75 @@
       "revId": "71c41b8c498d92ac53152677fef57859be641520",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
+  ],
+  "submitRequirementResults": [
+    {
+      "submitRequirement": {
+        "name": "Code-Review",
+        "description": {
+          "value": "Submit requirement for the \u0027Code-Review\u0027 label"
+        },
+        "applicabilityExpression": {},
+        "submittabilityExpression": {
+          "expressionString": "label:Code-Review\u003dMAX AND -label:Code-Review\u003dMIN"
+        },
+        "overrideExpression": {},
+        "allowOverrideInChildProjects": true
+      },
+      "applicabilityExpressionResult": {},
+      "submittabilityExpressionResult": {
+        "expression": {
+          "expressionString": "label:Code-Review\u003dMAX AND -label:Code-Review\u003dMIN"
+        },
+        "status": "PASS",
+        "errorMessage": {},
+        "passingAtoms": [
+          "label:Code-Review\u003dMAX"
+        ],
+        "failingAtoms": [
+          "label:Code-Review\u003dMIN"
+        ]
+      },
+      "overrideExpressionResult": {},
+      "patchSetCommitId": "71c41b8c498d92ac53152677fef57859be641520",
+      "legacy": {
+        "value": false
+      },
+      "forced": {}
+    },
+    {
+      "submitRequirement": {
+        "name": "Verified",
+        "description": {
+          "value": "Submit requirement for the \u0027Verified\u0027 label"
+        },
+        "applicabilityExpression": {},
+        "submittabilityExpression": {
+          "expressionString": "label:Verified\u003dMAX AND -label:Verified\u003dMIN"
+        },
+        "overrideExpression": {},
+        "allowOverrideInChildProjects": true
+      },
+      "applicabilityExpressionResult": {},
+      "submittabilityExpressionResult": {
+        "expression": {
+          "expressionString": "label:Verified\u003dMAX AND -label:Verified\u003dMIN"
+        },
+        "status": "PASS",
+        "errorMessage": {},
+        "passingAtoms": [
+          "label:Verified\u003dMAX"
+        ],
+        "failingAtoms": [
+          "label:Verified\u003dMIN"
+        ]
+      },
+      "overrideExpressionResult": {},
+      "patchSetCommitId": "71c41b8c498d92ac53152677fef57859be641520",
+      "legacy": {
+        "value": false
+      },
+      "forced": {}
+    }
   ]
 }
