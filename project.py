@@ -2554,7 +2554,10 @@ class Project(object):
 
     # Delete sample hooks.  They're noise.
     for hook in glob.glob(os.path.join(hooks, '*.sample')):
-      platform_utils.remove(hook, missing_ok=True)
+      try:
+        platform_utils.remove(hook, missing_ok=True)
+      except PermissionError:
+        pass
 
     for stock_hook in _ProjectHooks():
       name = os.path.basename(stock_hook)
