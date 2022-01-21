@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "175967fa_405d29b6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2022-01-21T22:34:31Z",
+      "side": 1,
+      "message": "Change \"stat\" to \"state\".",
+      "range": {
+        "startLine": 25,
+        "startChar": 22,
+        "endLine": 25,
+        "endChar": 26
+      },
+      "revId": "f112a93efcdbc6d782a784cf2baba06236c16219",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
