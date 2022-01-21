@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a22c308e_461d64ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135490
+      },
+      "writtenOn": "2022-01-21T22:19:33Z",
+      "side": 1,
+      "message": "A little background may be needed as to why I am seeing this:\n\nWe have our own completely revamped set of Git hooks and in our Git templatedir we have \"hooks\" as a symbolic link to a directory in /usr/share, which for legacy reasons also contains the sample hooks. So when repo now tries to remove the sample hooks, for us it is actually trying to remove a file in /usr/share, which obviously fails...",
+      "revId": "fa74646c02680fd8992653f9434fed17f7945630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aca91250_db4ab3a8",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2559,
+      "author": {
+        "id": 1135490
+      },
+      "writtenOn": "2022-01-21T22:19:33Z",
+      "side": 1,
+      "message": "I guess it can be argued to use \"except:\" here to ignore all errors, but PermissionError was the one I got and I assume it is the most likely one.",
+      "revId": "fa74646c02680fd8992653f9434fed17f7945630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
