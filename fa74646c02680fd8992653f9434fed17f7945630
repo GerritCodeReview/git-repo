@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1918d60_948e0438",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-21T23:00:36Z",
+      "side": 1,
+      "message": "but repo also installs commit-msg \u0026 gc hooks, so how is that working ?",
+      "parentUuid": "a22c308e_461d64ba",
+      "revId": "fa74646c02680fd8992653f9434fed17f7945630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aca91250_db4ab3a8",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-01-21T22:19:33Z",
       "side": 1,
       "message": "I guess it can be argued to use \"except:\" here to ignore all errors, but PermissionError was the one I got and I assume it is the most likely one.",
+      "revId": "fa74646c02680fd8992653f9434fed17f7945630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6df2d0e2_69fbd223",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2559,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-21T23:00:36Z",
+      "side": 1,
+      "message": "yeah, i\u0027d accept either.",
+      "parentUuid": "aca91250_db4ab3a8",
       "revId": "fa74646c02680fd8992653f9434fed17f7945630",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
