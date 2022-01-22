@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee699258_56779c4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2022-01-22T01:16:37Z",
+      "side": 1,
+      "message": "By pure luck. All our hooks in the \"hooks\" directory are actually symbolic links to a common script which handles the real hooks that are in a drop directory called \"hooks.d\". So the code in _InitHooks() that checks if dst is a symbolic link will find our hooks as symbolic links and skip installing the hooks provided by repo. :)",
+      "parentUuid": "c1918d60_948e0438",
+      "revId": "fa74646c02680fd8992653f9434fed17f7945630",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aca91250_db4ab3a8",
