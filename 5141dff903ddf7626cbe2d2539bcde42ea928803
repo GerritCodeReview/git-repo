@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78af7678_a1c7c20a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T17:14:55Z",
+      "side": 1,
+      "message": "few more minor things",
+      "revId": "5141dff903ddf7626cbe2d2539bcde42ea928803",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6534c241_625aff85",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T17:14:55Z",
+      "side": 1,
+      "message": "linkify [Git LFS].  put the anchor at the bottom of the doc pointing to https://git-lfs.github.com/",
+      "revId": "5141dff903ddf7626cbe2d2539bcde42ea928803",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c43ae5_31fe2b47",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T17:14:55Z",
+      "side": 1,
+      "message": "add another --no-git-lfs option to allow people to flip it back off\n\nlook at how clone-bundle/no-clone-bundle above handle dest\u003d and action\u003d to see how to make it work",
+      "revId": "5141dff903ddf7626cbe2d2539bcde42ea928803",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
