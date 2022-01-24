@@ -33,6 +33,24 @@
       "message": "it sounds like you\u0027re just adding support for including a manifest from a manifest.  is there something else not covered ?\n\nplease see:\nhttps://crbug.com/gerrit/11685\nhttps://gerrit-review.googlesource.com/c/git-repo/+/243588",
       "revId": "8f203b60445394402b5dfecf17f681d6bb10ccd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a65a5e39_5a749052",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-01-24T22:53:51Z",
+      "side": 1,
+      "message": "What this does:\n - implement including a manifest from a manifest\n  - without changing the current \u003cinclude/\u003e syntax and\n  - using a layout compatible with the superproject and git modules work.\n - allow a way to declare that the inner manifest should be explicitly shareable (deferring the actual process of doing so for this CL)\n - does not attempt to share the git objects between the various manifest trees (.repo/projects and .repo/project-objects are not shared).\n \n243588 looks more focused on sharing the objects and changing the include syntax.",
+      "parentUuid": "5e7f9d37_42025c61",
+      "revId": "8f203b60445394402b5dfecf17f681d6bb10ccd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
