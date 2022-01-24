@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18d234cc_f07345ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3e49ec5_6699ac28",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e32913ba_5608540f",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-01-24T06:36:45Z",
       "side": 1,
       "message": "we don\u0027t use s-o-b tags, so you can omit this",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc2028db_bc01ecbf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "I also adjusted the column width to be consistent with other comments from git-log.",
+      "parentUuid": "e32913ba_5608540f",
       "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f996f11_2c1616e5",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb45afb5_d6491fef",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c1a3890_71657e9a",
@@ -82,6 +136,24 @@
       "writtenOn": "2022-01-24T06:36:45Z",
       "side": 1,
       "message": "omit \"Filter\" i think.  see other comments below for more background.",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78fa79e8_c25b5d60",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c1a3890_71657e9a",
       "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -103,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd95719_1c01c01b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c0b69fe3_30568ac0",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25b5714e_217c2d32",
@@ -116,6 +206,24 @@
       "writtenOn": "2022-01-24T06:36:45Z",
       "side": 1,
       "message": "i think --git-lfs is sufficient and matches the style we\u0027ve used everywhere else in repo.  we\u0027ve never used --enable/--disable, only --xxx and --no-xxx.  --use-superproject is the closest we\u0027ve gotten, and even that arguably is wrong and shouldn\u0027t have \"use\" in it.",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bda559a9_f143a104",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25b5714e_217c2d32",
       "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -137,6 +245,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c949d587_89d06168",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6470d086_6822ff84",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3404b3b1_01cde8da",
@@ -154,6 +280,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "416c587c_cab836a9",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3404b3b1_01cde8da",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61601d6b_92b3daba",
@@ -167,6 +311,24 @@
       "writtenOn": "2022-01-24T06:36:45Z",
       "side": 1,
       "message": "this is not the pattern we want.  `repo init` should be able to toggle these defaults on the fly.  i don\u0027t think we need the code to walk all projects and clear/set the config though, so you can make it a warning.\n\n if opt.git_lfs is not None:\n   m.config.SetBoolean(...)\n   if not is_new:\n     print(\u0027warning: Changing --git-lfs settings will only affect new project checkouts.\\n\u0027\n           \u0027         Existing projects will require manual updates.\\n\u0027, file\u003dsys.stderr)",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a59a6391_299f4d83",
+        "filename": "subcmds/init.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-24T15:28:53Z",
+      "side": 1,
+      "message": "a little weird with\n \n# opt.git_lfs is not None, assume it is true\n`git_require((2, 17, 0), fail\u003dTrue, msg\u003d\u0027Git LFS support\u0027)`\n\nand\n\n# opt.git_lfs is not None, assume it is TURE OR FALSE\n`m.config.SetBoolean(\u0027repo.git-lfs\u0027, opt.git_lfs)`\n\ntogether.",
+      "parentUuid": "61601d6b_92b3daba",
       "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
