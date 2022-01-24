@@ -16,6 +16,23 @@
       "message": "IMO, vapier@ is the best person to review this change. From superproject point of view, this may not have an impact because of the following:\n\nif a project has a revision id is set, it will skip updating it. First time it sees a project it will update the revision id and afterwars if the same project comes up because of another manifest and if the project already has the revsion id, it won\u0027t update it.\n",
       "revId": "8f203b60445394402b5dfecf17f681d6bb10ccd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e7f9d37_42025c61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T22:20:38Z",
+      "side": 1,
+      "message": "it sounds like you\u0027re just adding support for including a manifest from a manifest.  is there something else not covered ?\n\nplease see:\nhttps://crbug.com/gerrit/11685\nhttps://gerrit-review.googlesource.com/c/git-repo/+/243588",
+      "revId": "8f203b60445394402b5dfecf17f681d6bb10ccd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
