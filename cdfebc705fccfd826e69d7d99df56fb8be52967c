@@ -1,0 +1,174 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3e49ec5_6699ac28",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "add above this:\n\n Bug: https://crbug.com/gerrit/14516",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e32913ba_5608540f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "we don\u0027t use s-o-b tags, so you can omit this",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc3d913a_ab087135",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "thanks, i like this approach -- the default doesn\u0027t change, but users can opt-in.  i think this reflects well the default repo philosophy of only getting you the git projects listed, and people have to opt-in to the rest (e.g. submodule usage).\n\nit also means the defaults/status quo doesn\u0027t change for anyone when upgrading.",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb45afb5_d6491fef",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "all new internal config values like this need documenting in docs/internal-fs-layout.md",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c1a3890_71657e9a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "omit \"Filter\" i think.  see other comments below for more background.",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0b69fe3_30568ac0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "how about \u0027repo.git-lfs\u0027 ?  best to keep options \u0026 internal configs as close as possible to reduce confusion.",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25b5714e_217c2d32",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "i think --git-lfs is sufficient and matches the style we\u0027ve used everywhere else in repo.  we\u0027ve never used --enable/--disable, only --xxx and --no-xxx.  --use-superproject is the closest we\u0027ve gotten, and even that arguably is wrong and shouldn\u0027t have \"use\" in it.",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6470d086_6822ff84",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "i would emphasize \"filters\".  i expect most people just \"use git lfs\" and that\u0027s as deep in the terminology they go.\n\n help\u003d\u0027enable Git LFS support\u0027",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3404b3b1_01cde8da",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "these can, and should, be handled by repo.  if the user passes --git-lfs, use git_require() to check for the min required git version.\n\nif you aren\u0027t sure of exact version, but you tested git-2.17, let\u0027s just start with that.  that was released 4 years ago and should be fine to require for git-lfs specifically.  if some random person wants to lower it because they tested it, they can send a patch.",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61601d6b_92b3daba",
+        "filename": "subcmds/init.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-24T06:36:45Z",
+      "side": 1,
+      "message": "this is not the pattern we want.  `repo init` should be able to toggle these defaults on the fly.  i don\u0027t think we need the code to walk all projects and clear/set the config though, so you can make it a warning.\n\n if opt.git_lfs is not None:\n   m.config.SetBoolean(...)\n   if not is_new:\n     print(\u0027warning: Changing --git-lfs settings will only affect new project checkouts.\\n\u0027\n           \u0027         Existing projects will require manual updates.\\n\u0027, file\u003dsys.stderr)",
+      "revId": "cdfebc705fccfd826e69d7d99df56fb8be52967c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
