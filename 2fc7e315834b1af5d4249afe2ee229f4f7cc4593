@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba7fbc5a_1c12594d",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-25T03:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a8c2754_68485ec8",
+      "revId": "2fc7e315834b1af5d4249afe2ee229f4f7cc4593",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23ced389_2aa8c559",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-01-25T03:44:32Z",
       "side": 1,
       "message": "this is nominally sorted, so should be higher up in the list",
+      "revId": "2fc7e315834b1af5d4249afe2ee229f4f7cc4593",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb359ee0_70a9c406",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1144460
+      },
+      "writtenOn": "2022-01-25T03:51:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23ced389_2aa8c559",
       "revId": "2fc7e315834b1af5d4249afe2ee229f4f7cc4593",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
