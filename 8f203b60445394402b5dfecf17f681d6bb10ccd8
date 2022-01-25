@@ -51,6 +51,24 @@
       "parentUuid": "5e7f9d37_42025c61",
       "revId": "8f203b60445394402b5dfecf17f681d6bb10ccd8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69c21bf8_80658a99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-01-25T19:58:28Z",
+      "side": 1,
+      "message": "Following up more:\n\n - \u003cinnertree/\u003e says \"put an instance of the named manifest ${HERE}\", rather than simply including the specified file in the current manifest (\u003cinclude/\u003e).  Since it creates a new element in the XML tree, it felt cleaner to use a different element type.\n - innertree sharing is an optimization to reduce the size of the checked out innertrees. (I know that some other innertree has the version of the thing [such as \"build-system\"], use that inner tree ${HERE}.)  That design is still somewhat pending: we can drop that attribute for the time being if desired.\n - \"does not attempt to share\" should be read as \"defers this for now\".  .repo/projects must be separate, and .repo/project-objects *should* be shared, but I was deferring that until after analyzing the complications of object sharing with differing remotes.\n \nWRT object sharing, we do *not* need to support remotes of the same `name` with different/colliding project namespaces.  We will happily require that one of the remotes be renamed before that innertree can coexist with the other.",
+      "parentUuid": "a65a5e39_5a749052",
+      "revId": "8f203b60445394402b5dfecf17f681d6bb10ccd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
