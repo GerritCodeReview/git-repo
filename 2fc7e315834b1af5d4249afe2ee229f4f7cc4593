@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fbc0b9e_8953ac59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-25T03:44:32Z",
+      "side": 1,
+      "message": "please mark it Verified+1 so we can merge it",
+      "revId": "2fc7e315834b1af5d4249afe2ee229f4f7cc4593",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a8c2754_68485ec8",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-25T03:44:32Z",
+      "side": 1,
+      "message": "need to write:\n\n Enable [Git LFS] support\n\nin order to actually link it",
+      "revId": "2fc7e315834b1af5d4249afe2ee229f4f7cc4593",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23ced389_2aa8c559",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-01-25T03:44:32Z",
+      "side": 1,
+      "message": "this is nominally sorted, so should be higher up in the list",
+      "revId": "2fc7e315834b1af5d4249afe2ee229f4f7cc4593",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
