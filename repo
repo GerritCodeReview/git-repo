@@ -618,6 +618,7 @@ def _Init(args, gitc_init=False):
             "REPO_URL set correctly?" % url, file=sys.stderr)
 
   except CloneFailure:
+    print('fatal: double check your --repo-rev setting.', file=sys.stderr)
     if opt.quiet:
       print('fatal: repo init failed; run without --quiet to see why',
             file=sys.stderr)

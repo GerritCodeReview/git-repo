@@ -520,8 +520,12 @@ to update the working directory files.
     # Handle new --repo-rev requests.
     if opt.repo_rev:
       wrapper = Wrapper()
-      remote_ref, rev = wrapper.check_repo_rev(
-          rp.gitdir, opt.repo_rev, repo_verify=opt.repo_verify, quiet=opt.quiet)
+      try:
+        remote_ref, rev = wrapper.check_repo_rev(
+            rp.gitdir, opt.repo_rev, repo_verify=opt.repo_verify, quiet=opt.quiet)
+      except wrapper.CloneFailure:
+        print('fatal: double check your --repo-rev setting.', file=sys.stderr)
+        sys.exit(1)
       branch = rp.GetBranch('default')
       branch.merge = remote_ref
       rp.work_git.reset('--hard', rev)
