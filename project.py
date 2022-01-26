@@ -2820,7 +2820,8 @@ class Project(object):
     }
     # Paths that we know will be in both, but are safe to clobber in .repo/projects/.
     SAFE_TO_CLOBBER = {
-        'COMMIT_EDITMSG', 'FETCH_HEAD', 'HEAD', 'gitk.cache', 'index', 'ORIG_HEAD',
+        'COMMIT_EDITMSG', 'FETCH_HEAD', 'HEAD', 'gc.log', 'gitk.cache', 'index',
+        'ORIG_HEAD',
     }
 
     # First see if we'd succeed before starting the migration.
