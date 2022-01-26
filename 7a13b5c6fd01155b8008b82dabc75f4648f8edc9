@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e77bca6_635b334f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2022-01-26T09:18:43Z",
+      "side": 1,
+      "message": "Change \"save\" to \"safe\".",
+      "range": {
+        "startLine": 7,
+        "startChar": 24,
+        "endLine": 7,
+        "endChar": 28
+      },
+      "revId": "7a13b5c6fd01155b8008b82dabc75f4648f8edc9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
