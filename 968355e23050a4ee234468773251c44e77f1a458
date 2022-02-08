@@ -1,0 +1,384 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b35b7c3_9e5a72f0",
+        "filename": "command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "should we stick to \"manifest\" instead of \"tree\" in the naming ?\n\nalso put \"options\" at the end",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41f71cba_52799602",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 18
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "this should document restrictions, considerations, and provide a tip/recommendation.  most people will read this and say \"unique in what way?  how is this actually used?\".",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0281ae10_71152907",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 18
+      },
+      "lineNbr": 260,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "should clarify how this is used.  see project.name below for details.",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93b371c0_aa45aff1",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 18
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "should note that tags and commits are also permitted",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77138b72_c00bae9f",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 18
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "if we\u0027re being consistent, this would be:\n\n If not supplied, `revision` is used.",
+      "range": {
+        "startLine": 270,
+        "startChar": 19,
+        "endLine": 270,
+        "endChar": 69
+      },
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88ce1144_6040d7ed",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 18
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "\"submanifests\" to be consistent",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e0b80e7_3974fc9f",
+        "filename": "main.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "space around \u003d",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "551fbe77_430f68a6",
+        "filename": "main.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "hmm, instead of walking the optparse.Values, what if you walked global_options instead ?\n\n for opt in global_options:\n   if not opt.dest:\n     # Skip --help and such.\n     continue\n   optstr \u003d opt.get_opt_string()\n   value \u003d getattr(gopts, opt.dest)\n   if opt.takes_value():\n     if value is not None:\n       if opt.dest in (\u0027event_log\u0027, \u0027git_trace2_event_log\u0027):\n         value \u003d os.path.realpath(value)\n       run_args.extend([optstr, value])\n   else:\n     run_args.append(optstr)",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7387a1e4_0f081951",
+        "filename": "main.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "guess you want to delete this",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7915d8f8_6d76ffbb",
+        "filename": "main.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 349,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "these should be declared \u0026 documented in Command as such.  see how we handle Command.COMMON \u0026 Command.PARALLEL_JOBS for example.  using getattr and such leads to harder to trace code.",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b11de51f_580ff435",
+        "filename": "main.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "seems like this code should be able to walk back up itself without having to fork+exec one process-per-parent-manifest",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66e9a24d_89dd8aca",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "should update docs/internal-fs-layout.md to document this new layout",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32846822_750d288a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "leave a comment noting where this came from (basically just picked a number)",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf2fd4be_fce19134",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "all classes should have docstrings\n\na good a time as any to add Attributes: to it too\n\nthis comes up multiple times in this CL, but i\u0027ll note it just this once :p",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97584c59_5d90694d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "i don\u0027t think this wrapped indentation is correct\n\nprob should have only one-test-per-line to keep it readable",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa20d19a_c0d8b65f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "can omit (object) in Python 3",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f48aa8ed_402bd1e0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "what is \"git-init\" ?  did you mean \"gitc-init\" ?  the two clients specifically have the isGitcClient property so code can test to see if it\u0027s in a gitc client.",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d118619_d6bb6823",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "one blank line",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b394331_5319a948",
+        "filename": "manifest_xml.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "pretty sure this is just:\n\n return bool(self.outer_client.submanifests)",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21cb276a_b3c6ba89",
+        "filename": "project.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "all funcs should have at least a one-line docstring explaining its purpose/intention and non-obvious arguments\n\nthis comes up multiple times in this CL, but i\u0027ll note it just this once :p",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e672d0e_ab525077",
+        "filename": "repo",
+        "patchSetId": 18
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "i think you want to drop this now",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25ccb24a_1aa315ba",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "the func has a kwarg, so specify it as such, not a positional\n\ni assume this pattern comes up more than once in this CL",
+      "revId": "968355e23050a4ee234468773251c44e77f1a458",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

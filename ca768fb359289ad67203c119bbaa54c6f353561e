@@ -22,6 +22,30 @@
       },
       "revId": "ca768fb359289ad67203c119bbaa54c6f353561e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a719c84f_1275049f",
+        "filename": "main.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-08T08:34:38Z",
+      "side": 1,
+      "message": "saving |glob| in _Repo._ParseArgs to |gopts| seems like the easiest route.  but i think that ends up not being correct because of how you want to use these things.  options like --event-log take a path which can be relative, but you\u0027re running repo in a diff dir which will break those relative paths.  so your only option is to reconstruct \u0026 normalize path arguments in the process.\n\nchromite has a custom FilteringParser that extends optparse.OptionParser so that it can capture arguments and replay them later, but it requires a bit of boiler plate, and wouldn\u0027t really address the relative path issue.",
+      "parentUuid": "870fde44_714b1e55",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 214,
+        "endChar": 51
+      },
+      "revId": "ca768fb359289ad67203c119bbaa54c6f353561e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
