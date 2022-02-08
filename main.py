@@ -195,54 +195,6 @@ class _Repo(object):
       args = []
     return name, args
 
-  def _RunGatherArgs(self, cmd, gopts, argv, submanifest_path=''):
-    """Collect common arguments for spawning ourselves."""
-    run_args = [sys.executable, os.path.join(cmd.manifest.repodir, 'repo', 'repo')]
-    # Reconstruct the global arguments.
-    for opt in global_options.option_list:
-      optstr = opt.get_opt_string()
-      value = getattr(gopts, opt.dest)
-      if not opt.dest or value is None:
-        # Skip --help and options not used.
-        continue
-      if opt.takes_value():
-        if value is not None:
-          if opt.dest in ('event_log', 'git_trace2_event_log'):
-            value = os.path.realpath(value)
-          run_args.extend([optstr, value])
-      else:
-        run_args.append(optstr)
-    if submanifest_path:
-      run_args.append(f'--submanifest-path={submanifest_path}')
-    run_args.append(cmd.NAME)
-    run_args.extend(argv)
-    return run_args
-
-  def _RunSubmanifests(self, cmd, gopts, argv, copts, cargs):
-    """Execute the requested subcommand in all submanifests"""
-    result = 0
-    m = cmd.manifest
-
-    if m.IsMirror:
-      return 0
-
-    for name in m.submanifests:
-      tree = m.submanifests[name]
-      spec = tree.ToSubmanifestSpec(root=m)
-
-      inner_args = self._RunGatherArgs(cmd, gopts, argv, tree.relpath)
-      inner_args.append('--no-parent-manifest')
-      # Lastly, override the manifest arguments for the submanifest.
-      if hasattr(copts, 'manifest_url'):
-        inner_args.extend(['--manifest-url', spec.manifestUrl])
-      if hasattr(copts, 'manifest_name'):
-        inner_args.extend(['--manifest-name', spec.manifestName])
-      if hasattr(copts, 'manifest_branch'):
-        inner_args.extend(['--manifest-branch', spec.revision])
-      res = subprocess.run(inner_args, check=True)
-      result = result or res.returncode
-    return result
-
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
     result = 0
