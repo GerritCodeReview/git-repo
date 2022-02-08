@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a0c48293_abad26de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-08T19:30:19Z",
+      "side": 1,
+      "message": "Dropped submanifest sharing until we understand how git modules will implement it, since we want to mirror that.",
+      "parentUuid": "6da2d253_1fb2605d",
+      "revId": "c418ab57a32c50f8e6177da4b2b4f1b4e2061bc5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "41e05723_c0deac8b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 12
