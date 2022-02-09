@@ -1911,7 +1911,7 @@ class RepoClient(XmlManifest):
       sys.exit(1)
 
     if manifest_file is None:
-        manifest_file = os.path.join(prefix, MANIFEST_FILE_NAME)
+      manifest_file = os.path.join(prefix, MANIFEST_FILE_NAME)
     local_manifests = os.path.abspath(os.path.join(prefix, LOCAL_MANIFESTS_DIR_NAME))
     super().__init__(repodir, manifest_file, local_manifests,
                      submanifest_path=submanifest_path, **kwargs)
