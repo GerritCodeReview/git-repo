@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1b592b1_56d98008",
+        "filename": "git_superproject.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-09T21:33:54Z",
+      "side": 1,
+      "message": "This probably belongs in manifest_xml.py, but there is enough work needed here to separate out the submanifests that it makes sense to move it as part of that larger CL.",
+      "range": {
+        "startLine": 95,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 0
+      },
+      "revId": "5e6dbac66fd305d2511bc804ec7b1663452e36c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "985039ac_2e1ce339",
+        "filename": "main.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-09T21:33:54Z",
+      "side": 1,
+      "message": "Dropping this for the next pass.",
+      "revId": "5e6dbac66fd305d2511bc804ec7b1663452e36c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
