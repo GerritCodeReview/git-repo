@@ -2142,8 +2142,7 @@ class Project(object):
     if prune:
       cmd.append('--prune')
 
-    if submodules:
-      cmd.append('--recurse-submodules=on-demand')
+    cmd.append(f'--recurse-submodules={"on-demand" if submodules else "no"}')
 
     spec = []
     if not current_branch_only:
