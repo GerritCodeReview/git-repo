@@ -650,6 +650,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def HasLocalManifests(self):
     return self._load_local_manifests and self.local_manifests
 
+  def IsFromLocalManifest(self, project):
+    """Is the project from a local manifest?
+    """
+    return any(x.startswith(LOCAL_MANIFEST_GROUP_PREFIX)
+               for x in project.groups)
+
   @property
   def IsMirror(self):
     return self.manifestProject.config.GetBoolean('repo.mirror')

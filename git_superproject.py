@@ -32,7 +32,6 @@ from typing import NamedTuple
 from git_command import git_require, GitCommand
 from git_config import RepoConfig
 from git_refs import R_HEADS
-from manifest_xml import LOCAL_MANIFEST_GROUP_PREFIX
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
@@ -311,7 +310,7 @@ class Superproject(object):
     if project.revisionId:
       return True
     # Skip the project if it comes from the local manifest.
-    return any(s.startswith(LOCAL_MANIFEST_GROUP_PREFIX) for s in project.groups)
+    return project.manifest.IsFromLocalManifest(project)
 
   def UpdateProjectsRevisionId(self, projects):
     """Update revisionId of every project in projects with the commit id.
