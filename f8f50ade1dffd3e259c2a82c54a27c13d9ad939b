@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed8f9871_825f4fcf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-15T21:10:05Z",
+      "side": 1,
+      "message": "This change will help when I extend git_superproject for multi-manifest syncing.",
+      "revId": "f8f50ade1dffd3e259c2a82c54a27c13d9ad939b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
