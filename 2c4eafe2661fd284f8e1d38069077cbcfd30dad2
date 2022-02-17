@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce0e29b0_dd78a5d3",
+        "filename": "command.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a15581a_a6a2823a",
+      "range": {
+        "startLine": 147,
+        "startChar": 44,
+        "endLine": 147,
+        "endChar": 62
+      },
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad56cf92_ac4b3c50",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-02-17T19:57:10Z",
       "side": 1,
       "message": "the option name implies it goes up one level, but the help text implies it goes up to the highest level",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c52c6a0d_3b27895c",
+        "filename": "command.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad56cf92_ac4b3c50",
       "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -64,6 +106,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "628ae816_815d8f0e",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 25
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "the single manifest.  Updated.",
+      "parentUuid": "fe174dbd_873bbb4a",
+      "range": {
+        "startLine": 254,
+        "startChar": 44,
+        "endLine": 254,
+        "endChar": 51
+      },
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "448fe66a_0b21e8ae",
@@ -77,6 +143,24 @@
       "writtenOn": "2022-02-17T19:57:10Z",
       "side": 1,
       "message": "single quotes",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e7cbd8e_baa8c2e2",
+        "filename": "main.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "448fe66a_0b21e8ae",
       "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -98,6 +182,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9dc22f5_b4f775df",
+        "filename": "main.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca75de5a_0038a09e",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "268f582b_28551067",
@@ -111,6 +213,24 @@
       "writtenOn": "2022-02-17T19:57:10Z",
       "side": 1,
       "message": "you can omit (object) now in Python 3 when declaring classes\n\ni prob should throw a CL up to migrate the tree",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bcd4422_a1c98e7f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "268f582b_28551067",
       "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -132,6 +252,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d191a744_896cf904",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c69621e6_8cefe105",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4aad19c_6c633152",
@@ -145,6 +283,24 @@
       "writtenOn": "2022-02-17T19:57:10Z",
       "side": 1,
       "message": "isn\u0027t self.groups a list of strings ?  GetGroupsStr below thinks it is, and Project.groups treats it as one.  we should be consistent.",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f41f72f9_e435b082",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4aad19c_6c633152",
       "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -166,6 +322,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf13746b_6cde2925",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6a78adf_2dd1d4bd",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c27c3d2_7b3019af",
@@ -179,6 +353,24 @@
       "writtenOn": "2022-02-17T19:57:10Z",
       "side": 1,
       "message": "at least a one-line docstring",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3966159_b38597ef",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c27c3d2_7b3019af",
       "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -200,6 +392,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff03405_072fa21c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 1429,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a4e7760_9f3fead3",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20f07cba_38a7e8df",
@@ -213,6 +423,24 @@
       "writtenOn": "2022-02-17T19:57:10Z",
       "side": 1,
       "message": "isn\u0027t this the default ?",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dcf0012_d45b1f8e",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "COMMON also defaults to True, and I mirrored that.  I\u0027ll drop MULTI_MANIFEST_SUPPORT\u003dTrue from the commands.",
+      "parentUuid": "20f07cba_38a7e8df",
       "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -234,6 +462,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8116a865_c058805a",
+        "filename": "subcmds/init.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fd3f280_aebb5425",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f0f3ba8_075db569",
@@ -247,6 +493,24 @@
       "writtenOn": "2022-02-17T19:57:10Z",
       "side": 1,
       "message": "i know we\u0027re bad about this, but only import optparse, not classes/funcs from it",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0b0e240_b898f35b",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-17T21:18:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f0f3ba8_075db569",
       "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
