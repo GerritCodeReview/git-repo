@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "224839c0_e42de3d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:35:49Z",
+      "side": 1,
+      "message": "seems like a minor change in behavior, but not unreasonable.  i guess if we want sticky submodule behavior, we should add an option to `repo init`.",
+      "revId": "adaa1d8734b9759c6e5fcb89398f34659aec49da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
