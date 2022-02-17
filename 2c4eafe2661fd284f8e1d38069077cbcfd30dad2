@@ -1,0 +1,254 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a15581a_a6a2823a",
+        "filename": "command.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "avoid negative names.  you do this already below it seems.",
+      "range": {
+        "startLine": 147,
+        "startChar": 44,
+        "endLine": 147,
+        "endChar": 62
+      },
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad56cf92_ac4b3c50",
+        "filename": "command.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "the option name implies it goes up one level, but the help text implies it goes up to the highest level",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe174dbd_873bbb4a",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 25
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "the single current manifest, or the entire state ?\n\n \u003croot manifest\u003e\n |-- \u003csub a\u003e\n |   |-- \u003csub 1\u003e\n |   `-- \u003csub 2\u003e    \u003c-- does this conflict ?\n `-- \u003csub b\u003e\n     |-- \u003csub 1\u003e\n     `-- \u003csub 2\u003e",
+      "range": {
+        "startLine": 254,
+        "startChar": 44,
+        "endLine": 254,
+        "endChar": 51
+      },
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "448fe66a_0b21e8ae",
+        "filename": "main.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "single quotes",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca75de5a_0038a09e",
+        "filename": "main.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 296,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "does this need getattr still ?",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "268f582b_28551067",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "you can omit (object) now in Python 3 when declaring classes\n\ni prob should throw a CL up to migrate the tree",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c69621e6_8cefe105",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "you use this once.  do you really need a variable for it ?",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4aad19c_6c633152",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 275,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "isn\u0027t self.groups a list of strings ?  GetGroupsStr below thinks it is, and Project.groups treats it as one.  we should be consistent.",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6a78adf_2dd1d4bd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "all classes should have a docstring\n\nalso drop (object)",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c27c3d2_7b3019af",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "at least a one-line docstring",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a4e7760_9f3fead3",
+        "filename": "manifest_xml.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 1429,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "one-line docstrings should be one-line",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20f07cba_38a7e8df",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "isn\u0027t this the default ?",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fd3f280_aebb5425",
+        "filename": "subcmds/init.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "multi-manifest",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f0f3ba8_075db569",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-17T19:57:10Z",
+      "side": 1,
+      "message": "i know we\u0027re bad about this, but only import optparse, not classes/funcs from it",
+      "revId": "2c4eafe2661fd284f8e1d38069077cbcfd30dad2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
