@@ -16,6 +16,24 @@
       "message": "one-liner docstrings should be on one line",
       "revId": "87cce68b28c34fa86895baa8d7f48307382e6c75",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "500284af_123c63c1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-22T18:04:14Z",
+      "side": 1,
+      "message": "This was addressed in another CL",
+      "parentUuid": "b2433bef_e3ba22c0",
+      "revId": "87cce68b28c34fa86895baa8d7f48307382e6c75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
