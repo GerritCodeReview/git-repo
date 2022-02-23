@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9af920c_96e06248",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-23T21:49:59Z",
+      "side": 1,
+      "message": "When this is rebased to tip-of-tree, [manifest_xml.GetProjectPaths](https://gerrit.googlesource.com/git-repo/+/cc879a97c3e2614d19b15b4661c3cab4d33139c9/manifest_xml.py#1621) will need to use self.repodir instead of self.subdir when assigning objdir.",
+      "revId": "e0e23e26327ee9568e255faa7c2edc706fc029b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "edb3328a_90c56232",
         "filename": "project.py",
         "patchSetId": 1
