@@ -16,6 +16,24 @@
       "message": "you defined this nice pretty unique id.  shouldn\u0027t we leverage that ?",
       "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7491a9a_aa4046c5",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-02-25T23:05:39Z",
+      "side": 0,
+      "message": "My logic was thus: `name` is unique only within the current manifest, while `path_prefix` is relative to topdir.  I\u0027m happy to go with either (or both..)\n\nthoughts?",
+      "parentUuid": "01d67693_456f7ed8",
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
