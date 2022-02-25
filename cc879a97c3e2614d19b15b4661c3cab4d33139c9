@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d67693_456f7ed8",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-25T20:14:41Z",
+      "side": 0,
+      "message": "you defined this nice pretty unique id.  shouldn\u0027t we leverage that ?",
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
