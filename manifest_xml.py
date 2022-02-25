@@ -36,6 +36,8 @@ LOCAL_MANIFESTS_DIR_NAME = 'local_manifests'
 SUBMANIFEST_DIR = 'submanifests'
 # Limit submanifests to an arbitrary depth for loop detection.
 MAX_SUBMANIFEST_DEPTH = 8
+# Add all projects from sub manifest into a group.
+SUBMANIFEST_GROUP_PREFIX = 'submanifest:'
 
 # Add all projects from local manifest into a group.
 LOCAL_MANIFEST_GROUP_PREFIX = 'local:'
@@ -990,6 +992,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       self.branch = b
 
       parent_groups = self.parent_groups
+      if self.path_prefix:
+        parent_groups = f'{SUBMANIFEST_GROUP_PREFIX}:path:{self.path_prefix},{parent_groups}'
 
       # The manifestFile was specified by the user which is why we allow include
       # paths to point anywhere.
