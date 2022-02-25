@@ -281,6 +281,9 @@ with the new settings needed.
 If not supplied the remote and project for this manifest will be used: `remote`
 cannot be supplied.
 
+Projects from a submanifest and its submanifests are added to the
+submanifest::<path_prefix> group.
+
 Attribute `manifest-name`: The manifest filename in the manifest project.  If
 not supplied, `default.xml` is used.
 
