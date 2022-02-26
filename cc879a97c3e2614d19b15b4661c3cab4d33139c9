@@ -34,6 +34,24 @@
       "parentUuid": "01d67693_456f7ed8",
       "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a601f70_8a4a2a52",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-02-26T05:40:27Z",
+      "side": 0,
+      "message": "i figured the names would accumulate as you descended\n\ni\u0027m not hung up on having both, but we should pick a schema that allows for future usage.  `submanifest::\u003cpath_prefix\u003e` doesn\u0027t.  the automatic group syntax we use already is `path:xxx`, so maybe it should be `submanifest::path:\u003cpath_prefix\u003e`.  a little wordy, but doesn\u0027t run into future expansion troubles.",
+      "parentUuid": "f7491a9a_aa4046c5",
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
