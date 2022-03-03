@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb47d232_40580a57",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1076929
+      },
+      "writtenOn": "2022-03-03T08:00:22Z",
+      "side": 1,
+      "message": "Hi LaMont,\n\nSorry for late late comments, but I had a few questions from the review. I thought just add comments to the CL would be the best way to communicate.\n\nThanks!",
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f2c3722_b2eaedbe",
+        "filename": "command.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1076929
+      },
+      "writtenOn": "2022-03-03T08:00:22Z",
+      "side": 1,
+      "message": "Probably I didn\u0027t understand properly, but not `outer_manifest`?",
+      "range": {
+        "startLine": 280,
+        "startChar": 33,
+        "endLine": 280,
+        "endChar": 45
+      },
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78d426e9_46ee0d46",
+        "filename": "manifest_xml.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1076929
+      },
+      "writtenOn": "2022-03-03T08:00:22Z",
+      "side": 1,
+      "message": "I thought this depth is too much. What do you think about limit this as 2 (just outer-tree and inner-tree)?",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a08e1f32_3085250e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 1910,
+      "author": {
+        "id": 1076929
+      },
+      "writtenOn": "2022-03-03T08:00:22Z",
+      "side": 1,
+      "message": "nit: spaces?",
+      "range": {
+        "startLine": 1910,
+        "startChar": 6,
+        "endLine": 1910,
+        "endChar": 8
+      },
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
