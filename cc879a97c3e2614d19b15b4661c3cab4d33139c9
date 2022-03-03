@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20dc8cda_1b047bd2",
+        "filename": "command.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-03-03T17:14:08Z",
+      "side": 1,
+      "message": "It probably should be `outer_client.manifest`.  That said, see the comment at the bottom of manifest_xml.RepoClient.__init__():\n```\n    # TODO: Completely separate manifest logic out of the client.\n    self.manifest \u003d self\n```\n\nThey\u0027re very intertwined right now.",
+      "parentUuid": "2f2c3722_b2eaedbe",
+      "range": {
+        "startLine": 280,
+        "startChar": 33,
+        "endLine": 280,
+        "endChar": 45
+      },
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78d426e9_46ee0d46",
@@ -64,6 +88,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a310ef2a_530fcb06",
+        "filename": "manifest_xml.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-03-03T17:14:08Z",
+      "side": 1,
+      "message": "The intent here was to avoid loops and deep recursion, not to define policy.  (The use of \"arbitrary\" on line 37 says that if 8 is not enough, there is nothing wrong with making it larger.)\n\nFrom `repo`\u0027s perspective, there\u0027s nothing wrong with submanifests having submanifests (and for example, the inner-tree may get its build system with a `\u003csubmanifest/\u003e` element).",
+      "parentUuid": "78d426e9_46ee0d46",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 21
+      },
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a08e1f32_3085250e",
@@ -77,6 +125,30 @@
       "writtenOn": "2022-03-03T08:00:22Z",
       "side": 1,
       "message": "nit: spaces?",
+      "range": {
+        "startLine": 1910,
+        "startChar": 6,
+        "endLine": 1910,
+        "endChar": 8
+      },
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfcb09f4_56a3a073",
+        "filename": "manifest_xml.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 1910,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-03-03T17:14:08Z",
+      "side": 1,
+      "message": "good catch.  I\u0027ve added the drive-by fix to 330059.",
+      "parentUuid": "a08e1f32_3085250e",
       "range": {
         "startLine": 1910,
         "startChar": 6,
