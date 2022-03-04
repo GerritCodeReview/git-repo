@@ -65,6 +65,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf9f2f35_54ad2269",
+        "filename": "command.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1076929
+      },
+      "writtenOn": "2022-03-04T02:28:34Z",
+      "side": 1,
+      "message": "That makes more sense. I just wondered why manifest \u003d client.",
+      "parentUuid": "20dc8cda_1b047bd2",
+      "range": {
+        "startLine": 280,
+        "startChar": 33,
+        "endLine": 280,
+        "endChar": 45
+      },
+      "revId": "cc879a97c3e2614d19b15b4661c3cab4d33139c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78d426e9_46ee0d46",
