@@ -16,11 +16,42 @@
 
 import json
 import os
+import socket
 import tempfile
+import threading
 import unittest
 from unittest import mock
 
 import git_trace2_event_log
+import platform_utils
+
+
+def serverLoggingThread(socket_path, server_ready, received_traces):
+  """Helper function to receive logs over a Unix domain socket.
+
+  Appends received messages on the provided socket and appends to received_traces.
+
+  Args:
+    socket_path: path to a Unix domain socket on which to listen for traces
+    server_ready: a threading.Condition used to signal to the caller that this thread is ready to
+        accept connections
+    received_traces: a list to which received traces will be appended (after decoding to a utf-8
+        string).
+  """
+  platform_utils.remove(socket_path, missing_ok=True)
+  data = b''
+  with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+    sock.bind(socket_path)
+    sock.listen(0)
+    with server_ready:
+      server_ready.notify()
+    with sock.accept()[0] as conn:
+      while True:
+        recved = conn.recv(4096)
+        if not recved:
+          break
+        data += recved
+  received_traces.extend(data.decode('utf-8').splitlines())
 
 
 class EventLogTestCase(unittest.TestCase):
@@ -323,6 +354,37 @@ class EventLogTestCase(unittest.TestCase):
     """Test Write() with non-string type for |path| throws TypeError."""
     with self.assertRaises(TypeError):
       self._event_log_module.Write(path=1234)
+
+  def test_write_socket(self):
+    """Test Write() with Unix domain socket for |path| and validate received traces."""
+    received_traces = []
+    with tempfile.TemporaryDirectory(prefix='test_server_sockets') as tempdir:
+      socket_path = os.path.join(tempdir, "server.sock")
+      server_ready = threading.Condition()
+      # Start "server" listening on Unix domain socket at socket_path.
+      try:
+        server_thread = threading.Thread(
+            target=serverLoggingThread,
+            args=(socket_path, server_ready, received_traces))
+        server_thread.start()
+
+        with server_ready:
+          server_ready.wait()
+
+        self._event_log_module.StartEvent()
+        path = self._event_log_module.Write(path=f'af_unix:{socket_path}')
+      finally:
+        server_thread.join(timeout=5)
+
+    self.assertEqual(path, f'af_unix:stream:{socket_path}')
+    self.assertEqual(len(received_traces), 2)
+    version_event = json.loads(received_traces[0])
+    start_event = json.loads(received_traces[1])
+    self.verifyCommonKeys(version_event, expected_event_name='version')
+    self.verifyCommonKeys(start_event, expected_event_name='start')
+    # Check for 'start' event specific fields.
+    self.assertIn('argv', start_event)
+    self.assertIsInstance(start_event['argv'], list)
 
 
 if __name__ == '__main__':
