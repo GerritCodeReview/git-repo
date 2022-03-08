@@ -16,11 +16,44 @@
 
 import json
 import os
+import os.path
+import socket
 import tempfile
+import threading
 import unittest
 from unittest import mock
 
 import git_trace2_event_log
+
+
+def serverLoggingThread(uds_path, server_ready, received_traces):
+  """Helper function to receive logs over a Unix domain socket. Appends received messages to
+  received_traces."""
+  try:
+      os.unlink(uds_path)
+  except OSError:
+      if os.path.exists(uds_path):
+          raise
+  sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+  sock.bind(uds_path)
+  sock.listen(0)
+  with server_ready:
+    server_ready.notify()
+  conn, _ = sock.accept()
+  data = b''
+  while True:
+    recved = conn.recv(4096)
+    if not recved:
+      break
+    data += recved
+    # Split on newlines, convert to strings, and append to received_traces
+    idx = data.find(b'\n')
+    while data and idx > 0:
+      received_traces.append(data[:idx].decode())
+      data = data[idx + 1:]
+      idx = data.find(b'\n')
+  conn.close()
+  sock.close()
 
 
 class EventLogTestCase(unittest.TestCase):
@@ -323,6 +356,34 @@ class EventLogTestCase(unittest.TestCase):
     """Test Write() with non-string type for |path| throws TypeError."""
     with self.assertRaises(TypeError):
       self._event_log_module.Write(path=1234)
+
+  def test_write_socket(self):
+    received_traces = []
+    with tempfile.TemporaryDirectory(prefix='test_server_sockets') as tempdir:
+      uds_path = os.path.join(tempdir, "server.sock")
+      server_ready = threading.Condition()
+      # Start "server" listening on Unix domain socket at uds_path
+      server_thread = threading.Thread(
+          target=serverLoggingThread,
+          args=(uds_path, server_ready, received_traces))
+      server_thread.start()
+
+      with server_ready:
+        server_ready.wait()
+
+      self._event_log_module.StartEvent()
+      path = self._event_log_module.Write(path='af_unix:%s' % uds_path)
+      server_thread.join(timeout=5)
+
+    self.assertEqual(path, 'af_unix:stream:%s' % uds_path)
+    self.assertEqual(len(received_traces), 2)
+    version_event = json.loads(received_traces[0])
+    start_event = json.loads(received_traces[1])
+    self.verifyCommonKeys(version_event, expected_event_name='version')
+    self.verifyCommonKeys(start_event, expected_event_name='start')
+    # Check for 'start' event specific fields.
+    self.assertIn('argv', start_event)
+    self.assertTrue(isinstance(start_event['argv'], list))
 
 
 if __name__ == '__main__':

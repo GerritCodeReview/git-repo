@@ -31,6 +31,7 @@ https://git-scm.com/docs/api-trace2#_the_event_format_target
 import datetime
 import json
 import os
+import socket
 import sys
 import tempfile
 import threading
@@ -219,19 +220,23 @@ class EventLog(object):
     return path
 
   def Write(self, path=None):
-    """Writes the log out to a file.
+    """Writes the log out to a file or socket.
 
     Log is only written if 'path' or 'git config --get trace2.eventtarget'
-    provide a valid path to write logs to.
+    provide a valid path (or socket) to write logs to.
 
     Logging filename format follows the git trace2 style of being a unique
     (exclusive writable) file.
 
     Args:
-      path: Path to where logs should be written.
+      path: Path to where logs should be written. The path may have a prefix of
+            the form "af_unix:[{stream|dgram}:]". If this prefix is set, then
+            the logs will be written to a Unix domain socket at the path, rather
+            than to a file. If neither "stream:" nor "dgram:" are included in
+            the prefix, try both.
 
     Returns:
-      log_path: Path to the log file if log is written, otherwise None
+      log_path: Path to the log file or socket if log is written, otherwise None
     """
     log_path = None
     # If no logging path is specified, get the path from 'trace2.eventtarget'.
@@ -242,17 +247,69 @@ class EventLog(object):
     if path is None:
       return None
 
+    path_is_uds = False
+    uds_type = None
     if isinstance(path, str):
-      # Get absolute path.
-      path = os.path.abspath(os.path.expanduser(path))
+      uds_prefix = 'af_unix:'
+      uds_stream_prefix = 'af_unix:stream:'
+      uds_dgram_prefix = 'af_unix:dgram:'
+      if path.startswith(uds_stream_prefix):
+        path_is_uds = True
+        uds_type = socket.SOCK_STREAM
+        path = path[len(uds_stream_prefix):]
+      elif path.startswith(uds_dgram_prefix):
+        path_is_uds = True
+        uds_type = socket.SOCK_DGRAM
+        path = path[len(uds_dgram_prefix):]
+      elif path.startswith(uds_prefix):
+        path_is_uds = True
+        path = path[len(uds_prefix):]
+      else:
+        # Get absolute path.
+        path = os.path.abspath(os.path.expanduser(path))
     else:
       raise TypeError('path: str required but got %s.' % type(path))
 
     # Git trace2 requires a directory to write log to.
 
     # TODO(https://crbug.com/gerrit/13706): Support file (append) mode also.
-    if not os.path.isdir(path):
+    if not (path_is_uds or os.path.isdir(path)):
       return None
+
+    if path_is_uds:
+      if uds_type == socket.SOCK_STREAM or uds_type is None:
+        try:
+          with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
+            sock.connect(path)
+            for e in self._log:
+              # Dump in compact encoding mode.
+              # See 'Compact encoding' in Python docs:
+              # https://docs.python.org/3/library/json.html#module-json
+              sock.sendall(
+                  (json.dumps(e, indent=None, separators=(',', ':')) + '\n').encode('utf-8'))
+          return 'af_unix:stream:%s' % path
+        except OSError as err:
+          if err.errno == 91:
+            # We tried to connect to a DGRAM socket using STREAM. Ignore this
+            # attempt and continue to DGRAM below.
+            pass
+          else:
+            raise
+      if uds_type == socket.SOCK_DGRAM or uds_type is None:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:
+          for e in self._log:
+            # Dump in compact encoding mode.
+            # See 'Compact encoding' in Python docs:
+            # https://docs.python.org/3/library/json.html#module-json
+            sock.sendto(
+                (json.dumps(e, indent=None, separators=(',', ':')) + '\n').encode('utf-8'),
+                path)
+          return 'af_unix:dgram:%s' % path
+      # Tried to open a socket but couldn't connect (SOCK_STREAM) or write
+      # (SOCK_DGRAM).
+      return None
+
+    # Path is an absolute path
     # Use NamedTemporaryFile to generate a unique filename as required by git trace2.
     try:
       with tempfile.NamedTemporaryFile(mode='x', prefix=self._sid, dir=path,
