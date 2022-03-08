@@ -1,0 +1,361 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48833db4_393f2082",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "should scope commit messages to make log summaries easier to scan.  in this case, `trace:` should suffice i think.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626e6f61_7937b48f",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "i think we can just link to the git docs for what syntax is expected rather than documenting it in detail ourselves.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "772fc2d9_0317adc2",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "use 4 space indent for hanging desc indents rather than aligning to the :.  i know the codebase uses both, but the former is what we want to standardize on.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "063708a8_5ab9b59e",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "nit: prefer \"unix_socket\" over \"uds\".  i don\u0027t think i\u0027ve seen \"uds\" before as a short name for \"unix domain socket\".",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5117bb75_81c568e1",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "seems like it\u0027d be simpler to chop it as you go\n\n parts \u003d path.split(\u0027:\u0027, 1)\n if parts[0] \u003d\u003d \u0027af_unix\u0027:\n   path \u003d parts[1]\n   parts \u003d path.split(\u0027:\u0027, 1)\n   if parts[0] \u003d\u003d \u0027stream\u0027:\n     ...\n   elif parts[1] \u003d\u003d \u0027dgram\u0027:\n     ...\n   else:\n     ...",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44aacdac_b7eca4d9",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "you\u0027ve copied \u0026 pasted this logic twice, so now we have 3 copies of it.  add a single nested helper function at the top that creates a generator so these only have to deal with the iteration+sending/writing.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6552623e_11dda4ca",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "use f-strings",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f46b8187_d6e20488",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "never hardcode errno values as this is not portable.  use the errno module to get the symbolic name.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc74dfe7_fef4f15d",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "we shouldn\u0027t be throwing unhandled exceptions.  this should issue a diagnostic and then return like we do below with FileExistsError.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2bc3e132_41826304",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "this should also handle errors from the connection attempt and gracefully return",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ace08c70_62033227",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "this is redundant.  os has already been imported above.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b575634_a0703e09",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "docstring style is incorrect.  for extensive details/examples, see:\nhttps://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/python.md#Describing-arguments-in-docstrings\n\n(CrOS follows the standard style and just provides more info on it)",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a02b0c5_86d476db",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "bad indentation -- use 2 spaces everywhere",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ca7eaaa_48450523",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "check the OSError errno value instead\n\nalternatively, use platform_utils.remove with missing_ok\u003dTrue to take care of all this boilerplate",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac97172_bea1ff7b",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "use a context manager to manage the socket lifetime like you did in the original code",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14f3cecc_2c0c76a1",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "i think you can use contextlib.closing here to manage the lifetime:\nhttps://docs.python.org/3.6/library/contextlib.html#contextlib.closing",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d071cbbc_838e927a",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "seems like it would be a lot simpler to do this at the end.  have the loop accumulate the data and then process it at once.\n\n data \u003d b\u0027\u0027\n while True:\n   recved \u003d conn.recv(4096)\n   if not recved:\n     break\n   data +\u003d recved\n received_traces.extend(data.decode(\u0027utf-8\u0027).splitlines())",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b07adf8_532725d2",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "all funcs should have at least a one-line docstring",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b09cf983_e1697de0",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "this should be in a try/finally block so we don\u0027t leak the threads on failures",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ae9cc6b_4bb0adc8",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "use f-strings",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ad8fb1b_bc10ec53",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-08T20:28:42Z",
+      "side": 1,
+      "message": "use self.assertIsInstance",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
