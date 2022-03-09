@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c8109fe_bb257881",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48833db4_393f2082",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "626e6f61_7937b48f",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "i think we can just link to the git docs for what syntax is expected rather than documenting it in detail ourselves.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "515722bd_ebd4ac34",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "626e6f61_7937b48f",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df5c75d6_27a29056",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "772fc2d9_0317adc2",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "063708a8_5ab9b59e",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "nit: prefer \"unix_socket\" over \"uds\".  i don\u0027t think i\u0027ve seen \"uds\" before as a short name for \"unix domain socket\".",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17b13d2d_3449b225",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "063708a8_5ab9b59e",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "836cca4b_ebed1074",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5117bb75_81c568e1",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44aacdac_b7eca4d9",
@@ -99,6 +189,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "you\u0027ve copied \u0026 pasted this logic twice, so now we have 3 copies of it.  add a single nested helper function at the top that creates a generator so these only have to deal with the iteration+sending/writing.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91e7612a_bd15c04f",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44aacdac_b7eca4d9",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -120,6 +228,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5285d76c_2ed22d48",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Switched all new formatted strings to f-strings. Left old ones as-is.",
+      "parentUuid": "6552623e_11dda4ca",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f46b8187_d6e20488",
@@ -133,6 +259,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "never hardcode errno values as this is not portable.  use the errno module to get the symbolic name.",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2db9ff31_e33a16fd",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f46b8187_d6e20488",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -154,6 +298,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69d674cc_a4041262",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cc74dfe7_fef4f15d",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2bc3e132_41826304",
@@ -167,6 +329,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "this should also handle errors from the connection attempt and gracefully return",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db47e2a1_21aaeb72",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2bc3e132_41826304",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -188,6 +368,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "079c53de_c484f06f",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ace08c70_62033227",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b575634_a0703e09",
@@ -201,6 +399,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "docstring style is incorrect.  for extensive details/examples, see:\nhttps://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/python.md#Describing-arguments-in-docstrings\n\n(CrOS follows the standard style and just provides more info on it)",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fa892da_8ed5e7dd",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b575634_a0703e09",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -222,6 +438,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d301881_6c10b964",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a02b0c5_86d476db",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ca7eaaa_48450523",
@@ -235,6 +469,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "check the OSError errno value instead\n\nalternatively, use platform_utils.remove with missing_ok\u003dTrue to take care of all this boilerplate",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94e3ec77_f745e619",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ca7eaaa_48450523",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -256,6 +508,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b195960e_d481639d",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cac97172_bea1ff7b",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14f3cecc_2c0c76a1",
@@ -269,6 +539,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "i think you can use contextlib.closing here to manage the lifetime:\nhttps://docs.python.org/3.6/library/contextlib.html#contextlib.closing",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ce83e2_63ea05b6",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Actually conn itself is also a socket object, so we can just use `with` directly.",
+      "parentUuid": "14f3cecc_2c0c76a1",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -290,6 +578,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97e385dc_832724ca",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d071cbbc_838e927a",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9b07adf8_532725d2",
@@ -303,6 +609,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "all funcs should have at least a one-line docstring",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3659f1be_ed5ca9c0",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b07adf8_532725d2",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -324,6 +648,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4517dd8a_9b008062",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b09cf983_e1697de0",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ae9cc6b_4bb0adc8",
@@ -341,6 +683,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87ac56cd_81528eec",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ae9cc6b_4bb0adc8",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ad8fb1b_bc10ec53",
@@ -354,6 +714,24 @@
       "writtenOn": "2022-03-08T20:28:42Z",
       "side": 1,
       "message": "use self.assertIsInstance",
+      "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ad7794e_daabd7e4",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-09T22:09:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ad8fb1b_bc10ec53",
       "revId": "19e78c4103f2a750b5e40c3b4a623b0bbf79bf53",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
