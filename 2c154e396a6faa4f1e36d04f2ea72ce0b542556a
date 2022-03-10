@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4c1c82d_f8800a02",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-10T02:54:32Z",
+      "side": 1,
+      "message": "writing to sockets takes bytes.  writing to the file handle below takes strings.  that complicates this a bit.\n\nif you change tempfile.NamedTemporaryFile to use `mode\u003d\u0027xb\u0027`, then every func to write takes bytes, and you can move this encode call into _WriteLog, and then you don\u0027t need this lambda at all -- just pass `sock.sendall` down.",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61f53b1e_90177992",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-10T02:54:32Z",
+      "side": 1,
+      "message": "invert this logic so we don\u0027t need the `pass` case\n\n # blah blah blah.\n if err.errno !\u003d errno....\n   print(...)\n   return ...",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21eba041_3faa47b0",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-10T02:54:32Z",
+      "side": 1,
+      "message": "use an f-string.  f\u0027... {err!r}\u0027 produces repr output.\n\nthat said, i don\u0027t think we need repr output for this as the string output should be fine",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a2154f2_a17c7dc1",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-10T02:54:32Z",
+      "side": 1,
+      "message": "pretty sure this is incorrect and you wanted to write what you did above",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b8a1e5b_a2bfdc13",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-10T02:54:32Z",
+      "side": 1,
+      "message": "do you need a lambda here ?  just pass in f.write ?",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a0813b6_72fb177f",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-10T02:54:32Z",
+      "side": 1,
+      "message": "comments are full sentences, so period at the end",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
