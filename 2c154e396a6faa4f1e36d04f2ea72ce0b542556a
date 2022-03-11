@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af797ff_bde7541d",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-11T04:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4c1c82d_f8800a02",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61f53b1e_90177992",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-10T02:54:32Z",
       "side": 1,
       "message": "invert this logic so we don\u0027t need the `pass` case\n\n # blah blah blah.\n if err.errno !\u003d errno....\n   print(...)\n   return ...",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90e4d3af_16f510f9",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-11T04:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61f53b1e_90177992",
       "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33e5374e_65da3d2e",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-11T04:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "21eba041_3faa47b0",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a2154f2_a17c7dc1",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-03-10T02:54:32Z",
       "side": 1,
       "message": "pretty sure this is incorrect and you wanted to write what you did above",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "145eacd2_fbfa3ecd",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-11T04:08:17Z",
+      "side": 1,
+      "message": "No, I think we should  fail in this case. Either we previously tried with SOCK_STREAM and failed, or the user specifically requested SOCK_DGRAM, and now we\u0027ve failed with that too. So we don\u0027t have a usable socket at this point.",
+      "parentUuid": "8a2154f2_a17c7dc1",
       "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bc7bc88_827263d5",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-11T04:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b8a1e5b_a2bfdc13",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a0813b6_72fb177f",
@@ -99,6 +189,24 @@
       "writtenOn": "2022-03-10T02:54:32Z",
       "side": 1,
       "message": "comments are full sentences, so period at the end",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48656ef3_721ffaa0",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-11T04:08:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a0813b6_72fb177f",
       "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
