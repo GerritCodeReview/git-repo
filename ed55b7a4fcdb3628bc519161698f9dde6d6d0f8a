@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "976ff019_e7652a58",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-11T09:51:19Z",
+      "side": 1,
+      "message": "\"bytes\"",
+      "range": {
+        "startLine": 230,
+        "startChar": 40,
+        "endLine": 230,
+        "endChar": 59
+      },
+      "revId": "ed55b7a4fcdb3628bc519161698f9dde6d6d0f8a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

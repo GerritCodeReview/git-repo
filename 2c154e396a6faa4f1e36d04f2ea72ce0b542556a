@@ -143,6 +143,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66842b0b_a3266b0b",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-11T09:51:19Z",
+      "side": 1,
+      "message": "i think you misunderstand.  `except err` is invalid.  this should be like line 300 above which handles `OSError`.",
+      "parentUuid": "145eacd2_fbfa3ecd",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4b8a1e5b_a2bfdc13",
         "filename": "git_trace2_event_log.py",
         "patchSetId": 2
