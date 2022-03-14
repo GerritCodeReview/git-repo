@@ -159,6 +159,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c89cc7_36620fcf",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1086857
+      },
+      "writtenOn": "2022-03-14T19:28:57Z",
+      "side": 1,
+      "message": "Ah sorry, thank you for the clarification. Fixed.",
+      "parentUuid": "66842b0b_a3266b0b",
+      "revId": "2c154e396a6faa4f1e36d04f2ea72ce0b542556a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b8a1e5b_a2bfdc13",
