@@ -123,6 +123,24 @@
       "parentUuid": "b29241d1_bc96bf1e",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53bd1f0c_683131b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2022-03-23T03:30:41Z",
+      "side": 1,
+      "message": "gLinux falls under the patch case, `apt install repo` will install a working version.\n\nMac (including gMac) apparently dropped `/usr/bin/python` entirely in 12.3, which came out last week (https://developer.apple.com/documentation/macos-release-notes/macos-12_3-release-notes). Now it only has `python3`, and only when the Xcode tools are installed. Installing python through homebrew (one of the common package managers) also only installs `python3` by default, though it appears to create a directory with an unversioned `python` that could be added to `PATH` by a user.\n\nOn Windows, it\u0027s not clear to me. I have an install that only has a `python.exe`, but other install types seem to have a `python3.exe`, and shebang lines aren\u0027t natively supported on Windows in the first place (python has a launcher that emulates support for them).",
+      "parentUuid": "8149339c_061c9e33",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
