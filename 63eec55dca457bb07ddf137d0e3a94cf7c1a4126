@@ -105,6 +105,24 @@
       "parentUuid": "edf29577_6944359b",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8149339c_061c9e33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1024282
+      },
+      "writtenOn": "2022-03-23T02:12:38Z",
+      "side": 1,
+      "message": "I\u0027m unsure if this ought to be discussed in a bug or over here, but the above reasoning seems stale now:\n\n* gMac doesn\u0027t have python anymore, only python3.\n* gLinux explicitly says that tools are broken if they are using env python instead of python3.\n\nPlease reconsider.",
+      "parentUuid": "b29241d1_bc96bf1e",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
