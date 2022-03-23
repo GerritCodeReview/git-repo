@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65ea981e_ae2b4b2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-23T19:58:33Z",
+      "side": 1,
+      "message": "\"absolute path\"",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1e9654b_0a791bb1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-23T19:58:33Z",
+      "side": 1,
+      "message": "really don\u0027t like referring to internal bugs that prevent understanding context.  you can duplicate into the public tracker, or inline enough context in the commit message.",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64124abe_bf239c8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-23T19:58:33Z",
+      "side": 1,
+      "message": "you\u0027ll have to make sure that `repo init -m` and `repo sync -m` still work w/relative paths \u0026 absolute paths",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54fb2f06_19cde03b",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-23T19:58:33Z",
+      "side": 1,
+      "message": "this is excessively wrapping by not wrapping sooner\n\n parent.SubmanifestInfoDir(\n     os.path.join(parent.path_prefix, ...),\n     ...",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8b9b512_1e08b842",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-23T19:58:33Z",
+      "side": 1,
+      "message": "just use os.path.join directly",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
