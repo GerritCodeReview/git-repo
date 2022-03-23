@@ -237,8 +237,13 @@ class _XmlSubmanifest:
     if self.remote and not self.project:
       raise ManifestParseError(
           f'Submanifest {name}: must specify project when remote is given.')
+    # Construct the absolute path to the manifest file using the parent's
+    # method, so that we can correctly create our repo_client.
+    manifestFile = parent.SubmanifestInfoDir(
+        os.path.join(parent.path_prefix, self.relpath),
+        os.path.join('manifests', manifestName or 'default.xml'))
     rc = self.repo_client = RepoClient(
-        parent.repodir, manifestName, parent_groups=','.join(groups) or '',
+        parent.repodir, manifestFile, parent_groups=','.join(groups) or '',
         submanifest_path=self.relpath, outer_client=outer_client)
 
     self.present = os.path.exists(os.path.join(self.repo_client.subdir,
@@ -337,6 +342,8 @@ class XmlManifest(object):
     self.repodir = os.path.abspath(repodir)
     self._CheckLocalPath(submanifest_path)
     self.topdir = os.path.join(os.path.dirname(self.repodir), submanifest_path)
+    if manifest_file != os.path.abspath(manifest_file):
+      raise ManifestParseError('manifest_file must be abspath')
     self.manifestFile = manifest_file
     self.local_manifests = local_manifests
     self._load_local_manifests = True
