@@ -71,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a80af64_86308007",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-23T21:08:16Z",
+      "side": 1,
+      "message": "i don\u0027t mind it as long as the commit message can standalone",
+      "parentUuid": "2fae7761_39e18ebc",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64124abe_bf239c8b",
