@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0a52f3e_8a60bfb0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-03-23T20:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "65ea981e_ae2b4b2a",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1e9654b_0a791bb1",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-23T19:58:33Z",
       "side": 1,
       "message": "really don\u0027t like referring to internal bugs that prevent understanding context.  you can duplicate into the public tracker, or inline enough context in the commit message.",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fae7761_39e18ebc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-03-23T20:40:44Z",
+      "side": 1,
+      "message": "I believe that I\u0027ve inlined enough information.  Should I drop the internal link entirely?",
+      "parentUuid": "f1e9654b_0a791bb1",
       "revId": "a55b90791e73db42c83adee56db92249647d013e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9742bca_36068272",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-03-23T20:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54fb2f06_19cde03b",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8b9b512_1e08b842",
@@ -82,6 +136,24 @@
       "writtenOn": "2022-03-23T19:58:33Z",
       "side": 1,
       "message": "just use os.path.join directly",
+      "revId": "a55b90791e73db42c83adee56db92249647d013e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "905f9c51_064548aa",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-03-23T20:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8b9b512_1e08b842",
       "revId": "a55b90791e73db42c83adee56db92249647d013e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
