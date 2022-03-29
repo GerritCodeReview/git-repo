@@ -3284,9 +3284,7 @@ class SyncBuffer(object):
 
 
 class MetaProject(Project):
-
-  """A special project housed under .repo.
-  """
+  """A special project housed under .repo."""
 
   def __init__(self, manifest, name, gitdir, worktree):
     Project.__init__(self,
@@ -3310,33 +3308,9 @@ class MetaProject(Project):
           self.revisionExpr = base
           self.revisionId = None
 
-  def MetaBranchSwitch(self, submodules=False):
-    """ Prepare MetaProject for manifest branch switch
-    """
-
-    # detach and delete manifest branch, allowing a new
-    # branch to take over
-    syncbuf = SyncBuffer(self.config, detach_head=True)
-    self.Sync_LocalHalf(syncbuf, submodules=submodules)
-    syncbuf.Finish()
-
-    return GitCommand(self,
-                      ['update-ref', '-d', 'refs/heads/default'],
-                      capture_stdout=True,
-                      capture_stderr=True).Wait() == 0
-
-  @property
-  def LastFetch(self):
-    try:
-      fh = os.path.join(self.gitdir, 'FETCH_HEAD')
-      return os.path.getmtime(fh)
-    except OSError:
-      return 0
-
   @property
   def HasChanges(self):
-    """Has the remote received new commits not yet checked out?
-    """
+    """Has the remote received new commits not yet checked out?"""
     if not self.remote or not self.revisionExpr:
       return False
 
@@ -3354,3 +3328,32 @@ class MetaProject(Project):
     elif self._revlist(not_rev(HEAD), revid):
       return True
     return False
+
+class RepoProject(MetaProject):
+  """The MetaProject for repo itself."""
+
+  @property
+  def LastFetch(self):
+    try:
+      fh = os.path.join(self.gitdir, 'FETCH_HEAD')
+      return os.path.getmtime(fh)
+    except OSError:
+      return 0
+
+class ManifestProject(MetaProject):
+  """The MetaProject for manifests."""
+
+  def MetaBranchSwitch(self, submodules=False):
+    """ Prepare for manifest branch switch
+    """
+
+    # detach and delete manifest branch, allowing a new
+    # branch to take over
+    syncbuf = SyncBuffer(self.config, detach_head=True)
+    self.Sync_LocalHalf(syncbuf, submodules=submodules)
+    syncbuf.Finish()
+
+    return GitCommand(self,
+                      ['update-ref', '-d', 'refs/heads/default'],
+                      capture_stdout=True,
+                      capture_stderr=True).Wait() == 0
