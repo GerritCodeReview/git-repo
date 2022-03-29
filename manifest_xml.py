@@ -25,7 +25,8 @@ import gitc_utils
 from git_config import GitConfig, IsId
 from git_refs import R_HEADS, HEAD
 import platform_utils
-from project import Annotation, RemoteSpec, Project, MetaProject
+from project import (Annotation, RemoteSpec, Project, RepoProject,
+                     ManifestProject)
 from error import (ManifestParseError, ManifestInvalidPathError,
                    ManifestInvalidRevisionError)
 from wrapper import Wrapper
@@ -360,7 +361,7 @@ class XmlManifest(object):
     # multi-tree.
     self._outer_client = outer_client or self
 
-    self.repoProject = MetaProject(self, 'repo',
+    self.repoProject = RepoProject(self, 'repo',
                                    gitdir=os.path.join(repodir, 'repo/.git'),
                                    worktree=os.path.join(repodir, 'repo'))
 
@@ -953,9 +954,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def SubmanifestProject(self, submanifest_path):
     """Return a manifestProject for a submanifest."""
     subdir = self.SubmanifestInfoDir(submanifest_path)
-    mp = MetaProject(self, 'manifests',
-                     gitdir=os.path.join(subdir, 'manifests.git'),
-                     worktree=os.path.join(subdir, 'manifests'))
+    mp = ManifestProject(self, 'manifests',
+                         gitdir=os.path.join(subdir, 'manifests.git'),
+                         worktree=os.path.join(subdir, 'manifests'))
     return mp
 
   def GetDefaultGroupsStr(self):
