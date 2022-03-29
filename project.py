@@ -3357,3 +3357,292 @@ class ManifestProject(MetaProject):
                       ['update-ref', '-d', 'refs/heads/default'],
                       capture_stdout=True,
                       capture_stderr=True).Wait() == 0
+
+  @property
+  def _platform_name(self):
+    """Return the name of the platform."""
+    return platform.system().lower()
+
+  def Sync(self, _kwargs_only=(), manifest_url='', manifest_branch=None,
+           standalone_manifest=False, groups='', platform='', mirror=False,
+           dissociate=False, reference='', worktree=False, submodules=False,
+           archive=False, partial_clone=None, clone_filter='blob:none',
+           partial_clone_exclude=None, clone_bundle=None, git_lfs=None,
+           use_superproject=None, verbose=False, current_branch_only=False,
+           tags='', depth=None):
+    """Sync the manifest and all submanifests.
+
+    Args:
+      manifest_url: a string, the URL of the manifest project.
+      manifest_branch: a string, the manifest branch to use.
+      standalone_manifest: a boolean, whether to store the manifest as a static
+          file.
+      groups: a string, restricts the checkout to projects with the specified
+          groups.
+      platform: a string, restrict the checkout to projects with the specified
+          platform group.
+      mirror: a boolean, whether to create a mirror of the remote repository.
+      reference: a string, location of a repo instance to use as a reference.
+      dissociate: a boolean, whether to dissociate from reference mirrors after
+          clone.
+      worktree: a boolean, whether to use git-worktree to manage projects.
+      submodules: a boolean, whether sync submodules associated with the
+          manifest project.
+      archive: a boolean, whether to checkout each project as an archive.  See
+          git-archive.
+      partial_clone: a boolean, whether to perform a partial clone.
+      clone_filter: a string, filter to use with partial_clone.
+      partial_clone_exclude : a string, comma-delimeted list of project namess
+          to exclude from partial clone.
+      clone_bundle: a boolean, whether to enable /clone.bundle on HTTP/HTTPS.
+      git_lfs: a boolean, whether to enable git LFS support.
+      use_superproject: a boolean, whether to use the manifest superproject to
+          sync projects.
+      verbose: a boolean, whether to show all output, rather than only errors.
+      current_branch_only: a boolean, whether to only fetch the current manifest
+          branch from the server.
+      tags: a boolean, whether to fetch tags.,
+      depth: an int, how deep of a shallow clone to create.
+
+    Returns:
+      a boolean, whether the sync was successful.
+    """
+    assert _kwargs_only == (), 'Sync only accepts keyword arguments.'
+
+    # If repo has already been initialized, we take -u with the absence of
+    # --standalone-manifest to mean "transition to a standard repo set up",
+    # which necessitates starting fresh.
+    # If --standalone-manifest is set, we always tear everything down and start
+    # anew.
+    if self.Exists:
+      was_standalone_manifest = self.config.GetString('manifest.standalone')
+      if was_standalone_manifest and not manifest_url:
+        print('fatal: repo was initialized with a standlone manifest, '
+              'cannot be re-initialized without --manifest-url/-u')
+        return False
+
+      if standalone_manifest or (was_standalone_manifest and manifest_url):
+        self.config.ClearCache()
+        if self.gitdir and os.path.exists(self.gitdir):
+          platform_utils.rmtree(self.gitdir)
+        if self.worktree and os.path.exists(self.worktree):
+          platform_utils.rmtree(self.worktree)
+
+    is_new = not self.Exists
+    if is_new:
+      if not manifest_url:
+        print('fatal: manifest url is required.', file=sys.stderr)
+        return False
+
+      if not quiet:
+        print('Downloading manifest from %s' %
+              (GitConfig.ForUser().UrlInsteadOf(manifest_url),),
+              file=sys.stderr)
+
+      # The manifest project object doesn't keep track of the path on the
+      # server where this git is located, so let's save that here.
+      mirrored_manifest_git = None
+      if reference:
+        manifest_git_path = urllib.parse.urlparse(manifest_url).path[1:]
+        mirrored_manifest_git = os.path.join(reference, manifest_git_path)
+        if not mirrored_manifest_git.endswith(".git"):
+          mirrored_manifest_git += ".git"
+        if not os.path.exists(mirrored_manifest_git):
+          mirrored_manifest_git = os.path.join(reference,
+                                               '.repo/manifests.git')
+
+      self._InitGitDir(mirror_git=mirrored_manifest_git)
+
+    # If standalone_manifest is set, mark the project as "standalone" -- we'll
+    # still do much of the manifests.git set up, but will avoid actual syncs to
+    # a remote.
+    if standalone_manifest:
+      self.config.SetString('manifest.standalone', manifest_url)
+    elif not manifest_url and not manifest_branch:
+      # If -u is set and --standalone-manifest is not, then we're not in
+      # standalone mode. Otherwise, use config to infer what we were in the last
+      # init.
+      standalone_manifest = bool(self.config.GetString('manifest.standalone'))
+    if not standalone_manifest:
+      self.config.SetString('manifest.standalone', None)
+
+    self._ConfigureDepth(depth)
+
+    # Set the remote URL before the remote branch as we might need it below.
+    if manifest_url:
+      r = self.GetRemote(self.remote.name)
+      r.url = manifest_url
+      r.ResetFetch()
+      r.Save()
+
+    if not standalone_manifest:
+      if manifest_branch:
+        if manifest_branch == 'HEAD':
+          manifest_branch = self.ResolveRemoteHead()
+          if manifest_branch is None:
+            print('fatal: unable to resolve HEAD', file=sys.stderr)
+            return False
+        self.revisionExpr = manifest_branch
+      else:
+        if is_new:
+          default_branch = self.ResolveRemoteHead()
+          if default_branch is None:
+            # If the remote doesn't have HEAD configured, default to master.
+            default_branch = 'refs/heads/master'
+          self.revisionExpr = default_branch
+        else:
+          self.PreSync()
+
+    groups = re.split(r'[,\s]+', groups)
+    all_platforms = ['linux', 'darwin', 'windows']
+    platformize = lambda x: 'platform-' + x
+    if platform == 'auto':
+      if (not mirror and not self.config.GetString('repo.mirror') == 'true'):
+        groups.append(platformize(self._platform_name))
+    elif platform == 'all':
+      groups.extend(map(platformize, all_platforms))
+    elif platform in all_platforms:
+      groups.append(platformize(platform))
+    elif platform != 'none':
+      print('fatal: invalid platform flag', file=sys.stderr)
+      return False
+
+    groups = [x for x in groups if x]
+    groupstr = ','.join(groups)
+    if platform == 'auto' and groupstr == self.manifest.GetDefaultGroupsStr():
+      groupstr = None
+    self.config.SetString('manifest.groups', groupstr)
+
+    if reference:
+      self.config.SetString('repo.reference', reference)
+
+    if dissociate:
+      self.config.SetBoolean('repo.dissociate', dissociate)
+
+    if worktree:
+      if mirror:
+        print('fatal: --mirror and --worktree are incompatible',
+              file=sys.stderr)
+        return False
+      if submodules:
+        print('fatal: --submodules and --worktree are incompatible',
+              file=sys.stderr)
+        return False
+      self.config.SetBoolean('repo.worktree', worktree)
+      if is_new:
+        self.use_git_worktrees = True
+      print('warning: --worktree is experimental!', file=sys.stderr)
+
+    if archive:
+      if is_new:
+        self.config.SetBoolean('repo.archive', archive)
+      else:
+        print('fatal: --archive is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
+        return False
+
+    if mirror:
+      if is_new:
+        self.config.SetBoolean('repo.mirror', mirror)
+      else:
+        print('fatal: --mirror is only supported when initializing a new '
+              'workspace.', file=sys.stderr)
+        print('Either delete the .repo folder in this workspace, or initialize '
+              'in another location.', file=sys.stderr)
+        return False
+
+    if partial_clone is not None:
+      if mirror:
+        print('fatal: --mirror and --partial-clone are mutually exclusive',
+              file=sys.stderr)
+        return False
+      self.config.SetBoolean('repo.partialclone', partial_clone)
+      if clone_filter:
+        self.config.SetString('repo.clonefilter', clone_filter)
+    elif self.config.GetBoolean('repo.partialclone'):
+      clone_filter = self.config.GetString('repo.clonefilter')
+    else:
+      clone_filter = None
+
+    if partial_clone_exclude is not None:
+      self.config.SetString('repo.partialcloneexclude', partial_clone_exclude)
+
+    if clone_bundle is None:
+      clone_bundle = False if partial_clone else True
+    else:
+      self.config.SetBoolean('repo.clonebundle', clone_bundle)
+
+    if submodules:
+      self.config.SetBoolean('repo.submodules', submodules)
+
+    if git_lfs is not None:
+      if git_lfs:
+        git_require((2, 17, 0), fail=True, msg='Git LFS support')
+
+      self.config.SetBoolean('repo.git-lfs', git_lfs)
+      if not is_new:
+        print('warning: Changing --git-lfs settings will only affect new project checkouts.\n'
+              '         Existing projects will require manual updates.\n', file=sys.stderr)
+
+    if use_superproject is not None:
+      self.config.SetBoolean('repo.superproject', use_superproject)
+
+    if standalone_manifest:
+      if is_new:
+        manifest_name = 'default.xml'
+        manifest_data = fetch.fetch_file(manifest_url, verbose=verbose)
+        dest = os.path.join(self.worktree, manifest_name)
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        with open(dest, 'wb') as f:
+          f.write(manifest_data)
+      return
+
+    if not self.Sync_NetworkHalf(is_new=is_new, quiet=not verbose, verbose=verbose,
+                              clone_bundle=clone_bundle,
+                              current_branch_only=current_branch_only,
+                              tags=tags, submodules=submodules,
+                              clone_filter=clone_filter,
+                              partial_clone_exclude=self.manifest.PartialCloneExclude):
+      r = self.GetRemote(self.remote.name)
+      print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
+
+      # Better delete the manifest git dir if we created it; otherwise next
+      # time (when user fixes problems) we won't go through the "is_new" logic.
+      if is_new:
+        platform_utils.rmtree(self.gitdir)
+      return False
+
+    if manifest_branch:
+      self.MetaBranchSwitch(submodules=submodules)
+
+    syncbuf = SyncBuffer(self.config)
+    self.Sync_LocalHalf(syncbuf, submodules=submodules)
+    syncbuf.Finish()
+
+    if is_new or self.CurrentBranch is None:
+      if not self.StartBranch('default'):
+        print('fatal: cannot create default in manifest', file=sys.stderr)
+        return False
+
+    return True
+
+  def _ConfigureDepth(self, depth):
+    """Configure the depth we'll sync down.
+
+    Args:
+      depth: an int, how deep of a partial clone to create.
+    """
+    # Opt.depth will be non-None if user actually passed --depth to repo init.
+    if depth is not None:
+      if depth > 0:
+        # Positive values will set the depth.
+        depth = str(depth)
+      else:
+        # Negative numbers will clear the depth; passing None to SetString
+        # will do that.
+        depth = None
+
+      # We store the depth in the main manifest project.
+      self.config.SetString('repo.depth', depth)
