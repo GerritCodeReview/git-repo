@@ -16,6 +16,58 @@
       "message": "This moves the code to sync the manifest project from subcmds/init.py to project.py.  I am delinting the code still.",
       "revId": "0871394eebc297f2a678e725591351821d4c8066",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88537b35_d815c100",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-31T04:27:06Z",
+      "side": 1,
+      "message": "as long as there\u0027s no real logic change for me to review, looks fine",
+      "parentUuid": "2f498a1e_ecbfbf52",
+      "revId": "0871394eebc297f2a678e725591351821d4c8066",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5e7f87a_5beeb828",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3613,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-31T04:27:06Z",
+      "side": 1,
+      "message": "when the code is in subcmds/, exit is OK.  when it\u0027s in common modules, it should return or throw an exception.  prob easiest to translate this code to return True/False and let the caller exit on False.",
+      "revId": "0871394eebc297f2a678e725591351821d4c8066",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24b70af0_2ddcf495",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-03-31T04:27:06Z",
+      "side": 1,
+      "message": "prob be easier to manage if it were one-per-line",
+      "revId": "0871394eebc297f2a678e725591351821d4c8066",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
