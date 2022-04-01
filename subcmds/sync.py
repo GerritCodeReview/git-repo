@@ -280,8 +280,13 @@ later is required to fix a server side protocol bug.
     return branch
 
   def _GetCurrentBranchOnly(self, opt):
-    """Returns True if current-branch or use-superproject options are enabled."""
-    return opt.current_branch_only or git_superproject.UseSuperproject(opt, self.manifest)
+    """Returns whether current-branch or use-superproject options are enabled.
+
+    Returns:
+      True if a superproject is requested, otherwise the value of the
+      current_branch option (True, False or None).
+    """
+    return git_superproject.UseSuperproject(opt, self.manifest) or opt.current_branch_only
 
   def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests, superproject_logging_data):
     """Update revisionId of every project with the SHA from superproject.
