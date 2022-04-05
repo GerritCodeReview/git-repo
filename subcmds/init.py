@@ -345,7 +345,7 @@ to update the working directory files.
     self._SyncManifest(opt)
     self._LinkManifest(opt.manifest_name)
 
-    if self.manifest.manifestProject.config.GetBoolean('repo.superproject'):
+    if self.manifest.manifestProject.use_superproject:
       self._CloneSuperproject(opt)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:

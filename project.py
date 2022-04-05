@@ -16,6 +16,7 @@ import errno
 import filecmp
 import glob
 import os
+import platform
 import random
 import re
 import shutil
@@ -1162,7 +1163,7 @@ class Project(object):
     if self.clone_depth:
       depth = self.clone_depth
     else:
-      depth = self.manifest.manifestProject.config.GetString('repo.depth')
+      depth = self.manifest.manifestProject.depth
 
     # See if we can skip the network fetch entirely.
     if not (optimized_fetch and
@@ -1179,7 +1180,7 @@ class Project(object):
         return False
 
     mp = self.manifest.manifestProject
-    dissociate = mp.config.GetBoolean('repo.dissociate')
+    dissociate = mp.dissociate
     if dissociate:
       alternates_file = os.path.join(self.objdir, 'objects/info/alternates')
       if os.path.exists(alternates_file):
@@ -2282,9 +2283,7 @@ class Project(object):
     return ok
 
   def _ApplyCloneBundle(self, initial=False, quiet=False, verbose=False):
-    if initial and \
-        (self.manifest.manifestProject.config.GetString('repo.depth') or
-         self.clone_depth):
+    if initial and (self.manifest.manifestProject.depth or self.clone_depth):
       return False
 
     remote = self.GetRemote(self.remote.name)
@@ -2513,7 +2512,7 @@ class Project(object):
 
       if init_git_dir:
         mp = self.manifest.manifestProject
-        ref_dir = mp.config.GetString('repo.reference') or ''
+        ref_dir = mp.reference or ''
 
         def _expanded_ref_dirs():
           """Iterate through the possible git reference directory paths."""
@@ -3359,17 +3358,92 @@ class ManifestProject(MetaProject):
                       capture_stderr=True).Wait() == 0
 
   @property
+  def standalone_manifest_url(self):
+    """The URL of the standalone manifest, or None."""
+    return self.config.getString('manifest.standalone')
+
+  @property
+  def manifest_groups(self):
+    """The manifest groups string."""
+    return self.config.GetString('manifest.groups')
+
+  @property
+  def reference(self):
+    """The --reference for this manifest."""
+    self.config.GetString('repo.reference')
+
+  @property
+  def dissociate(self):
+    """Whether to dissociate."""
+    self.config.GetBoolean('repo.dissociate')
+
+  @property
+  def archive(self):
+    """Whether we use archive."""
+    self.config.GetBoolean('repo.archive')
+
+  @property
+  def mirror(self):
+    """Whether we use mirror."""
+    self.config.GetBoolean('repo.mirror')
+
+  @property
+  def use_worktree(self):
+    """Whether we use worktree."""
+    self.config.GetBoolean('repo.worktree')
+
+  @property
+  def clone_bundle(self):
+    """Whether we use clone_bundle."""
+    self.config.GetBoolean('repo.clonebundle')
+
+  @property
+  def submodules(self):
+    """Whether we use submodules."""
+    self.config.GetBoolean('repo.submodules')
+
+  @property
+  def git_lfs(self):
+    """Whether we use git_lfs."""
+    self.config.GetBoolean('repo.git-lfs')
+
+  @property
+  def use_superproject(self):
+    """Whether we use superproject."""
+    self.config.GetBoolean('repo.superproject')
+
+  @property
+  def partial_clone(self):
+    """Whether this is a partial clone."""
+    self.config.GetBoolean('repo.partialclone')
+
+  @property
+  def depth(self):
+    """Partial clone depth."""
+    self.config.GetString('repo.depth')
+
+  @property
+  def clone_filter(self):
+    """The clone filter."""
+    self.config.GetString('repo.clonefilter')
+
+  @property
+  def partial_clone_exclude(self):
+    """Partial clone exclude string"""
+    self.config.GetBoolean('repo.partialcloneexclude')
+
+  @property
   def _platform_name(self):
     """Return the name of the platform."""
     return platform.system().lower()
 
   def Sync(self, _kwargs_only=(), manifest_url='', manifest_branch=None,
-           standalone_manifest=False, groups='', platform='', mirror=False,
-           dissociate=False, reference='', worktree=False, submodules=False,
-           archive=False, partial_clone=None, clone_filter='blob:none',
+           standalone_manifest=False, groups='', mirror=False, reference='',
+           dissociate=False, worktree=False, submodules=False, archive=False,
+           partial_clone=None, depth=None, clone_filter='blob:none',
            partial_clone_exclude=None, clone_bundle=None, git_lfs=None,
            use_superproject=None, verbose=False, current_branch_only=False,
-           tags='', depth=None):
+           platform='', tags=''):
     """Sync the manifest and all submanifests.
 
     Args:
@@ -3379,8 +3453,6 @@ class ManifestProject(MetaProject):
           file.
       groups: a string, restricts the checkout to projects with the specified
           groups.
-      platform: a string, restrict the checkout to projects with the specified
-          platform group.
       mirror: a boolean, whether to create a mirror of the remote repository.
       reference: a string, location of a repo instance to use as a reference.
       dissociate: a boolean, whether to dissociate from reference mirrors after
@@ -3391,6 +3463,7 @@ class ManifestProject(MetaProject):
       archive: a boolean, whether to checkout each project as an archive.  See
           git-archive.
       partial_clone: a boolean, whether to perform a partial clone.
+      depth: an int, how deep of a shallow clone to create.
       clone_filter: a string, filter to use with partial_clone.
       partial_clone_exclude : a string, comma-delimeted list of project namess
           to exclude from partial clone.
@@ -3401,8 +3474,9 @@ class ManifestProject(MetaProject):
       verbose: a boolean, whether to show all output, rather than only errors.
       current_branch_only: a boolean, whether to only fetch the current manifest
           branch from the server.
+      platform: a string, restrict the checkout to projects with the specified
+          platform group.
       tags: a boolean, whether to fetch tags.,
-      depth: an int, how deep of a shallow clone to create.
 
     Returns:
       a boolean, whether the sync was successful.
@@ -3493,11 +3567,11 @@ class ManifestProject(MetaProject):
         else:
           self.PreSync()
 
-    groups = re.split(r'[,\s]+', groups)
+    groups = re.split(r'[,\s]+', groups or '')
     all_platforms = ['linux', 'darwin', 'windows']
     platformize = lambda x: 'platform-' + x
     if platform == 'auto':
-      if (not mirror and not self.config.GetString('repo.mirror') == 'true'):
+      if not mirror and not self.mirror:
         groups.append(platformize(self._platform_name))
     elif platform == 'all':
       groups.extend(map(platformize, all_platforms))
@@ -3561,8 +3635,8 @@ class ManifestProject(MetaProject):
       self.config.SetBoolean('repo.partialclone', partial_clone)
       if clone_filter:
         self.config.SetString('repo.clonefilter', clone_filter)
-    elif self.config.GetBoolean('repo.partialclone'):
-      clone_filter = self.config.GetString('repo.clonefilter')
+    elif self.partialclone:
+      clone_filter = self.clone_filter
     else:
       clone_filter = None
 

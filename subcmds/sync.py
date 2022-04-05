@@ -976,7 +976,7 @@ later is required to fix a server side protocol bug.
               file=sys.stderr)
 
     mp = self.manifest.manifestProject
-    is_standalone_manifest = mp.config.GetString('manifest.standalone')
+    is_standalone_manifest = bool(mp.standalone_manifest_url)
     if not is_standalone_manifest:
       mp.PreSync()
 
