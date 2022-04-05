@@ -32,7 +32,7 @@ from wrapper import Wrapper
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   COMMON = True
-  MULTI_MANIFEST_SUPPORT = False
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Initialize a repo client checkout in the current directory"
   helpUsage = """
 %prog [options] [manifest url]
@@ -107,26 +107,6 @@ to update the working directory files.
     return {'REPO_MANIFEST_URL': 'manifest_url',
             'REPO_MIRROR_LOCATION': 'reference'}
 
-  def _CloneSuperproject(self, opt):
-    """Clone the superproject based on the superproject's url and branch.
-
-    Args:
-      opt: Program options returned from optparse.  See _Options().
-    """
-    superproject = git_superproject.Superproject(self.manifest,
-                                                 self.repodir,
-                                                 self.git_event_log,
-                                                 quiet=opt.quiet)
-    sync_result = superproject.Sync()
-    if not sync_result.success:
-      print('warning: git update of superproject failed, repo sync will not '
-            'use superproject to fetch source; while this error is not fatal, '
-            'and you can continue to run repo sync, please run repo init with '
-            'the --no-use-superproject option to stop seeing this warning',
-            file=sys.stderr)
-      if sync_result.fatal and opt.use_superproject is not None:
-        sys.exit(1)
-
   def _SyncManifest(self, opt):
     """Call manifestProject.Sync with arguments from opt.
 
@@ -154,19 +134,8 @@ to update the working directory files.
         verbose=opt.verbose,
         current_branch_only=opt.current_branch_only,
         tags=opt.tags,
-        depth=opt.depth):
-      sys.exit(1)
-
-  def _LinkManifest(self, name):
-    if not name:
-      print('fatal: manifest name (-m) is required.', file=sys.stderr)
-      sys.exit(1)
-
-    try:
-      self.manifest.Link(name)
-    except ManifestParseError as e:
-      print("fatal: manifest '%s' not available" % name, file=sys.stderr)
-      print('fatal: %s' % str(e), file=sys.stderr)
+        depth=opt.depth,
+        manifest_name=opt.manifest_name):
       sys.exit(1)
 
   def _Prompt(self, prompt, value):
@@ -343,10 +312,6 @@ to update the working directory files.
       git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
 
     self._SyncManifest(opt)
-    self._LinkManifest(opt.manifest_name)
-
-    if self.manifest.manifestProject.use_superproject:
-      self._CloneSuperproject(opt)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
       if opt.config_name or self._ShouldConfigureUser(opt):
