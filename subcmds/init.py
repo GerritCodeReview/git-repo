@@ -32,7 +32,7 @@ from wrapper import Wrapper
 
 class Init(InteractiveCommand, MirrorSafeCommand):
   COMMON = True
-  MULTI_MANIFEST_SUPPORT = False
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Initialize a repo client checkout in the current directory"
   helpUsage = """
 %prog [options] [manifest url]
@@ -154,19 +154,8 @@ to update the working directory files.
         verbose=opt.verbose,
         current_branch_only=opt.current_branch_only,
         tags=opt.tags,
-        depth=opt.depth):
-      sys.exit(1)
-
-  def _LinkManifest(self, name):
-    if not name:
-      print('fatal: manifest name (-m) is required.', file=sys.stderr)
-      sys.exit(1)
-
-    try:
-      self.manifest.Link(name)
-    except ManifestParseError as e:
-      print("fatal: manifest '%s' not available" % name, file=sys.stderr)
-      print('fatal: %s' % str(e), file=sys.stderr)
+        depth=opt.depth,
+        manifest_name=opt.manifest_name):
       sys.exit(1)
 
   def _Prompt(self, prompt, value):
@@ -343,7 +332,6 @@ to update the working directory files.
       git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
 
     self._SyncManifest(opt)
-    self._LinkManifest(opt.manifest_name)
 
     if self.manifest.manifestProject.use_superproject:
       self._CloneSuperproject(opt)
