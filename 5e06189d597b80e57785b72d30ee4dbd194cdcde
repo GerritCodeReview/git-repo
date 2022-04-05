@@ -16,6 +16,74 @@
       "message": "I have sent two patch sets, where the first one continues to use `unittest`-style tests, and the second one uses Pytest-style tests with parametrization. The second one cuts down on lines of code a lot, and Pytest is already used for running the tests in the project so it works without other modifications, but since it is far from the style of existing tests I let the maintainers prefer one style or the other.",
       "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c9cbf94_411c7216",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-05T07:33:23Z",
+      "side": 1,
+      "message": "2022 in new files",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2bbd084_133602d8",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-05T07:33:23Z",
+      "side": 1,
+      "message": "you can use `from unittest import mock` now",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcd6fe85_f2412d27",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-05T07:33:23Z",
+      "side": 1,
+      "message": "i don\u0027t think we need or want to stub the options like this\n\nif you look at test_subcmds_init.py, we instantiate \u0026 parse args there to get the |opts| state.  so let\u0027s do the same thing here.\n\nthen i think you don\u0027t even need `mock`",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eebc8798_df1c38b3",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-05T07:33:23Z",
+      "side": 1,
+      "message": "this doesn\u0027t follow docstring norms.  see examples:\nhttps://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/python.md#Describing-arguments-in-docstrings",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
