@@ -406,7 +406,7 @@ def UseSuperproject(opt, manifest):
   if opt.use_superproject is not None:
     return opt.use_superproject
   else:
-    client_value = manifest.manifestProject.config.GetBoolean('repo.superproject')
+    client_value = manifest.manifestProject.use_superproject
     if client_value is not None:
       return client_value
     else:

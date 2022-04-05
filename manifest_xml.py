@@ -372,7 +372,7 @@ class XmlManifest(object):
     # normal repo settings live in the manifestProject which we just setup
     # above, so we couldn't easily query before that.  We assume Project()
     # init doesn't care if this changes afterwards.
-    if os.path.exists(mp.gitdir) and mp.config.GetBoolean('repo.worktree'):
+    if os.path.exists(mp.gitdir) and mp.use_worktree:
       mp.use_git_worktrees = True
 
     self._Unload()
@@ -487,7 +487,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     mp = self.manifestProject
 
     if groups is None:
-      groups = mp.config.GetString('manifest.groups')
+      groups = mp.manifest_groups
     if groups:
       groups = self._ParseList(groups)
 
@@ -861,22 +861,21 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   @property
   def CloneBundle(self):
-    clone_bundle = self.manifestProject.config.GetBoolean('repo.clonebundle')
+    clone_bundle = self.manifestProject.clone_bundle
     if clone_bundle is None:
-      return False if self.manifestProject.config.GetBoolean('repo.partialclone') else True
+      return False if self.manifestProject.partial_clone else True
     else:
       return clone_bundle
 
   @property
   def CloneFilter(self):
-    if self.manifestProject.config.GetBoolean('repo.partialclone'):
-      return self.manifestProject.config.GetString('repo.clonefilter')
+    if self.manifestProject.partial_clone:
+      return self.manifestProject.clone_filter
     return None
 
   @property
   def PartialCloneExclude(self):
-    exclude = self.manifest.manifestProject.config.GetString(
-        'repo.partialcloneexclude') or ''
+    exclude = self.manifest.manifestProject.partial_clone_exclude or ''
     return set(x.strip() for x in exclude.split(','))
 
   @property
@@ -897,23 +896,23 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   @property
   def IsMirror(self):
-    return self.manifestProject.config.GetBoolean('repo.mirror')
+    return self.manifestProject.mirror
 
   @property
   def UseGitWorktrees(self):
-    return self.manifestProject.config.GetBoolean('repo.worktree')
+    return self.manifestProject.use_worktree
 
   @property
   def IsArchive(self):
-    return self.manifestProject.config.GetBoolean('repo.archive')
+    return self.manifestProject.archive
 
   @property
   def HasSubmodules(self):
-    return self.manifestProject.config.GetBoolean('repo.submodules')
+    return self.manifestProject.submodules
 
   @property
   def EnableGitLfs(self):
-    return self.manifestProject.config.GetBoolean('repo.git-lfs')
+    return self.manifestProject.git_lfs
 
   def FindManifestByPath(self, path):
     """Returns the manifest containing path."""
@@ -965,7 +964,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   def GetGroupsStr(self):
     """Returns the manifest group string that should be synced."""
-    groups = self.manifestProject.config.GetString('manifest.groups')
+    groups = self.manifestProject.manifest_groups
     if not groups:
       groups = self.GetDefaultGroupsStr()
     return groups
