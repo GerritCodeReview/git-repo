@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7aeb5a5_9f48d1bc",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-05T21:59:49Z",
+      "side": 1,
+      "message": "This fixes an error introduced when Sync() was implemented.",
+      "revId": "09b6c0b589f0a65d42aa41d2851f075d055940e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
