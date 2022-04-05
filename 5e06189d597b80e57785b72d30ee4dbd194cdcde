@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da1d8abc_8ba054d2",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1147117
+      },
+      "writtenOn": "2022-04-05T15:29:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c9cbf94_411c7216",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2bbd084_133602d8",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-04-05T07:33:23Z",
       "side": 1,
       "message": "you can use `from unittest import mock` now",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d78cde4_9cb48a55",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1147117
+      },
+      "writtenOn": "2022-04-05T15:29:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2bbd084_133602d8",
       "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -71,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aea9ab14_71d0db72",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1147117
+      },
+      "writtenOn": "2022-04-05T15:29:30Z",
+      "side": 1,
+      "message": "Using the option parser of the `sync.Sync` object works fine, interpreting the class as the \"unit\", and cuts down on code -- implemented.\n\nUsing mock for the `git_superproject.UseSuperproject` call avoids setting up prerequisites needed to cover its behavior, which would become convoluted in my eyes. The main complication is how `git_superproject.UseSuperproject` falls back to manifest/`repo` configuration values when `opt.use_superproject` is not `None`.\n\nIt seems like it would require either mocking the manifest configuration getter `manifest.manifestProject.config.GetBoolean` or creating and injecting manifest objects containing different settings, and either mocking the local `repo` configuration as read in `git_superproject._UseSuperprojectFromConfiguration` or creating and reading different configuration files. Exercising that seems like seems like something that should be done in `tests/test_git_superproject.py` rather than here.\n\nInstead of mocking the internal structure of `git_superproject.UseSuperproject` it seems cleaner to mock the entire call to a separate module inside a unit test for `subcmds.sync`.\n\nDoes that sound reasonable? (Or at least acceptable? :-) )",
+      "parentUuid": "fcd6fe85_f2412d27",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eebc8798_df1c38b3",
         "filename": "tests/test_subcmds_sync.py",
         "patchSetId": 2
@@ -82,6 +136,24 @@
       "writtenOn": "2022-04-05T07:33:23Z",
       "side": 1,
       "message": "this doesn\u0027t follow docstring norms.  see examples:\nhttps://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/python.md#Describing-arguments-in-docstrings",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc3c309_6e754083",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1147117
+      },
+      "writtenOn": "2022-04-05T15:29:30Z",
+      "side": 1,
+      "message": "Done. Also added a `Returns:` section to the `subcmd.sync` code in this change.",
+      "parentUuid": "eebc8798_df1c38b3",
       "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
