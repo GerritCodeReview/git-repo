@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b09c4ecc_b513b33a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-06T20:54:19Z",
+      "side": 1,
+      "message": "confirmed using both multitree, aosp, and chromiumos manifests.",
+      "revId": "34efd4da6363e4996ca429bae665bc5bfe8cc5cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
