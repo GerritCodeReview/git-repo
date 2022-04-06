@@ -135,6 +135,7 @@ to update the working directory files.
         current_branch_only=opt.current_branch_only,
         tags=opt.tags,
         depth=opt.depth,
+        git_event_log=self.git_event_log,
         manifest_name=opt.manifest_name):
       sys.exit(1)
 
