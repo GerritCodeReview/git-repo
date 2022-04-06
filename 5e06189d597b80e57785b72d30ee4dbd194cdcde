@@ -123,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64766c4c_c995eb80",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-06T05:09:07Z",
+      "side": 1,
+      "message": "that sounds reasonable considering the structure of the repo code as it exists currently",
+      "parentUuid": "aea9ab14_71d0db72",
+      "revId": "5e06189d597b80e57785b72d30ee4dbd194cdcde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eebc8798_df1c38b3",
