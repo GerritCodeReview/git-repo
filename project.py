@@ -32,10 +32,11 @@ from color import Coloring
 from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, \
     ID_RE
+from git_trace2_event_log import EventLog
 from error import GitError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError, ManifestInvalidPathError
 from error import NoManifestException, ManifestParseError
-import git_superproject
+from git_superproject import Superproject
 import platform_utils
 import progress
 from repo_trace import IsTrace, Trace
@@ -3361,7 +3362,7 @@ class ManifestProject(MetaProject):
   @property
   def standalone_manifest_url(self):
     """The URL of the standalone manifest, or None."""
-    return self.config.getString('manifest.standalone')
+    return self.config.GetString('manifest.standalone')
 
   @property
   def manifest_groups(self):
@@ -3444,8 +3445,8 @@ class ManifestProject(MetaProject):
            partial_clone=None, depth=None, clone_filter='blob:none',
            partial_clone_exclude=None, clone_bundle=None, git_lfs=None,
            use_superproject=None, verbose=False, current_branch_only=False,
-           platform='', tags='', manifest_name='default.xml',
-           this_manifest_only=False, outer_manifest=True):
+           git_event_log=None, platform='', manifest_name='default.xml',
+           tags='', this_manifest_only=False, outer_manifest=True):
     """Sync the manifest and all submanifests.
 
     Args:
@@ -3478,6 +3479,7 @@ class ManifestProject(MetaProject):
           branch from the server.
       platform: a string, restrict the checkout to projects with the specified
           platform group.
+      git_event_log: an EventLog, for git tracing.
       tags: a boolean, whether to fetch tags.,
       manifest_name: a string, the name of the manifest file to use.
       this_manifest_only: a boolean, whether to only operate on the current sub
@@ -3489,6 +3491,7 @@ class ManifestProject(MetaProject):
     """
     assert _kwargs_only == (), 'Sync only accepts keyword arguments.'
 
+    git_event_log = git_event_log or EventLog()
     if outer_manifest and self.manifest.is_submanifest:
       # In a multi-manifest checkout, use the outer manifest unless we are told
       # not to.
@@ -3514,6 +3517,7 @@ class ManifestProject(MetaProject):
           current_branch_only=current_branch_only,
           tags=tags,
           depth=depth,
+          git_event_log=git_event_log,
           manifest_name=manifest_name,
           this_manifest_only=this_manifest_only,
           outer_manifest=False)
@@ -3670,7 +3674,7 @@ class ManifestProject(MetaProject):
       self.config.SetBoolean('repo.partialclone', partial_clone)
       if clone_filter:
         self.config.SetString('repo.clonefilter', clone_filter)
-    elif self.partialclone:
+    elif self.partial_clone:
       clone_filter = self.clone_filter
     else:
       clone_filter = None
@@ -3747,52 +3751,51 @@ class ManifestProject(MetaProject):
       print('fatal: %s' % str(e), file=sys.stderr)
       return False
 
-    # Lastly, clone the superproject.
-    superproject = git_superproject.Superproject(self.manifest,
-                                                 self.repodir,
-                                                 self.git_event_log,
-                                                 quiet=not verbose)
-    sync_result = superproject.Sync()
-    if not sync_result.success:
-      print('warning: git update of superproject failed, repo sync will not '
-            'use superproject to fetch source; while this error is not fatal, '
-            'and you can continue to run repo sync, please run repo init with '
-            'the --no-use-superproject option to stop seeing this warning',
-            file=sys.stderr)
-      if sync_result.fatal and use_superproject is not None:
-        return False
+    if not this_manifest_only:
+      for submanifest in self.manifest.submanifests.values():
+        spec = submanifest.ToSubmanifestSpec(root=self.manifest.outer_client)
+        submanifest.repo_client.manifestProject.Sync(
+            manifest_url=spec.manifestUrl,
+            manifest_branch=spec.revision,
+            standalone_manifest=standalone_manifest,
+            groups=self.manifest_groups,
+            platform=platform,
+            mirror=mirror,
+            dissociate=dissociate,
+            reference=reference,
+            worktree=worktree,
+            submodules=submodules,
+            archive=archive,
+            partial_clone=partial_clone,
+            clone_filter=clone_filter,
+            partial_clone_exclude=partial_clone_exclude,
+            clone_bundle=clone_bundle,
+            git_lfs=git_lfs,
+            use_superproject=use_superproject,
+            verbose=verbose,
+            current_branch_only=current_branch_only,
+            tags=tags,
+            depth=depth,
+            git_event_log=git_event_log,
+            manifest_name=spec.manifestName,
+            this_manifest_only=False,
+            outer_manifest=False,
+        )
 
-    if this_manifest_only:
-      return True
-
-    for submanifest in self.manifest.submanifests.values():
-      spec = submanifest.ToSubmanifestSpec(root=self.manifest.outer_client)
-      submanifest.repo_client.manifestProject.Sync(
-          manifest_url=spec.manifestUrl,
-          manifest_branch=spec.revision,
-          standalone_manifest=standalone_manifest,
-          groups=self.manifest_groups,
-          platform=platform,
-          mirror=mirror,
-          dissociate=dissociate,
-          reference=reference,
-          worktree=worktree,
-          submodules=submodules,
-          archive=archive,
-          partial_clone=partial_clone,
-          clone_filter=clone_filter,
-          partial_clone_exclude=partial_clone_exclude,
-          clone_bundle=clone_bundle,
-          git_lfs=git_lfs,
-          use_superproject=use_superproject,
-          verbose=verbose,
-          current_branch_only=current_branch_only,
-          tags=tags,
-          depth=depth,
-          manifest_name=spec.manifestName,
-          this_manifest_only=False,
-          outer_manifest=False,
-      )
+    # Lastly, clone the superproject(s).
+    if outer_manifest and not self.manifest.is_submanifest:
+      for m in self.manifest.all_manifests:
+        sync_result = Superproject(
+            m, m.repodir, git_event_log, quiet=not verbose).Sync()
+        if not sync_result.success:
+          print(f'warning: git update of superproject for {m.path_prefix} failed, '
+                'repo sync will not '
+                'use superproject to fetch source; while this error is not fatal, '
+                'and you can continue to run repo sync, please run repo init with '
+                'the --no-use-superproject option to stop seeing this warning',
+                file=sys.stderr)
+          if sync_result.fatal and use_superproject is not None:
+            return False
 
     return True
 

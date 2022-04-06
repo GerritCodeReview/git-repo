@@ -243,12 +243,13 @@ class _XmlSubmanifest:
     manifestFile = parent.SubmanifestInfoDir(
         os.path.join(parent.path_prefix, self.relpath),
         os.path.join('manifests', manifestName or 'default.xml'))
+    linkFile = parent.SubmanifestInfoDir(
+        os.path.join(parent.path_prefix, self.relpath), MANIFEST_FILE_NAME)
     rc = self.repo_client = RepoClient(
-        parent.repodir, manifestFile, parent_groups=','.join(groups) or '',
+        parent.repodir, linkFile, parent_groups=','.join(groups) or '',
         submanifest_path=self.relpath, outer_client=outer_client)
 
-    self.present = os.path.exists(os.path.join(self.repo_client.subdir,
-                                               MANIFEST_FILE_NAME))
+    self.present = os.path.exists(manifestFile)
 
   def __eq__(self, other):
     if not isinstance(other, _XmlSubmanifest):
@@ -1051,7 +1052,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
               tree.present = present
             elif not os.path.exists(self.subdir):
               tree.present = False
-          if tree.present:
+          if present and tree.present:
             tree.repo_client._Load(initial_client=initial_client,
                                    submanifest_depth=submanifest_depth + 1)
 
