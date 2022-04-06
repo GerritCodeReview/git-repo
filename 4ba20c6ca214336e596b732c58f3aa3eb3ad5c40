@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc8f6eed_94f67c18",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3794,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-06T05:05:54Z",
+      "side": 1,
+      "message": "add a dangling comma",
+      "revId": "4ba20c6ca214336e596b732c58f3aa3eb3ad5c40",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
