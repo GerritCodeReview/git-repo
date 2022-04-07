@@ -376,7 +376,7 @@ class XmlManifest(object):
     if os.path.exists(mp.gitdir) and mp.use_worktree:
       mp.use_git_worktrees = True
 
-    self._Unload()
+    self.Unload()
 
   def Override(self, name, load_local_manifests=True):
     """Use a different manifest, just for the current instantiation.
@@ -399,7 +399,7 @@ class XmlManifest(object):
     try:
       self._load_local_manifests = load_local_manifests
       self.manifestFile = path
-      self._Unload()
+      self.Unload()
       self._Load()
     finally:
       self.manifestFile = old
@@ -970,7 +970,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       groups = self.GetDefaultGroupsStr()
     return groups
 
-  def _Unload(self):
+  def Unload(self):
     self._loaded = False
     self._projects = {}
     self._paths = {}
@@ -983,6 +983,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._notice = None
     self.branch = None
     self._manifest_server = None
+
+  def Load(self):
+    """Read the manifest into memory."""
+    # Do not expose internal arguments.
+    self._Load()
 
   def _Load(self, initial_client=None, submanifest_depth=0):
     if submanifest_depth > MAX_SUBMANIFEST_DEPTH:
@@ -1030,7 +1035,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       except ManifestParseError as e:
         # There was a problem parsing, unload ourselves in case they catch
         # this error and try again later, we will show the correct error
-        self._Unload()
+        self.Unload()
         raise e
 
       if self.IsMirror:

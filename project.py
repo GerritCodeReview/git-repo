@@ -3785,17 +3785,18 @@ class ManifestProject(MetaProject):
     # Lastly, clone the superproject(s).
     if outer_manifest and not self.manifest.is_submanifest:
       for m in self.manifest.all_manifests:
-        sync_result = Superproject(
-            m, m.repodir, git_event_log, quiet=not verbose).Sync()
-        if not sync_result.success:
-          print(f'warning: git update of superproject for {m.path_prefix} failed, '
-                'repo sync will not '
-                'use superproject to fetch source; while this error is not fatal, '
-                'and you can continue to run repo sync, please run repo init with '
-                'the --no-use-superproject option to stop seeing this warning',
-                file=sys.stderr)
-          if sync_result.fatal and use_superproject is not None:
-            return False
+        if m.manifestProject.use_superproject:
+          sync_result = Superproject(
+              m, m.repodir, git_event_log, quiet=not verbose).Sync()
+          if not sync_result.success:
+            print(f'warning: git update of superproject for {m.path_prefix} '
+                  'failed, repo sync will not use superproject to fetch '
+                  ' source; while this error is not fatal, and you can '
+                  'continue to run repo sync, please run repo init with the '
+                  '--no-use-superproject option to stop seeing this warning',
+                  file=sys.stderr)
+            if sync_result.fatal and use_superproject is not None:
+              return False
 
     return True
 
