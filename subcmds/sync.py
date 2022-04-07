@@ -998,7 +998,7 @@ later is required to fix a server side protocol bug.
     superproject_logging_data = {
         'superproject': use_superproject,
         'haslocalmanifests': bool(self.manifest.HasLocalManifests),
-        'hassuperprojecttag': bool(self.manifest.superproject),
+        'hassuperprojecttag': bool(self.manifest.superproject_xml),
     }
     if use_superproject:
       manifest_name = self._UpdateProjectsRevisionId(
