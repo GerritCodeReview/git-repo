@@ -97,10 +97,10 @@ class Superproject(object):
     self._manifest_path = os.path.join(self._superproject_path,
                                        _SUPERPROJECT_MANIFEST_NAME)
     git_name = ''
-    if self._manifest.superproject:
-      remote = self._manifest.superproject['remote']
+    if self._manifest.superproject_xml:
+      remote = self._manifest.superproject_xml['remote']
       git_name = hashlib.md5(remote.name.encode('utf8')).hexdigest() + '-'
-      self._branch = self._manifest.superproject['revision']
+      self._branch = self._manifest.superproject_xml['revision']
       self._remote_url = remote.url
     else:
       self._remote_url = None
@@ -221,7 +221,7 @@ class Superproject(object):
     Returns:
       SyncResult
     """
-    if not self._manifest.superproject:
+    if not self._manifest.superproject_xml:
       self._LogWarning(f'superproject tag is not defined in manifest: '
                        f'{self._manifest.manifestFile}')
       return SyncResult(False, False)
@@ -397,7 +397,7 @@ def _UseSuperprojectFromConfiguration():
 
 def PrintMessages(opt, manifest):
   """Returns a boolean if error/warning messages are to be printed."""
-  return opt.use_superproject is not None or manifest.superproject
+  return opt.use_superproject is not None or manifest.superproject_xml
 
 
 def UseSuperproject(opt, manifest):
@@ -410,6 +410,6 @@ def UseSuperproject(opt, manifest):
     if client_value is not None:
       return client_value
     else:
-      if not manifest.superproject:
+      if not manifest.superproject_xml:
         return False
       return _UseSuperprojectFromConfiguration()
