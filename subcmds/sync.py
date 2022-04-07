@@ -47,7 +47,7 @@ import event_log
 from git_command import git_require
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
-import git_superproject
+from git_superproject import PrintMessages, UseSuperproject
 import gitc_utils
 from project import Project
 from project import RemoteSpec
@@ -281,7 +281,7 @@ later is required to fix a server side protocol bug.
 
   def _GetCurrentBranchOnly(self, opt):
     """Returns True if current-branch or use-superproject options are enabled."""
-    return opt.current_branch_only or git_superproject.UseSuperproject(opt, self.manifest)
+    return opt.current_branch_only or UseSuperproject(opt, self.manifest)
 
   def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests, superproject_logging_data):
     """Update revisionId of every project with the SHA from superproject.
@@ -299,12 +299,8 @@ later is required to fix a server side protocol bug.
     Returns:
       Returns path to the overriding manifest file instead of None.
     """
-    print_messages = git_superproject.PrintMessages(opt, self.manifest)
-    superproject = git_superproject.Superproject(self.manifest,
-                                                 self.repodir,
-                                                 self.git_event_log,
-                                                 quiet=opt.quiet,
-                                                 print_messages=print_messages)
+    print_messages = PrintMessages(opt, self.manifest)
+    superproject = self.manifest.superproject
     if opt.local_only:
       manifest_path = superproject.manifest_path
       if manifest_path:
@@ -314,7 +310,8 @@ later is required to fix a server side protocol bug.
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
-    update_result = superproject.UpdateProjectsRevisionId(all_projects)
+    update_result = superproject.UpdateProjectsRevisionId(
+        all_projects, git_event_log=self.git_event_log)
     manifest_path = update_result.manifest_path
     superproject_logging_data['updatedrevisionid'] = bool(manifest_path)
     if manifest_path:
@@ -989,7 +986,7 @@ later is required to fix a server side protocol bug.
       self._UpdateManifestProject(opt, mp, manifest_name)
 
     load_local_manifests = not self.manifest.HasLocalManifests
-    use_superproject = git_superproject.UseSuperproject(opt, self.manifest)
+    use_superproject = UseSuperproject(opt, self.manifest)
     if use_superproject and (self.manifest.IsMirror or self.manifest.IsArchive):
       # Don't use superproject, because we have no working tree.
       use_superproject = False
