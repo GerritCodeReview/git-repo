@@ -42,4 +42,4 @@ def test_get_current_branch_only(use_superproject, cli_args, result):
   opts, _ = cmd.OptionParser.parse_args(cli_args)
 
   with mock.patch('git_superproject.UseSuperproject', return_value=use_superproject):
-    assert cmd._GetCurrentBranchOnly(opts) == result
+    assert cmd._GetCurrentBranchOnly(opts, cmd.manifest) == result
