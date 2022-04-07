@@ -24,6 +24,7 @@ import urllib.parse
 import gitc_utils
 from git_config import GitConfig, IsId
 from git_refs import R_HEADS, HEAD
+from git_superproject import Superproject
 import platform_utils
 from project import (Annotation, RemoteSpec, Project, RepoProject,
                      ManifestProject)
@@ -670,17 +671,17 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if self._superproject:
       root.appendChild(doc.createTextNode(''))
       e = doc.createElement('superproject')
-      e.setAttribute('name', self._superproject['name'])
+      e.setAttribute('name', self._superproject.name)
       remoteName = None
       if d.remote:
         remoteName = d.remote.name
-      remote = self._superproject.get('remote')
+      remote = self._superproject.remote
       if not d.remote or remote.orig_name != remoteName:
         remoteName = remote.orig_name
         e.setAttribute('remote', remoteName)
       revision = remote.revision or d.revisionExpr
-      if not revision or revision != self._superproject['revision']:
-        e.setAttribute('revision', self._superproject['revision'])
+      if not revision or revision != self._superproject.revision:
+        e.setAttribute('revision', self._superproject.revision)
       root.appendChild(e)
 
     if self._contactinfo.bugurl != Wrapper().BUG_URL:
@@ -984,7 +985,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._default = None
     self._submanifests = {}
     self._repo_hooks_project = None
-    self._superproject = {}
+    self._superproject = None
     self._contactinfo = ContactInfo(Wrapper().BUG_URL)
     self._notice = None
     self.branch = None
@@ -1052,20 +1053,19 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
       # Now that we have loaded this manifest, load any submanifest  manifests
       # as well.  We need to do this after self._loaded is set to avoid looping.
-      if self._outer_client:
-        for name in self._submanifests:
-          tree = self._submanifests[name]
-          spec = tree.ToSubmanifestSpec(self)
-          present = os.path.exists(os.path.join(self.subdir, MANIFEST_FILE_NAME))
-          if present and tree.present and not tree.repo_client:
-            if initial_client and initial_client.topdir == self.topdir:
-              tree.repo_client = self
-              tree.present = present
-            elif not os.path.exists(self.subdir):
-              tree.present = False
-          if present and tree.present:
-            tree.repo_client._Load(initial_client=initial_client,
-                                   submanifest_depth=submanifest_depth + 1)
+      for name in self._submanifests:
+        tree = self._submanifests[name]
+        spec = tree.ToSubmanifestSpec(self)
+        present = os.path.exists(os.path.join(self.subdir, MANIFEST_FILE_NAME))
+        if present and tree.present and not tree.repo_client:
+          if initial_client and initial_client.topdir == self.topdir:
+            tree.repo_client = self
+            tree.present = present
+          elif not os.path.exists(self.subdir):
+            tree.present = False
+        if present and tree.present:
+          tree.repo_client._Load(initial_client=initial_client,
+                                 submanifest_depth=submanifest_depth + 1)
 
   def _ParseManifestXml(self, path, include_root, parent_groups='',
                         restrict_includes=True):
@@ -1267,11 +1267,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if node.nodeName == 'superproject':
         name = self._reqatt(node, 'name')
         # There can only be one superproject.
-        if self._superproject.get('name'):
+        if self._superproject:
           raise ManifestParseError(
               'duplicate superproject in %s' %
               (self.manifestFile))
-        self._superproject['name'] = name
         remote_name = node.getAttribute('remote')
         if not remote_name:
           remote = self._default.remote
@@ -1280,14 +1279,16 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if remote is None:
           raise ManifestParseError("no remote for superproject %s within %s" %
                                    (name, self.manifestFile))
-        self._superproject['remote'] = remote.ToRemoteSpec(name)
         revision = node.getAttribute('revision') or remote.revision
         if not revision:
           revision = self._default.revisionExpr
         if not revision:
           raise ManifestParseError('no revision for superproject %s within %s' %
                                    (name, self.manifestFile))
-        self._superproject['revision'] = revision
+        self._superproject = Superproject(self,
+                                          name=name,
+                                          remote=remote.ToRemoteSpec(name),
+                                          revision=revision)
       if node.nodeName == 'contactinfo':
         bugurl = self._reqatt(node, 'bugurl')
         # This element can be repeated, later entries will clobber earlier ones.
@@ -1937,6 +1938,11 @@ class RepoClient(XmlManifest):
 
     # TODO: Completely separate manifest logic out of the client.
     self.manifest = self
+
+  @property
+  def superproject(self):
+    self._Load()
+    return self._superproject
 
 
 class GitcClient(RepoClient, GitcManifest):
