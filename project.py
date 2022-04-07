@@ -36,7 +36,6 @@ from git_trace2_event_log import EventLog
 from error import GitError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError, ManifestInvalidPathError
 from error import NoManifestException, ManifestParseError
-from git_superproject import Superproject
 import platform_utils
 import progress
 from repo_trace import IsTrace, Trace
