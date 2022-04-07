@@ -36,7 +36,6 @@ from git_trace2_event_log import EventLog
 from error import GitError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError, ManifestInvalidPathError
 from error import NoManifestException, ManifestParseError
-from git_superproject import Superproject
 import platform_utils
 import progress
 from repo_trace import IsTrace, Trace
@@ -3786,8 +3785,7 @@ class ManifestProject(MetaProject):
     if outer_manifest and not self.manifest.is_submanifest:
       for m in self.manifest.all_manifests:
         if m.manifestProject.use_superproject:
-          sync_result = Superproject(
-              m, m.repodir, git_event_log, quiet=not verbose).Sync()
+          sync_result = m.superproject.Sync(git_event_log, quiet=not verbose)
           if not sync_result.success:
             print(f'warning: git update of superproject for {m.path_prefix} '
                   'failed, repo sync will not use superproject to fetch '

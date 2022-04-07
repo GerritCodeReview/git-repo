@@ -25,7 +25,6 @@ from project import SyncBuffer
 from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
 import fetch
-import git_superproject
 import platform_utils
 from wrapper import Wrapper
 
