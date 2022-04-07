@@ -694,10 +694,10 @@ later is required to fix a server side protocol bug.
       load_local_manifests: Whether to load local manifests.
     """
     if manifest_name:
-      # Override calls _Unload already
+      # Override calls Unload already
       self.manifest.Override(manifest_name, load_local_manifests=load_local_manifests)
     else:
-      self.manifest._Unload()
+      self.manifest.Unload()
 
   def UpdateProjectList(self, opt):
     new_project_paths = []
