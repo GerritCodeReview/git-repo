@@ -289,8 +289,8 @@ class XmlManifestTests(ManifestParseTestCase):
   <x-custom-tag>X tags are always ignored</x-custom-tag>
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
+    self.assertEqual(manifest.superproject.name, 'superproject')
+    self.assertEqual(manifest.superproject.remote.name, 'test-remote')
     self.assertEqual(
         sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
@@ -569,10 +569,10 @@ class SuperProjectElementTests(ManifestParseTestCase):
   <superproject name="superproject"/>
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
-    self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/superproject')
-    self.assertEqual(manifest.superproject['revision'], 'refs/heads/main')
+    self.assertEqual(manifest.superproject.name, 'superproject')
+    self.assertEqual(manifest.superproject.remote.name, 'test-remote')
+    self.assertEqual(manifest.superproject.remote.url, 'http://localhost/superproject')
+    self.assertEqual(manifest.superproject.revision, 'refs/heads/main')
     self.assertEqual(
         sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
@@ -591,10 +591,10 @@ class SuperProjectElementTests(ManifestParseTestCase):
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
-    self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/superproject')
-    self.assertEqual(manifest.superproject['revision'], 'refs/heads/stable')
+    self.assertEqual(manifest.superproject.name, 'superproject')
+    self.assertEqual(manifest.superproject.remote.name, 'test-remote')
+    self.assertEqual(manifest.superproject.remote.url, 'http://localhost/superproject')
+    self.assertEqual(manifest.superproject.revision, 'refs/heads/stable')
     self.assertEqual(
         sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
@@ -613,10 +613,10 @@ class SuperProjectElementTests(ManifestParseTestCase):
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
-    self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/superproject')
-    self.assertEqual(manifest.superproject['revision'], 'refs/heads/stable')
+    self.assertEqual(manifest.superproject.name, 'superproject')
+    self.assertEqual(manifest.superproject.remote.name, 'test-remote')
+    self.assertEqual(manifest.superproject.remote.url, 'http://localhost/superproject')
+    self.assertEqual(manifest.superproject.revision, 'refs/heads/stable')
     self.assertEqual(
         sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
@@ -635,10 +635,10 @@ class SuperProjectElementTests(ManifestParseTestCase):
   <superproject name="superproject" revision="refs/heads/stable" />
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'test-remote')
-    self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/superproject')
-    self.assertEqual(manifest.superproject['revision'], 'refs/heads/stable')
+    self.assertEqual(manifest.superproject.name, 'superproject')
+    self.assertEqual(manifest.superproject.remote.name, 'test-remote')
+    self.assertEqual(manifest.superproject.remote.url, 'http://localhost/superproject')
+    self.assertEqual(manifest.superproject.revision, 'refs/heads/stable')
     self.assertEqual(
         sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
@@ -657,10 +657,10 @@ class SuperProjectElementTests(ManifestParseTestCase):
   <superproject name="platform/superproject" remote="superproject-remote"/>
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'platform/superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'superproject-remote')
-    self.assertEqual(manifest.superproject['remote'].url, 'http://localhost/platform/superproject')
-    self.assertEqual(manifest.superproject['revision'], 'refs/heads/main')
+    self.assertEqual(manifest.superproject.name, 'platform/superproject')
+    self.assertEqual(manifest.superproject.remote.name, 'superproject-remote')
+    self.assertEqual(manifest.superproject.remote.url, 'http://localhost/platform/superproject')
+    self.assertEqual(manifest.superproject.revision, 'refs/heads/main')
     self.assertEqual(
         sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
@@ -679,9 +679,9 @@ class SuperProjectElementTests(ManifestParseTestCase):
   <superproject name="superproject" remote="default-remote"/>
 </manifest>
 """)
-    self.assertEqual(manifest.superproject['name'], 'superproject')
-    self.assertEqual(manifest.superproject['remote'].name, 'default-remote')
-    self.assertEqual(manifest.superproject['revision'], 'refs/heads/main')
+    self.assertEqual(manifest.superproject.name, 'superproject')
+    self.assertEqual(manifest.superproject.remote.name, 'default-remote')
+    self.assertEqual(manifest.superproject.revision, 'refs/heads/main')
     self.assertEqual(
         sort_attributes(manifest.ToXml().toxml()),
         '<?xml version="1.0" ?><manifest>'
