@@ -667,20 +667,20 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                      ' '.join(self._repo_hooks_project.enabled_repo_hooks))
       root.appendChild(e)
 
-    if self._superproject:
+    if self._superproject_xml:
       root.appendChild(doc.createTextNode(''))
       e = doc.createElement('superproject')
-      e.setAttribute('name', self._superproject['name'])
+      e.setAttribute('name', self._superproject_xml['name'])
       remoteName = None
       if d.remote:
         remoteName = d.remote.name
-      remote = self._superproject.get('remote')
+      remote = self._superproject_xml.get('remote')
       if not d.remote or remote.orig_name != remoteName:
         remoteName = remote.orig_name
         e.setAttribute('remote', remoteName)
       revision = remote.revision or d.revisionExpr
-      if not revision or revision != self._superproject['revision']:
-        e.setAttribute('revision', self._superproject['revision'])
+      if not revision or revision != self._superproject_xml['revision']:
+        e.setAttribute('revision', self._superproject_xml['revision'])
       root.appendChild(e)
 
     if self._contactinfo.bugurl != Wrapper().BUG_URL:
@@ -841,9 +841,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     return self._repo_hooks_project
 
   @property
-  def superproject(self):
+  def superproject_xml(self):
     self._Load()
-    return self._superproject
+    return self._superproject_xml
 
   @property
   def contactinfo(self):
@@ -984,7 +984,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     self._default = None
     self._submanifests = {}
     self._repo_hooks_project = None
-    self._superproject = {}
+    self._superproject_xml = {}
     self._contactinfo = ContactInfo(Wrapper().BUG_URL)
     self._notice = None
     self.branch = None
@@ -1267,11 +1267,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       if node.nodeName == 'superproject':
         name = self._reqatt(node, 'name')
         # There can only be one superproject.
-        if self._superproject.get('name'):
+        if self._superproject_xml.get('name'):
           raise ManifestParseError(
               'duplicate superproject in %s' %
               (self.manifestFile))
-        self._superproject['name'] = name
+        self._superproject_xml['name'] = name
         remote_name = node.getAttribute('remote')
         if not remote_name:
           remote = self._default.remote
@@ -1280,14 +1280,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if remote is None:
           raise ManifestParseError("no remote for superproject %s within %s" %
                                    (name, self.manifestFile))
-        self._superproject['remote'] = remote.ToRemoteSpec(name)
+        self._superproject_xml['remote'] = remote.ToRemoteSpec(name)
         revision = node.getAttribute('revision') or remote.revision
         if not revision:
           revision = self._default.revisionExpr
         if not revision:
           raise ManifestParseError('no revision for superproject %s within %s' %
                                    (name, self.manifestFile))
-        self._superproject['revision'] = revision
+        self._superproject_xml['revision'] = revision
       if node.nodeName == 'contactinfo':
         bugurl = self._reqatt(node, 'bugurl')
         # This element can be repeated, later entries will clobber earlier ones.
