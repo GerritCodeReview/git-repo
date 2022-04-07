@@ -305,11 +305,7 @@ later is required to fix a server side protocol bug.
       Returns path to the overriding manifest file instead of None.
     """
     print_messages = git_superproject.PrintMessages(opt, self.manifest)
-    superproject = git_superproject.Superproject(self.manifest,
-                                                 self.repodir,
-                                                 self.git_event_log,
-                                                 quiet=opt.quiet,
-                                                 print_messages=print_messages)
+    superproject = self.manifest.superproject
     if opt.local_only:
       manifest_path = superproject.manifest_path
       if manifest_path:
@@ -319,7 +315,8 @@ later is required to fix a server side protocol bug.
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
                                     submodules_ok=opt.fetch_submodules)
-    update_result = superproject.UpdateProjectsRevisionId(all_projects)
+    update_result = superproject.UpdateProjectsRevisionId(
+        all_projects, git_event_log=self.git_event_log)
     manifest_path = update_result.manifest_path
     superproject_logging_data['updatedrevisionid'] = bool(manifest_path)
     if manifest_path:

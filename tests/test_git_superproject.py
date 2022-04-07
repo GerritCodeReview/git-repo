@@ -68,8 +68,7 @@ class SuperprojectTestCase(unittest.TestCase):
   <project path="art" name="platform/art" groups="notdefault,platform-""" + self.platform + """
   " /></manifest>
 """)
-    self._superproject = git_superproject.Superproject(manifest, self.repodir,
-                                                       self.git_event_log)
+    self._superproject = git_superproject.Superproject(manifest, self.repodir)
 
   def tearDown(self):
     """Tear down superproject every time."""
@@ -125,9 +124,9 @@ class SuperprojectTestCase(unittest.TestCase):
 <manifest>
 </manifest>
 """)
-    superproject = git_superproject.Superproject(manifest, self.repodir, self.git_event_log)
+    superproject = git_superproject.Superproject(manifest, self.repodir)
     # Test that exit condition is false when there is no superproject tag.
-    sync_result = superproject.Sync()
+    sync_result = superproject.Sync(self.git_event_log)
     self.assertFalse(sync_result.success)
     self.assertFalse(sync_result.fatal)
     self.verifyErrorEvent()
@@ -141,8 +140,8 @@ class SuperprojectTestCase(unittest.TestCase):
   <superproject name="superproject"/>
 </manifest>
 """)
-    superproject = git_superproject.Superproject(manifest, self.repodir, self.git_event_log)
-    sync_result = superproject.Sync()
+    superproject = git_superproject.Superproject(manifest, self.repodir)
+    sync_result = superproject.Sync(self.git_event_log)
     self.assertFalse(sync_result.success)
     self.assertTrue(sync_result.fatal)
 
@@ -155,17 +154,16 @@ class SuperprojectTestCase(unittest.TestCase):
   <superproject name="superproject"/>
 </manifest>
 """)
-    self._superproject = git_superproject.Superproject(manifest, self.repodir,
-                                                       self.git_event_log)
+    self._superproject = git_superproject.Superproject(manifest, self.repodir)
     with mock.patch.object(self._superproject, '_branch', 'junk'):
-      sync_result = self._superproject.Sync()
+      sync_result = self._superproject.Sync(self.git_event_log)
       self.assertFalse(sync_result.success)
       self.assertTrue(sync_result.fatal)
 
   def test_superproject_get_superproject_mock_init(self):
     """Test with _Init failing."""
     with mock.patch.object(self._superproject, '_Init', return_value=False):
-      sync_result = self._superproject.Sync()
+      sync_result = self._superproject.Sync(self.git_event_log)
       self.assertFalse(sync_result.success)
       self.assertTrue(sync_result.fatal)
 
@@ -174,7 +172,7 @@ class SuperprojectTestCase(unittest.TestCase):
     with mock.patch.object(self._superproject, '_Init', return_value=True):
       os.mkdir(self._superproject._superproject_path)
       with mock.patch.object(self._superproject, '_Fetch', return_value=False):
-        sync_result = self._superproject.Sync()
+        sync_result = self._superproject.Sync(self.git_event_log)
         self.assertFalse(sync_result.success)
         self.assertTrue(sync_result.fatal)
 
@@ -230,7 +228,7 @@ class SuperprojectTestCase(unittest.TestCase):
                                return_value=data):
           # Create temporary directory so that it can write the file.
           os.mkdir(self._superproject._superproject_path)
-          update_result = self._superproject.UpdateProjectsRevisionId(projects)
+          update_result = self._superproject.UpdateProjectsRevisionId(projects, self.git_event_log)
           self.assertIsNotNone(update_result.manifest_path)
           self.assertFalse(update_result.fatal)
           with open(update_result.manifest_path, 'r') as fp:
@@ -256,13 +254,12 @@ class SuperprojectTestCase(unittest.TestCase):
 </manifest>
 """)
     self.maxDiff = None
-    self._superproject = git_superproject.Superproject(manifest, self.repodir,
-                                                       self.git_event_log)
+    self._superproject = git_superproject.Superproject(manifest, self.repodir)
     self.assertEqual(len(self._superproject._manifest.projects), 1)
     projects = self._superproject._manifest.projects
     project = projects[0]
     project.SetRevisionId('ABCDEF')
-    update_result = self._superproject.UpdateProjectsRevisionId(projects)
+    update_result = self._superproject.UpdateProjectsRevisionId(projects, self.git_event_log)
     self.assertIsNone(update_result.manifest_path)
     self.assertFalse(update_result.fatal)
     self.verifyErrorEvent()
@@ -290,8 +287,7 @@ class SuperprojectTestCase(unittest.TestCase):
   " /></manifest>
 """)
     self.maxDiff = None
-    self._superproject = git_superproject.Superproject(manifest, self.repodir,
-                                                       self.git_event_log)
+    self._superproject = git_superproject.Superproject(manifest, self.repodir)
     self.assertEqual(len(self._superproject._manifest.projects), 2)
     projects = self._superproject._manifest.projects
     data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00')
@@ -302,7 +298,7 @@ class SuperprojectTestCase(unittest.TestCase):
                                return_value=data):
           # Create temporary directory so that it can write the file.
           os.mkdir(self._superproject._superproject_path)
-          update_result = self._superproject.UpdateProjectsRevisionId(projects)
+          update_result = self._superproject.UpdateProjectsRevisionId(projects, self.git_event_log)
           self.assertIsNotNone(update_result.manifest_path)
           self.assertFalse(update_result.fatal)
           with open(update_result.manifest_path, 'r') as fp:
@@ -337,8 +333,7 @@ class SuperprojectTestCase(unittest.TestCase):
   " /></manifest>
 """)
     self.maxDiff = None
-    self._superproject = git_superproject.Superproject(manifest, self.repodir,
-                                                       self.git_event_log)
+    self._superproject = git_superproject.Superproject(manifest, self.repodir)
     self.assertEqual(len(self._superproject._manifest.projects), 3)
     projects = self._superproject._manifest.projects
     data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
@@ -350,7 +345,7 @@ class SuperprojectTestCase(unittest.TestCase):
                                return_value=data):
           # Create temporary directory so that it can write the file.
           os.mkdir(self._superproject._superproject_path)
-          update_result = self._superproject.UpdateProjectsRevisionId(projects)
+          update_result = self._superproject.UpdateProjectsRevisionId(projects, self.git_event_log)
           self.assertIsNotNone(update_result.manifest_path)
           self.assertFalse(update_result.fatal)
           with open(update_result.manifest_path, 'r') as fp:
