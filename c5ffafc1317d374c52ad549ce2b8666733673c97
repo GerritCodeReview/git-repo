@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c14ad04c_c0393525",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 848,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-08T21:34:12Z",
+      "side": 1,
+      "message": "this feels like it should be in RepoClient, not XmlManifest",
+      "revId": "c5ffafc1317d374c52ad549ce2b8666733673c97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
