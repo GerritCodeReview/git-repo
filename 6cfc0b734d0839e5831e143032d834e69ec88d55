@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0200f007_e5e5ab2c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-08T18:01:58Z",
+      "side": 0,
+      "message": "I am not sure why  if self._outer_client: check was there. delphij@ may know. Change seems ok to me.",
+      "revId": "6cfc0b734d0839e5831e143032d834e69ec88d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
