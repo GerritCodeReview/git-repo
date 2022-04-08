@@ -16,6 +16,24 @@
       "message": "I am not sure why  if self._outer_client: check was there. delphij@ may know. Change seems ok to me.",
       "revId": "6cfc0b734d0839e5831e143032d834e69ec88d55",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b3188de_62c90816",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1055,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-08T19:10:17Z",
+      "side": 0,
+      "message": "This is some vestigal code of mine that was not cleaned up earlier.\n\n_outer_client is a multi-manifest artifact, and will always be True-ish (see line 364 of this file above.)  Single manifest checkouts will have an empty self._submanifests, making the check completely redundant.",
+      "parentUuid": "0200f007_e5e5ab2c",
+      "revId": "6cfc0b734d0839e5831e143032d834e69ec88d55",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
