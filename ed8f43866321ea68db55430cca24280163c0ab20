@@ -18,6 +18,41 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c45fc94_61c21762",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-08T13:58:46Z",
+      "side": 1,
+      "message": "Agreed",
+      "parentUuid": "10efc987_24e3bb7f",
+      "revId": "ed8f43866321ea68db55430cca24280163c0ab20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faf415df_78aa63e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-08T13:58:46Z",
+      "side": 1,
+      "message": "Multi-manifest with superprojects will need to override multiple manifest files in `repo sync`.  A subsequent change will extend Override() to do this.",
+      "revId": "ed8f43866321ea68db55430cca24280163c0ab20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a4a2369_08348690",
@@ -31,6 +66,24 @@
       "writtenOn": "2022-04-08T06:16:50Z",
       "side": 1,
       "message": "seems like you should leave this as-is since it\u0027s the same ?",
+      "revId": "ed8f43866321ea68db55430cca24280163c0ab20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96ff0eeb_00dce8fb",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-08T13:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a4a2369_08348690",
       "revId": "ed8f43866321ea68db55430cca24280163c0ab20",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
