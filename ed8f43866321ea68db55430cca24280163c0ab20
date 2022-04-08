@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10efc987_24e3bb7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-08T06:16:50Z",
+      "side": 1,
+      "message": "prob be good if Raman could take a look",
+      "revId": "ed8f43866321ea68db55430cca24280163c0ab20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a4a2369_08348690",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-08T06:16:50Z",
+      "side": 1,
+      "message": "seems like you should leave this as-is since it\u0027s the same ?",
+      "revId": "ed8f43866321ea68db55430cca24280163c0ab20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
