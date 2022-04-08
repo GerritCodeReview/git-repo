@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "437621f6_deacda8c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-08T13:42:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d5e49dc_e4213704",
+      "revId": "143ab5556358c48e01875d7d0e2929c61728853b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50469459_f7189a39",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-04-08T06:14:25Z",
       "side": 1,
       "message": "extra space before \"source\"",
+      "revId": "143ab5556358c48e01875d7d0e2929c61728853b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e162925d_a0e2fd27",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3794,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-08T13:42:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50469459_f7189a39",
       "revId": "143ab5556358c48e01875d7d0e2929c61728853b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
