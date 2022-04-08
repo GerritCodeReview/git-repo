@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d5e49dc_e4213704",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 973,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-08T06:14:25Z",
+      "side": 1,
+      "message": "add a docstring while you\u0027re here \u0026 you\u0027ve spent time understanding the APIs ?",
+      "revId": "143ab5556358c48e01875d7d0e2929c61728853b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50469459_f7189a39",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3794,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-08T06:14:25Z",
+      "side": 1,
+      "message": "extra space before \"source\"",
+      "revId": "143ab5556358c48e01875d7d0e2929c61728853b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
