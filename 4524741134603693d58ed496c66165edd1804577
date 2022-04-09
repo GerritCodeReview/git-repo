@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7979b12d_22f8ab44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-09T00:13:13Z",
+      "side": 1,
+      "message": "sorry, but why is this necessary ?  i\u0027ve looked at the next CL and can\u0027t quite explain the goal of this one.",
+      "revId": "4524741134603693d58ed496c66165edd1804577",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
