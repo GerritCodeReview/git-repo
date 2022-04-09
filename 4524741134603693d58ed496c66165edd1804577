@@ -16,6 +16,24 @@
       "message": "sorry, but why is this necessary ?  i\u0027ve looked at the next CL and can\u0027t quite explain the goal of this one.",
       "revId": "4524741134603693d58ed496c66165edd1804577",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5489373e_1c0e0dc9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-09T22:14:46Z",
+      "side": 1,
+      "message": "The as-yet-unwritten CL to add multi-manifest support to subcmds.Sync() needs to have all of the superproject instances present so that it can override *all* of the manifests in one reload.  That is simplest if we place the Superproject() instance inside of RepoClient (334641).\n\nWhile not strictly necessary, this rename avoids confusion around which is the xml element, and which is the instance.  We could also have manifest_xml pass the xml structure to Superproject() as a parameter, and make it a private element.\n\nthoughts?",
+      "parentUuid": "7979b12d_22f8ab44",
+      "revId": "4524741134603693d58ed496c66165edd1804577",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
