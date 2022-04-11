@@ -16,6 +16,74 @@
       "message": "@rtenneti - ps6 is a rather significant change to manifest.superproject: it now gets created when there is a \u003csuperproject\u003e element, and its absense is the indicator that there is no superproject to use, rather than creating it for all manifests and noticing that it has no definition inside of Superproject.",
       "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "798f0cd6_818ec341",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-11T20:56:30Z",
+      "side": 1,
+      "message": "Patchset 6 LGTM (would appreciate if quiet and print_messages arguements are plumbed from Sync.py to superproject). Thanks.",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "247f858b_1357fc96",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-11T20:56:30Z",
+      "side": 1,
+      "message": "nit: are quiet and print_messages arguments passed to this function?",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5267ac52_885b2e63",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-11T20:56:30Z",
+      "side": 1,
+      "message": "nit: consider passing  quiet and print_messages arguments also.",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cb4f7c4_21e21eb7",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-11T20:56:30Z",
+      "side": 1,
+      "message": "nit: consider passing print_messages to GetAllProjectsCommitIds. It looks like it gets overwritten in Sync method. Consider accepting \"opt.quiet argument from Sync.py\".",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

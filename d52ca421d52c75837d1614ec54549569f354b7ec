@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3d0b100_2081577b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-11T20:56:30Z",
+      "side": 0,
+      "message": "nit: sorry if I have missed it. Should we pass print_messages and quiet to UpdateProjectsRevisionId function?",
+      "revId": "d52ca421d52c75837d1614ec54549569f354b7ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
