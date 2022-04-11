@@ -3456,6 +3456,57 @@ class ManifestProject(MetaProject):
     """Return the name of the platform."""
     return platform.system().lower()
 
+  def SyncWithPossibleInit(self, submanifest, verbose=False,
+                           current_branch_only=False, tags='', git_event_log=None):
+    """Sync a manifestProject, possibly for the first time.
+
+    Call Sync() with arguments from the most recent `repo init`.  If this is a
+    new sub manifest, then inherit options from the parent's manifestProject.
+
+    This is used by subcmds.Sync() to do an initial download of new sub
+    manifests.
+
+    Args:
+      submanifest: an XmlSubmanifest, the submanifest to re-sync.
+      verbose: a boolean, whether to show all output, rather than only errors.
+      current_branch_only: a boolean, whether to only fetch the current manifest
+          branch from the server.
+      tags: a boolean, whether to fetch tags.
+      git_event_log: an EventLog, for git tracing.
+    """
+    git_event_log = git_event_log or EventLog()
+    spec = submanifest.ToSubmanifestSpec()
+    # Use the init options from the existing manifestProject, or the parent if
+    # it doesn't exist.
+    opts = self if self.Exists else submanifest.parent.manifestProject
+    return self.Sync(
+        manifest_url=spec.manifestUrl,
+        manifest_branch=spec.revision,
+        standalone_manifest=opts.standalone_manifest_url,
+        groups=opts.manifest_groups,
+        platform=opts.manifest_platform,
+        mirror=opts.mirror,
+        dissociate=opts.dissociate,
+        reference=opts.reference,
+        worktree=opts.use_worktree,
+        submodules=opts.submodules,
+        archive=opts.archive,
+        partial_clone=opts.partial_clone,
+        clone_filter=opts.clone_filter,
+        partial_clone_exclude=opts.partial_clone_exclude,
+        clone_bundle=opts.clone_bundle,
+        git_lfs=opts.git_lfs,
+        use_superproject=opts.use_superproject,
+        verbose=verbose,
+        current_branch_only=current_branch_only,
+        tags=tags,
+        depth=opts.depth,
+        git_event_log=git_event_log,
+        manifest_name=spec.manifestName,
+        this_manifest_only=True,
+        outer_manifest=False,
+    )
+
   def Sync(self, _kwargs_only=(), manifest_url='', manifest_branch=None,
            standalone_manifest=False, groups='', mirror=False, reference='',
            dissociate=False, worktree=False, submodules=False, archive=False,
