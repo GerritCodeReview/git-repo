@@ -714,8 +714,20 @@ later is required to fix a server side protocol bug.
       manifest.Unload()
 
   def UpdateProjectList(self, opt, manifest):
+    """Update the cached projects list for |manifest|
+
+    In a multi-manifest checkout, each manifest has its own project.list
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      manifest: The manifest to use.
+
+    Returns:
+      0: success
+      1: failure
+    """
     new_project_paths = []
-    for project in self.GetProjects(None, missing_ok=True):
+    for project in self.GetProjects(None, missing_ok=True, all_manifests=False):
       if project.relpath:
         new_project_paths.append(project.relpath)
     file_name = 'project.list'
@@ -923,6 +935,12 @@ later is required to fix a server side protocol bug.
       if not clean:
         sys.exit(1)
       self._ReloadManifest(manifest_name, mp.manifest)
+      # If there are new submanifests, sync them.
+      if mp.manifest.submanifests:
+        for submanifest in mp.manifest.submanifests.values():
+          submanifest.repo_client.manifestProject.ReSync(mp.manifest)
+        self._ReloadManifest(manifest_name, mp.manifest)
+
       if opt.jobs is None:
         self.jobs = mp.manifest.default.sync_j
 

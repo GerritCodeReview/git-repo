@@ -3438,6 +3438,50 @@ class ManifestProject(MetaProject):
     """Return the name of the platform."""
     return platform.system().lower()
 
+  def ReSync(self, parent_manifest, verbose=False, current_branch_only=False, tags='', git_event_log=None):
+    """Sync a previously created manifestProject.
+
+    This is used by subcmds.Sync() to do an initial download of new sub
+    manifests.
+
+    Args:
+      parent_manifest: the parent manifest.
+      verbose: a boolean, whether to show all output, rather than only errors.
+      current_branch_only: a boolean, whether to only fetch the current manifest
+          branch from the server.
+      tags: a boolean, whether to fetch tags.
+    """
+    git_event_log = git_event_log or EventLog()
+    spec = self.manifest.ToSubmanifestSpec(root=self.manifest.outer_client)
+    opts = self if self.Exists else parent_manifest.manifestProject
+    self.Sync(
+        manifest_url=spec.manifestUrl,
+        manifest_branch=spec.revision,
+        standalone_manifest=opts.standalone_manifest,
+        groups=opts.manifest_groups or 'default',
+        platform=opts.platform or 'auto',
+        mirror=opts.mirror,
+        dissociate=opts.dissociate,
+        reference=opts.reference,
+        worktree=opts.use_worktree,
+        submodules=opts.submodules,
+        archive=opts.archive,
+        partial_clone=opts.partial_clone,
+        clone_filter=opts.clone_filter,
+        partial_clone_exclude=opts.partial_clone_exclude,
+        clone_bundle=opts.clone_bundle,
+        git_lfs=opts.git_lfs,
+        use_superproject=opts.use_superproject,
+        verbose=verbose,
+        current_branch_only=current_branch_only,
+        tags=tags,
+        depth=opts.depth,
+        git_event_log=git_event_log,
+        manifest_name=spec.manifestName,
+        this_manifest_only=True,
+        outer_manifest=False,
+    )
+
   def Sync(self, _kwargs_only=(), manifest_url='', manifest_branch=None,
            standalone_manifest=False, groups='', mirror=False, reference='',
            dissociate=False, worktree=False, submodules=False, archive=False,
@@ -3479,7 +3523,7 @@ class ManifestProject(MetaProject):
       platform: a string, restrict the checkout to projects with the specified
           platform group.
       git_event_log: an EventLog, for git tracing.
-      tags: a boolean, whether to fetch tags.,
+      tags: a boolean, whether to fetch tags.
       manifest_name: a string, the name of the manifest file to use.
       this_manifest_only: a boolean, whether to only operate on the current sub
           manifest.
