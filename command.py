@@ -144,11 +144,10 @@ class Command(object):
           help=f'number of jobs to run in parallel (default: {default})')
 
     m = p.add_option_group('Multi-manifest options')
-    m.add_option('--outer-manifest', action='store_true',
+    m.add_option('--outer-manifest', action='store_true', default=True,
                  help='operate starting at the outermost manifest')
     m.add_option('--no-outer-manifest', dest='outer_manifest',
-                 action='store_false', default=None,
-                 help='do not operate on outer manifests')
+                 action='store_false', help='do not operate on outer manifests')
     m.add_option('--this-manifest-only', action='store_true', default=None,
                  help='only operate on this (sub)manifest')
     m.add_option('--no-this-manifest-only', '--all-manifests',
@@ -385,7 +384,7 @@ class Command(object):
       opt: The command options.
     """
     top = self.outer_manifest
-    if opt.outer_manifest is False or opt.this_manifest_only:
+    if not opt.outer_manifest or opt.this_manifest_only:
       top = self.manifest
     yield top
     if not opt.this_manifest_only:
