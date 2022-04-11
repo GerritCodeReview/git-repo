@@ -310,7 +310,7 @@ class _Repo(object):
         # (sub)manifest, and then any child submanifests.
         result = cmd.Execute(copts, cargs)
         for submanifest in repo_client.manifest.submanifests.values():
-          spec = submanifest.ToSubmanifestSpec(root=repo_client.outer_client)
+          spec = submanifest.ToSubmanifestSpec()
           gopts.submanifest_path = submanifest.repo_client.path_prefix
           child_argv = argv[:]
           child_argv.append('--no-outer-manifest')
