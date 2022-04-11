@@ -3459,6 +3459,67 @@ class ManifestProject(MetaProject):
     """Return the name of the platform."""
     return platform.system().lower()
 
+  def SyncWithPossibleInit(self, submanifest, verbose=False,
+                           current_branch_only=False, tags='', git_event_log=None):
+    """Sync a manifestProject, possibly for the first time.
+
+    Call Sync() with arguments from the most recent `repo init`.  If this is a
+    new sub manifest, then inherit options from the parent's manifestProject.
+
+    This is used by subcmds.Sync() to do an initial download of new sub
+    manifests.
+
+    Args:
+      submanifest: an XmlSubmanifest, the submanifest to re-sync.
+      verbose: a boolean, whether to show all output, rather than only errors.
+      current_branch_only: a boolean, whether to only fetch the current manifest
+          branch from the server.
+      tags: a boolean, whether to fetch tags.
+      git_event_log: an EventLog, for git tracing.
+    """
+    # TODO(lamontjones): when refactoring sync (and init?) consider how to
+    # better get the init options that we should use when syncing uncovers a new
+    # submanifest.
+    git_event_log = git_event_log or EventLog()
+    spec = submanifest.ToSubmanifestSpec()
+    # Use the init options from the existing manifestProject, or the parent if
+    # it doesn't exist.
+    #
+    # Today, we only support changing manifest_groups on the sub-manifest, with
+    # no supported-for-the-user way to change the other arguments from those
+    # specified by the outert manifest.
+    #
+    # TODO(lamontjones): determine which of these should come from the outermost
+    # manifest, and which should come from the parent manifest.
+    mp = self if self.Exists else submanifest.parent.manifestProject
+    return self.Sync(
+        manifest_url=spec.manifestUrl,
+        manifest_branch=spec.revision,
+        standalone_manifest=mp.standalone_manifest_url,
+        groups=mp.manifest_groups,
+        platform=mp.manifest_platform,
+        mirror=mp.mirror,
+        dissociate=mp.dissociate,
+        reference=mp.reference,
+        worktree=mp.use_worktree,
+        submodules=mp.submodules,
+        archive=mp.archive,
+        partial_clone=mp.partial_clone,
+        clone_filter=mp.clone_filter,
+        partial_clone_exclude=mp.partial_clone_exclude,
+        clone_bundle=mp.clone_bundle,
+        git_lfs=mp.git_lfs,
+        use_superproject=mp.use_superproject,
+        verbose=verbose,
+        current_branch_only=current_branch_only,
+        tags=tags,
+        depth=mp.depth,
+        git_event_log=git_event_log,
+        manifest_name=spec.manifestName,
+        this_manifest_only=True,
+        outer_manifest=False,
+    )
+
   def Sync(self, _kwargs_only=(), manifest_url='', manifest_branch=None,
            standalone_manifest=False, groups='', mirror=False, reference='',
            dissociate=False, worktree=False, submodules=False, archive=False,
