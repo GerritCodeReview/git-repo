@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from collections import defaultdict
 import functools
 import http.cookiejar as cookielib
 import io
@@ -66,7 +67,7 @@ _ONE_DAY_S = 24 * 60 * 60
 class Sync(Command, MirrorSafeCommand):
   jobs = 1
   COMMON = True
-  MULTI_MANIFEST_SUPPORT = False
+  MULTI_MANIFEST_SUPPORT = True
   helpSummary = "Update working tree to the latest revision"
   helpUsage = """
 %prog [<project>...]
@@ -295,7 +296,8 @@ later is required to fix a server side protocol bug.
     """
     return git_superproject.UseSuperproject(opt.use_superproject, manifest) or opt.current_branch_only
 
-  def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests, superproject_logging_data, manifest):
+  def _UpdateProjectsRevisionId(self, opt, args, superproject_logging_data,
+                                manifest):
     """Update revisionId of every project with the SHA from superproject.
 
     This function updates each project's revisionId with SHA from superproject.
@@ -305,41 +307,77 @@ later is required to fix a server side protocol bug.
       opt: Program options returned from optparse.  See _Options().
       args: Arguments to pass to GetProjects. See the GetProjects
           docstring for details.
-      load_local_manifests: Whether to load local manifests.
       superproject_logging_data: A dictionary of superproject data that is to be logged.
       manifest: The manifest to use.
-
-    Returns:
-      Returns path to the overriding manifest file instead of None.
     """
-    superproject = self.manifest.superproject
-    superproject.SetQuiet(opt.quiet)
-    print_messages = git_superproject.PrintMessages(opt, self.manifest)
-    superproject.SetPrintMessages(print_messages)
+    have_superproject = manifest.superproject or any(
+        m.superproject for m in manifest.all_children)
+    if not have_superproject:
+      return None
+
     if opt.local_only:
-      manifest_path = superproject.manifest_path
+      manifest_path = manifest.superproject.manifest_path
       if manifest_path:
-        self._ReloadManifest(manifest_path, manifest, load_local_manifests)
+        self._ReloadManifest(manifest_path, manifest)
       return manifest_path
 
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
-                                    submodules_ok=opt.fetch_submodules)
-    update_result = superproject.UpdateProjectsRevisionId(
-        all_projects, git_event_log=self.git_event_log)
-    manifest_path = update_result.manifest_path
-    superproject_logging_data['updatedrevisionid'] = bool(manifest_path)
-    if manifest_path:
-      self._ReloadManifest(manifest_path, manifest, load_local_manifests)
+                                    submodules_ok=opt.fetch_submodules,
+                                    manifest=manifest,
+                                    all_manifests=not opt.this_manifest_only)
+
+    per_manifest = defaultdict(list)
+    manifest_paths = {}
+    if opt.this_manifest_only:
+      per_manifest[manifest.path_prefix] = all_projects
     else:
-      if print_messages:
-        print('warning: Update of revisionId from superproject has failed, '
-              'repo sync will not use superproject to fetch the source. ',
-              'Please resync with the --no-use-superproject option to avoid this repo warning.',
-              file=sys.stderr)
-      if update_result.fatal and opt.use_superproject is not None:
-        sys.exit(1)
-    return manifest_path
+      for p in all_projects:
+        per_manifest[p.manifest.path_prefix].append(p)
+
+    superproject_logging_data = {}
+    need_unload = False
+    for m in self.ManifestList(opt):
+      if not m.path_prefix in per_manifest:
+        continue
+      use_super = git_superproject.UseSuperproject(opt.use_superproject, m)
+      if superproject_logging_data:
+        superproject_logging_data['multimanifest'] = True
+      superproject_logging_data.update(
+          superproject=use_super,
+          haslocalmanifests=bool(m.HasLocalManifests),
+          hassuperprojecttag=bool(m.superproject),
+      )
+      if use_super and (m.IsMirror or m.IsArchive):
+        # Don't use superproject, because we have no working tree.
+        use_super = False
+        superproject_logging_data['superproject'] = False
+        superproject_logging_data['noworktree'] = True
+
+      if not use_super:
+        continue
+      m.superproject.SetQuiet(opt.quiet)
+      print_messages = git_superproject.PrintMessages(opt, m)
+      m.superproject.SetPrintMessages(print_messages)
+      update_result = m.superproject.UpdateProjectsRevisionId(
+          per_manifest[m.path_prefix], git_event_log=self.git_event_log)
+      manifest_path = update_result.manifest_path
+      superproject_logging_data['updatedrevisionid'] = bool(manifest_path)
+      if manifest_path:
+        m.SetManifestOverride(manifest_path)
+        need_unload = True
+      else:
+        if print_messages:
+          print(f'{m.path_prefix}: warning: Update of revisionId from '
+                'superproject has failed, repo sync will not use superproject '
+                'to fetch the source. ',
+                'Please resync with the --no-use-superproject option to avoid '
+                'this repo warning.',
+                file=sys.stderr)
+        if update_result.fatal and opt.use_superproject is not None:
+          sys.exit(1)
+    if need_unload:
+      m.outer_client.manifest.Unload()
 
   def _FetchProjectList(self, opt, projects):
     """Main function of the fetch worker.
@@ -484,8 +522,8 @@ later is required to fix a server side protocol bug.
 
     return (ret, fetched)
 
-  def _FetchMain(self, opt, args, all_projects, err_event, manifest_name,
-                 load_local_manifests, ssh_proxy, manifest):
+  def _FetchMain(self, opt, args, all_projects, err_event,
+                 ssh_proxy, manifest):
     """The main network fetch loop.
 
     Args:
@@ -493,8 +531,6 @@ later is required to fix a server side protocol bug.
       args: Command line args used to filter out projects.
       all_projects: List of all projects that should be fetched.
       err_event: Whether an error was hit while processing.
-      manifest_name: Manifest file to be reloaded.
-      load_local_manifests: Whether to load local manifests.
       ssh_proxy: SSH manager for clients & masters.
       manifest: The manifest to use.
 
@@ -525,10 +561,12 @@ later is required to fix a server side protocol bug.
     # Iteratively fetch missing and/or nested unregistered submodules
     previously_missing_set = set()
     while True:
-      self._ReloadManifest(manifest_name, self.manifest, load_local_manifests)
+      self._ReloadManifest(None, manifest)
       all_projects = self.GetProjects(args,
                                       missing_ok=True,
-                                      submodules_ok=opt.fetch_submodules)
+                                      submodules_ok=opt.fetch_submodules,
+                                      manifest=manifest,
+                                      all_manifests=not opt.this_manifest_only)
       missing = []
       for project in all_projects:
         if project.gitdir not in fetched:
@@ -623,7 +661,7 @@ later is required to fix a server side protocol bug.
     for project in projects:
       # Make sure pruning never kicks in with shared projects.
       if (not project.use_git_worktrees and
-              len(project.manifest.GetProjectsWithName(project.name)) > 1):
+              len(project.manifest.GetProjectsWithName(project.name, all_manifests=True)) > 1):
         if not opt.quiet:
           print('\r%s: Shared project %s found, disabling pruning.' %
                 (project.relpath, project.name))
@@ -697,7 +735,7 @@ later is required to fix a server side protocol bug.
       t.join()
     pm.end()
 
-  def _ReloadManifest(self, manifest_name, manifest, load_local_manifests=True):
+  def _ReloadManifest(self, manifest_name, manifest):
     """Reload the manfiest from the file specified by the |manifest_name|.
 
     It unloads the manifest if |manifest_name| is None.
@@ -705,17 +743,29 @@ later is required to fix a server side protocol bug.
     Args:
       manifest_name: Manifest file to be reloaded.
       manifest: The manifest to use.
-      load_local_manifests: Whether to load local manifests.
     """
     if manifest_name:
       # Override calls Unload already
-      manifest.Override(manifest_name, load_local_manifests=load_local_manifests)
+      manifest.Override(manifest_name)
     else:
       manifest.Unload()
 
   def UpdateProjectList(self, opt, manifest):
+    """Update the cached projects list for |manifest|
+
+    In a multi-manifest checkout, each manifest has its own project.list
+
+    Args:
+      opt: Program options returned from optparse.  See _Options().
+      manifest: The manifest to use.
+
+    Returns:
+      0: success
+      1: failure
+    """
     new_project_paths = []
-    for project in self.GetProjects(None, missing_ok=True):
+    for project in self.GetProjects(None, missing_ok=True, manifest=manifest,
+                                    all_manifests=False):
       if project.relpath:
         new_project_paths.append(project.relpath)
     file_name = 'project.list'
@@ -765,7 +815,8 @@ later is required to fix a server side protocol bug.
     new_paths = {}
     new_linkfile_paths = []
     new_copyfile_paths = []
-    for project in self.GetProjects(None, missing_ok=True):
+    for project in self.GetProjects(None, missing_ok=True,
+                                    manifest=manifest, all_manifests=False):
       new_linkfile_paths.extend(x.dest for x in project.linkfiles)
       new_copyfile_paths.extend(x.dest for x in project.copyfiles)
 
@@ -923,6 +974,13 @@ later is required to fix a server side protocol bug.
       if not clean:
         sys.exit(1)
       self._ReloadManifest(manifest_name, mp.manifest)
+      # If there are new submanifests, sync them.
+      if mp.manifest.submanifests:
+        for submanifest in mp.manifest.submanifests.values():
+          child = submanifest.repo_client.manifest
+          child.manifestProject.ReSync(submanifest)
+          self._UpdateManifestProject(opt, child.manifestProject, None)
+
       if opt.jobs is None:
         self.jobs = mp.manifest.default.sync_j
 
@@ -947,9 +1005,6 @@ later is required to fix a server side protocol bug.
     if opt.prune is None:
       opt.prune = True
 
-    if self.outer_client.manifest.is_multimanifest and not opt.this_manifest_only and args:
-      self.OptionParser.error('partial syncs must use --this-manifest-only')
-
   def Execute(self, opt, args):
     if opt.jobs:
       self.jobs = opt.jobs
@@ -958,7 +1013,7 @@ later is required to fix a server side protocol bug.
       self.jobs = min(self.jobs, (soft_limit - 5) // 3)
 
     manifest = self.outer_manifest
-    if opt.this_manifest_only or not opt.outer_manifest:
+    if opt.outer_manifest is False:
       manifest = self.manifest
 
     if opt.manifest_name:
@@ -993,39 +1048,26 @@ later is required to fix a server side protocol bug.
               'receive updates; run `repo init --repo-rev=stable` to fix.',
               file=sys.stderr)
 
-    mp = manifest.manifestProject
-    is_standalone_manifest = bool(mp.standalone_manifest_url)
-    if not is_standalone_manifest:
-      mp.PreSync()
+    for m in self.ManifestList(opt):
+      mp = m.manifestProject
+      is_standalone_manifest = bool(mp.standalone_manifest_url)
+      if not is_standalone_manifest:
+        mp.PreSync()
 
-    if opt.repo_upgraded:
-      _PostRepoUpgrade(manifest, quiet=opt.quiet)
+      if opt.repo_upgraded:
+        _PostRepoUpgrade(m, quiet=opt.quiet)
 
     if not opt.mp_update:
       print('Skipping update of local manifest project.')
     elif not is_standalone_manifest:
       self._UpdateManifestProject(opt, mp, manifest_name)
 
-    load_local_manifests = not manifest.HasLocalManifests
-    use_superproject = git_superproject.UseSuperproject(opt.use_superproject, manifest)
-    if use_superproject and (manifest.IsMirror or manifest.IsArchive):
-      # Don't use superproject, because we have no working tree.
-      use_superproject = False
-      if opt.use_superproject is not None:
-        print('Defaulting to no-use-superproject because there is no working tree.')
-    superproject_logging_data = {
-        'superproject': use_superproject,
-        'haslocalmanifests': bool(manifest.HasLocalManifests),
-        'hassuperprojecttag': bool(manifest.superproject),
-    }
-    if use_superproject:
-      manifest_name = self._UpdateProjectsRevisionId(
-          opt, args, load_local_manifests, superproject_logging_data,
-          manifest) or opt.manifest_name
+    superproject_logging_data = {}
+    self._UpdateProjectsRevisionId(opt, args, superproject_logging_data,
+                                   manifest)
 
     if self.gitc_manifest:
-      gitc_manifest_projects = self.GetProjects(args,
-                                                missing_ok=True)
+      gitc_manifest_projects = self.GetProjects(args, missing_ok=True)
       gitc_projects = []
       opened_projects = []
       for project in gitc_manifest_projects:
@@ -1058,9 +1100,12 @@ later is required to fix a server side protocol bug.
               for path in opened_projects]
       if not args:
         return
+
     all_projects = self.GetProjects(args,
                                     missing_ok=True,
-                                    submodules_ok=opt.fetch_submodules)
+                                    submodules_ok=opt.fetch_submodules,
+                                    manifest=manifest,
+                                    all_manifests=not opt.this_manifest_only)
 
     err_network_sync = False
     err_update_projects = False
@@ -1072,7 +1117,6 @@ later is required to fix a server side protocol bug.
           # Initialize the socket dir once in the parent.
           ssh_proxy.sock()
           all_projects = self._FetchMain(opt, args, all_projects, err_event,
-                                         manifest_name, load_local_manifests,
                                          ssh_proxy, manifest)
 
       if opt.network_only:
@@ -1089,23 +1133,24 @@ later is required to fix a server side protocol bug.
                 file=sys.stderr)
           sys.exit(1)
 
-    if manifest.IsMirror or manifest.IsArchive:
-      # bail out now, we have no working tree
-      return
+    for m in self.ManifestList(opt):
+      if m.IsMirror or m.IsArchive:
+        # bail out now, we have no working tree
+        continue
 
-    if self.UpdateProjectList(opt, manifest):
-      err_event.set()
-      err_update_projects = True
-      if opt.fail_fast:
-        print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
-        sys.exit(1)
+      if self.UpdateProjectList(opt, m):
+        err_event.set()
+        err_update_projects = True
+        if opt.fail_fast:
+          print('\nerror: Local checkouts *not* updated.', file=sys.stderr)
+          sys.exit(1)
 
-    err_update_linkfiles = not self.UpdateCopyLinkfileList(manifest)
-    if err_update_linkfiles:
-      err_event.set()
-      if opt.fail_fast:
-        print('\nerror: Local update copyfile or linkfile failed.', file=sys.stderr)
-        sys.exit(1)
+      err_update_linkfiles = not self.UpdateCopyLinkfileList(m)
+      if err_update_linkfiles:
+        err_event.set()
+        if opt.fail_fast:
+          print('\nerror: Local update copyfile or linkfile failed.', file=sys.stderr)
+          sys.exit(1)
 
     err_results = []
     # NB: We don't exit here because this is the last step.
@@ -1113,10 +1158,13 @@ later is required to fix a server side protocol bug.
     if err_checkout:
       err_event.set()
 
-    # If there's a notice that's supposed to print at the end of the sync, print
-    # it now...
-    if manifest.notice:
-      print(manifest.notice)
+    printed_notices = set()
+    for m in self.ManifestList(opt):
+      # If there's a notice that's supposed to print at the end of the sync,
+      # print it now...  But avoid printing duplicate messages.
+      if m.notice and m.notice not in printed_notices:
+        print(m.notice)
+        printed_notices.add(m.notice)
 
     # If we saw an error, exit with code 1 so that other scripts can check.
     if err_event.is_set():
