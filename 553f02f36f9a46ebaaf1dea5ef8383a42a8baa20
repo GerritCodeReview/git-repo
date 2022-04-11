@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "513b3da0_a2970f5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-11T20:01:24Z",
+      "side": 1,
+      "message": "@rtenneti - ps6 is a rather significant change to manifest.superproject: it now gets created when there is a \u003csuperproject\u003e element, and its absense is the indicator that there is no superproject to use, rather than creating it for all manifests and noticing that it has no definition inside of Superproject.",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
