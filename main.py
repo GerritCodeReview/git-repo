@@ -294,8 +294,7 @@ class _Repo(object):
       cmd.ValidateOptions(copts, cargs)
 
       this_manifest_only = copts.this_manifest_only
-      # If not specified, default to using the outer manifest.
-      outer_manifest = copts.outer_manifest is not False
+      outer_manifest = copts.outer_manifest
       if cmd.MULTI_MANIFEST_SUPPORT or this_manifest_only:
         result = cmd.Execute(copts, cargs)
       elif outer_manifest and repo_client.manifest.is_submanifest:
