@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f95cbefd_19c45252",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-12T23:40:37Z",
+      "side": 1,
+      "message": "This brings REPO_PATH back to compliance with the documentation.",
+      "revId": "f4e7d217c4d86a2ba4883eba2babf0cdcc7ed798",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
