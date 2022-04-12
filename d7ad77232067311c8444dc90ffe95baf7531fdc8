@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef3e7128_44967ab9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-12T23:12:40Z",
+      "side": 1,
+      "message": "This includes a significant rewrite of how sync.py works.\n\n@vapier for overall review\n@rtenneti for Superproject interaction.",
+      "revId": "d7ad77232067311c8444dc90ffe95baf7531fdc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
