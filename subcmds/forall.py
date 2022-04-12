@@ -84,6 +84,11 @@ REPO_PROJECT is set to the unique name of the project.
 
 REPO_PATH is the path relative the the root of the client.
 
+REPO_OUTERPATH is the path of the sub manifest's root relative to the root of
+the client.
+
+REPO_INNERPATH is the path relative to the root of the sub manifest.
+
 REPO_REMOTE is the name of the remote system from the manifest.
 
 REPO_LREV is the name of the revision from the manifest, translated
@@ -290,8 +295,9 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     env[name] = val
 
   setenv('REPO_PROJECT', project.name)
-  setenv('REPO_PATH', project.relpath)
-  setenv('REPO_OUTERPATH', project.RelPath(local=opt.this_manifest_only))
+  setenv('REPO_OUTERPATH', project.manifest.path_prefix)
+  setenv('REPO_INNERPATH', project.relpath)
+  setenv('REPO_PATH', project.RelPath(local=opt.this_manifest_only))
   setenv('REPO_REMOTE', project.remote.name)
   try:
     # If we aren't in a fully synced state and we don't have the ref the manifest
