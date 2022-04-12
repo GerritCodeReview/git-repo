@@ -52,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d46bee9c_3c189b0f",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-12T00:54:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "247f858b_1357fc96",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5267ac52_885b2e63",
@@ -69,6 +87,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e885056_422dcb4b",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-12T00:54:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5267ac52_885b2e63",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5cb4f7c4_21e21eb7",
@@ -82,6 +118,24 @@
       "writtenOn": "2022-04-11T20:56:30Z",
       "side": 1,
       "message": "nit: consider passing print_messages to GetAllProjectsCommitIds. It looks like it gets overwritten in Sync method. Consider accepting \"opt.quiet argument from Sync.py\".",
+      "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aa98713_f1ab0fe3",
+        "filename": "git_superproject.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-12T00:54:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cb4f7c4_21e21eb7",
       "revId": "553f02f36f9a46ebaaf1dea5ef8383a42a8baa20",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
