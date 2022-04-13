@@ -33,6 +33,24 @@
       "message": "what if we renamed this to REPO_OUTERPATH ?",
       "revId": "f4e7d217c4d86a2ba4883eba2babf0cdcc7ed798",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec13678c_17fb2097",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-13T00:22:56Z",
+      "side": 1,
+      "message": "PATH\u003dsubmanifest/project/path\nINNERPATH\u003dproject/path\nSUBMANIFEST\u003dsubmanifest\n\nI\u0027m not averse to PATH\u003dos.path.join(OUTERPATH, INNERPATH)\n\nCan do.",
+      "parentUuid": "9eaf5ab2_417fd87a",
+      "revId": "f4e7d217c4d86a2ba4883eba2babf0cdcc7ed798",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
