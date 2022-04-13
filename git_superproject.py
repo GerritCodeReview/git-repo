@@ -71,6 +71,9 @@ class Superproject(object):
   lookup of commit ids for all projects. It contains _project_commit_ids which
   is a dictionary with project/commit id entries.
   """
+  # Whether the beta-status notice has been printed.
+  _beta_notice_printed = False
+
   def __init__(self, manifest, name, remote, revision,
                superproject_dir='exp-superproject'):
     """Initializes superproject.
@@ -238,8 +241,11 @@ class Superproject(object):
                        f'{self._manifest.manifestFile}')
       return SyncResult(False, False)
 
-    print('NOTICE: --use-superproject is in beta; report any issues to the '
-          'address described in `repo version`', file=sys.stderr)
+    if not Superproject._beta_notice_printed:
+      print('NOTICE: --use-superproject is in beta; report any issues to the '
+            'address described in `repo version`', file=sys.stderr)
+      Superproject._beta_notice_printed = True
+
     should_exit = True
     if not self._remote_url:
       self._LogWarning(f'superproject URL is not defined in manifest: '
