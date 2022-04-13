@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8988d5b_dd4407b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-13T16:34:18Z",
+      "side": 1,
+      "message": "a little nitty :p",
+      "revId": "b326259390723f6e0ce782fc4ab9afaf61c6e4c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11f45998_0fc3288b",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-13T16:34:18Z",
+      "side": 1,
+      "message": "move it to a module-level func and use `@functools.lru_cache` decorator to do it for you",
+      "revId": "b326259390723f6e0ce782fc4ab9afaf61c6e4c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
