@@ -238,8 +238,8 @@ class Superproject(object):
                        f'{self._manifest.manifestFile}')
       return SyncResult(False, False)
 
-    print('NOTICE: --use-superproject is in beta; report any issues to the '
-          'address described in `repo version`', file=sys.stderr)
+    _PrintBetaNotice()
+
     should_exit = True
     if not self._remote_url:
       self._LogWarning(f'superproject URL is not defined in manifest: '
@@ -362,6 +362,13 @@ class Superproject(object):
 
     manifest_path = self._WriteManifestFile()
     return UpdateProjectsResult(manifest_path, False)
+
+
+@functools.lru_cache(maxsize=10)
+def _PrintBetaNotice():
+  """Print the notice of beta status."""
+  print('NOTICE: --use-superproject is in beta; report any issues to the '
+        'address described in `repo version`', file=sys.stderr)
 
 
 @functools.lru_cache(maxsize=None)
