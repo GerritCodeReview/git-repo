@@ -33,6 +33,24 @@
       "message": "nit: we were printing the following message if user has passed in --use-superproject in command line (opt?), but we have decided to no use superproject. We are not printing that message.\n\n print(\u0027Defaulting to no-use-superproject because there is no working tree.\u0027).\n \n Original bug: https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d15368\n cl: https://gerrit-review.googlesource.com/c/git-repo/+/325797",
       "revId": "86afc6710e80717a9c53d93d18637ca63141db38",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e63a2e_17bb4404",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T00:06:30Z",
+      "side": 1,
+      "message": "I had removed it intentionally, but don\u0027t recall why... I have added it back in with a slight rewording. I also added a corresponding check for use_superproject and archive in subcmds/init.py.\n\nA subsequent change should move the check (and all of the  superproject_logging_data creation) to git_superproject.UseSuperproject(), instead of splitting the decision between the two places.",
+      "parentUuid": "6d3aec58_db82dd6b",
+      "revId": "86afc6710e80717a9c53d93d18637ca63141db38",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
