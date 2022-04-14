@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "faf53bc0_2da472d5",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-14T05:52:42Z",
+      "side": 1,
+      "message": "from what i can tell, this refactor isn\u0027t necessary.  i\u0027m not against this, it just seems to add to a noisy CL with unrelated content.",
+      "revId": "f1a57a417c3768bdab488661b3e4c64b669edf08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
