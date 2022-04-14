@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f6ae046b_ba2e8cc1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T15:27:00Z",
+      "side": 0,
+      "message": "Superproject excludes local_manifest projects during UpdateProjectsRevisionId.\n\nBy only loading local manifests when there are not any, superproject with local manifests would never sync the local manifest projects.",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
