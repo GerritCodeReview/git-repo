@@ -69,6 +69,24 @@
       "parentUuid": "ec13678c_17fb2097",
       "revId": "f4e7d217c4d86a2ba4883eba2babf0cdcc7ed798",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e15acfe2_9a656da5",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T14:31:39Z",
+      "side": 1,
+      "message": "makes sense.  I\u0027ve adjusted the wording a little bit more as well.",
+      "parentUuid": "2367e5e7_87083f19",
+      "revId": "f4e7d217c4d86a2ba4883eba2babf0cdcc7ed798",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
