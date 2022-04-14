@@ -3760,7 +3760,7 @@ class ManifestProject(MetaProject):
 
     if not this_manifest_only:
       for submanifest in self.manifest.submanifests.values():
-        spec = submanifest.ToSubmanifestSpec(root=self.manifest.outer_client)
+        spec = submanifest.ToSubmanifestSpec()
         submanifest.repo_client.manifestProject.Sync(
             manifest_url=spec.manifestUrl,
             manifest_branch=spec.revision,
