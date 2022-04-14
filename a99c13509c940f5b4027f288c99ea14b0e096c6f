@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b840338_e05f038d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T22:49:19Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "975bce18_e8d2b03f",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fce6102b_1ac23e97",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-04-14T22:00:09Z",
       "side": 1,
       "message": "kind of feels like manifestFile \u0026 manifestFileOverrides should be merged.  or maybe internalize both and add get/set helpers and let that manage which one should be used.",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71a10fa0_d14c531d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T22:49:19Z",
+      "side": 1,
+      "message": "I added comments, and now only create it in the outer manifest.  Specifically, child instances are (effectively) deleted by Unload() and we need the subsequent _Load() call to use the overriding file path.\n\nThat is, outer_client.manifestFileOverrides[submanifest.path_prefix] overrides inner_client.manifestFile.",
+      "parentUuid": "fce6102b_1ac23e97",
       "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5661c01a_c67d14d7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T22:49:19Z",
+      "side": 1,
+      "message": "The correct answer is to never clear the Override.  Good catch.",
+      "parentUuid": "c7407754_082860fe",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fc46917_08d76e60",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "907e1b45_61de9e2c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T22:49:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fc46917_08d76e60",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc482f80_cfecb878",
@@ -82,6 +154,24 @@
       "writtenOn": "2022-04-14T22:00:09Z",
       "side": 1,
       "message": "only indent with 2 spaces",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9c27981_987f0870",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T22:49:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc482f80_cfecb878",
       "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
