@@ -16,6 +16,24 @@
       "message": "from what i can tell, this refactor isn\u0027t necessary.  i\u0027m not against this, it just seems to add to a noisy CL with unrelated content.",
       "revId": "f1a57a417c3768bdab488661b3e4c64b669edf08",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0898a90d_ffdd2d5c",
+        "filename": "git_superproject.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T14:33:40Z",
+      "side": 1,
+      "message": "I will split it out.  The intent was to have git_superproject be independent of, and explicit about, the contents from optparse.",
+      "parentUuid": "faf53bc0_2da472d5",
+      "revId": "f1a57a417c3768bdab488661b3e4c64b669edf08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
