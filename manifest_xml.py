@@ -215,8 +215,9 @@ class _XmlSubmanifest:
     manifestName: a string, the submanifest file name.
     groups: a list of strings, the groups to add to all projects in the submanifest.
     path: a string, the relative path for the submanifest checkout.
+    parent: an XmlManifest, the parent manifest.
     annotations: (derived) a list of annotations.
-    present: (derived) a boolean, whether the submanifest's manifest file is present.
+    present: (derived) a boolean, whether the sub manifest file is present.
   """
   def __init__(self,
                name,
@@ -234,6 +235,7 @@ class _XmlSubmanifest:
     self.manifestName = manifestName
     self.groups = groups
     self.path = path
+    self.parent = parent
     self.annotations = []
     outer_client = parent._outer_client or parent
     if self.remote and not self.project:
@@ -268,10 +270,10 @@ class _XmlSubmanifest:
   def __ne__(self, other):
     return not self.__eq__(other)
 
-  def ToSubmanifestSpec(self, root):
+  def ToSubmanifestSpec(self):
     """Return a SubmanifestSpec object, populating attributes"""
-    mp = root.manifestProject
-    remote = root.remotes[self.remote or root.default.remote.name]
+    mp = self.parent.manifestProject
+    remote = self.parent.remotes[self.remote or self.parent.default.remote.name]
     # If a project was given, generate the url from the remote and project.
     # If not, use this manifestProject's url.
     if self.project:
@@ -348,6 +350,11 @@ class XmlManifest(object):
     if manifest_file != os.path.abspath(manifest_file):
       raise ManifestParseError('manifest_file must be abspath')
     self.manifestFile = manifest_file
+    if not outer_client or outer_client == self:
+      # manifestFileOverrides only exists in the outer_client's manifest, since
+      # that is the only instance left when Unload() is called on the outer
+      # manifest.
+      self.manifestFileOverrides = {}
     self.local_manifests = local_manifests
     self._load_local_manifests = True
     self.parent_groups = parent_groups
@@ -396,14 +403,10 @@ class XmlManifest(object):
       if not os.path.isfile(path):
         raise ManifestParseError('manifest %s not found' % name)
 
-    old = self.manifestFile
-    try:
-      self._load_local_manifests = load_local_manifests
-      self.manifestFile = path
-      self.Unload()
-      self._Load()
-    finally:
-      self.manifestFile = old
+    self._load_local_manifests = load_local_manifests
+    self._outer_client.manifestFileOverrides[self.path_prefix] = path
+    self.Unload()
+    self._Load()
 
   def Link(self, name):
     """Update the repo metadata to use a different manifest.
@@ -880,6 +883,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     exclude = self.manifest.manifestProject.partial_clone_exclude or ''
     return set(x.strip() for x in exclude.split(','))
 
+  def SetManifestOverride(self, path):
+    """Override manifestFile.  The caller must call Unload()"""
+    self._outer_client.manifest.manifestFileOverrides[self.path_prefix] = path
+
   @property
   def UseLocalManifests(self):
     return self._load_local_manifests
@@ -1005,57 +1012,66 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         # This will load all clients.
         self._outer_client._Load(initial_client=self)
 
-      m = self.manifestProject
-      b = m.GetBranch(m.CurrentBranch).merge
-      if b is not None and b.startswith(R_HEADS):
-        b = b[len(R_HEADS):]
-      self.branch = b
-
-      parent_groups = self.parent_groups
-      if self.path_prefix:
-        parent_groups = f'{SUBMANIFEST_GROUP_PREFIX}:path:{self.path_prefix},{parent_groups}'
-
-      # The manifestFile was specified by the user which is why we allow include
-      # paths to point anywhere.
-      nodes = []
-      nodes.append(self._ParseManifestXml(
-          self.manifestFile, self.manifestProject.worktree,
-          parent_groups=parent_groups, restrict_includes=False))
-
-      if self._load_local_manifests and self.local_manifests:
-        try:
-          for local_file in sorted(platform_utils.listdir(self.local_manifests)):
-            if local_file.endswith('.xml'):
-              local = os.path.join(self.local_manifests, local_file)
-              # Since local manifests are entirely managed by the user, allow
-              # them to point anywhere the user wants.
-              local_group = f'{LOCAL_MANIFEST_GROUP_PREFIX}:{local_file[:-4]}'
-              nodes.append(self._ParseManifestXml(
-                  local, self.subdir,
-                  parent_groups=f'{local_group},{parent_groups}',
-                  restrict_includes=False))
-        except OSError:
-          pass
+      savedManifestFile = self.manifestFile
+      override = self._outer_client.manifestFileOverrides.get(self.path_prefix)
+      if override:
+        self.manifestFile = override
 
       try:
-        self._ParseManifest(nodes)
-      except ManifestParseError as e:
-        # There was a problem parsing, unload ourselves in case they catch
-        # this error and try again later, we will show the correct error
-        self.Unload()
-        raise e
+        m = self.manifestProject
+        b = m.GetBranch(m.CurrentBranch).merge
+        if b is not None and b.startswith(R_HEADS):
+          b = b[len(R_HEADS):]
+        self.branch = b
 
-      if self.IsMirror:
-        self._AddMetaProjectMirror(self.repoProject)
-        self._AddMetaProjectMirror(self.manifestProject)
+        parent_groups = self.parent_groups
+        if self.path_prefix:
+          parent_groups = f'{SUBMANIFEST_GROUP_PREFIX}:path:{self.path_prefix},{parent_groups}'
 
-      self._loaded = True
+        # The manifestFile was specified by the user which is why we allow include
+        # paths to point anywhere.
+        nodes = []
+        nodes.append(self._ParseManifestXml(
+            self.manifestFile, self.manifestProject.worktree,
+            parent_groups=parent_groups, restrict_includes=False))
+
+        if self._load_local_manifests and self.local_manifests:
+          try:
+            for local_file in sorted(platform_utils.listdir(self.local_manifests)):
+              if local_file.endswith('.xml'):
+                local = os.path.join(self.local_manifests, local_file)
+                # Since local manifests are entirely managed by the user, allow
+                # them to point anywhere the user wants.
+                local_group = f'{LOCAL_MANIFEST_GROUP_PREFIX}:{local_file[:-4]}'
+                nodes.append(self._ParseManifestXml(
+                    local, self.subdir,
+                    parent_groups=f'{local_group},{parent_groups}',
+                    restrict_includes=False))
+          except OSError:
+            pass
+
+        try:
+          self._ParseManifest(nodes)
+        except ManifestParseError as e:
+          # There was a problem parsing, unload ourselves in case they catch
+          # this error and try again later, we will show the correct error
+          self.Unload()
+          raise e
+
+        if self.IsMirror:
+          self._AddMetaProjectMirror(self.repoProject)
+          self._AddMetaProjectMirror(self.manifestProject)
+
+        self._loaded = True
+      finally:
+        if override:
+          self.manifestFile = savedManifestFile
 
       # Now that we have loaded this manifest, load any submanifest  manifests
       # as well.  We need to do this after self._loaded is set to avoid looping.
       for name in self._submanifests:
         tree = self._submanifests[name]
-        spec = tree.ToSubmanifestSpec(self)
+        spec = tree.ToSubmanifestSpec()
         present = os.path.exists(os.path.join(self.subdir, MANIFEST_FILE_NAME))
         if present and tree.present and not tree.repo_client:
           if initial_client and initial_client.topdir == self.topdir:
