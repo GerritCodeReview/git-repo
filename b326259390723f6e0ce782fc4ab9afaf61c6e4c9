@@ -51,6 +51,24 @@
       "parentUuid": "11f45998_0fc3288b",
       "revId": "b326259390723f6e0ce782fc4ab9afaf61c6e4c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b3f010b_dd5d4577",
+        "filename": "git_superproject.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T00:06:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4062f6fd_df032c19",
+      "revId": "b326259390723f6e0ce782fc4ab9afaf61c6e4c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
