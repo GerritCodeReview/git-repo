@@ -286,7 +286,7 @@ later is required to fix a server side protocol bug.
       True if a superproject is requested, otherwise the value of the
       current_branch option (True, False or None).
     """
-    return git_superproject.UseSuperproject(opt, self.manifest) or opt.current_branch_only
+    return git_superproject.UseSuperproject(opt.use_superproject, self.manifest) or opt.current_branch_only
 
   def _UpdateProjectsRevisionId(self, opt, args, load_local_manifests, superproject_logging_data):
     """Update revisionId of every project with the SHA from superproject.
@@ -306,7 +306,8 @@ later is required to fix a server side protocol bug.
     """
     superproject = self.manifest.superproject
     superproject.SetQuiet(opt.quiet)
-    print_messages = git_superproject.PrintMessages(opt, self.manifest)
+    print_messages = git_superproject.PrintMessages(opt.use_superproject,
+                                                    self.manifest)
     superproject.SetPrintMessages(print_messages)
     if opt.local_only:
       manifest_path = superproject.manifest_path
@@ -993,7 +994,8 @@ later is required to fix a server side protocol bug.
       self._UpdateManifestProject(opt, mp, manifest_name)
 
     load_local_manifests = not self.manifest.HasLocalManifests
-    use_superproject = git_superproject.UseSuperproject(opt, self.manifest)
+    use_superproject = git_superproject.UseSuperproject(opt.use_superproject,
+                                                        self.manifest)
     if use_superproject and (self.manifest.IsMirror or self.manifest.IsArchive):
       # Don't use superproject, because we have no working tree.
       use_superproject = False
