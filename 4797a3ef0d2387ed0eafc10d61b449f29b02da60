@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10e5f21a_46d80e29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-14T18:06:13Z",
+      "side": 1,
+      "message": "Patchset#7 LGTM",
+      "revId": "4797a3ef0d2387ed0eafc10d61b449f29b02da60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
