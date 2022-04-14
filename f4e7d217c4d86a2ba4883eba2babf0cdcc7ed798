@@ -51,6 +51,24 @@
       "parentUuid": "9eaf5ab2_417fd87a",
       "revId": "f4e7d217c4d86a2ba4883eba2babf0cdcc7ed798",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2367e5e7_87083f19",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-14T06:53:46Z",
+      "side": 1,
+      "message": "my concern was more around \"submanifest\" being overloaded a bit more: is it a path to the manifest, the name of the manifest, something else ?  (in this case, it was \"something else\".)",
+      "parentUuid": "ec13678c_17fb2097",
+      "revId": "f4e7d217c4d86a2ba4883eba2babf0cdcc7ed798",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
