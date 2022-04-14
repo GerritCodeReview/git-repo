@@ -33,6 +33,24 @@
       "message": "nit: small question - is it ok for self.manifestFile to have override file (in case of override)? Please ignore, if it is ok to do.",
       "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c75771f2_c07112b3",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-14T20:38:58Z",
+      "side": 1,
+      "message": "The override file should be sticky.  Unless the caller explicitly decides to remove the override, it should stay active until the process exits, rather than being unexpectedly ignored later.\n\nAll of the current use paths exit after a bad manifest file, overridden or not. For the Superproject case, it seems best to raise a broken manifest file (which they can work around by using `--no-use-superproject`) rather than silently ignoring it when we subsequently wind up in _Load().",
+      "parentUuid": "99fa1696_bdaf4d52",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
