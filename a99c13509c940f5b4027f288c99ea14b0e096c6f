@@ -20,6 +20,74 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fce6102b_1ac23e97",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-14T22:00:09Z",
+      "side": 1,
+      "message": "kind of feels like manifestFile \u0026 manifestFileOverrides should be merged.  or maybe internalize both and add get/set helpers and let that manage which one should be used.",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7407754_082860fe",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-14T22:00:09Z",
+      "side": 1,
+      "message": "this is much too broad.  shouldn\u0027t this remain as a `finally` instead of swallowing exceptions ?",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fc46917_08d76e60",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1015,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-14T22:00:09Z",
+      "side": 1,
+      "message": "i don\u0027t think you need the `\u0027\u0027` fallback",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc482f80_cfecb878",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1017,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-14T22:00:09Z",
+      "side": 1,
+      "message": "only indent with 2 spaces",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "99fa1696_bdaf4d52",
         "filename": "manifest_xml.py",
         "patchSetId": 1
