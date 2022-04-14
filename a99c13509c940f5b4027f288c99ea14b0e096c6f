@@ -16,6 +16,23 @@
       "message": "I don\u0027t like this summary, and would love suggestions on wording it better.",
       "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99fa1696_bdaf4d52",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 1075811
+      },
+      "writtenOn": "2022-04-14T18:05:17Z",
+      "side": 1,
+      "message": "nit: small question - is it ok for self.manifestFile to have override file (in case of override)? Please ignore, if it is ok to do.",
+      "revId": "a99c13509c940f5b4027f288c99ea14b0e096c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
