@@ -3371,67 +3371,72 @@ class ManifestProject(MetaProject):
   @property
   def reference(self):
     """The --reference for this manifest."""
-    self.config.GetString('repo.reference')
+    return self.config.GetString('repo.reference')
 
   @property
   def dissociate(self):
     """Whether to dissociate."""
-    self.config.GetBoolean('repo.dissociate')
+    return self.config.GetBoolean('repo.dissociate')
 
   @property
   def archive(self):
     """Whether we use archive."""
-    self.config.GetBoolean('repo.archive')
+    return self.config.GetBoolean('repo.archive')
 
   @property
   def mirror(self):
     """Whether we use mirror."""
-    self.config.GetBoolean('repo.mirror')
+    return self.config.GetBoolean('repo.mirror')
 
   @property
   def use_worktree(self):
     """Whether we use worktree."""
-    self.config.GetBoolean('repo.worktree')
+    return self.config.GetBoolean('repo.worktree')
 
   @property
   def clone_bundle(self):
     """Whether we use clone_bundle."""
-    self.config.GetBoolean('repo.clonebundle')
+    return self.config.GetBoolean('repo.clonebundle')
 
   @property
   def submodules(self):
     """Whether we use submodules."""
-    self.config.GetBoolean('repo.submodules')
+    return self.config.GetBoolean('repo.submodules')
 
   @property
   def git_lfs(self):
     """Whether we use git_lfs."""
-    self.config.GetBoolean('repo.git-lfs')
+    return self.config.GetBoolean('repo.git-lfs')
 
   @property
   def use_superproject(self):
     """Whether we use superproject."""
-    self.config.GetBoolean('repo.superproject')
+    return self.config.GetBoolean('repo.superproject')
 
   @property
   def partial_clone(self):
     """Whether this is a partial clone."""
-    self.config.GetBoolean('repo.partialclone')
+    return self.config.GetBoolean('repo.partialclone')
 
   @property
   def depth(self):
     """Partial clone depth."""
-    self.config.GetString('repo.depth')
+    return self.config.GetString('repo.depth')
 
   @property
   def clone_filter(self):
     """The clone filter."""
-    self.config.GetString('repo.clonefilter')
+    return self.config.GetString('repo.clonefilter')
 
   @property
   def partial_clone_exclude(self):
     """Partial clone exclude string"""
-    self.config.GetBoolean('repo.partialcloneexclude')
+    return self.config.GetBoolean('repo.partialcloneexclude')
+
+  @property
+  def manifest_platform(self):
+    """The --platform argument from `repo init`."""
+    return self.config.GetString('manifest.platform')
 
   @property
   def _platform_name(self):
@@ -3479,7 +3484,7 @@ class ManifestProject(MetaProject):
       platform: a string, restrict the checkout to projects with the specified
           platform group.
       git_event_log: an EventLog, for git tracing.
-      tags: a boolean, whether to fetch tags.,
+      tags: a boolean, whether to fetch tags.
       manifest_name: a string, the name of the manifest file to use.
       this_manifest_only: a boolean, whether to only operate on the current sub
           manifest.
@@ -3620,6 +3625,7 @@ class ManifestProject(MetaProject):
     elif platform != 'none':
       print('fatal: invalid platform flag', file=sys.stderr)
       return False
+    self.config.SetString('manifest.platform', platform)
 
     groups = [x for x in groups if x]
     groupstr = ','.join(groups)
