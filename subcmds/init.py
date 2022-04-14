@@ -260,6 +260,9 @@ to update the working directory files.
       if opt.use_superproject is not None:
         self.OptionParser.error('--mirror and --use-superproject cannot be '
                                 'used together.')
+    if opt.archive and opt.use_superproject is not None:
+      self.OptionParser.error('--archive and --use-superproject cannot be used '
+                              'together.')
 
     if opt.standalone_manifest and (opt.manifest_branch or
                                     opt.manifest_name != 'default.xml'):

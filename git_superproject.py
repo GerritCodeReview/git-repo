@@ -415,16 +415,26 @@ def _UseSuperprojectFromConfiguration():
   return False
 
 
-def PrintMessages(opt, manifest):
-  """Returns a boolean if error/warning messages are to be printed."""
-  return opt.use_superproject is not None or bool(manifest.superproject)
+def PrintMessages(use_superproject, manifest):
+  """Returns a boolean if error/warning messages are to be printed.
+
+  Args:
+    use_superproject: option value from optparse.
+    manifest: manifest to use.
+  """
+  return use_superproject is not None or bool(manifest.superproject)
 
 
-def UseSuperproject(opt, manifest):
-  """Returns a boolean if use-superproject option is enabled."""
+def UseSuperproject(use_superproject, manifest):
+  """Returns a boolean if use-superproject option is enabled.
 
-  if opt.use_superproject is not None:
-    return opt.use_superproject
+  Args:
+    use_superproject: option value from optparse.
+    manifest: manifest to use.
+  """
+
+  if use_superproject is not None:
+    return use_superproject
   else:
     client_value = manifest.manifestProject.use_superproject
     if client_value is not None:
