@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9087bc_0ae85c5e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1067,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-15T04:19:28Z",
+      "side": 1,
+      "message": "there is a code path a few lines above that tries to restore \u0026 return early.  which kind of makes it seem like this field modification should be in a try/finally block ?",
+      "revId": "3879d199ed2f1aabf5629397756198ef86be42a6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
