@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fafa4a7_8b1ca59b",
+        "filename": "project.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 3446,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-15T14:27:56Z",
+      "side": 1,
+      "message": "Renamed to SyncWithPossibleInit, and the docstring updated for clarity.",
+      "parentUuid": "aa3397c3_4f116569",
+      "revId": "5cc752331e1163a17d949a22bd14340ff30f5fa9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d672b0c9_05c14a25",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-04-15T04:22:01Z",
       "side": 1,
       "message": "just import collections",
+      "revId": "5cc752331e1163a17d949a22bd14340ff30f5fa9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa206d1c_520a4f07",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-15T14:27:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d672b0c9_05c14a25",
       "revId": "5cc752331e1163a17d949a22bd14340ff30f5fa9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
