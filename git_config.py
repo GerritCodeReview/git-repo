@@ -65,10 +65,20 @@ def _key(name):
   return '.'.join(parts)
 
 
+def GetGitConfigPath():
+  home = os.path.expanduser("~")
+  xdg_config_home = os.environ.get('XDG_CONFIG_HOME', os.path.join(home, ".config"))
+  xdg_git_config = os.path.join(xdg_config_home, 'git/config')
+  if os.path.exists(xdg_git_config):
+    return xdg_git_config
+  else:
+    return '~/.gitconfig'
+
+
 class GitConfig(object):
   _ForUser = None
 
-  _USER_CONFIG = '~/.gitconfig'
+  _USER_CONFIG = GetGitConfigPath()
 
   _ForSystem = None
   _SYSTEM_CONFIG = '/etc/gitconfig'
