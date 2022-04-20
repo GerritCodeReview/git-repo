@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10b01a29_fb31bcd3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-20T17:06:04Z",
+      "side": 1,
+      "message": "should prefix this with the module you\u0027re changing\n\n git_config: support git config from XDG_DESKTOP_HOME",
+      "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c9bd885_243fc517",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-20T17:06:04Z",
+      "side": 1,
+      "message": "add:\n\n Bug: https://crbug.com/gerrit/13997",
+      "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2eaac696_eb5c8eba",
         "filename": "git_config.py",
         "patchSetId": 1
