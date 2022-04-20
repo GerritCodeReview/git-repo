@@ -65,8 +65,7 @@ class Info(PagedCommand):
       self.manifest = self.manifest.outer_client
     manifestConfig = self.manifest.manifestProject.config
     mergeBranch = manifestConfig.GetBranch("default").merge
-    manifestGroups = (manifestConfig.GetString('manifest.groups')
-                      or 'all,-notdefault')
+    manifestGroups = self.manifest.GetGroupsStr()
 
     self.heading("Manifest branch: ")
     if self.manifest.default.revisionExpr:
