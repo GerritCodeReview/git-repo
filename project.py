@@ -717,7 +717,8 @@ class Project(object):
        The special manifest group "default" will match any project that
        does not have the special project group "notdefault"
     """
-    expanded_manifest_groups = manifest_groups or ['default']
+    default_groups = self.manifest.default_groups or ['default']
+    expanded_manifest_groups = manifest_groups or default_groups
     expanded_project_groups = ['all'] + (self.groups or [])
     if 'notdefault' not in expanded_project_groups:
       expanded_project_groups += ['default']
@@ -3560,7 +3561,7 @@ class ManifestProject(MetaProject):
     """
     assert _kwargs_only == (), 'Sync only accepts keyword arguments.'
 
-    groups = groups or 'default'
+    groups = groups or self.manifest.GetDefaultGroupsStr(with_platform=False)
     platform = platform or 'auto'
     git_event_log = git_event_log or EventLog()
     if outer_manifest and self.manifest.is_submanifest:
