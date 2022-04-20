@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2eaac696_eb5c8eba",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-20T16:58:08Z",
+      "side": 1,
+      "message": "all funcs need a docstring, at least a one-liner\n\nit can document how this search logic is intended to match `git config`",
+      "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b40f2f15_5d1fdc0e",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-20T16:58:08Z",
+      "side": 1,
+      "message": "you only use this once, so you can inline this below\n\n xdg_config_home \u003d os.environ.get(\u0027XDG_CONFIG_HOME\u0027, os.path.expanduser(\u0027~/.config\"))",
+      "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
