@@ -66,6 +66,7 @@ following DTD:
   <!ATTLIST submanifest revision       CDATA #IMPLIED>
   <!ATTLIST submanifest path           CDATA #IMPLIED>
   <!ATTLIST submanifest groups         CDATA #IMPLIED>
+  <!ATTLIST submanifest default-groups CDATA #IMPLIED>
 
   <!ELEMENT project (annotation*,
                      project*,
@@ -302,6 +303,9 @@ in the included submanifest belong. This appends and recurses, meaning
 all projects in submanifests carry all parent submanifest groups.
 Same syntax as the corresponding element of `project`.
 
+Attribute `default-groups`: The list of manifest groups to sync if no
+`--groups=` parameter was specified at init.  When that list is empty, use this
+list instead of "default" as the list of groups to sync.
 
 ### Element project
 
