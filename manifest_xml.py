@@ -214,6 +214,7 @@ class _XmlSubmanifest:
     revision: a string, the commitish.
     manifestName: a string, the submanifest file name.
     groups: a list of strings, the groups to add to all projects in the submanifest.
+    default_groups: a list of strings, the default groups to sync.
     path: a string, the relative path for the submanifest checkout.
     parent: an XmlManifest, the parent manifest.
     annotations: (derived) a list of annotations.
@@ -226,6 +227,7 @@ class _XmlSubmanifest:
                revision=None,
                manifestName=None,
                groups=None,
+               default_groups=None,
                path=None,
                parent=None):
     self.name = name
@@ -234,6 +236,7 @@ class _XmlSubmanifest:
     self.revision = revision
     self.manifestName = manifestName
     self.groups = groups
+    self.default_groups = default_groups
     self.path = path
     self.parent = parent
     self.annotations = []
@@ -250,7 +253,8 @@ class _XmlSubmanifest:
         os.path.join(parent.path_prefix, self.relpath), MANIFEST_FILE_NAME)
     rc = self.repo_client = RepoClient(
         parent.repodir, linkFile, parent_groups=','.join(groups) or '',
-        submanifest_path=self.relpath, outer_client=outer_client)
+        submanifest_path=self.relpath, outer_client=outer_client,
+        default_groups=default_groups)
 
     self.present = os.path.exists(manifestFile)
 
@@ -264,6 +268,7 @@ class _XmlSubmanifest:
         self.revision == other.revision and
         self.manifestName == other.manifestName and
         self.groups == other.groups and
+        self.default_groups == other.default_groups and
         self.path == other.path and
         sorted(self.annotations) == sorted(other.annotations))
 
@@ -284,6 +289,7 @@ class _XmlSubmanifest:
     revision = self.revision or self.name
     path = self.path or revision.split('/')[-1]
     groups = self.groups or []
+    default_groups = self.default_groups or []
 
     return SubmanifestSpec(self.name, manifestUrl, manifestName, revision, path,
                            groups)
@@ -298,6 +304,12 @@ class _XmlSubmanifest:
     """Returns the `groups` given for this submanifest."""
     if self.groups:
       return ','.join(self.groups)
+    return ''
+
+  def GetDefaultGroupsStr(self):
+    """Returns the `default-groups` given for this submanifest."""
+    if self.default_groups:
+      return ','.join(self.default_groups)
     return ''
 
   def AddAnnotation(self, name, value, keep):
@@ -327,7 +339,8 @@ class XmlManifest(object):
   """manages the repo configuration file"""
 
   def __init__(self, repodir, manifest_file, local_manifests=None,
-               outer_client=None, parent_groups='', submanifest_path=''):
+               outer_client=None, parent_groups='', submanifest_path='',
+               default_groups=None):
     """Initialize.
 
     Args:
@@ -340,6 +353,7 @@ class XmlManifest(object):
       outer_client: RepoClient of the outertree.
       parent_groups: a string, the groups to apply to this projects.
       submanifest_path: The submanifest root relative to the repo root.
+      default_groups: a string, the default manifest groups to use.
     """
     # TODO(vapier): Move this out of this class.
     self.globalConfig = GitConfig.ForUser()
@@ -358,6 +372,7 @@ class XmlManifest(object):
     self.local_manifests = local_manifests
     self._load_local_manifests = True
     self.parent_groups = parent_groups
+    self.default_groups = default_groups
 
     if outer_client and self.isGitcClient:
       raise ManifestParseError('Multi-manifest is incompatible with `gitc-init`')
@@ -472,6 +487,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       e.setAttribute('path', r.path)
     if r.groups:
       e.setAttribute('groups', r.GetGroupsStr())
+    if r.default_groups:
+      e.setAttribute('default-groups', r.GetDefaultGroupsStr())
 
     for a in r.annotations:
       if a.keep == 'true':
@@ -969,13 +986,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   def GetDefaultGroupsStr(self):
     """Returns the default group string for the platform."""
-    return 'default,platform-' + platform.system().lower()
+    return  ','.join(self.default_groups or ['default'])
 
   def GetGroupsStr(self):
     """Returns the manifest group string that should be synced."""
     groups = self.manifestProject.manifest_groups
     if not groups:
-      groups = self.GetDefaultGroupsStr()
+      groups = self.GetDefaultGroupsStr() + ',platform-' + platform.system().lower()
     return groups
 
   def Unload(self):
@@ -1097,6 +1114,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       List of XML nodes.
     """
     try:
+      if not os.path.exists(path):
+        print(f'missing {path}'); import pdb; pdb.set_trace()
       root = xml.dom.minidom.parse(path)
     except (OSError, xml.parsers.expat.ExpatError) as e:
       raise ManifestParseError("error parsing manifest %s: %s" % (path, e))
@@ -1491,6 +1510,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if node.hasAttribute('groups'):
       groups = node.getAttribute('groups')
     groups = self._ParseList(groups)
+    default_groups = self._ParseList(node.getAttribute('default-groups'))
+    if not default_groups:
+      default_groups = None
     path = node.getAttribute('path')
     if path == '':
       path = None
@@ -1511,7 +1533,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             '<submanifest> invalid "path": %s: %s' % (path, msg))
 
     submanifest = _XmlSubmanifest(name, remote, project, revision, manifestName,
-                                  groups, path, self)
+                                  groups, default_groups, path, self)
 
     for n in node.childNodes:
       if n.nodeName == 'annotation':
