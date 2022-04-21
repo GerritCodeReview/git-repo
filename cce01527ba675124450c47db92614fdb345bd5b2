@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d97396a_f121ae33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-21T19:39:10Z",
+      "side": 1,
+      "message": "We need to be able to change the default group list for a sub manifest, as specified in the parent manifest.",
+      "revId": "cce01527ba675124450c47db92614fdb345bd5b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
