@@ -29,6 +29,7 @@ import time
 import urllib.parse
 
 from color import Coloring
+import fetch
 from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, \
     ID_RE
