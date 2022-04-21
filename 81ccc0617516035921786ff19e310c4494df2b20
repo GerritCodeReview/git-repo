@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21e06015_291a26a1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-21T17:29:13Z",
+      "side": 1,
+      "message": "Verified that the import lists are correct in project and subcmds/{init,sync}",
+      "revId": "81ccc0617516035921786ff19e310c4494df2b20",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
