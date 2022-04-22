@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91c4571d_22edf937",
+        "filename": "manifest_xml.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1118,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-22T19:45:10Z",
+      "side": 1,
+      "message": "Oops.  I thought I had removed that.  Fixed.",
+      "parentUuid": "f3086ffb_965a254a",
+      "revId": "cce01527ba675124450c47db92614fdb345bd5b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8bb696d_9521b680",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-04-22T02:37:43Z",
       "side": 1,
       "message": "i don\u0027t like having this logic be duplicated between here and manifest_xml, especially when they use diff methods to get there",
+      "revId": "cce01527ba675124450c47db92614fdb345bd5b2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b906ef_444c257c",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3700,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-04-22T19:45:10Z",
+      "side": 1,
+      "message": "Updated to make it parameterized.",
+      "parentUuid": "b8bb696d_9521b680",
       "revId": "cce01527ba675124450c47db92614fdb345bd5b2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
