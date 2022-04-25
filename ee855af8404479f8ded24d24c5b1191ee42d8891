@@ -139,6 +139,24 @@
       "parentUuid": "b40f2f15_5d1fdc0e",
       "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "027c4f5f_0902f7c8",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-04-25T13:42:19Z",
+      "side": 1,
+      "message": "if we want to match git behavior, we need to read both for values and stack the results, not just pick one file\nhttps://git-scm.com/docs/git-config#FILES",
+      "parentUuid": "3510d084_19d2ab42",
+      "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
