@@ -3718,7 +3718,7 @@ class ManifestProject(MetaProject):
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         with open(dest, 'wb') as f:
           f.write(manifest_data)
-      return
+      return True
 
     if not self.Sync_NetworkHalf(is_new=is_new, quiet=not verbose, verbose=verbose,
                               clone_bundle=clone_bundle,
