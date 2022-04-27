@@ -3710,46 +3710,45 @@ class ManifestProject(MetaProject):
     if use_superproject is not None:
       self.config.SetBoolean('repo.superproject', use_superproject)
 
-    if standalone_manifest:
-      if is_new:
-        manifest_name = 'default.xml'
-        manifest_data = fetch.fetch_file(manifest_url, verbose=verbose)
-        dest = os.path.join(self.worktree, manifest_name)
-        os.makedirs(os.path.dirname(dest), exist_ok=True)
-        with open(dest, 'wb') as f:
-          f.write(manifest_data)
-      return
+    if not standalone_manifest:
+      if not self.Sync_NetworkHalf(
+          is_new=is_new, quiet=not verbose, verbose=verbose,
+          clone_bundle=clone_bundle, current_branch_only=current_branch_only,
+          tags=tags, submodules=submodules, clone_filter=clone_filter,
+          partial_clone_exclude=self.manifest.PartialCloneExclude):
+        r = self.GetRemote(self.remote.name)
+        print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 
-    if not self.Sync_NetworkHalf(is_new=is_new, quiet=not verbose, verbose=verbose,
-                              clone_bundle=clone_bundle,
-                              current_branch_only=current_branch_only,
-                              tags=tags, submodules=submodules,
-                              clone_filter=clone_filter,
-                              partial_clone_exclude=self.manifest.PartialCloneExclude):
-      r = self.GetRemote(self.remote.name)
-      print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
-
-      # Better delete the manifest git dir if we created it; otherwise next
-      # time (when user fixes problems) we won't go through the "is_new" logic.
-      if is_new:
-        platform_utils.rmtree(self.gitdir)
-      return False
-
-    if manifest_branch:
-      self.MetaBranchSwitch(submodules=submodules)
-
-    syncbuf = SyncBuffer(self.config)
-    self.Sync_LocalHalf(syncbuf, submodules=submodules)
-    syncbuf.Finish()
-
-    if is_new or self.CurrentBranch is None:
-      if not self.StartBranch('default'):
-        print('fatal: cannot create default in manifest', file=sys.stderr)
+        # Better delete the manifest git dir if we created it; otherwise next
+        # time (when user fixes problems) we won't go through the "is_new" logic.
+        if is_new:
+          platform_utils.rmtree(self.gitdir)
         return False
 
-    if not manifest_name:
-      print('fatal: manifest name (-m) is required.', file=sys.stderr)
-      return False
+      if manifest_branch:
+        self.MetaBranchSwitch(submodules=submodules)
+
+      syncbuf = SyncBuffer(self.config)
+      self.Sync_LocalHalf(syncbuf, submodules=submodules)
+      syncbuf.Finish()
+
+      if is_new or self.CurrentBranch is None:
+        if not self.StartBranch('default'):
+          print('fatal: cannot create default in manifest', file=sys.stderr)
+          return False
+
+      if not manifest_name:
+        print('fatal: manifest name (-m) is required.', file=sys.stderr)
+        return False
+
+    elif is_new:
+      # This is a new standalone manifest.
+      manifest_name = 'default.xml'
+      manifest_data = fetch.fetch_file(manifest_url, verbose=verbose)
+      dest = os.path.join(self.worktree, manifest_name)
+      os.makedirs(os.path.dirname(dest), exist_ok=True)
+      with open(dest, 'wb') as f:
+        f.write(manifest_data)
 
     try:
       self.manifest.Link(manifest_name)
