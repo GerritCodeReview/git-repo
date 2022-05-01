@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e41fb416_74c4280a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1147970
+      },
+      "writtenOn": "2022-05-01T17:47:37Z",
+      "side": 1,
+      "message": "335474: manifest: add submanifest.default_groups attribute | https://gerrit-review.googlesource.com/c/git-repo/+/335474",
+      "revId": "501733c2abb1180679f25b2f78970d73a2f8d413",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
