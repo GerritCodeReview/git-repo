@@ -157,6 +157,24 @@
       "parentUuid": "3510d084_19d2ab42",
       "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1831695d_3a0b0894",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1134836
+      },
+      "writtenOn": "2022-05-02T17:01:53Z",
+      "side": 1,
+      "message": "I need to do more testing, but would you mind checking if this approach is OK?",
+      "parentUuid": "027c4f5f_0902f7c8",
+      "revId": "ee855af8404479f8ded24d24c5b1191ee42d8891",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
