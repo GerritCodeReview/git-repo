@@ -65,9 +65,13 @@ def _key(name):
   return '.'.join(parts)
 
 
-def GetGitConfigPath():
-  """Returns the path to the primary user git config file as defined in
-  https://git-scm.com/docs/git-config#FILES.
+def GetGitUserConfigPaths():
+  xdg_config_home = os.environ.get('XDG_CONFIG_HOME', '~/.config')
+  xdg_config = os.path.join(xdg_config_home, 'git/config')
+  global_config_file = '~/.gitconfig'
+  return [os.path.expanduser(config) for config in [xdg_config, global_config]
+          if os.path.exists(config)]
+
   """
   global_config_file = os.path.expanduser('~/.gitconfig')
   if os.path.exists(global_config_file):
