@@ -65,40 +65,36 @@ def _key(name):
   return '.'.join(parts)
 
 
-def GetGitUserConfigPaths():
-  xdg_config_home = os.environ.get('XDG_CONFIG_HOME', '~/.config')
-  xdg_config = os.path.join(xdg_config_home, 'git/config')
-  global_config_file = '~/.gitconfig'
-  return [os.path.expanduser(config) for config in [xdg_config, global_config]
-          if os.path.exists(config)]
-
+def GetCustomConfigFileOrDefault(file):
+  """Returns `file` if defined. Otherwise, returns the path to the primary
+  user git config file as defined in https://git-scm.com/docs/git-config#FILES.
   """
-  global_config_file = os.path.expanduser('~/.gitconfig')
-  if os.path.exists(global_config_file):
-    return global_config_file
+  if (file is not None):
+    config_file = file
   else:
-    xdg_config_home = os.environ.get('XDG_CONFIG_HOME', '~/.config')
-    return os.path.join(xdg_config_home, 'git/config')
+    global_config_file = '~/.gitconfig'
+    if os.path.exists(global_config_file):
+      config_file = global_config_file
+    else:
+      xdg_config_home = os.environ.get('XDG_CONFIG_HOME', '~/.config')
+      config_file = os.path.join(xdg_config_home, 'git/config')
+  return os.path.expanduser(config_file)
 
 
 class GitConfig(object):
   _ForUser = None
-
-  _USER_CONFIG = GetGitConfigPath()
-
   _ForSystem = None
-  _SYSTEM_CONFIG = '/etc/gitconfig'
 
   @classmethod
   def ForSystem(cls):
     if cls._ForSystem is None:
-      cls._ForSystem = cls(configfile=cls._SYSTEM_CONFIG)
+      cls._ForSystem = cls(use_system=True)
     return cls._ForSystem
 
   @classmethod
   def ForUser(cls):
     if cls._ForUser is None:
-      cls._ForUser = cls(configfile=os.path.expanduser(cls._USER_CONFIG))
+      cls._ForUser = cls(use_system=False)
     return cls._ForUser
 
   @classmethod
@@ -106,8 +102,9 @@ class GitConfig(object):
     return cls(configfile=os.path.join(gitdir, 'config'),
                defaults=defaults)
 
-  def __init__(self, configfile, defaults=None, jsonFile=None):
+  def __init__(self, configfile=None, use_system=False, defaults=None, jsonFile=None):
     self.file = configfile
+    self.use_system = use_system if configfile is not None else False
     self.defaults = defaults
     self._cache_dict = None
     self._section_dict = None
@@ -116,9 +113,8 @@ class GitConfig(object):
 
     self._json = jsonFile
     if self._json is None:
-      self._json = os.path.join(
-          os.path.dirname(self.file),
-          '.repo_' + os.path.basename(self.file) + '.json')
+      (dirname, basename) = os.path.split(GetCustomConfigFileOrDefault(self.file))
+      self._json = os.path.join(dirname, '.repo_' + basename + '.json')
 
   def ClearCache(self):
     """Clear the in-memory cache of config."""
@@ -359,13 +355,14 @@ class GitConfig(object):
 
   def _ReadJson(self):
     try:
-      if os.path.getmtime(self._json) <= os.path.getmtime(self.file):
+      if os.path.getmtime(self._json) <= os.path.getmtime(
+         GetCustomConfigFileOrDefault(self.file)):
         platform_utils.remove(self._json)
         return None
     except OSError:
       return None
     try:
-      Trace(': parsing %s', self.file)
+      Trace(': parsing %s', self._json)
       with open(self._json) as fd:
         return json.load(fd)
     except (IOError, ValueError):
@@ -387,9 +384,6 @@ class GitConfig(object):
 
     """
     c = {}
-    if not os.path.exists(self.file):
-      return c
-
     d = self._do('--null', '--list')
     for line in d.rstrip('\0').split('\0'):
       if '\n' in line:
@@ -406,10 +400,12 @@ class GitConfig(object):
     return c
 
   def _do(self, *args):
-    if self.file == self._SYSTEM_CONFIG:
+    if self.use_system:
       command = ['config', '--system', '--includes']
-    else:
+    elif self.file is not None:
       command = ['config', '--file', self.file, '--includes']
+    else:
+      command = ['config', '--global', '--includes']
     command.extend(args)
 
     p = GitCommand(None,
@@ -425,7 +421,11 @@ class GitConfig(object):
 class RepoConfig(GitConfig):
   """User settings for repo itself."""
 
-  _USER_CONFIG = '~/.repoconfig/config'
+  @classmethod
+  def ForUser(cls):
+    if cls._ForUser is None:
+      cls._ForUser = cls(configfile='~/.repoconfig/config')
+    return cls._ForUser
 
 
 class RefSpec(object):
