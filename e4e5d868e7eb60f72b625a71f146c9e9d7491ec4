@@ -1,12 +1,13 @@
 {
   "checks": {
     "zuul-check:git-repo": {
-      "state": "SCHEDULED",
-      "message": "Change has been enqueued in check",
-      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/335254,4",
+      "state": "NOT_RELEVANT",
+      "message": "Project has no jobs configured",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/buildset/53fc15436b78460ebbf5d7361d33808f",
       "started": "2022-05-02T17:01:31Z",
+      "finished": "2022-05-02T17:01:33Z",
       "created": "2022-05-02T17:01:32Z",
-      "updated": "2022-05-02T17:01:32Z"
+      "updated": "2022-05-02T17:01:33Z"
     }
   }
 }
