@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14ecd1ad_ce92549c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-02T16:54:44Z",
+      "side": 1,
+      "message": "I have adjusted this CL to match other changes that have landed, or are queued in 328101.",
+      "revId": "26424a0968754a1fb74d814b86cd12083c1dbdc1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
