@@ -234,6 +234,24 @@
       "parentUuid": "933d3789_a56b410d",
       "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e16634a0_8652e053",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-10T16:49:53Z",
+      "side": 1,
+      "message": "Check the error below. It happens on users who\u0027re still using python3.5 (mostly, Ubuntu 16.04)\n\nDuring line 42, before checking the python version, repo raises error when importing git_config\n\nTraceback (most recent call last):\n  File \"/tmp/1/.repo/repo/main.py\", line 42, in \u003cmodule\u003e\n    from git_config import RepoConfig\n  File \"/tmp/1/.repo/repo/git_config.py\", line 774\n    self._Set(f\u0027superproject.{key}\u0027, value)\n                                  ^\nSyntaxError: invalid syntax",
+      "parentUuid": "fee366bc_d83891c3",
+      "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

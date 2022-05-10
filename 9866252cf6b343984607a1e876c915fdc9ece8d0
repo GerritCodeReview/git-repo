@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2786aef7_5f7975f3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-10T16:49:53Z",
+      "side": 1,
+      "message": "\u003crepo not installed\u003e\nrepo launcher version 2.21\n       (from /usr/bin/repo)\ngit 2.7.4\nPython 3.5.2 (default, Jul 17 2020, 14:04:10) \n[GCC 5.4.0 20160609]\nOS Linux 5.13.0-40-generic (#45~20.04.1-Ubuntu SMP Mon Apr 4 09:38:31 UTC 2022)\nCPU x86_64 (x86_64)\nBug reports: https://bugs.chromium.org/p/gerrit/issues/entry?template\u003dRepo+tool+issue\n\n\ndirectly download from https://storage.googleapis.com/git-repo-downloads/repo",
+      "parentUuid": "27aed050_6640b8eb",
+      "revId": "9866252cf6b343984607a1e876c915fdc9ece8d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5705da70_1562710e",
