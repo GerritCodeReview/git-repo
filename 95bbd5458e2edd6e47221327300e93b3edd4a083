@@ -216,6 +216,24 @@
       "parentUuid": "6cc2beda_d865f14e",
       "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fee366bc_d83891c3",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-10T14:44:58Z",
+      "side": 1,
+      "message": "i didn\u0027t mean the sys import exactly, i mean the entire block of code.  normally we do not put code before imports.",
+      "parentUuid": "933d3789_a56b410d",
+      "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
