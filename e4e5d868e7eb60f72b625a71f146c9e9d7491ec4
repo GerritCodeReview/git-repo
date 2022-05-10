@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e54cb795_3bfa9555",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-10T04:10:58Z",
+      "side": 1,
+      "message": "incorrect style.  see these examples:\nhttps://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/python.md#Describing-arguments-in-docstrings",
+      "revId": "e4e5d868e7eb60f72b625a71f146c9e9d7491ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d6ee9fa_79f90979",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-10T04:10:58Z",
+      "side": 1,
+      "message": "don\u0027t need parens",
+      "revId": "e4e5d868e7eb60f72b625a71f146c9e9d7491ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8bcff2d_771235e6",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-10T04:10:58Z",
+      "side": 1,
+      "message": "this tests before expanding so it will look for a literal dir named `~`, not expand the home dir",
+      "revId": "e4e5d868e7eb60f72b625a71f146c9e9d7491ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9d5a807_d83c094c",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-10T04:10:58Z",
+      "side": 1,
+      "message": "this doesn\u0027t handle multiple user configs correctly.  i don\u0027t think it\u0027s a big deal (since it\u0027s not worse than the current includes bug), but it at least deserves a comment\n\nhowever, it also incorrect checks user configs when handling the system config.  that needs fixing ... prob with a `return None` when `use_system` is `True`.",
+      "range": {
+        "startLine": 359,
+        "startChar": 41,
+        "endLine": 359,
+        "endChar": 42
+      },
+      "revId": "e4e5d868e7eb60f72b625a71f146c9e9d7491ec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

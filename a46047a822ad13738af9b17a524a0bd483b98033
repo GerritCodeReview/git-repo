@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bea3067_39ff2103",
+        "filename": "git_config.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-10T04:10:58Z",
+      "side": 0,
+      "message": "seems like we need to keep this exists check if `self.file is not None`.  or it needs to be moved to the self._do call.",
+      "revId": "a46047a822ad13738af9b17a524a0bd483b98033",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
