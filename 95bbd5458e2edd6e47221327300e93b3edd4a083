@@ -47,6 +47,54 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "789733eb_48718305",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-10T13:05:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "d62b9683_6bf86fba",
+      "range": {
+        "startLine": 10,
+        "startChar": 27,
+        "endLine": 10,
+        "endChar": 35
+      },
+      "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97a95ac8_c5c6f2dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-10T13:05:40Z",
+      "side": 1,
+      "message": "I modify the message to be more clear. the real error is here.\n\n  File \"/tmp/1/.repo/repo/main.py\", line 42, in \u003cmodule\u003e\n    from git_config import RepoConfig\n  File \"/tmp/1/.repo/repo/git_config.py\", line 774\n    self._Set(f\u0027superproject.{key}\u0027, value)",
+      "parentUuid": "6e5a1515_25d3db55",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 19
+      },
+      "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7f07e918_bea722f6",
@@ -60,6 +108,30 @@
       "writtenOn": "2022-05-09T12:15:53Z",
       "side": 1,
       "message": "\"beginning\"",
+      "range": {
+        "startLine": 11,
+        "startChar": 60,
+        "endLine": 11,
+        "endChar": 68
+      },
+      "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f085379_b017fc77",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-10T13:05:40Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7f07e918_bea722f6",
       "range": {
         "startLine": 11,
         "startChar": 60,
@@ -100,6 +172,24 @@
       "writtenOn": "2022-05-09T12:15:53Z",
       "side": 1,
       "message": "should be a comment above this saying why this is executing so early",
+      "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "933d3789_a56b410d",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-10T13:05:40Z",
+      "side": 1,
+      "message": "Because the version check need sys.vresion to determine current python version\ncomment added in the source file",
+      "parentUuid": "6cc2beda_d865f14e",
       "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
