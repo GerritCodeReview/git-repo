@@ -252,6 +252,24 @@
       "parentUuid": "fee366bc_d83891c3",
       "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64d396fe_09ae2e36",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-10T16:52:32Z",
+      "side": 1,
+      "message": "latest stable repo launcher allow python3.5 to run\nHowever git-repo stable cannot run on python3.5 because of f-string.\n\nI think you can easily reproduce it on a ubuntu16.04 docker",
+      "parentUuid": "e16634a0_8652e053",
+      "revId": "95bbd5458e2edd6e47221327300e93b3edd4a083",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
