@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "746d1955_16e5cf99",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:21:01Z",
+      "side": 1,
+      "message": "that implies something is not working.  the repo launcher should have rejected your Python 3.5 usage itself.  that\u0027s the point of the requirements.json file that the repo launcher inspects.\n\nwhile your CL here probably improves things with the current versions, i don\u0027t think it\u0027ll help when/if we start using f-strings in main.py itself.  that is why the requirements.json logic was added.\n\nwe might still merge this CL to help in the short term (i haven\u0027t made up my mind about it), but it\u0027s def not the long term answer, and once we do start using things like f-string in main.py, we\u0027ll revert this CL since it no longer helps.\n\ndo you want to take a look now to see why requirements.json parsing in the repo launcher isn\u0027t working ?",
+      "parentUuid": "2786aef7_5f7975f3",
+      "revId": "9866252cf6b343984607a1e876c915fdc9ece8d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5705da70_1562710e",
         "filename": "main.py",
         "patchSetId": 3
