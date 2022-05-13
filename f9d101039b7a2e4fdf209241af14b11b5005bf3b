@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0676d648_bb30d375",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 3461,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:14:46Z",
+      "side": 1,
+      "message": "this is used in one place -- the subcommand sync.  i\u0027m not sure having a dedicated method here makes sense.  i\u0027m on the fence about it.  do you have a strong sales pitch for why here ?\n\nor maybe the sync subcommand is doing too much now, and we should instead be pulling logic out of it.  i\u0027ll note it\u0027s the biggest subcommand, and more than twice as big as the next largest subcommand.",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8676925a_abf6fca1",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 3481,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:14:46Z",
+      "side": 1,
+      "message": "are these ever going to diverge ?  should we allow them to ?  what is the problem with enforcing the root set of init options all the time ?",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98f08972_f06987bf",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 3483,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:14:46Z",
+      "side": 1,
+      "message": "when i saw `opts`, i thought this was referring to the options from the various subcommand parsers, and that made me think we had a bad coupling of state.  but it\u0027s actually a manifest project.  maybe use `mp` instead ?",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3699e216_2f8baca8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:14:46Z",
+      "side": 1,
+      "message": "fwiw, this is fine, although i tend to open code it like:\n\n per_manifest.setdefault(p.manifest.path_prefix, []).append(p)\n\nyour way is prob less esoteric",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "add51ba1_6e4c1473",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:14:46Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1104c8b6_1346e77f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:14:46Z",
+      "side": 1,
+      "message": "we never use `is False` or `is True` in Python.  just `if not opt.outer_manifest`.",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cae0d8d0_02c71e94",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1192,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-13T05:14:46Z",
+      "side": 1,
+      "message": "is this order guaranteed to be stable ?  if not, should sort here so the notice output is consistent.",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
