@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b62609b8_b3b1f9a0",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 3461,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-13T18:45:59Z",
+      "side": 1,
+      "message": "refactoring sync is almost certainly a good idea, but I\u0027d prefer that to be a no-change refactor, after cleaning up some of the complexity that is already there.\n\nThis was an attempt to isolate `sync` from `init`, passing the arguments that sync determines, and having the others from init be sticky.\n\nThe other option would be to have sync import a method from init, which then provided defaults or values that were stored the last time it was used.",
+      "parentUuid": "0676d648_bb30d375",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8676925a_abf6fca1",
         "filename": "project.py",
         "patchSetId": 15
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5853dea_ae38271f",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 3481,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-13T18:45:59Z",
+      "side": 1,
+      "message": "There may be a little bit of work to do around submanifests and manifest groups, but I haven\u0027t seen a need to allow those to be different yet.\n\nI would be happy to revisit that later, if that\u0027s OK.",
+      "parentUuid": "8676925a_abf6fca1",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98f08972_f06987bf",
         "filename": "project.py",
         "patchSetId": 15
@@ -48,6 +84,24 @@
       "writtenOn": "2022-05-13T05:14:46Z",
       "side": 1,
       "message": "when i saw `opts`, i thought this was referring to the options from the various subcommand parsers, and that made me think we had a bad coupling of state.  but it\u0027s actually a manifest project.  maybe use `mp` instead ?",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ea289dc_481dfa9b",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 3483,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-13T18:45:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "98f08972_f06987bf",
       "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +140,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f73f5748_b33e1014",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 760,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-13T18:45:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "add51ba1_6e4c1473",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1104c8b6_1346e77f",
@@ -103,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "31da9a48_42f9bca4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1046,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-13T18:45:59Z",
+      "side": 1,
+      "message": "At the moment, opt.outer_manifest defaults to None, which \u003d\u003d\u003d True for the logic.\n\nUpdated to default to True instead of None, and this change made in all occurances.",
+      "parentUuid": "1104c8b6_1346e77f",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cae0d8d0_02c71e94",
@@ -116,6 +206,24 @@
       "writtenOn": "2022-05-13T05:14:46Z",
       "side": 1,
       "message": "is this order guaranteed to be stable ?  if not, should sort here so the notice output is consistent.",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9147ffc0_829b71e8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1192,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-13T18:45:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cae0d8d0_02c71e94",
       "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
