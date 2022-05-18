@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de86e833_747df562",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-18T09:28:23Z",
+      "side": 1,
+      "message": "Well. Google official document will download repo 2.21 by default. and v2.21 allow python3.5\nSo i don\u0027t understand why \"repo launcher should have reject python3.5\". Where does it come from?",
+      "parentUuid": "746d1955_16e5cf99",
+      "revId": "9866252cf6b343984607a1e876c915fdc9ece8d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5705da70_1562710e",
