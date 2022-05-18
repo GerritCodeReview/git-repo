@@ -90,6 +90,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d4a4ab9_9ca6380d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1148165
+      },
+      "writtenOn": "2022-05-18T15:53:03Z",
+      "side": 1,
+      "message": "I already read it. But i\u0027m totally confused where am i wrong. Maybe it\u0027s not the correct fix. But the problem exists. Here is the thing\n---------------------------------------------------------------------------\nProblem: repo won\u0027t prompt correct error or warning on OS which only has python3.5 (e.g. Ubuntu 16.04)\n--------------------------------------------------------------------------\nExpect: repo will tell me python3.5 is out of date and require at least python3.5\n-----------------------------------------------------------------------\nWhat i got: \n\u0027\u0027\u0027\n$ repo init\nDownloading Repo source from https://gerrit.googlesource.com/git-repo\nrepo: Updating release signing keys to keyset ver 2.3\nTraceback (most recent call last):\n  File \"/tmp/1/.repo/repo/main.py\", line 42, in \u003cmodule\u003e\n    from git_config import RepoConfig\n  File \"/tmp/1/.repo/repo/git_config.py\", line 774\n    self._Set(f\u0027superproject.{key}\u0027, value)\n                                  ^\nSyntaxError: invalid syntax\n\u0027\u0027\u0027\n---------------------------------------------------------------------\nStep to reproduct:\n1. install a pure Ubuntu 16.04\n2. \u0027curl -o /usr/bin/repo https://storage.googleapis.com/git-repo-downloads/repo\u0027\\\n3. repo init\n4 Get \u0027invalid syntax\u0027 error rather than \"your python is too old\"",
+      "parentUuid": "4ef498d4_e6cb951c",
+      "revId": "9866252cf6b343984607a1e876c915fdc9ece8d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5705da70_1562710e",
