@@ -126,6 +126,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13f79965_e1927709",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-18T16:10:54Z",
+      "side": 1,
+      "message": "you\u0027re confusing the `repo` launcher being allowed to run as Python 3.5 with the requirements of the repo source code that is cloned \u0026 bootstrapped.  the launcher is supposed to dynamically check the requirements file and enforce it.\n\nthat doesn\u0027t seem to be happening.  that should be fixed.\n\nyour proposed change doesn\u0027t work when we start using Python 3.6 features in main.py itself.  which we\u0027re going to do eventually.",
+      "parentUuid": "42df0eb6_5e11f465",
+      "revId": "9866252cf6b343984607a1e876c915fdc9ece8d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5705da70_1562710e",
