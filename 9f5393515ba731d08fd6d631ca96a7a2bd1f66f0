@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2de1255b_5bab036f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-19T13:10:40Z",
+      "side": 1,
+      "message": "one space",
+      "range": {
+        "startLine": 773,
+        "startChar": 34,
+        "endLine": 773,
+        "endChar": 36
+      },
+      "revId": "9f5393515ba731d08fd6d631ca96a7a2bd1f66f0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
