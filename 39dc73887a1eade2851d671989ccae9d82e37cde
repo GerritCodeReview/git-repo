@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "486fd3b0_389421cf",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-19T12:25:33Z",
+      "side": 1,
+      "message": "The non-underscore versions call Load().  In the multi-manifest case, the outer manifest has been fetched/synced, but no submanifests have been fetched yet, resulting in a ManifestParseError.\n\nWhether the sub-manifests have been fetched or not, the outer manifest has sufficient information to tell if the tree has any submanifests once the XML is parsed.  Switching to using the version that does not require Load() to work allows the check in project.py on whether to use the alternates.\n\nWhen the check is removed (and all repo instances use alternates, then this could switch back to using the no-underscore methods, but it would be no more accurate than this version of the call.\n\nI\u0027ve updated the docstring to indicate that this is safe to use once the outermost manifest XML has been parsed.",
+      "parentUuid": "84b568be_d69ce993",
+      "revId": "39dc73887a1eade2851d671989ccae9d82e37cde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6738a9b4_ce9f2438",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2680b125_cb90b345",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1682,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-19T12:25:33Z",
+      "side": 1,
+      "message": "As we first turn on multi-manifest, there will be *many* common projects.  \n\nIn order to avoid the objects corruption issue, we decided to defer multi-manifest object sharing until this change (to use alternates).",
+      "parentUuid": "6738a9b4_ce9f2438",
+      "revId": "39dc73887a1eade2851d671989ccae9d82e37cde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4927ae31_cd14053e",
@@ -65,6 +101,24 @@
       "writtenOn": "2022-05-19T12:02:31Z",
       "side": 1,
       "message": "add a period at the end.  put a comment like:\n\n # TODO(vapier): Remove knob once behavior is verified.",
+      "revId": "39dc73887a1eade2851d671989ccae9d82e37cde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32af7730_8d4a2d95",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-19T12:25:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4927ae31_cd14053e",
       "revId": "39dc73887a1eade2851d671989ccae9d82e37cde",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
