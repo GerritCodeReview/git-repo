@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d59fa7a_7df35828",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-19T13:47:11Z",
+      "side": 1,
+      "message": "this logic depends on _ALTERNATES or self.manifest.is_multimanifest.  we can\u0027t drop this until that is gone.",
+      "revId": "49b506e576c7e0ea3738b4c5bbcd80ca0b1d099f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
