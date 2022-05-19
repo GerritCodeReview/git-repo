@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84b568be_d69ce993",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-19T12:02:31Z",
+      "side": 1,
+      "message": "what\u0027s up with this ?  doesn\u0027t seem like it\u0027s related to this CL.",
+      "revId": "39dc73887a1eade2851d671989ccae9d82e37cde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6738a9b4_ce9f2438",
+        "filename": "manifest_xml.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1682,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-19T12:02:31Z",
+      "side": 1,
+      "message": "seems like we should make this change in general ?",
+      "revId": "39dc73887a1eade2851d671989ccae9d82e37cde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4927ae31_cd14053e",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-19T12:02:31Z",
+      "side": 1,
+      "message": "add a period at the end.  put a comment like:\n\n # TODO(vapier): Remove knob once behavior is verified.",
+      "revId": "39dc73887a1eade2851d671989ccae9d82e37cde",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
