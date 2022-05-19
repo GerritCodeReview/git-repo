@@ -72,6 +72,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9bcf9b2_42c37c63",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 3461,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-19T13:50:04Z",
+      "side": 1,
+      "message": "Resolved offline.",
+      "parentUuid": "c40452fe_eace9c53",
+      "revId": "f9d101039b7a2e4fdf209241af14b11b5005bf3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8676925a_abf6fca1",
