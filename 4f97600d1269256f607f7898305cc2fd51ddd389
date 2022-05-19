@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3ed570a_8c513998",
+        "filename": "command.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-19T13:30:03Z",
+      "side": 1,
+      "message": "use CommonValidateOptions to flip the default from None to True",
+      "revId": "4f97600d1269256f607f7898305cc2fd51ddd389",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
