@@ -421,12 +421,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         labels = set(_ExpandCommaList(branch.project.config.GetString(key)))
         for label in opt.labels:
           labels.update(_ExpandCommaList(label))
-        # Basic sanity check on label syntax.
-        for label in labels:
-          if not re.match(r'^.+[+-][0-9]+$', label):
-            print('repo: error: invalid label syntax "%s": labels use forms '
-                  'like CodeReview+1 or Verified-1' % (label,), file=sys.stderr)
-            sys.exit(1)
 
         # Handle e-mail notifications.
         if opt.notify is False:

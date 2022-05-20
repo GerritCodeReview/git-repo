@@ -996,6 +996,13 @@ class Project(object):
     if not branch.remote.review:
       raise GitError('remote %s has no review url' % branch.remote.name)
 
+    # Basic validity check on label syntax.
+    for label in labels:
+      if not re.match(r'^.+[+-][0-9]+$', label):
+        raise UploadError(
+            f'invalid label syntax "{label}": labels use forms like '
+            'CodeReview+1 or Verified-1')
+
     if dest_branch is None:
       dest_branch = self.dest_branch
     if dest_branch is None:
@@ -1031,6 +1038,7 @@ class Project(object):
     if auto_topic:
       opts += ['topic=' + branch.name]
     opts += ['t=%s' % p for p in hashtags]
+    # NB: No need to encode labels as they've been validated above.
     opts += ['l=%s' % p for p in labels]
 
     opts += ['r=%s' % p for p in people[0]]
