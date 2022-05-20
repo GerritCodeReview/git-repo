@@ -203,6 +203,7 @@ class ReviewableBranch(object):
                       notify=None,
                       wip=False,
                       dest_branch=None,
+                      desc=None,
                       validate_certs=True,
                       push_options=None):
     self.project.UploadForReview(branch=self.name,
@@ -215,6 +216,7 @@ class ReviewableBranch(object):
                                  notify=notify,
                                  wip=wip,
                                  dest_branch=dest_branch,
+                                 desc=desc,
                                  validate_certs=validate_certs,
                                  push_options=push_options)
 
@@ -1003,6 +1005,7 @@ class Project(object):
                       notify=None,
                       wip=False,
                       dest_branch=None,
+                      desc=None,
                       validate_certs=True,
                       push_options=None):
     """Uploads the named branch for code review.
@@ -1054,6 +1057,8 @@ class Project(object):
       opts += ['topic=' + branch.name]
     opts += ['t=%s' % p for p in hashtags]
     opts += ['l=%s' % p for p in labels]
+    if desc:
+      opts += [f'm={desc}']
 
     opts += ['r=%s' % p for p in people[0]]
     opts += ['cc=%s' % p for p in people[1]]
