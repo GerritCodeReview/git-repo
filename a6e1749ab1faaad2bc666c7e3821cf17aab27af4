@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e269e341_3b7ea229",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-20T11:10:38Z",
+      "side": 1,
+      "message": "Say \"--description\" here to match the definition of the option.",
+      "range": {
+        "startLine": 7,
+        "startChar": 12,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "a6e1749ab1faaad2bc666c7e3821cf17aab27af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
