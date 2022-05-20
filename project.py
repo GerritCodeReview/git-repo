@@ -594,6 +594,14 @@ class Project(object):
     self.bare_objdir = self._GitGetByExec(self, bare=True, gitdir=self.objdir)
 
   @property
+  def UseAlternates(self):
+    """Whether git alternates are in use.
+
+    This will be removed once migration to alternates is complete.
+    """
+    return _ALTERNATES or self.manifest.is_multimanifest
+
+  @property
   def Derived(self):
     return self.is_derived
 
@@ -1138,7 +1146,7 @@ class Project(object):
       self._UpdateHooks(quiet=quiet)
     self._InitRemote()
 
-    if _ALTERNATES or self.manifest.is_multimanifest:
+    if self.UseAlternates:
       # If gitdir/objects is a symlink, migrate it from the old layout.
       gitdir_objects = os.path.join(self.gitdir, 'objects')
       if platform_utils.islink(gitdir_objects):
