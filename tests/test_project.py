@@ -21,6 +21,8 @@ import subprocess
 import tempfile
 import unittest
 
+import pytest
+
 import error
 import git_command
 import git_config
@@ -403,3 +405,21 @@ class MigrateWorkTreeTests(unittest.TestCase):
         self.assertTrue((dotgit / name).is_file())
       for name in self._SYMLINKS:
         self.assertTrue((dotgit / name).is_symlink())
+
+
+@pytest.mark.parametrize(
+    'opt, exp',
+    [
+        ('abcXYZ123', 'abcXYZ123'),
+        ('a space', 'a_space'),
+        ('heiß', 'hei%c3%9f'),
+        ('com,ma', 'com%2cma'),
+        ('per%cent', 'per%25cent'),
+        ('e-mail@addre.ss', 'e-mail@addre.ss'),
+        ('a l!, the % bad! thi&ngs_?',
+         'a_l%21%2c_the_%25_bad%21_thi%26ngs%5f%3f'),
+    ]
+)
+def test_encode_option(opt, exp):
+  """Verify options are encoded correctly."""
+  assert project.Project.encode_option(opt) == exp
