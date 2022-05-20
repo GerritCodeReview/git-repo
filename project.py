@@ -3790,10 +3790,10 @@ class ManifestProject(MetaProject):
             outer_manifest=False,
         )
 
-    # Lastly, clone the superproject(s).
-    if self.manifest.manifestProject.use_superproject:
-      sync_result = Superproject(
-          self.manifest, self.manifest.repodir, git_event_log, quiet=not verbose).Sync()
+    # Lastly, if the manifest has a <superproject> then have the superproject
+    # sync it if it will be used.
+    if self.manifest.superproject:
+      sync_result = self.manifest.superproject.Sync(git_event_log)
       if not sync_result.success:
         print('warning: git update of superproject for '
               f'{self.manifest.path_prefix} failed, repo sync will not use '
