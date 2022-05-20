@@ -16,6 +16,24 @@
       "message": "this logic depends on _ALTERNATES or self.manifest.is_multimanifest.  we can\u0027t drop this until that is gone.",
       "revId": "49b506e576c7e0ea3738b4c5bbcd80ca0b1d099f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9ee5b79_f441c6f4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-20T11:13:20Z",
+      "side": 1,
+      "message": "I\u0027ve added more CLs to allow a more gradual shift to using alternates.  See also 337535.",
+      "parentUuid": "1d59fa7a_7df35828",
+      "revId": "49b506e576c7e0ea3738b4c5bbcd80ca0b1d099f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
