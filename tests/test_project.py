@@ -17,7 +17,6 @@
 import contextlib
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 import unittest
@@ -32,11 +31,7 @@ import project
 @contextlib.contextmanager
 def TempGitTree():
   """Create a new empty git checkout for testing."""
-  # TODO(vapier): Convert this to tempfile.TemporaryDirectory once we drop
-  # Python 2 support entirely.
-  try:
-    tempdir = tempfile.mkdtemp(prefix='repo-tests')
-
+  with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
     # Tests need to assume, that main is default branch at init,
     # which is not supported in config until 2.28.
     cmd = ['git', 'init']
@@ -50,8 +45,6 @@ def TempGitTree():
       cmd += ['--template', templatedir]
     subprocess.check_call(cmd, cwd=tempdir)
     yield tempdir
-  finally:
-    platform_utils.rmtree(tempdir)
 
 
 class FakeProject(object):
@@ -124,14 +117,15 @@ class CopyLinkTestCase(unittest.TestCase):
   """
 
   def setUp(self):
-    self.tempdir = tempfile.mkdtemp(prefix='repo_tests')
+    self.tempdirobj = tempfile.TemporaryDirectory(prefix='repo_tests')
+    self.tempdir = self.tempdirobj.name
     self.topdir = os.path.join(self.tempdir, 'checkout')
     self.worktree = os.path.join(self.topdir, 'git-project')
     os.makedirs(self.topdir)
     os.makedirs(self.worktree)
 
   def tearDown(self):
-    shutil.rmtree(self.tempdir, ignore_errors=True)
+    self.tempdirobj.cleanup()
 
   @staticmethod
   def touch(path):

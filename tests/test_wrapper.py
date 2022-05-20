@@ -14,11 +14,9 @@
 
 """Unittests for the wrapper.py module."""
 
-import contextlib
 from io import StringIO
 import os
 import re
-import shutil
 import sys
 import tempfile
 import unittest
@@ -26,20 +24,7 @@ from unittest import mock
 
 import git_command
 import main
-import platform_utils
 import wrapper
-
-
-@contextlib.contextmanager
-def TemporaryDirectory():
-  """Create a new empty git checkout for testing."""
-  # TODO(vapier): Convert this to tempfile.TemporaryDirectory once we drop
-  # Python 2 support entirely.
-  try:
-    tempdir = tempfile.mkdtemp(prefix='repo-tests')
-    yield tempdir
-  finally:
-    platform_utils.rmtree(tempdir)
 
 
 def fixture(*paths):
@@ -336,19 +321,19 @@ class NeedSetupGnuPG(RepoWrapperTestCase):
 
   def test_missing_dir(self):
     """The ~/.repoconfig tree doesn't exist yet."""
-    with TemporaryDirectory() as tempdir:
+    with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
       self.wrapper.home_dot_repo = os.path.join(tempdir, 'foo')
       self.assertTrue(self.wrapper.NeedSetupGnuPG())
 
   def test_missing_keyring(self):
     """The keyring-version file doesn't exist yet."""
-    with TemporaryDirectory() as tempdir:
+    with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
       self.wrapper.home_dot_repo = tempdir
       self.assertTrue(self.wrapper.NeedSetupGnuPG())
 
   def test_empty_keyring(self):
     """The keyring-version file exists, but is empty."""
-    with TemporaryDirectory() as tempdir:
+    with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
       self.wrapper.home_dot_repo = tempdir
       with open(os.path.join(tempdir, 'keyring-version'), 'w'):
         pass
@@ -356,7 +341,7 @@ class NeedSetupGnuPG(RepoWrapperTestCase):
 
   def test_old_keyring(self):
     """The keyring-version file exists, but it's old."""
-    with TemporaryDirectory() as tempdir:
+    with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
       self.wrapper.home_dot_repo = tempdir
       with open(os.path.join(tempdir, 'keyring-version'), 'w') as fp:
         fp.write('1.0\n')
@@ -364,7 +349,7 @@ class NeedSetupGnuPG(RepoWrapperTestCase):
 
   def test_new_keyring(self):
     """The keyring-version file exists, and is up-to-date."""
-    with TemporaryDirectory() as tempdir:
+    with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
       self.wrapper.home_dot_repo = tempdir
       with open(os.path.join(tempdir, 'keyring-version'), 'w') as fp:
         fp.write('1000.0\n')
@@ -376,7 +361,7 @@ class SetupGnuPG(RepoWrapperTestCase):
 
   def test_full(self):
     """Make sure it works completely."""
-    with TemporaryDirectory() as tempdir:
+    with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
       self.wrapper.home_dot_repo = tempdir
       self.wrapper.gpg_dir = os.path.join(self.wrapper.home_dot_repo, 'gnupg')
       self.assertTrue(self.wrapper.SetupGnuPG(True))
@@ -426,7 +411,8 @@ class GitCheckoutTestCase(RepoWrapperTestCase):
   @classmethod
   def setUpClass(cls):
     # Create a repo to operate on, but do it once per-class.
-    cls.GIT_DIR = tempfile.mkdtemp(prefix='repo-rev-tests')
+    cls.tempdirobj = tempfile.TemporaryDirectory(prefix='repo-rev-tests')
+    cls.GIT_DIR = cls.tempdirobj.name
     run_git = wrapper.Wrapper().run_git
 
     remote = os.path.join(cls.GIT_DIR, 'remote')
@@ -455,10 +441,10 @@ class GitCheckoutTestCase(RepoWrapperTestCase):
 
   @classmethod
   def tearDownClass(cls):
-    if not cls.GIT_DIR:
+    if not cls.tempdirobj:
       return
 
-    shutil.rmtree(cls.GIT_DIR)
+    cls.tempdirobj.cleanup()
 
 
 class ResolveRepoRev(GitCheckoutTestCase):
