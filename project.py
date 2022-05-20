@@ -208,6 +208,7 @@ class ReviewableBranch(object):
                       wip=False,
                       ready=False,
                       dest_branch=None,
+                      desc=None,
                       validate_certs=True,
                       push_options=None):
     self.project.UploadForReview(branch=self.name,
@@ -221,6 +222,7 @@ class ReviewableBranch(object):
                                  wip=wip,
                                  ready=ready,
                                  dest_branch=dest_branch,
+                                 desc=desc,
                                  validate_certs=validate_certs,
                                  push_options=push_options)
 
@@ -1033,6 +1035,7 @@ class Project(object):
                       wip=False,
                       ready=False,
                       dest_branch=None,
+                      desc=None,
                       validate_certs=True,
                       push_options=None):
     """Uploads the named branch for code review.
@@ -1092,6 +1095,8 @@ class Project(object):
     opts += ['t=%s' % self.encode_option(p) for p in hashtags]
     # NB: No need to encode labels as they've been validated above.
     opts += ['l=%s' % p for p in labels]
+    if desc:
+      opts += [f'm={self.encode_option(desc)}']
 
     opts += ['r=%s' % self.encode_option(p) for p in people[0]]
     opts += ['cc=%s' % self.encode_option(p) for p in people[1]]

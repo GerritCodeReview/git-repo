@@ -166,6 +166,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--hashtag-branch', '--htb',
                  action='store_true',
                  help='add local branch name as a hashtag')
+    p.add_option('-d', '--description',
+                 dest='desc',
+                 help='set the patchset (short) description')
     p.add_option('-l', '--label',
                  dest='labels', action='append', default=[],
                  help='add a label when uploading')
@@ -477,6 +480,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                wip=opt.wip,
                                ready=opt.ready,
                                dest_branch=destination,
+                               desc=opt.desc,
                                validate_certs=opt.validate_certs,
                                push_options=opt.push_options)
 
