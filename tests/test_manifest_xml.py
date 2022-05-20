@@ -17,7 +17,6 @@
 import os
 import platform
 import re
-import shutil
 import tempfile
 import unittest
 import xml.dom.minidom
@@ -92,7 +91,8 @@ class ManifestParseTestCase(unittest.TestCase):
   """TestCase for parsing manifests."""
 
   def setUp(self):
-    self.tempdir = tempfile.mkdtemp(prefix='repo_tests')
+    self.tempdirobj = tempfile.TemporaryDirectory(prefix='repo_tests')
+    self.tempdir = self.tempdirobj.name
     self.repodir = os.path.join(self.tempdir, '.repo')
     self.manifest_dir = os.path.join(self.repodir, 'manifests')
     self.manifest_file = os.path.join(
@@ -111,7 +111,7 @@ class ManifestParseTestCase(unittest.TestCase):
 """)
 
   def tearDown(self):
-    shutil.rmtree(self.tempdir, ignore_errors=True)
+    self.tempdirobj.cleanup()
 
   def getXmlManifest(self, data):
     """Helper to initialize a manifest for testing."""

@@ -24,7 +24,6 @@ from unittest import mock
 import git_superproject
 import git_trace2_event_log
 import manifest_xml
-import platform_utils
 from test_manifest_xml import sort_attributes
 
 
@@ -38,7 +37,8 @@ class SuperprojectTestCase(unittest.TestCase):
 
   def setUp(self):
     """Set up superproject every time."""
-    self.tempdir = tempfile.mkdtemp(prefix='repo_tests')
+    self.tempdirobj = tempfile.TemporaryDirectory(prefix='repo_tests')
+    self.tempdir = self.tempdirobj.name
     self.repodir = os.path.join(self.tempdir, '.repo')
     self.manifest_file = os.path.join(
         self.repodir, manifest_xml.MANIFEST_FILE_NAME)
@@ -75,7 +75,7 @@ class SuperprojectTestCase(unittest.TestCase):
 
   def tearDown(self):
     """Tear down superproject every time."""
-    platform_utils.rmtree(self.tempdir)
+    self.tempdirobj.cleanup()
 
   def getXmlManifest(self, data):
     """Helper to initialize a manifest for testing."""
