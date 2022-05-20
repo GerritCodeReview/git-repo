@@ -21,6 +21,7 @@ import random
 import re
 import shutil
 import stat
+import string
 import subprocess
 import sys
 import tarfile
@@ -1000,6 +1001,27 @@ class Project(object):
         return rb
     return None
 
+  @staticmethod
+  def encode_option(arg):
+    """Encode |arg| using percent syntax to avoid confusing git.
+
+    These rules are more strict than URI encoding, so we can't use the standard
+    urllib quote APIs.
+    """
+    # The set of characters that do not need to be encoded.  The docs say we
+    # should encode @ and . but that doesn't seem to be the case, so skip them
+    # to make the output a little more human friendly (e.g. e-mail addresses).
+    SAFE = {ord(x) for x in string.ascii_letters + string.digits + '=.-@'}
+
+    def _enc(b):
+      if b in SAFE:
+        return chr(b)
+      elif b == ord(' '):
+        return '_'
+      else:
+        return f'%{b:02x}'
+    return ''.join(_enc(x) for x in arg.encode('utf-8'))
+
   def UploadForReview(self, branch=None,
                       people=([], []),
                       dryrun=False,
@@ -1066,15 +1088,15 @@ class Project(object):
     ref_spec = '%s:refs/for/%s' % (R_HEADS + branch.name, dest_branch)
     opts = []
     if auto_topic:
-      opts += ['topic=' + branch.name]
-    opts += ['t=%s' % p for p in hashtags]
+      opts += ['topic=' + self.encode_option(branch.name)]
+    opts += ['t=%s' % self.encode_option(p) for p in hashtags]
     # NB: No need to encode labels as they've been validated above.
     opts += ['l=%s' % p for p in labels]
 
-    opts += ['r=%s' % p for p in people[0]]
-    opts += ['cc=%s' % p for p in people[1]]
+    opts += ['r=%s' % self.encode_option(p) for p in people[0]]
+    opts += ['cc=%s' % self.encode_option(p) for p in people[1]]
     if notify:
-      opts += ['notify=' + notify]
+      opts += ['notify=' + self.encode_option(notify)]
     if private:
       opts += ['private']
     if wip:
