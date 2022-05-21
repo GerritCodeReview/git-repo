@@ -27,6 +27,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import xml.parsers.expat
 import xmlrpc.client
 
 try:
@@ -1332,11 +1333,16 @@ class PersistentTransport(xmlrpc.client.Transport):
           raise
 
       p, u = xmlrpc.client.getparser()
-      while 1:
-        data = response.read(1024)
-        if not data:
-          break
+      # Response should be fairly small, so read it all at once.
+      # This way we can show it to the user in case of error (e.g. HTML).
+      data = response.read()
+      try:
         p.feed(data)
+      except xml.parsers.expat.ExpatError as e:
+        raise IOError(
+            f'Parsing the manifest failed: {e}\n'
+            f'Please report this to your manifest server admin.\n'
+            f'Here is the full response:\n{data.decode("utf-8")}')
       p.close()
       return u.close()
 
