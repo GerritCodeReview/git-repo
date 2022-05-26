@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "738f0814_11f8b139",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-26T15:55:16Z",
+      "side": 1,
+      "message": "@vapier: I believe that this one is safe to land, PTAL.",
+      "revId": "85b463ce0ee8d26182d8b2bcde72dc0f46a55bc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "568b5e7d_6c8ed913",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-05-26T15:55:16Z",
+      "side": 1,
+      "message": "Pedantically, we should be checking that the shared objects directory is in the alternates file, and that .git/objects is a directory.  On the other hand, that becomes moot when the stack finishes landing, and turning back on preciousObjects et al (for the non multi-manifest case) doesn\u0027t adversely affect things.",
+      "revId": "85b463ce0ee8d26182d8b2bcde72dc0f46a55bc4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
