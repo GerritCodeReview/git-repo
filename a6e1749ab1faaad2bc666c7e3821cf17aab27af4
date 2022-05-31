@@ -22,6 +22,30 @@
       },
       "revId": "a6e1749ab1faaad2bc666c7e3821cf17aab27af4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84d5e0ed_32a3ab9f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-05-31T21:12:21Z",
+      "side": 1,
+      "message": "i did this on purpose, but i can change it for clarity\n\nargparse will accept unambiguous short matches.  so --desc actually works.",
+      "parentUuid": "e269e341_3b7ea229",
+      "range": {
+        "startLine": 7,
+        "startChar": 12,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "a6e1749ab1faaad2bc666c7e3821cf17aab27af4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
