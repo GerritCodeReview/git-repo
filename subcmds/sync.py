@@ -316,7 +316,7 @@ later is required to fix a server side protocol bug.
     if not have_superproject:
       return
 
-    if opt.local_only:
+    if opt.local_only and manifest.superproject:
       manifest_path = manifest.superproject.manifest_path
       if manifest_path:
         self._ReloadManifest(manifest_path, manifest)

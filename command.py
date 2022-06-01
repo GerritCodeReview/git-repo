@@ -277,6 +277,18 @@ class Command(object):
   def GetProjects(self, args, manifest=None, groups='', missing_ok=False,
                   submodules_ok=False, all_manifests=False):
     """A list of projects that match the arguments.
+
+    Args:
+      args: a list of (case-insensitive) strings, projects to search for.
+      manifest: an XmlManifest, the manifest to use, or None for default.
+      groups: a string, the manifest groups in use.
+      missing_ok: a boolean, whether to allow missing projects.
+      submodules_ok: a boolean, whether to allow submodules.
+      all_manifests: a boolean, if True then all manifests and submanifests are
+                     used.  If False, then only the local (sub)manifest is used.
+
+    Returns:
+      A list of matching Project instances.
     """
     if all_manifests:
       if not manifest:

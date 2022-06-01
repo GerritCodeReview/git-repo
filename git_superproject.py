@@ -18,7 +18,7 @@ For more information on superproject, check out:
 https://en.wikibooks.org/wiki/Git/Submodules_and_Superprojects
 
 Examples:
-  superproject = Superproject()
+  superproject = Superproject(manifest, name, remote, revision)
   UpdateProjectsResult = superproject.UpdateProjectsRevisionId(projects)
 """
 
@@ -99,8 +99,8 @@ class Superproject(object):
     self._work_git_name = git_name + _SUPERPROJECT_GIT_NAME
     self._work_git = os.path.join(self._superproject_path, self._work_git_name)
 
-    # The following are command arguemnts, rather then superproject attributes,
-    # and where included here originally.  They should eventually become
+    # The following are command arguemnts, rather than superproject attributes,
+    # and were included here originally.  They should eventually become
     # arguments that are passed down from the public methods, instead of being
     # treated as attributes.
     self._git_event_log = None
@@ -329,7 +329,8 @@ class Superproject(object):
     """Update revisionId of every project in projects with the commit id.
 
     Args:
-      projects: List of projects whose revisionId needs to be updated.
+      projects: a list of projects whose revisionId needs to be updated.
+      git_event_log: an EventLog, for git tracing.
 
     Returns:
       UpdateProjectsResult
@@ -431,9 +432,15 @@ def UseSuperproject(use_superproject, manifest):
   Args:
     use_superproject: option value from optparse.
     manifest: manifest to use.
+
+  Returns:
+    Whether the superproject should be used.
   """
 
-  if use_superproject is not None:
+  if not manifest.superproject:
+    # This (sub) manifest does not have a superproject definition.
+    return False
+  elif use_superproject is not None:
     return use_superproject
   else:
     client_value = manifest.manifestProject.use_superproject
