@@ -348,7 +348,7 @@ class XmlManifest(object):
           be |repodir|/|MANIFEST_FILE_NAME|.
       local_manifests: Full path to the directory of local override manifests.
           This will usually be |repodir|/|LOCAL_MANIFESTS_DIR_NAME|.
-      outer_client: RepoClient of the outertree.
+      outer_client: RepoClient of the outer manifest.
       parent_groups: a string, the groups to apply to this projects.
       submanifest_path: The submanifest root relative to the repo root.
       default_groups: a string, the default manifest groups to use.
@@ -776,18 +776,21 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   @property
   def is_submanifest(self):
-    """Whether this manifest is a submanifest"""
+    """Whether this manifest is a submanifest.
+
+    This is safe to use as long as the outermost manifest XML has been parsed.
+    """
     return self._outer_client and self._outer_client != self
 
   @property
   def outer_client(self):
-    """The instance of the outermost manifest client"""
+    """The instance of the outermost manifest client."""
     self._Load()
     return self._outer_client
 
   @property
   def all_manifests(self):
-    """Generator yielding all (sub)manifests."""
+    """Generator yielding all (sub)manifests, in depth-first order."""
     self._Load()
     outer = self._outer_client
     yield outer
@@ -796,7 +799,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   @property
   def all_children(self):
-    """Generator yielding all child submanifests."""
+    """Generator yielding all (present) child submanifests."""
     self._Load()
     for child in self._submanifests.values():
       if child.repo_client:
@@ -813,7 +816,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   @property
   def all_paths(self):
-    """All project paths for all (sub)manifests.  See `paths`."""
+    """All project paths for all (sub)manifests.
+
+    See also `paths`.
+
+    Returns:
+      A dictionary of {path: Project()}.  `path` is relative to the outer
+      manifest.
+    """
     ret = {}
     for tree in self.all_manifests:
       prefix = tree.path_prefix
@@ -829,7 +839,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
   def paths(self):
     """Return all paths for this manifest.
 
-    Return:
+    Returns:
       A dictionary of {path: Project()}.  `path` is relative to this manifest.
     """
     self._Load()
@@ -843,11 +853,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   @property
   def remotes(self):
+    """Return a list of remotes for this manifest."""
     self._Load()
     return self._remotes
 
   @property
   def default(self):
+    """Return default values for this manifest."""
     self._Load()
     return self._default
 
@@ -1090,8 +1102,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if override:
           self.manifestFile = savedManifestFile
 
-      # Now that we have loaded this manifest, load any submanifest  manifests
-      # as well.  We need to do this after self._loaded is set to avoid looping.
+      # Now that we have loaded this manifest, load any submanifests as well.
+      # We need to do this after self._loaded is set to avoid looping.
       for name in self._submanifests:
         tree = self._submanifests[name]
         spec = tree.ToSubmanifestSpec()
@@ -1659,6 +1671,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       name: a string, the name of the project.
       path: a string, the path of the project.
       remote: a string, the remote.name of the project.
+
+    Returns:
+      A tuple of (relpath, worktree, gitdir, objdir, use_git_worktrees) for the
+      project with |name| and |path|.
     """
     # The manifest entries might have trailing slashes.  Normalize them to avoid
     # unexpected filesystem behavior since we do string concatenation below.
@@ -1666,7 +1682,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     name = name.rstrip('/')
     remote = remote.rstrip('/')
     use_git_worktrees = False
-    use_remote_name = bool(self._outer_client._submanifests)
+    use_remote_name = self.is_multimanifest
     relpath = path
     if self.IsMirror:
       worktree = None
@@ -1696,6 +1712,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       name: a string, the name of the project.
       all_manifests: a boolean, if True, then all manifests are searched. If
                      False, then only this manifest is searched.
+
+    Returns:
+      A list of Project instances with name |name|.
     """
     if all_manifests:
       return list(itertools.chain.from_iterable(
@@ -1956,6 +1975,16 @@ class RepoClient(XmlManifest):
   """Manages a repo client checkout."""
 
   def __init__(self, repodir, manifest_file=None, submanifest_path='', **kwargs):
+    """Initialize.
+
+    Args:
+      repodir: Path to the .repo/ dir for holding all internal checkout state.
+          It must be in the top directory of the repo client checkout.
+      manifest_file: Full path to the manifest file to parse.  This will usually
+          be |repodir|/|MANIFEST_FILE_NAME|.
+      submanifest_path: The submanifest root relative to the repo root.
+      **kwargs: Additional keyword arguments, passed to XmlManifest.
+    """
     self.isGitcClient = False
     submanifest_path = submanifest_path or ''
     if submanifest_path:
