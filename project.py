@@ -33,6 +33,7 @@ import fetch
 from git_command import GitCommand, git_require
 from git_config import GitConfig, IsId, GetSchemeFromUrl, GetUrlCookieFile, \
     ID_RE
+import git_superproject
 from git_trace2_event_log import EventLog
 from error import GitError, UploadError, DownloadError
 from error import ManifestInvalidRevisionError, ManifestInvalidPathError
@@ -2180,6 +2181,8 @@ class Project(object):
     if prune:
       cmd.append('--prune')
 
+    # Always pass something for --recurse-submodules, git with GIT_DIR behaves
+    # incorrectly when not given `--recurse-submodules=no`. (b/218891912)
     cmd.append(f'--recurse-submodules={"on-demand" if submodules else "no"}')
 
     spec = []
@@ -3486,8 +3489,8 @@ class ManifestProject(MetaProject):
       git_event_log: an EventLog, for git tracing.
     """
     # TODO(lamontjones): when refactoring sync (and init?) consider how to
-    # better get the init options that we should use when syncing uncovers a new
-    # submanifest.
+    # better get the init options that we should use for new submanifests that
+    # are added when syncing an existing workspace.
     git_event_log = git_event_log or EventLog()
     spec = submanifest.ToSubmanifestSpec()
     # Use the init options from the existing manifestProject, or the parent if
@@ -3874,8 +3877,8 @@ class ManifestProject(MetaProject):
         )
 
     # Lastly, if the manifest has a <superproject> then have the superproject
-    # sync it if it will be used.
-    if self.manifest.superproject:
+    # sync it (if it will be used).
+    if git_superproject.UseSuperproject(use_superproject, self.manifest):
       sync_result = self.manifest.superproject.Sync(git_event_log)
       if not sync_result.success:
         print('warning: git update of superproject for '
