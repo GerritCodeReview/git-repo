@@ -33,6 +33,11 @@ if test "false" = "`git config --bool --get gerrit.createChangeId`" ; then
   exit 0
 fi
 
+# Do not create a change id for squash or fixup commits
+if head -n1 "$1" | grep -q '^\(squash\|fixup\)!'; then
+  exit 0
+fi
+
 # $RANDOM will be undefined if not using bash, so don't use set -u
 random=$( (whoami ; hostname ; date; cat $1 ; echo $RANDOM) | git hash-object --stdin)
 dest="$1.tmp.${random}"
