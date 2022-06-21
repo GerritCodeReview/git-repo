@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b20a86_8fe25437",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1132563
+      },
+      "writtenOn": "2022-06-21T23:44:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9c27f2d_7ec0366f",
+      "revId": "c430df1065d2bba1def1e1fdea9cd34dc62223aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f787d734_dda5c6b7",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-06-21T13:21:09Z",
       "side": 1,
       "message": "use `-E` to avoid having to escape to get ERE\n\nprob be a little more defensive and put a space after the `!`",
+      "revId": "c430df1065d2bba1def1e1fdea9cd34dc62223aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10c3a4b8_9e0b1a29",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1132563
+      },
+      "writtenOn": "2022-06-21T23:44:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f787d734_dda5c6b7",
       "revId": "c430df1065d2bba1def1e1fdea9cd34dc62223aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
