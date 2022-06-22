@@ -16,6 +16,24 @@
       "message": "This comes from https://gerrit.googlesource.com/gerrit/+show/HEAD/resources/com/google/gerrit/server/tools/root/hooks/commit-msg, right? Should it be fixed there and then imported here so the change doesn\u0027t get lost by later imports?",
       "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15c75dbd_b251a65e",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1132563
+      },
+      "writtenOn": "2022-06-22T01:43:10Z",
+      "side": 1,
+      "message": "thanks! I just bing-ed this file and landed here, I will try push to that upstream. That file looks like it has a few more patches on this one though.",
+      "parentUuid": "4d02439d_bb086c95",
+      "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
