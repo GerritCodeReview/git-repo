@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d02439d_bb086c95",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-06-22T01:35:19Z",
+      "side": 1,
+      "message": "This comes from https://gerrit.googlesource.com/gerrit/+show/HEAD/resources/com/google/gerrit/server/tools/root/hooks/commit-msg, right? Should it be fixed there and then imported here so the change doesn\u0027t get lost by later imports?",
+      "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
