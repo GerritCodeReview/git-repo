@@ -794,19 +794,22 @@ class Project(object):
     """
     return bool(self.UncommitedFiles(get_all=False))
 
-  def PrintWorkTreeStatus(self, output_redir=None, quiet=False):
+  def PrintWorkTreeStatus(self, output_redir=None, quiet=False, local=False):
     """Prints the status of the repository to stdout.
 
     Args:
       output_redir: If specified, redirect the output to this object.
       quiet:  If True then only print the project name.  Do not print
               the modified files, branch name, etc.
+      local: a boolean, if True, the path is relative to the local
+             (sub)manifest.  If false, the path is relative to the
+             outermost manifest.
     """
     if not platform_utils.isdir(self.worktree):
       if output_redir is None:
         output_redir = sys.stdout
       print(file=output_redir)
-      print('project %s/' % self.relpath, file=output_redir)
+      print('project %s/' % self.RelPath(local), file=output_redir)
       print('  missing (run "repo sync")', file=output_redir)
       return
 
@@ -824,7 +827,7 @@ class Project(object):
     out = StatusColoring(self.config)
     if output_redir is not None:
       out.redirect(output_redir)
-    out.project('project %-40s', self.relpath + '/ ')
+    out.project('project %-40s', self.RelPath(local) + '/ ')
 
     if quiet:
       out.nl()
@@ -885,7 +888,8 @@ class Project(object):
 
     return 'DIRTY'
 
-  def PrintWorkTreeDiff(self, absolute_paths=False, output_redir=None):
+  def PrintWorkTreeDiff(self, absolute_paths=False, output_redir=None,
+                        local=False):
     """Prints the status of the repository to stdout.
     """
     out = DiffColoring(self.config)
@@ -896,8 +900,8 @@ class Project(object):
       cmd.append('--color')
     cmd.append(HEAD)
     if absolute_paths:
-      cmd.append('--src-prefix=a/%s/' % self.relpath)
-      cmd.append('--dst-prefix=b/%s/' % self.relpath)
+      cmd.append('--src-prefix=a/%s/' % self.RelPath(local))
+      cmd.append('--dst-prefix=b/%s/' % self.RelPath(local))
     cmd.append('--')
     try:
       p = GitCommand(self,
@@ -907,14 +911,14 @@ class Project(object):
       p.Wait()
     except GitError as e:
       out.nl()
-      out.project('project %s/' % self.relpath)
+      out.project('project %s/' % self.RelPath(local))
       out.nl()
       out.fail('%s', str(e))
       out.nl()
       return False
     if p.stdout:
       out.nl()
-      out.project('project %s/' % self.relpath)
+      out.project('project %s/' % self.RelPath(local))
       out.nl()
       out.write('%s', p.stdout)
     return p.Wait() == 0
@@ -1553,14 +1557,14 @@ class Project(object):
     if self.IsDirty():
       if force:
         print('warning: %s: Removing dirty project: uncommitted changes lost.' %
-              (self.relpath,), file=sys.stderr)
+              (self.RelPath(local=False),), file=sys.stderr)
       else:
         print('error: %s: Cannot remove project: uncommitted changes are '
-              'present.\n' % (self.relpath,), file=sys.stderr)
+              'present.\n' % (self.RelPath(local=False),), file=sys.stderr)
         return False
 
     if not quiet:
-      print('%s: Deleting obsolete checkout.' % (self.relpath,))
+      print('%s: Deleting obsolete checkout.' % (self.RelPath(local=False),))
 
     # Unlock and delink from the main worktree.  We don't use git's worktree
     # remove because it will recursively delete projects -- we handle that
@@ -1599,7 +1603,8 @@ class Project(object):
       if e.errno != errno.ENOENT:
         print('error: %s: %s' % (self.gitdir, e), file=sys.stderr)
         print('error: %s: Failed to delete obsolete checkout; remove manually, '
-              'then run `repo sync -l`.' % (self.relpath,), file=sys.stderr)
+              'then run `repo sync -l`.' % (self.RelPath(local=False),),
+              file=sys.stderr)
         return False
 
     # Delete everything under the worktree, except for directories that contain
@@ -1635,7 +1640,7 @@ class Project(object):
             print('error: %s: Failed to remove: %s' % (d, e), file=sys.stderr)
             failed = True
     if failed:
-      print('error: %s: Failed to delete obsolete checkout.' % (self.relpath,),
+      print('error: %s: Failed to delete obsolete checkout.' % (self.RelPath(local=False),),
             file=sys.stderr)
       print('       Remove manually, then run `repo sync -l`.', file=sys.stderr)
       return False
@@ -2050,7 +2055,7 @@ class Project(object):
   def _FetchArchive(self, tarpath, cwd=None):
     cmd = ['archive', '-v', '-o', tarpath]
     cmd.append('--remote=%s' % self.remote.url)
-    cmd.append('--prefix=%s/' % self.relpath)
+    cmd.append('--prefix=%s/' % self.RelPath(local=False))
     cmd.append(self.revisionExpr)
 
     command = GitCommand(self, cmd, cwd=cwd,
@@ -2634,7 +2639,7 @@ class Project(object):
         if not filecmp.cmp(stock_hook, dst, shallow=False):
           if not quiet:
             _warn("%s: Not replacing locally modified %s hook",
-                  self.relpath, name)
+                  self.RelPath(local=False), name)
         continue
       try:
         platform_utils.symlink(
@@ -2729,7 +2734,7 @@ class Project(object):
                          'work tree. If you\'re comfortable with the '
                          'possibility of losing the work tree\'s git metadata,'
                          ' use `repo sync --force-sync {0}` to '
-                         'proceed.'.format(self.relpath))
+                         'proceed.'.format(self.RelPath(local=False)))
 
   def _ReferenceGitDir(self, gitdir, dotgit, copy_all):
     """Update |dotgit| to reference |gitdir|, using symlinks where possible.
@@ -3209,7 +3214,7 @@ class _InfoMessage(object):
     self.text = text
 
   def Print(self, syncbuf):
-    syncbuf.out.info('%s/: %s', self.project.relpath, self.text)
+    syncbuf.out.info('%s/: %s', self.projecf.RelPath(local=False), self.text)
     syncbuf.out.nl()
 
 
@@ -3221,7 +3226,7 @@ class _Failure(object):
 
   def Print(self, syncbuf):
     syncbuf.out.fail('error: %s/: %s',
-                     self.project.relpath,
+                     self.project.RelPath(local=False),
                      str(self.why))
     syncbuf.out.nl()
 
@@ -3234,7 +3239,7 @@ class _Later(object):
 
   def Run(self, syncbuf):
     out = syncbuf.out
-    out.project('project %s/', self.project.relpath)
+    out.project('project %s/', self.projecf.RelPath(local=False))
     out.nl()
     try:
       self.action()
