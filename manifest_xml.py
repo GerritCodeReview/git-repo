@@ -768,11 +768,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   @property
   def is_multimanifest(self):
-    """Whether this is a multimanifest checkout.
-
-    This is safe to use as long as the outermost manifest XML has been parsed.
-    """
-    return bool(self._outer_client._submanifests)
+    """Whether this is a multimanifest checkout"""
+    return bool(self.outer_client.submanifests)
 
   @property
   def is_submanifest(self):
@@ -1682,7 +1679,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
       # We allow people to mix git worktrees & non-git worktrees for now.
       # This allows for in situ migration of repo clients.
       if os.path.exists(gitdir) or not self.UseGitWorktrees:
-        objdir = os.path.join(self.repodir, 'project-objects', namepath)
+        objdir = os.path.join(self.subdir, 'project-objects', namepath)
       else:
         use_git_worktrees = True
         gitdir = os.path.join(self.repodir, 'worktrees', namepath)
@@ -1990,4 +1987,4 @@ class GitcClient(RepoClient, GitcManifest):
                                         gitc_client_name)
 
     super().__init__(repodir, os.path.join(self.gitc_client_dir, '.manifest'))
-    self.isGitcClient = True
+    self.isGitcClient =
