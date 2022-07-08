@@ -33,6 +33,75 @@
       "message": "I presume that this is a no-op but given that diff-index --cached and diff-files above are run via the self.work_git object, this change seems to make it inconsistent.\n\nUnless the plan is to override UntrackedFiles method in a subclass of Project, I do not know why this change is needed.",
       "revId": "86b5018d4b7b9feb35d182bf1d6c292eb6fc7461",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a209b1_16556706",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 653,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-08T14:40:00Z",
+      "side": 1,
+      "message": "seems like a reasonable abstraction of the API.  i agree it\u0027s not strictly necessary, but it does read a little easier.",
+      "parentUuid": "ce8ef92a_4412464f",
+      "revId": "86b5018d4b7b9feb35d182bf1d6c292eb6fc7461",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9e5e614_a970506e",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-08T14:40:00Z",
+      "side": 1,
+      "message": "i know other funcs in here do it wrong, but this should be cuddled up to the previous line",
+      "revId": "86b5018d4b7b9feb35d182bf1d6c292eb6fc7461",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e0bf5b4_8ef16646",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-08T14:40:00Z",
+      "side": 1,
+      "message": "please add a corresponding `--no-ignore-untracked-files` option",
+      "revId": "86b5018d4b7b9feb35d182bf1d6c292eb6fc7461",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f128baa9_42b33799",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-08T14:40:00Z",
+      "side": 1,
+      "message": "prefer to use `x` as the throw away iterator in short comprehensions",
+      "revId": "86b5018d4b7b9feb35d182bf1d6c292eb6fc7461",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
