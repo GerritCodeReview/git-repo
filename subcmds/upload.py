@@ -204,6 +204,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-y', '--yes',
                  default=False, action='store_true',
                  help='answer yes to all safe prompts')
+    p.add_option('--ignore-untracked-files',
+                 dest='ignore_untracked_files', action='store_true', default=False,
+                 help='ignore untracked files in the working copy')
     p.add_option('--no-cert-checks',
                  dest='validate_certs', action='store_false', default=True,
                  help='disable verifying ssl certs (unsafe)')
@@ -370,6 +373,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
         # Check if there are local changes that may have been forgotten
         changes = branch.project.UncommitedFiles()
+        if opt.ignore_untracked_files:
+          untracked = set(branch.project.UntrackedFiles())
+          changes = [c for c in changes if c not in untracked]
+
         if changes:
           key = 'review.%s.autoupload' % branch.project.remote.review
           answer = branch.project.config.GetBoolean(key)
