@@ -650,7 +650,7 @@ class Project(object):
       return True
     if self.work_git.DiffZ('diff-files'):
       return True
-    if consider_untracked and self.work_git.LsOthers():
+    if consider_untracked and self.UntrackedFiles():
       return True
     return False
 
@@ -779,11 +779,16 @@ class Project(object):
       if not get_all:
         return details
 
-    changes = self.work_git.LsOthers()
+    changes = self.UntrackedFiles()
     if changes:
       details.extend(changes)
 
     return details
+
+  def UntrackedFiles(self):
+    """Returns a list of strings, untracked files in the git tree.
+    """
+    return self.work_git.LsOthers()
 
   def HasChanges(self):
     """Returns true if there are uncommitted changes.
