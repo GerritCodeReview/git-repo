@@ -792,10 +792,7 @@ class Project(object):
   def HasChanges(self):
     """Returns true if there are uncommitted changes.
     """
-    if self.UncommitedFiles(get_all=False):
-      return True
-    else:
-      return False
+    return bool(self.UncommitedFiles(get_all=False))
 
   def PrintWorkTreeStatus(self, output_redir=None, quiet=False):
     """Prints the status of the repository to stdout.
