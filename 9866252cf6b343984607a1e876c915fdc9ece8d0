@@ -144,6 +144,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "262245b2_36d1afe5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-10T10:03:18Z",
+      "side": 1,
+      "message": "i don\u0027t have a system that is old enough that has python 3.5 to double check, but a quick hack shows it working for me\n\n```\n$ usr/bin/repo init -c --repo-url /usr/local/src/repo --no-repo-verify --repo-rev om  https://chromium.googlesource.com/chromiumos/manifest\nDownloading Repo source from /usr/local/src/repo\nremote: Enumerating objects: 7998, done.\nremote: Counting objects: 100% (7998/7998), done.\nremote: Compressing objects: 100% (2892/2892), done.\nremote: Total 7998 (delta 5606), reused 7267 (delta 5032), pack-reused 0\nrepo: warning: verification of repo code has been disabled;\nrepo will not be able to verify the integrity of itself.\n\nrepo: error: Your version of \"python\" (3.10.4.final.0) is unsupported; Please upgrade to at least version 4.6 to continue.\n```\n\nso please show the exact `repo init` command you\u0027re running and the resulting output",
+      "parentUuid": "13f79965_e1927709",
+      "revId": "9866252cf6b343984607a1e876c915fdc9ece8d0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5705da70_1562710e",
