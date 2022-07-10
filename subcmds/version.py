@@ -33,7 +33,7 @@ class Version(Command, MirrorSafeCommand):
 
   def Execute(self, opt, args):
     rp = self.manifest.repoProject
-    rem = rp.GetRemote(rp.remote.name)
+    rem = rp.GetRemote()
     branch = rp.GetBranch('default')
 
     # These might not be the same.  Report them both.

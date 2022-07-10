@@ -686,9 +686,13 @@ class Project(object):
       self._userident_name = ''
       self._userident_email = ''
 
-  def GetRemote(self, name):
+  def GetRemote(self, name=None):
     """Get the configuration for a single remote.
+
+    Defaults to the current project's remote.
     """
+    if name is None:
+      name = self.remote.name
     return self.config.GetRemote(name)
 
   def GetBranch(self, name):
@@ -1282,7 +1286,7 @@ class Project(object):
     if self.revisionId:
       return self.revisionId
 
-    rem = self.GetRemote(self.remote.name)
+    rem = self.GetRemote()
     rev = rem.ToLocal(self.revisionExpr)
 
     if all_refs is not None and rev in all_refs:
@@ -1474,7 +1478,7 @@ class Project(object):
                    "discarding %d commits removed from upstream",
                    len(local_changes) - cnt_mine)
 
-    branch.remote = self.GetRemote(self.remote.name)
+    branch.remote = self.GetRemote()
     if not ID_RE.match(self.revisionExpr):
       # in case of manifest sync the revisionExpr might be a SHA1
       branch.merge = self.revisionExpr
@@ -1532,7 +1536,7 @@ class Project(object):
   def DownloadPatchSet(self, change_id, patch_id):
     """Download a single patch set of a single change to FETCH_HEAD.
     """
-    remote = self.GetRemote(self.remote.name)
+    remote = self.GetRemote()
 
     cmd = ['fetch', remote.name]
     cmd.append('refs/changes/%2.2d/%d/%d'
@@ -1680,7 +1684,7 @@ class Project(object):
                         capture_stderr=True).Wait() == 0
 
     branch = self.GetBranch(name)
-    branch.remote = self.GetRemote(self.remote.name)
+    branch.remote = self.GetRemote()
     branch.merge = branch_merge
     if not branch.merge.startswith('refs/') and not ID_RE.match(branch_merge):
       branch.merge = R_HEADS + branch_merge
@@ -2048,7 +2052,7 @@ class Project(object):
       self.bare_git.rev_list('-1', '--missing=allow-any',
                              '%s^0' % self.revisionExpr, '--')
       if self.upstream:
-        rev = self.GetRemote(self.remote.name).ToLocal(self.upstream)
+        rev = self.GetRemote().ToLocal(self.upstream)
         self.bare_git.rev_list('-1', '--missing=allow-any',
                                '%s^0' % rev, '--')
         self.bare_git.merge_base('--is-ancestor', self.revisionExpr, rev)
@@ -2339,7 +2343,7 @@ class Project(object):
     if initial and (self.manifest.manifestProject.depth or self.clone_depth):
       return False
 
-    remote = self.GetRemote(self.remote.name)
+    remote = self.GetRemote()
     bundle_url = remote.url + '/clone.bundle'
     bundle_url = GitConfig.ForUser().UrlInsteadOf(bundle_url)
     if GetSchemeFromUrl(bundle_url) not in ('http', 'https',
@@ -2660,7 +2664,7 @@ class Project(object):
 
   def _InitRemote(self):
     if self.remote.url:
-      remote = self.GetRemote(self.remote.name)
+      remote = self.GetRemote()
       remote.url = self.remote.url
       remote.pushUrl = self.remote.pushUrl
       remote.review = self.remote.review
@@ -2710,7 +2714,7 @@ class Project(object):
         dst = self.revisionId + '^0'
         active_git.UpdateRef(ref, dst, message=msg, detach=True)
     else:
-      remote = self.GetRemote(self.remote.name)
+      remote = self.GetRemote()
       dst = remote.ToLocal(self.revisionExpr)
       if cur != dst:
         msg = 'manifest set to %s' % self.revisionExpr
@@ -3702,7 +3706,7 @@ class ManifestProject(MetaProject):
 
     # Set the remote URL before the remote branch as we might need it below.
     if manifest_url:
-      r = self.GetRemote(self.remote.name)
+      r = self.GetRemote()
       r.url = manifest_url
       r.ResetFetch()
       r.Save()
@@ -3828,7 +3832,7 @@ class ManifestProject(MetaProject):
           clone_bundle=clone_bundle, current_branch_only=current_branch_only,
           tags=tags, submodules=submodules, clone_filter=clone_filter,
           partial_clone_exclude=self.manifest.PartialCloneExclude):
-        r = self.GetRemote(self.remote.name)
+        r = self.GetRemote()
         print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 
         # Better delete the manifest git dir if we created it; otherwise next
