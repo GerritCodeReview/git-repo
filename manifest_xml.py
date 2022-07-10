@@ -284,7 +284,7 @@ class _XmlSubmanifest:
     if self.project:
       manifestUrl = remote.ToRemoteSpec(self.project).url
     else:
-      manifestUrl = mp.GetRemote(mp.remote.name).url
+      manifestUrl = mp.GetRemote().url
     manifestName = self.manifestName or 'default.xml'
     revision = self.revision or self.name
     path = self.path or revision.split('/')[-1]
@@ -1385,7 +1385,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
   def _AddMetaProjectMirror(self, m):
     name = None
-    m_url = m.GetRemote(m.remote.name).url
+    m_url = m.GetRemote().url
     if m_url.endswith('/.git'):
       raise ManifestParseError('refusing to mirror %s' % m_url)
 
