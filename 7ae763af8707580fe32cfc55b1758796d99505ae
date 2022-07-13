@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0e173d5_53659753",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-07-13T16:46:51Z",
+      "side": 1,
+      "message": "There are several places where we display the path of a project.\n\n - In subcmds, honor the value of this_manifest_only\n - In Project, always use the path relative to the outermost manifest.\n\nOnly visible in multi-manifest trees.",
+      "revId": "7ae763af8707580fe32cfc55b1758796d99505ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
