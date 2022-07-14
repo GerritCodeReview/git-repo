@@ -16,6 +16,24 @@
       "message": "not a fan of this name, but i don\u0027t have an alternative suggestion off the top of my head :p",
       "revId": "19e71e0c6548e8b01d7036edc84c089cdf78264b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6844d4d7_84de3d90",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-07-14T15:54:27Z",
+      "side": 1,
+      "message": "Agreed.  One option would be to invert the logic and use \"all_manifests\" (done elsewhere).\n\nOnce we figure out a better name, I\u0027m happy to upload the change.",
+      "parentUuid": "afe2f46a_a35e3966",
+      "revId": "19e71e0c6548e8b01d7036edc84c089cdf78264b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
