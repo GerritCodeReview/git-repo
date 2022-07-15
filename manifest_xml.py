@@ -502,7 +502,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     """
     return [x for x in re.split(r'[,\s]+', field) if x]
 
-  def ToXml(self, peg_rev=False, peg_rev_upstream=True, peg_rev_dest_branch=True, groups=None):
+  def ToXml(self, peg_rev=False, peg_rev_upstream=True,
+            peg_rev_dest_branch=True, groups=None, omit_local=False):
     """Return the current manifest XML."""
     mp = self.manifestProject
 
@@ -581,6 +582,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     def output_project(parent, parent_node, p):
       if not p.MatchesGroups(groups):
+        return
+
+      if omit_local and self.IsFromLocalManifest(p):
         return
 
       name = p.name

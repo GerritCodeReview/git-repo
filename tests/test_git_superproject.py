@@ -312,9 +312,6 @@ class SuperprojectTestCase(unittest.TestCase):
               '<project groups="notdefault,platform-' + self.platform + '" '
               'name="platform/art" path="art" '
               'revision="2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea" upstream="refs/heads/main"/>'
-              '<project clone-depth="1" groups="' + local_group + '" '
-              'name="platform/vendor/x" path="vendor/x" remote="goog" '
-              'revision="master-with-vendor"/>'
               '<superproject name="superproject"/>'
               '</manifest>')
 

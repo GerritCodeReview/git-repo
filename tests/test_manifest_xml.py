@@ -252,6 +252,37 @@ class XmlManifestTests(ManifestParseTestCase):
         '<manifest></manifest>')
     self.assertEqual(manifest.ToDict(), {})
 
+  def test_toxml_omit_local(self):
+    """Does not include local_manifests projects when omit_local=True."""
+    manifest = self.getXmlManifest(
+        '<?xml version="1.0" encoding="UTF-8"?><manifest>'
+        '<remote name="a" fetch=".."/><default remote="a" revision="r"/>'
+        '<project name="p" groups="local::me"/>'
+        '<project name="q"/>'
+        '<project name="r" groups="keep"/>'
+        '</manifest>')
+    self.assertEqual(
+        manifest.ToXml(omit_local=True).toxml(),
+        '<?xml version="1.0" ?><manifest>'
+        '<remote name="a" fetch=".."/><default remote="a" revision="r"/>'
+        '<project name="q"/><project name="r" groups="keep"/></manifest>')
+
+  def test_toxml_with_local(self):
+    """Does include local_manifests projects when omit_local=False."""
+    manifest = self.getXmlManifest(
+        '<?xml version="1.0" encoding="UTF-8"?><manifest>'
+        '<remote name="a" fetch=".."/><default remote="a" revision="r"/>'
+        '<project name="p" groups="local::me"/>'
+        '<project name="q"/>'
+        '<project name="r" groups="keep"/>'
+        '</manifest>')
+    self.assertEqual(
+        manifest.ToXml(omit_local=False).toxml(),
+        '<?xml version="1.0" ?><manifest>'
+        '<remote name="a" fetch=".."/><default remote="a" revision="r"/>'
+        '<project name="p" groups="local::me"/>'
+        '<project name="q"/><project name="r" groups="keep"/></manifest>')
+
   def test_repo_hooks(self):
     """Check repo-hooks settings."""
     manifest = self.getXmlManifest("""
