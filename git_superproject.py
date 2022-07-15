@@ -295,7 +295,8 @@ class Superproject(object):
     if not os.path.exists(self._superproject_path):
       self._LogWarning(f'missing superproject directory: {self._superproject_path}')
       return None
-    manifest_str = self._manifest.ToXml(groups=self._manifest.GetGroupsStr()).toxml()
+    manifest_str = self._manifest.ToXml(groups=self._manifest.GetGroupsStr(),
+                                        omit_local=True).toxml()
     manifest_path = self._manifest_path
     try:
       with open(manifest_path, 'w', encoding='utf-8') as fp:
