@@ -123,7 +123,7 @@ class _Default(object):
   destBranchExpr = None
   upstreamExpr = None
   remote = None
-  sync_j = 1
+  sync_j = None
   sync_c = False
   sync_s = False
   sync_tags = True
@@ -548,7 +548,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     if d.upstreamExpr:
       have_default = True
       e.setAttribute('upstream', d.upstreamExpr)
-    if d.sync_j > 1:
+    if d.sync_j is not None:
       have_default = True
       e.setAttribute('sync-j', '%d' % d.sync_j)
     if d.sync_c:
@@ -1462,8 +1462,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     d.destBranchExpr = node.getAttribute('dest-branch') or None
     d.upstreamExpr = node.getAttribute('upstream') or None
 
-    d.sync_j = XmlInt(node, 'sync-j', 1)
-    if d.sync_j <= 0:
+    d.sync_j = XmlInt(node, 'sync-j', None)
+    if d.sync_j is not None and d.sync_j <= 0:
       raise ManifestParseError('%s: sync-j must be greater than 0, not "%s"' %
                                (self.manifestFile, d.sync_j))
 
