@@ -206,7 +206,8 @@ class Command(object):
     raise NotImplementedError
 
   @staticmethod
-  def ExecuteInParallel(jobs, func, inputs, callback, output=None, ordered=False):
+  def ExecuteInParallel(jobs, func, inputs, callback, output=None,
+                        ordered=False, chunksize=WORKER_BATCH_SIZE):
     """Helper for managing parallel execution boiler plate.
 
     For subcommands that can easily split their work up.
@@ -238,7 +239,7 @@ class Command(object):
       else:
         with multiprocessing.Pool(jobs) as pool:
           submit = pool.imap if ordered else pool.imap_unordered
-          return callback(pool, output, submit(func, inputs, chunksize=WORKER_BATCH_SIZE))
+          return callback(pool, output, submit(func, inputs, chunksize))
     finally:
       if isinstance(output, progress.Progress):
         output.end()

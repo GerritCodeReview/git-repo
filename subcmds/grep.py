@@ -262,7 +262,8 @@ contain a line that matches both expressions:
         projects,
         callback=functools.partial(self._ProcessResults, full_name, have_rev, opt),
         output=out,
-        ordered=True)
+        ordered=True,
+        chunksize=1)
 
     if git_failed:
       sys.exit(1)
