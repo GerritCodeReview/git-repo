@@ -241,7 +241,7 @@ to update the working directory files.
     if current_dir != self.manifest.topdir:
       print('If this is not the directory in which you want to initialize '
             'repo, please run:')
-      print('   rm -r %s/.repo' % self.manifest.topdir)
+      print('   rm -r %s' % os.path.join(self.manifest.topdir, '.repo'))
       print('and try again.')
 
   def ValidateOptions(self, opt, args):
