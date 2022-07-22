@@ -20,6 +20,8 @@ import re
 import os
 import signal
 import sys
+sys.path.append('..')
+from platform_utils import isWindows
 import subprocess
 
 from color import Coloring
@@ -178,10 +180,16 @@ without iterating through the remaining projects.
     shell = True
     if re.compile(r'^[a-z0-9A-Z_/\.-]+$').match(cmd[0]):
       shell = False
-
-    if shell:
-      cmd.append(cmd[0])
-    cmd.extend(opt.command[1:])
+    print(shell)
+    if not isWindows():
+      if shell:
+        cmd.append(cmd[0])
+      cmd.extend(opt.command[1:])
+    else: # is windows
+      if shell:
+        cmd = ' '.join(opt.command)
+      else:
+        cmd.extend(opt.command[1:])
 
     # Historically, forall operated interactively, and in serial.  If the user
     # has selected 1 job, then default to interacive mode.
