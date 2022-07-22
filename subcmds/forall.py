@@ -25,6 +25,7 @@ import subprocess
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS, Command, MirrorSafeCommand, WORKER_BATCH_SIZE
 from error import ManifestInvalidRevisionError
+from platform_utils import isWindows
 
 _CAN_COLOR = [
     'branch',
@@ -179,9 +180,19 @@ without iterating through the remaining projects.
     if re.compile(r'^[a-z0-9A-Z_/\.-]+$').match(cmd[0]):
       shell = False
 
-    if shell:
-      cmd.append(cmd[0])
-    cmd.extend(opt.command[1:])
+    if not isWindows():
+      if shell:
+        cmd.append(cmd[0])
+      cmd.extend(opt.command[1:])
+    else:
+      if shell:
+        if len(opt.command) > 1:
+          print('windows does not support passing arguments to command_string')
+          sys.exit(1)
+        else:
+          cmd = opt.command[0]
+      else:
+        cmd.extend(opt.command[1:])
 
     # Historically, forall operated interactively, and in serial.  If the user
     # has selected 1 job, then default to interacive mode.
