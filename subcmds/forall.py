@@ -16,7 +16,6 @@ import errno
 import functools
 import io
 import multiprocessing
-import re
 import os
 import signal
 import sys
@@ -172,16 +171,14 @@ without iterating through the remaining projects.
       self.Usage()
 
   def Execute(self, opt, args):
-    cmd = [opt.command[0]]
     all_trees = not opt.this_manifest_only
 
-    shell = True
-    if re.compile(r'^[a-z0-9A-Z_/\.-]+$').match(cmd[0]):
+    if len(opt.command) == 1:
+      cmd = opt.command[0]
+      shell = True
+    else:
+      cmd = opt.command
       shell = False
-
-    if shell:
-      cmd.append(cmd[0])
-    cmd.extend(opt.command[1:])
 
     # Historically, forall operated interactively, and in serial.  If the user
     # has selected 1 job, then default to interacive mode.
