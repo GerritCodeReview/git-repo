@@ -16,6 +16,24 @@
       "message": "should this be `if not project.UseAlternates` ?",
       "revId": "8977e07c6b0bef2feeaa7ff841a6816a51e99031",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1eaa0db4_4b810a6d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-25T15:31:46Z",
+      "side": 1,
+      "message": "nm you fixed it in PS7 :P",
+      "parentUuid": "45ec4cba_cd415f1d",
+      "revId": "8977e07c6b0bef2feeaa7ff841a6816a51e99031",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
