@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8499e9fa_f4712e0b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1100,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-07-25T14:51:49Z",
+      "side": 1,
+      "message": "I realize that it\u0027s no change to the logic, but can you add a comment as to  why the \"3\" was chosen?",
+      "revId": "fa6b5061d2191cd2d7dfe12f68033c344caea8b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
