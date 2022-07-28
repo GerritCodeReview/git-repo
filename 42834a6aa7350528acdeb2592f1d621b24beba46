@@ -51,6 +51,24 @@
       "parentUuid": "4d02439d_bb086c95",
       "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5b6ddc3_e7f47ac8",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-28T15:46:11Z",
+      "side": 1,
+      "message": "i think it\u0027s ready to be reimported here ?",
+      "parentUuid": "15c75dbd_b251a65e",
+      "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
