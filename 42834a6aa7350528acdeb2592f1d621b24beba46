@@ -69,6 +69,24 @@
       "parentUuid": "15c75dbd_b251a65e",
       "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30074cf0_c85a29bc",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1132563
+      },
+      "writtenOn": "2022-07-29T01:25:22Z",
+      "side": 1,
+      "message": "I have imported it. I am not knowledgeable about repo internals so have not thourougly tested it, apart from the TEST\u003d lines. it seems to do the right thing with `git commit -s` at least.",
+      "parentUuid": "d5b6ddc3_e7f47ac8",
+      "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
