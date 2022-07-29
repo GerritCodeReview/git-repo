@@ -87,6 +87,24 @@
       "parentUuid": "d5b6ddc3_e7f47ac8",
       "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ee71ede_bc93f7f0",
+        "filename": "hooks/commit-msg",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-07-29T01:29:15Z",
+      "side": 1,
+      "message": "let\u0027s find out together",
+      "parentUuid": "30074cf0_c85a29bc",
+      "revId": "42834a6aa7350528acdeb2592f1d621b24beba46",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
