@@ -209,6 +209,7 @@ class ReviewableBranch(object):
                       private=False,
                       notify=None,
                       wip=False,
+                      ready=False,
                       dest_branch=None,
                       validate_certs=True,
                       push_options=None):
@@ -221,6 +222,7 @@ class ReviewableBranch(object):
                                  private=private,
                                  notify=notify,
                                  wip=wip,
+                                 ready=ready,
                                  dest_branch=dest_branch,
                                  validate_certs=validate_certs,
                                  push_options=push_options)
@@ -958,6 +960,7 @@ class Project(object):
                       private=False,
                       notify=None,
                       wip=False,
+                      ready=False,
                       dest_branch=None,
                       validate_certs=True,
                       push_options=None):
@@ -1019,6 +1022,8 @@ class Project(object):
       opts += ['private']
     if wip:
       opts += ['wip']
+    if ready:
+      opts += ['ready']
     if opts:
       ref_spec = ref_spec + '%' + ','.join(opts)
     cmd.append(ref_spec)
