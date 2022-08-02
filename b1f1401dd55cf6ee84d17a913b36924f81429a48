@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b3cf413_300c1b8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-02T12:13:11Z",
+      "side": 1,
+      "message": "this significantly degrades performance:\nhttps://groups.google.com/g/repo-discuss/c/lWvsy1FQUN4/m/qIf8vwQ0AQAJ",
+      "revId": "b1f1401dd55cf6ee84d17a913b36924f81429a48",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
