@@ -190,6 +190,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-w', '--wip',
                  action='store_true', dest='wip', default=False,
                  help='upload as a work-in-progress change')
+    p.add_option('-r', '--ready',
+                 action='store_true', dest='ready', default=False,
+                 help='unmark the work-in-progress and set the change as ready to review.')
     p.add_option('-o', '--push-option',
                  type='string', action='append', dest='push_options',
                  default=[],
@@ -465,6 +468,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                private=opt.private,
                                notify=notify,
                                wip=opt.wip,
+                               ready=opt.ready,
                                dest_branch=destination,
                                validate_certs=opt.validate_certs,
                                push_options=opt.push_options)
