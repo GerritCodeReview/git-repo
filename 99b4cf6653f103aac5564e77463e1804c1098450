@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c8037fa4_9c09877b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-03T01:22:58Z",
+      "side": 1,
+      "message": "\u003e Would  -o ready  do the trick here?\n\nyes\n\n\u003e If so, is there a good way to advertise that?\n\nwe could put it in the help text, but i don\u0027t think that\u0027s what people read most often ... they tend to scan the options.  using git -o push options also feels unweildy and isn\u0027t as forgiving.  e.g. if i typo `--raedy`, repo presents a good error message.  `-o raedy` error messages out of git from the remote server is much uglier, and takes time to round trip.",
+      "parentUuid": "9ea2565f_4396efc8",
+      "revId": "99b4cf6653f103aac5564e77463e1804c1098450",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98d74223_2432c34a",
         "filename": "subcmds/upload.py",
         "patchSetId": 3
