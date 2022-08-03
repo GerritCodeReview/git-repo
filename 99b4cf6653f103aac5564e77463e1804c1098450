@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ea2565f_4396efc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-08-03T00:14:17Z",
+      "side": 1,
+      "message": "Would `-o ready` do the trick here? If so, is there a good way to advertise that?",
+      "revId": "99b4cf6653f103aac5564e77463e1804c1098450",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "98d74223_2432c34a",
         "filename": "subcmds/upload.py",
         "patchSetId": 3
