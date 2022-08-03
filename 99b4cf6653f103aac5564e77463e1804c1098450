@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b10adb55_54f0599d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-03T00:11:26Z",
+      "side": 1,
+      "message": "since this is only for the upload subcommand, would be good to scope it:\n\n```\nupload: Add ........\n```",
+      "revId": "99b4cf6653f103aac5564e77463e1804c1098450",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e293fd4_21fd42f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-03T00:11:26Z",
+      "side": 1,
+      "message": "thanks, just a few nits",
+      "revId": "99b4cf6653f103aac5564e77463e1804c1098450",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98d74223_2432c34a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-03T00:11:26Z",
+      "side": 1,
+      "message": "dest is redundant, so omit it.  i know we use it above, but those should get cleaned up at some point.",
+      "revId": "99b4cf6653f103aac5564e77463e1804c1098450",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e4da00_8b4ee708",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-03T00:11:26Z",
+      "side": 1,
+      "message": "how about:\n\n```\nhelp\u003d\u0027mark change as ready (clears work-in-progress setting)\u0027\n```",
+      "revId": "99b4cf6653f103aac5564e77463e1804c1098450",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
