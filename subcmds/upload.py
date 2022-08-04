@@ -78,6 +78,13 @@ added to the respective list of users, and emails are sent to any
 new users.  Users passed as --reviewers must already be registered
 with the code review system, or the upload will fail.
 
+While most normal Gerrit options have dedicated command line options,
+direct access to the Gerit options is available via --push-options.
+This is useful when Gerrit has newer functionality that %prog doesn't
+yet support, or doesn't have plans to support.  See the Push Options
+documentation for more details:
+https://gerrit-review.googlesource.com/Documentation/user-upload.html#push_options
+
 # Configuration
 
 review.URL.autoupload:
