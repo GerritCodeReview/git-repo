@@ -149,7 +149,7 @@ if not REPO_REV:
 BUG_URL = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 21)
+VERSION = (2, 29)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -325,9 +325,9 @@ def InitParser(parser, gitc_init=False):
   # want -c, so try to satisfy both as best we can.
   if not gitc_init:
     cbr_opts += ['-c']
-  group.add_option(*cbr_opts,
+  group.add_option(*cbr_opts, default=True,
                    dest='current_branch_only', action='store_true',
-                   help='fetch only current manifest branch from server')
+                   help='fetch only current manifest branch from server (default)')
   group.add_option('--no-current-branch',
                    dest='current_branch_only', action='store_false',
                    help='fetch all manifest branches from server')
