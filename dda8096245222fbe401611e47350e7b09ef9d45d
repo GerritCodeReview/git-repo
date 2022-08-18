@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5074ae07_73236c5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-08-18T15:38:43Z",
+      "side": 1,
+      "message": "One minor nit, but definitely +2 (because there is no +5555).  Remembering to say `-c` is work.\n",
+      "revId": "dda8096245222fbe401611e47350e7b09ef9d45d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1202a333_aaad3233",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-08-18T15:38:43Z",
+      "side": 1,
+      "message": "Should this be done by checking for None later and setting it to true if that is the case?  (Similar to some of the other --foo/--no-foo options?)",
+      "revId": "dda8096245222fbe401611e47350e7b09ef9d45d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
