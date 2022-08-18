@@ -51,6 +51,24 @@
       "message": "Looks good.",
       "revId": "0790d56b2cdcc981ad274d015eb0975172e1f565",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fdabc34_0c8dc87a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-18T19:12:16Z",
+      "side": 1,
+      "message": "\u003e repo sync --current-branch affects all of the projects\n\nright.  what i mean is that `repo init --current-branch` only affects the manifest project while `repo init --depth` affects all projects and is sticky.\n\nwe prob should change --current-branch to behave like --depth and then add a new --manifest-current-branch option.\n\n\u003e and would be a wonderful option to make the default, especially for larger projects like Android.\n\nmanifests can opt-in to this via sync-c.  i don\u0027t think we need to change repo defaults in this space.\n\nsync-c has also been known to not play well with current shared-projects logic so that would have to be double checked.",
+      "parentUuid": "d3451fbf_8c71cdfe",
+      "revId": "0790d56b2cdcc981ad274d015eb0975172e1f565",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
