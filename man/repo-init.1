@@ -45,6 +45,10 @@ sync any submodules associated with the manifest repo
 \fB\-\-standalone\-manifest\fR
 download the manifest as a static file rather then
 create a git checkout of the manifest repo
+.TP
+\fB\-\-manifest\-depth\fR=\fI\,DEPTH\/\fR
+create a shallow clone of the manifest repo with given
+depth; see git clone (default: 1)
 .SS Manifest (only) checkout options:
 .TP
 \fB\-c\fR, \fB\-\-current\-branch\fR
