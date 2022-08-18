@@ -109,6 +109,10 @@ to update the working directory files.
     Args:
       opt: options from optparse.
     """
+    # Normally this value is set when instantiating the project, but the
+    # manifest project is special and is created when instantiating the
+    # manifest which happens before we parse options.
+    self.manifest.manifestProject.clone_depth = opt.manifest_depth
     if not self.manifest.manifestProject.Sync(
         manifest_url=opt.manifest_url,
         manifest_branch=opt.manifest_branch,
