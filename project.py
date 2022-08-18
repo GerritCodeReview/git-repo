@@ -1678,10 +1678,7 @@ class Project(object):
 
     all_refs = self.bare_ref.all
     if R_HEADS + name in all_refs:
-      return GitCommand(self,
-                        ['checkout', name, '--'],
-                        capture_stdout=True,
-                        capture_stderr=True).Wait() == 0
+      return GitCommand(self, ['checkout', '-q', name, '--']).Wait() == 0
 
     branch = self.GetBranch(name)
     branch.remote = self.GetRemote()
@@ -1706,10 +1703,7 @@ class Project(object):
       branch.Save()
       return True
 
-    if GitCommand(self,
-                  ['checkout', '-b', branch.name, revid],
-                  capture_stdout=True,
-                  capture_stderr=True).Wait() == 0:
+    if GitCommand(self, ['checkout', '-q', '-b', branch.name, revid]).Wait() == 0:
       branch.Save()
       return True
     return False
