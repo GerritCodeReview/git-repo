@@ -33,6 +33,24 @@
       "message": "Should this be done by checking for None later and setting it to true if that is the case?  (Similar to some of the other --foo/--no-foo options?)",
       "revId": "dda8096245222fbe401611e47350e7b09ef9d45d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0927a7e_10c7913c",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-18T16:53:42Z",
+      "side": 1,
+      "message": "propagating the tristate value to the runtime makes sense when there are other values we want to factor in.  for example, many of sync\u0027s options can be controlled inside the manifest itself, and the repo options end up overriding them.  see how --tags/--no-tags/sync_tags are handled.\n\nin this case, there is no other setting that we\u0027d consider, so doing it in the parser seems easiest.",
+      "parentUuid": "1202a333_aaad3233",
+      "revId": "dda8096245222fbe401611e47350e7b09ef9d45d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
