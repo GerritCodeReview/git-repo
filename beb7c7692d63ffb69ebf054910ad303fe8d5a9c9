@@ -16,6 +16,24 @@
       "message": "Line wrap?",
       "revId": "beb7c7692d63ffb69ebf054910ad303fe8d5a9c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e5518ee_1767a5fa",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-18T16:43:12Z",
+      "side": 1,
+      "message": "this code base has been using a line length of 100 cols -- see `.flake8`\n\nat some point prob should change to `black`",
+      "parentUuid": "1f3496df_bf64c92b",
+      "revId": "beb7c7692d63ffb69ebf054910ad303fe8d5a9c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
