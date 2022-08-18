@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cba04b5_dbbb4774",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-18T18:16:53Z",
+      "side": 1,
+      "message": "i was confused by `--depth` \u0026 `--current-branch`.  while the latter only applies to syncing the manifest project, the former applies to manifest project \u0026 all projects in the manifest.  i only want to change the behavior of the manifest project, so had to add a new dedicated option.\n\nPTAL",
+      "revId": "0790d56b2cdcc981ad274d015eb0975172e1f565",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
