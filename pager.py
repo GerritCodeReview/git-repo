@@ -56,8 +56,11 @@ def _PipePager(pager):
   global pager_process, old_stdout, old_stderr
   assert pager_process is None, "Only one active pager process at a time"
   # Create pager process, piping stdout/err into its stdin
-  pager_process = subprocess.Popen([pager], stdin=subprocess.PIPE, stdout=sys.stdout,
-                                   stderr=sys.stderr)
+  try:
+    pager_process = subprocess.Popen([pager], stdin=subprocess.PIPE, stdout=sys.stdout,
+                                     stderr=sys.stderr)
+  except FileNotFoundError:
+    sys.exit(f'fatal: cannot start pager "{pager}"')
   old_stdout = sys.stdout
   old_stderr = sys.stderr
   sys.stdout = pager_process.stdin
