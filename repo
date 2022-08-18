@@ -355,9 +355,9 @@ def InitParser(parser, gitc_init=False):
                    help='location of mirror directory', metavar='DIR')
   group.add_option('--dissociate', action='store_true',
                    help='dissociate from reference mirrors after clone')
-  group.add_option('--depth', type='int', default=None,
+  group.add_option('--depth', type='int', default=1,
                    help='create a shallow clone with given depth; '
-                        'see git clone')
+                        'see git clone (default: %default)')
   group.add_option('--partial-clone', action='store_true',
                    help='perform partial clone (https://git-scm.com/'
                         'docs/gitrepository-layout#_code_partialclone_code)')
