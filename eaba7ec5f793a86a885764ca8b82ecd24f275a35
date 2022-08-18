@@ -16,6 +16,24 @@
       "message": "Consider `Args` section with types and descriptions.",
       "revId": "eaba7ec5f793a86a885764ca8b82ecd24f275a35",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1326abf1_2aa5e15d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2708,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-18T17:30:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8f05ad1_12fb8a69",
+      "revId": "eaba7ec5f793a86a885764ca8b82ecd24f275a35",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
