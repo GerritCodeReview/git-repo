@@ -612,7 +612,9 @@ def _Init(args, gitc_init=False):
   try:
     if not opt.quiet:
       print('Downloading Repo source from', url)
-    dst = os.path.abspath(os.path.join(repodir, S_repo))
+    dst_final = os.path.abspath(os.path.join(repodir, S_repo))
+    dst = dst_final + '.tmp'
+    shutil.rmtree(dst, ignore_errors=True)
     _Clone(url, dst, opt.clone_bundle, opt.quiet, opt.verbose)
 
     remote_ref, rev = check_repo_rev(dst, rev, opt.repo_verify, quiet=opt.quiet)
@@ -621,6 +623,8 @@ def _Init(args, gitc_init=False):
     if not os.path.isfile(os.path.join(dst, 'repo')):
       print("warning: '%s' does not look like a git-repo repository, is "
             "REPO_URL set correctly?" % url, file=sys.stderr)
+
+    os.rename(dst, dst_final)
 
   except CloneFailure:
     print('fatal: double check your --repo-rev setting.', file=sys.stderr)
@@ -1317,6 +1321,7 @@ def main(orig_args):
         print("fatal: cloning the git-repo repository failed, will remove "
               "'%s' " % path, file=sys.stderr)
         shutil.rmtree(path, ignore_errors=True)
+        shutil.rmtree(path + '.tmp', ignore_errors=True)
         sys.exit(1)
       repo_main, rel_repo_dir = _FindRepo()
     else:
