@@ -60,8 +60,10 @@ change id will be added.
                    capture_stderr=True)
     status = p.Wait()
 
-    print(p.stdout, file=sys.stdout)
-    print(p.stderr, file=sys.stderr)
+    if p.stdout:
+      print(p.stdout.strip(), file=sys.stdout)
+    if p.stderr:
+      print(p.stderr.strip(), file=sys.stderr)
 
     if status == 0:
       # The cherry-pick was applied correctly. We just need to edit the
