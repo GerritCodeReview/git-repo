@@ -262,7 +262,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         answer = sys.stdin.readline().strip().lower()
         answer = answer in ('y', 'yes', '1', 'true', 't')
 
-    if answer:
+    if not opt.yes and answer:
       if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
         answer = _ConfirmManyUploads()
 
@@ -335,14 +335,15 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     if not todo:
       _die("nothing uncommented for upload")
 
-    many_commits = False
-    for branch in todo:
-      if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
-        many_commits = True
-        break
-    if many_commits:
-      if not _ConfirmManyUploads(multiple_branches=True):
-        _die("upload aborted by user")
+    if not opt.yes:
+      many_commits = False
+      for branch in todo:
+        if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
+          many_commits = True
+          break
+      if many_commits:
+        if not _ConfirmManyUploads(multiple_branches=True):
+          _die("upload aborted by user")
 
     self._UploadAndReport(opt, todo, people)
 
