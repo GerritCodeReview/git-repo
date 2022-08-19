@@ -144,7 +144,7 @@ to update the working directory files.
       return value
     return a
 
-  def _ShouldConfigureUser(self, opt):
+  def _ShouldConfigureUser(self, opt, existing_checkout):
     gc = self.client.globalConfig
     mp = self.manifest.manifestProject
 
@@ -156,7 +156,7 @@ to update the working directory files.
       mp.config.SetString('user.name', gc.GetString('user.name'))
       mp.config.SetString('user.email', gc.GetString('user.email'))
 
-    if not opt.quiet:
+    if not opt.quiet and not existing_checkout or opt.verbose:
       print()
       print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
                                            mp.config.GetString('user.email')))
@@ -321,7 +321,7 @@ to update the working directory files.
     self._SyncManifest(opt)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
-      if opt.config_name or self._ShouldConfigureUser(opt):
+      if opt.config_name or self._ShouldConfigureUser(opt, existing_checkout):
         self._ConfigureUser(opt)
       self._ConfigureColor()
 
