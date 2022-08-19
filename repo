@@ -621,8 +621,9 @@ def _Init(args, gitc_init=False):
     _Checkout(dst, remote_ref, rev, opt.quiet)
 
     if not os.path.isfile(os.path.join(dst, 'repo')):
-      print("warning: '%s' does not look like a git-repo repository, is "
-            "REPO_URL set correctly?" % url, file=sys.stderr)
+      print("fatal: '%s' does not look like a git-repo repository, is "
+            "--repo-url set correctly?" % url, file=sys.stderr)
+      raise CloneFailure()
 
     os.rename(dst, dst_final)
 
