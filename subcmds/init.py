@@ -315,6 +315,13 @@ to update the working directory files.
       # Older versions of git supported worktree, but had dangerous gc bugs.
       git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
 
+    # Provide a short notice that we're reinitializing an existing checkout.
+    # Sometimes developers might not realize that they're in one, or that
+    # repo doesn't do nested checkouts.
+    existing_checkout = self.manifest.manifestProject.Exists
+    if not opt.quiet and existing_checkout:
+      print('repo: reusing existing repo client checkout in', self.manifest.topdir)
+
     self._SyncManifest(opt)
 
     if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
