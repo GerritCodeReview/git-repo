@@ -281,14 +281,9 @@ class GitCommand(object):
       ssh_proxy.add_client(p)
 
     self.process = p
-    if input:
-      if isinstance(input, str):
-        input = input.encode('utf-8')
-      p.stdin.write(input)
-      p.stdin.close()
 
     try:
-      self.stdout, self.stderr = p.communicate()
+      self.stdout, self.stderr = p.communicate(input=input)
     finally:
       if ssh_proxy:
         ssh_proxy.remove_client(p)
