@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26bff5ea_27c3ff58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1151081
+      },
+      "writtenOn": "2022-08-20T11:40:34Z",
+      "side": 1,
+      "message": "Fatih Namlı Dürüm akşemsettin sarıgüzel no 36 fatih istanbul",
+      "revId": "3ab573aea5823b6c6cb25b266b79e41ba4bd1020",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
