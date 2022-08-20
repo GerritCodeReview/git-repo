@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5e894c2_e46af8c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-20T02:14:12Z",
+      "side": 1,
+      "message": "the suggestion in the bug is to change chromite to use `[\u0027python3\u0027, \u0027.../.repo/repo`, ...]` rather than change this",
+      "revId": "ed4d6a965580384250e895af9ef722b60901baed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
