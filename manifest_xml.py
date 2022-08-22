@@ -358,7 +358,10 @@ class XmlManifest(object):
 
     self.repodir = os.path.abspath(repodir)
     self._CheckLocalPath(submanifest_path)
-    self.topdir = os.path.join(os.path.dirname(self.repodir), submanifest_path)
+    self.topdir = self.topdir = os.path.dirname(self.repodir)
+    if submanifest_path:
+      # This avoids a trailing os.path.sep when submanifest_path is empty.
+      self.topdir = os.path.join(self.topdir, submanifest_path)
     if manifest_file != os.path.abspath(manifest_file):
       raise ManifestParseError('manifest_file must be abspath')
     self.manifestFile = manifest_file
