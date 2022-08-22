@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e769130d_7b9f1c14",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-08-22T19:09:51Z",
+      "side": 1,
+      "message": "Use a format string, rather than passing the topdir to print directly.",
+      "revId": "db102652659823b8cec038158a265a5c4b17ae7e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
