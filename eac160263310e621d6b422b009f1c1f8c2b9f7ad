@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f914b619_b9f74dde",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-24T19:26:33Z",
+      "side": 1,
+      "message": "you don\u0027t need this.  the import paths are already set correctly.",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3fdc555_0fba67f1",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-24T19:26:33Z",
+      "side": 1,
+      "message": "move this to the block below",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca0af343_82f7fabc",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-24T19:26:33Z",
+      "side": 1,
+      "message": "delete debug code",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fb0fb34_713b7cf7",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-24T19:26:33Z",
+      "side": 1,
+      "message": "don\u0027t need the comment",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c10f11b5_b99e9f4e",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-08-24T19:26:33Z",
+      "side": 1,
+      "message": "this is not equiv to the non-Windows invocation\n\nthe shell logic runs cmd[0] through a shell and passes cmd[1:] as args to the shell script.  you can test with something like:\n\n```\n$ repo forall . -c \u0027printf \"{%s}\\n\" \"$@\"\u0027 \u0027first arg\u0027 \u00272nd\u0027\n{first arg}\n{2nd}\n```",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
