@@ -1071,14 +1071,13 @@ later is required to fix a server side protocol bug.
               file=sys.stderr)
 
     for m in self.ManifestList(opt):
-      mp = m.manifestProject
-      is_standalone_manifest = bool(mp.standalone_manifest_url)
-      if not is_standalone_manifest:
-        mp.PreSync()
+      if not bool(m.manifestProject.standalone_manifest_url):
+        m.manifestProject.PreSync()
 
-      if opt.repo_upgraded:
-        _PostRepoUpgrade(m, quiet=opt.quiet)
+    if opt.repo_upgraded:
+      _PostRepoUpgrade(manifest, quiet=opt.quiet)
 
+    mp = manifest.manifestProject
     if opt.mp_update:
       self._UpdateAllManifestProjects(opt, mp, manifest_name)
     else:
