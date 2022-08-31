@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b12e5acf_1ccb6651",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2022-08-31T20:58:15Z",
+      "side": 1,
+      "message": "Maybe use a public issue tracker (e.g. https://bugs.chromium.org/p/gerrit/issues/list?q\u003dcomponent:Applications%3Erepo )?",
+      "range": {
+        "startLine": 11,
+        "startChar": 19,
+        "endLine": 11,
+        "endChar": 31
+      },
+      "revId": "7fe47ba9bae672c0ce4e60779ebd3e8cd5915a98",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "aa4cc6a0_bce56ddc",
