@@ -1131,10 +1131,15 @@ class Project(object):
                        submodules=False,
                        ssh_proxy=None,
                        clone_filter=None,
-                       partial_clone_exclude=set()):
+                       partial_clone_exclude=set(),
+                       syncbuf=None,
+                       bad_refs=False,
+                       ignore_bad_refs=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
+    mp = self.manifest.manifestProject
+    syncbuf = syncbuf or SyncBuffer(mp.config)
     if archive and not isinstance(self, MetaProject):
       if self.remote.url.startswith(('http://', 'https://')):
         _error("%s: Cannot fetch archives from http/https remotes.", self.name)
@@ -1240,7 +1245,9 @@ class Project(object):
               clone_filter=clone_filter, retry_fetches=retry_fetches):
         return Sync_NetworkHalf_Result(False, remote_fetched)
 
-    mp = self.manifest.manifestProject
+    if bad_refs and remote_fetched:
+      self.CheckReachable(syncbuf, ignore_bad_refs)
+
     dissociate = mp.dissociate
     if dissociate:
       alternates_file = os.path.join(self.objdir, 'objects/info/alternates')
@@ -1310,6 +1317,36 @@ class Project(object):
       self.upstream = self.revisionExpr
 
     self.revisionId = revisionId
+
+  def CheckReachable(self, syncbuf, ignore_errors):
+    """Verify that all of the refs in the tree are reachable.
+
+    Args:
+      syncbuf (SyncBuffer): The syncbuf for messages.
+      ignore_errors (bool): whether to treat errors as warnings.
+    """
+    if not os.path.exists(self.gitdir):
+      return
+
+    report = syncbuf.info if ignore_errors else syncbuf.fail
+    p = GitCommand(self, ['show-ref'], bare=True, gitdir=self.gitdir,
+                   capture_stdout=True, capture_stderr=True)
+    ret = p.Wait()
+    if ret:
+      report(self, '%s', p.stderr)
+
+    all_refs = list(self._allrefs.values())
+    while all_refs:
+      # Chunk at 1000 references, which should fit into the command line length
+      # limit.
+      ret = GitCommand(
+          self,
+          ['fsck', '--connectivity-only', '--no-dangling'] + all_refs[:1000],
+          bare=True, gitdir=self.gitdir,
+          capture_stdout=True, capture_stderr=True).Wait()
+      if ret != 0:
+        report(self, '%s', ret.stderr)
+      all_refs = all_refs[1000:]
 
   def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
     """Perform only the local IO portion of the sync process.
