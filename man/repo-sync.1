@@ -143,6 +143,15 @@ operate on this manifest and its submanifests
 .TP
 \fB\-\-no\-repo\-verify\fR
 do not verify repo source code
+.SS Debugging options:
+.TP
+\fB\-\-bad\-refs\fR=\fI\,OPTION\/\fR
+how to verify objects during sync.  One of: 'default'
+(same as 'no'), 'no' (no checks), 'opt' ('quick'
+checks only), 'all' (all checks)
+.TP
+\fB\-\-warn\-on\-bad\-ref\fR
+only warn about bad projects during sync
 .PP
 Run `repo help sync` to view the detailed manual.
 .SH DETAILS
