@@ -266,6 +266,17 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+    g = p.add_option_group('Bug catcher options')
+    g.add_option('--bad-refs',
+                 default=True, action='store_true',
+                 help='verify projects during sync')
+    g.add_option('--no-bad-refs',
+                 dest='bad_refs', action='store_false',
+                 help='do not verify projects during sync')
+    g.add_option('--ignore-bad-refs',
+                 action='store_true',
+                 help='only warn about bad projects during sync')
+
   def _GetBranch(self, manifest_project):
     """Returns the branch name for getting the approved smartsync manifest.
 
@@ -585,12 +596,14 @@ later is required to fix a server side protocol bug.
 
     return all_projects
 
-  def _CheckoutOne(self, detach_head, force_sync, project):
+  def _CheckoutOne(self, detach_head, force_sync, bad_refs, ignore_bad_refs, project):
     """Checkout work tree for one project
 
     Args:
       detach_head: Whether to leave a detached HEAD.
       force_sync: Force checking out of the repo.
+      bad_refs: Check for bad references.
+      ignore_bad_refs: Bad refs are only a warning.
       project: Project object for the project to checkout.
 
     Returns:
@@ -600,6 +613,18 @@ later is required to fix a server side protocol bug.
     syncbuf = SyncBuffer(project.manifest.manifestProject.config,
                          detach_head=detach_head)
     success = False
+    try:
+      if bad_refs:
+        project.CheckReachable(syncbuf, ignore_bad_refs)
+    except GitError as e:
+      print('error.GitError: Cannot verify %s: %s' %
+            (project.name, str(e)), file=sys.stderr)
+    except Exception as e:
+      print('error: Cannot verify %s: %s: %s' %
+            (project.name, type(e).__name__, str(e)),
+            file=sys.stderr)
+      raise
+
     try:
       project.Sync_LocalHalf(syncbuf, force_sync=force_sync)
       success = syncbuf.Finish()
@@ -647,7 +672,8 @@ later is required to fix a server side protocol bug.
 
     return self.ExecuteInParallel(
         opt.jobs_checkout,
-        functools.partial(self._CheckoutOne, opt.detach_head, opt.force_sync),
+        functools.partial(self._CheckoutOne, opt.detach_head, opt.force_sync,
+                          opt.bad_refs, opt.ignore_bad_refs),
         all_projects,
         callback=_ProcessResults,
         output=Progress('Checking out', len(all_projects), quiet=opt.quiet)) and not err_results
