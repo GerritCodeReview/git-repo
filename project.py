@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import enum
 import errno
 import filecmp
 import glob
@@ -46,6 +47,13 @@ from repo_trace import IsTrace, Trace
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M, R_WORKTREE_M
 
 
+@enum.unique
+class BadRefs(enum.Enum):
+  DEFAULT = 0
+  NO = 1
+  OPT = 2
+  ALL = 3
+
 # Sync_NetworkHalf return
 class Sync_NetworkHalf_Result(typing.NamedTuple):
   # True if successful.
@@ -53,6 +61,9 @@ class Sync_NetworkHalf_Result(typing.NamedTuple):
   # Did we query the remote? False when optimized_fetch is True and we have the
   # commit already present.
   remote_fetched: bool
+  # Was the project created for the sync (rather than an update of an already
+  # present project).
+  is_new: bool = None
 
 # Maximum sleep time allowed during retries.
 MAXIMUM_RETRY_SLEEP_SEC = 3600.0
@@ -1135,10 +1146,15 @@ class Project(object):
                        submodules=False,
                        ssh_proxy=None,
                        clone_filter=None,
-                       partial_clone_exclude=set()):
+                       partial_clone_exclude=set(),
+                       syncbuf=None,
+                       bad_refs=BadRefs.DEFAULT,
+                       warn_on_bad_ref=False):
     """Perform only the network IO portion of the sync process.
        Local working directory/branch state is not affected.
     """
+    mp = self.manifest.manifestProject
+    syncbuf = syncbuf or SyncBuffer(mp.config)
     if archive and not isinstance(self, MetaProject):
       if self.remote.url.startswith(('http://', 'https://')):
         _error("%s: Cannot fetch archives from http/https remotes.", self.name)
@@ -1242,9 +1258,11 @@ class Project(object):
               submodules=submodules, force_sync=force_sync,
               ssh_proxy=ssh_proxy,
               clone_filter=clone_filter, retry_fetches=retry_fetches):
-        return Sync_NetworkHalf_Result(False, remote_fetched)
+        return Sync_NetworkHalf_Result(False, remote_fetched, is_new=is_new)
 
-    mp = self.manifest.manifestProject
+    self.CheckReachable(syncbuf, not warn_on_bad_ref, is_new, bad_refs,
+                        remote_fetched)
+
     dissociate = mp.dissociate
     if dissociate:
       alternates_file = os.path.join(self.objdir, 'objects/info/alternates')
@@ -1255,7 +1273,7 @@ class Project(object):
         if p.stdout and output_redir:
           output_redir.write(p.stdout)
         if p.Wait() != 0:
-          return Sync_NetworkHalf_Result(False, remote_fetched)
+          return Sync_NetworkHalf_Result(False, remote_fetched, is_new=is_new)
         platform_utils.remove(alternates_file)
 
     if self.worktree:
@@ -1264,7 +1282,7 @@ class Project(object):
       self._InitMirrorHead()
       platform_utils.remove(os.path.join(self.gitdir, 'FETCH_HEAD'),
                             missing_ok=True)
-    return Sync_NetworkHalf_Result(True, remote_fetched)
+    return Sync_NetworkHalf_Result(True, remote_fetched, is_new=is_new)
 
   def PostRepoUpgrade(self):
     self._InitHooks()
@@ -1314,6 +1332,65 @@ class Project(object):
       self.upstream = self.revisionExpr
 
     self.revisionId = revisionId
+
+  def CheckReachable(self, syncbuf, check_errors, is_new, bad_refs,
+                     remote_fetched):
+    """Verify that all of the refs in the tree are reachable.
+
+    Args:
+      syncbuf (SyncBuffer): The syncbuf for messages.
+      check_errors (bool): whether errors cause failure.
+      is_new (bool): Whether this is the first checkout.
+      bad_refs (BadRefs): What style of checking to do.
+      remote_fetched (bool): was `git remote fetch` called.
+    """
+    if not platform_utils.isdir(self.gitdir):
+      return
+
+    # Default to no checking.
+    if bad_refs == BadRefs.DEFAULT or not bad_refs:
+      bad_refs = BadRefs.NO
+
+    if bad_refs == BadRefs.NO:
+      max_refs = 0
+    elif bad_refs == BadRefs.OPT:
+      # Default: ignore initial clones and un-updated projects.  Check at most
+      # 100 refs from the project.
+      if is_new or not remote_fetched:
+        max_refs = 0
+      else:
+        max_refs = 100
+    elif bad_refs == BadRefs.ALL:
+      max_refs = -1
+    else:
+      # This will fail, prompting an update here.
+      assert bad_refs in (BadRefs.NO, BadRefs.OPT, BadRefs.ALL)
+
+    report = syncbuf.info if not check_errors else syncbuf.fail
+    p = GitCommand(self, ['show-ref'], bare=True, gitdir=self.gitdir,
+                   capture_stdout=True, capture_stderr=True)
+    if p.rc:
+      report(self, '%s', p.stderr)
+
+    all_refs = list(self._allrefs.values())
+    if max_refs:
+      if max_refs != -1:
+        all_refs = all_refs[:max_refs]
+    else:
+      # skip all but the `show-ref` call.
+      return
+
+    while all_refs:
+      # Chunk at 1000 references, which should fit into the command line length
+      # limit.
+      p = GitCommand(
+          self,
+          ['fsck', '--connectivity-only', '--no-dangling'] + all_refs[:1000],
+          bare=True, gitdir=self.gitdir,
+          capture_stdout=True, capture_stderr=True)
+      if p.rc != 0:
+        report(self, '%s', p.stderr)
+      all_refs = all_refs[1000:]
 
   def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
     """Perform only the local IO portion of the sync process.

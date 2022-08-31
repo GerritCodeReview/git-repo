@@ -53,8 +53,7 @@ from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import git_superproject
 import gitc_utils
-from project import Project
-from project import RemoteSpec
+from project import BadRefs, Project, RemoteSpec
 from command import Command, DEFAULT_LOCAL_JOBS, MirrorSafeCommand, WORKER_BATCH_SIZE
 from error import RepoChangedException, GitError, ManifestParseError
 import platform_utils
@@ -83,6 +82,8 @@ class _FetchOne_Result(typing.NamedTuple):
   finish: float
   # Was the remote actually queried?
   remote_fetched: bool
+  # Was the git directory created?
+  newly_created: bool
 
 
 class _Fetch_Result(typing.NamedTuple):
@@ -91,14 +92,14 @@ class _Fetch_Result(typing.NamedTuple):
   # The set(project.gitdir) of the fetched projects.
   projects: set[str]
   # The set of projects fetched from the remote.
-  remote_fetched: set[Project]
+  updated_from_remote: set[Project]
 
 
 class _FetchMain_Result(typing.NamedTuple):
   # The list of fetched projects.
   all_projects: list[Project]
   # The list of projects where the remote was queried.
-  remote_fetched: list[Project]
+  updated_from_remote: list[Project]
 
 
 class _CheckoutOne_Result(typing.NamedTuple):
@@ -322,6 +323,20 @@ later is required to fix a server side protocol bug.
                  dest='repo_upgraded', action='store_true',
                  help=SUPPRESS_HELP)
 
+    g = p.add_option_group('Debugging options')
+    bad_refs_choices = [x.lower() for x in BadRefs.__members__]
+    # Make sure that there is help text for new options.
+    assert bad_refs_choices == ['default', 'no', 'opt', 'all']
+    g.add_option('--bad-refs', choices=bad_refs_choices, default='default',
+                 metavar='OPTION',
+                 help=(
+                     "how to verify objects during sync.  One of: "
+                     "'default' (same as 'no'), 'no' (no checks), "
+                     "'opt' ('quick' checks only), 'all' (all checks)"))
+    g.add_option('--warn-on-bad-ref',
+                 action='store_true',
+                 help='only warn about bad projects during sync')
+
   def _GetBranch(self, manifest_project):
     """Returns the branch name for getting the approved smartsync manifest.
 
@@ -462,6 +477,8 @@ later is required to fix a server side protocol bug.
     success = False
     buf = io.StringIO()
     remote_fetched = False
+    newly_created = None
+    use_super = git_superproject.UseSuperproject(opt.use_superproject, project.manifest)
     try:
       sync_result = project.Sync_NetworkHalf(
           quiet=opt.quiet,
@@ -471,14 +488,18 @@ later is required to fix a server side protocol bug.
           force_sync=opt.force_sync,
           clone_bundle=opt.clone_bundle,
           tags=opt.tags, archive=project.manifest.IsArchive,
-          optimized_fetch=opt.optimized_fetch,
+          optimized_fetch=opt.optimized_fetch or use_super,
           retry_fetches=opt.retry_fetches,
           prune=opt.prune,
           ssh_proxy=self.ssh_proxy,
           clone_filter=project.manifest.CloneFilter,
-          partial_clone_exclude=project.manifest.PartialCloneExclude)
+          partial_clone_exclude=project.manifest.PartialCloneExclude,
+          bad_refs=opt.bad_refs,
+          warn_on_bad_ref=opt.warn_on_bad_ref,
+      )
       success = sync_result.success
       remote_fetched = sync_result.remote_fetched
+      newly_created = sync_result.is_new
 
       output = buf.getvalue()
       if (opt.verbose or not success) and output:
@@ -496,7 +517,7 @@ later is required to fix a server side protocol bug.
       raise
 
     finish = time.time()
-    return _FetchOne_Result(success, project, start, finish, remote_fetched)
+    return _FetchOne_Result(success, project, start, finish, remote_fetched, newly_created)
 
   @classmethod
   def _FetchInitChild(cls, ssh_proxy):
@@ -507,7 +528,7 @@ later is required to fix a server side protocol bug.
 
     jobs = opt.jobs_network
     fetched = set()
-    remote_fetched = set()
+    updated_from_remote = set()
     pm = Progress('Fetching', len(projects), delay=False, quiet=opt.quiet)
 
     objdir_project_map = dict()
@@ -526,8 +547,8 @@ later is required to fix a server side protocol bug.
           self._fetch_times.Set(project, finish - start)
           self.event_log.AddSync(project, event_log.TASK_SYNC_NETWORK,
                                  start, finish, success)
-          if result.remote_fetched:
-            remote_fetched.add(project)
+          if result.remote_fetched and not result.newly_created:
+            updated_from_remote.add(project)
           # Check for any errors before running any more tasks.
           # ...we'll let existing jobs finish, though.
           if not success:
@@ -584,11 +605,11 @@ later is required to fix a server side protocol bug.
 
     if not self.outer_client.manifest.IsArchive:
       if opt.gc is None:
-        self._GCProjects(remote_fetched, opt, err_event)
+        self._GCProjects(updated_from_remote, opt, err_event)
       elif opt.gc:
         self._GCProjects(projects, opt, err_event)
 
-    return _Fetch_Result(ret, fetched, remote_fetched)
+    return _Fetch_Result(ret, fetched, updated_from_remote)
 
   def _FetchMain(self, opt, args, all_projects, err_event,
                  ssh_proxy, manifest):
@@ -617,7 +638,7 @@ later is required to fix a server side protocol bug.
     result = self._Fetch(to_fetch, opt, err_event, ssh_proxy)
     success = result.success
     fetched = result.projects
-    remote_fetched = result.remote_fetched
+    updated_from_remote = result.updated_from_remote
     if not success:
       err_event.set()
 
@@ -627,7 +648,7 @@ later is required to fix a server side protocol bug.
       if err_event.is_set():
         print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
         sys.exit(1)
-      return _FetchMain_Result([], remote_fetched)
+      return _FetchMain_Result([], updated_from_remote)
 
     # Iteratively fetch missing and/or nested unregistered submodules
     previously_missing_set = set()
@@ -652,18 +673,22 @@ later is required to fix a server side protocol bug.
       previously_missing_set = missing_set
       result = self._Fetch(missing, opt, err_event, ssh_proxy)
       fetched.update(result.projects)
-      remote_fetched.update(result.remote_fetched)
+      updated_from_remote.update(result.updated_from_remote)
       if not result.success:
         err_event.set()
 
-    return _FetchMain_Result(all_projects, remote_fetched)
+    return _FetchMain_Result(all_projects, updated_from_remote)
 
-  def _CheckoutOne(self, detach_head, force_sync, project):
+  def _CheckoutOne(self, detach_head, force_sync, bad_refs, warn_on_bad_ref,
+                   updated_projects, project):
     """Checkout work tree for one project
 
     Args:
       detach_head: Whether to leave a detached HEAD.
       force_sync: Force checking out of the repo.
+      bad_refs: Check for bad references.
+      warn_on_bad_ref: Bad refs are only a warning.
+      updated_projects: Set of projects updated from the remote.
       project: Project object for the project to checkout.
 
     Returns:
@@ -673,6 +698,20 @@ later is required to fix a server side protocol bug.
     syncbuf = SyncBuffer(project.manifest.manifestProject.config,
                          detach_head=detach_head)
     success = False
+    try:
+      # We don't have |newly_created|, so use not |updated| instead.
+      updated = project in updated_projects
+      project.CheckReachable(syncbuf, warn_on_bad_ref, not updated, bad_refs,
+                             updated)
+    except GitError as e:
+      print('error.GitError: Cannot checkout %s: %s' %
+            (project.name, str(e)), file=sys.stderr)
+    except Exception as e:
+      print('error: Cannot checkout %s: %s: %s' %
+            (project.name, type(e).__name__, str(e)),
+            file=sys.stderr)
+      raise
+
     try:
       project.Sync_LocalHalf(syncbuf, force_sync=force_sync)
       success = syncbuf.Finish()
@@ -690,16 +729,22 @@ later is required to fix a server side protocol bug.
     finish = time.time()
     return _CheckoutOne_Result(success, project, start, finish)
 
-  def _Checkout(self, all_projects, opt, err_results):
+  def _Checkout(self, all_projects, opt, err_results, updated_projects=None):
     """Checkout projects listed in all_projects
 
     Args:
       all_projects: List of all projects that should be checked out.
       opt: Program options returned from optparse.  See _Options().
       err_results: A list of strings, paths to git repos where checkout failed.
+      updated_projects: List of all projects updated from the remote.
     """
     # Only checkout projects with worktrees.
     all_projects = [x for x in all_projects if x.worktree]
+
+    if updated_projects is None:
+      updated_projects = all_projects
+    else:
+      updated_projects = set(x for x in updated_projects if x.worktree)
 
     def _ProcessResults(pool, pm, results):
       ret = True
@@ -724,7 +769,8 @@ later is required to fix a server side protocol bug.
 
     return self.ExecuteInParallel(
         opt.jobs_checkout,
-        functools.partial(self._CheckoutOne, opt.detach_head, opt.force_sync),
+        functools.partial(self._CheckoutOne, opt.detach_head, opt.force_sync,
+                          opt.bad_refs, opt.warn_on_bad_ref, updated_projects),
         all_projects,
         callback=_ProcessResults,
         output=Progress('Checking out', len(all_projects), quiet=opt.quiet)) and not err_results
@@ -1144,10 +1190,25 @@ later is required to fix a server side protocol bug.
     if opt.prune is None:
       opt.prune = True
 
+    opt.bad_refs = BadRefs[(opt.bad_refs or 'default').upper()]
+
   def Execute(self, opt, args):
     manifest = self.outer_manifest
     if not opt.outer_manifest:
       manifest = self.manifest
+
+    if opt.bad_refs is None:
+      # Now that we have the manifest, default to checking for bad references if
+      # we are using superprojects somewhere in the manifest.
+      # This is a bug catcher for b/221065125: (upstream) commits are being lost.
+      #
+      # --bad-refs checks that everything is OK every time we fetch a project
+      # from the remote.  By default, the affect on performance is only
+      # "reasonable" if we're not fetching everything.  Superprojects mean that
+      # we only fetch projects where the remote HEAD is not present in our tree.
+      opt.bad_refs = (
+          any(x.is_multimanifest for x in self.ManifestList(opt)) or
+          git_superproject.UseSuperproject(opt.use_superproject, manifest))
 
     if opt.manifest_name:
       manifest.Override(opt.manifest_name)
@@ -1317,7 +1378,8 @@ later is required to fix a server side protocol bug.
 
     err_results = []
     # NB: We don't exit here because this is the last step.
-    err_checkout = not self._Checkout(all_projects, opt, err_results)
+    err_checkout = not self._Checkout(all_projects, opt, err_results,
+                                      result.updated_from_remote)
     if err_checkout:
       err_event.set()
 

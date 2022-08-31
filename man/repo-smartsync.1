@@ -136,6 +136,14 @@ operate on this manifest and its submanifests
 .TP
 \fB\-\-no\-repo\-verify\fR
 do not verify repo source code
+.SS Bug catcher options:
+.TP
+\fB\-\-bad\-refs\fR=\fI\,BAD_REFS\/\fR
+how to verify objects during sync. One of ('default',
+\&'no', 'opt', 'all').
+.TP
+\fB\-\-ignore\-bad\-refs\fR
+only warn about bad projects during sync
 .PP
 Run `repo help smartsync` to view the detailed manual.
 .PP
