@@ -51,7 +51,7 @@ need to be performed by an end-user.
       _PostRepoUpgrade(self.manifest)
 
     else:
-      if not rp.Sync_NetworkHalf():
+      if not rp.Sync_NetworkHalf().success:
         print("error: can't update repo", file=sys.stderr)
         sys.exit(1)
 
