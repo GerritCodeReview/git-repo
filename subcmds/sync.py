@@ -65,8 +65,10 @@ from manifest_xml import GitcManifest
 _ONE_DAY_S = 24 * 60 * 60
 _FetchOne_Result = collections.namedtuple(
     '_FetchOne_Result', ['success', 'project', 'start', 'finish', 'remote_fetched'])
-_Fetch_Result = collections.namedtuple('_Fetch_Result', ['success', 'projects'])
-_FetchMain_Result = collections.namedtuple( '_FetchMain_Result', ['all_projects'])
+_FetchMain_Result = collections.namedtuple(
+    '_FetchMain_Result', ['all_projects', 'remote_fetched'])
+_Fetch_Result = collections.namedtuple(
+    '_Fetch_Result', ['success', 'projects', 'remote_fetched'])
 _CheckoutOne_Result = collections.namedtuple(
     '_CheckoutOne_Result', ['success', 'project', 'start', 'finish'])
 
@@ -146,6 +148,10 @@ exist locally.
 
 The --prune option can be used to remove any refs that no longer
 exist on the remote.
+
+By default, `git gc` is run for any project fetched from the remote.
+The --gc option can be used to force garbage collection of all projects,
+while --no-gc disables all garbage collection.
 
 # SSH Connections
 
@@ -256,6 +262,10 @@ later is required to fix a server side protocol bug.
                  help='delete refs that no longer exist on the remote (default)')
     p.add_option('--no-prune', dest='prune', action='store_false',
                  help='do not delete refs that no longer exist on the remote')
+    p.add_option('--gc', action='store_true',
+                 help='run garbage collection on all projects')
+    p.add_option('--no-gc', dest='gc', action='store_false',
+                 help='do not run garbage collection on any projects')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -532,9 +542,12 @@ later is required to fix a server side protocol bug.
     self._fetch_times.Save()
 
     if not self.outer_client.manifest.IsArchive:
-      self._GCProjects(projects, opt, err_event)
+      if opt.gc is None:
+        self._GCProjects(remote_fetched, opt, err_event)
+      elif opt.gc:
+        self._GCProjects(projects, opt, err_event)
 
-    return _Fetch_Result(ret, fetched)
+    return _Fetch_Result(ret, fetched, remote_fetched)
 
   def _FetchMain(self, opt, args, all_projects, err_event,
                  ssh_proxy, manifest):
@@ -563,6 +576,7 @@ later is required to fix a server side protocol bug.
     result = self._Fetch(to_fetch, opt, err_event, ssh_proxy)
     success = result.success
     fetched = result.projects
+    remote_fetched = result.remote_fetched
     if not success:
       err_event.set()
 
@@ -572,7 +586,7 @@ later is required to fix a server side protocol bug.
       if err_event.is_set():
         print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
         sys.exit(1)
-      return _FetchMain_Result([])
+      return _FetchMain_Result([], remote_fetched)
 
     # Iteratively fetch missing and/or nested unregistered submodules
     previously_missing_set = set()
@@ -596,13 +610,12 @@ later is required to fix a server side protocol bug.
         break
       previously_missing_set = missing_set
       result = self._Fetch(missing, opt, err_event, ssh_proxy)
-      success = result.success
-      new_fetched = result.projects
-      if not success:
+      fetched.update(result.projects)
+      remote_fetched.update(result.remote_fetched)
+      if not result.success:
         err_event.set()
-      fetched.update(new_fetched)
 
-    return _FetchMain_Result(all_projects)
+    return _FetchMain_Result(all_projects, remote_fetched)
 
   def _CheckoutOne(self, detach_head, force_sync, project):
     """Checkout work tree for one project
