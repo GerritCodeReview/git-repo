@@ -200,6 +200,9 @@ exist locally.
 The --prune option can be used to remove any refs that no longer
 exist on the remote.
 
+The --gc option can be used to trigger garbage collection (`git gc --auto`)
+on all projects. By default, repo does not run garbage collection.
+
 # SSH Connections
 
 If at least one project remote URL uses an SSH connection (ssh://,
@@ -309,6 +312,10 @@ later is required to fix a server side protocol bug.
                  help='delete refs that no longer exist on the remote (default)')
     p.add_option('--no-prune', dest='prune', action='store_false',
                  help='do not delete refs that no longer exist on the remote')
+    p.add_option('--gc', action='store_true',
+                 help=('run garbage collection on all synced projects'))
+    p.add_option('--no-gc', dest='gc', action='store_false',
+                 help='do not run garbage collection on any projects (default)')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -584,7 +591,7 @@ later is required to fix a server side protocol bug.
     pm.end()
     self._fetch_times.Save()
 
-    if not self.outer_client.manifest.IsArchive:
+    if not self.outer_client.manifest.IsArchive and opt.gc:
       self._GCProjects(projects, opt, err_event)
 
     return _FetchResult(ret, fetched)
