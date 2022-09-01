@@ -1451,6 +1451,8 @@ class Project(object):
         cnt_mine += 1
 
     if not upstream_gain and cnt_mine == len(local_changes):
+      # The copy/linkfile config may have changed.
+      self._CopyAndLinkFiles()
       return
 
     if self.IsDirty(consider_untracked=False):
