@@ -200,6 +200,9 @@ exist locally.
 The --prune option can be used to remove any refs that no longer
 exist on the remote.
 
+The --auto-gc option can be used to trigger garbage collection on all
+projects. By default, repo does not run garbage collection.
+
 # SSH Connections
 
 If at least one project remote URL uses an SSH connection (ssh://,
@@ -309,6 +312,10 @@ later is required to fix a server side protocol bug.
                  help='delete refs that no longer exist on the remote (default)')
     p.add_option('--no-prune', dest='prune', action='store_false',
                  help='do not delete refs that no longer exist on the remote')
+    p.add_option('--auto-gc', action='store_true',
+                 help='run garbage collection on all synced projects')
+    p.add_option('--no-auto-gc', dest='auto_gc', action='store_false',
+                 help='do not run garbage collection on any projects (default)')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -829,7 +836,14 @@ later is required to fix a server side protocol bug.
         project.config.SetString('gc.pruneExpire', None)
 
   def _GCProjects(self, projects, opt, err_event):
-    pm = Progress('Garbage collecting', len(projects), delay=False, quiet=opt.quiet)
+    """Perform garbage collection.
+
+    If We are skipping garbage collection (opt.gc not set), we still want to
+    potentially mark objects precious, so that `git gc` does not discard shared
+    objects.
+    """
+    pm = Progress(f'{"" if opt.gc else "NOT "}Garbage collecting',
+                  len(projects), delay=False, quiet=opt.quiet)
     pm.update(inc=0, msg='prescan')
 
     tidy_dirs = {}
@@ -848,6 +862,10 @@ later is required to fix a server side protocol bug.
             False,  # Do not run a full gc; just run pack-refs.
             project.bare_git,
         )
+
+    if not opt.gc:
+      pm.end()
+      return
 
     jobs = opt.jobs
 
