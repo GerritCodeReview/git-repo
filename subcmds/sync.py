@@ -98,6 +98,8 @@ class _FetchResult(NamedTuple):
   """
   success: bool
   projects: set[str]
+  # The set of projects fetched from the remote.
+  remote_fetched: set[Project]
 
 
 class _FetchMainResult(NamedTuple):
@@ -107,6 +109,8 @@ class _FetchMainResult(NamedTuple):
     all_projects (list[Project]): The fetched projects.
   """
   all_projects: list[Project]
+  # The list of projects where the remote was queried.
+  remote_fetched: list[Project]
 
 
 class _CheckoutOneResult(NamedTuple):
@@ -199,6 +203,10 @@ exist locally.
 
 The --prune option can be used to remove any refs that no longer
 exist on the remote.
+
+By default, `git gc` is run for any project fetched from the remote.
+The --gc option can be used to force garbage collection of all projects,
+while --no-gc disables all garbage collection.
 
 # SSH Connections
 
@@ -309,6 +317,11 @@ later is required to fix a server side protocol bug.
                  help='delete refs that no longer exist on the remote (default)')
     p.add_option('--no-prune', dest='prune', action='store_false',
                  help='do not delete refs that no longer exist on the remote')
+    p.add_option('--gc', action='store_true',
+                 help=('run garbage collection on all synced projects '
+                       '(default: only the remote-querying synced projects)'))
+    p.add_option('--no-gc', dest='gc', action='store_false',
+                 help='do not run garbage collection on any projects')
     if show_smart:
       p.add_option('-s', '--smart-sync',
                    dest='smart_sync', action='store_true',
@@ -464,6 +477,7 @@ later is required to fix a server side protocol bug.
     start = time.time()
     success = False
     buf = io.StringIO()
+    remote_fetched = False
     try:
       sync_result = project.Sync_NetworkHalf(
           quiet=opt.quiet,
@@ -480,6 +494,7 @@ later is required to fix a server side protocol bug.
           clone_filter=project.manifest.CloneFilter,
           partial_clone_exclude=project.manifest.PartialCloneExclude)
       success = sync_result.success
+      remote_fetched = sync_result.remote_fetched
 
       output = buf.getvalue()
       if (opt.verbose or not success) and output:
@@ -497,8 +512,7 @@ later is required to fix a server side protocol bug.
       raise
 
     finish = time.time()
-    return _FetchOneResult(success, project, start, finish,
-                           sync_result.remote_fetched)
+    return _FetchOneResult(success, project, start, finish, remote_fetched)
 
   @classmethod
   def _FetchInitChild(cls, ssh_proxy):
@@ -585,9 +599,12 @@ later is required to fix a server side protocol bug.
     self._fetch_times.Save()
 
     if not self.outer_client.manifest.IsArchive:
-      self._GCProjects(projects, opt, err_event)
+      if opt.gc is None:
+        self._GCProjects(remote_fetched, opt, err_event)
+      elif opt.gc:
+        self._GCProjects(projects, opt, err_event)
 
-    return _FetchResult(ret, fetched)
+    return _FetchResult(ret, fetched, remote_fetched)
 
   def _FetchMain(self, opt, args, all_projects, err_event,
                  ssh_proxy, manifest):
@@ -616,6 +633,7 @@ later is required to fix a server side protocol bug.
     result = self._Fetch(to_fetch, opt, err_event, ssh_proxy)
     success = result.success
     fetched = result.projects
+    remote_fetched = result.remote_fetched
     if not success:
       err_event.set()
 
@@ -625,7 +643,7 @@ later is required to fix a server side protocol bug.
       if err_event.is_set():
         print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
         sys.exit(1)
-      return _FetchMainResult([])
+      return _FetchMainResult([], remote_fetched)
 
     # Iteratively fetch missing and/or nested unregistered submodules
     previously_missing_set = set()
@@ -649,13 +667,12 @@ later is required to fix a server side protocol bug.
         break
       previously_missing_set = missing_set
       result = self._Fetch(missing, opt, err_event, ssh_proxy)
-      success = result.success
-      new_fetched = result.projects
-      if not success:
+      fetched.update(result.projects)
+      remote_fetched.update(result.remote_fetched)
+      if not result.success:
         err_event.set()
-      fetched.update(new_fetched)
 
-    return _FetchMainResult(all_projects)
+    return _FetchMainResult(all_projects, remote_fetched)
 
   def _CheckoutOne(self, detach_head, force_sync, project):
     """Checkout work tree for one project
