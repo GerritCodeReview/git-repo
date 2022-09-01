@@ -26,6 +26,7 @@ import socket
 import sys
 import tempfile
 import time
+from typing import NamedTuple
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -69,6 +70,58 @@ _ONE_DAY_S = 24 * 60 * 60
 REPO_BACKUP_OBJECTS = 'REPO_BACKUP_OBJECTS'
 
 _BACKUP_OBJECTS = os.environ.get(REPO_BACKUP_OBJECTS) != '0'
+
+
+class _FetchOneResult(NamedTuple):
+  """_FetchOne return value.
+
+  Attributes:
+    success (bool): True if successful.
+    project (Project): The fetched project.
+    start (float): The starting time.time().
+    finish (float): The ending time.time().
+    remote_fetched (bool): True if the remote was actually queried.
+  """
+  success: bool
+  project: Project
+  start: float
+  finish: float
+  remote_fetched: bool
+
+
+class _FetchResult(NamedTuple):
+  """_Fetch return value.
+
+  Attributes:
+    success (bool): True if successful.
+    projects (set[str]): The names of the git directories of fetched projects.
+  """
+  success: bool
+  projects: set[str]
+
+
+class _FetchMainResult(NamedTuple):
+  """_FetchMain return value.
+
+  Attributes:
+    all_projects (list[Project]): The fetched projects.
+  """
+  all_projects: list[Project]
+
+
+class _CheckoutOneResult(NamedTuple):
+  """_CheckoutOne return value.
+
+  Attributes:
+    success (bool): True if successful.
+    project (Project): The project.
+    start (float): The starting time.time().
+    finish (float): The ending time.time().
+  """
+  success: bool
+  project: Project
+  start: float
+  finish: float
 
 
 class Sync(Command, MirrorSafeCommand):
@@ -412,7 +465,7 @@ later is required to fix a server side protocol bug.
     success = False
     buf = io.StringIO()
     try:
-      success = project.Sync_NetworkHalf(
+      sync_result = project.Sync_NetworkHalf(
           quiet=opt.quiet,
           verbose=opt.verbose,
           output_redir=buf,
@@ -426,6 +479,7 @@ later is required to fix a server side protocol bug.
           ssh_proxy=self.ssh_proxy,
           clone_filter=project.manifest.CloneFilter,
           partial_clone_exclude=project.manifest.PartialCloneExclude)
+      success = sync_result.success
 
       output = buf.getvalue()
       if (opt.verbose or not success) and output:
@@ -443,7 +497,8 @@ later is required to fix a server side protocol bug.
       raise
 
     finish = time.time()
-    return (success, project, start, finish)
+    return _FetchOneResult(success, project, start, finish,
+                           sync_result.remote_fetched)
 
   @classmethod
   def _FetchInitChild(cls, ssh_proxy):
@@ -454,6 +509,7 @@ later is required to fix a server side protocol bug.
 
     jobs = opt.jobs_network
     fetched = set()
+    remote_fetched = set()
     pm = Progress('Fetching', len(projects), delay=False, quiet=opt.quiet)
 
     objdir_project_map = dict()
@@ -464,10 +520,16 @@ later is required to fix a server side protocol bug.
     def _ProcessResults(results_sets):
       ret = True
       for results in results_sets:
-        for (success, project, start, finish) in results:
+        for result in results:
+          success = result.success
+          project = result.project
+          start = result.start
+          finish = result.finish
           self._fetch_times.Set(project, finish - start)
           self.event_log.AddSync(project, event_log.TASK_SYNC_NETWORK,
                                  start, finish, success)
+          if result.remote_fetched:
+            remote_fetched.add(project)
           # Check for any errors before running any more tasks.
           # ...we'll let existing jobs finish, though.
           if not success:
@@ -525,7 +587,7 @@ later is required to fix a server side protocol bug.
     if not self.outer_client.manifest.IsArchive:
       self._GCProjects(projects, opt, err_event)
 
-    return (ret, fetched)
+    return _FetchResult(ret, fetched)
 
   def _FetchMain(self, opt, args, all_projects, err_event,
                  ssh_proxy, manifest):
@@ -551,7 +613,9 @@ later is required to fix a server side protocol bug.
     to_fetch.extend(all_projects)
     to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
-    success, fetched = self._Fetch(to_fetch, opt, err_event, ssh_proxy)
+    result = self._Fetch(to_fetch, opt, err_event, ssh_proxy)
+    success = result.success
+    fetched = result.projects
     if not success:
       err_event.set()
 
@@ -561,7 +625,7 @@ later is required to fix a server side protocol bug.
       if err_event.is_set():
         print('\nerror: Exited sync due to fetch errors.\n', file=sys.stderr)
         sys.exit(1)
-      return
+      return _FetchMainResult([])
 
     # Iteratively fetch missing and/or nested unregistered submodules
     previously_missing_set = set()
@@ -584,12 +648,14 @@ later is required to fix a server side protocol bug.
       if previously_missing_set == missing_set:
         break
       previously_missing_set = missing_set
-      success, new_fetched = self._Fetch(missing, opt, err_event, ssh_proxy)
+      result = self._Fetch(missing, opt, err_event, ssh_proxy)
+      success = result.success
+      new_fetched = result.projects
       if not success:
         err_event.set()
       fetched.update(new_fetched)
 
-    return all_projects
+    return _FetchMainResult(all_projects)
 
   def _CheckoutOne(self, detach_head, force_sync, project):
     """Checkout work tree for one project
@@ -621,7 +687,7 @@ later is required to fix a server side protocol bug.
     if not success:
       print('error: Cannot checkout %s' % (project.name), file=sys.stderr)
     finish = time.time()
-    return (success, project, start, finish)
+    return _CheckoutOneResult(success, project, start, finish)
 
   def _Checkout(self, all_projects, opt, err_results):
     """Checkout projects listed in all_projects
@@ -636,7 +702,11 @@ later is required to fix a server side protocol bug.
 
     def _ProcessResults(pool, pm, results):
       ret = True
-      for (success, project, start, finish) in results:
+      for result in results:
+        success = result.success
+        project = result.project
+        start = result.start
+        finish = result.finish
         self.event_log.AddSync(project, event_log.TASK_SYNC_LOCAL,
                                start, finish, success)
         # Check for any errors before running any more tasks.
@@ -1208,8 +1278,9 @@ later is required to fix a server side protocol bug.
         with ssh.ProxyManager(manager) as ssh_proxy:
           # Initialize the socket dir once in the parent.
           ssh_proxy.sock()
-          all_projects = self._FetchMain(opt, args, all_projects, err_event,
-                                         ssh_proxy, manifest)
+          result = self._FetchMain(opt, args, all_projects, err_event,
+                                   ssh_proxy, manifest)
+          all_projects = result.all_projects
 
       if opt.network_only:
         return

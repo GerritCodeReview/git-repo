@@ -26,6 +26,7 @@ import sys
 import tarfile
 import tempfile
 import time
+from typing import NamedTuple
 import urllib.parse
 
 from color import Coloring
@@ -44,6 +45,14 @@ from repo_trace import IsTrace, Trace
 
 from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M, R_WORKTREE_M
 
+
+class SyncNetworkHalfResult(NamedTuple):
+  """Sync_NetworkHalf return value."""
+  # True if successful.
+  success: bool
+  # Did we query the remote? False when optimized_fetch is True and we have the
+  # commit already present.
+  remote_fetched: bool
 
 # Maximum sleep time allowed during retries.
 MAXIMUM_RETRY_SLEEP_SEC = 3600.0
@@ -1133,7 +1142,7 @@ class Project(object):
     if archive and not isinstance(self, MetaProject):
       if self.remote.url.startswith(('http://', 'https://')):
         _error("%s: Cannot fetch archives from http/https remotes.", self.name)
-        return False
+        return SyncNetworkHalfResult(False, False)
 
       name = self.relpath.replace('\\', '/')
       name = name.replace('/', '_')
@@ -1144,19 +1153,19 @@ class Project(object):
         self._FetchArchive(tarpath, cwd=topdir)
       except GitError as e:
         _error('%s', e)
-        return False
+        return SyncNetworkHalfResult(False, False)
 
       # From now on, we only need absolute tarpath
       tarpath = os.path.join(topdir, tarpath)
 
       if not self._ExtractArchive(tarpath, path=topdir):
-        return False
+        return SyncNetworkHalfResult(False, True)
       try:
         platform_utils.remove(tarpath)
       except OSError as e:
         _warn("Cannot remove archive %s: %s", tarpath, str(e))
       self._CopyAndLinkFiles()
-      return True
+      return SyncNetworkHalfResult(True, True)
 
     # If the shared object dir already exists, don't try to rebootstrap with a
     # clone bundle download.  We should have the majority of objects already.
@@ -1220,9 +1229,11 @@ class Project(object):
       depth = self.manifest.manifestProject.depth
 
     # See if we can skip the network fetch entirely.
+    remote_fetched = False
     if not (optimized_fetch and
             (ID_RE.match(self.revisionExpr) and
              self._CheckForImmutableRevision())):
+      remote_fetched = True
       if not self._RemoteFetch(
               initial=is_new,
               quiet=quiet, verbose=verbose, output_redir=output_redir,
@@ -1231,7 +1242,7 @@ class Project(object):
               submodules=submodules, force_sync=force_sync,
               ssh_proxy=ssh_proxy,
               clone_filter=clone_filter, retry_fetches=retry_fetches):
-        return False
+        return SyncNetworkHalfResult(False, remote_fetched)
 
     mp = self.manifest.manifestProject
     dissociate = mp.dissociate
@@ -1244,7 +1255,7 @@ class Project(object):
         if p.stdout and output_redir:
           output_redir.write(p.stdout)
         if p.Wait() != 0:
-          return False
+          return SyncNetworkHalfResult(False, remote_fetched)
         platform_utils.remove(alternates_file)
 
     if self.worktree:
@@ -1253,7 +1264,7 @@ class Project(object):
       self._InitMirrorHead()
       platform_utils.remove(os.path.join(self.gitdir, 'FETCH_HEAD'),
                             missing_ok=True)
-    return True
+    return SyncNetworkHalfResult(True, remote_fetched)
 
   def PostRepoUpgrade(self):
     self._InitHooks()
@@ -3836,7 +3847,7 @@ class ManifestProject(MetaProject):
           is_new=is_new, quiet=not verbose, verbose=verbose,
           clone_bundle=clone_bundle, current_branch_only=current_branch_only,
           tags=tags, submodules=submodules, clone_filter=clone_filter,
-          partial_clone_exclude=self.manifest.PartialCloneExclude):
+          partial_clone_exclude=self.manifest.PartialCloneExclude).success:
         r = self.GetRemote()
         print('fatal: cannot obtain manifest %s' % r.url, file=sys.stderr)
 
