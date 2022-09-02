@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdfa6098_76258afd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-02T19:49:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "397b558a_45eb5523",
+      "revId": "fbcfc0569131c0c108ab8072857d712f6b070294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4acd6b2c_97ac2b8d",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e994a475_4d21a2c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-02T19:49:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4acd6b2c_97ac2b8d",
+      "revId": "fbcfc0569131c0c108ab8072857d712f6b070294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9771e027_ea236b4f",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-09-02T08:18:14Z",
       "side": 1,
       "message": "put `(default)` at the end so it\u0027s clear",
+      "revId": "fbcfc0569131c0c108ab8072857d712f6b070294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eae4a5c5_0a8e3335",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-02T19:49:14Z",
+      "side": 1,
+      "message": "Added `(default: only remote-querying projects)`, since that is the actual default.",
+      "parentUuid": "9771e027_ea236b4f",
       "revId": "fbcfc0569131c0c108ab8072857d712f6b070294",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
