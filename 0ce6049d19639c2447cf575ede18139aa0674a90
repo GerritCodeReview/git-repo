@@ -16,6 +16,24 @@
       "message": "typing.NamedTuple is the new hotness.  this allows you to declare like a normal object with typing info.  none of this metaprogramming funkiness.\n\nif you look in chromite for \"NamedTuple\" you\u0027ll find many examples.",
       "revId": "0ce6049d19639c2447cf575ede18139aa0674a90",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b126491e_48c9d3ff",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-02T19:35:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbbd7a70_0ec0b9f3",
+      "revId": "0ce6049d19639c2447cf575ede18139aa0674a90",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
