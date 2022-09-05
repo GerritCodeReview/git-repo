@@ -1940,12 +1940,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     fromKeys = sorted(fromProjects.keys())
     toKeys = sorted(toProjects.keys())
 
-    diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
+    projsPath = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'projects')
+    diff = {'added': [], 'removed': [], 'missing': [], 'changed': [], 'unreachable': []}
 
     for proj in fromKeys:
       if proj not in toKeys:
         diff['removed'].append(fromProjects[proj])
-      else:
+      elif os.path.exists(os.path.join(projsPath, "{}.git".format(proj))):
         fromProj = fromProjects[proj]
         toProj = toProjects[proj]
         try:
@@ -1959,7 +1960,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         toKeys.remove(proj)
 
     for proj in toKeys:
-      diff['added'].append(toProjects[proj])
+      if not proj in fromKeys:
+        diff['added'].append(toProjects[proj])
+      elif not os.path.exists(os.path.join(projsPath, "{}.git".format(proj))):
+        diff['missing'].append(toProjects[proj])
 
     return diff
 
