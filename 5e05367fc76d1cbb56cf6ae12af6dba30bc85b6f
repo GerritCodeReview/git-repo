@@ -16,6 +16,24 @@
       "message": "i think we want to do it like here instead of calling it directly",
       "revId": "5e05367fc76d1cbb56cf6ae12af6dba30bc85b6f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b9726ba_2aafdccb",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1500,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2022-09-05T15:46:06Z",
+      "side": 1,
+      "message": "Given that there are plenty of calls directly to _CopyAndLinkFiles() in this function, why does it need to be delayed in my case? I thought the delay here was only due to _dorebase() and _dosubmodules() being delayed.",
+      "parentUuid": "a0389d4c_d9fd58b6",
+      "revId": "5e05367fc76d1cbb56cf6ae12af6dba30bc85b6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
