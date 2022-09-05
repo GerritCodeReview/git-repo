@@ -1940,12 +1940,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     fromKeys = sorted(fromProjects.keys())
     toKeys = sorted(toProjects.keys())
 
-    diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
+    diff = {'added': [], 'removed': [], 'missing': [], 'changed': [], 'unreachable': []}
 
     for proj in fromKeys:
       if proj not in toKeys:
         diff['removed'].append(fromProjects[proj])
-      else:
+      elif os.path.exists(os.path.join(self.repodir, projsPath, 'projects', '%s.git' % proj)):
         fromProj = fromProjects[proj]
         toProj = toProjects[proj]
         try:
@@ -1956,6 +1956,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         else:
           if fromRevId != toRevId:
             diff['changed'].append((fromProj, toProj))
+        toKeys.remove(proj)
+      else:
+        diff['missing'].append(toProjects[proj])
         toKeys.remove(proj)
 
     for proj in toKeys:
