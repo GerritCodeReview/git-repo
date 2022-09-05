@@ -118,6 +118,16 @@ synced and their revisions won't be found.
         self.printRevision(project.revisionExpr)
         self.out.nl()
 
+    if diff['missing']:
+      self.out.nl()
+      self.printText('missing projects : \n')
+      self.out.nl()
+      for project in diff['missing']:
+        self.printProject('\t%s' % (project.relpath))
+        self.printText(' at revision ')
+        self.printRevision(project.revisionExpr)
+        self.out.nl()
+
     if diff['changed']:
       self.out.nl()
       self.printText('changed projects : \n')

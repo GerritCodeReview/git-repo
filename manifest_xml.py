@@ -1940,11 +1940,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     fromKeys = sorted(fromProjects.keys())
     toKeys = sorted(toProjects.keys())
 
-    diff = {'added': [], 'removed': [], 'changed': [], 'unreachable': []}
+    diff = {'added': [], 'removed': [], 'missing': [], 'changed': [], 'unreachable': []}
 
     for proj in fromKeys:
       if proj not in toKeys:
         diff['removed'].append(fromProjects[proj])
+      elif not fromProjects[proj].Exists:
+        diff['missing'].append(toProjects[proj])
+        toKeys.remove(proj)
       else:
         fromProj = fromProjects[proj]
         toProj = toProjects[proj]
