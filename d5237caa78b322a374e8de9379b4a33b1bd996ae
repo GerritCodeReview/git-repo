@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a503bcc3_e85bbb67",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1151396
+      },
+      "writtenOn": "2022-09-06T06:57:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "54b8afa2_c1585e78",
+      "revId": "d5237caa78b322a374e8de9379b4a33b1bd996ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17cc6009_d9488a62",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ebd0cfe_a6f3f810",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1948,
+      "author": {
+        "id": 1151396
+      },
+      "writtenOn": "2022-09-06T06:57:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "17cc6009_d9488a62",
+      "revId": "d5237caa78b322a374e8de9379b4a33b1bd996ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "648c8e53_524927af",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-09-06T05:44:43Z",
       "side": 1,
       "message": "we use 2 space indent",
+      "revId": "d5237caa78b322a374e8de9379b4a33b1bd996ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "641bf942_9342a4fc",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1151396
+      },
+      "writtenOn": "2022-09-06T06:57:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "648c8e53_524927af",
       "revId": "d5237caa78b322a374e8de9379b4a33b1bd996ae",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
