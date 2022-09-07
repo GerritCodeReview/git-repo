@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d182d41e_9ed53c8f",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1147620
+      },
+      "writtenOn": "2022-09-07T07:41:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f914b619_b9f74dde",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3fdc555_0fba67f1",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-08-24T19:26:33Z",
       "side": 1,
       "message": "move this to the block below",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "410d46bf_beefcc46",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1147620
+      },
+      "writtenOn": "2022-09-07T07:41:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3fdc555_0fba67f1",
       "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6647f02e_d0251d75",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1147620
+      },
+      "writtenOn": "2022-09-07T07:41:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca0af343_82f7fabc",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9fb0fb34_713b7cf7",
@@ -65,6 +119,24 @@
       "writtenOn": "2022-08-24T19:26:33Z",
       "side": 1,
       "message": "don\u0027t need the comment",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98a8e960_588d45d8",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1147620
+      },
+      "writtenOn": "2022-09-07T07:41:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fb0fb34_713b7cf7",
       "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -100,6 +172,24 @@
       "side": 1,
       "message": "I can\u0027t find a way to make windows have the same logic as shell.\nThus I guess the best way is to block it when detected.",
       "parentUuid": "c10f11b5_b99e9f4e",
+      "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ce45b4_0547fe71",
+        "filename": "subcmds/forall.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1147620
+      },
+      "writtenOn": "2022-09-07T07:41:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36f64963_2ceb65a7",
       "revId": "eac160263310e621d6b422b009f1c1f8c2b9f7ad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
