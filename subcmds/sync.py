@@ -21,6 +21,7 @@ import multiprocessing
 import netrc
 from optparse import SUPPRESS_HELP
 import os
+import shutil
 import socket
 import sys
 import tempfile
@@ -58,11 +59,16 @@ from error import RepoChangedException, GitError, ManifestParseError
 import platform_utils
 from project import SyncBuffer
 from progress import Progress
+from repo_trace import IsTrace, Trace
 import ssh
 from wrapper import Wrapper
 from manifest_xml import GitcManifest
 
 _ONE_DAY_S = 24 * 60 * 60
+# Env var to implicitly turn off object backups.
+REPO_BACKUP_OBJECTS = 'REPO_BACKUP_OBJECTS'
+
+_BACKUP_OBJECTS = os.environ.get(REPO_BACKUP_OBJECTS) != '0'
 
 
 class Sync(Command, MirrorSafeCommand):
@@ -694,13 +700,42 @@ later is required to fix a server side protocol bug.
 
     jobs = opt.jobs
 
+    def _backup_cruft(bare_git):
+      # Find any cruft packs in the current gitdir, and save them.
+      # b/221065125 (repo sync complains that objects are missing).  This does
+      # not prevent that state, but makes it so that the missing objects are
+      # available.
+      if not _BACKUP_OBJECTS:
+        return
+      saved = []
+      objdir = bare_git.GetDotgitPath('objects')
+      pack_dir = os.path.join(objdir, 'pack')
+      bak_dir = os.path.join(objdir, '.repo','pack.bak')
+      for fname in platform_utils.listdir(pack_dir):
+        base, ext = os.path.splitext(fname)
+        if ext == '.mtimes':
+          if not platform_utils.isdir(bak_dir):
+            os.makedirs(bak_dir)
+          pack_base = os.path.join(pack_dir, base)
+          bak_base = os.path.join(bak_dir, base)
+          if not os.path.exists(bak_base + '.mtimes'):
+            saved.append(base)
+            for ext in '.idx', '.pack', '.mtimes':
+              shutil.copy(pack_base + ext, bak_base + ext)
+      if saved and IsTrace():
+        Trace('%s saved  %s', bare_git._project.name, ' '.join(saved))
+
+    gc_args = ('--auto', '--cruft')
+    pack_refs_args = ()
     if jobs < 2:
       for (run_gc, bare_git) in tidy_dirs.values():
         pm.update(msg=bare_git._project.name)
+
         if run_gc:
-          bare_git.gc('--auto')
+          bare_git.gc(*gc_args)
         else:
-          bare_git.pack_refs()
+          bare_git.pack_refs(*pack_refs_args)
+        _backup_cruft(bare_git)
       pm.end()
       return
 
@@ -715,15 +750,16 @@ later is required to fix a server side protocol bug.
       try:
         try:
           if run_gc:
-            bare_git.gc('--auto', config=config)
+            bare_git.gc(*gc_args, config=config)
           else:
-            bare_git.pack_refs(config=config)
+            bare_git.pack_refs(*pack_refs_args, config=config)
         except GitError:
           err_event.set()
         except Exception:
           err_event.set()
           raise
       finally:
+        _backup_cruft(bare_git)
         pm.finish(bare_git._project.name)
         sem.release()
 
