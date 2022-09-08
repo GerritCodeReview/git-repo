@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8473fa3_631f1ca0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-08T21:42:25Z",
+      "side": 1,
+      "message": "This should make it possible for users to recover from the corruption issue while we figure out the root cause.",
+      "revId": "5b1943bedaa5c5527bb663329512b9f83b34fa32",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
