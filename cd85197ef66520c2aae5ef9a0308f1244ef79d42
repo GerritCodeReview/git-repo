@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe2ffc6d_c2cad66b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1030375
+      },
+      "writtenOn": "2022-09-08T22:54:01Z",
+      "side": 1,
+      "message": "Also copy over \u0027.promisor\u0027 if it is present.",
+      "range": {
+        "startLine": 723,
+        "startChar": 49,
+        "endLine": 723,
+        "endChar": 50
+      },
+      "revId": "cd85197ef66520c2aae5ef9a0308f1244ef79d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f29c4f8_d602d0a6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1030375
+      },
+      "writtenOn": "2022-09-08T22:54:01Z",
+      "side": 1,
+      "message": "It may be confusing to have a message written but no files actually being copied - maybe differentiate between a file being skipped because it\u0027s already there vs. a file being copied.",
+      "revId": "cd85197ef66520c2aae5ef9a0308f1244ef79d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
