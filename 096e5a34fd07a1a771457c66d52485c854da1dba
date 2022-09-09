@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8837697b_e6e6d97e",
+        "filename": "man/repo-diff.1",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T21:14:02Z",
+      "side": 1,
+      "message": "It\u0027s the result of using python3 to run release/update-manpages (no python2 on my machine, but it was used in previous runs of the script.)",
+      "parentUuid": "c435b0af_e09b2d8c",
+      "range": {
+        "startLine": 9,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 4
+      },
+      "revId": "096e5a34fd07a1a771457c66d52485c854da1dba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6be327d8_296c3a1b",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-09-09T20:39:52Z",
       "side": 1,
       "message": "I\u0027m not sure it matches the code. The \"if --gc\" check seems like it\u0027s still buried inside of the Fetch() function, so it really means, \"GC all fetched projects, or skip GCing all fetched projects,\" right?",
+      "revId": "096e5a34fd07a1a771457c66d52485c854da1dba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a67d1e7_0538aa86",
+        "filename": "man/repo-sync.1",
+        "patchSetId": 6
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T21:14:02Z",
+      "side": 1,
+      "message": "updated.\n\ntl;dr: this line should read \"all synced projects\" (to avoid it being interpreted as \"all manifest projects\".)  If the user did not provide a project list, then and only then is it \"all manifest projects (in the manifest groups given to repo init)\".\n\n--no-gc: Do not run GC.\n\n--gc:  if the user said to sync the project, then run GC.\n\ndefault: (neither specified): if the user said to sync the project, and repo decided to query the remote (either we didn\u0027t have the commit locally, or there is not a commit recorded for the project), then run GC.",
+      "parentUuid": "6be327d8_296c3a1b",
       "revId": "096e5a34fd07a1a771457c66d52485c854da1dba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

@@ -16,6 +16,24 @@
       "message": "Before, we were only GCing on fetched projects because this clause is inside of _Fetch(), if I understand correctly?\n\nBut after, we\u0027re using this conditional exercising the shiny new flag - but it\u0027s still inside of _Fetch(). So I\u0027m not sure it does what it says on the box...",
       "revId": "bfeaabbd05b81fd5f9c02d648b014ccf5e6e9bef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45161524_fbd2ec80",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T21:14:02Z",
+      "side": 0,
+      "message": "The distinction is between \"remote_fetched\" and\"projects\" -- if opt.gc is None, then we only GC the projects where we did not skip the call to Project._RemoteFetch (project.py line 1230).  If it\u0027s True, then we GC \"projects\" which is the list that the user gave us, or the projects from the manifest groups in repo init.",
+      "parentUuid": "22d5e89b_77a01426",
+      "revId": "bfeaabbd05b81fd5f9c02d648b014ccf5e6e9bef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
