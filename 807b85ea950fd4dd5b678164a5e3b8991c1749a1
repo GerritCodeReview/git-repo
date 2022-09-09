@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2cb2e26_68831262",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T21:13:34Z",
+      "side": 1,
+      "message": "I moved it to avoid using the longer version when called with `syncbuf\u003dNone`, after verifying that we don\u0027t actually use mp until line 1266 below.\n\nMost of this code base has logic on method entry to set default values where we expect them to be needed later.",
+      "parentUuid": "8277581f_2b6bb242",
+      "revId": "807b85ea950fd4dd5b678164a5e3b8991c1749a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae126478_051f137a",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-09-09T20:55:49Z",
       "side": 1,
       "message": "Er, I don\u0027t know Python, but if BadRefs is an enum, do y\u0027all not have a switch statement...? Why all the elifs?",
+      "revId": "807b85ea950fd4dd5b678164a5e3b8991c1749a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ed85d1c_678755de",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T21:13:34Z",
+      "side": 1,
+      "message": "Python does not have case statements.",
+      "parentUuid": "ae126478_051f137a",
       "revId": "807b85ea950fd4dd5b678164a5e3b8991c1749a1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
