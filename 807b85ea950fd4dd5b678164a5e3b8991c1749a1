@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8277581f_2b6bb242",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1152,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2022-09-09T20:55:49Z",
+      "side": 1,
+      "message": "It seems odd to move the mp assignment so much earlier when \u0027syncbuf\u0027 isn\u0027t used til approximately the place that mp was originally aligned, no? What\u0027s the reasoning? Are we sure that the manifest isn\u0027t going to be modified in the extra ~100 lines you\u0027re not executing before assigning \u0027mp\u0027 now?",
+      "revId": "807b85ea950fd4dd5b678164a5e3b8991c1749a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae126478_051f137a",
+        "filename": "project.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1345,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2022-09-09T20:55:49Z",
+      "side": 1,
+      "message": "Er, I don\u0027t know Python, but if BadRefs is an enum, do y\u0027all not have a switch statement...? Why all the elifs?",
+      "revId": "807b85ea950fd4dd5b678164a5e3b8991c1749a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
