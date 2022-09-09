@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffad0528_1e41b12a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T16:55:33Z",
+      "side": 1,
+      "message": "There are some trade offs here: when they are created, the cruft packs will contain only unreachable objects. Depending on how often `repo sync` is being called (and `--auto` is triggering actual work), those commits could wind up in multiple cruft packs before they expire, increasing the amount of disk space bloat that this CL creates (and does nothing to remove).\nTo reduce the impact to disk space, no effort is made to back up the non-cruft packs, or other objects, so we only know what `git gc` decided was unreachable at the time of the gc.\n\nIf the workspace becomes broken (due to \"missing commits\"), the developer should:\n1. create a tar file containing the `.repo/project-objects/${REPO_PROJECT}.git`, `.repo/projects/${REPO_PATH}.git`, and `/usr/local/google/tmp/git_trace2` directories.\n2. Submit a bug report.\n\nAfter that the developer should be able to recover the workspace by saying:\n`cp .repo/projects/${REPO_PATH}.git/objects/.repo/pack.bak/* .repo/projects/${REPO_PATH}.git/objects/pack`.",
+      "revId": "d287e496cf5039968a84cc7fec080c6ce44cd6d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
