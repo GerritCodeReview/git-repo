@@ -874,3 +874,27 @@ class ExtendProjectElementTests(ManifestParseTestCase):
     else:
       self.assertEqual(manifest.projects[0].relpath, 'bar')
       self.assertEqual(manifest.projects[1].relpath, 'y')
+
+  def test_extend_project_dest_branch(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" dest-branch="foo" />
+  <project name="myproject" />
+  <extend-project name="myproject" dest-branch="bar" />
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 1)
+    self.assertEqual(manifest.projects[0].dest_branch, 'bar')
+
+  def test_extend_project_upstream(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <extend-project name="myproject" upstream="upbar" />
+</manifest>
+""")
+    self.assertEqual(len(manifest.projects), 1)
+    self.assertEqual(manifest.projects[0].upstream, 'upbar')
