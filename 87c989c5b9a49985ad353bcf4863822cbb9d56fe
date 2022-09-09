@@ -1,0 +1,180 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "454885a3_5dd8c6b2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "this is only about syncing, so use `sync:` as a prefix",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45081149_c6c564b6",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1329,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "avoid negative variable names.  in this case, `check` would be a better name as that aligns with `subprocess.run()` a bit more.",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a471f88e_c86fbb76",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1331,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "it looks like you\u0027re writing an enum.  declare a proper enum instead via the `enum` module.",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eec918d1_1685d543",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1332,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "this help text really should be visible to users.  the current --help output has no information at all.",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8db2a242_ad993c61",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1335,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "prob want to use `platform_utils.isdir` here to match Exists API",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c845ca8_c81727de",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1357,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "the `Wait()` method is basically a nop now.  you can access `p.rc` directly yourself.",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86536825_0eb37f12",
+        "filename": "project.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 1376,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "please don\u0027t inline `.Wait()` like this ... it\u0027s very easy to miss.  capture the object, and test the `.rc` property.",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b1f761a_366b6591",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "i wonder if we really need `is_` prefix here.  seems out of style of the other fields.",
+      "range": {
+        "startLine": 84,
+        "startChar": 2,
+        "endLine": 84,
+        "endChar": 8
+      },
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "befa8e3a_5fe63f33",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "please document every field",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0841efc8_8360b5fb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 318,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-09T07:20:49Z",
+      "side": 1,
+      "message": "calling it \"Debugging options\" probably makes more sense",
+      "revId": "87c989c5b9a49985ad353bcf4863822cbb9d56fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
