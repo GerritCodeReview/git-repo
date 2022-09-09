@@ -105,6 +105,8 @@ following DTD:
   <!ATTLIST extend-project groups CDATA #IMPLIED>
   <!ATTLIST extend-project revision CDATA #IMPLIED>
   <!ATTLIST extend-project remote CDATA #IMPLIED>
+  <!ATTLIST extend-project dest-branch CDATA #IMPLIED>
+  <!ATTLIST extend-project upstream CDATA #IMPLIED>
 
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name  CDATA #REQUIRED>
@@ -422,6 +424,12 @@ project.  Same syntax as the corresponding element of `project`.
 
 Attribute `remote`: If specified, overrides the remote of the original
 project.  Same syntax as the corresponding element of `project`.
+
+Attribute `dest-branch`: If specified, overrides the dest-branch of the original
+project.  Same syntax as the corresponding element of `project`.
+
+Attribute `upstream`: If specified, overrides the upstream of the original
+project.  Same syntax as the corresponding element of `upstream`.
 
 ### Element annotation
 
