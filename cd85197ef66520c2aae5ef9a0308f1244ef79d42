@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e2a1a1_d34f31fa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T00:37:51Z",
+      "side": 1,
+      "message": "Updated to copy any file with the same prefix as a .mtimes file.",
+      "parentUuid": "fe2ffc6d_c2cad66b",
+      "range": {
+        "startLine": 723,
+        "startChar": 49,
+        "endLine": 723,
+        "endChar": 50
+      },
+      "revId": "cd85197ef66520c2aae5ef9a0308f1244ef79d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f29c4f8_d602d0a6",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-09-08T22:54:01Z",
       "side": 1,
       "message": "It may be confusing to have a message written but no files actually being copied - maybe differentiate between a file being skipped because it\u0027s already there vs. a file being copied.",
+      "revId": "cd85197ef66520c2aae5ef9a0308f1244ef79d42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1a26de9_dd64701b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-09T00:37:51Z",
+      "side": 1,
+      "message": "IsTrace() is only on when `repo --trace` is used, and the Trace call only happens when there is a non-empty list of files that were copied this time.",
+      "parentUuid": "6f29c4f8_d602d0a6",
       "revId": "cd85197ef66520c2aae5ef9a0308f1244ef79d42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
