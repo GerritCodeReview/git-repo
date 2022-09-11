@@ -71,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e02cae1_da424cb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1150387
+      },
+      "writtenOn": "2022-09-11T04:15:53Z",
+      "side": 1,
+      "message": "\u003e Done",
+      "parentUuid": "e994a475_4d21a2c3",
+      "revId": "fbcfc0569131c0c108ab8072857d712f6b070294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9771e027_ea236b4f",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Added `(default: only remote-querying projects)`, since that is the actual default.",
       "parentUuid": "9771e027_ea236b4f",
+      "revId": "fbcfc0569131c0c108ab8072857d712f6b070294",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5927a471_eaee3ff6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1150387
+      },
+      "writtenOn": "2022-09-11T04:15:53Z",
+      "side": 1,
+      "message": "\u003e Added `(default: only remote-querying projects)`, since that is the actual default.",
+      "parentUuid": "eae4a5c5_0a8e3335",
       "revId": "fbcfc0569131c0c108ab8072857d712f6b070294",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
