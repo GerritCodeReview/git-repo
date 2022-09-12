@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58282250_83921be8",
+        "filename": "man/repo-diff.1",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-12T17:24:22Z",
+      "side": 1,
+      "message": "On a system with no `python`, the following error is produced:\n```\n./release/update-manpages\n...\nhelp2man: can\u0027t get `help rebase\u0027 info from .../git-repo/repo\nTry `--no-discard-stderr\u0027 if option outputs to stderr\n...\nmultiprocessing.pool.RemoteTraceback: \n\"\"\"\nTraceback (most recent call last):\n  File \"/usr/lib/python3.10/multiprocessing/pool.py\", line 125, in worker\n    result \u003d (True, func(*args, **kwds))\n  File \"/usr/lib/python3.10/multiprocessing/pool.py\", line 48, in mapstar\n    return list(map(*args))\n  File \".../git-repo/./release/update-manpages\", line 41, in worker\n    subprocess.run(cmd, **kwargs)\n  File \"/usr/lib/python3.10/subprocess.py\", line 524, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command \u0027[\u0027help2man\u0027, \u0027-N\u0027, \u0027-n\u0027, \u0027repo version - manual page for repo version\u0027, \u0027-S\u0027, \u0027repo version\u0027, \u0027-m\u0027, \u0027Repo Manual\u0027, \u0027--version-string\u003d2.29.2-5-gefcea34\u0027, \u0027-o\u0027, PosixPath(\u0027.../git-repo/man/repo-version.1.tmp\u0027), PosixPath(\u0027.../git-repo/repo\u0027), \u0027-h\u0027, \u0027help version\u0027]\u0027 returned non-zero exit status 127.\n```\n\nLocally changing repo to say `#!/usr/bin/env python3` in line 1, was my workaround for that issue.",
+      "parentUuid": "54dcee82_d76036e9",
+      "range": {
+        "startLine": 9,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 4
+      },
+      "revId": "096e5a34fd07a1a771457c66d52485c854da1dba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6be327d8_296c3a1b",
         "filename": "man/repo-sync.1",
         "patchSetId": 6
