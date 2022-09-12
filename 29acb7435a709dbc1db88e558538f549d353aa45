@@ -52,6 +52,24 @@
       "parentUuid": "1af3971d_964a9e08",
       "revId": "29acb7435a709dbc1db88e558538f549d353aa45",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce87798e_abee6f21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-12T19:31:13Z",
+      "side": 1,
+      "message": "Only installed long enough to confirm that it does not fix the issue, and then purged.",
+      "parentUuid": "4ce4aaa6_6466b51f",
+      "revId": "29acb7435a709dbc1db88e558538f549d353aa45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
