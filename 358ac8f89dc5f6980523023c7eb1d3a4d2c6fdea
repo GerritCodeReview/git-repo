@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0206cba2_637107f4",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2022-09-12T06:18:48Z",
+      "side": 1,
+      "message": "Since this is a change in manifest format, please help out with assessing impact of backwards compatibility.  I believe it should be safe, since it is only adding attributes. So older manifests, not having these attributes, would not change behavior when running with newer repo versions.",
+      "revId": "358ac8f89dc5f6980523023c7eb1d3a4d2c6fdea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
