@@ -59,17 +59,25 @@ def main(argv):
   version = RepoSourceVersion()
   cmdlist = [['help2man', '-N', '-n', f'repo {cmd} - manual page for repo {cmd}',
     '-S', f'repo {cmd}', '-m', 'Repo Manual', f'--version-string={version}',
-    '-o', MANDIR.joinpath(f'repo-{cmd}.1.tmp'), TOPDIR.joinpath('repo'),
+    '-o', MANDIR.joinpath(f'repo-{cmd}.1.tmp'), './repo',
     '-h', f'help {cmd}'] for cmd in subcmds.all_commands]
   cmdlist.append(['help2man', '-N', '-n', 'repository management tool built on top of git',
     '-S', 'repo', '-m', 'Repo Manual', f'--version-string={version}',
-    '-o', MANDIR.joinpath('repo.1.tmp'), TOPDIR.joinpath('repo'),
+    '-o', MANDIR.joinpath('repo.1.tmp'), './repo',
     '-h', '--help-all'])
 
   with tempfile.TemporaryDirectory() as tempdir:
-    repo_dir = Path(tempdir) / '.repo'
+    tempdir = Path(tempdir)
+    repo_dir = tempdir / '.repo'
     repo_dir.mkdir()
     (repo_dir / 'repo').symlink_to(TOPDIR)
+
+    # Create a repo wrapper using the active Python executable.  We can't pass
+    # this directly to help2man as it's too simple, so insert it via shebang.
+    data = (TOPDIR / 'repo').read_text(encoding='utf-8')
+    tempbin = tempdir / 'repo'
+    tempbin.write_text(f'#!{sys.executable}\n' + data, encoding='utf-8')
+    tempbin.chmod(0o755)
 
     # Run all cmd in parallel, and wait for them to finish.
     with multiprocessing.Pool() as pool:
