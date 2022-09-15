@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b66cb61_d6b6ef75",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:08:32Z",
+      "side": 1,
+      "message": "this shouldn\u0027t be a nested function",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2473ce9f_5f6aba72",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:08:32Z",
+      "side": 1,
+      "message": "missing space after `,`",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61b4d5ca_ff367ee3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:08:32Z",
+      "side": 1,
+      "message": "we only use single quotes",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9466dd4_5ec11ad5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:08:32Z",
+      "side": 1,
+      "message": "you don\u0027t need the isdir check.  just pass `exist_ok\u003dTrue` to the os.makedirs call.",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dff0c221_6d2361e4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:08:32Z",
+      "side": 1,
+      "message": "Trace() already checks IsTrace().  there\u0027s no point in doing this yourself.",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
