@@ -658,6 +658,36 @@ later is required to fix a server side protocol bug.
         callback=_ProcessResults,
         output=Progress('Checking out', len(all_projects), quiet=opt.quiet)) and not err_results
 
+  def _backup_cruft(self, bare_git):
+    """Save a copy of any cruft from `git gc`."""
+    # Find any cruft packs in the current gitdir, and save them.
+    # b/221065125 (repo sync complains that objects are missing).  This does
+    # not prevent that state, but makes it so that the missing objects are
+    # available.
+    objdir = bare_git._project.objdir
+    pack_dir = os.path.join(objdir, 'pack')
+    bak_dir = os.path.join(objdir, '.repo', 'pack.bak')
+    if not _BACKUP_OBJECTS or not platform_utils.isdir(pack_dir):
+      return
+    saved = []
+    files = set(platform_utils.listdir(pack_dir))
+    to_backup = []
+    for f in files:
+      base, ext = os.path.splitext(f)
+      if base + '.mtimes' in files:
+        to_backup.append(f)
+    if to_backup:
+      os.makedirs(bak_dir, exist_ok=True)
+    for fname in to_backup:
+      bak_fname = os.path.join(bak_dir, fname)
+      if not os.path.exists(bak_fname):
+        saved.append(fname)
+        # Use a tmp file so that we are sure of a complete copy.
+        shutil.copy(os.path.join(pack_dir, fname), bak_fname + '.tmp')
+        shutil.move(bak_fname + '.tmp', bak_fname)
+    if saved:
+      Trace('%s saved %s', bare_git._project.name, ' '.join(saved))
+
   def _GCProjects(self, projects, opt, err_event):
     pm = Progress('Garbage collecting', len(projects), delay=False, quiet=opt.quiet)
     pm.update(inc=0, msg='prescan')
@@ -700,35 +730,6 @@ later is required to fix a server side protocol bug.
 
     jobs = opt.jobs
 
-    def _backup_cruft(bare_git):
-      # Find any cruft packs in the current gitdir, and save them.
-      # b/221065125 (repo sync complains that objects are missing).  This does
-      # not prevent that state, but makes it so that the missing objects are
-      # available.
-      if not _BACKUP_OBJECTS:
-        return
-      saved = []
-      objdir = bare_git.GetDotgitPath('objects')
-      pack_dir = os.path.join(objdir, 'pack')
-      bak_dir = os.path.join(objdir, '.repo','pack.bak')
-      files = set(platform_utils.listdir(pack_dir))
-      to_backup = []
-      for f in files:
-        base, ext = os.path.splitext(f)
-        if base + ".mtimes" in files:
-          to_backup.append(f)
-      if to_backup and not platform_utils.isdir(bak_dir):
-        os.makedirs(bak_dir)
-      for fname in to_backup:
-        bak_fname = os.path.join(bak_dir, fname)
-        if not os.path.exists(bak_fname):
-          saved.append(fname)
-          # Use a tmp file so that we are sure of a complete copy.
-          shutil.copy(os.path.join(pack_dir, fname), bak_fname + '.tmp')
-          shutil.move(bak_fname + '.tmp', bak_fname)
-      if saved and IsTrace():
-        Trace('%s saved %s', bare_git._project.name, ' '.join(saved))
-
     gc_args = ('--auto', '--cruft')
     pack_refs_args = ()
     if jobs < 2:
@@ -739,7 +740,7 @@ later is required to fix a server side protocol bug.
           bare_git.gc(*gc_args)
         else:
           bare_git.pack_refs(*pack_refs_args)
-        _backup_cruft(bare_git)
+        self._backup_cruft(bare_git)
       pm.end()
       return
 
@@ -763,7 +764,7 @@ later is required to fix a server side protocol bug.
           err_event.set()
           raise
       finally:
-        _backup_cruft(bare_git)
+        self._backup_cruft(bare_git)
         pm.finish(bare_git._project.name)
         sem.release()
 
