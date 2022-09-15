@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b057d7a_34492259",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:03:21Z",
+      "side": 1,
+      "message": "we usually import classes out of typing\n\n`from typing import NamedTuple`",
+      "revId": "19d7c1f4cfbbf9adfe166c3f37bdfa320df389c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b56c8acf_aeedff33",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:03:21Z",
+      "side": 1,
+      "message": "this is Snakey_Camel_Case.  Google Python style guide justs does CamelCase with classes.",
+      "range": {
+        "startLine": 50,
+        "startChar": 6,
+        "endLine": 50,
+        "endChar": 29
+      },
+      "revId": "19d7c1f4cfbbf9adfe166c3f37bdfa320df389c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06c51c4c_ea34172b",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T12:03:21Z",
+      "side": 1,
+      "message": "every class needs at least a one-line docstring explaining its purpose\n\ni\u0027ll note you already wrote a comment above it ...",
+      "revId": "19d7c1f4cfbbf9adfe166c3f37bdfa320df389c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
