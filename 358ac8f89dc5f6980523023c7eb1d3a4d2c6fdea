@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58eee31c_bc643471",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T19:15:46Z",
+      "side": 1,
+      "message": "should add prefix to scope like `manifest:`",
+      "revId": "358ac8f89dc5f6980523023c7eb1d3a4d2c6fdea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba871ef8_3eeb3a65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T19:15:46Z",
+      "side": 1,
+      "message": "nice, i didn\u0027t even have to ask for tests",
+      "revId": "358ac8f89dc5f6980523023c7eb1d3a4d2c6fdea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0206cba2_637107f4",
         "filename": "docs/manifest-format.md",
         "patchSetId": 2
@@ -14,6 +48,47 @@
       "writtenOn": "2022-09-12T06:18:48Z",
       "side": 1,
       "message": "Since this is a change in manifest format, please help out with assessing impact of backwards compatibility.  I believe it should be safe, since it is only adding attributes. So older manifests, not having these attributes, would not change behavior when running with newer repo versions.",
+      "revId": "358ac8f89dc5f6980523023c7eb1d3a4d2c6fdea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "deac539d_50f9ae15",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T19:15:46Z",
+      "side": 1,
+      "message": "your analysis sounds correct to me",
+      "parentUuid": "0206cba2_637107f4",
+      "revId": "358ac8f89dc5f6980523023c7eb1d3a4d2c6fdea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9c29579_9528fa33",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 432,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-15T19:15:46Z",
+      "side": 1,
+      "message": "\"project\"",
+      "range": {
+        "startLine": 432,
+        "startChar": 55,
+        "endLine": 432,
+        "endChar": 63
+      },
       "revId": "358ac8f89dc5f6980523023c7eb1d3a4d2c6fdea",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
