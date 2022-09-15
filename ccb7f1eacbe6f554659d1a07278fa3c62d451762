@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b9ac8cf_ecc2de29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1143860
+      },
+      "writtenOn": "2022-09-15T20:39:49Z",
+      "side": 1,
+      "message": "This is similar in spirit to https://gerrit-review.googlesource.com/c/git-repo/+/344475, but fixes a different edge case.",
+      "revId": "ccb7f1eacbe6f554659d1a07278fa3c62d451762",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
