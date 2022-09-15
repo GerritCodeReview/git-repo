@@ -1428,6 +1428,7 @@ class Project(object):
           syncbuf.fail(self,
                        "branch %s is published (but not merged) and is now "
                        "%d commits behind" % (branch.name, len(upstream_gain)))
+        self._CopyAndLinkFiles()
         return
       elif pub == head:
         # All published commits are merged, and thus we are a
@@ -1436,6 +1437,7 @@ class Project(object):
         syncbuf.later1(self, _doff)
         if submodules:
           syncbuf.later1(self, _dosubmodules)
+        self._CopyAndLinkFiles()
         return
 
     # Examine the local commits not in the remote.  Find the
