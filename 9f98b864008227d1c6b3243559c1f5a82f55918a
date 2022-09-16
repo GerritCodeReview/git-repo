@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d04b0194_c6f4f85d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:27:20Z",
+      "side": 1,
+      "message": "The only substantive change here is switching from `GetDotgitPath(\u0027objects\u0027)` to `bare_git._project.objdir` (which should be the same in practice.)",
+      "revId": "9f98b864008227d1c6b3243559c1f5a82f55918a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
