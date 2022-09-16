@@ -16,6 +16,40 @@
       "message": "This is similar in spirit to https://gerrit-review.googlesource.com/c/git-repo/+/344475, but fixes a different edge case.",
       "revId": "ccb7f1eacbe6f554659d1a07278fa3c62d451762",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c1d1d8b_00808ef2",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1431,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2022-09-16T22:05:26Z",
+      "side": 1,
+      "message": "There should be an else: before this so that it is not called when syncbuf.fail() is called.",
+      "revId": "ccb7f1eacbe6f554659d1a07278fa3c62d451762",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1d469ee_1d252c16",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1440,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2022-09-16T22:05:26Z",
+      "side": 1,
+      "message": "Doesn\u0027t syncbuf.later1(self, _doff) above take care of calling _CopyAndLinkFiles() in this case?",
+      "revId": "ccb7f1eacbe6f554659d1a07278fa3c62d451762",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
