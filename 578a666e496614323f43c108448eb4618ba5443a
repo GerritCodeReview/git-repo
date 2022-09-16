@@ -16,6 +16,24 @@
       "message": "you need to regen these man pages after you updated the help text",
       "revId": "578a666e496614323f43c108448eb4618ba5443a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bb465e4_a2e35c5c",
+        "filename": "man/repo-smartsync.1",
+        "patchSetId": 11
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:56:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7276c29_9a908230",
+      "revId": "578a666e496614323f43c108448eb4618ba5443a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
