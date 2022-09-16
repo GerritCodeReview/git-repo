@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d5e9df5_0074d433",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:56:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b057d7a_34492259",
+      "revId": "19d7c1f4cfbbf9adfe166c3f37bdfa320df389c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b56c8acf_aeedff33",
@@ -54,6 +72,48 @@
       "writtenOn": "2022-09-15T12:03:21Z",
       "side": 1,
       "message": "every class needs at least a one-line docstring explaining its purpose\n\ni\u0027ll note you already wrote a comment above it ...",
+      "revId": "19d7c1f4cfbbf9adfe166c3f37bdfa320df389c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3db37ee4_c0676234",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:56:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06c51c4c_ea34172b",
+      "revId": "19d7c1f4cfbbf9adfe166c3f37bdfa320df389c4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0be40b5_d9be7d96",
+        "filename": "project.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:56:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b56c8acf_aeedff33",
+      "range": {
+        "startLine": 50,
+        "startChar": 6,
+        "endLine": 50,
+        "endChar": 29
+      },
       "revId": "19d7c1f4cfbbf9adfe166c3f37bdfa320df389c4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
