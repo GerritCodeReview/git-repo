@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3353f767_3dd4c330",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:25:08Z",
+      "side": 1,
+      "message": "Uploaded as https://gerrit-review.googlesource.com/c/git-repo/+/345894",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b66cb61_d6b6ef75",
@@ -14,6 +31,24 @@
       "writtenOn": "2022-09-15T12:08:32Z",
       "side": 1,
       "message": "this shouldn\u0027t be a nested function",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c33b52ef_52631367",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 703,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b66cb61_d6b6ef75",
       "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -35,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "625e45f5_d17b75d2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2473ce9f_5f6aba72",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61b4d5ca_ff367ee3",
@@ -48,6 +101,24 @@
       "writtenOn": "2022-09-15T12:08:32Z",
       "side": 1,
       "message": "we only use single quotes",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6200910d_387c3601",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 718,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61b4d5ca_ff367ee3",
       "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +140,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6c201c5_0430d861",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9466dd4_5ec11ad5",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dff0c221_6d2361e4",
@@ -82,6 +171,24 @@
       "writtenOn": "2022-09-15T12:08:32Z",
       "side": 1,
       "message": "Trace() already checks IsTrace().  there\u0027s no point in doing this yourself.",
+      "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "914b6279_da5d3f39",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 729,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-09-16T17:25:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dff0c221_6d2361e4",
       "revId": "891e8f72ce3551a19c377456574bbfbeac5c8b8e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
