@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1f442f4_57e8df37",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-18T11:38:26Z",
+      "side": 1,
+      "message": "looking at git-fetch, they use --[no-]auto-gc. we probably should use the same name here for symmetry?",
+      "revId": "9a8f094ecb3e32cb172fa02369ce4bd8d5b5e6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d263b399_dd4a706b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-18T11:38:26Z",
+      "side": 1,
+      "message": "you don\u0027t need the paren",
+      "revId": "9a8f094ecb3e32cb172fa02369ce4bd8d5b5e6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "744e9bf4_6fb89540",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-18T11:38:26Z",
+      "side": 1,
+      "message": "this is a bit hard to parse. maybe use the phrasing you used above in the help text.",
+      "revId": "9a8f094ecb3e32cb172fa02369ce4bd8d5b5e6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

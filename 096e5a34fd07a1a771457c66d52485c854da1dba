@@ -144,6 +144,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a15d715_5c34442f",
+        "filename": "man/repo-diff.1",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-18T11:38:26Z",
+      "side": 1,
+      "message": "you can check your pager and/or man settings to see if it\u0027s coming from those",
+      "parentUuid": "ab234900_fe85207b",
+      "range": {
+        "startLine": 9,
+        "startChar": 1,
+        "endLine": 9,
+        "endChar": 4
+      },
+      "revId": "096e5a34fd07a1a771457c66d52485c854da1dba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6be327d8_296c3a1b",
