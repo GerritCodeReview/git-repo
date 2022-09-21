@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87a119d4_2b5b00b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-09-21T18:13:40Z",
+      "side": 1,
+      "message": "sorry for the delay.  i\u0027ve been thinking about this interface off \u0026 on.  the current dynamic logic can be fooled even on *NIX systems.  so i\u0027m thinking we should change it to stop trying to be smart.\n\nwhat if the interface were:\n* -c always invokes a shell.  this shouldn\u0027t break existing usage i don\u0027t think.\n* we don\u0027t require -c and support nargs\u003d*.  if those are specified, we just invoke it w/out a shell.  people can use `--` for clarity here too.\n\nas a result, i think this would simplify the Windows logic too.",
+      "revId": "85a70d7ae590d2446562e346a379556418a696d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
