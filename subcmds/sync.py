@@ -800,7 +800,11 @@ later is required to fix a server side protocol bug.
 
     jobs = opt.jobs
 
-    gc_args = ('--auto', '--cruft')
+    gc_args = ['--auto']
+    backup_cruft = False
+    if git_require((2, 37, 0)):
+      gc_args.append('--cruft')
+      backup_cruft = True
     pack_refs_args = ()
     if jobs < 2:
       for (run_gc, bare_git) in tidy_dirs.values():
@@ -810,7 +814,8 @@ later is required to fix a server side protocol bug.
           bare_git.gc(*gc_args)
         else:
           bare_git.pack_refs(*pack_refs_args)
-        self._backup_cruft(bare_git)
+        if backup_cruft:
+          self._backup_cruft(bare_git)
       pm.end()
       return
 
@@ -834,7 +839,8 @@ later is required to fix a server side protocol bug.
           err_event.set()
           raise
       finally:
-        self._backup_cruft(bare_git)
+        if backup_cruft:
+          self._backup_cruft(bare_git)
         pm.finish(bare_git._project.name)
         sem.release()
 
