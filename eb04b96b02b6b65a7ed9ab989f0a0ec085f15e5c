@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "597e1293_879e9a5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2022-09-22T19:18:08Z",
+      "side": 1,
+      "message": "I did check the version, 2.37.0 is indeed the first.",
+      "revId": "eb04b96b02b6b65a7ed9ab989f0a0ec085f15e5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "20807b20_a6085571",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
