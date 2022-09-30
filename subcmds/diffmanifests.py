@@ -77,33 +77,35 @@ synced and their revisions won't be found.
                  metavar='<FORMAT>',
                  help='print the log using a custom git pretty format string')
 
-  def _printRawDiff(self, diff, pretty_format=None):
+  def _printRawDiff(self, diff, pretty_format=None, local=False):
+    _RelPath = lambda p: p.RelPath(local=local)
     for project in diff['added']:
-      self.printText("A %s %s" % (project.relpath, project.revisionExpr))
+      self.printText("A %s %s" % (_RelPath(project), project.revisionExpr))
       self.out.nl()
 
     for project in diff['removed']:
-      self.printText("R %s %s" % (project.relpath, project.revisionExpr))
+      self.printText("R %s %s" % (_RelPath(project), project.revisionExpr))
       self.out.nl()
 
     for project, otherProject in diff['changed']:
-      self.printText("C %s %s %s" % (project.relpath, project.revisionExpr,
+      self.printText("C %s %s %s" % (_RelPath(project), project.revisionExpr,
                                      otherProject.revisionExpr))
       self.out.nl()
       self._printLogs(project, otherProject, raw=True, color=False, pretty_format=pretty_format)
 
     for project, otherProject in diff['unreachable']:
-      self.printText("U %s %s %s" % (project.relpath, project.revisionExpr,
+      self.printText("U %s %s %s" % (_RelPath(project), project.revisionExpr,
                                      otherProject.revisionExpr))
       self.out.nl()
 
-  def _printDiff(self, diff, color=True, pretty_format=None):
+  def _printDiff(self, diff, color=True, pretty_format=None, local=False):
+    _RelPath = lambda p: p.RelPath(local=local)
     if diff['added']:
       self.out.nl()
       self.printText('added projects : \n')
       self.out.nl()
       for project in diff['added']:
-        self.printProject('\t%s' % (project.relpath))
+        self.printProject('\t%s' % (_RelPath(project)))
         self.printText(' at revision ')
         self.printRevision(project.revisionExpr)
         self.out.nl()
@@ -113,7 +115,7 @@ synced and their revisions won't be found.
       self.printText('removed projects : \n')
       self.out.nl()
       for project in diff['removed']:
-        self.printProject('\t%s' % (project.relpath))
+        self.printProject('\t%s' % (_RelPath(project)))
         self.printText(' at revision ')
         self.printRevision(project.revisionExpr)
         self.out.nl()
@@ -123,7 +125,7 @@ synced and their revisions won't be found.
       self.printText('missing projects : \n')
       self.out.nl()
       for project in diff['missing']:
-        self.printProject('\t%s' % (project.relpath))
+        self.printProject('\t%s' % (_RelPath(project)))
         self.printText(' at revision ')
         self.printRevision(project.revisionExpr)
         self.out.nl()
@@ -133,7 +135,7 @@ synced and their revisions won't be found.
       self.printText('changed projects : \n')
       self.out.nl()
       for project, otherProject in diff['changed']:
-        self.printProject('\t%s' % (project.relpath))
+        self.printProject('\t%s' % (_RelPath(project)))
         self.printText(' changed from ')
         self.printRevision(project.revisionExpr)
         self.printText(' to ')
@@ -148,7 +150,7 @@ synced and their revisions won't be found.
       self.printText('projects with unreachable revisions : \n')
       self.out.nl()
       for project, otherProject in diff['unreachable']:
-        self.printProject('\t%s ' % (project.relpath))
+        self.printProject('\t%s ' % (_RelPath(project)))
         self.printRevision(project.revisionExpr)
         self.printText(' or ')
         self.printRevision(otherProject.revisionExpr)
@@ -214,6 +216,8 @@ synced and their revisions won't be found.
 
     diff = manifest1.projectsDiff(manifest2)
     if opt.raw:
-      self._printRawDiff(diff, pretty_format=opt.pretty_format)
+      self._printRawDiff(diff, pretty_format=opt.pretty_format,
+                         local=opt.this_manifest_only)
     else:
-      self._printDiff(diff, color=opt.color, pretty_format=opt.pretty_format)
+      self._printDiff(diff, color=opt.color, pretty_format=opt.pretty_format,
+                      local=opt.this_manifest_only)
