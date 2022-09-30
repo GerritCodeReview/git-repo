@@ -155,11 +155,11 @@ is shown, then the branch appears in all projects.
         if i.IsSplitCurrent or (in_cnt <= project_cnt - in_cnt):
           in_type = 'in'
           for b in i.projects:
-            relpath = b.project.relpath
+            relpath = _RelPath(b.project)
             if not i.IsSplitCurrent or b.current:
-              paths.append(_RelPath(b.project))
+              paths.append(b.project)
             else:
-              non_cur_paths.append(_RelPath(b.project))
+              non_cur_paths.append(b.project)
         else:
           fmt = out.notinproject
           in_type = 'not in'
