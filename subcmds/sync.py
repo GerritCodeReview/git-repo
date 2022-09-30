@@ -713,7 +713,7 @@ later is required to fix a server side protocol bug.
         # ...we'll let existing jobs finish, though.
         if not success:
           ret = False
-          err_results.append(project.relpath)
+          err_results.append(project.RelPath(local=opt.this_manifest_only))
           if opt.fail_fast:
             if pool:
               pool.close()
