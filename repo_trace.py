@@ -19,6 +19,8 @@ Activated via `repo --trace ...` or `REPO_TRACE=1 repo ...`.
 
 import sys
 import os
+import time
+from contextlib import ContextDecorator
 
 # Env var to implicitly turn on tracing.
 REPO_TRACE = 'REPO_TRACE'
@@ -35,6 +37,17 @@ def SetTrace():
   _TRACE = True
 
 
-def Trace(fmt, *args):
-  if IsTrace():
-    print(fmt % args, file=sys.stderr)
+class Trace(ContextDecorator):
+    def __init__(self, fmt, *args):
+      self._fmt = fmt
+      self._args = args
+
+    def __enter__(self):
+        if IsTrace():
+          print(f"PID: {os.getpid()} START: {time.time_ns()} :" + self._fmt % self._args, file=sys.stderr)
+        return self
+
+    def __exit__(self, *exc):
+        if IsTrace():
+          print(f"PID: {os.getpid()} END: {time.time_ns()} :" + self._fmt % self._args, file=sys.stderr)
+        return False
