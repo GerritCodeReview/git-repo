@@ -26,7 +26,7 @@ import socket
 import sys
 import tempfile
 import time
-from typing import NamedTuple
+from typing import NamedTuple, List, Set
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -94,19 +94,19 @@ class _FetchResult(NamedTuple):
 
   Attributes:
     success (bool): True if successful.
-    projects (set[str]): The names of the git directories of fetched projects.
+    projects (Set[str]): The names of the git directories of fetched projects.
   """
   success: bool
-  projects: set[str]
+  projects: Set[str]
 
 
 class _FetchMainResult(NamedTuple):
   """_FetchMain return value.
 
   Attributes:
-    all_projects (list[Project]): The fetched projects.
+    all_projects (List[Project]): The fetched projects.
   """
-  all_projects: list[Project]
+  all_projects: List[Project]
 
 
 class _CheckoutOneResult(NamedTuple):
