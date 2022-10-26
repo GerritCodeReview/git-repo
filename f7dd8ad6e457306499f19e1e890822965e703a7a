@@ -70,6 +70,30 @@
       },
       "revId": "f7dd8ad6e457306499f19e1e890822965e703a7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbd75a02_6846954b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-10-26T18:17:07Z",
+      "side": 1,
+      "message": "The issue is buried in a function that should really be refactored into something that can be unit tested.  I don\u0027t see any reasonable way to add a unit test for this specific issue at this time.",
+      "parentUuid": "6ebd7240_803e4efc",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1280,
+        "endChar": 32
+      },
+      "revId": "f7dd8ad6e457306499f19e1e890822965e703a7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
