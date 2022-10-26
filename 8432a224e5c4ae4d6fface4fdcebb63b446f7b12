@@ -39,6 +39,30 @@
       },
       "revId": "8432a224e5c4ae4d6fface4fdcebb63b446f7b12",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d82cf77d_fa109cda",
+        "filename": "release/update-manpages",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2022-10-26T22:46:13Z",
+      "side": 1,
+      "message": "I think this will only catch bold (\\033\\[1m) that begins a line.  Maybe `(r\u0027\\033\\[[0-9;]*m\u0027, \u0027\u0027),`?",
+      "parentUuid": "d6660a52_213a638f",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 41
+      },
+      "revId": "8432a224e5c4ae4d6fface4fdcebb63b446f7b12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
