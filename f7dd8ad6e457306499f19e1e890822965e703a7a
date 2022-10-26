@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c874d98_0c4e0508",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-10-26T16:48:21Z",
+      "side": 1,
+      "message": "thoughts on adding a new test in https://gerrit.googlesource.com/git-repo/+/refs/heads/main/tests/test_subcmds_sync.py that would have caught this?",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1280,
+        "endChar": 32
+      },
+      "revId": "f7dd8ad6e457306499f19e1e890822965e703a7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
