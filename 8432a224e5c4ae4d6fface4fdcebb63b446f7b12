@@ -16,6 +16,29 @@
       "message": "I haven\u0027t tracked down why the color codes are there on my machine, but this removes the churn.  I verified it by making a change that affected man pages, and then running the script to confirm that only the expected files changed.",
       "revId": "8432a224e5c4ae4d6fface4fdcebb63b446f7b12",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6660a52_213a638f",
+        "filename": "release/update-manpages",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-10-26T17:25:30Z",
+      "side": 1,
+      "message": "too bad this https://pypi.org/project/strip-ansi/ is not a core python lib\n\nCan you add a test to ensure this stripping works as expected?",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 41
+      },
+      "revId": "8432a224e5c4ae4d6fface4fdcebb63b446f7b12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
