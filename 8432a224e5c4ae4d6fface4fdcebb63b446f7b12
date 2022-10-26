@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da856a08_84fb9935",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-10-26T16:42:45Z",
+      "side": 1,
+      "message": "I haven\u0027t tracked down why the color codes are there on my machine, but this removes the churn.  I verified it by making a change that affected man pages, and then running the script to confirm that only the expected files changed.",
+      "revId": "8432a224e5c4ae4d6fface4fdcebb63b446f7b12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
