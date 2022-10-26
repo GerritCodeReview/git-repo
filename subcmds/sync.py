@@ -1277,6 +1277,7 @@ later is required to fix a server side protocol bug.
 
     err_network_sync = False
     err_update_projects = False
+    err_update_linkfiles = False
 
     self._fetch_times = _FetchTimes(manifest)
     if not opt.local_only:
