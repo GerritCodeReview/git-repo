@@ -46,6 +46,30 @@
       },
       "revId": "f7dd8ad6e457306499f19e1e890822965e703a7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ebd7240_803e4efc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1280,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-10-26T17:05:15Z",
+      "side": 1,
+      "message": "Would it be possible to add a basic test that would have caught this? I for sure do not want to hold this change on adding all the tests, but a small test that would have caught this feels ok?",
+      "parentUuid": "2deeff71_2b86d937",
+      "range": {
+        "startLine": 1280,
+        "startChar": 0,
+        "endLine": 1280,
+        "endChar": 32
+      },
+      "revId": "f7dd8ad6e457306499f19e1e890822965e703a7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
