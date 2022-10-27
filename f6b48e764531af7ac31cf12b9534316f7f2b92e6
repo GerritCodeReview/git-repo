@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dfd121d_60eb6006",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-10-27T22:55:17Z",
+      "side": 1,
+      "message": "Work in progress, but the developer guide tells people to run yapf, and the style used in the code is definitely not the style that yapf uses by default.\n\nDiscuss.",
+      "revId": "f6b48e764531af7ac31cf12b9534316f7f2b92e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
