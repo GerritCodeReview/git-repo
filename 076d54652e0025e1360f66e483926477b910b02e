@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef95d9d1_a3f8aa23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-10-27T21:15:33Z",
+      "side": 1,
+      "message": "flagged as causing a defect in https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d16193#c8\n\nspecifically during the double repo init workflow \nhttps://bugs.chromium.org/p/gerrit/issues/detail?id\u003d16358",
+      "revId": "076d54652e0025e1360f66e483926477b910b02e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
