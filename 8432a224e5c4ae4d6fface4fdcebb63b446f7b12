@@ -87,6 +87,30 @@
       },
       "revId": "8432a224e5c4ae4d6fface4fdcebb63b446f7b12",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf1cb0f5_589fdbc6",
+        "filename": "release/update-manpages",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-10-27T22:51:42Z",
+      "side": 1,
+      "message": "That\u0027s close, but it didn\u0027t work for me in the end.  Since the change is done in multiline mode, and we only ever switch once and then back, I went with a more general regex that catches the start and end in one regex.",
+      "parentUuid": "5ee1991e_0a50cb56",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 41
+      },
+      "revId": "8432a224e5c4ae4d6fface4fdcebb63b446f7b12",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
