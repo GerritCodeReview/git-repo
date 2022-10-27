@@ -316,9 +316,6 @@ def InitParser(parser, gitc_init=False):
                    help='download the manifest as a static file '
                         'rather then create a git checkout of '
                         'the manifest repo')
-  group.add_option('--manifest-depth', type='int', default=1, metavar='DEPTH',
-                   help='create a shallow clone of the manifest repo with '
-                        'given depth; see git clone (default: %default)')
 
   # Options that only affect manifest project, and not any of the projects
   # specified in the manifest itself.
