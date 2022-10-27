@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0ccb1dd_fd0048bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-10-27T21:35:41Z",
+      "side": 1,
+      "message": "Can this be broken out into a dedicated change outside of the relation chain? (also would it be possible for this to be a direct revert from the UI .. which makes it clear in gerrit that the original change was reverted)",
+      "revId": "99db3388d42e88bcd2f57a454e588545be6e9b9e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
