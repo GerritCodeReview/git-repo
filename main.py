@@ -652,6 +652,10 @@ def _Main(argv):
   Version.wrapper_path = opt.wrapper_path
 
   repo = _Repo(opt.repodir)
+
+  trace_file = os.path.join(opt.repodir, 'TRACE_FILE')
+  old_stderr = sys.stderr
+  sys.stderr = open(trace_file, 'w')
   try:
     init_http()
     name, gopts, argv = repo._ParseArgs(argv)
@@ -680,6 +684,8 @@ def _Main(argv):
       print('fatal: cannot restart repo after upgrade', file=sys.stderr)
       print('fatal: %s' % e, file=sys.stderr)
       result = 128
+  sys.stderr.close()
+  sys.stderr = old_stderr
 
   TerminatePager()
   sys.exit(result)

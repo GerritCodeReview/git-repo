@@ -739,7 +739,6 @@ later is required to fix a server side protocol bug.
     bak_dir = os.path.join(objdir, '.repo', 'pack.bak')
     if not _BACKUP_OBJECTS or not platform_utils.isdir(pack_dir):
       return
-    saved = []
     files = set(platform_utils.listdir(pack_dir))
     to_backup = []
     for f in files:
@@ -752,11 +751,10 @@ later is required to fix a server side protocol bug.
       bak_fname = os.path.join(bak_dir, fname)
       if not os.path.exists(bak_fname):
         saved.append(fname)
-        # Use a tmp file so that we are sure of a complete copy.
-        shutil.copy(os.path.join(pack_dir, fname), bak_fname + '.tmp')
-        shutil.move(bak_fname + '.tmp', bak_fname)
-    if saved:
-      Trace('%s saved %s', bare_git._project.name, ' '.join(saved))
+        with Trace('%s saved %s', bare_git._project.name, ' '.join(fname)):
+          # Use a tmp file so that we are sure of a complete copy.
+          shutil.copy(os.path.join(pack_dir, fname), bak_fname + '.tmp')
+          shutil.move(bak_fname + '.tmp', bak_fname)
 
   def _GCProjects(self, projects, opt, err_event):
     pm = Progress('Garbage collecting', len(projects), delay=False, quiet=opt.quiet)
