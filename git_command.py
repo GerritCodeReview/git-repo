@@ -263,31 +263,31 @@ class GitCommand(object):
         dbg += ' 2>|'
       elif stderr == subprocess.STDOUT:
         dbg += ' 2>&1'
-      Trace('%s', dbg)
 
-    try:
-      p = subprocess.Popen(command,
-                           cwd=cwd,
-                           env=env,
-                           encoding='utf-8',
-                           errors='backslashreplace',
-                           stdin=stdin,
-                           stdout=stdout,
-                           stderr=stderr)
-    except Exception as e:
-      raise GitError('%s: %s' % (command[1], e))
+    with Trace('git command %s %s', LAST_GITDIR, command):
+      try:
+        p = subprocess.Popen(command,
+                            cwd=cwd,
+                            env=env,
+                            encoding='utf-8',
+                            errors='backslashreplace',
+                            stdin=stdin,
+                            stdout=stdout,
+                            stderr=stderr)
+      except Exception as e:
+        raise GitError('%s: %s' % (command[1], e))
 
-    if ssh_proxy:
-      ssh_proxy.add_client(p)
-
-    self.process = p
-
-    try:
-      self.stdout, self.stderr = p.communicate(input=input)
-    finally:
       if ssh_proxy:
-        ssh_proxy.remove_client(p)
-    self.rc = p.wait()
+        ssh_proxy.add_client(p)
+
+      self.process = p
+
+      try:
+        self.stdout, self.stderr = p.communicate(input=input)
+      finally:
+        if ssh_proxy:
+          ssh_proxy.remove_client(p)
+      self.rc = p.wait()
 
   @staticmethod
   def _GetBasicEnv():

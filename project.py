@@ -2416,16 +2416,16 @@ class Project(object):
         srcUrl = 'http' + srcUrl[len('persistent-http'):]
       cmd += [srcUrl]
 
-      if IsTrace():
-        Trace('%s', ' '.join(cmd))
-      if verbose:
-        print('%s: Downloading bundle: %s' % (self.name, srcUrl))
-      stdout = None if verbose else subprocess.PIPE
-      stderr = None if verbose else subprocess.STDOUT
-      try:
-        proc = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
-      except OSError:
-        return False
+      proc = None
+      with Trace('%s', ' '.join(cmd)):
+        if verbose:
+          print('%s: Downloading bundle: %s' % (self.name, srcUrl))
+        stdout = None if verbose else subprocess.PIPE
+        stderr = None if verbose else subprocess.STDOUT
+        try:
+          proc = subprocess.Popen(cmd, stdout=stdout, stderr=stderr)
+        except OSError:
+          return False
 
       (output, _) = proc.communicate()
       curlret = proc.returncode
