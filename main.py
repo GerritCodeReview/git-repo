@@ -37,7 +37,7 @@ except ImportError:
 
 from color import SetDefaultColoring
 import event_log
-from repo_trace import SetTrace
+from repo_trace import NEW_COMMAND_SEP, Trace
 from git_command import user_agent
 from git_config import RepoConfig
 from git_trace2_event_log import EventLog
@@ -197,9 +197,6 @@ class _Repo(object):
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
     result = 0
-
-    if gopts.trace:
-      SetTrace()
 
     # Handle options that terminate quickly first.
     if gopts.help or gopts.help_all:
@@ -655,14 +652,15 @@ def _Main(argv):
   try:
     init_http()
     name, gopts, argv = repo._ParseArgs(argv)
-    run = lambda: repo._Run(name, gopts, argv) or 0
-    if gopts.trace_python:
-      import trace
-      tracer = trace.Trace(count=False, trace=True, timing=True,
-                           ignoredirs=set(sys.path[1:]))
-      result = tracer.runfunc(run)
-    else:
-      result = run()
+    with Trace('%s starting new command: %s', NEW_COMMAND_SEP, ', '.join([name] + argv)):
+      run = lambda: repo._Run(name, gopts, argv) or 0
+      if gopts.trace_python:
+        import trace
+        tracer = trace.Trace(count=False, trace=True, timing=True,
+                             ignoredirs=set(sys.path[1:]))
+        result = tracer.runfunc(run)
+      else:
+        result = run()
   except KeyboardInterrupt:
     print('aborted by user', file=sys.stderr)
     result = 1
