@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d0d9a7c_1b23ccc2",
+        "filename": "repo_trace.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T18:40:28Z",
+      "side": 1,
+      "message": "Are you talking about this line specifically?\n`self._trace_msg \u003d \u0027%s %s\u0027 % (_NEW_COMMAND_SEP, self._trace_msg)`\n (I don\u0027t see why)\n \n \n or are you talking about _ClearOldTraces()? (I see why)\n\nor generally this is all racy? (I see why) I think that the repo commands themselves could be racy to not work if running at the same. I don\u0027t know if that impacts the correctness of what shows up in the trace file.",
+      "parentUuid": "72c47cef_35573fb3",
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e2ec5c8_0d37ff24",
         "filename": "ssh.py",
         "patchSetId": 18
