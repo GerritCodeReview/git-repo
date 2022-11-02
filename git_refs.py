@@ -67,38 +67,37 @@ class GitRefs(object):
       self._LoadAll()
 
   def _NeedUpdate(self):
-    Trace(': scan refs %s', self._gitdir)
-
-    for name, mtime in self._mtime.items():
-      try:
-        if mtime != os.path.getmtime(os.path.join(self._gitdir, name)):
+    with Trace(': scan refs %s', self._gitdir):
+      for name, mtime in self._mtime.items():
+        try:
+          if mtime != os.path.getmtime(os.path.join(self._gitdir, name)):
+            return True
+        except OSError:
           return True
-      except OSError:
-        return True
-    return False
+      return False
 
   def _LoadAll(self):
-    Trace(': load refs %s', self._gitdir)
+    with Trace(': load refs %s', self._gitdir):
 
-    self._phyref = {}
-    self._symref = {}
-    self._mtime = {}
+      self._phyref = {}
+      self._symref = {}
+      self._mtime = {}
 
-    self._ReadPackedRefs()
-    self._ReadLoose('refs/')
-    self._ReadLoose1(os.path.join(self._gitdir, HEAD), HEAD)
+      self._ReadPackedRefs()
+      self._ReadLoose('refs/')
+      self._ReadLoose1(os.path.join(self._gitdir, HEAD), HEAD)
 
-    scan = self._symref
-    attempts = 0
-    while scan and attempts < 5:
-      scan_next = {}
-      for name, dest in scan.items():
-        if dest in self._phyref:
-          self._phyref[name] = self._phyref[dest]
-        else:
-          scan_next[name] = dest
-      scan = scan_next
-      attempts += 1
+      scan = self._symref
+      attempts = 0
+      while scan and attempts < 5:
+        scan_next = {}
+        for name, dest in scan.items():
+          if dest in self._phyref:
+            self._phyref[name] = self._phyref[dest]
+          else:
+            scan_next[name] = dest
+        scan = scan_next
+        attempts += 1
 
   def _ReadPackedRefs(self):
     path = os.path.join(self._gitdir, 'packed-refs')
