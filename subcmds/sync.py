@@ -758,33 +758,87 @@ later is required to fix a server side protocol bug.
     if saved:
       Trace('%s saved %s', bare_git._project.name, ' '.join(saved))
 
+  @staticmethod
+  def _GetPreciousObjectsState(project: Project, opt):
+    """Get the preciousObjects state for the project.
+
+    Args:
+      project (Project): the project to examine, and possibly correct.
+      opt (optparse.Values): options given to sync.
+
+    Returns:
+      Expected state of extensions.preciousObjects:
+        False: Should be disabled. (not present)
+        True: Should be enabled.
+    """
+    if project.use_git_worktrees:
+      return False
+    projects = project.manifest.GetProjectsWithName(project.name,
+                                                    all_manifests=True)
+    if len(projects) == 1:
+      return False
+    relpath = project.RelPath(local=opt.this_manifest_only)
+    if len(projects) > 1:
+      # Objects are potentially shared with another project.
+      # See the logic in Project.Sync_NetworkHalf regarding UseAlternates.
+      # - When False, shared projects share (via symlink)
+      #   .repo/project-objects/{PROJECT_NAME}.git as the one-and-only objects
+      #   directory.  All objects are precious, since there is no project with a
+      #   complete set of refs.
+      # - When True, shared projects share (via info/alternates)
+      #   .repo/project-objects/{PROJECT_NAME}.git as an alternate object store,
+      #   which is written only on the first clone of the project, and is not
+      #   written subsequently.  (When Sync_NetworkHalf sees that it exists, it
+      #   makes sure that the alternates file points there, and uses a
+      #   project-local .git/objects directory for all syncs going forward.
+      # We do not support switching between the options.  The environment
+      # variable is present for testing and migration only.
+      return not project.UseAlternates
+    print(f'\r{relpath}: project not found in manifest.', file=sys.stderr)
+    return False
+
+  def _RepairPreciousObjectsState(self, project: Project, opt):
+    """Correct the preciousObjects state for the project.
+
+    Args:
+      project (Project): the project to examine, and possibly correct.
+      opt (optparse.Values): options given to sync.
+    """
+    expected = self._GetPreciousObjectsState(project, opt)
+    actual = project.config.GetBoolean('extension.preciousObjects')
+    relpath = project.RelPath(local = opt.this_manifest_only)
+
+    if (expected != actual and
+        not project.config.GetBoolean('repo.preservePreciousObjects')):
+      # If this is unexpected, log it and repair.
+      Trace(f'{relpath} expected preciousObjects={expected}, got {actual}')
+      if expected:
+        if not opt.quiet:
+          print('\r%s: Shared project %s found, disabling pruning.' %
+                (relpath, project.name))
+        if git_require((2, 7, 0)):
+          project.EnableRepositoryExtension('preciousObjects')
+        else:
+          # This isn't perfect, but it's the best we can do with old git.
+          print('\r%s: WARNING: shared projects are unreliable when using '
+                'old versions of git; please upgrade to git-2.7.0+.'
+                % (relpath,),
+                file=sys.stderr)
+          project.config.SetString('gc.pruneExpire', 'never')
+      else:
+        if not opt.quiet:
+          print('\r{relpath}: not shared, enabling pruning.')
+        project.config.SetString('extensions.preciousObjects', None)
+        project.config.SetString('gc.pruneExpire', None)
+
   def _GCProjects(self, projects, opt, err_event):
     pm = Progress('Garbage collecting', len(projects), delay=False, quiet=opt.quiet)
     pm.update(inc=0, msg='prescan')
 
     tidy_dirs = {}
     for project in projects:
-      # Make sure pruning never kicks in with shared projects that do not use
-      # alternates to avoid corruption.
-      if (not project.use_git_worktrees and
-              len(project.manifest.GetProjectsWithName(project.name, all_manifests=True)) > 1):
-        if project.UseAlternates:
-          # Undo logic set by previous versions of repo.
-          project.config.SetString('extensions.preciousObjects', None)
-          project.config.SetString('gc.pruneExpire', None)
-        else:
-          if not opt.quiet:
-            print('\r%s: Shared project %s found, disabling pruning.' %
-                  (project.relpath, project.name))
-          if git_require((2, 7, 0)):
-            project.EnableRepositoryExtension('preciousObjects')
-          else:
-            # This isn't perfect, but it's the best we can do with old git.
-            print('\r%s: WARNING: shared projects are unreliable when using old '
-                  'versions of git; please upgrade to git-2.7.0+.'
-                  % (project.relpath,),
-                  file=sys.stderr)
-            project.config.SetString('gc.pruneExpire', 'never')
+      self._RepairPreciousObjectsState(project, opt)
+
       project.config.SetString('gc.autoDetach', 'false')
       # Only call git gc once per objdir, but call pack-refs for the remainder.
       if project.objdir not in tidy_dirs:
