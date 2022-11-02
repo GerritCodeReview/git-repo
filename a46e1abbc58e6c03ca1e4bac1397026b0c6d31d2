@@ -34,6 +34,24 @@
       "parentUuid": "4ff07626_979fe84f",
       "revId": "a46e1abbc58e6c03ca1e4bac1397026b0c6d31d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "beca7727_2ff9f0b1",
+        "filename": "repo_trace.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T00:50:35Z",
+      "side": 1,
+      "message": "```\nwhen -j8:\nnot all \u0027START\u0027 traces are added to the TRACE_FILE.\n\nOpening the trace_file at the very beginning and having parallel processes print to it is probably causing some lines to not get amended to the file.\n```\nnot sure how to fix this one.\n\n```\nClearOldTraces(trace_file)\ndoes not work because of invalid bytes\n```\ncan be resolved with `open(....., errors\u003dignore)`",
+      "parentUuid": "7cd3e723_09e111e3",
+      "revId": "a46e1abbc58e6c03ca1e4bac1397026b0c6d31d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
