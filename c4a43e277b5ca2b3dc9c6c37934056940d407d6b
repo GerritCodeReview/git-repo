@@ -106,6 +106,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "373e932b_155ce320",
+        "filename": "repo_trace.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T19:41:44Z",
+      "side": 1,
+      "message": "ah yeah\nnoted in _ClearOldTraces()",
+      "parentUuid": "ebb15d39_d37ac634",
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e2ec5c8_0d37ff24",
