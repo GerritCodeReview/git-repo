@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e6db8bc_587979e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-11-02T23:01:23Z",
+      "side": 1,
+      "message": "I like it --- this should make the behavior easier to understand instead of having to walk through `repo` version history to guess what setting was recorded.",
+      "revId": "3a307c62576fe25cb0933da9223a71170d74c6ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49f5841f_86b2b050",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-11-02T23:01:23Z",
+      "side": 1,
+      "message": "This is starting to feel a bit complicated.\n\nI think ideally we\u0027d be able to do something that logically comes down to\n* determine intended state\n* compare to current state\n* update to match\n\nE.g.,\n\n```\n  # Make sure pruning never kicks in with shared projects that do not use\n  # alternates to avoid corruption.\n  if projectIsSharedWithoutAlternates(project):\n    if not opt.quiet:\n      ... say what we\u0027re about to do ...\n    if git_require((2, 7, 0)):\n      project.EnableRepositoryExtension(...)\n    else:\n      ... warn and set gc.pruneExpire to never ...\n  elif project.config.GetBoolean(\u0027repo.preserveGcSettings\u0027):\n    pass\n  else:\n    if not opt.quiet:\n       ... say what we\u0027re about to do ...\n    project.config.SetString(\u0027extensions.preciousObjects\u0027, None)\n    project.config.SetString(\u0027gc.pruneExpire\u0027, None)\n```\n\nwith `projectIsSharedWithoutAlternates` as a factored-out helper function.\n\nWhat do you think?",
+      "revId": "3a307c62576fe25cb0933da9223a71170d74c6ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a57ec43_6e0bb0f1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2022-11-02T23:01:23Z",
+      "side": 1,
+      "message": "Could this also generate a trace event so that we can see how often it\u0027s happening?",
+      "revId": "3a307c62576fe25cb0933da9223a71170d74c6ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
