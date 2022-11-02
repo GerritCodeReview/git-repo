@@ -52,6 +52,24 @@
       "parentUuid": "7cd3e723_09e111e3",
       "revId": "a46e1abbc58e6c03ca1e4bac1397026b0c6d31d2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84db6f3e_16da1d54",
+        "filename": "repo_trace.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T01:59:35Z",
+      "side": 1,
+      "message": "TODO: go back to this version because:\n* the workaround for -j8 not capturing all the issues is to just run it again with -j1\n* seems more useful to capture all stdout and stderr",
+      "parentUuid": "beca7727_2ff9f0b1",
+      "revId": "a46e1abbc58e6c03ca1e4bac1397026b0c6d31d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

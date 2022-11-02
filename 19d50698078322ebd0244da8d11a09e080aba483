@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c0ad3f0_ee72c092",
+        "filename": "repo_trace.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T01:59:35Z",
+      "side": 1,
+      "message": "Open and closing files at each ammend has no significant impact on performance for chromeos, `repo sync` specifically.",
+      "revId": "19d50698078322ebd0244da8d11a09e080aba483",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
