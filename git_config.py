@@ -219,8 +219,8 @@ class GitConfig(object):
     """Set the value(s) for a key.
        Only this configuration file is modified.
 
-       The supplied value should be either a string,
-       or a list of strings (to store multiple values).
+       The supplied value should be either a string, or a list of strings (to
+       store multiple values), or None (to delete the key).
     """
     key = _key(name)
 
