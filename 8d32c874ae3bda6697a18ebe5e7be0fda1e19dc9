@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b711980b_e2da0032",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T16:23:38Z",
+      "side": 1,
+      "message": "going back to making parallel jobs work",
+      "revId": "8d32c874ae3bda6697a18ebe5e7be0fda1e19dc9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
