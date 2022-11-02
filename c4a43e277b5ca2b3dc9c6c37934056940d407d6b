@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ebb15d39_d37ac634",
+        "filename": "repo_trace.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-11-02T19:09:58Z",
+      "side": 1,
+      "message": "The whole thing - _NEW_COMMAND_SEP can show up in between lines of previous ongoing repo call; truncating doesn\u0027t guarantee that entire run will be deleted (it\u0027s best effort).\n\nAs I said, I think it\u0027s fine for what we need it; but we should make a comment in this file to make it clear there\u0027s no guarantee about ordering.",
+      "parentUuid": "4d0d9a7c_1b23ccc2",
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e2ec5c8_0d37ff24",
         "filename": "ssh.py",
         "patchSetId": 18
