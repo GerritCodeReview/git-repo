@@ -16,6 +16,86 @@
       "message": "PTAL\ntests failing due to \n`No such file or directory: \u0027/.repo/TRACE_FILE\u0027`\n\nbut w/e fix for that should not impact non-test files in the CL",
       "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24867b3a_571469dc",
+        "filename": "project.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 2420,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-11-02T18:26:02Z",
+      "side": 1,
+      "message": "a bit more information so we can trace it back to this line",
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c47cef_35573fb3",
+        "filename": "repo_trace.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-11-02T18:26:02Z",
+      "side": 1,
+      "message": "this is racy if two repo commands are running at the same time. I don\u0027t think we need to worry about that, but maybe we should leave a comment in the file",
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e2ec5c8_0d37ff24",
+        "filename": "ssh.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-11-02T18:26:02Z",
+      "side": 1,
+      "message": "nit: expand name of trace; it could be hard to trace it back to this line",
+      "range": {
+        "startLine": 206,
+        "startChar": 18,
+        "endLine": 206,
+        "endChar": 19
+      },
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "973cd4fe_ca0f6142",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-11-02T18:26:02Z",
+      "side": 1,
+      "message": "just `fname`",
+      "range": {
+        "startLine": 754,
+        "startChar": 58,
+        "endLine": 754,
+        "endChar": 73
+      },
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
