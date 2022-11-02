@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ff45f1b_8ad0f6cc",
+        "filename": "project.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 2420,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T18:47:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24867b3a_571469dc",
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72c47cef_35573fb3",
@@ -93,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b66fb128_69762b0d",
+        "filename": "ssh.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T18:47:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e2ec5c8_0d37ff24",
+      "range": {
+        "startLine": 206,
+        "startChar": 18,
+        "endLine": 206,
+        "endChar": 19
+      },
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "973cd4fe_ca0f6142",
@@ -106,6 +148,30 @@
       "writtenOn": "2022-11-02T18:26:02Z",
       "side": 1,
       "message": "just `fname`",
+      "range": {
+        "startLine": 754,
+        "startChar": 58,
+        "endLine": 754,
+        "endChar": 73
+      },
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7ae7aef_215de570",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 754,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T18:47:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "973cd4fe_ca0f6142",
       "range": {
         "startLine": 754,
         "startChar": 58,
