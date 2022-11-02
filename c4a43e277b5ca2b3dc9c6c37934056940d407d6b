@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c41acc00_6702f640",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-02T17:40:26Z",
+      "side": 1,
+      "message": "PTAL\ntests failing due to \n`No such file or directory: \u0027/.repo/TRACE_FILE\u0027`\n\nbut w/e fix for that should not impact non-test files in the CL",
+      "revId": "c4a43e277b5ca2b3dc9c6c37934056940d407d6b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
