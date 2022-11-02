@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a678d5c_933ecad2",
+        "filename": "repo_trace.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-02T21:27:08Z",
+      "side": 1,
+      "message": "perhaps we can turn it OFF if someone explicitly sets it to 0?",
+      "range": {
+        "startLine": 29,
+        "startChar": 9,
+        "endLine": 29,
+        "endChar": 42
+      },
+      "revId": "96c49392e49de80fc85a17bd7ca14571acb6f152",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6cd1017_896f5104",
+        "filename": "repo_trace.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-02T21:27:08Z",
+      "side": 1,
+      "message": "we should be able to use the api python gives us for tmp files\nhttps://docs.python.org/3/library/tempfile.html#examples",
+      "range": {
+        "startLine": 141,
+        "startChar": 0,
+        "endLine": 141,
+        "endChar": 40
+      },
+      "revId": "96c49392e49de80fc85a17bd7ca14571acb6f152",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adb4b8a4_4adfeb1b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 22
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-02T21:27:08Z",
+      "side": 1,
+      "message": "looks like saved was removed on 742 but we are appending to it here but this was only used for logging - we should be able to remove this .append",
+      "range": {
+        "startLine": 753,
+        "startChar": 0,
+        "endLine": 753,
+        "endChar": 27
+      },
+      "revId": "96c49392e49de80fc85a17bd7ca14571acb6f152",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
