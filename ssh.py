@@ -182,28 +182,29 @@ class ProxyManager:
     # be important because we can't tell that that 'git@myhost.com' is the same
     # as 'myhost.com' where "User git" is setup in the user's ~/.ssh/config file.
     check_command = command_base + ['-O', 'check']
-    try:
-      Trace(': %s', ' '.join(check_command))
-      check_process = subprocess.Popen(check_command,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE)
-      check_process.communicate()  # read output, but ignore it...
-      isnt_running = check_process.wait()
+    with Trace('Call to ssh (check call): %s', ' '.join(check_command)):
+      try:
+        check_process = subprocess.Popen(check_command,
+                                        stdout=subprocess.PIPE,
+                                        stderr=subprocess.PIPE)
+        check_process.communicate()  # read output, but ignore it...
+        isnt_running = check_process.wait()
 
-      if not isnt_running:
-        # Our double-check found that the master _was_ infact running.  Add to
-        # the list of keys.
-        self._master_keys[key] = True
-        return True
-    except Exception:
-      # Ignore excpetions.  We we will fall back to the normal command and print
-      # to the log there.
-      pass
+        if not isnt_running:
+          # Our double-check found that the master _was_ infact running.  Add to
+          # the list of keys.
+          self._master_keys[key] = True
+          return True
+      except Exception:
+        # Ignore excpetions.  We we will fall back to the normal command and print
+        # to the log there.
+        pass
 
     command = command_base[:1] + ['-M', '-N'] + command_base[1:]
+    p = None
     try:
-      Trace(': %s', ' '.join(command))
-      p = subprocess.Popen(command)
+      with Trace('Call to ssh: %s', ' '.join(command)):
+        p = subprocess.Popen(command)
     except Exception as e:
       self._master_broken.value = True
       print('\nwarn: cannot enable ssh control master for %s:%s\n%s'

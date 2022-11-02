@@ -230,11 +230,10 @@ class GitCommand(object):
     stderr = (subprocess.STDOUT if merge_output else
               (subprocess.PIPE if capture_stderr else None))
 
+    dbg = ''
     if IsTrace():
       global LAST_CWD
       global LAST_GITDIR
-
-      dbg = ''
 
       if cwd and LAST_CWD != cwd:
         if LAST_GITDIR or LAST_CWD:
@@ -263,31 +262,31 @@ class GitCommand(object):
         dbg += ' 2>|'
       elif stderr == subprocess.STDOUT:
         dbg += ' 2>&1'
-      Trace('%s', dbg)
 
-    try:
-      p = subprocess.Popen(command,
-                           cwd=cwd,
-                           env=env,
-                           encoding='utf-8',
-                           errors='backslashreplace',
-                           stdin=stdin,
-                           stdout=stdout,
-                           stderr=stderr)
-    except Exception as e:
-      raise GitError('%s: %s' % (command[1], e))
+    with Trace('git command %s %s with debug: %s', LAST_GITDIR, command, dbg):
+      try:
+        p = subprocess.Popen(command,
+                            cwd=cwd,
+                            env=env,
+                            encoding='utf-8',
+                            errors='backslashreplace',
+                            stdin=stdin,
+                            stdout=stdout,
+                            stderr=stderr)
+      except Exception as e:
+        raise GitError('%s: %s' % (command[1], e))
 
-    if ssh_proxy:
-      ssh_proxy.add_client(p)
-
-    self.process = p
-
-    try:
-      self.stdout, self.stderr = p.communicate(input=input)
-    finally:
       if ssh_proxy:
-        ssh_proxy.remove_client(p)
-    self.rc = p.wait()
+        ssh_proxy.add_client(p)
+
+      self.process = p
+
+      try:
+        self.stdout, self.stderr = p.communicate(input=input)
+      finally:
+        if ssh_proxy:
+          ssh_proxy.remove_client(p)
+      self.rc = p.wait()
 
   @staticmethod
   def _GetBasicEnv():
