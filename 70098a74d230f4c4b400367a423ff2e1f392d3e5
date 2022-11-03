@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9510d833_0f6f0514",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2022-11-03T20:21:14Z",
+      "side": 1,
+      "message": "So this is saying: If two objects are sharing an object store using Git\u0027s alternates feature, we should disable preciousObjects. If they are sharing an object store entirely, we should enable preciousObjects.\n\nI\u0027m not quite sure. One of the dangers with alternates is that the pointer goes only one way (for Git, anyhow) and the \"host\" might gc an object that the project pointing to it was depending on. That seems to me like it still might be a good case for using preciousObjects...",
+      "range": {
+        "startLine": 781,
+        "startChar": 0,
+        "endLine": 784,
+        "endChar": 38
+      },
+      "revId": "70098a74d230f4c4b400367a423ff2e1f392d3e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73539f84_6e3057fb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2022-11-03T20:21:14Z",
+      "side": 1,
+      "message": "Should I understand from this line and L819 below that we wrote a setter function but not a corresponding un-setter function? Great. Good.",
+      "revId": "70098a74d230f4c4b400367a423ff2e1f392d3e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
