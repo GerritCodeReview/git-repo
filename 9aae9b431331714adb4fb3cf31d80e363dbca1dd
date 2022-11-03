@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "305c3e9c_2301b635",
+        "filename": "repo_trace.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-03T19:50:32Z",
+      "side": 1,
+      "message": "I couldn\u0027t find a FindRepo() in main.py\nhttps://source.corp.google.com/git_repo/main.py\nand no function afaict that does the similar thing.\n\n\ni copied and pasted this logic from https://source.corp.google.com/git_repo/repo;l\u003d1038?q\u003drepo\u0026ss\u003dpiper%2FGoogle%2Fgit_repo\n\nwhich iiuc is a standalone thing that should work from anywhere so it shouldn\u0027t share anything with other stuff.",
+      "parentUuid": "36495be0_334f432e",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bfa20f0b_f16c2ac2",
         "filename": "repo_trace.py",
         "patchSetId": 24
