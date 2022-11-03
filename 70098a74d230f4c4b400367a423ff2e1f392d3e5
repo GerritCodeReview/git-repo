@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4aa2b106_eeb72775",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T20:40:24Z",
+      "side": 1,
+      "message": "In the case of \"shared with alternates\", we have:\n\n - project1/.git/objects with info/alternates pointing to \"shared\"\n - project2/.git/objects with info/alternates pointing to \"shared\"\n - no project which has a symlink `.../.git/objects -\u003e \"shared\"`\n \nThat is, the switch to using alternates results in `.repo/project-objects/*` being write-once (at initial creation).  If that directory is present when a project is initially (or subsequently) synced, then the shared objects directory is added as a reference, and therefore should never be garbage collected.\n\nOne reason that 328102 has not been submitted yet is that common blobs in shared projects (after the first clone) get fetched N times, instead of being added to the shared objects store, in order to prevent removing blobs that should not be removed.\n\nI\u0027ll add a comment.",
+      "parentUuid": "9510d833_0f6f0514",
+      "range": {
+        "startLine": 781,
+        "startChar": 0,
+        "endLine": 784,
+        "endChar": 38
+      },
+      "revId": "70098a74d230f4c4b400367a423ff2e1f392d3e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "73539f84_6e3057fb",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
@@ -37,6 +61,24 @@
       "writtenOn": "2022-11-03T20:21:14Z",
       "side": 1,
       "message": "Should I understand from this line and L819 below that we wrote a setter function but not a corresponding un-setter function? Great. Good.",
+      "revId": "70098a74d230f4c4b400367a423ff2e1f392d3e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e843b13_26d428b0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 808,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T20:40:24Z",
+      "side": 1,
+      "message": "So it would appear.",
+      "parentUuid": "73539f84_6e3057fb",
       "revId": "70098a74d230f4c4b400367a423ff2e1f392d3e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
