@@ -37,7 +37,7 @@ except ImportError:
 
 from color import SetDefaultColoring
 import event_log
-from repo_trace import SetTrace
+from repo_trace import SetTrace, Trace, SetTraceToStderr
 from git_command import user_agent
 from git_config import RepoConfig
 from git_trace2_event_log import EventLog
@@ -109,6 +109,9 @@ global_options.add_option('--color',
 global_options.add_option('--trace',
                           dest='trace', action='store_true',
                           help='trace git command execution (REPO_TRACE=1)')
+global_options.add_option('--trace_to_stderr',
+                          dest='trace_to_stderr', action='store_true',
+                          help='trace outputs go to stderr in addition to .repo/TRACE_FILE')
 global_options.add_option('--trace-python',
                           dest='trace_python', action='store_true',
                           help='trace python command execution')
@@ -197,9 +200,6 @@ class _Repo(object):
   def _Run(self, name, gopts, argv):
     """Execute the requested subcommand."""
     result = 0
-
-    if gopts.trace:
-      SetTrace()
 
     # Handle options that terminate quickly first.
     if gopts.help or gopts.help_all:
@@ -652,17 +652,26 @@ def _Main(argv):
   Version.wrapper_path = opt.wrapper_path
 
   repo = _Repo(opt.repodir)
+
   try:
     init_http()
     name, gopts, argv = repo._ParseArgs(argv)
-    run = lambda: repo._Run(name, gopts, argv) or 0
-    if gopts.trace_python:
-      import trace
-      tracer = trace.Trace(count=False, trace=True, timing=True,
-                           ignoredirs=set(sys.path[1:]))
-      result = tracer.runfunc(run)
-    else:
-      result = run()
+
+    if gopts.trace:
+      SetTrace()
+
+    if gopts.trace_to_stderr:
+      SetTraceToStderr()
+
+    with Trace('starting new command: %s', ', '.join([name] + argv), first_trace=True):
+      run = lambda: repo._Run(name, gopts, argv) or 0
+      if gopts.trace_python:
+        import trace
+        tracer = trace.Trace(count=False, trace=True, timing=True,
+                             ignoredirs=set(sys.path[1:]))
+        result = tracer.runfunc(run)
+      else:
+        result = run()
   except KeyboardInterrupt:
     print('aborted by user', file=sys.stderr)
     result = 1
