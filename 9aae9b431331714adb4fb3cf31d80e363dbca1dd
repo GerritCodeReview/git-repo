@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a56d42b_bbbfbc6e",
+        "filename": "repo_trace.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-03T19:59:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5077aeb_ef6a4583",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "36495be0_334f432e",
@@ -93,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87beaabd_82094b93",
+        "filename": "repo_trace.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-03T19:59:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bfa20f0b_f16c2ac2",
+      "range": {
+        "startLine": 126,
+        "startChar": 46,
+        "endLine": 126,
+        "endChar": 47
+      },
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45ef63f0_f7d1fcaf",
@@ -106,6 +148,24 @@
       "writtenOn": "2022-11-03T18:28:02Z",
       "side": 1,
       "message": "nit: rewrap this (and elsewhere) at 80 columns maximum.  (can certainly be done in a follow-on CL.)",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98bb06ac_8e264fa3",
+        "filename": "ssh.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-03T19:59:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45ef63f0_f7d1fcaf",
       "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
