@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "727f8a8d_65fd857a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 800,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-03T18:16:22Z",
+      "side": 1,
+      "message": "should this use the value of actual set above?",
+      "range": {
+        "startLine": 800,
+        "startChar": 12,
+        "endLine": 800,
+        "endChar": 69
+      },
+      "revId": "003346f83cebaebfc1d66e7ca65d8d571530d148",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01fc616c_6a40f563",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-03T18:16:22Z",
+      "side": 1,
+      "message": "SetString passing None is somewhat confusing ... feels like the project.config should have an \"unset\" function\n\n---\n\nnon-blocking and can be in another change",
+      "range": {
+        "startLine": 819,
+        "startChar": 23,
+        "endLine": 819,
+        "endChar": 32
+      },
+      "revId": "003346f83cebaebfc1d66e7ca65d8d571530d148",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
