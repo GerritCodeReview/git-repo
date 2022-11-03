@@ -74,6 +74,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "02172d5b_85a69d03",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T21:33:28Z",
+      "side": 1,
+      "message": "Correct.  Any `objects/` storage that repo points to with info/alternates is ever anyone\u0027s actual .git/objects.",
+      "parentUuid": "56b3d90d_068b3a0c",
+      "range": {
+        "startLine": 781,
+        "startChar": 0,
+        "endLine": 784,
+        "endChar": 38
+      },
+      "revId": "70098a74d230f4c4b400367a423ff2e1f392d3e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "73539f84_6e3057fb",
         "filename": "subcmds/sync.py",
         "patchSetId": 3
