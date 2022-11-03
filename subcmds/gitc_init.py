@@ -68,7 +68,8 @@ use for this GITC client.
         sys.exit(1)
       manifest_file = opt.manifest_file
 
-    manifest = GitcManifest(self.repodir, gitc_client)
+    manifest = GitcManifest(self.repodir, os.path.join(self.client_dir,
+                                                       '.manifest'))
     manifest.Override(manifest_file)
     gitc_utils.generate_gitc_manifest(None, manifest)
     print('Please run `cd %s` to view your GITC client.' %
