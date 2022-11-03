@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dae983db_28cdd0b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T18:28:02Z",
+      "side": 1,
+      "message": "Looks pretty good overall.  A couple of small changes, and some nits.",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5077aeb_ef6a4583",
+        "filename": "repo_trace.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T18:28:02Z",
+      "side": 1,
+      "message": "I would be more inclined to add `firstTrace\u003dFalse,` instead of using `**kwargs` in the function definition.  This avoids typoes.",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36495be0_334f432e",
+        "filename": "repo_trace.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T18:28:02Z",
+      "side": 1,
+      "message": "I\u0027d prefer that this use main._FindRepo() (though I\u0027m not seeing where to put that function after renaming it... maybe platform_utils.py??)\n\nPlease at least add a TODO to combine this with the logic in main.py.",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfa20f0b_f16c2ac2",
+        "filename": "repo_trace.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T18:28:02Z",
+      "side": 1,
+      "message": "split this out, so that we get `os.path.sep`, since it\u0027s different on windows.",
+      "range": {
+        "startLine": 126,
+        "startChar": 46,
+        "endLine": 126,
+        "endChar": 47
+      },
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45ef63f0_f7d1fcaf",
+        "filename": "ssh.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T18:28:02Z",
+      "side": 1,
+      "message": "nit: rewrap this (and elsewhere) at 80 columns maximum.  (can certainly be done in a follow-on CL.)",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
