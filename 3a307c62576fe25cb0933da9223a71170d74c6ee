@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5e272c0_d10b5c50",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T18:07:40Z",
+      "side": 1,
+      "message": "I refactored it into _{Get,Repair}PreciousObjectsState(), which lets us better cover both setting and clearing it.",
+      "parentUuid": "49f5841f_86b2b050",
+      "revId": "3a307c62576fe25cb0933da9223a71170d74c6ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a57ec43_6e0bb0f1",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-11-02T23:01:23Z",
       "side": 1,
       "message": "Could this also generate a trace event so that we can see how often it\u0027s happening?",
+      "revId": "3a307c62576fe25cb0933da9223a71170d74c6ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa514b5b_b6d5a7f5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 792,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T18:07:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a57ec43_6e0bb0f1",
       "revId": "3a307c62576fe25cb0933da9223a71170d74c6ee",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
