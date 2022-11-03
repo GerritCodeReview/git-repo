@@ -48,6 +48,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "56b3d90d_068b3a0c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2022-11-03T21:16:45Z",
+      "side": 1,
+      "message": "Thanks, the clarifying comment helps a lot. So that means that .repo/project-objects/* is never a candidate for garbage collection anyway, and nobody\u0027s .git/objects/ is acting as an alternate, right? If I\u0027m understanding correctly, then this change LGTM.",
+      "parentUuid": "4aa2b106_eeb72775",
+      "range": {
+        "startLine": 781,
+        "startChar": 0,
+        "endLine": 784,
+        "endChar": 38
+      },
+      "revId": "70098a74d230f4c4b400367a423ff2e1f392d3e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "73539f84_6e3057fb",
