@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e455b662_8318495c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 25
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T20:21:57Z",
+      "side": 1,
+      "message": "sorry for being unclear (and confused) earlier.",
+      "revId": "625c5d8807bbc7f3a9339f72ab914e2666655175",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0206d2c_7cf7fdca",
+        "filename": "repo_trace.py",
+        "patchSetId": 25
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T20:21:57Z",
+      "side": 1,
+      "message": "Since we\u0027re revisiting this one more time (my bad), please change this to `first_trace` to be consistent with the variable naming strategy throughout this source tree.",
+      "range": {
+        "startLine": 75,
+        "startChar": 35,
+        "endLine": 75,
+        "endChar": 45
+      },
+      "revId": "625c5d8807bbc7f3a9339f72ab914e2666655175",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

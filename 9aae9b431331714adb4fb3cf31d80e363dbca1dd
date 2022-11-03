@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a149768_e3bc9954",
+        "filename": "repo_trace.py",
+        "patchSetId": 24
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-03T20:21:57Z",
+      "side": 1,
+      "message": "yeah, it\u0027s repo._FindRepo(), not main.py.  And with that prodding of my memory, the entire \"find the workspace root\" becomes either:\n1. pass in manifest.repodir, and use `os.path.dirname(repodir)`.  While cleanest, this affects every call to Trace().\n2. `os.path.dirname(os.path.dirname(__file__))` is the path to `{WORKSPACE}/.repo` (used in various places in the source).  This does the right thing for repo users, and understandable things for repo developers (pedantically: when running `repo --repo-dir\u003d{path} ...`, it will place the trace file in the parent of the given path.  That\u0027s acceptable, IMO.)\n\nI\u0027ll CR+2 option 2, and we can rework to option 1 later if anyone cares sufficiently.  If you go with option 2, please add a `# TODO: refactor to pass repodir to Trace`.",
+      "parentUuid": "305c3e9c_2301b635",
+      "revId": "9aae9b431331714adb4fb3cf31d80e363dbca1dd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bfa20f0b_f16c2ac2",
         "filename": "repo_trace.py",
         "patchSetId": 24
