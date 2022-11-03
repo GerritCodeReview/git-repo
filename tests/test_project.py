@@ -26,6 +26,7 @@ import git_command
 import git_config
 import platform_utils
 import project
+import repo_trace
 
 
 @contextlib.contextmanager
@@ -63,6 +64,13 @@ class FakeProject(object):
 
 class ReviewableBranchTests(unittest.TestCase):
   """Check ReviewableBranch behavior."""
+
+  def setUp(self):
+    self.tempdirobj = tempfile.TemporaryDirectory(prefix='repo_tests')
+    repo_trace._TRACE_FILE = os.path.join(self.tempdirobj.name, 'TRACE_FILE_from_test')
+
+  def tearDown(self):
+    self.tempdirobj.cleanup()
 
   def test_smoke(self):
     """A quick run through everything."""
