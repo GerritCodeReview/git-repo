@@ -119,7 +119,7 @@ def _GetTraceFile():
   # TODO: refactor to pass repodir to Trace.
   repo_dir = os.path.dirname(os.path.dirname(__file__))
   trace_file = os.path.join(repo_dir, _TRACE_FILE_NAME)
-  print('Trace outputs in %s' % trace_file)
+  print('Trace outputs in %s' % trace_file, file=sys.stderr)
   return trace_file
 
 def _ClearOldTraces():

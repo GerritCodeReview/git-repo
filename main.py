@@ -216,6 +216,19 @@ class _Repo(object):
       self._PrintHelp(short=True)
       return 1
 
+    run = lambda: self._RunLong(name, gopts, argv) or 0
+    with Trace('starting new command: %s', ', '.join([name] + argv),
+               first_trace=True):
+      if gopts.trace_python:
+        import trace
+        tracer = trace.Trace(count=False, trace=True, timing=True,
+                             ignoredirs=set(sys.path[1:]))
+        result = tracer.runfunc(run)
+      else:
+        result = run()
+
+  def _RunLong(self, name, gopts, argv):
+    """Execute the (longer running) requested subcommand."""
     SetDefaultColoring(gopts.color)
 
     git_trace2_event_log = EventLog()
@@ -663,15 +676,7 @@ def _Main(argv):
     if gopts.trace_to_stderr:
       SetTraceToStderr()
 
-    with Trace('starting new command: %s', ', '.join([name] + argv), first_trace=True):
-      run = lambda: repo._Run(name, gopts, argv) or 0
-      if gopts.trace_python:
-        import trace
-        tracer = trace.Trace(count=False, trace=True, timing=True,
-                             ignoredirs=set(sys.path[1:]))
-        result = tracer.runfunc(run)
-      else:
-        result = run()
+    result = repo._Run(name, gopts, argv) or 0
   except KeyboardInterrupt:
     print('aborted by user', file=sys.stderr)
     result = 1
