@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0289e9b_f77bb48c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-07T23:26:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f1f442f4_57e8df37",
+      "revId": "9a8f094ecb3e32cb172fa02369ce4bd8d5b5e6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d263b399_dd4a706b",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f07a6ae7_7ca26462",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-07T23:26:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d263b399_dd4a706b",
+      "revId": "9a8f094ecb3e32cb172fa02369ce4bd8d5b5e6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "744e9bf4_6fb89540",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-09-18T11:38:26Z",
       "side": 1,
       "message": "this is a bit hard to parse. maybe use the phrasing you used above in the help text.",
+      "revId": "9a8f094ecb3e32cb172fa02369ce4bd8d5b5e6e8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4c13460_2a84c05e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-07T23:26:25Z",
+      "side": 1,
+      "message": "Done.  In the current version, we don\u0027t do gc at all, due to other considerations.",
+      "parentUuid": "744e9bf4_6fb89540",
       "revId": "9a8f094ecb3e32cb172fa02369ce4bd8d5b5e6e8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
