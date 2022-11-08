@@ -302,8 +302,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
           script.append('#         %s' % commit)
         b[name] = branch
 
-      projects[project.RelPath(local=opt.this_manifest_only)] = project
-      branches[project.name] = b
+      project_path = project.RelPath(local=opt.this_manifest_only)
+      projects[project_path] = project
+      branches[project_path] = b
     script.append('')
 
     script = Editor.EditString("\n".join(script)).split("\n")
@@ -328,9 +329,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         name = m.group(1)
         if not project:
           _die('project for branch %s not in script', name)
-        branch = branches[project.name].get(name)
+        project_path = project.RelPath(local=opt.this_manifest_only)
+        branch = branches[project_path].get(name)
         if not branch:
-          _die('branch %s not in %s', name, project.RelPath(local=opt.this_manifest_only))
+          _die('branch %s not in %s', name, project_path)
         todo.append(branch)
     if not todo:
       _die("nothing uncommented for upload")
