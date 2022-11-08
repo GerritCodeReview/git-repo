@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500e74fd_b7a9d7c7",
+        "filename": "repo_trace.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-11-08T17:23:17Z",
+      "side": 1,
+      "message": "`temp_file` is guaranteed to be within the same filesystem.\n\nalternatively shutil.move, but it\u0027s not atomic across different filesystems and it looks like (within the same filesystem) it calls `os.rename` \n\nhttps://github.com/python/cpython/blob/main/Lib/shutil.py#L824\n\nhttps://stackoverflow.com/questions/69363867/difference-between-os-replace-and-os-rename#:~:text\u003drename()%20will%20raise%20an,destination%20not%20just%20the%20directory.",
+      "range": {
+        "startLine": 143,
+        "startChar": 6,
+        "endLine": 143,
+        "endChar": 40
+      },
+      "revId": "9a9fe2f672db1b75bf165ef8354c21230b411ec3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
