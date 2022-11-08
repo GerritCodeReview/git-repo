@@ -109,7 +109,7 @@ global_options.add_option('--color',
 global_options.add_option('--trace',
                           dest='trace', action='store_true',
                           help='trace git command execution (REPO_TRACE=1)')
-global_options.add_option('--trace_to_stderr',
+global_options.add_option('--trace-to-stderr',
                           dest='trace_to_stderr', action='store_true',
                           help='trace outputs go to stderr in addition to .repo/TRACE_FILE')
 global_options.add_option('--trace-python',
