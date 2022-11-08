@@ -139,4 +139,7 @@ def _ClearOldTraces():
             temp.writelines(trace_lines[i+1:])
             break
       temp.close()
-      os.replace(temp.name, _TRACE_FILE)
+      try:
+        os.replace(temp.name, _TRACE_FILE)
+      except OSError as e:
+        shutil.move(temp.name, _TRACE_FILE)
