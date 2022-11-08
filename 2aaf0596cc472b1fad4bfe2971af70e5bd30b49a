@@ -16,6 +16,24 @@
       "message": "Let\u0027s bump this to at least 50MB.  My sync of AOSP is almost done fetching from the network, and the trace file is over 26MB.  With it set at 5, it seems like we\u0027ll be throwing away the data when we don\u0027t want to.",
       "revId": "2aaf0596cc472b1fad4bfe2971af70e5bd30b49a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee2456b2_6f769447",
+        "filename": "repo_trace.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-08T23:56:02Z",
+      "side": 1,
+      "message": "`repo init --quiet ... \u0026\u0026 repo sync -c -j 20` produces a trace file that is 31090572 on my machine (144179 lines, with the sync starting on line 151).  So maybe something like 64-70 MB would be a good idea.",
+      "parentUuid": "b2c4efdf_490514e6",
+      "revId": "2aaf0596cc472b1fad4bfe2971af70e5bd30b49a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
