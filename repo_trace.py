@@ -132,11 +132,12 @@ def _ClearOldTraces():
   if os.path.isfile(_TRACE_FILE):
     while os.path.getsize(_TRACE_FILE)/(1024*1024) > _MAX_SIZE:
       temp = tempfile.NamedTemporaryFile(mode='w', delete=False)
+      temp_file = _TRACE_FILE + '.temp'
       with open(_TRACE_FILE, 'r', errors='ignore') as fin:
-        trace_lines = fin.readlines()
-        for i , l in enumerate(trace_lines):
-          if 'END:' in l and _NEW_COMMAND_SEP in l:
-            temp.writelines(trace_lines[i+1:])
-            break
-      temp.close()
-      os.replace(temp.name, _TRACE_FILE)
+        with open(temp_file, 'w') as tf:
+          trace_lines = fin.readlines()
+          for i , l in enumerate(trace_lines):
+            if 'END:' in l and _NEW_COMMAND_SEP in l:
+              temp.writelines(trace_lines[i+1:])
+              break
+      os.replace(temp_file, _TRACE_FILE)
