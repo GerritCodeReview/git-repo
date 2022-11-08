@@ -22,9 +22,10 @@ To also include trace outputs in stderr do `repo --trace_to_stderr ...`
 
 import sys
 import os
-import tempfile
 import time
 from contextlib import ContextDecorator
+
+import platform_utils
 
 # Env var to implicitly turn on tracing.
 REPO_TRACE = 'REPO_TRACE'
@@ -123,7 +124,7 @@ def _GetTraceFile():
   return trace_file
 
 def _ClearOldTraces():
-  """Clear traces from old commands if trace file is too big.
+  """Clear the oldest commands if trace file is too big.
 
   Note: If the trace file contains output from two `repo`
         commands that were running at the same time, this
@@ -131,12 +132,12 @@ def _ClearOldTraces():
   """
   if os.path.isfile(_TRACE_FILE):
     while os.path.getsize(_TRACE_FILE)/(1024*1024) > _MAX_SIZE:
-      temp = tempfile.NamedTemporaryFile(mode='w', delete=False)
+      temp_file = _TRACE_FILE + '.tmp'
       with open(_TRACE_FILE, 'r', errors='ignore') as fin:
-        trace_lines = fin.readlines()
-        for i , l in enumerate(trace_lines):
-          if 'END:' in l and _NEW_COMMAND_SEP in l:
-            temp.writelines(trace_lines[i+1:])
-            break
-      temp.close()
-      os.replace(temp.name, _TRACE_FILE)
+        with open(temp_file, 'w') as tf:
+          trace_lines = fin.readlines()
+          for i , l in enumerate(trace_lines):
+            if 'END:' in l and _NEW_COMMAND_SEP in l:
+              tf.writelines(trace_lines[i+1:])
+              break
+      platform_utils.rename(temp_file, _TRACE_FILE)
