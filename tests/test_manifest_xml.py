@@ -23,7 +23,6 @@ import xml.dom.minidom
 
 import error
 import manifest_xml
-import repo_trace
 
 
 # Invalid paths that we don't want in the filesystem.
@@ -94,7 +93,6 @@ class ManifestParseTestCase(unittest.TestCase):
   def setUp(self):
     self.tempdirobj = tempfile.TemporaryDirectory(prefix='repo_tests')
     self.tempdir = self.tempdirobj.name
-    repo_trace._TRACE_FILE = os.path.join(self.tempdir, 'TRACE_FILE_from_test')
     self.repodir = os.path.join(self.tempdir, '.repo')
     self.manifest_dir = os.path.join(self.repodir, 'manifests')
     self.manifest_file = os.path.join(
@@ -264,10 +262,10 @@ class XmlManifestTests(ManifestParseTestCase):
         '<project name="r" groups="keep"/>'
         '</manifest>')
     self.assertEqual(
-        sort_attributes(manifest.ToXml(omit_local=True).toxml()),
+        manifest.ToXml(omit_local=True).toxml(),
         '<?xml version="1.0" ?><manifest>'
-        '<remote fetch=".." name="a"/><default remote="a" revision="r"/>'
-        '<project name="q"/><project groups="keep" name="r"/></manifest>')
+        '<remote name="a" fetch=".."/><default remote="a" revision="r"/>'
+        '<project name="q"/><project name="r" groups="keep"/></manifest>')
 
   def test_toxml_with_local(self):
     """Does include local_manifests projects when omit_local=False."""
@@ -279,11 +277,11 @@ class XmlManifestTests(ManifestParseTestCase):
         '<project name="r" groups="keep"/>'
         '</manifest>')
     self.assertEqual(
-        sort_attributes(manifest.ToXml(omit_local=False).toxml()),
+        manifest.ToXml(omit_local=False).toxml(),
         '<?xml version="1.0" ?><manifest>'
-        '<remote fetch=".." name="a"/><default remote="a" revision="r"/>'
-        '<project groups="local::me" name="p"/>'
-        '<project name="q"/><project groups="keep" name="r"/></manifest>')
+        '<remote name="a" fetch=".."/><default remote="a" revision="r"/>'
+        '<project name="p" groups="local::me"/>'
+        '<project name="q"/><project name="r" groups="keep"/></manifest>')
 
   def test_repo_hooks(self):
     """Check repo-hooks settings."""

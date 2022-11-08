@@ -219,8 +219,8 @@ class GitConfig(object):
     """Set the value(s) for a key.
        Only this configuration file is modified.
 
-       The supplied value should be either a string, or a list of strings (to
-       store multiple values), or None (to delete the key).
+       The supplied value should be either a string,
+       or a list of strings (to store multiple values).
     """
     key = _key(name)
 
@@ -349,9 +349,9 @@ class GitConfig(object):
     except OSError:
       return None
     try:
-      with Trace(': parsing %s', self.file):
-        with open(self._json) as fd:
-          return json.load(fd)
+      Trace(': parsing %s', self.file)
+      with open(self._json) as fd:
+        return json.load(fd)
     except (IOError, ValueError):
       platform_utils.remove(self._json, missing_ok=True)
       return None
