@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2862bc6_26915c09",
+        "filename": "repo_trace.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-08T19:41:32Z",
+      "side": 1,
+      "message": "It\u0027s probably worth noting here, or at the for loop in 137 that we only remove the oldest command from the trace file, rather than many older traces.",
+      "revId": "927a93bc88ceb5f1fdd03faa9f23902227d0fd22",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fe0a897_384c0ba5",
+        "filename": "repo_trace.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-08T19:41:32Z",
+      "side": 1,
+      "message": "Other places where repo does this use `\u0027.tmp\u0027`.  Let\u0027s use that instead.",
+      "revId": "927a93bc88ceb5f1fdd03faa9f23902227d0fd22",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
