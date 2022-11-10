@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1bc1e6b_66ba6e4e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2022-11-10T00:30:19Z",
+      "side": 1,
+      "message": "Nit: the existing style convention appears to be no prefixing _ for constants? e.g.:\n\nREPO_AUTO_GC \u003d \u0027REPO_AUTO_GC\u0027\n_AUTO_GC \u003d os.environ.get(REPO_AUTO_GC) \u003d\u003d \u00271\u0027",
+      "revId": "b01071da399094eb9a064cd93ad831b7aac0228f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd2db35c_5269f83f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 1023901
+      },
+      "writtenOn": "2022-11-10T00:30:19Z",
+      "side": 1,
+      "message": "And here..",
+      "range": {
+        "startLine": 1226,
+        "startChar": 48,
+        "endLine": 1226,
+        "endChar": 49
+      },
+      "revId": "b01071da399094eb9a064cd93ad831b7aac0228f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
