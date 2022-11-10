@@ -57,66 +57,67 @@ def SetTrace():
   _TRACE = True
 
 
-def _SetTraceFile():
+def _SetTraceFile(quiet):
   global _TRACE_FILE
-  _TRACE_FILE = _GetTraceFile()
+  _TRACE_FILE = _GetTraceFile(quiet)
 
 
 class Trace(ContextDecorator):
 
-    def _time(self):
-      """Generate nanoseconds of time in a py3.6 safe way"""
-      return int(time.time()*1e+9)
+  def _time(self):
+    """Generate nanoseconds of time in a py3.6 safe way"""
+    return int(time.time() * 1e+9)
 
-    def __init__(self, fmt, *args, first_trace=False):
-      if not IsTrace():
-        return
-      self._trace_msg = fmt % args
+  def __init__(self, fmt, *args, first_trace=False, quiet=True):
+    if not IsTrace():
+      return
+    self._trace_msg = fmt % args
 
-      if not _TRACE_FILE:
-        _SetTraceFile()
+    if not _TRACE_FILE:
+      _SetTraceFile(quiet)
 
-      if first_trace:
-        _ClearOldTraces()
-        self._trace_msg = '%s %s' % (_NEW_COMMAND_SEP, self._trace_msg)
+    if first_trace:
+      _ClearOldTraces()
+      self._trace_msg = f'{_NEW_COMMAND_SEP} {self._trace_msg}'
 
-
-    def __enter__(self):
-      if not IsTrace():
-        return self
-
-      print_msg = f'PID: {os.getpid()} START: {self._time()} :' + self._trace_msg + '\n'
-
-      with open(_TRACE_FILE, 'a') as f:
-        print(print_msg, file=f)
-
-      if _TRACE_TO_STDERR:
-        print(print_msg, file=sys.stderr)
-
+  def __enter__(self):
+    if not IsTrace():
       return self
 
-    def __exit__(self, *exc):
-      if not IsTrace():
-        return False
+    print_msg = f'PID: {os.getpid()} START: {self._time()} :{self._trace_msg}\n'
 
-      print_msg = f'PID: {os.getpid()} END: {self._time()} :' + self._trace_msg + '\n'
+    with open(_TRACE_FILE, 'a') as f:
+      print(print_msg, file=f)
 
-      with open(_TRACE_FILE, 'a') as f:
-        print(print_msg, file=f)
+    if _TRACE_TO_STDERR:
+      print(print_msg, file=sys.stderr)
 
-      if _TRACE_TO_STDERR:
-        print(print_msg, file=sys.stderr)
+    return self
 
+  def __exit__(self, *exc):
+    if not IsTrace():
       return False
 
+    print_msg = f'PID: {os.getpid()} END: {self._time()} :{self._trace_msg}\n'
 
-def _GetTraceFile():
+    with open(_TRACE_FILE, 'a') as f:
+      print(print_msg, file=f)
+
+    if _TRACE_TO_STDERR:
+      print(print_msg, file=sys.stderr)
+
+    return False
+
+
+def _GetTraceFile(quiet):
   """Get the trace file or create one."""
   # TODO: refactor to pass repodir to Trace.
   repo_dir = os.path.dirname(os.path.dirname(__file__))
   trace_file = os.path.join(repo_dir, _TRACE_FILE_NAME)
-  print('Trace outputs in %s' % trace_file, file=sys.stderr)
+  if not quiet:
+    print(f'Trace outputs in {trace_file}', file=sys.stderr)
   return trace_file
+
 
 def _ClearOldTraces():
   """Clear the oldest commands if trace file is too big.
@@ -126,13 +127,13 @@ def _ClearOldTraces():
         will not work precisely.
   """
   if os.path.isfile(_TRACE_FILE):
-    while os.path.getsize(_TRACE_FILE)/(1024*1024) > _MAX_SIZE:
+    while os.path.getsize(_TRACE_FILE) / (1024 * 1024) > _MAX_SIZE:
       temp_file = _TRACE_FILE + '.tmp'
       with open(_TRACE_FILE, 'r', errors='ignore') as fin:
         with open(temp_file, 'w') as tf:
           trace_lines = fin.readlines()
-          for i , l in enumerate(trace_lines):
+          for i, l in enumerate(trace_lines):
             if 'END:' in l and _NEW_COMMAND_SEP in l:
-              tf.writelines(trace_lines[i+1:])
+              tf.writelines(trace_lines[i + 1:])
               break
       platform_utils.rename(temp_file, _TRACE_FILE)
