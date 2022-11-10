@@ -15,7 +15,7 @@
 import os
 import sys
 from time import time
-from repo_trace import IsTrace
+from repo_trace import IsTraceToStderr
 
 _NOT_TTY = not os.isatty(2)
 
@@ -80,7 +80,7 @@ class Progress(object):
   def update(self, inc=1, msg=''):
     self._done += inc
 
-    if _NOT_TTY or IsTrace():
+    if _NOT_TTY or IsTraceToStderr():
       return
 
     if not self._show:
@@ -113,7 +113,7 @@ class Progress(object):
       sys.stderr.flush()
 
   def end(self):
-    if _NOT_TTY or IsTrace() or not self._show:
+    if _NOT_TTY or IsTraceToStderr() or not self._show:
       return
 
     duration = duration_str(time() - self._start)
