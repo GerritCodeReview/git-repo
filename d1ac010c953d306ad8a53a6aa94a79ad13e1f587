@@ -33,6 +33,24 @@
       "message": "can you split the reformatting changes into a single CL and the logical change into a different change?\n\nAlso for reformatting changes (since it messes up blame) we should add a new file to the repo so that we can utilize --ignore-revs-file\n\nperhaps called\n.git-blame-ignore-revs\n\nThen we can use this!\n\nhttps://git-scm.com/docs/git-blame#Documentation/git-blame.txt---ignore-revs-fileltfilegt",
       "revId": "d1ac010c953d306ad8a53a6aa94a79ad13e1f587",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "613658fd_d6f136f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-10T18:51:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a355720_82083c59",
+      "revId": "d1ac010c953d306ad8a53a6aa94a79ad13e1f587",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
