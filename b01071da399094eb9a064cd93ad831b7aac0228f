@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7e3d36f_7a76dda9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-10T00:37:27Z",
+      "side": 1,
+      "message": "Sam rightly pointed out that it should have the underscore, which makes REPO_BACKUP_OBJECTS the non-conforming variable.\n\nThat said, there are also:\n\n - envvars that are \"just a string deep in the code\" (e.g., REPO_HOST_PORT_INFO)\n - other examples of both (GENERATE_MANPAGES vs _ALTERNATES)\n \nOnce we sort out the correct style, we can go fix all of the various places to be consistent.",
+      "parentUuid": "c1bc1e6b_66ba6e4e",
+      "revId": "b01071da399094eb9a064cd93ad831b7aac0228f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd2db35c_5269f83f",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-11-10T00:30:19Z",
       "side": 1,
       "message": "And here..",
+      "range": {
+        "startLine": 1226,
+        "startChar": 48,
+        "endLine": 1226,
+        "endChar": 49
+      },
+      "revId": "b01071da399094eb9a064cd93ad831b7aac0228f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1ea0636_e9da814d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-10T00:37:27Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "cd2db35c_5269f83f",
       "range": {
         "startLine": 1226,
         "startChar": 48,
