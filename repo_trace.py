@@ -32,19 +32,14 @@ REPO_TRACE = 'REPO_TRACE'
 
 # Temporarily set tracing to always on unless user expicitly sets to 0.
 _TRACE = os.environ.get(REPO_TRACE) != '0'
-
 _TRACE_TO_STDERR = False
-
 _TRACE_FILE = None
-
 _TRACE_FILE_NAME = 'TRACE_FILE'
-
 _MAX_SIZE = 70  # in mb
-
 _NEW_COMMAND_SEP = '+++++++++++++++NEW COMMAND+++++++++++++++++++'
 
 
-def IsStraceToStderr():
+def IsTraceToStderr():
   return _TRACE_TO_STDERR
 
 
@@ -90,7 +85,7 @@ class Trace(ContextDecorator):
       if not IsTrace():
         return self
 
-      print_msg = f"PID: {os.getpid()} START: {self._time()} :" + self._trace_msg + '\n'
+      print_msg = f'PID: {os.getpid()} START: {self._time()} :' + self._trace_msg + '\n'
 
       with open(_TRACE_FILE, 'a') as f:
         print(print_msg, file=f)
@@ -104,7 +99,7 @@ class Trace(ContextDecorator):
       if not IsTrace():
         return False
 
-      print_msg = f"PID: {os.getpid()} END: {self._time()} :" + self._trace_msg + '\n'
+      print_msg = f'PID: {os.getpid()} END: {self._time()} :' + self._trace_msg + '\n'
 
       with open(_TRACE_FILE, 'a') as f:
         print(print_msg, file=f)
