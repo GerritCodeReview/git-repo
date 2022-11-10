@@ -68,8 +68,11 @@ from manifest_xml import GitcManifest
 _ONE_DAY_S = 24 * 60 * 60
 # Env var to implicitly turn off object backups.
 REPO_BACKUP_OBJECTS = 'REPO_BACKUP_OBJECTS'
-
 _BACKUP_OBJECTS = os.environ.get(REPO_BACKUP_OBJECTS) != '0'
+
+# Env var to implicitly turn auto-gc back on.
+_REPO_AUTO_GC = 'REPO_AUTO_GC'
+_AUTO_GC = os.environ.get(_REPO_AUTO_GC) == '1'
 
 
 class _FetchOneResult(NamedTuple):
@@ -312,7 +315,7 @@ later is required to fix a server side protocol bug.
                  help='delete refs that no longer exist on the remote (default)')
     p.add_option('--no-prune', dest='prune', action='store_false',
                  help='do not delete refs that no longer exist on the remote')
-    p.add_option('--auto-gc', action='store_true',
+    p.add_option('--auto-gc', action='store_true', default=None,
                  help='run garbage collection on all synced projects')
     p.add_option('--no-auto-gc', dest='auto_gc', action='store_false',
                  help='do not run garbage collection on any projects (default)')
@@ -1218,6 +1221,11 @@ later is required to fix a server side protocol bug.
 
     if opt.prune is None:
       opt.prune = True
+
+    if opt.auto_gc is None and _AUTO_GC:
+      print(f"Will run `git gc --auto` because {_REPO_AUTO_GC} is set.",
+            file=sys.stderr)
+      opt.auto_gc = True
 
   def Execute(self, opt, args):
     manifest = self.outer_manifest
