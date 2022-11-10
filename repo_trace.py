@@ -57,9 +57,9 @@ def SetTrace():
   _TRACE = True
 
 
-def _SetTraceFile():
+def _SetTraceFile(quiet):
   global _TRACE_FILE
-  _TRACE_FILE = _GetTraceFile()
+  _TRACE_FILE = _GetTraceFile(quiet)
 
 
 class Trace(ContextDecorator):
@@ -68,13 +68,13 @@ class Trace(ContextDecorator):
     """Generate nanoseconds of time in a py3.6 safe way"""
     return int(time.time() * 1e+9)
 
-  def __init__(self, fmt, *args, first_trace=False):
+  def __init__(self, fmt, *args, first_trace=False, quiet=True):
     if not IsTrace():
       return
     self._trace_msg = fmt % args
 
     if not _TRACE_FILE:
-      _SetTraceFile()
+      _SetTraceFile(quiet)
 
     if first_trace:
       _ClearOldTraces()
@@ -109,12 +109,13 @@ class Trace(ContextDecorator):
     return False
 
 
-def _GetTraceFile():
+def _GetTraceFile(quiet):
   """Get the trace file or create one."""
   # TODO: refactor to pass repodir to Trace.
   repo_dir = os.path.dirname(os.path.dirname(__file__))
   trace_file = os.path.join(repo_dir, _TRACE_FILE_NAME)
-  print(f'Trace outputs in {trace_file}', file=sys.stderr)
+  if not quiet:
+    print(f'Trace outputs in {trace_file}', file=sys.stderr)
   return trace_file
 
 
