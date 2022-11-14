@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0213c42e_c8b53ff6",
+        "filename": "repo_trace.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-14T23:35:57Z",
+      "side": 1,
+      "message": "nit to pydoc this since it is an optional param to the constructor of a public class",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 64
+      },
+      "revId": "87b03a2a6e8c98d29532f21dd8cdb538a55eb5cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
