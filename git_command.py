@@ -207,10 +207,16 @@ class GitCommand(object):
     if objdir:
       # Set to the place we want to save the objects.
       env['GIT_OBJECT_DIRECTORY'] = objdir
-      if gitdir:
+
+      alt_objects = os.path.join(gitdir, 'objects')
+      if gitdir and os.path.realpath(alt_objects) != os.path.realpath(objdir):
+        print("setting %s" % gitdir)
+        print("setting %s %s" % (os.path.realpath(alt_objects), os.path.realpath(objdir)))
         # Allow git to search the original place in case of local or unique refs
         # that git will attempt to resolve even if we aren't fetching them.
-        env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = gitdir + '/objects'
+        env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = alt_objects
+      else:
+        print("unsetting %s" % gitdir)
 
     command = [GIT]
     if bare:
@@ -287,6 +293,9 @@ class GitCommand(object):
         if ssh_proxy:
           ssh_proxy.remove_client(p)
       self.rc = p.wait()
+      if self.rc > 0:
+        with Trace('git command %s %s with debug: %s exited with %d', LAST_GITDIR, command, dbg, self.rc):
+          pass
 
   @staticmethod
   def _GetBasicEnv():
