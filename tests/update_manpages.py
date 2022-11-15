@@ -1,1 +1,1 @@
-update-manpages
+../release/update-manpages
