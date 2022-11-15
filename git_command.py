@@ -157,6 +157,43 @@ def git_require(min_version, fail=False, msg=''):
   return False
 
 
+def _build_env(opts):
+  """Constucts an env dict for command execution."""
+  env = GitCommand._GetBasicEnv()
+
+  if opts.get('disable_editor'):
+    env['GIT_EDITOR'] = ':'
+  if opts.get('ssh_proxy'):
+    env['REPO_SSH_SOCK'] = opts.get('ssh_proxy').sock()
+    env['GIT_SSH'] = opts.get('ssh_proxy').proxy
+    env['GIT_SSH_VARIANT'] = 'ssh'
+  if 'http_proxy' in env and 'darwin' == sys.platform:
+    s = "'http.proxy=%s'" % (env['http_proxy'],)
+    p = env.get('GIT_CONFIG_PARAMETERS')
+    if p is not None:
+      s = p + ' ' + s
+    env['GIT_CONFIG_PARAMETERS'] = s
+  if 'GIT_ALLOW_PROTOCOL' not in env:
+    env['GIT_ALLOW_PROTOCOL'] = (
+        'file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc')
+  env['GIT_HTTP_USER_AGENT'] = user_agent.git
+
+  if opts.get('objdir'):
+    # Set to the place we want to save the objects.
+    env['GIT_OBJECT_DIRECTORY'] = opts.get('objdir')
+
+    alt_objects = os.path.join(opts.get('gitdir'), 'objects') if opts.get('gitdir') else None
+    if alt_objects and os.path.realpath(alt_objects) != os.path.realpath(opts.get('objdir')):
+      # Allow git to search the original place in case of local or unique refs
+      # that git will attempt to resolve even if we aren't fetching them.
+      env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = alt_objects
+  if opts.get('bare'):
+    if opts.get('gitdir'):
+      env[GIT_DIR] = opts.get('gitdir')
+
+  return env
+
+
 class GitCommand(object):
   """Wrapper around a single git invocation."""
 
@@ -173,24 +210,14 @@ class GitCommand(object):
                cwd=None,
                gitdir=None,
                objdir=None):
-    env = self._GetBasicEnv()
 
-    if disable_editor:
-      env['GIT_EDITOR'] = ':'
-    if ssh_proxy:
-      env['REPO_SSH_SOCK'] = ssh_proxy.sock()
-      env['GIT_SSH'] = ssh_proxy.proxy
-      env['GIT_SSH_VARIANT'] = 'ssh'
-    if 'http_proxy' in env and 'darwin' == sys.platform:
-      s = "'http.proxy=%s'" % (env['http_proxy'],)
-      p = env.get('GIT_CONFIG_PARAMETERS')
-      if p is not None:
-        s = p + ' ' + s
-      env['GIT_CONFIG_PARAMETERS'] = s
-    if 'GIT_ALLOW_PROTOCOL' not in env:
-      env['GIT_ALLOW_PROTOCOL'] = (
-          'file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc')
-    env['GIT_HTTP_USER_AGENT'] = user_agent.git
+    env = _build_env(dict(
+      disable_editor=disable_editor,
+      ssh_proxy=ssh_proxy,
+      objdir=objdir,
+      gitdir=gitdir,
+      bare=bare,
+    ))
 
     if project:
       if not cwd:
@@ -204,20 +231,8 @@ class GitCommand(object):
       if gitdir:
         gitdir = gitdir.replace('\\', '/')
 
-    if objdir:
-      # Set to the place we want to save the objects.
-      env['GIT_OBJECT_DIRECTORY'] = objdir
-
-      alt_objects = os.path.join(gitdir, 'objects') if gitdir else None
-      if alt_objects and os.path.realpath(alt_objects) != os.path.realpath(objdir):
-        # Allow git to search the original place in case of local or unique refs
-        # that git will attempt to resolve even if we aren't fetching them.
-        env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = alt_objects
-
     command = [GIT]
     if bare:
-      if gitdir:
-        env[GIT_DIR] = gitdir
       cwd = None
     command.append(cmdv[0])
     # Need to use the --progress flag for fetch/clone so output will be
