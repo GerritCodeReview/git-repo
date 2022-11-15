@@ -207,10 +207,12 @@ class GitCommand(object):
     if objdir:
       # Set to the place we want to save the objects.
       env['GIT_OBJECT_DIRECTORY'] = objdir
-      if gitdir:
+
+      alt_objects = os.path.join(gitdir, 'objects') if gitdir else None
+      if alt_objects and os.path.realpath(alt_objects) != os.path.realpath(objdir):
         # Allow git to search the original place in case of local or unique refs
         # that git will attempt to resolve even if we aren't fetching them.
-        env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = gitdir + '/objects'
+        env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = alt_objects
 
     command = [GIT]
     if bare:
