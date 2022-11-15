@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f766e0e9_ef541da1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-15T23:07:49Z",
+      "side": 1,
+      "message": "This should be a one-line summary, with the rest of the description included after a blank line.",
+      "revId": "471cf19f032630f270a8da9ad45560ceec59feaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77ba6f94_e0c01d2a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-15T23:07:49Z",
+      "side": 1,
+      "message": "The preferred format for this is to move it down into the footers, and use:\n```\nBug: b/255376186\nBug: https://crbug.com/gerrit/16247\nChange-Id: I12458ee04c307be916851dddd36231997bc8839e\n```",
+      "revId": "471cf19f032630f270a8da9ad45560ceec59feaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f69c8e6_4add8517",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-15T23:07:49Z",
+      "side": 1,
+      "message": "If gitdir is None, this will fail.  (Needs to be inside `if gitdir:`)",
+      "revId": "471cf19f032630f270a8da9ad45560ceec59feaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
