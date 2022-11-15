@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d2eebe_a492118a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-15T23:13:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f766e0e9_ef541da1",
+      "revId": "471cf19f032630f270a8da9ad45560ceec59feaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77ba6f94_e0c01d2a",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5498c0c1_e85f63e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-15T23:13:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77ba6f94_e0c01d2a",
+      "revId": "471cf19f032630f270a8da9ad45560ceec59feaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4f69c8e6_4add8517",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-11-15T23:07:49Z",
       "side": 1,
       "message": "If gitdir is None, this will fail.  (Needs to be inside `if gitdir:`)",
+      "revId": "471cf19f032630f270a8da9ad45560ceec59feaf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dd2eeb8_7778ad81",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-15T23:13:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f69c8e6_4add8517",
       "revId": "471cf19f032630f270a8da9ad45560ceec59feaf",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
