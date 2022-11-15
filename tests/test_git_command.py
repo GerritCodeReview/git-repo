@@ -15,6 +15,7 @@
 """Unittests for the git_command.py module."""
 
 import re
+import os
 import unittest
 
 try:
@@ -24,6 +25,38 @@ except ImportError:
 
 import git_command
 import wrapper
+
+
+class GitCommandTest(unittest.TestCase):
+  """Tests the GitCommand class (via git_command.git)."""
+
+  def setUp(self):
+
+    def realpath_mock(val):
+      return val
+
+    mock.patch.object(os.path, 'realpath', side_effect=realpath_mock).start()
+
+  def tearDown(self):
+    mock.patch.stopall()
+
+  def test_alternative_setting_when_matching(self):
+    r = git_command._build_env(dict(
+      objdir = 'zap/objects',
+      gitdir = 'zap'
+    ))
+
+    self.assertIsNone(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'))
+    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'),  'zap/objects')
+
+  def test_alternative_setting_when_different(self):
+    r = git_command._build_env(dict(
+      objdir = 'wow/objects',
+      gitdir = 'zap'
+    ))
+
+    self.assertEqual(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'), 'zap/objects')
+    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'),  'wow/objects')
 
 
 class GitCallUnitTest(unittest.TestCase):
