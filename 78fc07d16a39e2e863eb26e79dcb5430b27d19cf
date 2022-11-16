@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8785b484_badee4ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-16T18:16:49Z",
+      "side": 1,
+      "message": "other than the indentation nit, LGTM.",
+      "revId": "78fc07d16a39e2e863eb26e79dcb5430b27d19cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dee484c_a17477dd",
+        "filename": "git_command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-16T18:16:49Z",
+      "side": 1,
+      "message": "nit: I believe that the proper indent puts \u0027bare\u0027 directly below \u0027_kwa\u0027 in the line above, etc. (see lines 209-221 below)",
+      "revId": "78fc07d16a39e2e863eb26e79dcb5430b27d19cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
