@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40219c23_acdfc15c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-16T18:26:32Z",
+      "side": 1,
+      "message": "verified this works. repo init / repo sync",
+      "revId": "630e4d053e5398e204784cb7d97fbd70d6186b3d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
