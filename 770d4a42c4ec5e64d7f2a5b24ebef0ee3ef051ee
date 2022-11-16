@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63d852df_3bc057a4",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-16T18:03:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9fa9fc57_e100994f",
+      "revId": "770d4a42c4ec5e64d7f2a5b24ebef0ee3ef051ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39164a32_3abbe3dd",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-11-16T16:59:32Z",
       "side": 1,
       "message": "Line 181 means that `opts.get(\u0027objdir\u0027)` we don\u0027t need to check it again here.  Also, please wrap to 80 columns.",
+      "range": {
+        "startLine": 185,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 93
+      },
+      "revId": "770d4a42c4ec5e64d7f2a5b24ebef0ee3ef051ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31494e5a_d8c9ef8f",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-11-16T18:03:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39164a32_3abbe3dd",
       "range": {
         "startLine": 185,
         "startChar": 0,
