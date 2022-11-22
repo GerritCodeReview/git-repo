@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8770f4_3371721e",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:59:43Z",
+      "side": 1,
+      "message": "needs updating",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c42b4a3_cd4eb087",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:59:43Z",
+      "side": 1,
+      "message": "you\u0027ve changed the launcher, but not updated the version above.  you need to do that so we can push out a new launcher script for people.  otherwise your change doesn\u0027t actually take effect for people.",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
