@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5d9598_79a8f0e9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 845,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:28:05Z",
+      "side": 1,
+      "message": "the \"not\" setting is just confusing.  we shouldn\u0027t bother with a progress bar at all in this case.",
+      "revId": "7efab539f0fc78aa759000a922c30ac45e84530b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e26741c_94e30c4c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:28:05Z",
+      "side": 1,
+      "message": "seems like we shouldn\u0027t bother setting this if we aren\u0027t going to gc",
+      "revId": "7efab539f0fc78aa759000a922c30ac45e84530b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
