@@ -1,0 +1,327 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3878c4f6_1cf80465",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "for such a significant change, there is no discussion here as to overhead incurred",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "087899e0_07048fd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "repo has an internals doc that needs updating:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/internal-fs-layout.md",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "956aa69d_5730f325",
+        "filename": "main.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "options use dashs, not underscores",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04bb2e18_1da033df",
+        "filename": "main.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "the `dest` value is redundant",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddcf8832_27f18818",
+        "filename": "main.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "why do you need this option at all ?  if the user specifies `--trace`, they expect to see the output.\n\nseems like a better option would to generalize it like other tools.  call it `--trace-output` and let it take a path.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd95e7d2_bb9a4ef2",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "this CL seems to do a number of things in one: refactor the trace code, add new options, enable .repo/TRACE_FILE support, default to on.  this makes it difficult to review, and hard to look through the history (especially when bisecting).  please break your commits up more into logical pieces.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d4e9939_ff3baf3c",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "\"mb\" ?  do you mean megabytes or mebibytes ?  normally we mean mebibytes, so this should be \"MiB\".",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1df80240_97f09202",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "ad-hoc file formats is generally not a good idea.  i grok that there was pressure to track a bug down, but now that\u0027s settled, can we fix this ?  serialize it to JSON at least.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b01967f9_de309556",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "all new functions need docstrings",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41abb7e9_026ea6d7",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "all classes need docstrings",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5675f350_ead9c016",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "use f-strings",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd86293f_bcba3b37",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "what does this comment mean ?\n\nif you mean the code isn\u0027t atomic-safe, then doing atomic writes isn\u0027t difficult at all.  write to a file alongside _TRACE_FILE, and then do a rename.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d0f07a6_bc18c3dd",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "use spaces around binary operators",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c5cf544_a48cea66",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "no space before the ,",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43e8beb6_b4b8a2a9",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "never use `l` as a short variable.  depending on the font, it can render as 1 or | or I.  just write \"line\" ... it\u0027s not that much longer.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbd51056_bdfd19b1",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "just use a proper context manager so you don\u0027t leak files when code crashes",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54464ca8_b05e9b75",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "this crashes when the tempdir (e.g. /tmp) is a diff mount/filesystem",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b05d1c98_20f8f45e",
+        "filename": "run_tests",
+        "patchSetId": 28
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "why do you import this ?  you don\u0027t use it.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6b63e2d_83a41c57",
+        "filename": "tests/test_git_config.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:15:54Z",
+      "side": 1,
+      "message": "this is extremely fragile.  this needs refactoring so all tests get it automatically.\n\nalso, tearDown is not reliable when tests fail, or classes stack.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
