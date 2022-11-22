@@ -1,0 +1,214 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de968f5e_9170a1a9",
+        "filename": "git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "this style is incorrect: hanging indents are 4 spaces",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af3d077f_35286f9d",
+        "filename": "git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "`ssh_proxy` is of type `ssh.ProxyManager`, not `Any`\n\nif we aren\u0027t importing the `ssh` module otherwise (and that seems to be the case), then you\u0027d use `\u0027ssh.ProxyManager\u0027` here to avoid the runtime requirement, and then above do:\n\n```\nfrom typing import TYPE_CHECKING\nif TYPE_CHECKING:\n  import ssh\n```",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bf21534_458503f0",
+        "filename": "git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "if you want to put `):` on a new line, please use a dangling comma with the arguments",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "049494b7_58d452f6",
+        "filename": "git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "functions that don\u0027t return anything should be annotated with explicit `-\u003e None`",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51e122d9_bed6f9a0",
+        "filename": "git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "i don\u0027t know if this is some python2 style, but pretty sure the python 3 way of doing this is:\n\n```\ndef _build_env(\n    *,\n    bare: Optional[bool] \u003d False,\n    ...\n```\n\nthen you don\u0027t need an assert, and the Python runtime takes care of it for you",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c8d9c61_06490cff",
+        "filename": "git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "hanging indent uses 4 spaces",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efb3a18a_28afb79f",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "this is only testing _build_env, not GitCommand",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 57
+      },
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f51c71e0_5609e97f",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "don\u0027t use mock this way.  either use context managers or per-test decorators.  tearDown is messy which makes these easy to leak.",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2d0c32e_d555a62b",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "not sure what `r` means.  maybe you want `env`.",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65f53343_091e2f67",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "indent + dangling comma",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2580ed67_fd69f10b",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "better to write:\n\n```\nself.assertNotIn(\u0027GIT_ALTERNATE_OBJECT_DIRECTORIES\u0027, r)\n```",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deb76a51_205e77f9",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T08:24:37Z",
+      "side": 1,
+      "message": "only one space after `,`",
+      "revId": "d686365449ade2480a23f86531a5b6630fcbb7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
