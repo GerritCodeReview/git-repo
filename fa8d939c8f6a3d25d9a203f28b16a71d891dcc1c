@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f943d684_0f440af9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:22:19Z",
+      "side": 1,
+      "message": "don\u0027t use docstrings for types.  we\u0027ve already started putting typing info into new code, and you even already put it above for `project: Project`.",
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9993d15_2a099530",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 806,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:22:19Z",
+      "side": 1,
+      "message": "don\u0027t put spaces around kwargs `\u003d`",
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ea777e_e4e54ba6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:22:19Z",
+      "side": 1,
+      "message": "what is this ?  it\u0027s not set by a command line option, nor is it documented in our internals.  is this just left over debug code ?",
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
