@@ -52,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be4c9ae9_10447f53",
+        "filename": "main.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:36:34Z",
+      "side": 1,
+      "message": "looks like this was fixed in https://gerrit-review.git.corp.google.com/c/git-repo/+/350934",
+      "parentUuid": "956aa69d_5730f325",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04bb2e18_1da033df",
@@ -273,6 +291,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "68caf4fd_aa127a8e",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:36:34Z",
+      "side": 1,
+      "message": "looks like this was fixed in https://gerrit-review.git.corp.google.com/c/git-repo/+/350934\n\nconsider this a future suggestion when writing Python ;)",
+      "parentUuid": "cbd51056_bdfd19b1",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54464ca8_b05e9b75",
@@ -286,6 +322,24 @@
       "writtenOn": "2022-11-22T09:15:54Z",
       "side": 1,
       "message": "this crashes when the tempdir (e.g. /tmp) is a diff mount/filesystem",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54528a02_ab7cfc1d",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:36:34Z",
+      "side": 1,
+      "message": "looks like this was fixed in https://gerrit-review.git.corp.google.com/c/git-repo/+/350934",
+      "parentUuid": "54464ca8_b05e9b75",
       "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
