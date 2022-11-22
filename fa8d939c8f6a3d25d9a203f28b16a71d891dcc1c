@@ -20,6 +20,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "335fffb0_edb7b84e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 798,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:30:44Z",
+      "side": 1,
+      "message": "seems like this should just be \"Set\".  calling it \"repair\" makes it sound like there was a bug at some point that we\u0027re cleaning up.  afaik, the only way we\u0027d go from precious-\u003enot precious is:\n\n1. the user set it manually\n2. the manifest had multiple projects, but now it only has one\n\nplus, this function is responsible for initializing the value in the normal course of things.\n\nseems like we should only be backing the value out in situation (2), not (1).  but i get that maintaining delta manifest state is tricky, and prob not worth the effort atm.",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 798,
+        "endChar": 57
+      },
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9993d15_2a099530",
         "filename": "subcmds/sync.py",
         "patchSetId": 7
