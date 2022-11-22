@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba531c64_dbb8e309",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:45:47Z",
+      "side": 1,
+      "message": "do you have any information on this ?  i still don\u0027t see it anywhere else, nor am i aware of anyone else in the OSS world who uses help2man having to do this.  it still sounds like an issue that only exists on your system.",
+      "revId": "f8af33c9f0ef38fbe9bd6944255738edc8d4e8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6dc00f9_e7de1524",
+        "filename": "release/update-manpages",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-22T09:45:47Z",
+      "side": 1,
+      "message": "this seems more complicated than necessary.  all you need to do is strip the CSI+m command.  the fact that the output tends to output them in pairs seems pretty incidental, but def not a requirement for ANSI terminals.\n\n`(r\u0027\\033[[0-9;]*m\u0027, \u0027\u0027)`",
+      "revId": "f8af33c9f0ef38fbe9bd6944255738edc8d4e8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
