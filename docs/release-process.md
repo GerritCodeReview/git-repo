@@ -143,23 +143,14 @@ internal processes for accessing the restricted keys.
 ***
 
 ```sh
-# Set the gpg key directory.
-$ export GNUPGHOME=~/.gnupg/repo/
-
-# Verify the listed key is “Repo Maintainer”.
-$ gpg -K
-
-# Pick whatever branch or commit you want to tag.
-$ r=main
-
 # Pick the new version.
-$ t=1.12.10
+$ t=v2.30
 
-# Create the signed tag.
-$ git tag -s v$t -u "Repo Maintainer <repo@android.kernel.org>" -m "repo $t" $r
+# Create a new signed tag with the current HEAD.
+$ ./release/sign-tag.py $t
 
 # Verify the signed tag.
-$ git show v$t
+$ git show $t
 ```
 
 ### Push the new release
@@ -168,11 +159,11 @@ Once you're ready to make the release available to everyone, push it to the
 `stable` branch.
 
 Make sure you never push the tag itself to the stable branch!
-Only push the commit -- notice the use of `$t` and `$r` below.
+Only push the commit -- note the use of `^0` below.
 
 ```sh
-$ git push https://gerrit-review.googlesource.com/git-repo v$t
-$ git push https://gerrit-review.googlesource.com/git-repo $r:stable
+$ git push https://gerrit-review.googlesource.com/git-repo $t
+$ git push https://gerrit-review.googlesource.com/git-repo $t^0:stable
 ```
 
 If something goes horribly wrong, you can force push the previous version to the
@@ -195,7 +186,9 @@ You can create a short changelog using the command:
 ```sh
 # If you haven't pushed to the stable branch yet, you can use origin/stable.
 # If you have pushed, change origin/stable to the previous release tag.
-$ git log --format="%h (%aN) %s" --no-merges origin/stable..$r
+# This assumes "main" is the current tagged release.  If it's newer, change it
+# to the current release tag too.
+$ git log --format="%h (%aN) %s" --no-merges origin/stable..main
 ```
 
 ## Project References
