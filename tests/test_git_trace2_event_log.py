@@ -369,7 +369,7 @@ class EventLogTestCase(unittest.TestCase):
         server_thread.start()
 
         with server_ready:
-          server_ready.wait()
+          server_ready.wait(timeout=5)
 
         self._event_log_module.StartEvent()
         path = self._event_log_module.Write(path=f'af_unix:{socket_path}')
