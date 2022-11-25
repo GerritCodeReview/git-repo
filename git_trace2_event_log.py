@@ -110,7 +110,7 @@ class EventLog(object):
     return {
         'event': event_name,
         'sid': self._full_sid,
-        'thread': threading.currentThread().getName(),
+        'thread': threading.current_thread().name,
         'time': datetime.datetime.utcnow().isoformat() + 'Z',
     }
 
