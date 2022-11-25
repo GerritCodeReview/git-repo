@@ -12,12 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-try:
-  from importlib.machinery import SourceFileLoader
-  _loader = lambda *args: SourceFileLoader(*args).load_module()
-except ImportError:
-  import imp
-  _loader = lambda *args: imp.load_source(*args)
+import importlib.machinery
+import importlib.util
 import os
 
 
@@ -31,5 +27,9 @@ _wrapper_module = None
 def Wrapper():
   global _wrapper_module
   if not _wrapper_module:
-    _wrapper_module = _loader('wrapper', WrapperPath())
+    modname = 'wrapper'
+    loader = importlib.machinery.SourceFileLoader(modname, WrapperPath())
+    spec = importlib.util.spec_from_loader(modname, loader)
+    _wrapper_module = importlib.util.module_from_spec(spec)
+    loader.exec_module(_wrapper_module)
   return _wrapper_module
