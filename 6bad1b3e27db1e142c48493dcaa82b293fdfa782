@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "201e33ce_4c55504b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2022-11-26T10:17:07Z",
+      "side": 1,
+      "message": "tested with tox, test case now fails when waiting for 2min on windows",
+      "revId": "6bad1b3e27db1e142c48493dcaa82b293fdfa782",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
