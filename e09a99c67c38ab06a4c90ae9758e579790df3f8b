@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5f26c2d_355e80f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2022-11-26T10:11:25Z",
+      "side": 1,
+      "message": "any test that runs longer than 5 minutes is now interrupted when running tests with both tox and run_tests",
+      "revId": "e09a99c67c38ab06a4c90ae9758e579790df3f8b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
