@@ -51,6 +51,24 @@
       "parentUuid": "790afc4e_57397890",
       "revId": "20909ec82664fe748f2e2b893946ec087d025d71",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b69d8cc1_35aace75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-26T09:04:50Z",
+      "side": 1,
+      "message": "as long as `pytest` respects the setting (which is what `./run_tests` uses), i\u0027m fine with using `tox.ini`",
+      "parentUuid": "106244b1_b101a140",
+      "revId": "20909ec82664fe748f2e2b893946ec087d025d71",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
