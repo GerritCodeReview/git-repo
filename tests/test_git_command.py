@@ -42,21 +42,21 @@ class GitCommandTest(unittest.TestCase):
 
   def test_alternative_setting_when_matching(self):
     r = git_command._build_env(
-      objdir = 'zap/objects',
+      objdir = os.path.join('zap', 'objects'),
       gitdir = 'zap'
     )
 
     self.assertIsNone(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'))
-    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'),  'zap/objects')
+    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'), os.path.join('zap', 'objects'))
 
   def test_alternative_setting_when_different(self):
     r = git_command._build_env(
-      objdir = 'wow/objects',
+      objdir = os.path.join('wow', 'objects'),
       gitdir = 'zap'
     )
 
-    self.assertEqual(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'), 'zap/objects')
-    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'),  'wow/objects')
+    self.assertEqual(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'), os.path.join('zap', 'objects'))
+    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'), os.path.join('wow', 'objects'))
 
 
 class GitCallUnitTest(unittest.TestCase):
