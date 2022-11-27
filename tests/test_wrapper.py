@@ -159,7 +159,9 @@ class RunCommand(RepoWrapperTestCase):
   def test_capture(self):
     """Check capture_output handling."""
     ret = self.wrapper.run_command(['echo', 'hi'], capture_output=True)
-    self.assertEqual(ret.stdout, 'hi\n')
+    # echo command appends OS specific linesep, but on Windows + Git Bash
+    # we get UNIX ending, so we allow both
+    self.assertIn(ret.stdout, ['hi' + os.linesep, 'hi\n'])
 
   def test_check(self):
     """Check check handling."""
