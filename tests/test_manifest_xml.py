@@ -117,7 +117,7 @@ class ManifestParseTestCase(unittest.TestCase):
 
   def getXmlManifest(self, data):
     """Helper to initialize a manifest for testing."""
-    with open(self.manifest_file, 'w') as fp:
+    with open(self.manifest_file, 'w', encoding="utf-8") as fp:
       fp.write(data)
     return manifest_xml.XmlManifest(self.repodir, self.manifest_file)
 
@@ -428,7 +428,7 @@ class IncludeElementTests(ManifestParseTestCase):
     def parse(name):
       name = self.encodeXmlAttr(name)
       # Setup target of the include.
-      with open(os.path.join(self.manifest_dir, 'target.xml'), 'w') as fp:
+      with open(os.path.join(self.manifest_dir, 'target.xml'), 'w', encoding="utf-8") as fp:
         fp.write(f'<manifest><include name="{name}"/></manifest>')
 
       manifest = self.getXmlManifest("""
