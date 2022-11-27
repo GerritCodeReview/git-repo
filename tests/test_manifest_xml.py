@@ -578,7 +578,7 @@ class ProjectElementTests(ManifestParseTestCase):
       parse('', 'ok')
 
     for path in INVALID_FS_PATHS:
-      if not path or path.endswith('/'):
+      if not path or path.endswith('/') or path.endswith(os.path.sep):
         continue
 
       with self.assertRaises(error.ManifestInvalidPathError):
