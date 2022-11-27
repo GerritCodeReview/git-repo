@@ -159,7 +159,7 @@ class RunCommand(RepoWrapperTestCase):
   def test_capture(self):
     """Check capture_output handling."""
     ret = self.wrapper.run_command(['echo', 'hi'], capture_output=True)
-    self.assertEqual(ret.stdout, 'hi\n')
+    self.assertIn(ret.stdout, ['hi\n', 'hi' + os.linesep])
 
   def test_check(self):
     """Check check handling."""
