@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35225bb2_ce7132e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-28T12:00:35Z",
+      "side": 1,
+      "message": "i don\u0027t know why Python keeps making it more difficult to import things",
+      "revId": "c796a94ea62396590f78bfcc30460eff4f571648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52392664_d3b1001a",
+        "filename": "wrapper.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-28T12:00:35Z",
+      "side": 1,
+      "message": "change this to `import importlib.machinery` while you\u0027re here",
+      "revId": "c796a94ea62396590f78bfcc30460eff4f571648",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
