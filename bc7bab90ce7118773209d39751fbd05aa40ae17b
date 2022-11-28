@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeced1dc_e3ffec68",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-28T06:34:25Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "bc7bab90ce7118773209d39751fbd05aa40ae17b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
