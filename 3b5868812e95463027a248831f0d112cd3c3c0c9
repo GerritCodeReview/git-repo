@@ -34,6 +34,24 @@
       "parentUuid": "c19f30b2_62051275",
       "revId": "3b5868812e95463027a248831f0d112cd3c3c0c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "033ca5ba_9f858ac9",
+        "filename": "tests/test_wrapper.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-11-28T02:36:29Z",
+      "side": 1,
+      "message": "that deserves a code comment so someone doesn\u0027t come along and \"clean it up\" later on",
+      "parentUuid": "69a86904_491bbd03",
+      "revId": "3b5868812e95463027a248831f0d112cd3c3c0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
