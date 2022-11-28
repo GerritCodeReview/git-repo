@@ -117,7 +117,8 @@ class GitRequireTests(unittest.TestCase):
   """Test the git_require helper."""
 
   def setUp(self):
-    ver = wrapper.GitVersion(1, 2, 3, 4)
+    self.wrapper = wrapper.Wrapper()
+    ver = self.wrapper.GitVersion(1, 2, 3, 4)
     mock.patch.object(git_command.git, 'version_tuple', return_value=ver).start()
 
   def tearDown(self):
