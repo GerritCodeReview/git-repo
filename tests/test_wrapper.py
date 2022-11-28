@@ -59,12 +59,12 @@ class RepoWrapperUnitTest(RepoWrapperTestCase):
   def test_python_constraints(self):
     """The launcher should never require newer than main.py."""
     self.assertGreaterEqual(main.MIN_PYTHON_VERSION_HARD,
-                            wrapper.MIN_PYTHON_VERSION_HARD)
+                            self.wrapper.MIN_PYTHON_VERSION_HARD)
     self.assertGreaterEqual(main.MIN_PYTHON_VERSION_SOFT,
-                            wrapper.MIN_PYTHON_VERSION_SOFT)
+                            self.wrapper.MIN_PYTHON_VERSION_SOFT)
     # Make sure the versions are themselves in sync.
-    self.assertGreaterEqual(wrapper.MIN_PYTHON_VERSION_SOFT,
-                            wrapper.MIN_PYTHON_VERSION_HARD)
+    self.assertGreaterEqual(self.wrapper.MIN_PYTHON_VERSION_SOFT,
+                            self.wrapper.MIN_PYTHON_VERSION_HARD)
 
   def test_init_parser(self):
     """Make sure 'init' GetParser works."""
@@ -458,7 +458,7 @@ class ResolveRepoRev(GitCheckoutTestCase):
     self.assertEqual('refs/heads/stable', rrev)
     self.assertEqual(self.REV_LIST[1], lrev)
 
-    with self.assertRaises(wrapper.CloneFailure):
+    with self.assertRaises(self.wrapper.CloneFailure):
       self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/heads/unknown')
 
   def test_explicit_tag(self):
@@ -467,7 +467,7 @@ class ResolveRepoRev(GitCheckoutTestCase):
     self.assertEqual('refs/tags/v1.0', rrev)
     self.assertEqual(self.REV_LIST[1], lrev)
 
-    with self.assertRaises(wrapper.CloneFailure):
+    with self.assertRaises(self.wrapper.CloneFailure):
       self.wrapper.resolve_repo_rev(self.GIT_DIR, 'refs/tags/unknown')
 
   def test_branch_name(self):
@@ -502,7 +502,7 @@ class ResolveRepoRev(GitCheckoutTestCase):
 
   def test_unknown(self):
     """Check unknown ref/commit argument."""
-    with self.assertRaises(wrapper.CloneFailure):
+    with self.assertRaises(self.wrapper.CloneFailure):
       self.wrapper.resolve_repo_rev(self.GIT_DIR, 'boooooooya')
 
 
