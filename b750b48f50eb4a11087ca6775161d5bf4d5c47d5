@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74ff72a8_9cd56dda",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T19:48:11Z",
+      "side": 1,
+      "message": "Fixed in Ie01ea8475b978f950471b0a52fc576e59060c6c5.  OTOH, that sets it to `(2, 30)`, but won\u0027t be present in a repo tag until the following release.",
+      "parentUuid": "dc8770f4_3371721e",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c42b4a3_cd4eb087",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-22T09:59:43Z",
       "side": 1,
       "message": "you\u0027ve changed the launcher, but not updated the version above.  you need to do that so we can push out a new launcher script for people.  otherwise your change doesn\u0027t actually take effect for people.",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "446781ec_167c0345",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T19:48:11Z",
+      "side": 1,
+      "message": "I had not been aware of that.  Will it need to be bumped again, since 2.30 is already tagged and released?",
+      "parentUuid": "1c42b4a3_cd4eb087",
       "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
