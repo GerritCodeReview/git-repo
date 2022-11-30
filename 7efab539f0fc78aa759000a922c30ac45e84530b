@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee6bf60a_76f5f757",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 845,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T19:57:38Z",
+      "side": 1,
+      "message": "I was going for a visual indication for the terminal user, it can certainly be dropped entirely at this point.",
+      "parentUuid": "7d5d9598_79a8f0e9",
+      "revId": "7efab539f0fc78aa759000a922c30ac45e84530b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e26741c_94e30c4c",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-22T09:28:05Z",
       "side": 1,
       "message": "seems like we shouldn\u0027t bother setting this if we aren\u0027t going to gc",
+      "revId": "7efab539f0fc78aa759000a922c30ac45e84530b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d813c7a6_7809e74f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 853,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T19:57:38Z",
+      "side": 1,
+      "message": "Agreed.  I\u0027ll draft a new CL to not change it.  (I\u0027m less comfortable explicitly removing it from existing workspaces.)",
+      "parentUuid": "5e26741c_94e30c4c",
       "revId": "7efab539f0fc78aa759000a922c30ac45e84530b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
