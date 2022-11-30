@@ -775,19 +775,18 @@ later is required to fix a server side protocol bug.
     print(f'\r{relpath}: project not found in manifest.', file=sys.stderr)
     return False
 
-  def _RepairPreciousObjectsState(self, project: Project, opt):
+  def _SetPreciousObjectsState(self, project: Project, opt):
     """Correct the preciousObjects state for the project.
 
     Args:
-      project (Project): the project to examine, and possibly correct.
-      opt (optparse.Values): options given to sync.
+      project: the project to examine, and possibly correct.
+      opt: options given to sync.
     """
     expected = self._GetPreciousObjectsState(project, opt)
     actual = project.config.GetBoolean('extensions.preciousObjects') or False
-    relpath = project.RelPath(local = opt.this_manifest_only)
+    relpath = project.RelPath(local=opt.this_manifest_only)
 
-    if (expected != actual and
-        not project.config.GetBoolean('repo.preservePreciousObjects')):
+    if expected != actual:
       # If this is unexpected, log it and repair.
       Trace(f'{relpath} expected preciousObjects={expected}, got {actual}')
       if expected:
@@ -816,13 +815,19 @@ later is required to fix a server side protocol bug.
     to potentially mark objects precious, so that `git gc` does not discard
     shared objects.
     """
-    pm = Progress(f'{"" if opt.auto_gc else "NOT "}Garbage collecting',
-                  len(projects), delay=False, quiet=opt.quiet)
+    if not opt.auto_gc:
+      # Just repair preciousObjects state, and return.
+      for project in projects:
+        self._SetPreciousObjectsState(project, opt)
+      return
+
+    pm = Progress('Garbage collecting', len(projects), delay=False,
+                  quiet=opt.quiet)
     pm.update(inc=0, msg='prescan')
 
     tidy_dirs = {}
     for project in projects:
-      self._RepairPreciousObjectsState(project, opt)
+      self._SetPreciousObjectsState(project, opt)
 
       project.config.SetString('gc.autoDetach', 'false')
       # Only call git gc once per objdir, but call pack-refs for the remainder.
@@ -836,10 +841,6 @@ later is required to fix a server side protocol bug.
             False,  # Do not run a full gc; just run pack-refs.
             project.bare_git,
         )
-
-    if not opt.auto_gc:
-      pm.end()
-      return
 
     jobs = opt.jobs
 
