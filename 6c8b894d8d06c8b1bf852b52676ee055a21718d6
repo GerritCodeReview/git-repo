@@ -34,6 +34,24 @@
       "parentUuid": "d04bf9b0_1e32d412",
       "revId": "6c8b894d8d06c8b1bf852b52676ee055a21718d6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f842230c_464cdacb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T19:44:55Z",
+      "side": 1,
+      "message": "Done in that way to follow the \"revert first\" approach, as discussed before the CL was uploaded.",
+      "parentUuid": "efd415a0_e2519d15",
+      "revId": "6c8b894d8d06c8b1bf852b52676ee055a21718d6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
