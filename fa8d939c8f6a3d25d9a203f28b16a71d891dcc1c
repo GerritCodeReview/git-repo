@@ -41,6 +41,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f975c475_2cb69ebf",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 798,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T20:01:07Z",
+      "side": 1,
+      "message": "This CL was written because of (at least one?) chromiumos? user workspace where preciousObjects was set for *every* project in the manifest. (root cause probably still unknown.)\n\n@samccone has details.  Renaming it to \"Set\" instead of \"Repair\", in any case.",
+      "parentUuid": "335fffb0_edb7b84e",
+      "range": {
+        "startLine": 797,
+        "startChar": 0,
+        "endLine": 798,
+        "endChar": 57
+      },
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9993d15_2a099530",
