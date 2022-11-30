@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ddae827_c25d3df1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T20:06:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f943d684_0f440af9",
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "335fffb0_edb7b84e",
@@ -82,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba0040b3_7d523a45",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 806,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T20:06:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9993d15_2a099530",
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5ea777e_e4e54ba6",
@@ -95,6 +131,24 @@
       "writtenOn": "2022-11-22T09:22:19Z",
       "side": 1,
       "message": "what is this ?  it\u0027s not set by a command line option, nor is it documented in our internals.  is this just left over debug code ?",
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b47540d1_5a29291f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-11-30T20:06:20Z",
+      "side": 1,
+      "message": "Referring to the line 798 comment, this was added as a way for the user to indicate that they had set it manually, should they need to do so.  I\u0027ve added a comment above this if statement to that effect.",
+      "parentUuid": "e5ea777e_e4e54ba6",
       "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
