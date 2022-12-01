@@ -69,6 +69,24 @@
       "parentUuid": "1c42b4a3_cd4eb087",
       "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5381b271_dc6ab846",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-01T05:56:08Z",
+      "side": 1,
+      "message": "we only need to bump the version if we make a change to the launcher.  if there are no changes, no need to bump.\n\nideally it would be part of the tag, but it\u0027s not strictly a hard requirement.  signing \u0026 releasing the launcher is a manual process, so we could fake it with any value.  if things are out of sync though, it leads to confusion for everyone involved.",
+      "parentUuid": "446781ec_167c0345",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
