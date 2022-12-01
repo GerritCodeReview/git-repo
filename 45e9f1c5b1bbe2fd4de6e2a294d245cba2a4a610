@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3d02d4_a45aa6e8",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-12-01T16:59:27Z",
+      "side": 1,
+      "message": "nit to add some pytypes \n\nname: str) -\u003e int|None:",
+      "range": {
+        "startLine": 120,
+        "startChar": 19,
+        "endLine": 120,
+        "endChar": 25
+      },
+      "revId": "45e9f1c5b1bbe2fd4de6e2a294d245cba2a4a610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45fe8842_0e92983b",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3509,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-12-01T16:59:27Z",
+      "side": 1,
+      "message": "definitely supportive of adding tests for this.",
+      "range": {
+        "startLine": 3506,
+        "startChar": 0,
+        "endLine": 3509,
+        "endChar": 0
+      },
+      "revId": "45e9f1c5b1bbe2fd4de6e2a294d245cba2a4a610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
