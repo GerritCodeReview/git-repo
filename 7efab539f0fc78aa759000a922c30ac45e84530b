@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd7ca66d_57c3e507",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 845,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-01T09:35:56Z",
+      "side": 1,
+      "message": "you mean something to make it clear that we aren\u0027t doing GC ?  i wouldn\u0027t bother ... the fact that we emit anything at all to signal we\u0027re GCing is a relatively new thing i added :).  we used to be completely silent when running this phase.  being silent when we do nothing is fine.",
+      "parentUuid": "ee6bf60a_76f5f757",
+      "revId": "7efab539f0fc78aa759000a922c30ac45e84530b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e26741c_94e30c4c",
