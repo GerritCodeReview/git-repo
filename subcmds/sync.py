@@ -21,7 +21,6 @@ import multiprocessing
 import netrc
 from optparse import SUPPRESS_HELP
 import os
-import shutil
 import socket
 import sys
 import tempfile
@@ -66,9 +65,6 @@ from wrapper import Wrapper
 from manifest_xml import GitcManifest
 
 _ONE_DAY_S = 24 * 60 * 60
-# Env var to implicitly turn off object backups.
-REPO_BACKUP_OBJECTS = 'REPO_BACKUP_OBJECTS'
-_BACKUP_OBJECTS = os.environ.get(REPO_BACKUP_OBJECTS) != '0'
 
 # Env var to implicitly turn auto-gc back on.
 _REPO_AUTO_GC = 'REPO_AUTO_GC'
@@ -738,33 +734,6 @@ later is required to fix a server side protocol bug.
         callback=_ProcessResults,
         output=Progress('Checking out', len(all_projects), quiet=opt.quiet)) and not err_results
 
-  def _backup_cruft(self, bare_git):
-    """Save a copy of any cruft from `git gc`."""
-    # Find any cruft packs in the current gitdir, and save them.
-    # b/221065125 (repo sync complains that objects are missing).  This does
-    # not prevent that state, but makes it so that the missing objects are
-    # available.
-    objdir = bare_git._project.objdir
-    pack_dir = os.path.join(objdir, 'pack')
-    bak_dir = os.path.join(objdir, '.repo', 'pack.bak')
-    if not _BACKUP_OBJECTS or not platform_utils.isdir(pack_dir):
-      return
-    files = set(platform_utils.listdir(pack_dir))
-    to_backup = []
-    for f in files:
-      base, ext = os.path.splitext(f)
-      if base + '.mtimes' in files:
-        to_backup.append(f)
-    if to_backup:
-      os.makedirs(bak_dir, exist_ok=True)
-    for fname in to_backup:
-      bak_fname = os.path.join(bak_dir, fname)
-      if not os.path.exists(bak_fname):
-        with Trace('%s saved %s', bare_git._project.name, fname):
-          # Use a tmp file so that we are sure of a complete copy.
-          shutil.copy(os.path.join(pack_dir, fname), bak_fname + '.tmp')
-          shutil.move(bak_fname + '.tmp', bak_fname)
-
   @staticmethod
   def _GetPreciousObjectsState(project: Project, opt):
     """Get the preciousObjects state for the project.
@@ -872,22 +841,14 @@ later is required to fix a server side protocol bug.
 
     jobs = opt.jobs
 
-    gc_args = ['--auto']
-    backup_cruft = False
-    if git_require((2, 37, 0)):
-      gc_args.append('--cruft')
-      backup_cruft = True
-    pack_refs_args = ()
     if jobs < 2:
       for (run_gc, bare_git) in tidy_dirs.values():
         pm.update(msg=bare_git._project.name)
 
         if run_gc:
-          bare_git.gc(*gc_args)
+          bare_git.gc('--auto')
         else:
-          bare_git.pack_refs(*pack_refs_args)
-        if backup_cruft:
-          self._backup_cruft(bare_git)
+          bare_git.pack_refs()
       pm.end()
       return
 
@@ -902,17 +863,15 @@ later is required to fix a server side protocol bug.
       try:
         try:
           if run_gc:
-            bare_git.gc(*gc_args, config=config)
+            bare_git.gc('--auto', config=config)
           else:
-            bare_git.pack_refs(*pack_refs_args, config=config)
+            bare_git.pack_refs(config=config)
         except GitError:
           err_event.set()
         except Exception:
           err_event.set()
           raise
       finally:
-        if backup_cruft:
-          self._backup_cruft(bare_git)
         pm.finish(bare_git._project.name)
         sem.release()
 
