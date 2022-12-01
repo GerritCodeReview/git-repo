@@ -70,7 +70,9 @@ _ONE_DAY_S = 24 * 60 * 60
 REPO_BACKUP_OBJECTS = 'REPO_BACKUP_OBJECTS'
 _BACKUP_OBJECTS = os.environ.get(REPO_BACKUP_OBJECTS) != '0'
 
-# Env var to implicitly turn auto-gc back on.
+# Env var to implicitly turn auto-gc back on.  This was added to allow a user to
+# revert a change in default behavior in v2.29.9, and will be removed in a
+# future release.
 _REPO_AUTO_GC = 'REPO_AUTO_GC'
 _AUTO_GC = os.environ.get(_REPO_AUTO_GC) == '1'
 
@@ -1226,6 +1228,8 @@ later is required to fix a server side protocol bug.
       print(f"Will run `git gc --auto` because {_REPO_AUTO_GC} is set.",
             file=sys.stderr)
       opt.auto_gc = True
+      print(f'{_REPO_AUTO_GC} is deprecated and will be removed in a future'
+            'release.  Use `--auto-gc` instead.', file=sys.stderr)
 
   def Execute(self, opt, args):
     manifest = self.outer_manifest
