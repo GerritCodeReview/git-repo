@@ -126,7 +126,7 @@ class GitConfig(object):
       name: The key to lookup.
 
     Returns:
-      None if the value was not defined, or is not a boolean.
+      None if the value was not defined, or is not an int.
       Otherwise, the number itself.
     """
     v = self.GetString(name)
@@ -152,6 +152,8 @@ class GitConfig(object):
     try:
       return int(v, base=base) * mult
     except ValueError:
+      print('warning: expected %s to represent a Int, got %s instead'
+            % (name, v))
       return None
 
   def DumpConfigDict(self):
@@ -183,6 +185,8 @@ class GitConfig(object):
       return True
     if v in ('false', 'no'):
       return False
+    print('warning: expected %s to represent a Boolean, got %s instead'
+          % (name, v))
     return None
 
   def SetBoolean(self, name, value):
