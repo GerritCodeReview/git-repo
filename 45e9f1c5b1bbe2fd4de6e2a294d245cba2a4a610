@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bba8b480_51803f17",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-01T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c3d02d4_a45aa6e8",
+      "range": {
+        "startLine": 120,
+        "startChar": 19,
+        "endLine": 120,
+        "endChar": 25
+      },
+      "revId": "45e9f1c5b1bbe2fd4de6e2a294d245cba2a4a610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51365052_b8a5a0f9",
@@ -37,6 +61,24 @@
       "writtenOn": "2022-12-01T18:28:06Z",
       "side": 1,
       "message": "print this warning to stderr\n\n    file\u003dsys.stderr",
+      "revId": "45e9f1c5b1bbe2fd4de6e2a294d245cba2a4a610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "739abcff_9425dd6d",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-01T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51365052_b8a5a0f9",
       "revId": "45e9f1c5b1bbe2fd4de6e2a294d245cba2a4a610",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -58,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d39281c_ce702178",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-01T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61b15a8f_a07f4ee3",
+      "revId": "45e9f1c5b1bbe2fd4de6e2a294d245cba2a4a610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "45fe8842_0e92983b",
@@ -71,6 +131,30 @@
       "writtenOn": "2022-12-01T16:59:27Z",
       "side": 1,
       "message": "definitely supportive of adding tests for this.",
+      "range": {
+        "startLine": 3506,
+        "startChar": 0,
+        "endLine": 3509,
+        "endChar": 0
+      },
+      "revId": "45e9f1c5b1bbe2fd4de6e2a294d245cba2a4a610",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b5eacb9_7edc9cc6",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3509,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-01T20:52:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "45fe8842_0e92983b",
       "range": {
         "startLine": 3506,
         "startChar": 0,
