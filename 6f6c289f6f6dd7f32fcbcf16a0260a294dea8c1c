@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "381ce731_d1027dc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-01T00:53:30Z",
+      "side": 1,
+      "message": "`partialcloneexclude` is a string. \ncalling GetBoolean on it returns None.",
+      "revId": "6f6c289f6f6dd7f32fcbcf16a0260a294dea8c1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
