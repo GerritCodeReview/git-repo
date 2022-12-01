@@ -151,6 +151,24 @@
       "parentUuid": "e5ea777e_e4e54ba6",
       "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ced2e498_30f98ad6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-01T12:17:05Z",
+      "side": 1,
+      "message": "i don\u0027t think we need to do this.  we don\u0027t do it for other git config options that we set/clear, and i don\u0027t think we should start.  at least, certainly not for just one option in such a bespoke manner.",
+      "parentUuid": "b47540d1_5a29291f",
+      "revId": "fa8d939c8f6a3d25d9a203f28b16a71d891dcc1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
