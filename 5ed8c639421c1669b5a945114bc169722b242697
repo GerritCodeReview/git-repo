@@ -16,6 +16,24 @@
       "message": "i don\u0027t think we should support this.  we aren\u0027t doing this for other options (REPO_URL/REPO_REV not withstanding), either existing, or new.  any tooling that wants to dynamically handle new options can grep `repo sync --help` output.\n\nif we want to make this more robust for higher level tools, then we can make some `repo version --quiet` type output where it only prints the number (e.g. 2.29), or add some sort of `repo --supports` query.  not sure if there\u0027s prior art out there for this sort of thing.  git itself requires you to test its version/interface.",
       "revId": "5ed8c639421c1669b5a945114bc169722b242697",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fb57f14_377b15b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-12-01T20:25:28Z",
+      "side": 1,
+      "message": "The more correct path (not followed because of the P0 corruption issue) would have been:\n 1. Add `--auto-gc` and `--no-auto-gc` flag, with the default set to `--auto-gc`.\n 2. Wait a period of time, so that users can update and explicitly state the behavior that they want.\n 3. Change the default to `--no-quto-gc`.\n \nIn cases where we explicitly add a flag *and* introduce a change in default behavior, adding the environment variable option allows the user to accomplish the same thing.  Now that v2.30 is marked stable, I will prepare a change that marks the envvar as deprecated and \"to be removed\", and we can remove it completely in a future release.",
+      "parentUuid": "573053ce_deb1f4dd",
+      "revId": "5ed8c639421c1669b5a945114bc169722b242697",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
