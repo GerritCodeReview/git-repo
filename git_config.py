@@ -126,7 +126,7 @@ class GitConfig(object):
       name: The key to lookup.
 
     Returns:
-      None if the value was not defined, or is not a boolean.
+      None if the value was not defined, or is not an int.
       Otherwise, the number itself.
     """
     v = self.GetString(name)
