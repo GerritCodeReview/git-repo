@@ -117,7 +117,7 @@ class GitConfig(object):
       return self.defaults.Has(name, include_defaults=True)
     return False
 
-  def GetInt(self, name):
+  def GetInt(self, name: str) -> int | None:
     """Returns an integer from the configuration file.
 
     This follows the git config syntax.
@@ -126,7 +126,7 @@ class GitConfig(object):
       name: The key to lookup.
 
     Returns:
-      None if the value was not defined, or is not a boolean.
+      None if the value was not defined, or is not an int.
       Otherwise, the number itself.
     """
     v = self.GetString(name)
@@ -152,6 +152,8 @@ class GitConfig(object):
     try:
       return int(v, base=base) * mult
     except ValueError:
+      print('warning: expected %s to represent a Int, got %s instead'
+            % (name, v))
       return None
 
   def DumpConfigDict(self):
@@ -169,7 +171,7 @@ class GitConfig(object):
       config_dict[key] = self.GetString(key)
     return config_dict
 
-  def GetBoolean(self, name):
+  def GetBoolean(self, name: str) -> str | None:
     """Returns a boolean from the configuration file.
        None : The value was not defined, or is not a boolean.
        True : The value was set to true or yes.
@@ -183,6 +185,8 @@ class GitConfig(object):
       return True
     if v in ('false', 'no'):
       return False
+    print('warning: expected %s to represent a Boolean, got %s instead'
+          % (name, v))
     return None
 
   def SetBoolean(self, name, value):
@@ -191,7 +195,7 @@ class GitConfig(object):
       value = 'true' if value else 'false'
     self.SetString(name, value)
 
-  def GetString(self, name, all_keys=False):
+  def GetString(self, name: str, all_keys: bool = False) -> str | None:
     """Get the first value for a key, or None if it is not defined.
 
        This configuration file is used first, if the key is not
