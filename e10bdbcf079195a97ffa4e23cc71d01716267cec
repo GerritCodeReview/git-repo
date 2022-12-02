@@ -16,6 +16,24 @@
       "message": "needs to use `Union`",
       "revId": "e10bdbcf079195a97ffa4e23cc71d01716267cec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cf81136_eb07641f",
+        "filename": "git_config.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-02T14:57:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe2e7658_8e6bb810",
+      "revId": "e10bdbcf079195a97ffa4e23cc71d01716267cec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
