@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed557852_09dda5c2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-12-02T22:32:16Z",
+      "side": 1,
+      "message": "I was not able to isolate it any further than that.  I don\u0027t believe that there\u0027s anything particular on my workstation, but I\u0027m also not running inside of any SDK when I run `update-manpages`.",
+      "parentUuid": "ba531c64_dbb8e309",
+      "revId": "f8af33c9f0ef38fbe9bd6944255738edc8d4e8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a6dc00f9_e7de1524",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-22T09:45:47Z",
       "side": 1,
       "message": "this seems more complicated than necessary.  all you need to do is strip the CSI+m command.  the fact that the output tends to output them in pairs seems pretty incidental, but def not a requirement for ANSI terminals.\n\n`(r\u0027\\033[[0-9;]*m\u0027, \u0027\u0027)`",
+      "revId": "f8af33c9f0ef38fbe9bd6944255738edc8d4e8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18e4bc83_10d9544c",
+        "filename": "release/update-manpages",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-12-02T22:32:16Z",
+      "side": 1,
+      "message": "It probably is more specific than necessary.  I went with \"least change\", and made it very specific (then expanded it to `[0-9;]*` based on feedback.)  I expect that we could be more aggressive in stripping the sequence than the current state, if we see that it causes any issues.",
+      "parentUuid": "a6dc00f9_e7de1524",
       "revId": "f8af33c9f0ef38fbe9bd6944255738edc8d4e8c7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
