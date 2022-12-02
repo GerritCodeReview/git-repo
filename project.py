@@ -3505,7 +3505,7 @@ class ManifestProject(MetaProject):
   @property
   def partial_clone_exclude(self):
     """Partial clone exclude string"""
-    return self.config.GetBoolean('repo.partialcloneexclude')
+    return self.config.GetString('repo.partialcloneexclude')
 
   @property
   def manifest_platform(self):
