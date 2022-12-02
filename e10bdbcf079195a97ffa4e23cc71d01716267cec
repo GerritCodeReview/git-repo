@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe2e7658_8e6bb810",
+        "filename": "git_config.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-02T03:32:24Z",
+      "side": 1,
+      "message": "needs to use `Union`",
+      "revId": "e10bdbcf079195a97ffa4e23cc71d01716267cec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
