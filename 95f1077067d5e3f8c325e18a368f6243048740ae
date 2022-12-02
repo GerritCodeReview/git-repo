@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ee38f75_64d331ff",
+        "filename": "git_config.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-02T01:38:29Z",
+      "side": 1,
+      "message": "\"an integer\"",
+      "range": {
+        "startLine": 155,
+        "startChar": 47,
+        "endLine": 155,
+        "endChar": 52
+      },
+      "revId": "95f1077067d5e3f8c325e18a368f6243048740ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4574a0ea_03869603",
+        "filename": "git_config.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-02T01:38:29Z",
+      "side": 1,
+      "message": "we should use f-strings in new code\n\ncomes up below too",
+      "revId": "95f1077067d5e3f8c325e18a368f6243048740ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7740153c_e772b9dc",
+        "filename": "git_config.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-02T01:38:29Z",
+      "side": 1,
+      "message": "this union syntax is new to Python 3.10.  we must support Python 3.6.  so use `Union` from typing instead.\nhttps://peps.python.org/pep-0604/\n\ncomes up below too\n\nif you use `tox` to run the unittests, you should see failures",
+      "revId": "95f1077067d5e3f8c325e18a368f6243048740ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
