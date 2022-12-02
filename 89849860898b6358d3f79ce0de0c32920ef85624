@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e6b70cf_56b0e2b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-12-02T23:03:10Z",
+      "side": 1,
+      "message": "The wrong patchset was accidentally submitted for change 353734.",
+      "revId": "89849860898b6358d3f79ce0de0c32920ef85624",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
