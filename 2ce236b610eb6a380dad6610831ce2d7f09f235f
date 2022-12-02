@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93aaa2a2_f0de724b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-12-02T22:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a893b845_c0e32c3f",
+      "revId": "2ce236b610eb6a380dad6610831ce2d7f09f235f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2e3e762_af15b83a",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-12-02T07:04:42Z",
       "side": 1,
       "message": "any reason to not combine this with the print directly above ?",
+      "revId": "2ce236b610eb6a380dad6610831ce2d7f09f235f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ceaa07f2_7fa53aaa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1231,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-12-02T22:22:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2e3e762_af15b83a",
       "revId": "2ce236b610eb6a380dad6610831ce2d7f09f235f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
