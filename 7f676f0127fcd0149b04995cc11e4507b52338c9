@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efd57442_0db5ebfc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 819,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-02T07:03:20Z",
+      "side": 1,
+      "message": "i don\u0027t think we need to do this.  we don\u0027t do it for other git config options that we set/clear, and i don\u0027t think we should start.  at least, certainly not",
+      "revId": "7f676f0127fcd0149b04995cc11e4507b52338c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
