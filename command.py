@@ -24,17 +24,18 @@ from error import InvalidProjectGroupsError
 import progress
 
 
-# Are we generating man-pages?
-GENERATE_MANPAGES = os.environ.get('_REPO_GENERATE_MANPAGES_') == ' indeed! '
-
-
-# Number of projects to submit to a single worker process at a time.
+# Number of projects to submit to a single worker process at a time for
+# relatively fast operations (sub-seconds).
 # This number represents a tradeoff between the overhead of IPC and finer
 # grained opportunity for parallelism. This particular value was chosen by
 # iterating through powers of two until the overall performance no longer
 # improved. The performance of this batch size is not a function of the
 # number of cores on the system.
-WORKER_BATCH_SIZE = 32
+FAST_OP_WORKER_BATCH_SIZE = 32
+
+
+# Are we generating man-pages?
+GENERATE_MANPAGES = os.environ.get('_REPO_GENERATE_MANPAGES_') == ' indeed! '
 
 
 # How many jobs to run in parallel by default?  This assumes the jobs are
@@ -206,7 +207,8 @@ class Command(object):
     raise NotImplementedError
 
   @staticmethod
-  def ExecuteInParallel(jobs, func, inputs, callback, output=None, ordered=False):
+  def ExecuteInParallel(jobs, func, inputs, callback, output=None,
+                        ordered=False, chunksize=1):
     """Helper for managing parallel execution boiler plate.
 
     For subcommands that can easily split their work up.
@@ -227,6 +229,10 @@ class Command(object):
           - An iterator for the results.
       output: An output manager.  May be progress.Progess or color.Coloring.
       ordered: Whether the jobs should be processed in order.
+      chunksize: Size of chunks to be given to individual process at once. If
+      all tasks take roughly the same amount of time and are relatively quick
+      (e.g. less then seconds), a size greather than 1 could improve
+      performance since there will be less of the IPC overhead.
 
     Returns:
       The |callback| function's results are returned.
@@ -238,7 +244,7 @@ class Command(object):
       else:
         with multiprocessing.Pool(jobs) as pool:
           submit = pool.imap if ordered else pool.imap_unordered
-          return callback(pool, output, submit(func, inputs, chunksize=WORKER_BATCH_SIZE))
+          return callback(pool, output, submit(func, inputs, chunksize=chunksize))
     finally:
       if isinstance(output, progress.Progress):
         output.end()

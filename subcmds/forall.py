@@ -23,7 +23,7 @@ import sys
 import subprocess
 
 from color import Coloring
-from command import DEFAULT_LOCAL_JOBS, Command, MirrorSafeCommand, WORKER_BATCH_SIZE
+from command import DEFAULT_LOCAL_JOBS, Command, MirrorSafeCommand
 from error import ManifestInvalidRevisionError
 
 _CAN_COLOR = [
@@ -232,8 +232,7 @@ without iterating through the remaining projects.
       with multiprocessing.Pool(opt.jobs, InitWorker) as pool:
         results_it = pool.imap(
             functools.partial(DoWorkWrapper, mirror, opt, cmd, shell, config),
-            enumerate(projects),
-            chunksize=WORKER_BATCH_SIZE)
+            enumerate(projects))
         first = True
         for (r, output) in results_it:
           if output:

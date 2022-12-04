@@ -16,7 +16,7 @@ import itertools
 import sys
 
 from color import Coloring
-from command import Command, DEFAULT_LOCAL_JOBS
+from command import Command, DEFAULT_LOCAL_JOBS, FAST_OP_WORKER_BATCH_SIZE
 
 
 class BranchColoring(Coloring):
@@ -113,7 +113,8 @@ is shown, then the branch appears in all projects.
         opt.jobs,
         expand_project_to_branches,
         projects,
-        callback=_ProcessResults)
+        callback=_ProcessResults,
+        chunksize=FAST_OP_WORKER_BATCH_SIZE)
 
     names = sorted(all_branches)
 

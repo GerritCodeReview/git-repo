@@ -54,7 +54,7 @@ import git_superproject
 import gitc_utils
 from project import Project
 from project import RemoteSpec
-from command import Command, DEFAULT_LOCAL_JOBS, MirrorSafeCommand, WORKER_BATCH_SIZE
+from command import Command, DEFAULT_LOCAL_JOBS, MirrorSafeCommand, FAST_OP_WORKER_BATCH_SIZE
 from error import RepoChangedException, GitError, ManifestParseError
 import platform_utils
 from project import SyncBuffer
@@ -570,7 +570,7 @@ later is required to fix a server side protocol bug.
       # can accept a bit more CPU overhead with a smaller chunksize so that the
       # user sees more immediate & continuous feedback.
       if opt.quiet:
-        chunksize = WORKER_BATCH_SIZE
+        chunksize = FAST_OP_WORKER_BATCH_SIZE
       else:
         pm.update(inc=0, msg='warming up')
         chunksize = 4
