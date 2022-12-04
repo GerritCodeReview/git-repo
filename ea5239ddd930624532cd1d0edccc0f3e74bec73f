@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb4b4e06_097377c5",
+        "filename": "tests/test_project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2022-12-04T11:57:07Z",
+      "side": 1,
+      "message": "These 4 `assertEquals` should be `assertEqual`.\nhttps://docs.python.org/3/library/unittest.html#deprecated-aliases",
+      "revId": "ea5239ddd930624532cd1d0edccc0f3e74bec73f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
