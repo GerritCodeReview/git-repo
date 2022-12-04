@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cab70452_5d8e6a0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-12-04T21:52:32Z",
+      "side": 1,
+      "message": "repo sync for chromeos increased from 40s to 3 min",
+      "revId": "9a8aad577b0508f49425181576005b24f0e550c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
