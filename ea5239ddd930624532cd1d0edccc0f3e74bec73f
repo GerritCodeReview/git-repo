@@ -52,6 +52,24 @@
       "parentUuid": "4d15fee2_65e76e9d",
       "revId": "ea5239ddd930624532cd1d0edccc0f3e74bec73f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "afbc3755_cd82267d",
+        "filename": "tests/test_project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-05T17:25:14Z",
+      "side": 1,
+      "message": "the ZUUL pipeline is supposed to provide CQ coverage.  but the Gerrit ZUUL configs lack good documentation explaining how it actually works.  so we have no CQ coverage.",
+      "parentUuid": "8e859f47_5bbb669f",
+      "revId": "ea5239ddd930624532cd1d0edccc0f3e74bec73f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
