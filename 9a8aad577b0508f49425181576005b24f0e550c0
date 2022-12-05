@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bfc82d4_6edd7f44",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-05T00:29:52Z",
+      "side": 1,
+      "message": "it was moved there on purpose.  there was no parallel code previously, and the 32 value was spot checked in a CrOS repo.  which the comment above the constant documents.",
+      "revId": "9a8aad577b0508f49425181576005b24f0e550c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "cab70452_5d8e6a0c",
@@ -14,6 +31,24 @@
       "writtenOn": "2022-12-04T21:52:32Z",
       "side": 1,
       "message": "repo sync for chromeos increased from 40s to 3 min",
+      "revId": "9a8aad577b0508f49425181576005b24f0e550c0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0f677c4_9c8c236e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-05T00:29:52Z",
+      "side": 1,
+      "message": "right, this regresses perf in many places\n\nsee https://crbug.com/gerrit/14911",
+      "parentUuid": "cab70452_5d8e6a0c",
       "revId": "9a8aad577b0508f49425181576005b24f0e550c0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
