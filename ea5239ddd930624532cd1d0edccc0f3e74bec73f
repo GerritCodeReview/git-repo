@@ -34,6 +34,24 @@
       "parentUuid": "eb4b4e06_097377c5",
       "revId": "ea5239ddd930624532cd1d0edccc0f3e74bec73f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e859f47_5bbb669f",
+        "filename": "tests/test_project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2022-12-05T16:55:08Z",
+      "side": 1,
+      "message": "Let\u0027s figure out a way to detect this automatically during our test runs to ensure we automate this lint vs having humans drive it.",
+      "parentUuid": "4d15fee2_65e76e9d",
+      "revId": "ea5239ddd930624532cd1d0edccc0f3e74bec73f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
