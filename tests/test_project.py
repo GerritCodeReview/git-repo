@@ -480,13 +480,13 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
       self.assertFalse(fakeproj.partial_clone)
 
       fakeproj.config.SetString('repo.depth', '48')
-      self.assertEquals(fakeproj.depth, '48')
+      self.assertEqual(fakeproj.depth, '48')
 
       fakeproj.config.SetString('repo.clonefilter', 'blob:limit=10M')
-      self.assertEquals(fakeproj.clone_filter, 'blob:limit=10M')
+      self.assertEqual(fakeproj.clone_filter, 'blob:limit=10M')
 
       fakeproj.config.SetString('repo.partialcloneexclude', 'third_party/big_repo')
-      self.assertEquals(fakeproj.partial_clone_exclude, 'third_party/big_repo')
+      self.assertEqual(fakeproj.partial_clone_exclude, 'third_party/big_repo')
 
       fakeproj.config.SetString('manifest.platform', 'auto')
-      self.assertEquals(fakeproj.manifest_platform, 'auto')
+      self.assertEqual(fakeproj.manifest_platform, 'auto')
