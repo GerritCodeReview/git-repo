@@ -470,6 +470,7 @@ later is required to fix a server side protocol bug.
     """
     start = time.time()
     success = False
+    remote_fetched = False
     buf = io.StringIO()
     try:
       sync_result = project.Sync_NetworkHalf(
@@ -487,6 +488,7 @@ later is required to fix a server side protocol bug.
           clone_filter=project.manifest.CloneFilter,
           partial_clone_exclude=project.manifest.PartialCloneExclude)
       success = sync_result.success
+      remote_fetched = sync_result.remote_fetched
 
       output = buf.getvalue()
       if (opt.verbose or not success) and output:
@@ -504,8 +506,7 @@ later is required to fix a server side protocol bug.
       raise
 
     finish = time.time()
-    return _FetchOneResult(success, project, start, finish,
-                           sync_result.remote_fetched)
+    return _FetchOneResult(success, project, start, finish, remote_fetched)
 
   @classmethod
   def _FetchInitChild(cls, ssh_proxy):
