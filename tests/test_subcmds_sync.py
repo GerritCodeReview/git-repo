@@ -13,11 +13,13 @@
 # limitations under the License.
 """Unittests for the subcmds/sync.py module."""
 
+import os
 import unittest
 from unittest import mock
 
 import pytest
 
+import command
 from subcmds import sync
 
 
@@ -41,6 +43,51 @@ def test_get_current_branch_only(use_superproject, cli_args, result):
   with mock.patch('git_superproject.UseSuperproject',
                   return_value=use_superproject):
     assert cmd._GetCurrentBranchOnly(opts, cmd.manifest) == result
+
+
+# Used to patch os.cpu_count() for reliable results.
+OS_CPU_COUNT = 24
+
+@pytest.mark.parametrize('argv, jobs_manifest, jobs, jobs_net, jobs_check', [
+  # No user or manifest settings.
+  ([], None, OS_CPU_COUNT, 1, command.DEFAULT_LOCAL_JOBS),
+  # No user settings, so manifest settings control.
+  ([], 3, 3, 3, 3),
+  # User settings, but no manifest.
+  (['--jobs=4'], None, 4, 4, 4),
+  (['--jobs=4', '--jobs-network=5'], None, 4, 5, 4),
+  (['--jobs=4', '--jobs-checkout=6'], None, 4, 4, 6),
+  (['--jobs=4', '--jobs-network=5', '--jobs-checkout=6'], None, 4, 5, 6),
+  (['--jobs-network=5'], None, OS_CPU_COUNT, 5, command.DEFAULT_LOCAL_JOBS),
+  (['--jobs-checkout=6'], None, OS_CPU_COUNT, 1, 6),
+  (['--jobs-network=5', '--jobs-checkout=6'], None, OS_CPU_COUNT, 5, 6),
+  # User settings with manifest settings.
+  (['--jobs=4'], 3, 4, 4, 4),
+  (['--jobs=4', '--jobs-network=5'], 3, 4, 5, 4),
+  (['--jobs=4', '--jobs-checkout=6'], 3, 4, 4, 6),
+  (['--jobs=4', '--jobs-network=5', '--jobs-checkout=6'], 3, 4, 5, 6),
+  (['--jobs-network=5'], 3, 3, 5, 3),
+  (['--jobs-checkout=6'], 3, 3, 3, 6),
+  (['--jobs-network=5', '--jobs-checkout=6'], 3, 3, 5, 6),
+  # Settings that exceed rlimits get capped.
+  (['--jobs=1000000'], None, 83, 83, 83),
+  ([], 1000000, 83, 83, 83),
+])
+def test_cli_jobs(argv, jobs_manifest, jobs, jobs_net, jobs_check):
+  """Tests --jobs option behavior."""
+  mp = mock.MagicMock()
+  mp.manifest.default.sync_j = jobs_manifest
+
+  cmd = sync.Sync()
+  opts, args = cmd.OptionParser.parse_args(argv)
+  cmd.ValidateOptions(opts, args)
+
+  with mock.patch.object(sync, '_rlimit_nofile', return_value=(256, 256)):
+    with mock.patch.object(os, 'cpu_count', return_value=OS_CPU_COUNT):
+      cmd._ValidateOptionsWithManifest(opts, mp)
+      assert opts.jobs == jobs
+      assert opts.jobs_network == jobs_net
+      assert opts.jobs_checkout == jobs_check
 
 
 class GetPreciousObjectsState(unittest.TestCase):

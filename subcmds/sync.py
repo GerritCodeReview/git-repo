@@ -1190,6 +1190,45 @@ later is required to fix a server side protocol bug.
             'release.  Use `--auto-gc` instead.', file=sys.stderr)
       opt.auto_gc = True
 
+  def _ValidateOptionsWithManifest(self, opt, mp):
+    """Like ValidateOptions, but after we've updated the manifest.
+
+    Needed to handle sync-xxx option defaults in the manifest.
+
+    Args:
+      opt: The options to process.
+      mp: The manifest project to pull defaults from.
+    """
+    if not opt.jobs:
+      # If the user hasn't made a choice, use the manifest value.
+      opt.jobs = mp.manifest.default.sync_j
+    if opt.jobs:
+      # If --jobs has a non-default value, propagate it as the default for
+      # --jobs-xxx flags too.
+      if not opt.jobs_network:
+        opt.jobs_network = opt.jobs
+      if not opt.jobs_checkout:
+        opt.jobs_checkout = opt.jobs
+    else:
+      # Neither user nor manifest have made a choice, so setup defaults.
+      if not opt.jobs_network:
+        opt.jobs_network = 1
+      if not opt.jobs_checkout:
+        opt.jobs_checkout = DEFAULT_LOCAL_JOBS
+      opt.jobs = os.cpu_count()
+
+    # Try to stay under user rlimit settings.
+    #
+    # Since each worker requires at 3 file descriptors to run `git fetch`, use
+    # that to scale down the number of jobs.  Unfortunately there isn't an easy
+    # way to determine this reliably as systems change, but it was last measured
+    # by hand in 2011.
+    soft_limit, _ = _rlimit_nofile()
+    jobs_soft_limit = max(1, (soft_limit - 5) // 3)
+    opt.jobs = min(opt.jobs, jobs_soft_limit)
+    opt.jobs_network = min(opt.jobs_network, jobs_soft_limit)
+    opt.jobs_checkout = min(opt.jobs_checkout, jobs_soft_limit)
+
   def Execute(self, opt, args):
     manifest = self.outer_manifest
     if not opt.outer_manifest:
@@ -1240,35 +1279,9 @@ later is required to fix a server side protocol bug.
     else:
       print('Skipping update of local manifest project.')
 
-    # Now that the manifests are up-to-date, setup the jobs value.
-    if opt.jobs is None:
-      # User has not made a choice, so use the manifest settings.
-      opt.jobs = mp.default.sync_j
-    if opt.jobs is not None:
-      # Neither user nor manifest have made a choice.
-      if opt.jobs_network is None:
-        opt.jobs_network = opt.jobs
-      if opt.jobs_checkout is None:
-        opt.jobs_checkout = opt.jobs
-    # Setup defaults if jobs==0.
-    if not opt.jobs:
-      if not opt.jobs_network:
-        opt.jobs_network = 1
-      if not opt.jobs_checkout:
-        opt.jobs_checkout = DEFAULT_LOCAL_JOBS
-      opt.jobs = os.cpu_count()
-
-    # Try to stay under user rlimit settings.
-    #
-    # Since each worker requires at 3 file descriptors to run `git fetch`, use
-    # that to scale down the number of jobs.  Unfortunately there isn't an easy
-    # way to determine this reliably as systems change, but it was last measured
-    # by hand in 2011.
-    soft_limit, _ = _rlimit_nofile()
-    jobs_soft_limit = max(1, (soft_limit - 5) // 3)
-    opt.jobs = min(opt.jobs, jobs_soft_limit)
-    opt.jobs_network = min(opt.jobs_network, jobs_soft_limit)
-    opt.jobs_checkout = min(opt.jobs_checkout, jobs_soft_limit)
+    # Now that the manifests are up-to-date, setup options whose defaults might
+    # be in the manifest.
+    self._ValidateOptionsWithManifest(opt, mp)
 
     superproject_logging_data = {}
     self._UpdateProjectsRevisionId(opt, args, superproject_logging_data,
