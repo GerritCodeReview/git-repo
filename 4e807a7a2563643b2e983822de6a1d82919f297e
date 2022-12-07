@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "81a89b36_faa1cd2d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1246,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2022-12-07T17:57:43Z",
+      "side": 1,
+      "message": "This comment seems to be describing the else clause.",
+      "revId": "4e807a7a2563643b2e983822de6a1d82919f297e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c1672c32_8c888fd8",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
