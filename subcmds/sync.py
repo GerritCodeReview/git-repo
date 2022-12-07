@@ -1240,17 +1240,15 @@ later is required to fix a server side protocol bug.
       print('Skipping update of local manifest project.')
 
     # Now that the manifests are up-to-date, setup the jobs value.
-    if opt.jobs is None:
-      # User has not made a choice, so use the manifest settings.
-      opt.jobs = mp.default.sync_j
-    if opt.jobs is not None:
-      # Neither user nor manifest have made a choice.
-      if opt.jobs_network is None:
-        opt.jobs_network = opt.jobs
-      if opt.jobs_checkout is None:
-        opt.jobs_checkout = opt.jobs
-    # Setup defaults if jobs==0.
     if not opt.jobs:
+      opt.jobs = mp.manifest.default.sync_j
+    if opt.jobs:
+      # Neither user nor manifest have made a choice.
+      if not opt.jobs_network:
+        opt.jobs_network = opt.jobs
+      if not opt.jobs_checkout:
+        opt.jobs_checkout = opt.jobs
+    else:
       if not opt.jobs_network:
         opt.jobs_network = 1
       if not opt.jobs_checkout:
