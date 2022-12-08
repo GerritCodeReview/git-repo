@@ -222,23 +222,24 @@ The `[remote]` settings are automatically populated/updated from the manifest.
 
 The `[branch]` settings are updated by `repo start` and `git branch`.
 
-| Setting                       | Subcommands   | Use/Meaning |
-|-------------------------------|---------------|-------------|
-| review.\<url\>.autocopy       | upload        | Automatically add to `--cc=<value>` |
-| review.\<url\>.autoreviewer   | upload        | Automatically add to `--reviewers=<value>` |
-| review.\<url\>.autoupload     | upload        | Automatically answer "yes" or "no" to all prompts |
-| review.\<url\>.uploadhashtags | upload        | Automatically add to `--hashtag=<value>` |
-| review.\<url\>.uploadlabels   | upload        | Automatically add to `--label=<value>` |
-| review.\<url\>.uploadnotify   | upload        | [Notify setting][upload-notify] to use |
-| review.\<url\>.uploadtopic    | upload        | Default [topic] to use |
-| review.\<url\>.username       | upload        | Override username with `ssh://` review URIs |
-| remote.\<remote\>.fetch       | sync          | Set of refs to fetch |
-| remote.\<remote\>.projectname | \<network\>   | The name of the project as it exists in Gerrit review |
-| remote.\<remote\>.pushurl     | upload        | The base URI for pushing CLs |
-| remote.\<remote\>.review      | upload        | The URI of the Gerrit review server |
-| remote.\<remote\>.url         | sync & upload | The URI of the git project to fetch |
-| branch.\<branch\>.merge       | sync & upload | The branch to merge & upload & track |
-| branch.\<branch\>.remote      | sync & upload | The remote to track |
+| Setting                               | Subcommands   | Use/Meaning |
+|---------------------------------------|---------------|-------------|
+| review.\<url\>.autocopy               | upload        | Automatically add to `--cc=<value>` |
+| review.\<url\>.autoreviewer           | upload        | Automatically add to `--reviewers=<value>` |
+| review.\<url\>.autoupload             | upload        | Automatically answer "yes" or "no" to all prompts |
+| review.\<url\>.uploadhashtags         | upload        | Automatically add to `--hashtag=<value>` |
+| review.\<url\>.uploadlabels           | upload        | Automatically add to `--label=<value>` |
+| review.\<url\>.uploadnotify           | upload        | [Notify setting][upload-notify] to use |
+| review.\<url\>.uploadtopic            | upload        | Default [topic] to use |
+| review.\<url\>.uploadwarningthreshold | upload        | Warn when attempting to upload more than this many CLs |
+| review.\<url\>.username               | upload        | Override username with `ssh://` review URIs |
+| remote.\<remote\>.fetch               | sync          | Set of refs to fetch |
+| remote.\<remote\>.projectname         | \<network\>   | The name of the project as it exists in Gerrit review |
+| remote.\<remote\>.pushurl             | upload        | The base URI for pushing CLs |
+| remote.\<remote\>.review              | upload        | The URI of the Gerrit review server |
+| remote.\<remote\>.url                 | sync & upload | The URI of the git project to fetch |
+| branch.\<branch\>.merge               | sync & upload | The branch to merge & upload & track |
+| branch.\<branch\>.remote              | sync & upload | The remote to track |
 
 ## ~/ dotconfig layout
 
