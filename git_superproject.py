@@ -31,7 +31,7 @@ from typing import NamedTuple
 
 from git_command import git_require, GitCommand
 from git_config import RepoConfig
-from git_refs import R_HEADS
+from git_refs import R_HEADS, GitRefs
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
@@ -181,6 +181,16 @@ class Superproject(object):
       return False
     cmd = ['fetch', self._remote_url, '--depth', '1', '--force', '--no-tags',
            '--filter', 'blob:none']
+
+    # Check if there is a local ref that we can pass to --negotiation-tip.
+    # If this is the first fetch, it does not exist yet.
+    # We use --negotiation-tip to speed up the fetch. Superproject branches do
+    # not share commits. So this lets git know it only needs to send commits
+    # reachable from the specified local refs.
+    rev_commit = GitRefs(self._work_git).get(f'refs/heads/{self.revision}')
+    if rev_commit:
+      cmd.extend(['--negotiation-tip', rev_commit])
+
     if self._branch:
       cmd += [self._branch + ':' + self._branch]
     p = GitCommand(None,
