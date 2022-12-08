@@ -38,7 +38,7 @@ class RepoWrapperTestCase(unittest.TestCase):
 
   def setUp(self):
     """Load the wrapper module every time."""
-    wrapper._wrapper_module = None
+    wrapper.Wrapper.cache_clear()
     self.wrapper = wrapper.Wrapper()
 
 
