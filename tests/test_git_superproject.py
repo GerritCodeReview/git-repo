@@ -21,6 +21,7 @@ import tempfile
 import unittest
 from unittest import mock
 
+from git_command import GitCommand
 import git_superproject
 import git_trace2_event_log
 import manifest_xml
@@ -367,6 +368,49 @@ class SuperprojectTestCase(unittest.TestCase):
               '<superproject name="superproject"/>'
               '</manifest>')
 
+  def test_Fetch(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <superproject name="superproject"/>
+  " /></manifest>
+""")
+    self.maxDiff = None
+    self._superproject = git_superproject.Superproject(
+        manifest, name='superproject',
+        remote=manifest.remotes.get('default-remote').ToRemoteSpec('superproject'),
+        revision='refs/heads/main')
+    os.mkdir(self._superproject._superproject_path)
+    with open(self._superproject._work_git, 'w'):
+      pass
+    with mock.patch.object(self._superproject, '_Init', return_value=True):
+      with mock.patch('git_superproject.GitCommand', autospec=True) as mock_git_command:
+        instance = mock_git_command.return_value
+
+        instance.Wait.return_value = 0
+
+        instance.stdout = 'branch'
+        self.assertTrue(self._superproject._Fetch())
+        self.assertEqual(len(mock_git_command.call_args_list), 2)
+
+        self.assertEqual(mock_git_command.call_args.args,(None, [
+            'fetch', 'http://localhost/superproject', '--depth', '1',
+            '--force', '--no-tags', '--filter', 'blob:none',
+            'refs/heads/main:refs/heads/main'
+        ]))
+
+        # If branch for revision exists, set as --negotiation-tip
+        instance.stdout = self._superproject.revision
+        self.assertTrue(self._superproject._Fetch())
+        self.assertEqual(len(mock_git_command.call_args_list), 4)
+
+        self.assertEqual(mock_git_command.call_args.args,(None, [
+            'fetch', 'http://localhost/superproject', '--depth', '1',
+            '--force', '--no-tags', '--filter', 'blob:none',
+            '--negotiation-tip', self._superproject.revision,
+            'refs/heads/main:refs/heads/main'
+        ]))
 
 if __name__ == '__main__':
   unittest.main()
