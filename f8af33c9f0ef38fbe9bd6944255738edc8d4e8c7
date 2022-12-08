@@ -56,6 +56,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f013e9b9_a8a8617c",
+        "filename": "release/update-manpages",
+        "patchSetId": 4
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T06:38:29Z",
+      "side": 1,
+      "message": "you need to use a raw string with `\\g`.  when you run the unittests, it reports that `\\g` is an invalid escape sequence.",
+      "revId": "f8af33c9f0ef38fbe9bd6944255738edc8d4e8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6dc00f9_e7de1524",
         "filename": "release/update-manpages",
         "patchSetId": 4
