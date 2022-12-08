@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f8c21a0_a391b80e",
+        "filename": "git_superproject.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-12-08T18:07:56Z",
+      "side": 1,
+      "message": "Maybe expand a bit why. E.g. superproject branches share no commits so let git know not to bother sending commits reachable from other local refs.",
+      "revId": "75791e33cdc9c0f6723d6cc680600ba95302bc07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da0f4e0c_028ddb97",
+        "filename": "git_superproject.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2022-12-08T18:07:56Z",
+      "side": 1,
+      "message": "We have this functionality in git_refs.py and it\u0027s already used. Instead of creating a new process, maybe we just rely on it.\n\nI think this should do the trick:\n\n     `GitRefs(self._work_git).get(\u0027revision\u0027)`",
+      "revId": "75791e33cdc9c0f6723d6cc680600ba95302bc07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
