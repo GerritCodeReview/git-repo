@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89fd21b2_a4762995",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-08T17:31:51Z",
+      "side": 1,
+      "message": "set to WIP to test no branch during repo init case",
+      "revId": "2da31bb237cff5f0cbff289fcb997f6d7869815f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
