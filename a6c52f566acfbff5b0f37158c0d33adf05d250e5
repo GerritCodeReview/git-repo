@@ -240,6 +240,41 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07f39b36_1fe8716d",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T18:22:39Z",
+      "side": 1,
+      "message": "looks like this was fixed in https://gerrit-review.git.corp.google.com/c/git-repo/+/351474",
+      "parentUuid": "6d0f07a6_bc18c3dd",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "932bdfb1_51b439e5",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T18:22:39Z",
+      "side": 1,
+      "message": "if the file is corrupted, or there\u0027s many repo processes writing in parallel, and the chunk you reduce down exceeds the max size, this code will hang forever",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c5cf544_a48cea66",
