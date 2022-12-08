@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6646697f_2ceeb1c6",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 385,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T22:37:51Z",
+      "side": 1,
+      "message": "isn\u0027t `_work_git` a dir ?  or am i misreading the code ?",
+      "revId": "d0b29c9018f3578262dcd19bad3a22d1fb733c15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20a46d51_5541eaa3",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T22:37:51Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "d0b29c9018f3578262dcd19bad3a22d1fb733c15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f261528_5c1d3fd9",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T22:37:51Z",
+      "side": 1,
+      "message": "delete this boilerplate.  it\u0027s unused.",
+      "revId": "d0b29c9018f3578262dcd19bad3a22d1fb733c15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
