@@ -181,6 +181,22 @@ class Superproject(object):
       return False
     cmd = ['fetch', self._remote_url, '--depth', '1', '--force', '--no-tags',
            '--filter', 'blob:none']
+
+    # Use --negotiation-tip to speed up the fetch.
+    branch_check_p = GitCommand(None,
+                                ['branch'],
+                                cwd=self._work_git,
+                                capture_stdout=True,
+                                capture_stderr=True)
+    check_retval = branch_check_p.Wait()
+    if check_retval:
+      self._LogWarning(f'git branch call failed, command: git {cmd}, '
+                       f'return code: {check_retval}, '
+                       f'stderr: {branch_check_p.stderr}')
+      return False
+    if self.revision in branch_check_p.stdout:
+      cmd.extend(['--negotiation-tip', self.revision])
+
     if self._branch:
       cmd += [self._branch + ':' + self._branch]
     p = GitCommand(None,
