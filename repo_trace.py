@@ -144,4 +144,9 @@ def _ClearOldTraces():
             if 'END:' in l and _NEW_COMMAND_SEP in l:
               tf.writelines(trace_lines[i + 1:])
               break
-      platform_utils.rename(temp_file, _TRACE_FILE)
+      try:
+        platform_utils.rename(temp_file, _TRACE_FILE)
+      except FileNotFoundError:
+        # Looks like something else removed temp_file (another repo process)
+        if not quiet:
+          print(f'Unable to rename trace_file', file=sys.stderr)
