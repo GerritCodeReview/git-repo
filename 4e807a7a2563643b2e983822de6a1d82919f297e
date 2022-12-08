@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dde936d3_04c009f7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1246,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T06:20:30Z",
+      "side": 1,
+      "message": "i think it was misplaced in the original code too",
+      "parentUuid": "81a89b36_faa1cd2d",
+      "revId": "4e807a7a2563643b2e983822de6a1d82919f297e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1672c32_8c888fd8",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-12-07T17:56:36Z",
       "side": 1,
       "message": "can this block be broken out into a testable chunk - this logic is non-trivial and did regress, let\u0027s ensure it is tested so it does not regress again.",
+      "range": {
+        "startLine": 1242,
+        "startChar": 0,
+        "endLine": 1257,
+        "endChar": 0
+      },
+      "revId": "4e807a7a2563643b2e983822de6a1d82919f297e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f5ffbc_5e3dec04",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1257,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T06:20:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1672c32_8c888fd8",
       "range": {
         "startLine": 1242,
         "startChar": 0,
