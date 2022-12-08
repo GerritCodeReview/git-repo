@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import functools
 import importlib.machinery
 import importlib.util
 import os
@@ -21,15 +22,11 @@ def WrapperPath():
   return os.path.join(os.path.dirname(__file__), 'repo')
 
 
-_wrapper_module = None
-
-
+@functools.lru_cache(maxsize=None)
 def Wrapper():
-  global _wrapper_module
-  if not _wrapper_module:
-    modname = 'wrapper'
-    loader = importlib.machinery.SourceFileLoader(modname, WrapperPath())
-    spec = importlib.util.spec_from_loader(modname, loader)
-    _wrapper_module = importlib.util.module_from_spec(spec)
-    loader.exec_module(_wrapper_module)
-  return _wrapper_module
+  modname = 'wrapper'
+  loader = importlib.machinery.SourceFileLoader(modname, WrapperPath())
+  spec = importlib.util.spec_from_loader(modname, loader)
+  module = importlib.util.module_from_spec(spec)
+  loader.exec_module(module)
+  return module
