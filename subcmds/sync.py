@@ -426,6 +426,9 @@ later is required to fix a server side protocol bug.
       m.superproject.SetPrintMessages(print_messages)
       update_result = m.superproject.UpdateProjectsRevisionId(
           per_manifest[m.path_prefix], git_event_log=self.git_event_log)
+      print(update_result)
+      print('HEY')
+
       manifest_path = update_result.manifest_path
       superproject_logging_data['updatedrevisionid'] = bool(manifest_path)
       if manifest_path:
