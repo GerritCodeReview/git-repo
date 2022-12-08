@@ -24,21 +24,54 @@ from error import UploadError
 from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
+from project import ReviewableBranch
+from typing import List
 
 
-UNUSUAL_COMMIT_THRESHOLD = 5
+_DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
 
 
-def _ConfirmManyUploads(multiple_branches=False):
-  if multiple_branches:
-    print('ATTENTION: One or more branches has an unusually high number '
-          'of commits.')
-  else:
-    print('ATTENTION: You are uploading an unusually high number of commits.')
-  print('YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across '
-        'branches?)')
-  answer = input("If you are sure you intend to do this, type 'yes': ").strip()
-  return answer == "yes"
+def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
+  """Perform basic safety checks on the given set of branches.
+
+  Ensures that each branch does not have a "large" number of commits
+  and, if so, prompts the user to confirm they want to proceed with
+  the upload.
+
+  Returns true if all branches pass the safety check or the user
+  confirmed. Returns false if the upload should be aborted.
+  """
+
+  # Determine if any branch has a suspicious number of commits.
+  many_commits = False
+  for branch in branches:
+    # Get the user's unusual threshold for the branch.
+    #
+    # Each branch may be configured to have a different threshold.
+    remote = branch.project.GetBranch(branch.name).remote
+    key = 'review.%s.unusualcommitthreshold' % remote.review
+    threshold = branch.project.config.GetInt(key)
+    if threshold is None:
+      threshold = _DEFAULT_UNUSUAL_COMMIT_THRESHOLD
+
+    if len(branch.commits) > _DEFAULT_UNUSUAL_COMMIT_THRESHOLD:
+      many_commits = True
+      break
+
+  # If any branch has many commits, prompt the user.
+  if many_commits:
+    if len(branches) > 1:
+      print('ATTENTION: One or more branches has an unusually high number '
+            'of commits.')
+    else:
+      print('ATTENTION: You are uploading an unusually high number of commits.')
+    print('YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across '
+          'branches?)')
+    answer = input(
+        "If you are sure you intend to do this, type 'yes': ").strip()
+    return answer == 'yes'
+
+  return True
 
 
 def _die(fmt, *args):
@@ -148,6 +181,13 @@ review.URL.uploadnotify:
 
 Control e-mail notifications when uploading.
 https://gerrit-review.googlesource.com/Documentation/user-upload.html#notify
+
+review.URL.unusualcommitthreshold:
+
+Repo will warn you if you are attempting to upload a large number
+of commits in one or more branches. By default, the threshold
+is five commits. This option allows you to override the warning
+threshold to a different value.
 
 # References
 
@@ -261,15 +301,14 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
       else:
         answer = sys.stdin.readline().strip().lower()
         answer = answer in ('y', 'yes', '1', 'true', 't')
+      if not answer:
+        _die("upload aborted by user")
 
-    if not opt.yes and answer:
-      if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
-        answer = _ConfirmManyUploads()
-
-    if answer:
-      self._UploadAndReport(opt, [branch], people)
-    else:
+    # Perform some basic safety checks prior to uploading.
+    if not opt.yes and not _VerifyPendingCommits([branch]):
       _die("upload aborted by user")
+
+    self._UploadAndReport(opt, [branch], people)
 
   def _MultipleBranches(self, opt, pending, people):
     projects = {}
@@ -337,15 +376,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     if not todo:
       _die("nothing uncommented for upload")
 
-    if not opt.yes:
-      many_commits = False
-      for branch in todo:
-        if len(branch.commits) > UNUSUAL_COMMIT_THRESHOLD:
-          many_commits = True
-          break
-      if many_commits:
-        if not _ConfirmManyUploads(multiple_branches=True):
-          _die("upload aborted by user")
+    # Perform some basic safety checks prior to uploading.
+    if not opt.yes and not _VerifyPendingCommits(todo):
+      _die("upload aborted by user")
 
     self._UploadAndReport(opt, todo, people)
 
