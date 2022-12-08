@@ -15,7 +15,8 @@
 """Unittests for the update_manpages module."""
 
 import unittest
-import tests.update_manpages as um
+
+from release import update_manpages
 
 
 class UpdateManpagesTest(unittest.TestCase):
@@ -24,4 +25,4 @@ class UpdateManpagesTest(unittest.TestCase):
   def test_replace_regex(self):
     """Check that replace_regex works."""
     data = '\n\033[1mSummary\033[m\n'
-    self.assertEqual(um.replace_regex(data),'\nSummary\n')
+    self.assertEqual(update_manpages.replace_regex(data),'\nSummary\n')
