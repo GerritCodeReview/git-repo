@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "931cd3fc_ae290515",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T06:34:49Z",
+      "side": 1,
+      "message": "what SDK would you be using normally ?  repo runs fine in the default env.\n\nthe help2man code is just perl code.  it shouldn\u0027t be hard to trace down what your system is doing.  other people have run update-manpages without the problems you have.\n\nthis CL is not sufficient to undo everything that your system is generating.  when i run the script locally, it dirties the repo.  you still have whitespace noise that is causing other people to regenerate when it shouldn\u0027t.",
+      "parentUuid": "ed557852_09dda5c2",
+      "revId": "f8af33c9f0ef38fbe9bd6944255738edc8d4e8c7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a6dc00f9_e7de1524",
         "filename": "release/update-manpages",
         "patchSetId": 4
