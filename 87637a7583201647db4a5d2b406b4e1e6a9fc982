@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4e96402_c1e32a38",
+        "filename": "repo_trace.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T18:35:10Z",
+      "side": 1,
+      "message": "i think this func needs drastic simplification (from the filesystem pov)\n\n1. read all the current log once\n\n```\n  try:\n    with open(_TRACE_FILE, \u0027r\u0027, errors\u003d\u0027ignore\u0027) as f:\n      if os.stat(f.fileno()).st_size / (1024 * 1024) \u003c\u003d _MAX_SIZE:\n        return\n      trace_lines \u003d f.readlines()\n  except FileNotFoundError:\n    return\n```\n\n2. iterate over the sections and check the size of the in-memory file\n\n```\n  while sum(len(x) for x in trace_lines) / (1024 * 1024) \u003e _MAX_SIZE:\n    for i, line in enumerate(trace_lines):\n      if \u0027END:\u0027 in line and _NEW_COMMAND_SEP in line:\n        trace_lines \u003d trace_lines[i + 1:]\n        break\n    else:\n      # The last chunk is too big, so throw it all away.\n      trace_lines \u003d []\n```\n\n3. write it out once with a unique name and rename atomically\n\n```\n  temp_dir, temp_prefix \u003d os.path.split(_TRACE_FILE)\n  with tempfile.NamedTemporaryFile(dir\u003dtemp_dir, prefix\u003dtemp_prefix, delete\u003dFalse) as f:\n    f.writelines(trace_lines)\n  platform.rename(f.name, _TRACE_FILE)\n```",
+      "revId": "87637a7583201647db4a5d2b406b4e1e6a9fc982",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
