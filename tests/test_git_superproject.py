@@ -21,6 +21,7 @@ import tempfile
 import unittest
 from unittest import mock
 
+from git_command import GitCommand
 import git_superproject
 import git_trace2_event_log
 import manifest_xml
@@ -366,6 +367,58 @@ class SuperprojectTestCase(unittest.TestCase):
               'revision="52d3c9f7c107839ece2319d077de0cd922aa9d8f"/>'
               '<superproject name="superproject"/>'
               '</manifest>')
+
+  def test_Fetch(self):
+    manifest = self.getXmlManifest("""
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <superproject name="superproject"/>
+  <project path="vendor/x" name="platform/vendor/x" revision="" />
+  <project path="vendor/y" name="platform/vendor/y"
+           revision="52d3c9f7c107839ece2319d077de0cd922aa9d8f" />
+  <project path="art" name="platform/art" groups="notdefault,platform-""" + self.platform + """
+  " /></manifest>
+""")
+    self.maxDiff = None
+    self._superproject = git_superproject.Superproject(
+        manifest, name='superproject',
+        remote=manifest.remotes.get('default-remote').ToRemoteSpec('superproject'),
+        revision='refs/heads/main')
+    self.assertEqual(len(self._superproject._manifest.projects), 3)
+    projects = self._superproject._manifest.projects
+    data = ('160000 commit 2c2724cb36cd5a9cec6c852c681efc3b7c6b86ea\tart\x00'
+            '160000 commit e9d25da64d8d365dbba7c8ee00fe8c4473fe9a06\tvendor/x\x00')
+    with mock.patch.object(self._superproject, '_Init', return_value=True):
+      with mock.patch('git_superproject.GitCommand', autospec=True) as mock_git_command:
+        instance = mock_git_command.return_value
+        instance.Wait.return_value = 0
+        instance.stdout = 'branch'
+
+        os.mkdir(self._superproject._superproject_path)
+        with open(self._superproject._work_git, 'w'):
+          pass
+
+        self.assertTrue(self._superproject._Fetch())
+        self.assertEqual(len(mock_git_command.call_args_list), 2)
+
+        self.assertEqual(mock_git_command.call_args.args,(None, [
+            'fetch', 'http://localhost/superproject', '--depth', '1',
+            '--force', '--no-tags', '--filter', 'blob:none',
+            'refs/heads/main:refs/heads/main'
+        ]))
+
+        # If branch for revision exists, set as --negotiation-tip
+        instance.stdout = self._superproject.revision
+        self.assertTrue(self._superproject._Fetch())
+        self.assertEqual(len(mock_git_command.call_args_list), 4)
+
+        self.assertEqual(mock_git_command.call_args.args,(None, [
+            'fetch', 'http://localhost/superproject', '--depth', '1',
+            '--force', '--no-tags', '--filter', 'blob:none',
+            '--negotiation-tip', self._superproject.revision,
+            'refs/heads/main:refs/heads/main'
+        ]))
 
 
 if __name__ == '__main__':
