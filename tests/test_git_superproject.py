@@ -366,7 +366,3 @@ class SuperprojectTestCase(unittest.TestCase):
               'revision="52d3c9f7c107839ece2319d077de0cd922aa9d8f"/>'
               '<superproject name="superproject"/>'
               '</manifest>')
-
-
-if __name__ == '__main__':
-  unittest.main()

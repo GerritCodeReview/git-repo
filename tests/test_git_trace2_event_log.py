@@ -385,7 +385,3 @@ class EventLogTestCase(unittest.TestCase):
     # Check for 'start' event specific fields.
     self.assertIn('argv', start_event)
     self.assertIsInstance(start_event['argv'], list)
-
-
-if __name__ == '__main__':
-  unittest.main()
