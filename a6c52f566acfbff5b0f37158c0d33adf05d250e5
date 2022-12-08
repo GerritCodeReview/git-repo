@@ -292,6 +292,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b04eaacc_2ef49dc7",
+        "filename": "repo_trace.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T18:37:22Z",
+      "side": 1,
+      "message": "looks like this was fixed in https://gerrit-review.git.corp.google.com/c/git-repo/+/351474",
+      "parentUuid": "3c5cf544_a48cea66",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43e8beb6_b4b8a2a9",
@@ -396,6 +414,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d775c1b8_3874f882",
+        "filename": "run_tests",
+        "patchSetId": 28
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T18:37:22Z",
+      "side": 1,
+      "message": "i posted a fix in https://gerrit-review.git.corp.google.com/c/git-repo/+/354358",
+      "parentUuid": "b05d1c98_20f8f45e",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6b63e2d_83a41c57",
@@ -409,6 +445,24 @@
       "writtenOn": "2022-11-22T09:15:54Z",
       "side": 1,
       "message": "this is extremely fragile.  this needs refactoring so all tests get it automatically.\n\nalso, tearDown is not reliable when tests fail, or classes stack.",
+      "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a7278aa_1368e233",
+        "filename": "tests/test_git_config.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-08T18:37:22Z",
+      "side": 1,
+      "message": "i posted a fix in https://gerrit-review.git.corp.google.com/c/git-repo/+/354358",
+      "parentUuid": "d6b63e2d_83a41c57",
       "revId": "a6c52f566acfbff5b0f37158c0d33adf05d250e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
