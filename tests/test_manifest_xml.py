@@ -23,7 +23,6 @@ import xml.dom.minidom
 
 import error
 import manifest_xml
-import repo_trace
 
 
 # Invalid paths that we don't want in the filesystem.
@@ -94,7 +93,6 @@ class ManifestParseTestCase(unittest.TestCase):
   def setUp(self):
     self.tempdirobj = tempfile.TemporaryDirectory(prefix='repo_tests')
     self.tempdir = self.tempdirobj.name
-    repo_trace._TRACE_FILE = os.path.join(self.tempdir, 'TRACE_FILE_from_test')
     self.repodir = os.path.join(self.tempdir, '.repo')
     self.manifest_dir = os.path.join(self.repodir, 'manifests')
     self.manifest_file = os.path.join(
