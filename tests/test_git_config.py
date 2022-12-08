@@ -200,7 +200,3 @@ class GitConfigReadWriteTests(unittest.TestCase):
     for key, value in TESTS:
       self.assertEqual(sync_data[f'{git_config.SYNC_STATE_PREFIX}{key}'], value)
     self.assertTrue(sync_data[f'{git_config.SYNC_STATE_PREFIX}main.synctime'])
-
-
-if __name__ == '__main__':
-  unittest.main()

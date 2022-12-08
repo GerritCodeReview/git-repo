@@ -553,7 +553,3 @@ class CheckRepoRev(GitCheckoutTestCase):
       rrev, lrev = self.wrapper.check_repo_rev(self.GIT_DIR, 'stable', repo_verify=False)
     self.assertEqual('refs/heads/stable', rrev)
     self.assertEqual(self.REV_LIST[1], lrev)
-
-
-if __name__ == '__main__':
-  unittest.main()
