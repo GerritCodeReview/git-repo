@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b0ddae0_12ce0666",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1154890
+      },
+      "writtenOn": "2022-12-08T22:48:13Z",
+      "side": 1,
+      "message": "An attempt at adding a configuration item for the number of unusual commits.\n\nMy first time touching the repo code, so don\u0027t hesitate letting me know if I am way off here :-)",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
