@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fce3bbb4_4a8634c9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e1e0a798_d0c0944a",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "8db97cd4_0cad7fe1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "439f818b_2cb7d7af",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "821c45b5_233e49d1",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f5d05390_4fbbc3d5",
@@ -65,6 +101,24 @@
       "writtenOn": "2022-12-09T17:19:55Z",
       "side": 1,
       "message": "you can drop \"or not\".  \"Whether\" covers boolean state sufficiently.  you use that style below already.",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7153e437_757ab8f1",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5d05390_4fbbc3d5",
       "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +140,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edaa8166_eae129e3",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb178433_2e150f00",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "692fbbbf_6a2798d0",
@@ -103,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e34452c7_e1034006",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "692fbbbf_6a2798d0",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cba254c2_981abbbf",
@@ -116,6 +206,24 @@
       "writtenOn": "2022-12-09T17:19:55Z",
       "side": 1,
       "message": "same feedback here",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a8bc617_fa7ecd31",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cba254c2_981abbbf",
       "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -154,6 +262,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dc877d1_d6612bc3",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "553e635f_db8555d1",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d2fa030_75549cb7",
@@ -171,6 +297,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b75f794a_ba8ab650",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "forgot to rebase.",
+      "parentUuid": "1d2fa030_75549cb7",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b559f67b_04465c50",
@@ -184,6 +328,24 @@
       "writtenOn": "2022-12-09T17:19:55Z",
       "side": 1,
       "message": "`os.path.getsize()` is simpler",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c136fc98_71b02f3f",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b559f67b_04465c50",
       "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -222,6 +384,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94b9f50e_5957cb15",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b4f7b52d_3e810918",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "468c4770_a279da58",
@@ -235,6 +415,24 @@
       "writtenOn": "2022-12-09T17:19:55Z",
       "side": 1,
       "message": "this modifies the setting in the runtime.  nothing cleans it up for you.  this is why mock usage involves context managers vs just assigning to global state.\n\nnormally mocks are used with functions, but you can mock constants too.\n\nhttps://docs.python.org/3/library/unittest.mock.html#unittest.mock.PropertyMock",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d7c04b2_7db3af74",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2022-12-09T18:29:15Z",
+      "side": 1,
+      "message": "Done with plain mock.patch()",
+      "parentUuid": "468c4770_a279da58",
       "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
