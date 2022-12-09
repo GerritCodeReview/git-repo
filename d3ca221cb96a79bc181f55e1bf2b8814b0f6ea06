@@ -16,6 +16,91 @@
       "message": "An attempt at adding a configuration item for the number of unusual commits.\n\nMy first time touching the repo code, so don\u0027t hesitate letting me know if I am way off here :-)",
       "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "238b8d1c_4c57ce1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T10:49:54Z",
+      "side": 1,
+      "message": "largely just nits",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05dd9dcd_91f96df9",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T10:49:54Z",
+      "side": 1,
+      "message": "this is a stdlib module, so this belongs with the stdlib imports above (i.e. after `import sys`)",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37627bc3_e44c6448",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T10:49:54Z",
+      "side": 1,
+      "message": "use an f-string now",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91e1afb1_473fa5c7",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T10:49:54Z",
+      "side": 1,
+      "message": "should keep `upload` prefix",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "314cc756_9d3928a1",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T10:49:54Z",
+      "side": 1,
+      "message": "you\u0027ll want to update docs/internal-fs-layout.md too",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
