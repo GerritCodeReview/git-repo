@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb4f529a_f103afb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2022-12-09T16:09:03Z",
+      "side": 1,
+      "message": "Test fails for me on py36 and py37, rest passes...",
+      "revId": "0e4f1e7fba4770908235e136c5ed0a540854651e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
