@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1751bca9_8e9485c0",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T20:20:53Z",
+      "side": 1,
+      "message": "os.path.getsize",
+      "revId": "ef10208a6728bfc44e65e48801eb438844b0d301",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
