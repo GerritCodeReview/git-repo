@@ -1,0 +1,242 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1e0a798_d0c0944a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "please scope commits with relevant modules/sections when possible as it makes scanning history much easier.  in this case `repo_trace:` works.",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8db97cd4_0cad7fe1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "mostly nits",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "821c45b5_233e49d1",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "MiB",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5d05390_4fbbc3d5",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "you can drop \"or not\".  \"Whether\" covers boolean state sufficiently.  you use that style below already.",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb178433_2e150f00",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "docstrings cover API behavior, not internal details.  this function enables tracing logging to stderr.",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "692fbbbf_6a2798d0",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "same feedback here",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cba254c2_981abbbf",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "same feedback here",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8926c13_36ab349e",
+        "filename": "repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "ftr, i didn\u0027t actually test the code i posted in the other CL, i just typed it up in the comment.  but you have tests to make sure things actually work ;).",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "553e635f_db8555d1",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "blank line between the file comment block and the module docstring",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d2fa030_75549cb7",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "do you actually need this ?  my CL https://gerrit-review.googlesource.com/c/git-repo/+/354358 has landed and it guarantees that _TRACE_FILE lives in a preexisting dir.",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b559f67b_04465c50",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "`os.path.getsize()` is simpler",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "569ea70c_4365ab33",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "you don\u0027t have to change since existing code does it this way, but since we use pytest now, you can write simple `assert` statements\n\n```\nassert os.path.getsize(repo_trace._TRACE_FILE) \u003e first_trace_size\n```",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4f7b52d_3e810918",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "468c4770_a279da58",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-09T17:19:55Z",
+      "side": 1,
+      "message": "this modifies the setting in the runtime.  nothing cleans it up for you.  this is why mock usage involves context managers vs just assigning to global state.\n\nnormally mocks are used with functions, but you can mock constants too.\n\nhttps://docs.python.org/3/library/unittest.mock.html#unittest.mock.PropertyMock",
+      "revId": "932b9a59200f5c8a9709b7d7352f5a2599085741",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
