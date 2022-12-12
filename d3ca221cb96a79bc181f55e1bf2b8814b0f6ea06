@@ -140,6 +140,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b422d474_bc277999",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-12T11:19:38Z",
+      "side": 1,
+      "message": "our config names are a bit of a mess, so i won\u0027t bikeshed it",
+      "parentUuid": "69ea4339_bebf1b9c",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "314cc756_9d3928a1",
