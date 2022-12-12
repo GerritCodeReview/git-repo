@@ -52,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "171f153b_470a6951",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1154890
+      },
+      "writtenOn": "2022-12-12T02:42:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "05dd9dcd_91f96df9",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37627bc3_e44c6448",
@@ -65,6 +83,24 @@
       "writtenOn": "2022-12-09T10:49:54Z",
       "side": 1,
       "message": "use an f-string now",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e01a74de_e1989e59",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1154890
+      },
+      "writtenOn": "2022-12-12T02:42:38Z",
+      "side": 1,
+      "message": "Much neater, thanks.",
+      "parentUuid": "37627bc3_e44c6448",
       "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +122,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "69ea4339_bebf1b9c",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1154890
+      },
+      "writtenOn": "2022-12-12T02:42:38Z",
+      "side": 1,
+      "message": "Adding `upload` to the name is a good idea for consistency, though it does make the config name rather long (`uploadunusualcommitthreshold`). I\u0027m lacking imagination for a better name, though. `uploadwarningthreshold`, maybe?\n\nI\u0027ve switched over to `uploadwarningthreshold`, but I\u0027m all ears for a better name.",
+      "parentUuid": "91e1afb1_473fa5c7",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "314cc756_9d3928a1",
@@ -99,6 +153,24 @@
       "writtenOn": "2022-12-09T10:49:54Z",
       "side": 1,
       "message": "you\u0027ll want to update docs/internal-fs-layout.md too",
+      "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4388b1d_3dcb2e27",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1154890
+      },
+      "writtenOn": "2022-12-12T02:42:38Z",
+      "side": 1,
+      "message": "Thanks for pointing this out. Added a new line to the table.",
+      "parentUuid": "314cc756_9d3928a1",
       "revId": "d3ca221cb96a79bc181f55e1bf2b8814b0f6ea06",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
