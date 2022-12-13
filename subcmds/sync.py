@@ -55,7 +55,7 @@ import gitc_utils
 from project import Project
 from project import RemoteSpec
 from command import Command, DEFAULT_LOCAL_JOBS, MirrorSafeCommand, WORKER_BATCH_SIZE
-from error import RepoChangedException, GitError, ManifestParseError
+from error import RepoChangedException, GitError
 import platform_utils
 from project import SyncBuffer
 from progress import Progress

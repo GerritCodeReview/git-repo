@@ -21,7 +21,6 @@ import tempfile
 import unittest
 from unittest import mock
 
-from git_command import GitCommand
 import git_superproject
 import git_trace2_event_log
 import manifest_xml

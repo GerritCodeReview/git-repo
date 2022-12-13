@@ -31,7 +31,7 @@ from typing import NamedTuple
 
 from git_command import git_require, GitCommand
 from git_config import RepoConfig
-from git_refs import R_HEADS, GitRefs
+from git_refs import GitRefs
 
 _SUPERPROJECT_GIT_NAME = 'superproject.git'
 _SUPERPROJECT_MANIFEST_NAME = 'superproject_override.xml'
