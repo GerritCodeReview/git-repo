@@ -447,8 +447,7 @@ def run_command(cmd, **kwargs):
     except UnicodeError:
       print('repo: warning: Invalid UTF-8 output:\ncmd: %r\n%r' % (cmd, output),
             file=sys.stderr)
-      # TODO(vapier): Once we require Python 3, use 'backslashreplace'.
-      return output.decode('utf-8', 'replace')
+      return output.decode('utf-8', 'backslashreplace')
 
   # Run & package the results.
   proc = subprocess.Popen(cmd, **kwargs)
