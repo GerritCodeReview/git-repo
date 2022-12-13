@@ -134,9 +134,7 @@ to update the working directory files.
       sys.exit(1)
 
   def _Prompt(self, prompt, value):
-    print('%-10s [%s]: ' % (prompt, value), end='')
-    # TODO: When we require Python 3, use flush=True w/print above.
-    sys.stdout.flush()
+    print('%-10s [%s]: ' % (prompt, value), end='', flush=True)
     a = sys.stdin.readline().strip()
     if a == '':
       return value
@@ -173,9 +171,7 @@ to update the working directory files.
       if not opt.quiet:
         print()
       print('Your identity is: %s <%s>' % (name, email))
-      print('is this correct [y/N]? ', end='')
-      # TODO: When we require Python 3, use flush=True w/print above.
-      sys.stdout.flush()
+      print('is this correct [y/N]? ', end='', flush=True)
       a = sys.stdin.readline().strip().lower()
       if a in ('yes', 'y', 't', 'true'):
         break
@@ -217,9 +213,7 @@ to update the working directory files.
       out.printer(fg='black', attr=c)(' %-6s ', c)
     out.nl()
 
-    print('Enable color display in this user account (y/N)? ', end='')
-    # TODO: When we require Python 3, use flush=True w/print above.
-    sys.stdout.flush()
+    print('Enable color display in this user account (y/N)? ', end='', flush=True)
     a = sys.stdin.readline().strip().lower()
     if a in ('y', 'yes', 't', 'true', 'on'):
       gc.SetString('color.ui', 'auto')
