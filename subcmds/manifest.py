@@ -15,7 +15,6 @@
 import json
 import os
 import sys
-import optparse
 
 from command import PagedCommand
 

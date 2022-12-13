@@ -13,16 +13,10 @@
 # limitations under the License.
 
 import os
-import platform
-import re
 import sys
-import urllib.parse
 
 from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
-from error import ManifestParseError
-from project import SyncBuffer
-from git_config import GitConfig
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
 from wrapper import Wrapper
 

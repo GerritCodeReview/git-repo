@@ -14,7 +14,6 @@
 
 import os
 import multiprocessing
-import platform
 import re
 import sys
 import time

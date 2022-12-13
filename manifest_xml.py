@@ -22,7 +22,7 @@ import xml.dom.minidom
 import urllib.parse
 
 import gitc_utils
-from git_config import GitConfig, IsId
+from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 from git_superproject import Superproject
 import platform_utils
