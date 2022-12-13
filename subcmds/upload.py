@@ -293,9 +293,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
       for commit in commit_list:
         print('         %s' % commit)
 
-      print('to %s (y/N)? ' % remote.review, end='')
-      # TODO: When we require Python 3, use flush=True w/print above.
-      sys.stdout.flush()
+      print('to %s (y/N)? ' % remote.review, end='', flush=True)
       if opt.yes:
         print('<--yes>')
         answer = True
@@ -437,9 +435,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             print('Uncommitted changes in %s (did you forget to amend?):'
                   % branch.project.name)
             print('\n'.join(changes))
-            print('Continue uploading? (y/N) ', end='')
-            # TODO: When we require Python 3, use flush=True w/print above.
-            sys.stdout.flush()
+            print('Continue uploading? (y/N) ', end='', flush=True)
             if opt.yes:
               print('<--yes>')
               a = 'yes'
