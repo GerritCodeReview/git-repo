@@ -17,6 +17,7 @@
 import json
 import os
 import socket
+import sys
 import tempfile
 import threading
 import unittest
@@ -355,6 +356,7 @@ class EventLogTestCase(unittest.TestCase):
     with self.assertRaises(TypeError):
       self._event_log_module.Write(path=1234)
 
+  @unittest.skipIf(sys.platform == 'win32', "There are no unix domain sockets in windows.")
   def test_write_socket(self):
     """Test Write() with Unix domain socket for |path| and validate received traces."""
     received_traces = []

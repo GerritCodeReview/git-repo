@@ -1,0 +1,1 @@
+@call python %~dp0run_tests %*

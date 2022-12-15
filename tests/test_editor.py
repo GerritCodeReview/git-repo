@@ -15,6 +15,7 @@
 """Unittests for the editor.py module."""
 
 import unittest
+import sys
 
 from editor import Editor
 
@@ -50,6 +51,7 @@ class EditString(EditorTestCase):
     self.setEditor(':')
     self.assertEqual('foo', Editor.EditString('foo'))
 
+  @unittest.skipIf(sys.platform == 'win32', "There is no cat executable on windows.")
   def test_cat_editor(self):
     """Check behavior when editor is `cat`."""
     self.setEditor('cat')

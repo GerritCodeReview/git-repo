@@ -14,6 +14,7 @@
 
 import os
 import select
+import shutil
 import subprocess
 import sys
 
@@ -58,7 +59,7 @@ def _PipePager(pager):
   # Create pager process, piping stdout/err into its stdin
   try:
     pager_process = subprocess.Popen([pager], stdin=subprocess.PIPE, stdout=sys.stdout,
-                                     stderr=sys.stderr)
+                                     stderr=sys.stderr, encoding='utf-8')
   except FileNotFoundError:
     sys.exit(f'fatal: cannot start pager "{pager}"')
   old_stdout = sys.stdout
@@ -108,6 +109,10 @@ def _SelectPager(globalConfig):
     return os.environ['PAGER']
   except KeyError:
     pass
+
+  if sys.platform == 'win32':
+    # More is the default pager on win32
+    return shutil.which('more') or 'less'
 
   return 'less'
 

@@ -127,6 +127,10 @@ class Coloring(object):
     else:
       self._on = False
 
+    # Initialize ansi coloring on windows.
+    if self._on and sys.platform == 'win32':
+      os.system("")
+
   def redirect(self, out):
     self._out = out
 

@@ -109,12 +109,18 @@ class GitConfigReadWriteTests(unittest.TestCase):
   """Read/write tests of the GitConfig class."""
 
   def setUp(self):
-    self.tmpfile = tempfile.NamedTemporaryFile()
+    # Under windows NamedTemporaryFile has restrictive permissions
+    # preventing git from accessing the file.
+    self.tmpfile = tempfile.mktemp()
     self.config = self.get_config()
+
+
+  def tearDown(self):
+    os.unlink(self.tmpfile)
 
   def get_config(self):
     """Get a new GitConfig instance."""
-    return git_config.GitConfig(self.tmpfile.name)
+    return git_config.GitConfig(self.tmpfile)
 
   def test_SetString(self):
     """Test SetString behavior."""
