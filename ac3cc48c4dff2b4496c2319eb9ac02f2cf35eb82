@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cae68a6_5207a6cc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-15T20:52:11Z",
+      "side": 1,
+      "message": "\"series\" suggests \"multiple commits\".  when it\u0027s one big commit of unrelated changes, we can\u0027t merge any fix until everything finishes discussion.  but if you break things up logically, we can merge subpieces easily.",
+      "revId": "ac3cc48c4dff2b4496c2319eb9ac02f2cf35eb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0bb4a90_46f8a773",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-15T20:52:11Z",
+      "side": 1,
+      "message": "this one for example looks straightforward and i\u0027m fine to merge it by itself",
+      "revId": "ac3cc48c4dff2b4496c2319eb9ac02f2cf35eb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aff6915_b47c7766",
+        "filename": "tests/test_editor.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-15T20:52:11Z",
+      "side": 1,
+      "message": "module imports should be sorted",
+      "revId": "ac3cc48c4dff2b4496c2319eb9ac02f2cf35eb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67eb026a_a26d77b4",
+        "filename": "tests/test_editor.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-15T20:52:11Z",
+      "side": 1,
+      "message": "this should use shutil.which instead of probing the platform",
+      "revId": "ac3cc48c4dff2b4496c2319eb9ac02f2cf35eb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "062aa4dd_18cc31c3",
+        "filename": "tests/test_editor.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-15T20:52:11Z",
+      "side": 1,
+      "message": "incorrect indentation",
+      "revId": "ac3cc48c4dff2b4496c2319eb9ac02f2cf35eb82",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
