@@ -16,6 +16,7 @@
 
 import multiprocessing
 import subprocess
+import sys
 import unittest
 from unittest import mock
 
@@ -49,11 +50,12 @@ class SshTests(unittest.TestCase):
 
   def test_context_manager_child_cleanup(self):
     """Verify orphaned clients & masters get cleaned up."""
+    sleep = ['sleep', '964853320'] if sys.platform != 'win32' else ['timeout', '/t','964853320']
     with multiprocessing.Manager() as manager:
       with ssh.ProxyManager(manager) as ssh_proxy:
-        client = subprocess.Popen(['sleep', '964853320'])
+        client = subprocess.Popen(sleep)
         ssh_proxy.add_client(client)
-        master = subprocess.Popen(['sleep', '964853321'])
+        master = subprocess.Popen(sleep)
         ssh_proxy.add_master(master)
     # If the process still exists, these will throw timeout errors.
     client.wait(0)

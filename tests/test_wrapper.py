@@ -158,18 +158,21 @@ class RunCommand(RepoWrapperTestCase):
 
   def test_capture(self):
     """Check capture_output handling."""
-    ret = self.wrapper.run_command(['echo', 'hi'], capture_output=True)
+    echo_hi_cmd = ['echo', 'hi'] if sys.platform != 'win32' else ['cmd', '/C', 'echo', 'hi']
+    ret = self.wrapper.run_command(echo_hi_cmd, capture_output=True)
     # echo command appends OS specific linesep, but on Windows + Git Bash
     # we get UNIX ending, so we allow both.
     self.assertIn(ret.stdout, ['hi' + os.linesep, 'hi\n'])
 
   def test_check(self):
     """Check check handling."""
-    self.wrapper.run_command(['true'], check=False)
-    self.wrapper.run_command(['true'], check=True)
-    self.wrapper.run_command(['false'], check=False)
+    true_cmd = ['true'] if sys.platform != 'win32' else ['cmd', '/C', 'exit', '0']
+    false_cmd = ['false'] if sys.platform != 'win32' else ['cmd', '/C', 'exit', '1']
+    self.wrapper.run_command(true_cmd, check=False)
+    self.wrapper.run_command(true_cmd, check=True)
+    self.wrapper.run_command(false_cmd, check=False)
     with self.assertRaises(self.wrapper.RunError):
-      self.wrapper.run_command(['false'], check=True)
+      self.wrapper.run_command(false_cmd, check=True)
 
 
 class RunGit(RepoWrapperTestCase):
