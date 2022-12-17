@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24b52650_9d802781",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-17T09:41:44Z",
+      "side": 1,
+      "message": "this sounds like https://crbug.com/gerrit/14375.  so same feedback there.\n\nhttps://bugs.python.org/issue40134#msg365492 in platform_utils looks more promising.",
+      "revId": "e8dcfe70178ddce57ff2d3a6f77848734f92be4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
