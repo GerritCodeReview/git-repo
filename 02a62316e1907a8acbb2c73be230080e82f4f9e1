@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35957bc3_83e3683a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2022-12-17T09:36:44Z",
+      "side": 1,
+      "message": "i don\u0027t think this policy makes sense.  it seems to assume sys.platform\u003d\u003dwin32 is always running repo inside a command.exe environment ?  if you run it in a cygwin shell (e.g. git bash shell), then you usually have access to less, and you don\u0027t want to use more.\n\nmaybe the logic should be dynamic for all platforms ... look for less, then more, and then fallback to cat.",
+      "revId": "02a62316e1907a8acbb2c73be230080e82f4f9e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
