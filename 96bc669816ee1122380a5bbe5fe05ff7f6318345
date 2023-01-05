@@ -16,6 +16,23 @@
       "message": "Testing:\n - `./run_tests` passed\n - `flake8 project.py subcmds/upload.py` produced some warnings, but they are unrelated to my chages. Fix here: https://gerrit-review.googlesource.com/c/git-repo/+/355969. \n - `tox -p auto` failed with the following error:\n\n```\nTraceback (most recent call last):\n  File \"/usr/bin/tox\", line 33, in \u003cmodule\u003e\n    sys.exit(load_entry_point(\u0027tox\u003d\u003d3.21.4\u0027, \u0027console_scripts\u0027, \u0027tox\u0027)())\n  File \"/usr/bin/tox\", line 25, in importlib_load_entry_point\n    return next(matches).load()\n  File \"/usr/lib/python3.10/importlib/metadata/__init__.py\", line 171, in load\n    module \u003d import_module(match.group(\u0027module\u0027))\n  File \"/usr/lib/python3.10/importlib/__init__.py\", line 126, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n  File \"\u003cfrozen importlib._bootstrap\u003e\", line 1050, in _gcd_import\n  File \"\u003cfrozen importlib._bootstrap\u003e\", line 1027, in _find_and_load\n  File \"\u003cfrozen importlib._bootstrap\u003e\", line 1006, in _find_and_load_unlocked\n  File \"\u003cfrozen importlib._bootstrap\u003e\", line 688, in _load_unlocked\n  File \"\u003cfrozen importlib._bootstrap_external\u003e\", line 883, in exec_module\n  File \"\u003cfrozen importlib._bootstrap\u003e\", line 241, in _call_with_frames_removed\n  File \"/usr/lib/python3/dist-packages/tox/__init__.py\", line 32, in \u003cmodule\u003e\n    from .session import cmdline  # isort:skip\n  File \"/usr/lib/python3/dist-packages/tox/session/__init__.py\", line 20, in \u003cmodule\u003e\n    from tox import reporter\n  File \"/usr/lib/python3/dist-packages/tox/reporter.py\", line 127, in \u003cmodule\u003e\n    _INSTANCE \u003d Reporter()\n  File \"/usr/lib/python3/dist-packages/tox/reporter.py\", line 32, in __init__\n    self._reset(**kwargs)\n  File \"/usr/lib/python3/dist-packages/tox/reporter.py\", line 38, in _reset\n    self.tw \u003d py.io.TerminalWriter()\nAttributeError: module \u0027py\u0027 has no attribute \u0027io\u0027\n```",
       "revId": "96bc669816ee1122380a5bbe5fe05ff7f6318345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d7a33b_f68935e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-01-05T20:55:35Z",
+      "side": 1,
+      "message": "what you\u0027re calling \"title\" i think is actually \"description\" right ?\nhttps://gerrit-review.googlesource.com/Documentation/user-upload.html#patch_set_description\n\ni started to implement this in https://gerrit-review.git.corp.google.com/c/git-repo/+/337517 but got a little too ambitious and broke things.  guess i should rebase/finish it.",
+      "revId": "96bc669816ee1122380a5bbe5fe05ff7f6318345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
