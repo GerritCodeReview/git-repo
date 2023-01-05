@@ -320,7 +320,8 @@ class Command(object):
       for arg in args:
         # We have to filter by manifest groups in case the requested project is
         # checked out multiple times or differently based on them.
-        projects = [project for project in manifest.GetProjectsWithName(
+        projects = [project
+                    for project in manifest.GetProjectsWithName(
                         arg, all_manifests=all_manifests)
                     if project.MatchesGroups(groups)]
 

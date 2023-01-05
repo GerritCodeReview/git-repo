@@ -159,12 +159,12 @@ def git_require(min_version, fail=False, msg=''):
 
 
 def _build_env(
-  _kwargs_only=(),
-  bare: Optional[bool] = False,
-  disable_editor: Optional[bool] = False,
-  ssh_proxy: Optional[Any] = None,
-  gitdir: Optional[str] = None,
-  objdir: Optional[str] = None
+    _kwargs_only=(),
+    bare: Optional[bool] = False,
+    disable_editor: Optional[bool] = False,
+    ssh_proxy: Optional[Any] = None,
+    gitdir: Optional[str] = None,
+    objdir: Optional[str] = None
 ):
   """Constucts an env dict for command execution."""
 
@@ -194,8 +194,7 @@ def _build_env(
     env['GIT_OBJECT_DIRECTORY'] = objdir
 
     alt_objects = os.path.join(gitdir, 'objects') if gitdir else None
-    if (alt_objects and
-        os.path.realpath(alt_objects) != os.path.realpath(objdir)):
+    if alt_objects and os.path.realpath(alt_objects) != os.path.realpath(objdir):
       # Allow git to search the original place in case of local or unique refs
       # that git will attempt to resolve even if we aren't fetching them.
       env['GIT_ALTERNATE_OBJECT_DIRECTORIES'] = alt_objects
@@ -236,11 +235,11 @@ class GitCommand(object):
         gitdir = gitdir.replace('\\', '/')
 
     env = _build_env(
-      disable_editor=disable_editor,
-      ssh_proxy=ssh_proxy,
-      objdir=objdir,
-      gitdir=gitdir,
-      bare=bare,
+        disable_editor=disable_editor,
+        ssh_proxy=ssh_proxy,
+        objdir=objdir,
+        gitdir=gitdir,
+        bare=bare,
     )
 
     command = [GIT]
@@ -279,7 +278,8 @@ class GitCommand(object):
       if 'GIT_OBJECT_DIRECTORY' in env:
         dbg += ': export GIT_OBJECT_DIRECTORY=%s\n' % env['GIT_OBJECT_DIRECTORY']
       if 'GIT_ALTERNATE_OBJECT_DIRECTORIES' in env:
-        dbg += ': export GIT_ALTERNATE_OBJECT_DIRECTORIES=%s\n' % env['GIT_ALTERNATE_OBJECT_DIRECTORIES']
+        dbg += ': export GIT_ALTERNATE_OBJECT_DIRECTORIES=%s\n' % (
+            env['GIT_ALTERNATE_OBJECT_DIRECTORIES'])
 
       dbg += ': '
       dbg += ' '.join(command)
@@ -295,13 +295,13 @@ class GitCommand(object):
     with Trace('git command %s %s with debug: %s', LAST_GITDIR, command, dbg):
       try:
         p = subprocess.Popen(command,
-                            cwd=cwd,
-                            env=env,
-                            encoding='utf-8',
-                            errors='backslashreplace',
-                            stdin=stdin,
-                            stdout=stdout,
-                            stderr=stderr)
+                             cwd=cwd,
+                             env=env,
+                             encoding='utf-8',
+                             errors='backslashreplace',
+                             stdin=stdin,
+                             stdout=stdout,
+                             stderr=stderr)
       except Exception as e:
         raise GitError('%s: %s' % (command[1], e))
 
