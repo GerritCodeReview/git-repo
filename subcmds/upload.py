@@ -615,9 +615,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
       hook = RepoHook.FromSubcmd(
           hook_type='pre-upload', manifest=manifest,
           opt=opt, abort_if_user_denies=True)
-      if not hook.Run(
-          project_list=pending_proj_names,
-          worktree_list=pending_worktrees):
+      if not hook.Run(project_list=pending_proj_names,
+                      worktree_list=pending_worktrees):
         ret = 1
     if ret:
       return ret

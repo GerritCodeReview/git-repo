@@ -188,7 +188,7 @@ class GitConfig(object):
     if v in ('false', 'no'):
       return False
     print(f"warning: expected {name} to represent a boolean, got {v} instead",
-            file=sys.stderr)
+          file=sys.stderr)
     return None
 
   def SetBoolean(self, name, value):
@@ -197,7 +197,7 @@ class GitConfig(object):
       value = 'true' if value else 'false'
     self.SetString(name, value)
 
-  def GetString(self, name: str, all_keys: bool = False) -> Union[str,  None]:
+  def GetString(self, name: str, all_keys: bool = False) -> Union[str, None]:
     """Get the first value for a key, or None if it is not defined.
 
        This configuration file is used first, if the key is not
