@@ -210,6 +210,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('-l', '--label',
                  dest='labels', action='append', default=[],
                  help='add a label when uploading')
+    p.add_option('--patchset-title', dest='patchset_title',
+                 help='title for patchset')
     p.add_option('--re', '--reviewers',
                  type='string', action='append', dest='reviewers',
                  help='request reviews from these people')
@@ -511,7 +513,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                                ready=opt.ready,
                                dest_branch=destination,
                                validate_certs=opt.validate_certs,
-                               push_options=opt.push_options)
+                               push_options=opt.push_options,
+                               patchset_title=opt.patchset_title)
 
         branch.uploaded = True
       except UploadError as e:

@@ -217,7 +217,8 @@ class ReviewableBranch(object):
                       ready=False,
                       dest_branch=None,
                       validate_certs=True,
-                      push_options=None):
+                      push_options=None,
+                      patchset_title=None):
     self.project.UploadForReview(branch=self.name,
                                  people=people,
                                  dryrun=dryrun,
@@ -230,7 +231,8 @@ class ReviewableBranch(object):
                                  ready=ready,
                                  dest_branch=dest_branch,
                                  validate_certs=validate_certs,
-                                 push_options=push_options)
+                                 push_options=push_options,
+                                 patchset_title=patchset_title)
 
   def GetPublishedRefs(self):
     refs = {}
@@ -1021,7 +1023,8 @@ class Project(object):
                       ready=False,
                       dest_branch=None,
                       validate_certs=True,
-                      push_options=None):
+                      push_options=None,
+                      patchset_title=None):
     """Uploads the named branch for code review.
     """
     if branch is None:
@@ -1090,6 +1093,8 @@ class Project(object):
       opts += ['wip']
     if ready:
       opts += ['ready']
+    if patchset_title:
+      opts += ['m=%s' % self._PercentEncodeForGitRef(patchset_title)]
     if opts:
       ref_spec = ref_spec + '%' + ','.join(opts)
     cmd.append(ref_spec)
@@ -1102,6 +1107,23 @@ class Project(object):
       self.bare_git.UpdateRef(R_PUB + branch.name,
                               R_HEADS + branch.name,
                               message=msg)
+
+  def _PercentEncodeForGitRef(self, original):
+    """Applies percent-encoding for strings sent to Gerrit via git ref metadata.
+
+    The encoding used is based on but stricter than URL encoding (Section 2.1 of
+    RFC 3986). The only non-escaped characters are alphanumerics, and 'SPACE'
+    (U+0020) can be represented as 'LOW LINE' (U+005F) or 'PLUS SIGN' (U+002B).
+
+    For more information, see the Gerrit docs here:
+    https://gerrit-review.googlesource.com/Documentation/user-upload.html#message
+    """
+    safe = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '
+    encoded = ''.join(c if c in safe else '%%%02X' % ord(c) for c in original)
+
+    # Spaces are not allowed in git refs; gerrit will interpret either '_' or
+    # '+' (or '%20') as space. Use '_' since that has been supported the longest.
+    return encoded.replace(' ', '_')
 
 # Sync ##
   def _ExtractArchive(self, tarpath, path=None):
