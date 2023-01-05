@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110a7703_3c4a12c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-01-05T18:15:16Z",
+      "side": 1,
+      "message": "Testing: no logical changes, just fixing flake8 warnings.",
+      "revId": "9dd7f0edf31b80dc385fe126eebd5431305f735c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
