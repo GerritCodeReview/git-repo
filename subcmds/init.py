@@ -224,10 +224,8 @@ to update the working directory files.
     else:
       init_type = ''
 
-    if not opt.quiet:
-      print()
-      print('repo %shas been initialized in %s' %
-            (init_type, self.manifest.topdir))
+    print()
+    print('repo %shas been initialized in %s' % (init_type, self.manifest.topdir))
 
     current_dir = os.getcwd()
     if current_dir != self.manifest.topdir:
@@ -317,4 +315,5 @@ to update the working directory files.
         self._ConfigureUser(opt)
       self._ConfigureColor()
 
-    self._DisplayResult(opt)
+    if not opt.quiet:
+      self._DisplayResult(opt)
