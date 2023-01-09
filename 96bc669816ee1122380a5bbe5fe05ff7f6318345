@@ -33,6 +33,24 @@
       "message": "what you\u0027re calling \"title\" i think is actually \"description\" right ?\nhttps://gerrit-review.googlesource.com/Documentation/user-upload.html#patch_set_description\n\ni started to implement this in https://gerrit-review.git.corp.google.com/c/git-repo/+/337517 but got a little too ambitious and broke things.  guess i should rebase/finish it.",
       "revId": "96bc669816ee1122380a5bbe5fe05ff7f6318345",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7da4d1b9_c41a1de6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-01-09T19:21:00Z",
+      "side": 1,
+      "message": "You are correct. They are incorrectly called \"patchset titles\" in the git-cl tool, which is where I took it from.\n\nRe whether to rebase https://gerrit-review.git.corp.google.com/c/git-repo/+/337517 or submit this, I\u0027ll leave it up to you. I most care that this feature ends up being supported somehow.",
+      "parentUuid": "c6d7a33b_f68935e1",
+      "revId": "96bc669816ee1122380a5bbe5fe05ff7f6318345",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
