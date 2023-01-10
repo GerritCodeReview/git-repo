@@ -772,7 +772,7 @@ later is required to fix a server side protocol bug.
       # We do not support switching between the options.  The environment
       # variable is present for testing and migration only.
       return not project.UseAlternates
-    print(f'\r{relpath}: project not found in manifest.', file=sys.stderr)
+
     return False
 
   def _SetPreciousObjectsState(self, project: Project, opt):
