@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b76fb05_a5ab70fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-01-12T21:20:48Z",
+      "side": 1,
+      "message": "i don\u0027t know what scenarios you\u0027re alluding to, but focusing on this function just by itself, seems reasonable to not complain about a missing git dir when the only point of the function is to clear a git config setting, and if the git dir is missing, we know it\u0027s cleared.\n\ngive LaMont a chance to take a look.",
+      "revId": "95705a7e755aa5426776764e291bd07d5220127e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
