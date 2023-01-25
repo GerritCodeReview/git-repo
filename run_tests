@@ -15,46 +15,8 @@
 
 """Wrapper to run pytest with the right settings."""
 
-import os
-import shutil
-import subprocess
 import sys
-
-
-def find_pytest():
-  """Try to locate a good version of pytest."""
-  # If we're in a virtualenv, assume that it's provided the right pytest.
-  if 'VIRTUAL_ENV' in os.environ:
-    return 'pytest'
-
-  # Use the Python 3 version if available.
-  ret = shutil.which('pytest-3')
-  if ret:
-    return ret
-
-  # Hopefully this is a Python 3 version.
-  ret = shutil.which('pytest')
-  if ret:
-    return ret
-
-  print('%s: unable to find pytest.' % (__file__,), file=sys.stderr)
-  print('%s: Try installing: sudo apt-get install python-pytest' % (__file__,),
-        file=sys.stderr)
-
-
-def main(argv):
-  """The main entry."""
-  # Add the repo tree to PYTHONPATH as the tests expect to be able to import
-  # modules directly.
-  pythonpath = os.path.dirname(os.path.realpath(__file__))
-  oldpythonpath = os.environ.get('PYTHONPATH', None)
-  if oldpythonpath is not None:
-    pythonpath += os.pathsep + oldpythonpath
-  os.environ['PYTHONPATH'] = pythonpath
-
-  pytest = find_pytest()
-  return subprocess.run([pytest] + argv, check=False).returncode
-
+import pytest
 
 if __name__ == '__main__':
-  sys.exit(main(sys.argv[1:]))
+  sys.exit(pytest.main(sys.argv[1:]))
