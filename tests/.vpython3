@@ -1,0 +1,61 @@
+# This is a vpython "spec" file.
+#
+# Read more about `vpython` and how to modify this file here:
+#   https://chromium.googlesource.com/infra/infra/+/main/doc/users/vpython.md
+# List of available wheels:
+#   https://chromium.googlesource.com/infra/infra/+/main/infra/tools/dockerbuild/wheels.md
+
+python_version: "3.8"
+
+wheel: <
+  name: "infra/python/wheels/pytest-py3"
+  version: "version:6.2.2"
+>
+
+# Required by pytest==6.2.2
+wheel: <
+  name: "infra/python/wheels/py-py2_py3"
+  version: "version:1.10.0"
+>
+
+# Required by pytest==6.2.2
+wheel: <
+  name: "infra/python/wheels/iniconfig-py3"
+  version: "version:1.1.1"
+>
+
+# Required by pytest==6.2.2
+wheel: <
+  name: "infra/python/wheels/packaging-py2_py3"
+  version: "version:16.8"
+>
+
+# Required by pytest==6.2.2
+wheel: <
+  name: "infra/python/wheels/pluggy-py3"
+  version: "version:0.13.1"
+>
+
+# Required by pytest==6.2.2
+wheel: <
+  name: "infra/python/wheels/toml-py3"
+  version: "version:0.10.1"
+>
+
+# Required by pytest==6.2.2
+wheel: <
+  name: "infra/python/wheels/pyparsing-py3"
+  version: "version:3.0.7"
+>
+
+# Required by pytest==6.2.2
+wheel: <
+  name: "infra/python/wheels/attrs-py2_py3"
+  version: "version:21.4.0"
+>
+
+# Required by packaging==16.8
+wheel: <
+  name: "infra/python/wheels/six-py2_py3"
+  version: "version:1.16.0"
+>
