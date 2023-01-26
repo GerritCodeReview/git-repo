@@ -149,7 +149,7 @@ if not REPO_REV:
 BUG_URL = 'https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue'
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 30)
+VERSION = (2, 32)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -265,7 +265,8 @@ else:
   urllib.error = urllib2
 
 
-home_dot_repo = os.path.expanduser('~/.repoconfig')
+repo_config_dir = os.getenv('REPO_CONFIG_DIR', os.path.expanduser('~'))
+home_dot_repo = os.path.join(repo_config_dir, '.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 
 
