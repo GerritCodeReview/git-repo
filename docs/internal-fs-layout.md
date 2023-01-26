@@ -243,7 +243,9 @@ The `[branch]` settings are updated by `repo start` and `git branch`.
 
 ## ~/ dotconfig layout
 
-Repo will create & maintain a few files in the user's home directory.
+Repo will create & maintain a few files under the `.repoconfig/` directory.
+This is placed in the user's home directory by default but can be changed by
+setting `REPO_CONFIG_DIR`.
 
 *   `.repoconfig/`: Repo's per-user directory for all random config files/state.
 *   `.repoconfig/config`: Per-user settings using [git-config] file format.
