@@ -264,9 +264,9 @@ else:
   urllib.request = urllib2
   urllib.error = urllib2
 
-
-home_dot_repo = os.path.expanduser('~/.repoconfig')
-gpg_dir = os.path.join(home_dot_repo, 'gnupg')
+repo_config_dir = os.getenv('REPO_CONFIG_DIR', os.path.expanduser('~'))
+dot_repo_config = os.path.join(repo_config_dir, '.repoconfig')
+gpg_dir = os.path.join(dot_repo_config, 'gnupg')
 
 
 def GetParser(gitc_init=False):
@@ -729,10 +729,10 @@ def _setenv(key, value, env=None):
 
 
 def NeedSetupGnuPG():
-  if not os.path.isdir(home_dot_repo):
+  if not os.path.isdir(dot_repo_config):
     return True
 
-  kv = os.path.join(home_dot_repo, 'keyring-version')
+  kv = os.path.join(dot_repo_config, 'keyring-version')
   if not os.path.exists(kv):
     return True
 
@@ -748,11 +748,11 @@ def NeedSetupGnuPG():
 
 def SetupGnuPG(quiet):
   try:
-    os.mkdir(home_dot_repo)
+    os.mkdir(dot_repo_config)
   except OSError as e:
     if e.errno != errno.EEXIST:
       print('fatal: cannot make %s directory: %s'
-            % (home_dot_repo, e.strerror), file=sys.stderr)
+            % (dot_repo_config, e.strerror), file=sys.stderr)
       sys.exit(1)
 
   try:
@@ -784,7 +784,7 @@ def SetupGnuPG(quiet):
       print(file=sys.stderr)
     return False
 
-  with open(os.path.join(home_dot_repo, 'keyring-version'), 'w') as fd:
+  with open(os.path.join(dot_repo_config, 'keyring-version'), 'w') as fd:
     fd.write('.'.join(map(str, KEYRING_VERSION)) + '\n')
   return True
 
@@ -797,7 +797,7 @@ def _SetConfig(cwd, name, value):
 
 def _GetRepoConfig(name):
   """Read a repo configuration option."""
-  config = os.path.join(home_dot_repo, 'config')
+  config = os.path.join(dot_repo_config, 'config')
   if not os.path.exists(config):
     return None
 
