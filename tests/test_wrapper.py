@@ -324,19 +324,19 @@ class NeedSetupGnuPG(RepoWrapperTestCase):
   def test_missing_dir(self):
     """The ~/.repoconfig tree doesn't exist yet."""
     with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
-      self.wrapper.home_dot_repo = os.path.join(tempdir, 'foo')
+      self.wrapper.dot_repo_config = os.path.join(tempdir, 'foo')
       self.assertTrue(self.wrapper.NeedSetupGnuPG())
 
   def test_missing_keyring(self):
     """The keyring-version file doesn't exist yet."""
     with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
-      self.wrapper.home_dot_repo = tempdir
+      self.wrapper.dot_repo_config = tempdir
       self.assertTrue(self.wrapper.NeedSetupGnuPG())
 
   def test_empty_keyring(self):
     """The keyring-version file exists, but is empty."""
     with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
-      self.wrapper.home_dot_repo = tempdir
+      self.wrapper.dot_repo_config = tempdir
       with open(os.path.join(tempdir, 'keyring-version'), 'w'):
         pass
       self.assertTrue(self.wrapper.NeedSetupGnuPG())
@@ -344,7 +344,7 @@ class NeedSetupGnuPG(RepoWrapperTestCase):
   def test_old_keyring(self):
     """The keyring-version file exists, but it's old."""
     with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
-      self.wrapper.home_dot_repo = tempdir
+      self.wrapper.dot_repo_config = tempdir
       with open(os.path.join(tempdir, 'keyring-version'), 'w') as fp:
         fp.write('1.0\n')
       self.assertTrue(self.wrapper.NeedSetupGnuPG())
@@ -352,7 +352,7 @@ class NeedSetupGnuPG(RepoWrapperTestCase):
   def test_new_keyring(self):
     """The keyring-version file exists, and is up-to-date."""
     with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
-      self.wrapper.home_dot_repo = tempdir
+      self.wrapper.dot_repo_config = tempdir
       with open(os.path.join(tempdir, 'keyring-version'), 'w') as fp:
         fp.write('1000.0\n')
       self.assertFalse(self.wrapper.NeedSetupGnuPG())
@@ -364,8 +364,8 @@ class SetupGnuPG(RepoWrapperTestCase):
   def test_full(self):
     """Make sure it works completely."""
     with tempfile.TemporaryDirectory(prefix='repo-tests') as tempdir:
-      self.wrapper.home_dot_repo = tempdir
-      self.wrapper.gpg_dir = os.path.join(self.wrapper.home_dot_repo, 'gnupg')
+      self.wrapper.dot_repo_config = tempdir
+      self.wrapper.gpg_dir = os.path.join(self.wrapper.dot_repo_config, 'gnupg')
       self.assertTrue(self.wrapper.SetupGnuPG(True))
       with open(os.path.join(tempdir, 'keyring-version'), 'r') as fp:
         data = fp.read()
