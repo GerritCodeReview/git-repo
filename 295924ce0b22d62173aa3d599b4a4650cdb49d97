@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a63c3b_29daa2aa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-01-27T19:01:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a9a3fed_02b08779",
+      "revId": "295924ce0b22d62173aa3d599b4a4650cdb49d97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e351a999_d72a159f",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4f05d72_9d1407b3",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-01-27T19:01:57Z",
+      "side": 1,
+      "message": "done, why skip 2.31?",
+      "parentUuid": "e351a999_d72a159f",
+      "revId": "295924ce0b22d62173aa3d599b4a4650cdb49d97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c5f6c101_aefae777",
         "filename": "repo",
         "patchSetId": 6
@@ -48,6 +84,24 @@
       "writtenOn": "2023-01-27T02:45:08Z",
       "side": 1,
       "message": "seems like we should leave he name `home_dot_repo` so we don\u0027t have to in the rest of the file",
+      "revId": "295924ce0b22d62173aa3d599b4a4650cdb49d97",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "340ea24c_6cee33ff",
+        "filename": "repo",
+        "patchSetId": 6
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-01-27T19:01:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5f6c101_aefae777",
       "revId": "295924ce0b22d62173aa3d599b4a4650cdb49d97",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
