@@ -159,6 +159,24 @@
       "parentUuid": "3c52f8bc_1b5dc284",
       "revId": "95705a7e755aa5426776764e291bd07d5220127e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e5d2032_4a77d0b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-01-31T21:40:52Z",
+      "side": 1,
+      "message": "you need to mark your CLs Verified+1",
+      "parentUuid": "d925429f_39944599",
+      "revId": "95705a7e755aa5426776764e291bd07d5220127e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
