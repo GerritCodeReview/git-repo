@@ -3932,12 +3932,14 @@ class ManifestProject(MetaProject):
     if git_superproject.UseSuperproject(use_superproject, self.manifest):
       sync_result = self.manifest.superproject.Sync(git_event_log)
       if not sync_result.success:
-        print('warning: git update of superproject for '
-              f'{self.manifest.path_prefix} failed, repo sync will not use '
-              'superproject to fetch source; while this error is not fatal, '
-              'and you can continue to run repo sync, please run repo init '
-              'with the --no-use-superproject option to stop seeing this '
-              'warning', file=sys.stderr)
+        submanifest = ''
+        if self.manifest.path_prefix:
+          submanifest = f'for {self.manifest.path_prefix} '
+        print(f'warning: git update of superproject {submanifest}failed, repo '
+              'sync will not use superproject to fetch source; while this '
+              'error is not fatal, and you can continue to run repo sync, '
+              'please run repo init with the --no-use-superproject option to '
+              'stop seeing this warning', file=sys.stderr)
         if sync_result.fatal and use_superproject is not None:
           return False
 
