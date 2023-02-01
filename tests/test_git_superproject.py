@@ -163,6 +163,7 @@ class SuperprojectTestCase(unittest.TestCase):
       sync_result = self._superproject.Sync(self.git_event_log)
       self.assertFalse(sync_result.success)
       self.assertTrue(sync_result.fatal)
+      self.verifyErrorEvent()
 
   def test_superproject_get_superproject_mock_init(self):
     """Test with _Init failing."""
