@@ -125,23 +125,24 @@ class Superproject(object):
     """Returns the manifest path if the path exists or None."""
     return self._manifest_path if os.path.exists(self._manifest_path) else None
 
-  def _LogMessage(self, message):
+  def _LogMessage(self, fmt, *inputs):
     """Logs message to stderr and _git_event_log."""
+    message = f'{self._LogMessagePrefix()} {fmt.format(*inputs)}'
     if self._print_messages:
       print(message, file=sys.stderr)
-    self._git_event_log.ErrorEvent(message, f'{message}')
+    self._git_event_log.ErrorEvent(message, fmt)
 
   def _LogMessagePrefix(self):
     """Returns the prefix string to be logged in each log message"""
     return f'repo superproject branch: {self._branch} url: {self._remote_url}'
 
-  def _LogError(self, message):
+  def _LogError(self, fmt, *inputs):
     """Logs error message to stderr and _git_event_log."""
-    self._LogMessage(f'{self._LogMessagePrefix()} error: {message}')
+    self._LogMessage(f'error: {fmt}', *inputs)
 
-  def _LogWarning(self, message):
+  def _LogWarning(self, fmt, *inputs):
     """Logs warning message to stderr and _git_event_log."""
-    self._LogMessage(f'{self._LogMessagePrefix()} warning: {message}')
+    self._LogMessage(f'warning: {fmt}', *inputs)
 
   def _Init(self):
     """Sets up a local Git repository to get a copy of a superproject.
@@ -162,8 +163,8 @@ class Superproject(object):
                    capture_stderr=True)
     retval = p.Wait()
     if retval:
-      self._LogWarning(f'git init call failed, command: git {cmd}, '
-                       f'return code: {retval}, stderr: {p.stderr}')
+      self._LogWarning('git init call failed, command: git {}, '
+                       'return code: {}, stderr: {}', cmd, retval, p.stderr)
       return False
     return True
 
@@ -174,7 +175,7 @@ class Superproject(object):
       True if fetch is successful, or False.
     """
     if not os.path.exists(self._work_git):
-      self._LogWarning(f'git fetch missing directory: {self._work_git}')
+      self._LogWarning('git fetch missing directory: {}', self._work_git)
       return False
     if not git_require((2, 28, 0)):
       self._LogWarning('superproject requires a git version 2.28 or later')
@@ -200,8 +201,8 @@ class Superproject(object):
                    capture_stderr=True)
     retval = p.Wait()
     if retval:
-      self._LogWarning(f'git fetch call failed, command: git {cmd}, '
-                       f'return code: {retval}, stderr: {p.stderr}')
+      self._LogWarning('git fetch call failed, command: git {}, '
+                       'return code: {}, stderr: {}', cmd, retval, p.stderr)
       return False
     return True
 
@@ -214,7 +215,7 @@ class Superproject(object):
       data: data returned from 'git ls-tree ...' instead of None.
     """
     if not os.path.exists(self._work_git):
-      self._LogWarning(f'git ls-tree missing directory: {self._work_git}')
+      self._LogWarning('git ls-tree missing directory: {}', self._work_git)
       return None
     data = None
     branch = 'HEAD' if not self._branch else self._branch
@@ -229,8 +230,8 @@ class Superproject(object):
     if retval == 0:
       data = p.stdout
     else:
-      self._LogWarning(f'git ls-tree call failed, command: git {cmd}, '
-                       f'return code: {retval}, stderr: {p.stderr}')
+      self._LogWarning('git ls-tree call failed, command: git {}, '
+                       'return code: {}, stderr: {}', cmd, retval, p.stderr)
     return data
 
   def Sync(self, git_event_log):
@@ -244,16 +245,16 @@ class Superproject(object):
     """
     self._git_event_log = git_event_log
     if not self._manifest.superproject:
-      self._LogWarning(f'superproject tag is not defined in manifest: '
-                       f'{self._manifest.manifestFile}')
+      self._LogWarning('superproject tag is not defined in manifest: {}',
+                       self._manifest.manifestFile)
       return SyncResult(False, False)
 
     _PrintBetaNotice()
 
     should_exit = True
     if not self._remote_url:
-      self._LogWarning(f'superproject URL is not defined in manifest: '
-                       f'{self._manifest.manifestFile}')
+      self._LogWarning('superproject URL is not defined in manifest: {}',
+                       self._manifest.manifestFile)
       return SyncResult(False, should_exit)
 
     if not self._Init():
@@ -276,8 +277,8 @@ class Superproject(object):
 
     data = self._LsTree()
     if not data:
-      self._LogWarning(f'git ls-tree failed to return data for manifest: '
-                       f'{self._manifest.manifestFile}')
+      self._LogWarning('git ls-tree failed to return data for manifest: {}',
+                       self._manifest.manifestFile)
       return CommitIdsResult(None, True)
 
     # Parse lines like the following to select lines starting with '160000' and
@@ -303,7 +304,7 @@ class Superproject(object):
       manifest_path: Path name of the file into which manifest is written instead of None.
     """
     if not os.path.exists(self._superproject_path):
-      self._LogWarning(f'missing superproject directory: {self._superproject_path}')
+      self._LogWarning('missing superproject directory: {}', self._superproject_path)
       return None
     manifest_str = self._manifest.ToXml(groups=self._manifest.GetGroupsStr(),
                                         omit_local=True).toxml()
@@ -312,7 +313,8 @@ class Superproject(object):
       with open(manifest_path, 'w', encoding='utf-8') as fp:
         fp.write(manifest_str)
     except IOError as e:
-      self._LogError(f'cannot write manifest to : {manifest_path} {e}')
+      self._LogError('cannot write manifest to : {} {}',
+                     manifest_path, e)
       return None
     return manifest_path
 
@@ -364,8 +366,9 @@ class Superproject(object):
     # If superproject doesn't have a commit id for a project, then report an
     # error event and continue as if do not use superproject is specified.
     if projects_missing_commit_ids:
-      self._LogWarning(f'please file a bug using {self._manifest.contactinfo.bugurl} '
-                       f'to report missing commit_ids for: {projects_missing_commit_ids}')
+      self._LogWarning('please file a bug using {} to report missing '
+                       'commit_ids for: {}', self._manifest.contactinfo.bugurl,
+                       projects_missing_commit_ids)
       return UpdateProjectsResult(None, False)
 
     for project in projects:
