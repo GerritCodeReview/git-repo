@@ -544,7 +544,7 @@ later is required to fix a server side protocol bug.
             ret = False
           else:
             fetched.add(project.gitdir)
-          pm.update(msg=project.name)
+          pm.update(msg=f'Last synced: {project.name}')
         if not ret and opt.fail_fast:
           break
       return ret
