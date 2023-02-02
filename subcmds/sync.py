@@ -498,7 +498,7 @@ later is required to fix a server side protocol bug.
         print('error: Cannot fetch %s from %s'
               % (project.name, project.remote.url),
               file=sys.stderr)
-    except KeyboardInterrupt as e:
+    except KeyboardInterrupt:
       print(f'Keyboard interrupt while processing {project.name}')
     except GitError as e:
       print('error.GitError: Cannot fetch %s' % str(e), file=sys.stderr)
