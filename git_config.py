@@ -720,6 +720,9 @@ class Branch(object):
     else:
       self.remote = None
 
+  def __repr__(self) -> str:
+    return "git_config.Branch name: %s merge: %s remote: %s" % (self.name, self.merge, self.remote)
+
   @property
   def LocalMerge(self):
     """Convert the merge spec to a local name.
