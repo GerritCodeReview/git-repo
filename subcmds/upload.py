@@ -24,6 +24,7 @@ from error import UploadError
 from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
+from subcmds.autosquash import Autosquasher
 
 
 UNUSUAL_COMMIT_THRESHOLD = 5
@@ -223,6 +224,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     p.add_option('--no-cert-checks',
                  dest='validate_certs', action='store_false', default=True,
                  help='disable verifying ssl certs (unsafe)')
+    p.add_option('--autosquash',
+                 dest='autosquash', action='store_true',
+                 help='squash commits first so each branch is its own CL')
     RepoHook.AddOptionGroup(p, 'pre-upload')
 
   def _SingleBranch(self, opt, branch, people):
@@ -545,6 +549,24 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
   def Execute(self, opt, args):
     projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
 
+    autosquasher = None
+    try:
+      if (opt.autosquash):
+        if (len(projects) == 1):
+          project = projects[0]
+          autosquasher = Autosquasher(project, project.CurrentBranch)
+          autosquasher.Squash()
+        else:
+          print('WARNING: Autosquash aborted. Autosquash doesn\'t work on multiple projects. Did you make sure to specify only the current directory?')
+          return 1
+
+      self.ExecuteUpload(opt, args, projects)
+    finally:
+      if autosquasher is not None:
+        autosquasher.Restore()
+
+
+  def ExecuteUpload(self, opt, args, projects):
     def _ProcessResults(_pool, _out, results):
       pending = []
       for result in results:
