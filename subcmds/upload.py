@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+from subcmds.autosquash import Autosquasher
+
+
 import copy
 import functools
 import optparse
@@ -731,6 +735,28 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         return (project, avail)
 
     def Execute(self, opt, args):
+        projects = self.GetProjects(
+            args, all_manifests=not opt.this_manifest_only
+        )
+
+        autosquasher = None
+        try:
+            if (opt.autosquash):
+                if (len(projects) == 1):
+                    project = projects[0]
+                    autosquasher = Autosquasher(project, project.CurrentBranch)
+                    autosquasher.Squash()
+                else:
+                    print("WARNING: Autosquash aborted. Autosquash doesn't work on multiple"
+                          " projects. Did you make sure to specify only the current directory?")
+                return 1
+
+            self.ExecuteUpload(opt, args, projects)
+        finally:
+            if autosquasher is not None:
+                autosquasher.Restore()
+
+    def ExecuteUpload(self, opt, args, projects):
         projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )
