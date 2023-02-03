@@ -16,6 +16,24 @@
       "message": "i don\u0027t think we want this.  repo is meant to be a thin layer on top of git, and we\u0027re trying to figure out how to get rid of repo entirely in favor of git.  so adding new subcommands/workflows that only work on repo is taking us in the wrong direction we want to end up.",
       "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a372973b_ba91cc7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1156555
+      },
+      "writtenOn": "2023-02-03T23:21:47Z",
+      "side": 1,
+      "message": "Bummer, that\u0027s a shame. When will you be deprecating repo and moving to pure git?",
+      "parentUuid": "80ccd404_b4bd5541",
+      "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
