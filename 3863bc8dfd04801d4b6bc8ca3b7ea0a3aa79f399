@@ -34,6 +34,24 @@
       "parentUuid": "80ccd404_b4bd5541",
       "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36fd0762_6caa3545",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-02-03T23:27:09Z",
+      "side": 1,
+      "message": "as soon as the git team provides equiv/comparable functionality for common workflows\n\nthat said, you can dogfood submodules with Android now.",
+      "parentUuid": "a372973b_ba91cc7b",
+      "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
