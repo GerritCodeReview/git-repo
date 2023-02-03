@@ -1,0 +1,34 @@
+PID: 2092816 START: 1672967012453630464 :+++++++++++++++NEW COMMAND+++++++++++++++++++ starting new command: init, --quiet
+
+PID: 2092816 START: 1672967012473299712 :git command None ['git', 'config', '--get', 'trace2.eventtarget'] with debug: : git config --get trace2.eventtarget 1>| 2>|
+
+PID: 2092816 END: 1672967012477890560 :git command None ['git', 'config', '--get', 'trace2.eventtarget'] with debug: : git config --get trace2.eventtarget 1>| 2>|
+
+PID: 2092816 END: 1672967012478163712 :+++++++++++++++NEW COMMAND+++++++++++++++++++ starting new command: init, --quiet
+
+PID: 444651 START: 1674770107819267584 :+++++++++++++++NEW COMMAND+++++++++++++++++++ starting new command: version
+
+PID: 444651 START: 1674770108196952832 :: parsing /usr/local/google/home/gavinmak/.gitconfig
+
+PID: 444651 END: 1674770108197200640 :: parsing /usr/local/google/home/gavinmak/.gitconfig
+
+PID: 444651 START: 1674770108201988608 :git command None ['git', 'config', '--file', '/usr/local/google/home/gavinmak/git-repo/.repo/repo/.git/config', '--includes', '--null', '--list'] with debug: : git config --file /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git/config --includes --null --list 1>| 2>|
+
+PID: 444651 END: 1674770108206573056 :git command None ['git', 'config', '--file', '/usr/local/google/home/gavinmak/git-repo/.repo/repo/.git/config', '--includes', '--null', '--list'] with debug: : git config --file /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git/config --includes --null --list 1>| 2>|
+
+PID: 444651 START: 1674770108207211520 :git command /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git ['git', 'describe', 'HEAD'] with debug: : export GIT_DIR=/usr/local/google/home/gavinmak/git-repo/.repo/repo/.git
+: git describe HEAD 1>| 2>|
+
+PID: 444651 END: 1674770108222762240 :git command /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git ['git', 'describe', 'HEAD'] with debug: : export GIT_DIR=/usr/local/google/home/gavinmak/git-repo/.repo/repo/.git
+: git describe HEAD 1>| 2>|
+
+PID: 444651 START: 1674770108222998272 :git command /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git ['git', 'log', '-1', '--format=%cD', 'HEAD'] with debug: : git log -1 --format=%cD HEAD 1>| 2>|
+
+PID: 444651 END: 1674770108228742400 :git command /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git ['git', 'log', '-1', '--format=%cD', 'HEAD'] with debug: : git log -1 --format=%cD HEAD 1>| 2>|
+
+PID: 444651 START: 1674770108230825472 :git command /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git ['git', 'config', '--get', 'trace2.eventtarget'] with debug: : git config --get trace2.eventtarget 1>| 2>|
+
+PID: 444651 END: 1674770108235327744 :git command /usr/local/google/home/gavinmak/git-repo/.repo/repo/.git ['git', 'config', '--get', 'trace2.eventtarget'] with debug: : git config --get trace2.eventtarget 1>| 2>|
+
+PID: 444651 END: 1674770108235576576 :+++++++++++++++NEW COMMAND+++++++++++++++++++ starting new command: version
+

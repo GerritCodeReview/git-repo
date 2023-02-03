@@ -156,7 +156,7 @@ to update the working directory files.
       print()
       print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
                                            mp.config.GetString('user.email')))
-      print("If you want to change this, please re-run 'repo init' with --config-name")
+      print("If you want to change this, please re-run 'repo init'  with --config-name")
     return False
 
   def _ConfigureUser(self, opt):
