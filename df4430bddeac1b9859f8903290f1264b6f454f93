@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b456b61c_c32ffd24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-02-10T01:07:51Z",
+      "side": 1,
+      "message": "pretty sure this doesn\u0027t work.  run_tests executes in the top-level dir.\n\nalthough it\u0027s not clear how \u0026 where exactly you plan on running things in the recipe.",
+      "revId": "df4430bddeac1b9859f8903290f1264b6f454f93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
