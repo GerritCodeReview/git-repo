@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cff50206_e9766652",
+        "filename": ".vpython3",
+        "patchSetId": 6
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-02-10T00:53:43Z",
+      "side": 1,
+      "message": "moved",
+      "parentUuid": "705f4400_1fd75708",
+      "revId": "0828db1572f29438afeb5aff0ecde1e45941f159",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "351a045f_d45770b0",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-02-10T00:29:35Z",
       "side": 1,
       "message": "nit: prefix with tests:",
+      "revId": "0828db1572f29438afeb5aff0ecde1e45941f159",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e82ea785_eba71998",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-02-10T00:53:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "351a045f_d45770b0",
       "revId": "0828db1572f29438afeb5aff0ecde1e45941f159",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
