@@ -16,6 +16,24 @@
       "message": "pretty sure this doesn\u0027t work.  run_tests executes in the top-level dir.\n\nalthough it\u0027s not clear how \u0026 where exactly you plan on running things in the recipe.",
       "revId": "df4430bddeac1b9859f8903290f1264b6f454f93",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26e909eb_79d5e3c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-02-10T01:09:49Z",
+      "side": 1,
+      "message": "this is a working led run with tests/.vpython3\n\nhttps://ci.chromium.org/raw/build/logs.chromium.org/gerrit/led/gavinmak_google.com/c8ef0ba32cab3a000a79bcc280ba83d4ae333d61e073b8d4dd904242296388b2/+/build.proto?server\u003dchromium-swarm.appspot.com\n\nrecipe at https://gerrit-review.googlesource.com/c/luci-config/+/357934",
+      "parentUuid": "b456b61c_c32ffd24",
+      "revId": "df4430bddeac1b9859f8903290f1264b6f454f93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
