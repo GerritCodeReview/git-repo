@@ -34,6 +34,24 @@
       "parentUuid": "b456b61c_c32ffd24",
       "revId": "df4430bddeac1b9859f8903290f1264b6f454f93",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a70df840_41057e5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-02-10T01:34:10Z",
+      "side": 1,
+      "message": "well that works because you\u0027re cheating and specifying `-vpython-spec` explicitly :p.  at which point, it doesn\u0027t matter at all what the file is called.  imo using a standard vpython name like `.vpython3` but not using it in the standard way (e.g. vpython automatically discovering it) is unnecessarily confusing.\n\ni\u0027m also not a fan of the recipe having unique codepaths that aren\u0027t readily available in the git tree itself.\n\nthe current `run_tests` logic is complicated because it needed to handle python2/python3 versions better.  i think we\u0027re past that point.  so instead of searching for a pytest program, why don\u0027t we change run_tests to import pytest directly ?  then you can invoke vpython on run_tests directly.  that\u0027s a lot easier for devs to reproduce -- `vpython3 ./run_tests`.  and it simplifies the amount of custom logic that\u0027s in the recipe so that if we want to change things, we don\u0027t have to keep updating the recipe at the same time.  and it makes it easier to run the recipe against other branches (if we go that route, which maybe we will).\n\nas for the spec, i\u0027m fine with it living at `run_tests.vpython3`.  if we really want to keep it under tests/, then we should move run_tests there too.  and then add another run_tests to the top-level just to go into the subdir to run the run_tests there.  all in all, keeping run_tests.vpython3 in the top-level sounds a lot easier.",
+      "parentUuid": "26e909eb_79d5e3c9",
+      "revId": "df4430bddeac1b9859f8903290f1264b6f454f93",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
