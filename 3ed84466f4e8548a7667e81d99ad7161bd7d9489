@@ -16,6 +16,24 @@
       "message": "this repo uses `Bug:`",
       "revId": "3ed84466f4e8548a7667e81d99ad7161bd7d9489",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0805bf61_2bd19a0b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-02-13T20:15:26Z",
+      "side": 1,
+      "message": "ack, thanks. will use `Bug:` going forward",
+      "parentUuid": "f31f6955_b6007ac9",
+      "revId": "3ed84466f4e8548a7667e81d99ad7161bd7d9489",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
