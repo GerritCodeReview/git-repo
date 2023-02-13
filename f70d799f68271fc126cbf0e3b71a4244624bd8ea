@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62ba21f2_f5e84fff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-02-13T20:39:36Z",
+      "side": 1,
+      "message": "submission blocked on https://gerrit-review.git.corp.google.com/c/luci-config/+/358274",
+      "revId": "f70d799f68271fc126cbf0e3b71a4244624bd8ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10839c1f_5bd0e256",
+        "filename": "project.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-02-13T20:39:36Z",
+      "side": 1,
+      "message": "will remove after CQ label is working",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 28
+      },
+      "revId": "f70d799f68271fc126cbf0e3b71a4244624bd8ea",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
