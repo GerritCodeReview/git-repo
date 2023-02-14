@@ -106,7 +106,7 @@ class ReviewableBranchTests(unittest.TestCase):
 class CopyLinkTestCase(unittest.TestCase):
   """TestCase for stub repo client checkouts.
 
-  It'll have a layout like:
+  It'll have a layout like this:
     tempdir/          # self.tempdir
       checkout/       # self.topdir
         git-project/  # self.worktree
