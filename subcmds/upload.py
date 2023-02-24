@@ -17,6 +17,7 @@ import functools
 import optparse
 import re
 import sys
+import os
 from typing import List
 
 from command import DEFAULT_LOCAL_JOBS, InteractiveCommand
@@ -415,6 +416,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
   def _UploadAndReport(self, opt, todo, original_people):
     have_errors = False
     for branch in todo:
+      print(branch.name)
+      print(branch.project)
+      print(branch.base)
       try:
         people = copy.deepcopy(original_people)
         self._AppendAutoList(branch, people)
@@ -484,16 +488,30 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
         destination = opt.dest_branch or branch.project.dest_branch
 
-        # Make sure our local branch is not setup to track a different remote branch
-        merge_branch = self._GetMergeBranch(branch.project)
-        if destination:
-          full_dest = destination
-          if not full_dest.startswith(R_HEADS):
-            full_dest = R_HEADS + full_dest
+        if branch.project.dest_branch and not opt.dest_branch:
+          project_dest_name = destination
+          match = re.search(r'refs/heads/(?P<name>\w+)', project_dest_name)
+          if match:
+            project_dest_name = match.group('name')
 
-          if not opt.dest_branch and merge_branch and merge_branch != full_dest:
-            print('merge branch %s does not match destination branch %s'
-                  % (merge_branch, full_dest))
+          merge_branch_name = branch.base
+          match = re.search(r'refs/remotes/\w+/(?P<name>\w+)', merge_branch_name)
+          if match:
+            merge_branch_name = match.group('name')
+
+          project_revision_name = branch.project.revisionExpr
+          match = re.search(r'refs/heads/(?P<name>\w+)', project_revision_name)
+          if match:
+            project_revision_name = match.group('name')
+
+          # branch was NOT created with `repo start` and manifest is set
+          # to upload to a branch different from what the local branch is
+          # tracking.
+          if (merge_branch_name != project_revision_name
+              and project_dest_name != merge_branch_name):
+            print('For local branch %s: '
+                  'merge branch %s does not match destination branch %s'
+                  % (branch.name, branch.base, destination))
             print('skipping upload.')
             print('Please use `--destination %s` if this is intentional'
                   % destination)
@@ -546,15 +564,21 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     if have_errors:
       sys.exit(1)
 
-  def _GetMergeBranch(self, project):
+  def _GetMergeBranch(self, project, bare=False, cwd=None, gitdir=None):
     p = GitCommand(project,
                    ['rev-parse', '--abbrev-ref', 'HEAD'],
+                   bare=bare,
+                   gitdir=gitdir,
+                   cwd=cwd,
                    capture_stdout=True,
                    capture_stderr=True)
     p.Wait()
     local_branch = p.stdout.strip()
     p = GitCommand(project,
                    ['config', '--get', 'branch.%s.merge' % local_branch],
+                   bare=bare,
+                   cwd=cwd,
+                   gitdir=gitdir,
                    capture_stdout=True,
                    capture_stderr=True)
     p.Wait()
