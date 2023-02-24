@@ -484,19 +484,24 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
         destination = opt.dest_branch or branch.project.dest_branch
 
-        # Make sure our local branch is not setup to track a different remote branch
-        merge_branch = self._GetMergeBranch(branch.project)
-        if destination:
+        if branch.project.dest_branch and not opt.dest_branch:
+
+          merge_branch = self._GetMergeBranch(
+            branch.project, local_branch=branch.name)
+
           full_dest = destination
           if not full_dest.startswith(R_HEADS):
             full_dest = R_HEADS + full_dest
 
-          if not opt.dest_branch and merge_branch and merge_branch != full_dest:
-            print('merge branch %s does not match destination branch %s'
-                  % (merge_branch, full_dest))
+          # If the merge branch of the local branch is different from the
+          # project's revision AND destination, this might not be intentional.
+          if (merge_branch and merge_branch != branch.project.revisionExpr
+              and merge_branch != full_dest):
+            print(f'For local branch {branch.name}: merge branch '
+                  f'{merge_branch} does not match destination branch '
+                  f'{destination}')
             print('skipping upload.')
-            print('Please use `--destination %s` if this is intentional'
-                  % destination)
+            print(f'Please use `--destination {destination}` if this is intentional')
             branch.uploaded = False
             continue
 
@@ -546,13 +551,14 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
     if have_errors:
       sys.exit(1)
 
-  def _GetMergeBranch(self, project):
-    p = GitCommand(project,
-                   ['rev-parse', '--abbrev-ref', 'HEAD'],
-                   capture_stdout=True,
-                   capture_stderr=True)
-    p.Wait()
-    local_branch = p.stdout.strip()
+  def _GetMergeBranch(self, project, local_branch=None):
+    if local_branch is None:
+      p = GitCommand(project,
+                     ['rev-parse', '--abbrev-ref', 'HEAD'],
+                     capture_stdout=True,
+                     capture_stderr=True)
+      p.Wait()
+      local_branch = p.stdout.strip()
     p = GitCommand(project,
                    ['config', '--get', 'branch.%s.merge' % local_branch],
                    capture_stdout=True,
