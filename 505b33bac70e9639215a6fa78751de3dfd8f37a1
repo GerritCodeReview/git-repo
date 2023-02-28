@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "736b5138_191efc98",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-02-28T04:18:39Z",
+      "side": 1,
+      "message": "this is an internal URL.  use the public https://gerrit-review.googlesource.com/c/50300 instead.",
+      "range": {
+        "startLine": 9,
+        "startChar": 47,
+        "endLine": 9,
+        "endChar": 107
+      },
+      "revId": "505b33bac70e9639215a6fa78751de3dfd8f37a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9577eb2e_8f6fe201",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-02-28T04:18:39Z",
+      "side": 1,
+      "message": "commit messages should normally line wrap at like 80 cols",
+      "revId": "505b33bac70e9639215a6fa78751de3dfd8f37a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
