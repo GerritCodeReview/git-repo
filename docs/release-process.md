@@ -284,7 +284,7 @@ Things in italics are things we used to care about but probably don't anymore.
 | Apr 2018 |              |              |                 | 7.7          | 18.10 Cosmic |
 | Apr 2018 | **Apr 2028** |              |                 |              | **18.04 Bionic**     | 2.17.0   | 2.7.15 3.6.5 | 7.6 |
 | Jun 2018 | *Mar 2021*   | 2.18.0       |
-| Jun 2018 | **Jun 2023** |              | 3.7.0           |              | 19.04 Disco - **20.04 Focal** / **Buster** |
+| Jun 2018 | **Jun 2023** |              | 3.7.0           |              | 19.04 Disco - **Buster** |
 | Aug 2018 |              |              |                 | 7.8          |
 | Sep 2018 | *Mar 2021*   | 2.19.0       |                 |              | 18.10 Cosmic |
 | Oct 2018 |              |              |                 | 7.9          | 19.04 Disco / **Buster** |
