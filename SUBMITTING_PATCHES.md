@@ -4,7 +4,7 @@
 
  - Make small logical changes.
  - [Provide a meaningful commit message][commit-message-style].
- - Check for coding errors and style nits with flake8.
+ - Format with black.
  - Make sure all code is under the Apache License, 2.0.
  - Publish your changes for review.
  - Make corrections if requested.
