@@ -23,31 +23,36 @@ import sys
 import subprocess
 
 from color import Coloring
-from command import DEFAULT_LOCAL_JOBS, Command, MirrorSafeCommand, WORKER_BATCH_SIZE
+from command import (
+    DEFAULT_LOCAL_JOBS,
+    Command,
+    MirrorSafeCommand,
+    WORKER_BATCH_SIZE,
+)
 from error import ManifestInvalidRevisionError
 
 _CAN_COLOR = [
-    'branch',
-    'diff',
-    'grep',
-    'log',
+    "branch",
+    "diff",
+    "grep",
+    "log",
 ]
 
 
 class ForallColoring(Coloring):
-  def __init__(self, config):
-    Coloring.__init__(self, config, 'forall')
-    self.project = self.printer('project', attr='bold')
+    def __init__(self, config):
+        Coloring.__init__(self, config, "forall")
+        self.project = self.printer("project", attr="bold")
 
 
 class Forall(Command, MirrorSafeCommand):
-  COMMON = False
-  helpSummary = "Run a shell command in each project"
-  helpUsage = """
+    COMMON = False
+    helpSummary = "Run a shell command in each project"
+    helpUsage = """
 %prog [<project>...] -c <command> [<arg>...]
 %prog -r str1 [str2] ... -c <command> [<arg>...]
 """
-  helpDescription = """
+    helpDescription = """
 Executes the same shell command in each project.
 
 The -r option allows running the command only on projects matching
@@ -125,236 +130,281 @@ terminal and are not redirected.
 If -e is used, when a command exits unsuccessfully, '%prog' will abort
 without iterating through the remaining projects.
 """
-  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-  @staticmethod
-  def _cmd_option(option, _opt_str, _value, parser):
-    setattr(parser.values, option.dest, list(parser.rargs))
-    while parser.rargs:
-      del parser.rargs[0]
+    @staticmethod
+    def _cmd_option(option, _opt_str, _value, parser):
+        setattr(parser.values, option.dest, list(parser.rargs))
+        while parser.rargs:
+            del parser.rargs[0]
 
-  def _Options(self, p):
-    p.add_option('-r', '--regex',
-                 dest='regex', action='store_true',
-                 help='execute the command only on projects matching regex or wildcard expression')
-    p.add_option('-i', '--inverse-regex',
-                 dest='inverse_regex', action='store_true',
-                 help='execute the command only on projects not matching regex or '
-                      'wildcard expression')
-    p.add_option('-g', '--groups',
-                 dest='groups',
-                 help='execute the command only on projects matching the specified groups')
-    p.add_option('-c', '--command',
-                 help='command (and arguments) to execute',
-                 dest='command',
-                 action='callback',
-                 callback=self._cmd_option)
-    p.add_option('-e', '--abort-on-errors',
-                 dest='abort_on_errors', action='store_true',
-                 help='abort if a command exits unsuccessfully')
-    p.add_option('--ignore-missing', action='store_true',
-                 help='silently skip & do not exit non-zero due missing '
-                      'checkouts')
+    def _Options(self, p):
+        p.add_option(
+            "-r",
+            "--regex",
+            dest="regex",
+            action="store_true",
+            help="execute the command only on projects matching regex or wildcard expression",
+        )
+        p.add_option(
+            "-i",
+            "--inverse-regex",
+            dest="inverse_regex",
+            action="store_true",
+            help="execute the command only on projects not matching regex or "
+            "wildcard expression",
+        )
+        p.add_option(
+            "-g",
+            "--groups",
+            dest="groups",
+            help="execute the command only on projects matching the specified groups",
+        )
+        p.add_option(
+            "-c",
+            "--command",
+            help="command (and arguments) to execute",
+            dest="command",
+            action="callback",
+            callback=self._cmd_option,
+        )
+        p.add_option(
+            "-e",
+            "--abort-on-errors",
+            dest="abort_on_errors",
+            action="store_true",
+            help="abort if a command exits unsuccessfully",
+        )
+        p.add_option(
+            "--ignore-missing",
+            action="store_true",
+            help="silently skip & do not exit non-zero due missing "
+            "checkouts",
+        )
 
-    g = p.get_option_group('--quiet')
-    g.add_option('-p',
-                 dest='project_header', action='store_true',
-                 help='show project headers before output')
-    p.add_option('--interactive',
-                 action='store_true',
-                 help='force interactive usage')
+        g = p.get_option_group("--quiet")
+        g.add_option(
+            "-p",
+            dest="project_header",
+            action="store_true",
+            help="show project headers before output",
+        )
+        p.add_option(
+            "--interactive", action="store_true", help="force interactive usage"
+        )
 
-  def WantPager(self, opt):
-    return opt.project_header and opt.jobs == 1
+    def WantPager(self, opt):
+        return opt.project_header and opt.jobs == 1
 
-  def ValidateOptions(self, opt, args):
-    if not opt.command:
-      self.Usage()
+    def ValidateOptions(self, opt, args):
+        if not opt.command:
+            self.Usage()
 
-  def Execute(self, opt, args):
-    cmd = [opt.command[0]]
-    all_trees = not opt.this_manifest_only
+    def Execute(self, opt, args):
+        cmd = [opt.command[0]]
+        all_trees = not opt.this_manifest_only
 
-    shell = True
-    if re.compile(r'^[a-z0-9A-Z_/\.-]+$').match(cmd[0]):
-      shell = False
+        shell = True
+        if re.compile(r"^[a-z0-9A-Z_/\.-]+$").match(cmd[0]):
+            shell = False
 
-    if shell:
-      cmd.append(cmd[0])
-    cmd.extend(opt.command[1:])
+        if shell:
+            cmd.append(cmd[0])
+        cmd.extend(opt.command[1:])
 
-    # Historically, forall operated interactively, and in serial.  If the user
-    # has selected 1 job, then default to interacive mode.
-    if opt.jobs == 1:
-      opt.interactive = True
+        # Historically, forall operated interactively, and in serial.  If the user
+        # has selected 1 job, then default to interacive mode.
+        if opt.jobs == 1:
+            opt.interactive = True
 
-    if opt.project_header \
-            and not shell \
-            and cmd[0] == 'git':
-      # If this is a direct git command that can enable colorized
-      # output and the user prefers coloring, add --color into the
-      # command line because we are going to wrap the command into
-      # a pipe and git won't know coloring should activate.
-      #
-      for cn in cmd[1:]:
-        if not cn.startswith('-'):
-          break
-      else:
-        cn = None
-      if cn and cn in _CAN_COLOR:
-        class ColorCmd(Coloring):
-          def __init__(self, config, cmd):
-            Coloring.__init__(self, config, cmd)
-        if ColorCmd(self.manifest.manifestProject.config, cn).is_on:
-          cmd.insert(cmd.index(cn) + 1, '--color')
+        if opt.project_header and not shell and cmd[0] == "git":
+            # If this is a direct git command that can enable colorized
+            # output and the user prefers coloring, add --color into the
+            # command line because we are going to wrap the command into
+            # a pipe and git won't know coloring should activate.
+            #
+            for cn in cmd[1:]:
+                if not cn.startswith("-"):
+                    break
+            else:
+                cn = None
+            if cn and cn in _CAN_COLOR:
 
-    mirror = self.manifest.IsMirror
-    rc = 0
+                class ColorCmd(Coloring):
+                    def __init__(self, config, cmd):
+                        Coloring.__init__(self, config, cmd)
 
-    smart_sync_manifest_name = "smart_sync_override.xml"
-    smart_sync_manifest_path = os.path.join(
-        self.manifest.manifestProject.worktree, smart_sync_manifest_name)
+                if ColorCmd(self.manifest.manifestProject.config, cn).is_on:
+                    cmd.insert(cmd.index(cn) + 1, "--color")
 
-    if os.path.isfile(smart_sync_manifest_path):
-      self.manifest.Override(smart_sync_manifest_path)
+        mirror = self.manifest.IsMirror
+        rc = 0
 
-    if opt.regex:
-      projects = self.FindProjects(args, all_manifests=all_trees)
-    elif opt.inverse_regex:
-      projects = self.FindProjects(args, inverse=True, all_manifests=all_trees)
-    else:
-      projects = self.GetProjects(args, groups=opt.groups, all_manifests=all_trees)
+        smart_sync_manifest_name = "smart_sync_override.xml"
+        smart_sync_manifest_path = os.path.join(
+            self.manifest.manifestProject.worktree, smart_sync_manifest_name
+        )
 
-    os.environ['REPO_COUNT'] = str(len(projects))
+        if os.path.isfile(smart_sync_manifest_path):
+            self.manifest.Override(smart_sync_manifest_path)
 
-    try:
-      config = self.manifest.manifestProject.config
-      with multiprocessing.Pool(opt.jobs, InitWorker) as pool:
-        results_it = pool.imap(
-            functools.partial(DoWorkWrapper, mirror, opt, cmd, shell, config),
-            enumerate(projects),
-            chunksize=WORKER_BATCH_SIZE)
-        first = True
-        for (r, output) in results_it:
-          if output:
-            if first:
-              first = False
-            elif opt.project_header:
-              print()
-            # To simplify the DoWorkWrapper, take care of automatic newlines.
-            end = '\n'
-            if output[-1] == '\n':
-              end = ''
-            print(output, end=end)
-          rc = rc or r
-          if r != 0 and opt.abort_on_errors:
-            raise Exception('Aborting due to previous error')
-    except (KeyboardInterrupt, WorkerKeyboardInterrupt):
-      # Catch KeyboardInterrupt raised inside and outside of workers
-      rc = rc or errno.EINTR
-    except Exception as e:
-      # Catch any other exceptions raised
-      print('forall: unhandled error, terminating the pool: %s: %s' %
-            (type(e).__name__, e),
-            file=sys.stderr)
-      rc = rc or getattr(e, 'errno', 1)
-    if rc != 0:
-      sys.exit(rc)
+        if opt.regex:
+            projects = self.FindProjects(args, all_manifests=all_trees)
+        elif opt.inverse_regex:
+            projects = self.FindProjects(
+                args, inverse=True, all_manifests=all_trees
+            )
+        else:
+            projects = self.GetProjects(
+                args, groups=opt.groups, all_manifests=all_trees
+            )
+
+        os.environ["REPO_COUNT"] = str(len(projects))
+
+        try:
+            config = self.manifest.manifestProject.config
+            with multiprocessing.Pool(opt.jobs, InitWorker) as pool:
+                results_it = pool.imap(
+                    functools.partial(
+                        DoWorkWrapper, mirror, opt, cmd, shell, config
+                    ),
+                    enumerate(projects),
+                    chunksize=WORKER_BATCH_SIZE,
+                )
+                first = True
+                for r, output in results_it:
+                    if output:
+                        if first:
+                            first = False
+                        elif opt.project_header:
+                            print()
+                        # To simplify the DoWorkWrapper, take care of automatic newlines.
+                        end = "\n"
+                        if output[-1] == "\n":
+                            end = ""
+                        print(output, end=end)
+                    rc = rc or r
+                    if r != 0 and opt.abort_on_errors:
+                        raise Exception("Aborting due to previous error")
+        except (KeyboardInterrupt, WorkerKeyboardInterrupt):
+            # Catch KeyboardInterrupt raised inside and outside of workers
+            rc = rc or errno.EINTR
+        except Exception as e:
+            # Catch any other exceptions raised
+            print(
+                "forall: unhandled error, terminating the pool: %s: %s"
+                % (type(e).__name__, e),
+                file=sys.stderr,
+            )
+            rc = rc or getattr(e, "errno", 1)
+        if rc != 0:
+            sys.exit(rc)
 
 
 class WorkerKeyboardInterrupt(Exception):
-  """ Keyboard interrupt exception for worker processes. """
+    """Keyboard interrupt exception for worker processes."""
 
 
 def InitWorker():
-  signal.signal(signal.SIGINT, signal.SIG_IGN)
+    signal.signal(signal.SIGINT, signal.SIG_IGN)
 
 
 def DoWorkWrapper(mirror, opt, cmd, shell, config, args):
-  """ A wrapper around the DoWork() method.
+    """A wrapper around the DoWork() method.
 
-  Catch the KeyboardInterrupt exceptions here and re-raise them as a different,
-  ``Exception``-based exception to stop it flooding the console with stacktraces
-  and making the parent hang indefinitely.
+    Catch the KeyboardInterrupt exceptions here and re-raise them as a different,
+    ``Exception``-based exception to stop it flooding the console with stacktraces
+    and making the parent hang indefinitely.
 
-  """
-  cnt, project = args
-  try:
-    return DoWork(project, mirror, opt, cmd, shell, cnt, config)
-  except KeyboardInterrupt:
-    print('%s: Worker interrupted' % project.name)
-    raise WorkerKeyboardInterrupt()
+    """
+    cnt, project = args
+    try:
+        return DoWork(project, mirror, opt, cmd, shell, cnt, config)
+    except KeyboardInterrupt:
+        print("%s: Worker interrupted" % project.name)
+        raise WorkerKeyboardInterrupt()
 
 
 def DoWork(project, mirror, opt, cmd, shell, cnt, config):
-  env = os.environ.copy()
+    env = os.environ.copy()
 
-  def setenv(name, val):
-    if val is None:
-      val = ''
-    env[name] = val
+    def setenv(name, val):
+        if val is None:
+            val = ""
+        env[name] = val
 
-  setenv('REPO_PROJECT', project.name)
-  setenv('REPO_OUTERPATH', project.manifest.path_prefix)
-  setenv('REPO_INNERPATH', project.relpath)
-  setenv('REPO_PATH', project.RelPath(local=opt.this_manifest_only))
-  setenv('REPO_REMOTE', project.remote.name)
-  try:
-    # If we aren't in a fully synced state and we don't have the ref the manifest
-    # wants, then this will fail.  Ignore it for the purposes of this code.
-    lrev = '' if mirror else project.GetRevisionId()
-  except ManifestInvalidRevisionError:
-    lrev = ''
-  setenv('REPO_LREV', lrev)
-  setenv('REPO_RREV', project.revisionExpr)
-  setenv('REPO_UPSTREAM', project.upstream)
-  setenv('REPO_DEST_BRANCH', project.dest_branch)
-  setenv('REPO_I', str(cnt + 1))
-  for annotation in project.annotations:
-    setenv("REPO__%s" % (annotation.name), annotation.value)
+    setenv("REPO_PROJECT", project.name)
+    setenv("REPO_OUTERPATH", project.manifest.path_prefix)
+    setenv("REPO_INNERPATH", project.relpath)
+    setenv("REPO_PATH", project.RelPath(local=opt.this_manifest_only))
+    setenv("REPO_REMOTE", project.remote.name)
+    try:
+        # If we aren't in a fully synced state and we don't have the ref the manifest
+        # wants, then this will fail.  Ignore it for the purposes of this code.
+        lrev = "" if mirror else project.GetRevisionId()
+    except ManifestInvalidRevisionError:
+        lrev = ""
+    setenv("REPO_LREV", lrev)
+    setenv("REPO_RREV", project.revisionExpr)
+    setenv("REPO_UPSTREAM", project.upstream)
+    setenv("REPO_DEST_BRANCH", project.dest_branch)
+    setenv("REPO_I", str(cnt + 1))
+    for annotation in project.annotations:
+        setenv("REPO__%s" % (annotation.name), annotation.value)
 
-  if mirror:
-    setenv('GIT_DIR', project.gitdir)
-    cwd = project.gitdir
-  else:
-    cwd = project.worktree
+    if mirror:
+        setenv("GIT_DIR", project.gitdir)
+        cwd = project.gitdir
+    else:
+        cwd = project.worktree
 
-  if not os.path.exists(cwd):
-    # Allow the user to silently ignore missing checkouts so they can run on
-    # partial checkouts (good for infra recovery tools).
-    if opt.ignore_missing:
-      return (0, '')
+    if not os.path.exists(cwd):
+        # Allow the user to silently ignore missing checkouts so they can run on
+        # partial checkouts (good for infra recovery tools).
+        if opt.ignore_missing:
+            return (0, "")
 
-    output = ''
-    if ((opt.project_header and opt.verbose)
-            or not opt.project_header):
-      output = 'skipping %s/' % project.RelPath(local=opt.this_manifest_only)
-    return (1, output)
+        output = ""
+        if (opt.project_header and opt.verbose) or not opt.project_header:
+            output = "skipping %s/" % project.RelPath(
+                local=opt.this_manifest_only
+            )
+        return (1, output)
 
-  if opt.verbose:
-    stderr = subprocess.STDOUT
-  else:
-    stderr = subprocess.DEVNULL
+    if opt.verbose:
+        stderr = subprocess.STDOUT
+    else:
+        stderr = subprocess.DEVNULL
 
-  stdin = None if opt.interactive else subprocess.DEVNULL
+    stdin = None if opt.interactive else subprocess.DEVNULL
 
-  result = subprocess.run(
-      cmd, cwd=cwd, shell=shell, env=env, check=False,
-      encoding='utf-8', errors='replace',
-      stdin=stdin, stdout=subprocess.PIPE, stderr=stderr)
+    result = subprocess.run(
+        cmd,
+        cwd=cwd,
+        shell=shell,
+        env=env,
+        check=False,
+        encoding="utf-8",
+        errors="replace",
+        stdin=stdin,
+        stdout=subprocess.PIPE,
+        stderr=stderr,
+    )
 
-  output = result.stdout
-  if opt.project_header:
-    if output:
-      buf = io.StringIO()
-      out = ForallColoring(config)
-      out.redirect(buf)
-      if mirror:
-        project_header_path = project.name
-      else:
-        project_header_path = project.RelPath(local=opt.this_manifest_only)
-      out.project('project %s/' % project_header_path)
-      out.nl()
-      buf.write(output)
-      output = buf.getvalue()
-  return (result.returncode, output)
+    output = result.stdout
+    if opt.project_header:
+        if output:
+            buf = io.StringIO()
+            out = ForallColoring(config)
+            out.redirect(buf)
+            if mirror:
+                project_header_path = project.name
+            else:
+                project_header_path = project.RelPath(
+                    local=opt.this_manifest_only
+                )
+            out.project("project %s/" % project_header_path)
+            out.nl()
+            buf.write(output)
+            output = buf.getvalue()
+    return (result.returncode, output)
