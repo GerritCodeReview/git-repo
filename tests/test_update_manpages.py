@@ -20,9 +20,9 @@ from release import update_manpages
 
 
 class UpdateManpagesTest(unittest.TestCase):
-  """Tests the update-manpages code."""
+    """Tests the update-manpages code."""
 
-  def test_replace_regex(self):
-    """Check that replace_regex works."""
-    data = '\n\033[1mSummary\033[m\n'
-    self.assertEqual(update_manpages.replace_regex(data),'\nSummary\n')
+    def test_replace_regex(self):
+        """Check that replace_regex works."""
+        data = "\n\033[1mSummary\033[m\n"
+        self.assertEqual(update_manpages.replace_regex(data), "\nSummary\n")
