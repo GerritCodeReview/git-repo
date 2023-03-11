@@ -1,7 +1,11 @@
 [flake8]
 max-line-length = 80
+per-file-ignores =
+    # E501: line too long
+    tests/test_git_superproject.py: E501
 extend-ignore =
-    # E203: Whitespace before ':'. See https://github.com/PyCQA/pycodestyle/issues/373
+    # E203: Whitespace before ':'
+    # See https://github.com/PyCQA/pycodestyle/issues/373
     E203,
     # E402: Module level import not at top of file
     E402,
