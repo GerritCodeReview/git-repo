@@ -19,63 +19,76 @@ from command import DEFAULT_LOCAL_JOBS, PagedCommand
 
 
 class Prune(PagedCommand):
-  COMMON = True
-  helpSummary = "Prune (delete) already merged topics"
-  helpUsage = """
+    COMMON = True
+    helpSummary = "Prune (delete) already merged topics"
+    helpUsage = """
 %prog [<project>...]
 """
-  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-  def _ExecuteOne(self, project):
-    """Process one project."""
-    return project.PruneHeads()
+    def _ExecuteOne(self, project):
+        """Process one project."""
+        return project.PruneHeads()
 
-  def Execute(self, opt, args):
-    projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
+    def Execute(self, opt, args):
+        projects = self.GetProjects(
+            args, all_manifests=not opt.this_manifest_only
+        )
 
-    # NB: Should be able to refactor this module to display summary as results
-    # come back from children.
-    def _ProcessResults(_pool, _output, results):
-      return list(itertools.chain.from_iterable(results))
+        # NB: Should be able to refactor this module to display summary as results
+        # come back from children.
+        def _ProcessResults(_pool, _output, results):
+            return list(itertools.chain.from_iterable(results))
 
-    all_branches = self.ExecuteInParallel(
-        opt.jobs,
-        self._ExecuteOne,
-        projects,
-        callback=_ProcessResults,
-        ordered=True)
+        all_branches = self.ExecuteInParallel(
+            opt.jobs,
+            self._ExecuteOne,
+            projects,
+            callback=_ProcessResults,
+            ordered=True,
+        )
 
-    if not all_branches:
-      return
+        if not all_branches:
+            return
 
-    class Report(Coloring):
-      def __init__(self, config):
-        Coloring.__init__(self, config, 'status')
-        self.project = self.printer('header', attr='bold')
+        class Report(Coloring):
+            def __init__(self, config):
+                Coloring.__init__(self, config, 'status')
+                self.project = self.printer('header', attr='bold')
 
-    out = Report(all_branches[0].project.config)
-    out.project('Pending Branches')
-    out.nl()
-
-    project = None
-
-    for branch in all_branches:
-      if project != branch.project:
-        project = branch.project
-        out.nl()
-        out.project('project %s/' % project.RelPath(local=opt.this_manifest_only))
+        out = Report(all_branches[0].project.config)
+        out.project('Pending Branches')
         out.nl()
 
-      print('%s %-33s ' % (
-            branch.name == project.CurrentBranch and '*' or ' ',
-            branch.name), end='')
+        project = None
 
-      if not branch.base_exists:
-        print('(ignoring: tracking branch is gone: %s)' % (branch.base,))
-      else:
-        commits = branch.commits
-        date = branch.date
-        print('(%2d commit%s, %s)' % (
-            len(commits),
-            len(commits) != 1 and 's' or ' ',
-            date))
+        for branch in all_branches:
+            if project != branch.project:
+                project = branch.project
+                out.nl()
+                out.project(
+                    'project %s/'
+                    % project.RelPath(local=opt.this_manifest_only)
+                )
+                out.nl()
+
+            print(
+                '%s %-33s '
+                % (
+                    branch.name == project.CurrentBranch and '*' or ' ',
+                    branch.name,
+                ),
+                end='',
+            )
+
+            if not branch.base_exists:
+                print(
+                    '(ignoring: tracking branch is gone: %s)' % (branch.base,)
+                )
+            else:
+                commits = branch.commits
+                date = branch.date
+                print(
+                    '(%2d commit%s, %s)'
+                    % (len(commits), len(commits) != 1 and 's' or ' ', date)
+                )
