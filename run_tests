@@ -13,10 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Wrapper to run pytest with the right settings."""
+"""Wrapper to run black and pytest with the right settings."""
 
+import subprocess
 import sys
 import pytest
 
-if __name__ == '__main__':
-  sys.exit(pytest.main(sys.argv[1:]))
+
+def main(argv):
+    """The main entry."""
+    ret = subprocess.run(
+        [sys.executable, "-m", "black", "--check", "."], check=False
+    ).returncode
+    if ret:
+        return ret
+    return pytest.main(argv)
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
