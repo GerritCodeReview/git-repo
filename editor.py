@@ -23,93 +23,99 @@ import platform_utils
 
 
 class Editor(object):
-  """Manages the user's preferred text editor."""
+    """Manages the user's preferred text editor."""
 
-  _editor = None
-  globalConfig = None
+    _editor = None
+    globalConfig = None
 
-  @classmethod
-  def _GetEditor(cls):
-    if cls._editor is None:
-      cls._editor = cls._SelectEditor()
-    return cls._editor
+    @classmethod
+    def _GetEditor(cls):
+        if cls._editor is None:
+            cls._editor = cls._SelectEditor()
+        return cls._editor
 
-  @classmethod
-  def _SelectEditor(cls):
-    e = os.getenv('GIT_EDITOR')
-    if e:
-      return e
+    @classmethod
+    def _SelectEditor(cls):
+        e = os.getenv("GIT_EDITOR")
+        if e:
+            return e
 
-    if cls.globalConfig:
-      e = cls.globalConfig.GetString('core.editor')
-      if e:
-        return e
+        if cls.globalConfig:
+            e = cls.globalConfig.GetString("core.editor")
+            if e:
+                return e
 
-    e = os.getenv('VISUAL')
-    if e:
-      return e
+        e = os.getenv("VISUAL")
+        if e:
+            return e
 
-    e = os.getenv('EDITOR')
-    if e:
-      return e
+        e = os.getenv("EDITOR")
+        if e:
+            return e
 
-    if os.getenv('TERM') == 'dumb':
-      print(
-          """No editor specified in GIT_EDITOR, core.editor, VISUAL or EDITOR.
+        if os.getenv("TERM") == "dumb":
+            print(
+                """No editor specified in GIT_EDITOR, core.editor, VISUAL or EDITOR.
 Tried to fall back to vi but terminal is dumb.  Please configure at
-least one of these before using this command.""", file=sys.stderr)
-      sys.exit(1)
+least one of these before using this command.""",  # noqa: E501
+                file=sys.stderr,
+            )
+            sys.exit(1)
 
-    return 'vi'
+        return "vi"
 
-  @classmethod
-  def EditString(cls, data):
-    """Opens an editor to edit the given content.
+    @classmethod
+    def EditString(cls, data):
+        """Opens an editor to edit the given content.
 
-    Args:
-      data: The text to edit.
+        Args:
+            data: The text to edit.
 
-    Returns:
-      New value of edited text.
+        Returns:
+            New value of edited text.
 
-    Raises:
-      EditorError: The editor failed to run.
-    """
-    editor = cls._GetEditor()
-    if editor == ':':
-      return data
+        Raises:
+            EditorError: The editor failed to run.
+        """
+        editor = cls._GetEditor()
+        if editor == ":":
+            return data
 
-    fd, path = tempfile.mkstemp()
-    try:
-      os.write(fd, data.encode('utf-8'))
-      os.close(fd)
-      fd = None
+        fd, path = tempfile.mkstemp()
+        try:
+            os.write(fd, data.encode("utf-8"))
+            os.close(fd)
+            fd = None
 
-      if platform_utils.isWindows():
-        # Split on spaces, respecting quoted strings
-        import shlex
-        args = shlex.split(editor)
-        shell = False
-      elif re.compile("^.*[$ \t'].*$").match(editor):
-        args = [editor + ' "$@"', 'sh']
-        shell = True
-      else:
-        args = [editor]
-        shell = False
-      args.append(path)
+            if platform_utils.isWindows():
+                # Split on spaces, respecting quoted strings
+                import shlex
 
-      try:
-        rc = subprocess.Popen(args, shell=shell).wait()
-      except OSError as e:
-        raise EditorError('editor failed, %s: %s %s'
-                          % (str(e), editor, path))
-      if rc != 0:
-        raise EditorError('editor failed with exit status %d: %s %s'
-                          % (rc, editor, path))
+                args = shlex.split(editor)
+                shell = False
+            elif re.compile("^.*[$ \t'].*$").match(editor):
+                args = [editor + ' "$@"', "sh"]
+                shell = True
+            else:
+                args = [editor]
+                shell = False
+            args.append(path)
 
-      with open(path, mode='rb') as fd2:
-        return fd2.read().decode('utf-8')
-    finally:
-      if fd:
-        os.close(fd)
-      platform_utils.remove(path)
+            try:
+                rc = subprocess.Popen(args, shell=shell).wait()
+            except OSError as e:
+                raise EditorError(
+                    "editor failed, %s: %s %s" % (str(e), editor, path)
+                )
+            if rc != 0:
+                raise EditorError(
+                    "editor failed with exit status %d: %s %s"
+                    % (rc, editor, path)
+                )
+
+            with open(path, mode="rb") as fd2:
+                return fd2.read().decode("utf-8")
+        finally:
+            if fd:
+                os.close(fd)
+            platform_utils.remove(path)
