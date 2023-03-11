@@ -22,32 +22,34 @@ import error
 
 
 class PickleTests(unittest.TestCase):
-  """Make sure all our custom exceptions can be pickled."""
+    """Make sure all our custom exceptions can be pickled."""
 
-  def getExceptions(self):
-    """Return all our custom exceptions."""
-    for name in dir(error):
-      cls = getattr(error, name)
-      if isinstance(cls, type) and issubclass(cls, Exception):
-        yield cls
+    def getExceptions(self):
+        """Return all our custom exceptions."""
+        for name in dir(error):
+            cls = getattr(error, name)
+            if isinstance(cls, type) and issubclass(cls, Exception):
+                yield cls
 
-  def testExceptionLookup(self):
-    """Make sure our introspection logic works."""
-    classes = list(self.getExceptions())
-    self.assertIn(error.HookError, classes)
-    # Don't assert the exact number to avoid being a change-detector test.
-    self.assertGreater(len(classes), 10)
+    def testExceptionLookup(self):
+        """Make sure our introspection logic works."""
+        classes = list(self.getExceptions())
+        self.assertIn(error.HookError, classes)
+        # Don't assert the exact number to avoid being a change-detector test.
+        self.assertGreater(len(classes), 10)
 
-  def testPickle(self):
-    """Try to pickle all the exceptions."""
-    for cls in self.getExceptions():
-      args = inspect.getfullargspec(cls.__init__).args[1:]
-      obj = cls(*args)
-      p = pickle.dumps(obj)
-      try:
-        newobj = pickle.loads(p)
-      except Exception as e:  # pylint: disable=broad-except
-        self.fail('Class %s is unable to be pickled: %s\n'
-                  'Incomplete super().__init__(...) call?' % (cls, e))
-      self.assertIsInstance(newobj, cls)
-      self.assertEqual(str(obj), str(newobj))
+    def testPickle(self):
+        """Try to pickle all the exceptions."""
+        for cls in self.getExceptions():
+            args = inspect.getfullargspec(cls.__init__).args[1:]
+            obj = cls(*args)
+            p = pickle.dumps(obj)
+            try:
+                newobj = pickle.loads(p)
+            except Exception as e:  # pylint: disable=broad-except
+                self.fail(
+                    "Class %s is unable to be pickled: %s\n"
+                    "Incomplete super().__init__(...) call?" % (cls, e)
+                )
+            self.assertIsInstance(newobj, cls)
+            self.assertEqual(str(obj), str(newobj))
