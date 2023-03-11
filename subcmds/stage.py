@@ -20,98 +20,111 @@ from git_command import GitCommand
 
 
 class _ProjectList(Coloring):
-  def __init__(self, gc):
-    Coloring.__init__(self, gc, 'interactive')
-    self.prompt = self.printer('prompt', fg='blue', attr='bold')
-    self.header = self.printer('header', attr='bold')
-    self.help = self.printer('help', fg='red', attr='bold')
+    def __init__(self, gc):
+        Coloring.__init__(self, gc, 'interactive')
+        self.prompt = self.printer('prompt', fg='blue', attr='bold')
+        self.header = self.printer('header', attr='bold')
+        self.help = self.printer('help', fg='red', attr='bold')
 
 
 class Stage(InteractiveCommand):
-  COMMON = True
-  helpSummary = "Stage file(s) for commit"
-  helpUsage = """
+    COMMON = True
+    helpSummary = "Stage file(s) for commit"
+    helpUsage = """
 %prog -i [<project>...]
 """
-  helpDescription = """
+    helpDescription = """
 The '%prog' command stages files to prepare the next commit.
 """
 
-  def _Options(self, p):
-    g = p.get_option_group('--quiet')
-    g.add_option('-i', '--interactive',
-                 dest='interactive', action='store_true',
-                 help='use interactive staging')
+    def _Options(self, p):
+        g = p.get_option_group('--quiet')
+        g.add_option(
+            '-i',
+            '--interactive',
+            dest='interactive',
+            action='store_true',
+            help='use interactive staging',
+        )
 
-  def Execute(self, opt, args):
-    if opt.interactive:
-      self._Interactive(opt, args)
-    else:
-      self.Usage()
+    def Execute(self, opt, args):
+        if opt.interactive:
+            self._Interactive(opt, args)
+        else:
+            self.Usage()
 
-  def _Interactive(self, opt, args):
-    all_projects = [
-        p for p in self.GetProjects(args, all_manifests=not opt.this_manifest_only)
-        if p.IsDirty()]
-    if not all_projects:
-      print('no projects have uncommitted modifications', file=sys.stderr)
-      return
+    def _Interactive(self, opt, args):
+        all_projects = [
+            p
+            for p in self.GetProjects(
+                args, all_manifests=not opt.this_manifest_only
+            )
+            if p.IsDirty()
+        ]
+        if not all_projects:
+            print('no projects have uncommitted modifications', file=sys.stderr)
+            return
 
-    out = _ProjectList(self.manifest.manifestProject.config)
-    while True:
-      out.header('        %s', 'project')
-      out.nl()
+        out = _ProjectList(self.manifest.manifestProject.config)
+        while True:
+            out.header('        %s', 'project')
+            out.nl()
 
-      for i in range(len(all_projects)):
-        project = all_projects[i]
-        out.write('%3d:    %s', i + 1,
-                  project.RelPath(local=opt.this_manifest_only) + '/')
-        out.nl()
-      out.nl()
+            for i in range(len(all_projects)):
+                project = all_projects[i]
+                out.write(
+                    '%3d:    %s',
+                    i + 1,
+                    project.RelPath(local=opt.this_manifest_only) + '/',
+                )
+                out.nl()
+            out.nl()
 
-      out.write('%3d: (', 0)
-      out.prompt('q')
-      out.write('uit)')
-      out.nl()
+            out.write('%3d: (', 0)
+            out.prompt('q')
+            out.write('uit)')
+            out.nl()
 
-      out.prompt('project> ')
-      out.flush()
-      try:
-        a = sys.stdin.readline()
-      except KeyboardInterrupt:
-        out.nl()
-        break
-      if a == '':
-        out.nl()
-        break
+            out.prompt('project> ')
+            out.flush()
+            try:
+                a = sys.stdin.readline()
+            except KeyboardInterrupt:
+                out.nl()
+                break
+            if a == '':
+                out.nl()
+                break
 
-      a = a.strip()
-      if a.lower() in ('q', 'quit', 'exit'):
-        break
-      if not a:
-        continue
+            a = a.strip()
+            if a.lower() in ('q', 'quit', 'exit'):
+                break
+            if not a:
+                continue
 
-      try:
-        a_index = int(a)
-      except ValueError:
-        a_index = None
+            try:
+                a_index = int(a)
+            except ValueError:
+                a_index = None
 
-      if a_index is not None:
-        if a_index == 0:
-          break
-        if 0 < a_index and a_index <= len(all_projects):
-          _AddI(all_projects[a_index - 1])
-          continue
+            if a_index is not None:
+                if a_index == 0:
+                    break
+                if 0 < a_index and a_index <= len(all_projects):
+                    _AddI(all_projects[a_index - 1])
+                    continue
 
-      projects = [
-          p for p in all_projects
-          if a in [p.name, p.RelPath(local=opt.this_manifest_only)]]
-      if len(projects) == 1:
-        _AddI(projects[0])
-        continue
-    print('Bye.')
+            projects = [
+                p
+                for p in all_projects
+                if a in [p.name, p.RelPath(local=opt.this_manifest_only)]
+            ]
+            if len(projects) == 1:
+                _AddI(projects[0])
+                continue
+        print('Bye.')
 
 
 def _AddI(project):
-  p = GitCommand(project, ['add', '--interactive'], bare=False)
-  p.Wait()
+    p = GitCommand(project, ['add', '--interactive'], bare=False)
+    p.Wait()
