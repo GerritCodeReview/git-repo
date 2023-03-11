@@ -20,12 +20,12 @@ from progress import Progress
 
 
 class Checkout(Command):
-  COMMON = True
-  helpSummary = "Checkout a branch for development"
-  helpUsage = """
+    COMMON = True
+    helpSummary = "Checkout a branch for development"
+    helpUsage = """
 %prog <branchname> [<project>...]
 """
-  helpDescription = """
+    helpDescription = """
 The '%prog' command checks out an existing branch that was previously
 created by 'repo start'.
 
@@ -33,43 +33,50 @@ The command is equivalent to:
 
   repo forall [<project>...] -c git checkout <branchname>
 """
-  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-  def ValidateOptions(self, opt, args):
-    if not args:
-      self.Usage()
+    def ValidateOptions(self, opt, args):
+        if not args:
+            self.Usage()
 
-  def _ExecuteOne(self, nb, project):
-    """Checkout one project."""
-    return (project.CheckoutBranch(nb), project)
+    def _ExecuteOne(self, nb, project):
+        """Checkout one project."""
+        return (project.CheckoutBranch(nb), project)
 
-  def Execute(self, opt, args):
-    nb = args[0]
-    err = []
-    success = []
-    all_projects = self.GetProjects(args[1:], all_manifests=not opt.this_manifest_only)
+    def Execute(self, opt, args):
+        nb = args[0]
+        err = []
+        success = []
+        all_projects = self.GetProjects(
+            args[1:], all_manifests=not opt.this_manifest_only
+        )
 
-    def _ProcessResults(_pool, pm, results):
-      for status, project in results:
-        if status is not None:
-          if status:
-            success.append(project)
-          else:
-            err.append(project)
-        pm.update()
+        def _ProcessResults(_pool, pm, results):
+            for status, project in results:
+                if status is not None:
+                    if status:
+                        success.append(project)
+                    else:
+                        err.append(project)
+                pm.update()
 
-    self.ExecuteInParallel(
-        opt.jobs,
-        functools.partial(self._ExecuteOne, nb),
-        all_projects,
-        callback=_ProcessResults,
-        output=Progress('Checkout %s' % (nb,), len(all_projects), quiet=opt.quiet))
+        self.ExecuteInParallel(
+            opt.jobs,
+            functools.partial(self._ExecuteOne, nb),
+            all_projects,
+            callback=_ProcessResults,
+            output=Progress(
+                "Checkout %s" % (nb,), len(all_projects), quiet=opt.quiet
+            ),
+        )
 
-    if err:
-      for p in err:
-        print("error: %s/: cannot checkout %s" % (p.relpath, nb),
-              file=sys.stderr)
-      sys.exit(1)
-    elif not success:
-      print('error: no project has branch %s' % nb, file=sys.stderr)
-      sys.exit(1)
+        if err:
+            for p in err:
+                print(
+                    "error: %s/: cannot checkout %s" % (p.relpath, nb),
+                    file=sys.stderr,
+                )
+            sys.exit(1)
+        elif not success:
+            print("error: no project has branch %s" % nb, file=sys.stderr)
+            sys.exit(1)
