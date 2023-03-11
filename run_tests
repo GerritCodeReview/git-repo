@@ -13,10 +13,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Wrapper to run pytest with the right settings."""
+"""Wrapper to run black and pytest with the right settings."""
 
+import os
+import shutil
+import subprocess
 import sys
 import pytest
 
+
+def find_black():
+  """Try to locate a good version of black."""
+  # If we're in a virtualenv, assume that it's provided the right black.
+  if 'VIRTUAL_ENV' in os.environ:
+    return 'black'
+
+  ret = shutil.which('black')
+  if ret:
+    return ret
+
+  print('%s: unable to find black.' % (__file__,), file=sys.stderr)
+  print('%s: Try installing: pip install black' % (__file__,), file=sys.stderr)
+
+
+def main(argv):
+  """The main entry."""
+  black = find_black()
+  ret = subprocess.run([black, '--check', '.'], check=False).returncode
+  if ret:
+    return ret
+  return pytest.main(argv)
+
+
 if __name__ == '__main__':
-  sys.exit(pytest.main(sys.argv[1:]))
+  sys.exit(main(sys.argv[1:]))
