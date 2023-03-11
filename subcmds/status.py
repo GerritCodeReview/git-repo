@@ -24,12 +24,12 @@ import platform_utils
 
 
 class Status(PagedCommand):
-  COMMON = True
-  helpSummary = "Show the working tree status"
-  helpUsage = """
+    COMMON = True
+    helpSummary = "Show the working tree status"
+    helpUsage = """
 %prog [<project>...]
 """
-  helpDescription = """
+    helpDescription = """
 '%prog' compares the working tree to the staging area (aka index),
 and the most recent commit on this branch (HEAD), in each project
 specified.  A summary is displayed, one line per file where there
@@ -76,109 +76,128 @@ the following meanings:
  d:  deleted       (    in index, not in work tree                )
 
 """
-  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-  def _Options(self, p):
-    p.add_option('-o', '--orphans',
-                 dest='orphans', action='store_true',
-                 help="include objects in working directory outside of repo projects")
+    def _Options(self, p):
+        p.add_option(
+            "-o",
+            "--orphans",
+            dest="orphans",
+            action="store_true",
+            help="include objects in working directory outside of repo "
+            "projects",
+        )
 
-  def _StatusHelper(self, quiet, local, project):
-    """Obtains the status for a specific project.
+    def _StatusHelper(self, quiet, local, project):
+        """Obtains the status for a specific project.
 
-    Obtains the status for a project, redirecting the output to
-    the specified object.
+        Obtains the status for a project, redirecting the output to
+        the specified object.
 
-    Args:
-      quiet: Where to output the status.
-      local: a boolean, if True, the path is relative to the local
-             (sub)manifest.  If false, the path is relative to the
-             outermost manifest.
-      project: Project to get status of.
+        Args:
+            quiet: Where to output the status.
+            local: a boolean, if True, the path is relative to the local
+                (sub)manifest.  If false, the path is relative to the outermost
+                manifest.
+            project: Project to get status of.
 
-    Returns:
-      The status of the project.
-    """
-    buf = io.StringIO()
-    ret = project.PrintWorkTreeStatus(quiet=quiet, output_redir=buf,
-                                      local=local)
-    return (ret, buf.getvalue())
+        Returns:
+            The status of the project.
+        """
+        buf = io.StringIO()
+        ret = project.PrintWorkTreeStatus(
+            quiet=quiet, output_redir=buf, local=local
+        )
+        return (ret, buf.getvalue())
 
-  def _FindOrphans(self, dirs, proj_dirs, proj_dirs_parents, outstring):
-    """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""
-    status_header = ' --\t'
-    for item in dirs:
-      if not platform_utils.isdir(item):
-        outstring.append(''.join([status_header, item]))
-        continue
-      if item in proj_dirs:
-        continue
-      if item in proj_dirs_parents:
-        self._FindOrphans(glob.glob('%s/.*' % item) +
-                          glob.glob('%s/*' % item),
-                          proj_dirs, proj_dirs_parents, outstring)
-        continue
-      outstring.append(''.join([status_header, item, '/']))
+    def _FindOrphans(self, dirs, proj_dirs, proj_dirs_parents, outstring):
+        """find 'dirs' that are present in 'proj_dirs_parents' but not in 'proj_dirs'"""  # noqa: E501
+        status_header = " --\t"
+        for item in dirs:
+            if not platform_utils.isdir(item):
+                outstring.append("".join([status_header, item]))
+                continue
+            if item in proj_dirs:
+                continue
+            if item in proj_dirs_parents:
+                self._FindOrphans(
+                    glob.glob("%s/.*" % item) + glob.glob("%s/*" % item),
+                    proj_dirs,
+                    proj_dirs_parents,
+                    outstring,
+                )
+                continue
+            outstring.append("".join([status_header, item, "/"]))
 
-  def Execute(self, opt, args):
-    all_projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
+    def Execute(self, opt, args):
+        all_projects = self.GetProjects(
+            args, all_manifests=not opt.this_manifest_only
+        )
 
-    def _ProcessResults(_pool, _output, results):
-      ret = 0
-      for (state, output) in results:
-        if output:
-          print(output, end='')
-        if state == 'CLEAN':
-          ret += 1
-      return ret
+        def _ProcessResults(_pool, _output, results):
+            ret = 0
+            for state, output in results:
+                if output:
+                    print(output, end="")
+                if state == "CLEAN":
+                    ret += 1
+            return ret
 
-    counter = self.ExecuteInParallel(
-        opt.jobs,
-        functools.partial(self._StatusHelper, opt.quiet, opt.this_manifest_only),
-        all_projects,
-        callback=_ProcessResults,
-        ordered=True)
+        counter = self.ExecuteInParallel(
+            opt.jobs,
+            functools.partial(
+                self._StatusHelper, opt.quiet, opt.this_manifest_only
+            ),
+            all_projects,
+            callback=_ProcessResults,
+            ordered=True,
+        )
 
-    if not opt.quiet and len(all_projects) == counter:
-      print('nothing to commit (working directory clean)')
+        if not opt.quiet and len(all_projects) == counter:
+            print("nothing to commit (working directory clean)")
 
-    if opt.orphans:
-      proj_dirs = set()
-      proj_dirs_parents = set()
-      for project in self.GetProjects(None, missing_ok=True, all_manifests=not opt.this_manifest_only):
-        relpath = project.RelPath(local=opt.this_manifest_only)
-        proj_dirs.add(relpath)
-        (head, _tail) = os.path.split(relpath)
-        while head != "":
-          proj_dirs_parents.add(head)
-          (head, _tail) = os.path.split(head)
-      proj_dirs.add('.repo')
+        if opt.orphans:
+            proj_dirs = set()
+            proj_dirs_parents = set()
+            for project in self.GetProjects(
+                None, missing_ok=True, all_manifests=not opt.this_manifest_only
+            ):
+                relpath = project.RelPath(local=opt.this_manifest_only)
+                proj_dirs.add(relpath)
+                (head, _tail) = os.path.split(relpath)
+                while head != "":
+                    proj_dirs_parents.add(head)
+                    (head, _tail) = os.path.split(head)
+            proj_dirs.add(".repo")
 
-      class StatusColoring(Coloring):
-        def __init__(self, config):
-          Coloring.__init__(self, config, 'status')
-          self.project = self.printer('header', attr='bold')
-          self.untracked = self.printer('untracked', fg='red')
+            class StatusColoring(Coloring):
+                def __init__(self, config):
+                    Coloring.__init__(self, config, "status")
+                    self.project = self.printer("header", attr="bold")
+                    self.untracked = self.printer("untracked", fg="red")
 
-      orig_path = os.getcwd()
-      try:
-        os.chdir(self.manifest.topdir)
+            orig_path = os.getcwd()
+            try:
+                os.chdir(self.manifest.topdir)
 
-        outstring = []
-        self._FindOrphans(glob.glob('.*') +
-                          glob.glob('*'),
-                          proj_dirs, proj_dirs_parents, outstring)
+                outstring = []
+                self._FindOrphans(
+                    glob.glob(".*") + glob.glob("*"),
+                    proj_dirs,
+                    proj_dirs_parents,
+                    outstring,
+                )
 
-        if outstring:
-          output = StatusColoring(self.client.globalConfig)
-          output.project('Objects not within a project (orphans)')
-          output.nl()
-          for entry in outstring:
-            output.untracked(entry)
-            output.nl()
-        else:
-          print('No orphan files or directories')
+                if outstring:
+                    output = StatusColoring(self.client.globalConfig)
+                    output.project("Objects not within a project (orphans)")
+                    output.nl()
+                    for entry in outstring:
+                        output.untracked(entry)
+                        output.nl()
+                else:
+                    print("No orphan files or directories")
 
-      finally:
-        # Restore CWD.
-        os.chdir(orig_path)
+            finally:
+                # Restore CWD.
+                os.chdir(orig_path)

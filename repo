@@ -506,10 +506,10 @@ def gitc_parse_clientdir(gitc_fs_path):
   """Parse a path in the GITC FS and return its client name.
 
   Args:
-    gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
+      gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
 
   Returns:
-    The GITC client name.
+      The GITC client name.
   """
   if gitc_fs_path == GITC_FS_ROOT_DIR:
     return None
@@ -942,14 +942,14 @@ def resolve_repo_rev(cwd, committish):
   * xxx: Branch or tag or commit.
 
   Args:
-    cwd: The git checkout to run in.
-    committish: The REPO_REV argument to resolve.
+      cwd: The git checkout to run in.
+      committish: The REPO_REV argument to resolve.
 
   Returns:
-    A tuple of (remote ref, commit) as makes sense for the committish.
-    For branches, this will look like ('refs/heads/stable', <revision>).
-    For tags, this will look like ('refs/tags/v1.0', <revision>).
-    For commits, this will be (<revision>, <revision>).
+      A tuple of (remote ref, commit) as makes sense for the committish.
+      For branches, this will look like ('refs/heads/stable', <revision>).
+      For tags, this will look like ('refs/tags/v1.0', <revision>).
+      For commits, this will be (<revision>, <revision>).
   """
   def resolve(committish):
     ret = run_git('rev-parse', '--verify', '%s^{commit}' % (committish,),
@@ -1104,7 +1104,7 @@ class Requirements(object):
     """Initialize.
 
     Args:
-      requirements: A dictionary of settings.
+        requirements: A dictionary of settings.
     """
     self.requirements = requirements
 

@@ -23,39 +23,39 @@ TOPDIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # Rip out the first intro paragraph.
-with open(os.path.join(TOPDIR, 'README.md')) as fp:
+with open(os.path.join(TOPDIR, "README.md")) as fp:
     lines = fp.read().splitlines()[2:]
-    end = lines.index('')
-    long_description = ' '.join(lines[0:end])
+    end = lines.index("")
+    long_description = " ".join(lines[0:end])
 
 
 # https://packaging.python.org/tutorials/packaging-projects/
 setuptools.setup(
-    name='repo',
-    version='2',
-    maintainer='Various',
-    maintainer_email='repo-discuss@googlegroups.com',
-    description='Repo helps manage many Git repositories',
+    name="repo",
+    version="2",
+    maintainer="Various",
+    maintainer_email="repo-discuss@googlegroups.com",
+    description="Repo helps manage many Git repositories",
     long_description=long_description,
-    long_description_content_type='text/plain',
-    url='https://gerrit.googlesource.com/git-repo/',
+    long_description_content_type="text/plain",
+    url="https://gerrit.googlesource.com/git-repo/",
     project_urls={
-        'Bug Tracker': 'https://bugs.chromium.org/p/gerrit/issues/list?q=component:Applications%3Erepo',
+        "Bug Tracker": "https://bugs.chromium.org/p/gerrit/issues/list?q=component:Applications%3Erepo",  # noqa: E501
     },
     # https://pypi.org/classifiers/
     classifiers=[
-        'Development Status :: 6 - Mature',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Natural Language :: English',
-        'Operating System :: MacOS :: MacOS X',
-        'Operating System :: Microsoft :: Windows :: Windows 10',
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3 :: Only',
-        'Topic :: Software Development :: Version Control :: Git',
+        "Development Status :: 6 - Mature",
+        "Environment :: Console",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: Apache Software License",
+        "Natural Language :: English",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows :: Windows 10",
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3 :: Only",
+        "Topic :: Software Development :: Version Control :: Git",
     ],
-    python_requires='>=3.6',
-    packages=['subcmds'],
+    python_requires=">=3.6",
+    packages=["subcmds"],
 )
