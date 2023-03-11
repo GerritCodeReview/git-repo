@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33efd698_a1a2ae05",
+        "filename": "tox.ini",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-11T14:04:00Z",
+      "side": 1,
+      "message": "i can\u0027t tell ... is this enforced when running `./run_tests` ?  or by the cq recipe ?",
+      "revId": "a343255cb70d75d7503c4677a99a02a6968dabf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6be02c95_2c3a132d",
+        "filename": "tox.ini",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-11T14:04:00Z",
+      "side": 1,
+      "message": "add a pyproject.toml instead to hold these settings.  then people can run `black` and have it just work.\n\nwe should do the string-normalization too.  there\u0027s no reason to deviate here.",
+      "revId": "a343255cb70d75d7503c4677a99a02a6968dabf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
