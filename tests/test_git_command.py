@@ -19,138 +19,146 @@ import os
 import unittest
 
 try:
-  from unittest import mock
+    from unittest import mock
 except ImportError:
-  import mock
+    import mock
 
 import git_command
 import wrapper
 
 
 class GitCommandTest(unittest.TestCase):
-  """Tests the GitCommand class (via git_command.git)."""
+    """Tests the GitCommand class (via git_command.git)."""
 
-  def setUp(self):
+    def setUp(self):
+        def realpath_mock(val):
+            return val
 
-    def realpath_mock(val):
-      return val
+        mock.patch.object(
+            os.path, 'realpath', side_effect=realpath_mock
+        ).start()
 
-    mock.patch.object(os.path, 'realpath', side_effect=realpath_mock).start()
+    def tearDown(self):
+        mock.patch.stopall()
 
-  def tearDown(self):
-    mock.patch.stopall()
+    def test_alternative_setting_when_matching(self):
+        r = git_command._build_env(
+            objdir=os.path.join('zap', 'objects'), gitdir='zap'
+        )
 
-  def test_alternative_setting_when_matching(self):
-    r = git_command._build_env(
-      objdir = os.path.join('zap', 'objects'),
-      gitdir = 'zap'
-    )
+        self.assertIsNone(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'))
+        self.assertEqual(
+            r.get('GIT_OBJECT_DIRECTORY'), os.path.join('zap', 'objects')
+        )
 
-    self.assertIsNone(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'))
-    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'), os.path.join('zap', 'objects'))
+    def test_alternative_setting_when_different(self):
+        r = git_command._build_env(
+            objdir=os.path.join('wow', 'objects'), gitdir='zap'
+        )
 
-  def test_alternative_setting_when_different(self):
-    r = git_command._build_env(
-      objdir = os.path.join('wow', 'objects'),
-      gitdir = 'zap'
-    )
-
-    self.assertEqual(r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'), os.path.join('zap', 'objects'))
-    self.assertEqual(r.get('GIT_OBJECT_DIRECTORY'), os.path.join('wow', 'objects'))
+        self.assertEqual(
+            r.get('GIT_ALTERNATE_OBJECT_DIRECTORIES'),
+            os.path.join('zap', 'objects'),
+        )
+        self.assertEqual(
+            r.get('GIT_OBJECT_DIRECTORY'), os.path.join('wow', 'objects')
+        )
 
 
 class GitCallUnitTest(unittest.TestCase):
-  """Tests the _GitCall class (via git_command.git)."""
+    """Tests the _GitCall class (via git_command.git)."""
 
-  def test_version_tuple(self):
-    """Check git.version_tuple() handling."""
-    ver = git_command.git.version_tuple()
-    self.assertIsNotNone(ver)
+    def test_version_tuple(self):
+        """Check git.version_tuple() handling."""
+        ver = git_command.git.version_tuple()
+        self.assertIsNotNone(ver)
 
-    # We don't dive too deep into the values here to avoid having to update
-    # whenever git versions change.  We do check relative to this min version
-    # as this is what `repo` itself requires via MIN_GIT_VERSION.
-    MIN_GIT_VERSION = (2, 10, 2)
-    self.assertTrue(isinstance(ver.major, int))
-    self.assertTrue(isinstance(ver.minor, int))
-    self.assertTrue(isinstance(ver.micro, int))
+        # We don't dive too deep into the values here to avoid having to update
+        # whenever git versions change.  We do check relative to this min version
+        # as this is what `repo` itself requires via MIN_GIT_VERSION.
+        MIN_GIT_VERSION = (2, 10, 2)
+        self.assertTrue(isinstance(ver.major, int))
+        self.assertTrue(isinstance(ver.minor, int))
+        self.assertTrue(isinstance(ver.micro, int))
 
-    self.assertGreater(ver.major, MIN_GIT_VERSION[0] - 1)
-    self.assertGreaterEqual(ver.micro, 0)
-    self.assertGreaterEqual(ver.major, 0)
+        self.assertGreater(ver.major, MIN_GIT_VERSION[0] - 1)
+        self.assertGreaterEqual(ver.micro, 0)
+        self.assertGreaterEqual(ver.major, 0)
 
-    self.assertGreaterEqual(ver, MIN_GIT_VERSION)
-    self.assertLess(ver, (9999, 9999, 9999))
+        self.assertGreaterEqual(ver, MIN_GIT_VERSION)
+        self.assertLess(ver, (9999, 9999, 9999))
 
-    self.assertNotEqual('', ver.full)
+        self.assertNotEqual('', ver.full)
 
 
 class UserAgentUnitTest(unittest.TestCase):
-  """Tests the UserAgent function."""
+    """Tests the UserAgent function."""
 
-  def test_smoke_os(self):
-    """Make sure UA OS setting returns something useful."""
-    os_name = git_command.user_agent.os
-    # We can't dive too deep because of OS/tool differences, but we can check
-    # the general form.
-    m = re.match(r'^[^ ]+$', os_name)
-    self.assertIsNotNone(m)
+    def test_smoke_os(self):
+        """Make sure UA OS setting returns something useful."""
+        os_name = git_command.user_agent.os
+        # We can't dive too deep because of OS/tool differences, but we can
+        # check the general form.
+        m = re.match(r'^[^ ]+$', os_name)
+        self.assertIsNotNone(m)
 
-  def test_smoke_repo(self):
-    """Make sure repo UA returns something useful."""
-    ua = git_command.user_agent.repo
-    # We can't dive too deep because of OS/tool differences, but we can check
-    # the general form.
-    m = re.match(r'^git-repo/[^ ]+ ([^ ]+) git/[^ ]+ Python/[0-9.]+', ua)
-    self.assertIsNotNone(m)
+    def test_smoke_repo(self):
+        """Make sure repo UA returns something useful."""
+        ua = git_command.user_agent.repo
+        # We can't dive too deep because of OS/tool differences, but we can
+        # check the general form.
+        m = re.match(r'^git-repo/[^ ]+ ([^ ]+) git/[^ ]+ Python/[0-9.]+', ua)
+        self.assertIsNotNone(m)
 
-  def test_smoke_git(self):
-    """Make sure git UA returns something useful."""
-    ua = git_command.user_agent.git
-    # We can't dive too deep because of OS/tool differences, but we can check
-    # the general form.
-    m = re.match(r'^git/[^ ]+ ([^ ]+) git-repo/[^ ]+', ua)
-    self.assertIsNotNone(m)
+    def test_smoke_git(self):
+        """Make sure git UA returns something useful."""
+        ua = git_command.user_agent.git
+        # We can't dive too deep because of OS/tool differences, but we can
+        # check the general form.
+        m = re.match(r'^git/[^ ]+ ([^ ]+) git-repo/[^ ]+', ua)
+        self.assertIsNotNone(m)
 
 
 class GitRequireTests(unittest.TestCase):
-  """Test the git_require helper."""
+    """Test the git_require helper."""
 
-  def setUp(self):
-    self.wrapper = wrapper.Wrapper()
-    ver = self.wrapper.GitVersion(1, 2, 3, 4)
-    mock.patch.object(git_command.git, 'version_tuple', return_value=ver).start()
+    def setUp(self):
+        self.wrapper = wrapper.Wrapper()
+        ver = self.wrapper.GitVersion(1, 2, 3, 4)
+        mock.patch.object(
+            git_command.git, 'version_tuple', return_value=ver
+        ).start()
 
-  def tearDown(self):
-    mock.patch.stopall()
+    def tearDown(self):
+        mock.patch.stopall()
 
-  def test_older_nonfatal(self):
-    """Test non-fatal require calls with old versions."""
-    self.assertFalse(git_command.git_require((2,)))
-    self.assertFalse(git_command.git_require((1, 3)))
-    self.assertFalse(git_command.git_require((1, 2, 4)))
-    self.assertFalse(git_command.git_require((1, 2, 3, 5)))
+    def test_older_nonfatal(self):
+        """Test non-fatal require calls with old versions."""
+        self.assertFalse(git_command.git_require((2,)))
+        self.assertFalse(git_command.git_require((1, 3)))
+        self.assertFalse(git_command.git_require((1, 2, 4)))
+        self.assertFalse(git_command.git_require((1, 2, 3, 5)))
 
-  def test_newer_nonfatal(self):
-    """Test non-fatal require calls with newer versions."""
-    self.assertTrue(git_command.git_require((0,)))
-    self.assertTrue(git_command.git_require((1, 0)))
-    self.assertTrue(git_command.git_require((1, 2, 0)))
-    self.assertTrue(git_command.git_require((1, 2, 3, 0)))
+    def test_newer_nonfatal(self):
+        """Test non-fatal require calls with newer versions."""
+        self.assertTrue(git_command.git_require((0,)))
+        self.assertTrue(git_command.git_require((1, 0)))
+        self.assertTrue(git_command.git_require((1, 2, 0)))
+        self.assertTrue(git_command.git_require((1, 2, 3, 0)))
 
-  def test_equal_nonfatal(self):
-    """Test require calls with equal values."""
-    self.assertTrue(git_command.git_require((1, 2, 3, 4), fail=False))
-    self.assertTrue(git_command.git_require((1, 2, 3, 4), fail=True))
+    def test_equal_nonfatal(self):
+        """Test require calls with equal values."""
+        self.assertTrue(git_command.git_require((1, 2, 3, 4), fail=False))
+        self.assertTrue(git_command.git_require((1, 2, 3, 4), fail=True))
 
-  def test_older_fatal(self):
-    """Test fatal require calls with old versions."""
-    with self.assertRaises(SystemExit) as e:
-      git_command.git_require((2,), fail=True)
-      self.assertNotEqual(0, e.code)
+    def test_older_fatal(self):
+        """Test fatal require calls with old versions."""
+        with self.assertRaises(SystemExit) as e:
+            git_command.git_require((2,), fail=True)
+            self.assertNotEqual(0, e.code)
 
-  def test_older_fatal_msg(self):
-    """Test fatal require calls with old versions and message."""
-    with self.assertRaises(SystemExit) as e:
-      git_command.git_require((2,), fail=True, msg='so sad')
-      self.assertNotEqual(0, e.code)
+    def test_older_fatal_msg(self):
+        """Test fatal require calls with old versions and message."""
+        with self.assertRaises(SystemExit) as e:
+            git_command.git_require((2,), fail=True, msg='so sad')
+            self.assertNotEqual(0, e.code)

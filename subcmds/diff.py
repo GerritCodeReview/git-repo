@@ -19,54 +19,63 @@ from command import DEFAULT_LOCAL_JOBS, PagedCommand
 
 
 class Diff(PagedCommand):
-  COMMON = True
-  helpSummary = "Show changes between commit and working tree"
-  helpUsage = """
+    COMMON = True
+    helpSummary = "Show changes between commit and working tree"
+    helpUsage = """
 %prog [<project>...]
 
 The -u option causes '%prog' to generate diff output with file paths
 relative to the repository root, so the output can be applied
 to the Unix 'patch' command.
 """
-  PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
+    PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-  def _Options(self, p):
-    p.add_option('-u', '--absolute',
-                 dest='absolute', action='store_true',
-                 help='paths are relative to the repository root')
+    def _Options(self, p):
+        p.add_option(
+            '-u',
+            '--absolute',
+            dest='absolute',
+            action='store_true',
+            help='paths are relative to the repository root',
+        )
 
-  def _ExecuteOne(self, absolute, local, project):
-    """Obtains the diff for a specific project.
+    def _ExecuteOne(self, absolute, local, project):
+        """Obtains the diff for a specific project.
 
-    Args:
-      absolute: Paths are relative to the root.
-      local: a boolean, if True, the path is relative to the local
-             (sub)manifest.  If false, the path is relative to the
-             outermost manifest.
-      project: Project to get status of.
+        Args:
+          absolute: Paths are relative to the root.
+          local: a boolean, if True, the path is relative to the local
+                 (sub)manifest.  If false, the path is relative to the
+                 outermost manifest.
+          project: Project to get status of.
 
-    Returns:
-      The status of the project.
-    """
-    buf = io.StringIO()
-    ret = project.PrintWorkTreeDiff(absolute, output_redir=buf, local=local)
-    return (ret, buf.getvalue())
+        Returns:
+          The status of the project.
+        """
+        buf = io.StringIO()
+        ret = project.PrintWorkTreeDiff(absolute, output_redir=buf, local=local)
+        return (ret, buf.getvalue())
 
-  def Execute(self, opt, args):
-    all_projects = self.GetProjects(args, all_manifests=not opt.this_manifest_only)
+    def Execute(self, opt, args):
+        all_projects = self.GetProjects(
+            args, all_manifests=not opt.this_manifest_only
+        )
 
-    def _ProcessResults(_pool, _output, results):
-      ret = 0
-      for (state, output) in results:
-        if output:
-          print(output, end='')
-        if not state:
-          ret = 1
-      return ret
+        def _ProcessResults(_pool, _output, results):
+            ret = 0
+            for state, output in results:
+                if output:
+                    print(output, end='')
+                if not state:
+                    ret = 1
+            return ret
 
-    return self.ExecuteInParallel(
-        opt.jobs,
-        functools.partial(self._ExecuteOne, opt.absolute, opt.this_manifest_only),
-        all_projects,
-        callback=_ProcessResults,
-        ordered=True)
+        return self.ExecuteInParallel(
+            opt.jobs,
+            functools.partial(
+                self._ExecuteOne, opt.absolute, opt.this_manifest_only
+            ),
+            all_projects,
+            callback=_ProcessResults,
+            ordered=True,
+        )
