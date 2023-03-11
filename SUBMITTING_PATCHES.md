@@ -4,7 +4,7 @@
 
  - Make small logical changes.
  - [Provide a meaningful commit message][commit-message-style].
- - Check for coding errors and style nits with flake8.
+ - Format with black and check for coding errors and style nits with flake8.
  - Make sure all code is under the Apache License, 2.0.
  - Publish your changes for review.
  - Make corrections if requested.
@@ -39,17 +39,9 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 
 
-## Check for coding errors and style violations with flake8
+## Format with black
 
-Run `flake8` on changed modules:
-
-    flake8 file.py
-
-Note that repo generally follows [Google's Python Style Guide] rather than
-[PEP 8], with a couple of notable exceptions:
-
-* Indentation is at 2 columns rather than 4
-* The maximum line length is 100 columns rather than 80
+Run `tox run -e format` on changed modules. This uses black with line length 80.
 
 There should be no new errors or warnings introduced.
 
