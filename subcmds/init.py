@@ -22,13 +22,13 @@ from wrapper import Wrapper
 
 
 class Init(InteractiveCommand, MirrorSafeCommand):
-  COMMON = True
-  MULTI_MANIFEST_SUPPORT = True
-  helpSummary = "Initialize a repo client checkout in the current directory"
-  helpUsage = """
+    COMMON = True
+    MULTI_MANIFEST_SUPPORT = True
+    helpSummary = "Initialize a repo client checkout in the current directory"
+    helpUsage = """
 %prog [options] [manifest url]
 """
-  helpDescription = """
+    helpDescription = """
 The '%prog' command is run once to install and initialize repo.
 The latest repo source code and manifest collection is downloaded
 from the server and is installed in the .repo/ directory in the
@@ -77,243 +77,301 @@ manifest, a subsequent `repo sync` (or `repo sync -d`) is necessary
 to update the working directory files.
 """
 
-  def _CommonOptions(self, p):
-    """Disable due to re-use of Wrapper()."""
+    def _CommonOptions(self, p):
+        """Disable due to re-use of Wrapper()."""
 
-  def _Options(self, p, gitc_init=False):
-    Wrapper().InitParser(p, gitc_init=gitc_init)
-    m = p.add_option_group('Multi-manifest')
-    m.add_option('--outer-manifest', action='store_true', default=True,
-                 help='operate starting at the outermost manifest')
-    m.add_option('--no-outer-manifest', dest='outer_manifest',
-                 action='store_false', help='do not operate on outer manifests')
-    m.add_option('--this-manifest-only', action='store_true', default=None,
-                 help='only operate on this (sub)manifest')
-    m.add_option('--no-this-manifest-only', '--all-manifests',
-                 dest='this_manifest_only', action='store_false',
-                 help='operate on this manifest and its submanifests')
+    def _Options(self, p, gitc_init=False):
+        Wrapper().InitParser(p, gitc_init=gitc_init)
+        m = p.add_option_group('Multi-manifest')
+        m.add_option(
+            '--outer-manifest',
+            action='store_true',
+            default=True,
+            help='operate starting at the outermost manifest',
+        )
+        m.add_option(
+            '--no-outer-manifest',
+            dest='outer_manifest',
+            action='store_false',
+            help='do not operate on outer manifests',
+        )
+        m.add_option(
+            '--this-manifest-only',
+            action='store_true',
+            default=None,
+            help='only operate on this (sub)manifest',
+        )
+        m.add_option(
+            '--no-this-manifest-only',
+            '--all-manifests',
+            dest='this_manifest_only',
+            action='store_false',
+            help='operate on this manifest and its submanifests',
+        )
 
-  def _RegisteredEnvironmentOptions(self):
-    return {'REPO_MANIFEST_URL': 'manifest_url',
-            'REPO_MIRROR_LOCATION': 'reference'}
+    def _RegisteredEnvironmentOptions(self):
+        return {
+            'REPO_MANIFEST_URL': 'manifest_url',
+            'REPO_MIRROR_LOCATION': 'reference',
+        }
 
-  def _SyncManifest(self, opt):
-    """Call manifestProject.Sync with arguments from opt.
+    def _SyncManifest(self, opt):
+        """Call manifestProject.Sync with arguments from opt.
 
-    Args:
-      opt: options from optparse.
-    """
-    # Normally this value is set when instantiating the project, but the
-    # manifest project is special and is created when instantiating the
-    # manifest which happens before we parse options.
-    self.manifest.manifestProject.clone_depth = opt.manifest_depth
-    if not self.manifest.manifestProject.Sync(
-        manifest_url=opt.manifest_url,
-        manifest_branch=opt.manifest_branch,
-        standalone_manifest=opt.standalone_manifest,
-        groups=opt.groups,
-        platform=opt.platform,
-        mirror=opt.mirror,
-        dissociate=opt.dissociate,
-        reference=opt.reference,
-        worktree=opt.worktree,
-        submodules=opt.submodules,
-        archive=opt.archive,
-        partial_clone=opt.partial_clone,
-        clone_filter=opt.clone_filter,
-        partial_clone_exclude=opt.partial_clone_exclude,
-        clone_bundle=opt.clone_bundle,
-        git_lfs=opt.git_lfs,
-        use_superproject=opt.use_superproject,
-        verbose=opt.verbose,
-        current_branch_only=opt.current_branch_only,
-        tags=opt.tags,
-        depth=opt.depth,
-        git_event_log=self.git_event_log,
-        manifest_name=opt.manifest_name):
-      sys.exit(1)
+        Args:
+          opt: options from optparse.
+        """
+        # Normally this value is set when instantiating the project, but the
+        # manifest project is special and is created when instantiating the
+        # manifest which happens before we parse options.
+        self.manifest.manifestProject.clone_depth = opt.manifest_depth
+        if not self.manifest.manifestProject.Sync(
+            manifest_url=opt.manifest_url,
+            manifest_branch=opt.manifest_branch,
+            standalone_manifest=opt.standalone_manifest,
+            groups=opt.groups,
+            platform=opt.platform,
+            mirror=opt.mirror,
+            dissociate=opt.dissociate,
+            reference=opt.reference,
+            worktree=opt.worktree,
+            submodules=opt.submodules,
+            archive=opt.archive,
+            partial_clone=opt.partial_clone,
+            clone_filter=opt.clone_filter,
+            partial_clone_exclude=opt.partial_clone_exclude,
+            clone_bundle=opt.clone_bundle,
+            git_lfs=opt.git_lfs,
+            use_superproject=opt.use_superproject,
+            verbose=opt.verbose,
+            current_branch_only=opt.current_branch_only,
+            tags=opt.tags,
+            depth=opt.depth,
+            git_event_log=self.git_event_log,
+            manifest_name=opt.manifest_name,
+        ):
+            sys.exit(1)
 
-  def _Prompt(self, prompt, value):
-    print('%-10s [%s]: ' % (prompt, value), end='', flush=True)
-    a = sys.stdin.readline().strip()
-    if a == '':
-      return value
-    return a
+    def _Prompt(self, prompt, value):
+        print('%-10s [%s]: ' % (prompt, value), end='', flush=True)
+        a = sys.stdin.readline().strip()
+        if a == '':
+            return value
+        return a
 
-  def _ShouldConfigureUser(self, opt, existing_checkout):
-    gc = self.client.globalConfig
-    mp = self.manifest.manifestProject
+    def _ShouldConfigureUser(self, opt, existing_checkout):
+        gc = self.client.globalConfig
+        mp = self.manifest.manifestProject
 
-    # If we don't have local settings, get from global.
-    if not mp.config.Has('user.name') or not mp.config.Has('user.email'):
-      if not gc.Has('user.name') or not gc.Has('user.email'):
-        return True
+        # If we don't have local settings, get from global.
+        if not mp.config.Has('user.name') or not mp.config.Has('user.email'):
+            if not gc.Has('user.name') or not gc.Has('user.email'):
+                return True
 
-      mp.config.SetString('user.name', gc.GetString('user.name'))
-      mp.config.SetString('user.email', gc.GetString('user.email'))
+            mp.config.SetString('user.name', gc.GetString('user.name'))
+            mp.config.SetString('user.email', gc.GetString('user.email'))
 
-    if not opt.quiet and not existing_checkout or opt.verbose:
-      print()
-      print('Your identity is: %s <%s>' % (mp.config.GetString('user.name'),
-                                           mp.config.GetString('user.email')))
-      print("If you want to change this, please re-run 'repo init' with --config-name")
-    return False
+        if not opt.quiet and not existing_checkout or opt.verbose:
+            print()
+            print(
+                'Your identity is: %s <%s>'
+                % (
+                    mp.config.GetString('user.name'),
+                    mp.config.GetString('user.email'),
+                )
+            )
+            print(
+                "If you want to change this, please re-run 'repo init' with --config-name"
+            )
+        return False
 
-  def _ConfigureUser(self, opt):
-    mp = self.manifest.manifestProject
+    def _ConfigureUser(self, opt):
+        mp = self.manifest.manifestProject
 
-    while True:
-      if not opt.quiet:
+        while True:
+            if not opt.quiet:
+                print()
+            name = self._Prompt('Your Name', mp.UserName)
+            email = self._Prompt('Your Email', mp.UserEmail)
+
+            if not opt.quiet:
+                print()
+            print('Your identity is: %s <%s>' % (name, email))
+            print('is this correct [y/N]? ', end='', flush=True)
+            a = sys.stdin.readline().strip().lower()
+            if a in ('yes', 'y', 't', 'true'):
+                break
+
+        if name != mp.UserName:
+            mp.config.SetString('user.name', name)
+        if email != mp.UserEmail:
+            mp.config.SetString('user.email', email)
+
+    def _HasColorSet(self, gc):
+        for n in ['ui', 'diff', 'status']:
+            if gc.Has('color.%s' % n):
+                return True
+        return False
+
+    def _ConfigureColor(self):
+        gc = self.client.globalConfig
+        if self._HasColorSet(gc):
+            return
+
+        class _Test(Coloring):
+            def __init__(self):
+                Coloring.__init__(self, gc, 'test color display')
+                self._on = True
+
+        out = _Test()
+
         print()
-      name = self._Prompt('Your Name', mp.UserName)
-      email = self._Prompt('Your Email', mp.UserEmail)
+        print("Testing colorized output (for 'repo diff', 'repo status'):")
 
-      if not opt.quiet:
+        for c in ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan']:
+            out.write(' ')
+            out.printer(fg=c)(' %-6s ', c)
+        out.write(' ')
+        out.printer(fg='white', bg='black')(' %s ' % 'white')
+        out.nl()
+
+        for c in ['bold', 'dim', 'ul', 'reverse']:
+            out.write(' ')
+            out.printer(fg='black', attr=c)(' %-6s ', c)
+        out.nl()
+
+        print(
+            'Enable color display in this user account (y/N)? ',
+            end='',
+            flush=True,
+        )
+        a = sys.stdin.readline().strip().lower()
+        if a in ('y', 'yes', 't', 'true', 'on'):
+            gc.SetString('color.ui', 'auto')
+
+    def _DisplayResult(self):
+        if self.manifest.IsMirror:
+            init_type = 'mirror '
+        else:
+            init_type = ''
+
         print()
-      print('Your identity is: %s <%s>' % (name, email))
-      print('is this correct [y/N]? ', end='', flush=True)
-      a = sys.stdin.readline().strip().lower()
-      if a in ('yes', 'y', 't', 'true'):
-        break
+        print(
+            'repo %shas been initialized in %s'
+            % (init_type, self.manifest.topdir)
+        )
 
-    if name != mp.UserName:
-      mp.config.SetString('user.name', name)
-    if email != mp.UserEmail:
-      mp.config.SetString('user.email', email)
+        current_dir = os.getcwd()
+        if current_dir != self.manifest.topdir:
+            print(
+                'If this is not the directory in which you want to initialize '
+                'repo, please run:'
+            )
+            print('   rm -r %s' % os.path.join(self.manifest.topdir, '.repo'))
+            print('and try again.')
 
-  def _HasColorSet(self, gc):
-    for n in ['ui', 'diff', 'status']:
-      if gc.Has('color.%s' % n):
-        return True
-    return False
+    def ValidateOptions(self, opt, args):
+        if opt.reference:
+            opt.reference = os.path.expanduser(opt.reference)
 
-  def _ConfigureColor(self):
-    gc = self.client.globalConfig
-    if self._HasColorSet(gc):
-      return
+        # Check this here, else manifest will be tagged "not new" and init won't be
+        # possible anymore without removing the .repo/manifests directory.
+        if opt.mirror:
+            if opt.archive:
+                self.OptionParser.error(
+                    '--mirror and --archive cannot be used ' 'together.'
+                )
+            if opt.use_superproject is not None:
+                self.OptionParser.error(
+                    '--mirror and --use-superproject cannot be '
+                    'used together.'
+                )
+        if opt.archive and opt.use_superproject is not None:
+            self.OptionParser.error(
+                '--archive and --use-superproject cannot be used ' 'together.'
+            )
 
-    class _Test(Coloring):
-      def __init__(self):
-        Coloring.__init__(self, gc, 'test color display')
-        self._on = True
-    out = _Test()
+        if opt.standalone_manifest and (
+            opt.manifest_branch or opt.manifest_name != 'default.xml'
+        ):
+            self.OptionParser.error(
+                '--manifest-branch and --manifest-name cannot'
+                ' be used with --standalone-manifest.'
+            )
 
-    print()
-    print("Testing colorized output (for 'repo diff', 'repo status'):")
+        if args:
+            if opt.manifest_url:
+                self.OptionParser.error(
+                    '--manifest-url option and URL argument both specified: only use '
+                    'one to select the manifest URL.'
+                )
 
-    for c in ['black', 'red', 'green', 'yellow', 'blue', 'magenta', 'cyan']:
-      out.write(' ')
-      out.printer(fg=c)(' %-6s ', c)
-    out.write(' ')
-    out.printer(fg='white', bg='black')(' %s ' % 'white')
-    out.nl()
+            opt.manifest_url = args.pop(0)
 
-    for c in ['bold', 'dim', 'ul', 'reverse']:
-      out.write(' ')
-      out.printer(fg='black', attr=c)(' %-6s ', c)
-    out.nl()
+            if args:
+                self.OptionParser.error('too many arguments to init')
 
-    print('Enable color display in this user account (y/N)? ', end='', flush=True)
-    a = sys.stdin.readline().strip().lower()
-    if a in ('y', 'yes', 't', 'true', 'on'):
-      gc.SetString('color.ui', 'auto')
+    def Execute(self, opt, args):
+        git_require(MIN_GIT_VERSION_HARD, fail=True)
+        if not git_require(MIN_GIT_VERSION_SOFT):
+            print(
+                'repo: warning: git-%s+ will soon be required; please upgrade your '
+                'version of git to maintain support.'
+                % ('.'.join(str(x) for x in MIN_GIT_VERSION_SOFT),),
+                file=sys.stderr,
+            )
 
-  def _DisplayResult(self):
-    if self.manifest.IsMirror:
-      init_type = 'mirror '
-    else:
-      init_type = ''
+        rp = self.manifest.repoProject
 
-    print()
-    print('repo %shas been initialized in %s' % (init_type, self.manifest.topdir))
+        # Handle new --repo-url requests.
+        if opt.repo_url:
+            remote = rp.GetRemote('origin')
+            remote.url = opt.repo_url
+            remote.Save()
 
-    current_dir = os.getcwd()
-    if current_dir != self.manifest.topdir:
-      print('If this is not the directory in which you want to initialize '
-            'repo, please run:')
-      print('   rm -r %s' % os.path.join(self.manifest.topdir, '.repo'))
-      print('and try again.')
+        # Handle new --repo-rev requests.
+        if opt.repo_rev:
+            wrapper = Wrapper()
+            try:
+                remote_ref, rev = wrapper.check_repo_rev(
+                    rp.gitdir,
+                    opt.repo_rev,
+                    repo_verify=opt.repo_verify,
+                    quiet=opt.quiet,
+                )
+            except wrapper.CloneFailure:
+                print(
+                    'fatal: double check your --repo-rev setting.',
+                    file=sys.stderr,
+                )
+                sys.exit(1)
+            branch = rp.GetBranch('default')
+            branch.merge = remote_ref
+            rp.work_git.reset('--hard', rev)
+            branch.Save()
 
-  def ValidateOptions(self, opt, args):
-    if opt.reference:
-      opt.reference = os.path.expanduser(opt.reference)
+        if opt.worktree:
+            # Older versions of git supported worktree, but had dangerous gc bugs.
+            git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
 
-    # Check this here, else manifest will be tagged "not new" and init won't be
-    # possible anymore without removing the .repo/manifests directory.
-    if opt.mirror:
-      if opt.archive:
-        self.OptionParser.error('--mirror and --archive cannot be used '
-                                'together.')
-      if opt.use_superproject is not None:
-        self.OptionParser.error('--mirror and --use-superproject cannot be '
-                                'used together.')
-    if opt.archive and opt.use_superproject is not None:
-      self.OptionParser.error('--archive and --use-superproject cannot be used '
-                              'together.')
+        # Provide a short notice that we're reinitializing an existing checkout.
+        # Sometimes developers might not realize that they're in one, or that
+        # repo doesn't do nested checkouts.
+        existing_checkout = self.manifest.manifestProject.Exists
+        if not opt.quiet and existing_checkout:
+            print(
+                'repo: reusing existing repo client checkout in',
+                self.manifest.topdir,
+            )
 
-    if opt.standalone_manifest and (opt.manifest_branch or
-                                    opt.manifest_name != 'default.xml'):
-      self.OptionParser.error('--manifest-branch and --manifest-name cannot'
-                              ' be used with --standalone-manifest.')
+        self._SyncManifest(opt)
 
-    if args:
-      if opt.manifest_url:
-        self.OptionParser.error(
-            '--manifest-url option and URL argument both specified: only use '
-            'one to select the manifest URL.')
+        if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
+            if opt.config_name or self._ShouldConfigureUser(
+                opt, existing_checkout
+            ):
+                self._ConfigureUser(opt)
+            self._ConfigureColor()
 
-      opt.manifest_url = args.pop(0)
-
-      if args:
-        self.OptionParser.error('too many arguments to init')
-
-  def Execute(self, opt, args):
-    git_require(MIN_GIT_VERSION_HARD, fail=True)
-    if not git_require(MIN_GIT_VERSION_SOFT):
-      print('repo: warning: git-%s+ will soon be required; please upgrade your '
-            'version of git to maintain support.'
-            % ('.'.join(str(x) for x in MIN_GIT_VERSION_SOFT),),
-            file=sys.stderr)
-
-    rp = self.manifest.repoProject
-
-    # Handle new --repo-url requests.
-    if opt.repo_url:
-      remote = rp.GetRemote('origin')
-      remote.url = opt.repo_url
-      remote.Save()
-
-    # Handle new --repo-rev requests.
-    if opt.repo_rev:
-      wrapper = Wrapper()
-      try:
-        remote_ref, rev = wrapper.check_repo_rev(
-            rp.gitdir, opt.repo_rev, repo_verify=opt.repo_verify, quiet=opt.quiet)
-      except wrapper.CloneFailure:
-        print('fatal: double check your --repo-rev setting.', file=sys.stderr)
-        sys.exit(1)
-      branch = rp.GetBranch('default')
-      branch.merge = remote_ref
-      rp.work_git.reset('--hard', rev)
-      branch.Save()
-
-    if opt.worktree:
-      # Older versions of git supported worktree, but had dangerous gc bugs.
-      git_require((2, 15, 0), fail=True, msg='git gc worktree corruption')
-
-    # Provide a short notice that we're reinitializing an existing checkout.
-    # Sometimes developers might not realize that they're in one, or that
-    # repo doesn't do nested checkouts.
-    existing_checkout = self.manifest.manifestProject.Exists
-    if not opt.quiet and existing_checkout:
-      print('repo: reusing existing repo client checkout in', self.manifest.topdir)
-
-    self._SyncManifest(opt)
-
-    if os.isatty(0) and os.isatty(1) and not self.manifest.IsMirror:
-      if opt.config_name or self._ShouldConfigureUser(opt, existing_checkout):
-        self._ConfigureUser(opt)
-      self._ConfigureColor()
-
-    if not opt.quiet:
-      self._DisplayResult()
+        if not opt.quiet:
+            self._DisplayResult()

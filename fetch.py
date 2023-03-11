@@ -21,25 +21,29 @@ from urllib.request import urlopen
 
 
 def fetch_file(url, verbose=False):
-  """Fetch a file from the specified source using the appropriate protocol.
+    """Fetch a file from the specified source using the appropriate protocol.
 
-  Returns:
-    The contents of the file as bytes.
-  """
-  scheme = urlparse(url).scheme
-  if scheme == 'gs':
-    cmd = ['gsutil', 'cat', url]
-    try:
-      result = subprocess.run(
-          cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-          check=True)
-      if result.stderr and verbose:
-        print('warning: non-fatal error running "gsutil": %s' % result.stderr,
-              file=sys.stderr)
-      return result.stdout
-    except subprocess.CalledProcessError as e:
-      print('fatal: error running "gsutil": %s' % e.stderr,
-            file=sys.stderr)
-    sys.exit(1)
-  with urlopen(url) as f:
-    return f.read()
+    Returns:
+      The contents of the file as bytes.
+    """
+    scheme = urlparse(url).scheme
+    if scheme == 'gs':
+        cmd = ['gsutil', 'cat', url]
+        try:
+            result = subprocess.run(
+                cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
+            )
+            if result.stderr and verbose:
+                print(
+                    'warning: non-fatal error running "gsutil": %s'
+                    % result.stderr,
+                    file=sys.stderr,
+                )
+            return result.stdout
+        except subprocess.CalledProcessError as e:
+            print(
+                'fatal: error running "gsutil": %s' % e.stderr, file=sys.stderr
+            )
+        sys.exit(1)
+    with urlopen(url) as f:
+        return f.read()
