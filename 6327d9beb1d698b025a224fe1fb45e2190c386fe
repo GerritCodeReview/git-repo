@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11b7907e_d4b203e9",
+        "filename": "pyproject.toml",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-14T05:53:53Z",
+      "side": 1,
+      "message": "should add file header like we do with others (e.g. tox.ini)",
+      "revId": "6327d9beb1d698b025a224fe1fb45e2190c386fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "49435816_6c8b7ba6",
         "filename": "pyproject.toml",
         "patchSetId": 13
