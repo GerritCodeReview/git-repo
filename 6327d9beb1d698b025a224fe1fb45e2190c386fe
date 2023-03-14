@@ -16,6 +16,23 @@
       "message": "to be submitted with https://gerrit-review.googlesource.com/c/git-repo/+/363474",
       "revId": "6327d9beb1d698b025a224fe1fb45e2190c386fe",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49435816_6c8b7ba6",
+        "filename": "pyproject.toml",
+        "patchSetId": 13
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-14T05:53:31Z",
+      "side": 1,
+      "message": "prob want to set `target-version` here\n```\n# NB: Keep in sync with tox.ini.\ntarget-version \u003d [\u0027py36\u0027, \u0027py37\u0027, \u0027py38\u0027, \u0027py39\u0027, \u0027py310\u0027]\n```",
+      "revId": "6327d9beb1d698b025a224fe1fb45e2190c386fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
