@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd5395e7_37927c16",
+        "filename": "tox.ini",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-14T02:17:14Z",
+      "side": 1,
+      "message": "it\u0027s enforced when running `tox -p auto`. `./run_tests` just runs pytest for now\n\nI\u0027m still working on enforcing this in cq",
+      "parentUuid": "33efd698_a1a2ae05",
+      "revId": "a343255cb70d75d7503c4677a99a02a6968dabf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6be02c95_2c3a132d",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-03-11T14:04:00Z",
       "side": 1,
       "message": "add a pyproject.toml instead to hold these settings.  then people can run `black` and have it just work.\n\nwe should do the string-normalization too.  there\u0027s no reason to deviate here.",
+      "revId": "a343255cb70d75d7503c4677a99a02a6968dabf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fe4dae2_5d8f63db",
+        "filename": "tox.ini",
+        "patchSetId": 9
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-14T02:17:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6be02c95_2c3a132d",
       "revId": "a343255cb70d75d7503c4677a99a02a6968dabf8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
