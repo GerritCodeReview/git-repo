@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "41d6bd7f_66483a88",
+        "filename": "tox.ini",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-15T00:28:52Z",
+      "side": 1,
+      "message": "\u003e run_tests invoke black seems like the natural answer\n\nSGTM, better than having two run_tests to maintain. `./run_tests` now runs `black --check .` and is enforced in CQ (see https://ci.chromium.org/ui/p/gerrit/builders/try/Verify%20git-repo%20CL/b8786603225359127473/overview) but im still waiting on https://crbug.com/1424153 to get flake8.\n\n\u003e we can\u0027t land the next one (which actually reformats the codebase) without CQ enforcement.\n\nthoughts on submitting this and the next given we check black?",
+      "parentUuid": "c6c7dbd2_553f5340",
+      "revId": "a343255cb70d75d7503c4677a99a02a6968dabf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6be02c95_2c3a132d",
         "filename": "tox.ini",
         "patchSetId": 9
