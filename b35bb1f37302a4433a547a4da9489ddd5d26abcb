@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a69a19d7_b9bac946",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-03-17T20:25:16Z",
+      "side": 1,
+      "message": "nit: maybe expand a bit subject line",
+      "revId": "b35bb1f37302a4433a547a4da9489ddd5d26abcb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
