@@ -16,6 +16,24 @@
       "message": "nit: maybe expand a bit subject line",
       "revId": "b35bb1f37302a4433a547a4da9489ddd5d26abcb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed93bd33_9c140233",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-18T00:20:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a69a19d7_b9bac946",
+      "revId": "b35bb1f37302a4433a547a4da9489ddd5d26abcb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
