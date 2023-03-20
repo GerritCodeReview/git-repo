@@ -90,6 +90,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e053807_e45901bc",
+        "filename": "tox.ini",
+        "patchSetId": 9
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T20:18:48Z",
+      "side": 1,
+      "message": "\u003e `./run_tests` now runs `black --check .` and is enforced in CQ\n\ni thought you were going to do that in this CL.  i\u0027m fine with it being in the next one though.",
+      "parentUuid": "7273d761_aa4f13a5",
+      "revId": "a343255cb70d75d7503c4677a99a02a6968dabf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6be02c95_2c3a132d",
