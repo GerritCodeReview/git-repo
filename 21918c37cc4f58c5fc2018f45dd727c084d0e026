@@ -1,0 +1,1421 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "254e2567_e7c74473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "that was mind numbing.  feel free to just submit once you go through the high level things.",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "747d5cfe_1234430e",
+        "filename": "command.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "Args blocks use 4 space hanging indent too now.  black doesn\u0027t enforce this unfortunately.\n\ncomes up a bunch in this CL.",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d58179e4_5a450ffd",
+        "filename": "command.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "same for Returns blocks\n\ncomes up a bunch in this CL",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58ff76a3_32f5b7f9",
+        "filename": "command.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "hanging text should be 4 space indent rather than `:` aligned.  not a new issue, but since we\u0027re reformatting the codebase, now is a good time to fix the docstrings.",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d9c6b80_22daf9a5",
+        "filename": "command.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 512,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "this should be one-line",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65cb995f_41d12609",
+        "filename": "git_config.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "blank line above this.  really these values should be in a Returns section.",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7380deef_6b02d652",
+        "filename": "git_superproject.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "the first line of docstrings should fit on one line.  if it wraps like this, it needs truncating, and any info left over that we want to keep moves to the paragraph below.",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0477fa6c_8c367aab",
+        "filename": "git_superproject.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "another one-liner to fix",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "603e6048_b5fb246c",
+        "filename": "git_superproject.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "another one-liner",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0528441_89c6140b",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "another one-liner",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "629138eb_19130267",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "another one-liner",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21532f0c_647393a3",
+        "filename": "git_trace2_event_log.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "another one-liner",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbb02793_319cae13",
+        "filename": "gitc_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"its\"",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec96f9a4_09091093",
+        "filename": "pager.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "throw a period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ea27a5c_95a9aac0",
+        "filename": "pager.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this line while you\u0027re at it",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9744c2ec_1ff36b2f",
+        "filename": "pager.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this line while you\u0027re at it",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d8279b_dc73294a",
+        "filename": "platform_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "put a blank line here while you\u0027re at it",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8835ac6a_6a7be56a",
+        "filename": "platform_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "`\"\"\"` should be on the next line",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd911de5_8b3fdb23",
+        "filename": "platform_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a6cc865_fcc281ba",
+        "filename": "platform_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "`\"\"\"` should be on the next line",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3851f8d_21dbf2aa",
+        "filename": "platform_utils.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "`\"\"\"` should be on the next line",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3480cd27_322936d0",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "comment end up in wrong place",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c2b64d0_8f815d30",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "comment end up in wrong place",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42fc0607_ca7a7894",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "comment end up in wrong place",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02ade6cc_051410fd",
+        "filename": "platform_utils_win32.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5065a4_679a46b2",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Copy\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "664204e1_222d22db",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Remove\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "397123e3_79871509",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Make\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17a0818e_71c3b34f",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Link\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a7f4289_8a8f9ab1",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Remove\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94f24624_b211ffdd",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "500f4b99_b20106eb",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b94570c_782eee9f",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "these `##` markers were meant to try \u0026 break up the code a bit because this file is just so damn big.  i would punt them at this point.",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f53d593_6240e84a",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1156,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete the leading `-`",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59eda0dd_10f4fc72",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3a0e39a_6c4df1ad",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1405,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "blank line above this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "219e416a_085b9e68",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1458,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19fab6d1_0f220150",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1465,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93710853_fd945498",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3e024a2_c29fe39b",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1498,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e1b5f4a_00f9ec9d",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd9bbd73_d1b3d756",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1540,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e9ea447_e85c80a2",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1548,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21fe995e_3e80feef",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1568,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2ffbede_c307d760",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1583,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01ebba66_d2ea837b",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1592,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"In\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61301e64_f60c2c4e",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1881,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91ec8a81_0b39d007",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1882,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd461d29_5b744214",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1889,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b46ae255_ac14ff27",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1890,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3f98c1_605d6603",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1902,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14179ba8_61660f3b",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1939,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "delete this",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2b4c9d0_7211a0a2",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2048,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7f19882_aeb00477",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2055,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb6a7d51_9689ceda",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2429,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3152820b_5ace6bb5",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2539,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b2cd221_bc521d1e",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2862,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "one-liner needed",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc011c9_b05ee902",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 2945,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd8c1e58_6c844514",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 3066,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "116b23db_6943da4e",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 3405,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6c03ee2_15ceac88",
+        "filename": "project.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 4303,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "should be easy to break up into 80 col strings",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ea1951d_9a0b3907",
+        "filename": "run_tests",
+        "patchSetId": 20
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "probably should explicitly set cwd to the repo dir, or pass that path instead of `.`",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2adeed28_0a28d192",
+        "filename": "run_tests",
+        "patchSetId": 20
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "can we do both ?  would suck to not be able to run unittests without formatting all the code first.\n\n```\nblack_ret \u003d run_black()\npytest_ret \u003d pytest.main(argv)\nreturn 0 if not black_ret and not pytest_ret else 1\n```\n\nalso, maybe we should omit black if the user is passing args ?  that way you can do iterative faster with `./run_tests tests/xxx.py`.\n\n```\nblack_ret \u003d 0 if argv else run_black()\npytest_ret \u003d pytest.main(argv)\nreturn 0 if not black_ret and not pytest_ret else 1\n```",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9022ae7e_4de80603",
+        "filename": "subcmds/cherry_pick.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "throw a period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1182a4d9_da5ae3d4",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Ignore\" and period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c08e58b3_450fbc6a",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Ignore\" and period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed072ec0_12399156",
+        "filename": "subcmds/start.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "throw a period at the end while you\u0027re at it",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e4da1b5_1d0691d0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"The\"",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "828bd255_52c69eff",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "should be easy to rephrase to 1-line",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b49f95e_121dc90c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Bail\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85d199c0_9036f96e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17043dbf_870d44fc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1116,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c731cd58_cfe41a47",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1153,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce2cba16_8104287a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1261,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22ad2a0c_ce338244",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1653,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Bail\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce05ec1b_a68581b7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1742,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "817b4057_b7fd61e2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 1908,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13cf4c32_469e59f8",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf913a36_39d283ad",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"If\" \u0026 period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6d8a39_09c9e084",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ecef103_6d29eebb",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "this would be better written as `\"-\" * 70`",
+      "range": {
+        "startLine": 666,
+        "startChar": 13,
+        "endLine": 666,
+        "endChar": 83
+      },
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "daae885b_bfedee27",
+        "filename": "tests/test_ssh.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"Old\" and period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba7e09b4_c2b8fdbf",
+        "filename": "tests/test_ssh.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-20T21:31:30Z",
+      "side": 1,
+      "message": "\"New\" and period at the end",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
