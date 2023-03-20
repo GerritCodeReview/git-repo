@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c93a9c26_08ea90de",
+        "filename": "command.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-20T23:41:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "747d5cfe_1234430e",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d58179e4_5a450ffd",
@@ -70,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "adb3b400_599b24f2",
+        "filename": "command.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-20T23:41:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d58179e4_5a450ffd",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58ff76a3_32f5b7f9",
@@ -83,6 +119,24 @@
       "writtenOn": "2023-03-20T21:31:30Z",
       "side": 1,
       "message": "hanging text should be 4 space indent rather than `:` aligned.  not a new issue, but since we\u0027re reformatting the codebase, now is a good time to fix the docstrings.",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "107fdbc4_72850764",
+        "filename": "command.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-20T23:41:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58ff76a3_32f5b7f9",
       "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
