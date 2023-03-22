@@ -30,6 +30,7 @@ class Abandon(Command):
 
 This subcommand permanently abandons a development branch by
 deleting it (and all its history) from your local repository.
+It can take multiple comma-separated branchnames.
 
 It is equivalent to "git branch -D <branchname>".
 """
@@ -59,7 +60,7 @@ It is equivalent to "git branch -D <branchname>".
         if all_branches:
             branches = project.GetBranches()
         else:
-            branches = [nb]
+            branches = nb
 
         ret = {}
         for name in branches:
@@ -69,7 +70,7 @@ It is equivalent to "git branch -D <branchname>".
         return (ret, project)
 
     def Execute(self, opt, args):
-        nb = args[0]
+        nb = args[0].split(",")
         err = defaultdict(list)
         success = defaultdict(list)
         all_projects = self.GetProjects(
