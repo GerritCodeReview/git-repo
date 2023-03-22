@@ -59,7 +59,7 @@ It is equivalent to "git branch -D <branchname>".
         if all_branches:
             branches = project.GetBranches()
         else:
-            branches = [nb]
+            branches = nb
 
         ret = {}
         for name in branches:
@@ -69,7 +69,7 @@ It is equivalent to "git branch -D <branchname>".
         return (ret, project)
 
     def Execute(self, opt, args):
-        nb = args[0]
+        nb = args[0].strip().split(",")
         err = defaultdict(list)
         success = defaultdict(list)
         all_projects = self.GetProjects(
