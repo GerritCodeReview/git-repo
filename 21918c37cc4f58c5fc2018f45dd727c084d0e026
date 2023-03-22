@@ -2153,6 +2153,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de2ed6af_cb7170ea",
+        "filename": "run_tests",
+        "patchSetId": 20
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-22T01:46:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ea1951d_9a0b3907",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2adeed28_0a28d192",
@@ -2166,6 +2184,24 @@
       "writtenOn": "2023-03-20T21:31:30Z",
       "side": 1,
       "message": "can we do both ?  would suck to not be able to run unittests without formatting all the code first.\n\n```\nblack_ret \u003d run_black()\npytest_ret \u003d pytest.main(argv)\nreturn 0 if not black_ret and not pytest_ret else 1\n```\n\nalso, maybe we should omit black if the user is passing args ?  that way you can do iterative faster with `./run_tests tests/xxx.py`.\n\n```\nblack_ret \u003d 0 if argv else run_black()\npytest_ret \u003d pytest.main(argv)\nreturn 0 if not black_ret and not pytest_ret else 1\n```",
+      "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc74182d_c3e2937a",
+        "filename": "run_tests",
+        "patchSetId": 20
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-03-22T01:46:35Z",
+      "side": 1,
+      "message": "opted for the latter, thanks",
+      "parentUuid": "2adeed28_0a28d192",
       "revId": "21918c37cc4f58c5fc2018f45dd727c084d0e026",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
