@@ -1912,7 +1912,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             # We allow people to mix git worktrees & non-git worktrees for now.
             # This allows for in situ migration of repo clients.
             if os.path.exists(gitdir) or not self.UseGitWorktrees:
-                objdir = os.path.join(self.repodir, "project-objects", namepath)
+                # Use objdir = gitdir in all cases.
+                # {gitdir}/objects is either a directory, or a symlink to
+                # {self.repodir}/project-objects/{namepath}.
+                objdir = gitdir
             else:
                 use_git_worktrees = True
                 gitdir = os.path.join(self.repodir, "worktrees", namepath)
