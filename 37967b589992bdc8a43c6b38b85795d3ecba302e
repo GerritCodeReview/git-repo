@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ab933bf6_2ebb3fcd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-03-23T04:37:04Z",
+      "side": 1,
+      "message": "Ah, I didn\u0027t know `,` was a valid char. I didn\u0027t use space-separated values to keep the current UX. I will update this. Marking this WIP until then.",
+      "parentUuid": "e3cbbb77_2b73b337",
+      "revId": "37967b589992bdc8a43c6b38b85795d3ecba302e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56f43874_1e5b25f5",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -31,6 +49,30 @@
       "writtenOn": "2023-03-23T03:54:48Z",
       "side": 1,
       "message": "https",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 9
+      },
+      "revId": "37967b589992bdc8a43c6b38b85795d3ecba302e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84b8cb9c_4b5ec7d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-03-23T04:37:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56f43874_1e5b25f5",
       "range": {
         "startLine": 11,
         "startChar": 5,
