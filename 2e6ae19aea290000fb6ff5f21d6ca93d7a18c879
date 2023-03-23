@@ -16,6 +16,23 @@
       "message": "If we have an `objects` directory (rather than a symlink to project-objects), we need to use that for the project.",
       "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "670c3fb5_3203d4ff",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-23T23:44:18Z",
+      "side": 1,
+      "message": "{gitdir}/objects always exists.  it\u0027s either a symlink to project-objects, or if `_ALTERNATES` is true, it\u0027s a standalone dir.  in both cases, isdir returns True.\n\nso seems like we should always return objdir\u003dgitdir ?",
+      "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
