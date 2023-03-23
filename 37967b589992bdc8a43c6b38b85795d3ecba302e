@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cc03d207_e6054406",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-23T04:56:58Z",
+      "side": 1,
+      "message": "the current UX takes a single argument for the branch.  you can make that argument be space delimited.\n\n`repo abandon \u0027a b c\u0027 project1 project2`",
+      "parentUuid": "ab933bf6_2ebb3fcd",
+      "revId": "37967b589992bdc8a43c6b38b85795d3ecba302e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "56f43874_1e5b25f5",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
