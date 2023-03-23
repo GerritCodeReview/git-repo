@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3cbbb77_2b73b337",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-23T03:54:48Z",
+      "side": 1,
+      "message": "`,` is a valid char in a branch name.  prob uncommon, but not invalid.  i don\u0027t think we have any other cases/examples where we use `,` as a delimiter when it comes to branch names.\n\ni believe spaces are not allowed in git branch names, so whitespace would be an acceptable delimter.",
+      "revId": "37967b589992bdc8a43c6b38b85795d3ecba302e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56f43874_1e5b25f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-23T03:54:48Z",
+      "side": 1,
+      "message": "https",
+      "range": {
+        "startLine": 11,
+        "startChar": 5,
+        "endLine": 11,
+        "endChar": 9
+      },
+      "revId": "37967b589992bdc8a43c6b38b85795d3ecba302e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
