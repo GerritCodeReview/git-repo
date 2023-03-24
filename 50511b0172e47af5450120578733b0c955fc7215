@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c508b97_e3184fc1",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-24T01:50:15Z",
+      "side": 1,
+      "message": "use `.split()` to split on any whitespace, not just literal spaces",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62cef0b1_e1459ee3",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-24T01:50:15Z",
+      "side": 1,
+      "message": "use `x` as an iterator instead of `name`",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "844298a1_6cb6b332",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-24T01:50:15Z",
+      "side": 1,
+      "message": "use an f-string to simplify",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4c12dd2_6921978d",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-24T01:50:15Z",
+      "side": 1,
+      "message": "use an f-string",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3170f23_0a76f3fb",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-24T01:50:15Z",
+      "side": 1,
+      "message": "use `.split()`",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
