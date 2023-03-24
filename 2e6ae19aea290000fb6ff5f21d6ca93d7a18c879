@@ -51,6 +51,24 @@
       "parentUuid": "670c3fb5_3203d4ff",
       "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e692fda5_880a6627",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2023-03-24T17:01:29Z",
+      "side": 1,
+      "message": "{gitdir}/objects always exists *AFTER* the initial sync of the project.  patchset2 results in never using .repo/project-objects at all.",
+      "parentUuid": "2bed0eba_0dca29a8",
+      "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
