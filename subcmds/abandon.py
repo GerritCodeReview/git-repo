@@ -48,9 +48,13 @@ It is equivalent to "git branch -D <branchname>".
             self.Usage()
 
         if not opt.all:
-            nb = args[0]
-            if not git.check_ref_format("heads/%s" % nb):
-                self.OptionParser.error("'%s' is not a valid branch name" % nb)
+            branches = args[0].split()
+            invalid_branches = [x for x in branches
+                                if not git.check_ref_format(f"heads/{x}")]
+
+            if invalid_branches:
+                self.OptionParser.error(
+                    f"{invalid_branches} are not valid branch names")
         else:
             args.insert(0, "'All local branches'")
 
@@ -59,7 +63,7 @@ It is equivalent to "git branch -D <branchname>".
         if all_branches:
             branches = project.GetBranches()
         else:
-            branches = [nb]
+            branches = nb
 
         ret = {}
         for name in branches:
@@ -69,7 +73,7 @@ It is equivalent to "git branch -D <branchname>".
         return (ret, project)
 
     def Execute(self, opt, args):
-        nb = args[0]
+        nb = args[0].split()
         err = defaultdict(list)
         success = defaultdict(list)
         all_projects = self.GetProjects(
