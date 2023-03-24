@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3567bb5_a3272374",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-03-24T04:05:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c508b97_e3184fc1",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62cef0b1_e1459ee3",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-03-24T01:50:15Z",
       "side": 1,
       "message": "use `x` as an iterator instead of `name`",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e7fef5_ebd61a1f",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-03-24T04:05:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62cef0b1_e1459ee3",
       "revId": "50511b0172e47af5450120578733b0c955fc7215",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df55af48_a0de0fd7",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-03-24T04:05:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "844298a1_6cb6b332",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4c12dd2_6921978d",
@@ -69,6 +123,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4af80725_ad2df8e4",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-03-24T04:05:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4c12dd2_6921978d",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3170f23_0a76f3fb",
@@ -82,6 +154,24 @@
       "writtenOn": "2023-03-24T01:50:15Z",
       "side": 1,
       "message": "use `.split()`",
+      "revId": "50511b0172e47af5450120578733b0c955fc7215",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2434414c_181ee99a",
+        "filename": "subcmds/abandon.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-03-24T04:05:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3170f23_0a76f3fb",
       "revId": "50511b0172e47af5450120578733b0c955fc7215",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
