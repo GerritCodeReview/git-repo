@@ -31,8 +31,8 @@ def run_black():
 
 def main(argv):
     """The main entry."""
-    black_ret = 0 if argv else run_black()
     pytest_ret = pytest.main(argv)
+    black_ret = run_black()
     return 0 if not black_ret and not pytest_ret else 1
 
 
