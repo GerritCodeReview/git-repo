@@ -69,6 +69,24 @@
       "parentUuid": "2bed0eba_0dca29a8",
       "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e2a454e_ce7ab92a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-25T06:20:10Z",
+      "side": 1,
+      "message": "the point of my previous work was to stop using symlinks with gitdir/objects/.  but that hasn\u0027t completed, so we have to support both modes.\n\nthe git_command logic still looks correct to me.  GIT_OBJECT_DIRECTORY is project-objects because we want to store common objects fetched from the remote to that dir, and GIT_ALTERNATE_DIRECTORIES points to gitdir/objects/ in case the git negotiation uses a branch with unique objects that exist only in that one checkout.  if we got rid of that logic, we\u0027d lose the object sharing, which was the entire point of project-objects.",
+      "parentUuid": "e692fda5_880a6627",
+      "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

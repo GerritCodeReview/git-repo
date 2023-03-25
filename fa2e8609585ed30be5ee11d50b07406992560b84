@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2f92fea_1ccff08e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1926,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-25T06:20:10Z",
+      "side": 1,
+      "message": "it\u0027s the same value here.  so we should move this init to line 1912 after we set gitdir.",
+      "revId": "fa2e8609585ed30be5ee11d50b07406992560b84",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
