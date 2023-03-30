@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Wrapper to run black and pytest with the right settings."""
+"""Wrapper to run linters and pytest with the right settings."""
 
 import os
 import subprocess
@@ -21,19 +21,31 @@ import sys
 import pytest
 
 
+ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+
+
 def run_black():
-    """Returns the exit code of running `black --check`."""
-    dirpath = os.path.dirname(os.path.realpath(__file__))
+    """Returns the exit code from black."""
     return subprocess.run(
-        [sys.executable, "-m", "black", "--check", dirpath], check=False
+        [sys.executable, "-m", "black", "--check", ROOT_DIR], check=False
+    ).returncode
+
+
+def run_flake8():
+    """Returns the exit code from flake8."""
+    return subprocess.run(
+        [sys.executable, "-m", "flake8", ROOT_DIR], check=False
     ).returncode
 
 
 def main(argv):
     """The main entry."""
-    pytest_ret = pytest.main(argv)
-    black_ret = run_black()
-    return 0 if not black_ret and not pytest_ret else 1
+    checks = (
+        lambda: pytest.main(argv),
+        run_black,
+        run_flake8,
+    )
+    return 0 if all(not c() for c in checks) else 1
 
 
 if __name__ == "__main__":
