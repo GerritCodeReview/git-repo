@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e1ee6b0_4ffd08a9",
+        "filename": "run_tests",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-03-30T05:24:07Z",
+      "side": 1,
+      "message": "i don\u0027t think we should short circuit.  what if we looped ?\n\n```\ndef run_black():\n  ...\n\ndef run_flake8():\n  ...\n\ndef run_pylint():\n  ...\n\ndef main():\n  linters \u003d (\n    run_pytest,\n    run_black,\n    run_flake8,\n  )\n  return 0 if all(not x() for x in linters) else 1\n```",
+      "revId": "4096c93ffd1520289a58c27b0a5e4049c042cb08",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
