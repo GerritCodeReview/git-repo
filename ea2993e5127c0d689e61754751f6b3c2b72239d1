@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b902bd7b_9614c6d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-03T23:21:51Z",
+      "side": 1,
+      "message": "why would we ever want to push tags when pushing a CL for review ?  seems like we should always pass --follow-tags and not provide an option to the user.\n\nthat said, this option is new to git-1.8.3, and we support back to 1.7.2, so the option has to be added dynamically.",
+      "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
