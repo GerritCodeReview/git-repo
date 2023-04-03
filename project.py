@@ -240,6 +240,7 @@ class ReviewableBranch(object):
         dest_branch=None,
         validate_certs=True,
         push_options=None,
+        no_follow_tags=False,
     ):
         self.project.UploadForReview(
             branch=self.name,
@@ -255,6 +256,7 @@ class ReviewableBranch(object):
             dest_branch=dest_branch,
             validate_certs=validate_certs,
             push_options=push_options,
+            no_follow_tags=False,
         )
 
     def GetPublishedRefs(self):
@@ -1065,6 +1067,7 @@ class Project(object):
         dest_branch=None,
         validate_certs=True,
         push_options=None,
+        no_follow_tags=False,
     ):
         """Uploads the named branch for code review."""
         if branch is None:
@@ -1106,6 +1109,9 @@ class Project(object):
 
         if url.startswith("ssh://"):
             cmd.append("--receive-pack=gerrit receive-pack")
+
+        if no_follow_tags:
+            cmd.append("--no-follow-tags")
 
         for push_option in push_options or []:
             cmd.append("-o")

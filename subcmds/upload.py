@@ -361,6 +361,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             default=True,
             help="disable verifying ssl certs (unsafe)",
         )
+        p.add_option(
+            "--no-follow-tags",
+            dest="no_follow_tags",
+            default=False,
+            help="override push.followTags in your git config",
+        )
         RepoHook.AddOptionGroup(p, "pre-upload")
 
     def _SingleBranch(self, opt, branch, people):
