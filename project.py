@@ -1107,6 +1107,9 @@ class Project(object):
         if url.startswith("ssh://"):
             cmd.append("--receive-pack=gerrit receive-pack")
 
+        if git_require((1, 8, 3)):
+            cmd.append("--no-follow-tags")
+
         for push_option in push_options or []:
             cmd.append("-o")
             cmd.append(push_option)
