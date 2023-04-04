@@ -34,6 +34,24 @@
       "parentUuid": "b902bd7b_9614c6d7",
       "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9dbe28d_75ab025e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-04T17:58:06Z",
+      "side": 1,
+      "message": "\u003e if git_version \u003e\u003d 1.8.3:\n\u003e  cmd.append(\"--no-follow-tags\")\n\nyou want to use `git_require(...)`, but otherwise, yes\n\n\u003e I just went through the old doc and followTags is not an option in the previous version so I guess \u003c 1.8.3, it\u0027s a noop.\n\nthe config option is a noop, but the command line option is not.  git will error out if given an unknown command line option.",
+      "parentUuid": "8d9d717c_cd2cdc1a",
+      "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
