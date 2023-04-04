@@ -52,6 +52,24 @@
       "parentUuid": "8d9d717c_cd2cdc1a",
       "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4e9cc0_412268e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-04-04T21:55:48Z",
+      "side": 1,
+      "message": "I\u0027m not sure if there is an efficient way to find when a feature was added to git but manually skimming through all the git tags, it seems like `--no-follow-tags` was added in v2.4.0: https://github.com/git/git/commit/61ca378275e83c48343c74a849ff0dcdef9abc91\n\nAm I missing something? How did you come with v1.8.3?",
+      "parentUuid": "e9dbe28d_75ab025e",
+      "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
