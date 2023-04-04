@@ -16,6 +16,24 @@
       "message": "why would we ever want to push tags when pushing a CL for review ?  seems like we should always pass --follow-tags and not provide an option to the user.\n\nthat said, this option is new to git-1.8.3, and we support back to 1.7.2, so the option has to be added dynamically.",
       "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d9d717c_cd2cdc1a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-04-04T07:08:52Z",
+      "side": 1,
+      "message": "\u003e seems like we should always pass --follow-tags and not provide an option to the user.\n\nDo you mean always pass `--no-follow-tags`? Yeah, I agree, afaiu, gerrit doesn\u0027t accept tags pushed to `refs/for/refs/*` anyway so I guess we can always pass `--no-follow-tags`.\n\n\u003e so the option has to be added dynamically.\n\nDo you mean something like this:\n\n```\nif git_version \u003e\u003d 1.8.3:\n  cmd.append(\"--no-follow-tags\")\n```\n\nI just went through the old doc and followTags is not an option in the previous version so I guess \u003c 1.8.3, it\u0027s a noop.",
+      "parentUuid": "b902bd7b_9614c6d7",
+      "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
