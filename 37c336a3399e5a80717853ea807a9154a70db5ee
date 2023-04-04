@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33892b57_ad531014",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-04T23:30:46Z",
+      "side": 1,
+      "message": "i know this isn\u0027t in the upload command exactly, but you\u0027re using a func that is only run by the upload command, and we try to scope to commands when possible.  so this would read:\n\nupload: Add ...",
+      "revId": "37c336a3399e5a80717853ea807a9154a70db5ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45b5d897_4b1d2cff",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1111,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-04T23:30:46Z",
+      "side": 1,
+      "message": "please leave a comment explaining what/why",
+      "revId": "37c336a3399e5a80717853ea807a9154a70db5ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
