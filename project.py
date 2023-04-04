@@ -1107,6 +1107,12 @@ class Project(object):
         if url.startswith("ssh://"):
             cmd.append("--receive-pack=gerrit receive-pack")
 
+        # This stops git from pushing all reachable annotated tags when
+        # push.followTags is configured. Gerrit does not accept any tags
+        # pushed to a CL.
+        if git_require((1, 8, 3)):
+            cmd.append("--no-follow-tags")
+
         for push_option in push_options or []:
             cmd.append("-o")
             cmd.append(push_option)
