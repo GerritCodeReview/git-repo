@@ -70,6 +70,24 @@
       "parentUuid": "e9dbe28d_75ab025e",
       "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dccfbba_b84900cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-05T18:54:49Z",
+      "side": 1,
+      "message": "\u003e I\u0027m not sure if there is an efficient way to find when a feature was added to git\n\nthere isn\u0027t.  you read/grep the history \u0026 changelog.\n\n\u003e How did you come with v1.8.3?\n\nhttps://github.com/git/git/commit/c2aba155da10b8bc9f867d2f0ac0e63cc8dae1a4 added `--folow-tags` \u0026 `--no-follow-tags` and that was merged for 1.8.3",
+      "parentUuid": "2c4e9cc0_412268e2",
+      "revId": "ea2993e5127c0d689e61754751f6b3c2b72239d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
