@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "96bf3eec_57137308",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-05T03:43:45Z",
+      "side": 1,
+      "message": "the repo command is \"upload\", not \"push\"",
+      "parentUuid": "ca7bcf23_1fcce6d8",
+      "revId": "37c336a3399e5a80717853ea807a9154a70db5ee",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "45b5d897_4b1d2cff",
         "filename": "project.py",
         "patchSetId": 5
