@@ -17,6 +17,8 @@ import sys
 
 import pager
 
+# lol wut
+
 COLORS = {
     None: -1,
     "normal": -1,
