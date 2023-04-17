@@ -294,6 +294,12 @@ later is required to fix a server side protocol bug.
             "WARNING: this may cause loss of data",
         )
         p.add_option(
+            "--force_rebase",
+            action="store_true",
+            help="rebase local commits regardless of whether they are "
+            "published",
+        )
+        p.add_option(
             "-l",
             "--local-only",
             dest="local_only",
@@ -840,12 +846,13 @@ later is required to fix a server side protocol bug.
 
         return _FetchMainResult(all_projects)
 
-    def _CheckoutOne(self, detach_head, force_sync, project):
+    def _CheckoutOne(self, detach_head, force_sync, force_rebase, project):
         """Checkout work tree for one project
 
         Args:
             detach_head: Whether to leave a detached HEAD.
             force_sync: Force checking out of the repo.
+            force_rebase: Force rebase.
             project: Project object for the project to checkout.
 
         Returns:
@@ -857,7 +864,9 @@ later is required to fix a server side protocol bug.
         )
         success = False
         try:
-            project.Sync_LocalHalf(syncbuf, force_sync=force_sync)
+            project.Sync_LocalHalf(
+                syncbuf, force_sync=force_sync, force_rebase=force_rebase
+            )
             success = syncbuf.Finish()
         except GitError as e:
             print(
@@ -918,7 +927,10 @@ later is required to fix a server side protocol bug.
             self.ExecuteInParallel(
                 opt.jobs_checkout,
                 functools.partial(
-                    self._CheckoutOne, opt.detach_head, opt.force_sync
+                    self._CheckoutOne,
+                    opt.detach_head,
+                    opt.force_sync,
+                    opt.force_rebase,
                 ),
                 all_projects,
                 callback=_ProcessResults,
