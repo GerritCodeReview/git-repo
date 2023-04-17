@@ -1404,7 +1404,9 @@ class Project(object):
 
         self.revisionId = revisionId
 
-    def Sync_LocalHalf(self, syncbuf, force_sync=False, submodules=False):
+    def Sync_LocalHalf(
+        self, syncbuf, force_sync=False, submodules=False, force_rebase=False
+    ):
         """Perform only the local IO portion of the sync process.
 
         Network access is not required.
@@ -1525,7 +1527,7 @@ class Project(object):
         if pub:
             not_merged = self._revlist(not_rev(revid), pub)
             if not_merged:
-                if upstream_gain:
+                if upstream_gain and not force_rebase:
                     # The user has published this branch and some of those
                     # commits are not yet merged upstream.  We do not want
                     # to rewrite the published commits so we punt.
