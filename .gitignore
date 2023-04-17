@@ -8,6 +8,7 @@ __pycache__
 /repoc
 /.tox
 /.venv
+/.vscode
 
 # PyCharm related
 /.idea/
