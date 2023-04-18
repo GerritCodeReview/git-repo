@@ -1233,7 +1233,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
 
     def _ParseManifestXml(
-        self, path, include_root, parent_groups="", restrict_includes=True
+        self, path, include_root, parent_groups="", restrict_includes=True, parent_node=None
     ):
         """Parse a manifest XML and return the computed nodes.
 
@@ -1243,6 +1243,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             parent_groups: The groups to apply to this projects.
             restrict_includes: Whether to constrain the "name" attribute of
                 includes.
+            parent_node: The parent include node, to apply attribute to this
+                projects.
 
         Returns:
             List of XML nodes.
@@ -1288,7 +1290,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
                 try:
                     nodes.extend(
-                        self._ParseManifestXml(fp, include_root, include_groups)
+                        self._ParseManifestXml(fp, include_root, include_groups, parent_node=node)
                     )
                 # should isolate this to the exact exception, but that's
                 # tricky.  actual parsing implementation may vary.
@@ -1311,6 +1313,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                             node.getAttribute("groups") + "," + nodeGroups
                         )
                     node.setAttribute("groups", nodeGroups)
+                if parent_node and node.nodeName == "project" and not node.hasAttribute('revision'):
+                    node.setAttribute('revision', parent_node.getAttribute('revision'))
                 nodes.append(node)
         return nodes
 
