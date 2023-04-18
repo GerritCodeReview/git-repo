@@ -75,3 +75,17 @@ class AllCommands(unittest.TestCase):
                     msg=f"subcmds/{name}.py: {option.get_opt_string()}: "
                     f'help text should not end in a period: "{option.help}"',
                 )
+
+    def test_cli_option_style(self):
+        """Force some consistency in option flags."""
+        for name, cls in subcmds.all_commands.items():
+            cmd = cls()
+            parser = cmd.OptionParser
+            for option in parser.option_list:
+                for opt in option._long_opts:
+                    self.assertNotIn(
+                        "_",
+                        opt,
+                        msg=f"subcmds/{name}.py: {opt}: only use dashes in "
+                        "options, not underscores",
+                    )
