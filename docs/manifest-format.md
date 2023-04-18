@@ -125,8 +125,9 @@ following DTD:
   <!ATTLIST contactinfo bugurl  CDATA #REQUIRED>
 
   <!ELEMENT include EMPTY>
-  <!ATTLIST include name   CDATA #REQUIRED>
-  <!ATTLIST include groups CDATA #IMPLIED>
+  <!ATTLIST include name     CDATA #REQUIRED>
+  <!ATTLIST include groups   CDATA #IMPLIED>
+  <!ATTLIST include revision CDATA #IMPLIED>
 ]>
 ```
 
@@ -552,6 +553,9 @@ Attribute `groups`: List of additional groups to which all projects
 in the included manifest belong. This appends and recurses, meaning
 all projects in included manifests carry all parent include groups.
 Same syntax as the corresponding element of `project`.
+
+Attribute `revision`: Name of a Git branch (e.g. `main` or `refs/heads/main`)
+default to which all projects in the included manifest belong.
 
 ## Local Manifests {#local-manifests}
 
