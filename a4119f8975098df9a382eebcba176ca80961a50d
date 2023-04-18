@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a1e9d82_f28e8f12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1124415
+      },
+      "writtenOn": "2023-04-18T07:45:25Z",
+      "side": 1,
+      "message": "add example to show how to add include revision",
+      "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
