@@ -389,6 +389,44 @@ class XmlManifestTests(ManifestParseTestCase):
 class IncludeElementTests(ManifestParseTestCase):
     """Tests for <include>."""
 
+    def test_revision_default(self):
+        root_m = os.path.join(self.manifest_dir, "root.xml")
+        with open(root_m, "w") as fp:
+            fp.write(
+                """
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <include name="stable.xml" revision="stable-branch" />
+  <project name="root-name1" path="root-path1" />
+  <project name="root-name2" path="root-path2" />
+</manifest>
+"""
+            )
+        with open(os.path.join(self.manifest_dir, "stable.xml"), "w") as fp:
+            fp.write(
+                """
+<manifest>
+  <project name="stable-name1" path="stable-path1" />
+  <project name="stable-name2" path="stable-path2" revision="stable-branch2" />
+</manifest>
+"""
+            )
+        include_m = manifest_xml.XmlManifest(self.repodir, root_m)
+        for proj in include_m.projects:
+            if proj.name == "root-name1":
+                # Check include revision not set on root level proj.
+                self.assertNotEqual("stable-branch", proj.revisionExpr)
+            if proj.name == "root-name2":
+                # Check root proj revision not removed.
+                self.assertEqual("refs/heads/main", proj.revisionExpr)
+            if proj.name == "stable-name1":
+                # Check stable proj has inherited revision include node.
+                self.assertEqual("stable-branch", proj.revisionExpr)
+            if proj.name == "stable-name2":
+                # Check stable proj revision can override include node.
+                self.assertEqual("stable-branch2", proj.revisionExpr)
+
     def test_group_levels(self):
         root_m = os.path.join(self.manifest_dir, "root.xml")
         with open(root_m, "w") as fp:
