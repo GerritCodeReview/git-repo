@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cdb48f0f_6a749654",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1124415
+      },
+      "writtenOn": "2023-04-18T03:43:36Z",
+      "side": 1,
+      "message": "manifest.xml add revision into include node,\nand run \u0027repo manifest\u0027, the projects in include xml\ncan use include node revision attribute",
+      "revId": "1226d5dc4cdf5b1756f5d47582e306c5cc427085",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
