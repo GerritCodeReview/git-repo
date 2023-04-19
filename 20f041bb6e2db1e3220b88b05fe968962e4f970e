@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6b9181b_1f2d9551",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-19T21:48:05Z",
+      "side": 1,
+      "message": "please see our docs for how to write proper git commit messages:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/SUBMITTING_PATCHES.md\nhttps://chris.beams.io/posts/git-commit/\n\nthese apply to git in general, not just repo",
+      "revId": "20f041bb6e2db1e3220b88b05fe968962e4f970e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "2dc494c2_cf1426a8",
@@ -14,6 +31,23 @@
       "writtenOn": "2023-04-18T16:47:24Z",
       "side": 1,
       "message": "Thanks for the quick response!",
+      "revId": "20f041bb6e2db1e3220b88b05fe968962e4f970e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9362aa8_c25c1d43",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-19T21:48:05Z",
+      "side": 1,
+      "message": "why \"force rebase\" and not just \"rebase\" ?",
       "revId": "20f041bb6e2db1e3220b88b05fe968962e4f970e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
