@@ -1,6 +1,40 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "edbd42f4_e597dd1d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-19T21:51:22Z",
+      "side": 1,
+      "message": "looks like your ~/.gitconfig settings are missing.  please fix that so your details show up correctly here.",
+      "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e35b1aa5_7e3b7b70",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-19T21:51:22Z",
+      "side": 1,
+      "message": "thanks, this def looks like a bug to me, and i don\u0027t think LaMont intended for this.  can you add a unittest ?",
+      "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5a1e9d82_f28e8f12",
@@ -14,6 +48,23 @@
       "writtenOn": "2023-04-18T07:45:25Z",
       "side": 1,
       "message": "add example to show how to add include revision",
+      "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5984f834_a0174b7c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1246,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-19T21:51:22Z",
+      "side": 1,
+      "message": "please keep within 80 cols",
       "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
