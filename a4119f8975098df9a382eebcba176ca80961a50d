@@ -91,6 +91,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f49c078b_c3ba4825",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-20T16:30:47Z",
+      "side": 1,
+      "message": "ah, thanks LaMont, i misread it.  i agree this isn\u0027t a bug but a FR.\n\ni can\u0027t see how `revision\u003d` would be used in this element other than how it\u0027s proposed here, so i\u0027m fine merging this.  any opinion to the contrary ?",
+      "parentUuid": "71a33038_7cea1c41",
+      "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5a1e9d82_f28e8f12",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
