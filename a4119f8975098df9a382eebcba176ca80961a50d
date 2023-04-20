@@ -109,6 +109,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "04654728_7f1259fa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2023-04-20T18:08:21Z",
+      "side": 1,
+      "message": "No objections here.  LGTM.\n\nWithout knowing the author\u0027s use case, my initial reaction was that it would make changes to an include file easier to merge across manifest branches. That is, if default.xml has \u003cinclude name\u003d\"projects\" revision\u003d\"R110\"/\u003e on refs/heads/R110, then the only file that would need to change when R111 was created would be default.xml.\n\nMore of an Android use case than a Chromiumos use case, but I can see the value of it.",
+      "parentUuid": "f49c078b_c3ba4825",
+      "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "5a1e9d82_f28e8f12",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
