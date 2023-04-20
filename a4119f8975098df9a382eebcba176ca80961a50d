@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d23a003_19c4f4d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2023-04-20T00:00:24Z",
+      "side": 1,
+      "message": "@vapier: If I\u0027m reading the code correctly, this change adds the `revision` attribute to \u003cinclude/\u003e, allowing that directive to provide a default revision value for projects in the included manifest that differs from the \u003cdefault/\u003e element in the manifest. I\u0027m not sure what the use case would be for that.\n\nA better wording for this line of the commit message would be:\n\nWith this change, the final manifest will have `revision\u003d\"r1\"` for project2.",
+      "parentUuid": "e35b1aa5_7e3b7b70",
+      "revId": "a4119f8975098df9a382eebcba176ca80961a50d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "5a1e9d82_f28e8f12",
