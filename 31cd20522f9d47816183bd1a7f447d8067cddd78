@@ -16,6 +16,24 @@
       "message": "we already have `duration_str()` above specifically to provide a single func for \"here\u0027s how we format time deltas\".  why do we need another ?",
       "revId": "31cd20522f9d47816183bd1a7f447d8067cddd78",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07cd00fa_bb84e449",
+        "filename": "progress.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-04-27T17:31:23Z",
+      "side": 1,
+      "message": "duration_str is more verbose w/ units and ms precision that\u0027s fitting for an overall recap\n\nelapsed_str is for concisely displaying elapsed time because users don\u0027t need that extra info in the progress indicator",
+      "parentUuid": "56413e37_0d286f6c",
+      "revId": "31cd20522f9d47816183bd1a7f447d8067cddd78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
