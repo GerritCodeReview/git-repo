@@ -34,6 +34,24 @@
       "parentUuid": "56413e37_0d286f6c",
       "revId": "31cd20522f9d47816183bd1a7f447d8067cddd78",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "846b30b2_006508b9",
+        "filename": "progress.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-04-27T22:36:02Z",
+      "side": 1,
+      "message": "the units are not more verbose.  you\u0027re adding \"[:]\" to the string instead of \"ms\".  we could add an option to duration_str to omit the milliseconds if we don\u0027t need it to be so coarse.\n\nso instead of `[0:33]`, it\u0027d be `33s`.  instead of `[1:33]`, it\u0027d be `1m33s`.  in pretty  much all cases, duration_str takes up less space.\n\nin terms of clarity for users, i don\u0027t think `[]` adds anything.  it\u0027s already separated from other elements by multiple things -- paren with the project count, and a `|`.",
+      "parentUuid": "07cd00fa_bb84e449",
+      "revId": "31cd20522f9d47816183bd1a7f447d8067cddd78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
