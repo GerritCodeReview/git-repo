@@ -778,7 +778,7 @@ class SyncAnalysisState:
     """
     self._config = config
     now = datetime.datetime.utcnow()
-    self._Set('main.synctime', now.isoformat() + 'Z')
+    self._Set('main.synctime', now.isoformat(timespec='microseconds') + 'Z')
     self._Set('main.version', '1')
     self._Set('sys.argv', sys.argv)
     for key, value in superproject_logging_data.items():
