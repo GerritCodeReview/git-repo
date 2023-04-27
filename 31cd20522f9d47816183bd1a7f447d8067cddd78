@@ -52,6 +52,24 @@
       "parentUuid": "07cd00fa_bb84e449",
       "revId": "31cd20522f9d47816183bd1a7f447d8067cddd78",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e942fb5_435c9165",
+        "filename": "progress.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-04-27T23:37:27Z",
+      "side": 1,
+      "message": "fine with removing `[]`, but imo `[H:]MM:SS` \u003e `HhMMmSSs` in terms of scannability especially for hour-long syncs (`1:03:31` vs `1h3m31s`) and consistency with how other tools display progress/time (eg curl, progress, tqdm)\n\n(doesn\u0027t format hours yet, but i\u0027ll fix it if we go that route)",
+      "parentUuid": "846b30b2_006508b9",
+      "revId": "31cd20522f9d47816183bd1a7f447d8067cddd78",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
