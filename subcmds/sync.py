@@ -675,7 +675,14 @@ later is required to fix a server side protocol bug.
         jobs = opt.jobs_network
         fetched = set()
         remote_fetched = set()
-        pm = Progress("Fetching", len(projects), delay=False, quiet=opt.quiet)
+
+        pm = Progress(
+            "Fetching",
+            len(projects),
+            delay=False,
+            quiet=opt.quiet,
+            show_elapsed=True,
+        )
 
         objdir_project_map = dict()
         for project in projects:
