@@ -675,7 +675,28 @@ later is required to fix a server side protocol bug.
         jobs = opt.jobs_network
         fetched = set()
         remote_fetched = set()
-        pm = Progress("Fetching", len(projects), delay=False, quiet=opt.quiet)
+
+        pm = Progress(
+            "Fetching",
+            len(projects),
+            delay=False,
+            quiet=opt.quiet,
+            show_elapsed=True,
+        )
+        sync_event = _threading.Event()
+
+        def _PrintFetchProgress():
+            while True:
+                time.sleep(1)
+                if sync_event.is_set():
+                    return
+                pm.refresh()
+
+        sync_progress_thread = _threading.Thread(
+            target=_PrintFetchProgress,
+        )
+        sync_progress_thread.daemon = True
+        sync_progress_thread.start()
 
         objdir_project_map = dict()
         for project in projects:
@@ -758,6 +779,7 @@ later is required to fix a server side protocol bug.
         # crash.
         del Sync.ssh_proxy
 
+        sync_event.set()
         pm.end()
         self._fetch_times.Save()
 

@@ -46,6 +46,12 @@ def duration_str(total):
     return ret
 
 
+def elapsed_str(total):
+    """Returns elapsed seconds in the format [M:SS]."""
+    mins, rem_sec = divmod(int(total), 60)
+    return f"[{mins}:{str(rem_sec).zfill(2)}]"
+
+
 class Progress(object):
     def __init__(
         self,
@@ -55,6 +61,7 @@ class Progress(object):
         print_newline=False,
         delay=True,
         quiet=False,
+        show_elapsed=False,
     ):
         self._title = title
         self._total = total
@@ -74,6 +81,10 @@ class Progress(object):
             self._show = False
             self._start += 2**32
 
+        # Save the last message for displaying on refresh.
+        self._last_msg = None
+        self._show_elapsed = show_elapsed
+
     def start(self, name):
         self._active += 1
         if not self._show_jobs:
@@ -84,14 +95,19 @@ class Progress(object):
         self.update(msg="finished " + name)
         self._active -= 1
 
+    def refresh(self):
+        self.update(inc=0, msg=self._last_msg)
+
     def update(self, inc=1, msg=""):
         self._done += inc
+        self._last_msg = msg
 
         if _NOT_TTY or IsTraceToStderr():
             return
 
+        elapsed_sec = time() - self._start
         if not self._show:
-            if 0.5 <= time() - self._start:
+            if 0.5 <= elapsed_sec:
                 self._show = True
             else:
                 return
@@ -110,8 +126,12 @@ class Progress(object):
                 )
             else:
                 jobs = ""
+            if self._show_elapsed:
+                elapsed = elapsed_str(int(elapsed_sec)) + " "
+            else:
+                elapsed = ""
             sys.stderr.write(
-                "\r%s: %2d%% %s(%d%s/%d%s)%s%s%s%s"
+                "\r%s: %2d%% %s(%d%s/%d%s) %s| %s%s%s"
                 % (
                     self._title,
                     p,
@@ -120,7 +140,7 @@ class Progress(object):
                     self._units,
                     self._total,
                     self._units,
-                    " " if msg else "",
+                    elapsed,
                     msg,
                     CSI_ERASE_LINE_AFTER,
                     "\n" if self._print_newline else "",
