@@ -14,7 +14,13 @@
 
 import os
 import sys
-from time import time
+import time
+
+try:
+    import threading as _threading
+except ImportError:
+    import dummy_threading as _threading
+
 from repo_trace import IsTraceToStderr
 
 _NOT_TTY = not os.isatty(2)
@@ -46,6 +52,12 @@ def duration_str(total):
     return ret
 
 
+def elapsed_str(total):
+    """Returns elapsed seconds in the format [M:SS]."""
+    mins, rem_sec = divmod(int(total), 60)
+    return f"[{mins}:{str(rem_sec).zfill(2)}]"
+
+
 class Progress(object):
     def __init__(
         self,
@@ -55,11 +67,12 @@ class Progress(object):
         print_newline=False,
         delay=True,
         quiet=False,
+        show_elapsed=False,
     ):
         self._title = title
         self._total = total
         self._done = 0
-        self._start = time()
+        self._start = time.time()
         self._show = not delay
         self._units = units
         self._print_newline = print_newline
@@ -67,12 +80,30 @@ class Progress(object):
         self._show_jobs = False
         self._active = 0
 
+        # Save the last message for displaying on refresh.
+        self._last_msg = None
+        self._show_elapsed = show_elapsed
+        self._update_event = _threading.Event()
+        self._update_thread = _threading.Thread(
+            target=self._update_loop,
+        )
+        self._update_thread.daemon = True
+
         # When quiet, never show any output.  It's a bit hacky, but reusing the
         # existing logic that delays initial output keeps the rest of the class
         # clean.  Basically we set the start time to years in the future.
         if quiet:
             self._show = False
             self._start += 2**32
+        elif show_elapsed:
+            self._update_thread.start()
+
+    def _update_loop(self):
+        while True:
+            if self._update_event.is_set():
+                return
+            self.update(inc=0, msg=self._last_msg)
+            time.sleep(1)
 
     def start(self, name):
         self._active += 1
@@ -86,12 +117,14 @@ class Progress(object):
 
     def update(self, inc=1, msg=""):
         self._done += inc
+        self._last_msg = msg
 
         if _NOT_TTY or IsTraceToStderr():
             return
 
+        elapsed_sec = time.time() - self._start
         if not self._show:
-            if 0.5 <= time() - self._start:
+            if 0.5 <= elapsed_sec:
                 self._show = True
             else:
                 return
@@ -110,8 +143,12 @@ class Progress(object):
                 )
             else:
                 jobs = ""
+            if self._show_elapsed:
+                elapsed = f" {elapsed_str(int(elapsed_sec))} |"
+            else:
+                elapsed = ""
             sys.stderr.write(
-                "\r%s: %2d%% %s(%d%s/%d%s)%s%s%s%s"
+                "\r%s: %2d%% %s(%d%s/%d%s)%s %s%s%s"
                 % (
                     self._title,
                     p,
@@ -120,7 +157,7 @@ class Progress(object):
                     self._units,
                     self._total,
                     self._units,
-                    " " if msg else "",
+                    elapsed,
                     msg,
                     CSI_ERASE_LINE_AFTER,
                     "\n" if self._print_newline else "",
@@ -129,10 +166,11 @@ class Progress(object):
             sys.stderr.flush()
 
     def end(self):
+        self._update_event.set()
         if _NOT_TTY or IsTraceToStderr() or not self._show:
             return
 
-        duration = duration_str(time() - self._start)
+        duration = duration_str(time.time() - self._start)
         if self._total <= 0:
             sys.stderr.write(
                 "\r%s: %d, done in %s%s\n"
