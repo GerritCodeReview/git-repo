@@ -2300,6 +2300,20 @@ class Project(object):
         if ID_RE.match(self.revisionExpr) is not None:
             is_sha1 = True
 
+        # b/274340522 Prevent creating a shallow repo when there is a high
+        # chance the repo will be subsequently unshallowed (immediately or in
+        # the future).
+        # The recursive call to this._RemoteFetch ensures that a shallow
+        # repositiory is unshallowed.
+        # This happens anytime there is not enough history to determine if
+        # the revisionExpr is an ancestor of the upstream branch. It is possible
+        # for this to happen many times for a single repository.
+        prevent_shallow_repo = depth and is_sha1 and self.upstream
+
+        if depth and prevent_shallow_repo:
+            clone_filter = "blob:none"
+            depth = None
+
         if current_branch_only:
             if self.revisionExpr.startswith(R_TAGS):
                 # This is a tag and its commit id should never change.
