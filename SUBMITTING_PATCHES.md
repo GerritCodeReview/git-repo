@@ -3,16 +3,17 @@
 # Short Version
 
  - Make small logical changes.
- - [Provide a meaningful commit message][commit-message-style].
+ - Provide a meaningful commit message.
+ - Check for coding errors and style nits with flake8.
  - Make sure all code is under the Apache License, 2.0.
  - Publish your changes for review.
  - Make corrections if requested.
  - Verify your changes on gerrit so they can be submitted.
 
-   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/main`
-
+   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/master`
 
 # Long Version
+
 
 I wanted a file describing how to submit patches for repo,
 so I started with the one found in the core Git distribution
@@ -22,14 +23,12 @@ patch submission guidelines for the Linux kernel.
 However there are some differences, so please review and familiarize
 yourself with the following relevant bits.
 
-
 ## Make separate commits for logically separate changes.
 
-Unless your patch is really trivial, you should not be sending out a patch that
-was generated between your working tree and your commit head.
-Instead, always make a commit with a complete
-[commit message][commit-message-style] and generate a series of patches from
-your repository.
+Unless your patch is really trivial, you should not be sending
+out a patch that was generated between your working tree and your
+commit head.  Instead, always make a commit with complete commit
+message and generate a series of patches from your repository.
 It is a good discipline.
 
 Describe the technical detail of the change(s).
@@ -38,26 +37,17 @@ If your description starts to get too long, that's a sign that you
 probably need to split up your commit to finer grained pieces.
 
 
-## Linting and formatting code
+## Check for coding errors and style violations with flake8
 
-Lint any changes by running:
-```sh
-$ tox -e lint -- file.py
-```
+Run `flake8` on changed modules:
 
-And format with:
-```sh
-$ tox -e format -- file.py
-```
+    flake8 file.py
 
-Or format everything:
-```sh
-$ tox -e format
-```
+Note that repo generally follows [Google's Python Style Guide] rather than
+[PEP 8], with a couple of notable exceptions:
 
-Repo uses [black](https://black.readthedocs.io/) with line length of 80 as its
-formatter and flake8 as its linter. Repo also follows
-[Google's Python Style Guide].
+* Indentation is at 2 columns rather than 4
+* The maximum line length is 100 columns rather than 80
 
 There should be no new errors or warnings introduced.
 
@@ -159,7 +149,7 @@ Push your patches over HTTPS to the review server, possibly through
 a remembered remote to make this easier in the future:
 
     git config remote.review.url https://gerrit-review.googlesource.com/git-repo
-    git config remote.review.push HEAD:refs/for/main
+    git config remote.review.push HEAD:refs/for/master
 
     git push review
 
@@ -180,6 +170,3 @@ After you receive a Code-Review+2 from the maintainer, select the Verified
 button on the gerrit page for the change. This verifies that you have tested
 your changes and notifies the maintainer that they are ready to be submitted.
 The maintainer will then submit your changes to the repository.
-
-
-[commit-message-style]: https://chris.beams.io/posts/git-commit/
