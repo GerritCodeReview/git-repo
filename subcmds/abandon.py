@@ -90,7 +90,7 @@ It is equivalent to "git branch -D <branchname>".
                         success[branch].append(project)
                     else:
                         err[branch].append(project)
-                pm.update()
+                pm.update(msg="")
 
         self.ExecuteInParallel(
             opt.jobs,
