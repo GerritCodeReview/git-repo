@@ -39,6 +39,8 @@ class SshTests(unittest.TestCase):
             "OpenSSH_7.6p1 Ubuntu-4ubuntu0.3, OpenSSL 1.0.2n  7 Dec 2017\n"
         )
         self.assertEqual(ver, (7, 6))
+        ver = ssh._parse_ssh_version("OpenSSH_9.0p1, LibreSSL 3.3.6\n")
+        self.assertEqual(ver, (9, 0))
 
     def test_version(self):
         """Check version() handling."""

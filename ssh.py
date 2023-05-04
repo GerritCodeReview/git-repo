@@ -42,7 +42,7 @@ def _parse_ssh_version(ver_str=None):
     """parse a ssh version string into a tuple"""
     if ver_str is None:
         ver_str = _run_ssh_version()
-    m = re.match(r"^OpenSSH_([0-9.]+)(p[0-9]+)?\s", ver_str)
+    m = re.match(r"^OpenSSH_([0-9.]+)(p[0-9]+)?[\s,]", ver_str)
     if m:
         return tuple(int(x) for x in m.group(1).split("."))
     else:
