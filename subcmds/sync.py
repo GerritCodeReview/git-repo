@@ -66,7 +66,7 @@ from command import (
 from error import RepoChangedException, GitError
 import platform_utils
 from project import SyncBuffer
-from progress import Progress
+from progress import Progress, elapsed_str
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
@@ -245,6 +245,10 @@ later is required to fix a server side protocol bug.
     # A value of 0 means we want parallel jobs, but we'll determine the default
     # value later on.
     PARALLEL_JOBS = 0
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._sync_dict = multiprocessing.Manager().dict()
 
     def _Options(self, p, show_smart=True):
         p.add_option(
@@ -596,7 +600,7 @@ later is required to fix a server side protocol bug.
         The projects we're given share the same underlying git object store, so
         we have to fetch them in serial.
 
-        Delegates most of the work to _FetchHelper.
+        Delegates most of the work to _FetchOne.
 
         Args:
             opt: Program options returned from optparse.  See _Options().
@@ -615,6 +619,8 @@ later is required to fix a server side protocol bug.
             Whether the fetch was successful.
         """
         start = time.time()
+        k = f"{project.name} @ {project.relpath}"
+        self._sync_dict[k] = start
         success = False
         remote_fetched = False
         buf = io.StringIO()
@@ -660,14 +666,30 @@ later is required to fix a server side protocol bug.
                 % (project.name, type(e).__name__, str(e)),
                 file=sys.stderr,
             )
+            del self._sync_dict[k]
             raise
 
         finish = time.time()
+        del self._sync_dict[k]
         return _FetchOneResult(success, project, start, finish, remote_fetched)
 
     @classmethod
     def _FetchInitChild(cls, ssh_proxy):
         cls.ssh_proxy = ssh_proxy
+
+    def _GetLongestSyncMessage(self):
+        if len(self._sync_dict) == 0:
+            return None
+
+        earliest_time = float("inf")
+        earliest_proj = None
+        for project, t in self._sync_dict.items():
+            if t < earliest_time:
+                earliest_time = t
+                earliest_proj = project
+
+        elapsed = time.time() - earliest_time
+        return f"{elapsed_str(elapsed)} {earliest_proj}"
 
     def _Fetch(self, projects, opt, err_event, ssh_proxy):
         ret = True
@@ -681,7 +703,21 @@ later is required to fix a server side protocol bug.
             delay=False,
             quiet=opt.quiet,
             show_elapsed=True,
+            elide=True,
         )
+
+        sync_event = _threading.Event()
+
+        def _MonitorSyncLoop():
+            while True:
+                if sync_event.is_set():
+                    return
+                pm.update(inc=0, msg=self._GetLongestSyncMessage())
+                time.sleep(1)
+
+        sync_progress_thread = _threading.Thread(target=_MonitorSyncLoop)
+        sync_progress_thread.daemon = True
+        sync_progress_thread.start()
 
         objdir_project_map = dict()
         for project in projects:
@@ -712,7 +748,7 @@ later is required to fix a server side protocol bug.
                         ret = False
                     else:
                         fetched.add(project.gitdir)
-                    pm.update(msg=f"Last synced: {project.name}")
+                    pm.update()
                 if not ret and opt.fail_fast:
                     break
             return ret
@@ -764,6 +800,7 @@ later is required to fix a server side protocol bug.
         # crash.
         del Sync.ssh_proxy
 
+        sync_event.set()
         pm.end()
         self._fetch_times.Save()
 
