@@ -58,7 +58,7 @@ The command is equivalent to:
                         success.append(project)
                     else:
                         err.append(project)
-                pm.update()
+                pm.update(msg="")
 
         self.ExecuteInParallel(
             opt.jobs,

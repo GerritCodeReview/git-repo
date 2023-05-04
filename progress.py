@@ -82,10 +82,10 @@ class Progress(object):
         title,
         total=0,
         units="",
-        print_newline=False,
         delay=True,
         quiet=False,
         show_elapsed=False,
+        elide=False,
     ):
         self._title = title
         self._total = total
@@ -93,7 +93,7 @@ class Progress(object):
         self._start = time.time()
         self._show = not delay
         self._units = units
-        self._print_newline = print_newline
+        self._elide = elide
         # Only show the active jobs section if we run more than one in parallel.
         self._show_jobs = False
         self._active = 0
@@ -118,10 +118,18 @@ class Progress(object):
 
     def _update_loop(self):
         while True:
-            if self._update_event.is_set():
+            self.update(inc=0)
+            if self._update_event.wait(timeout=1):
                 return
-            self.update(inc=0, msg=self._last_msg)
-            time.sleep(1)
+
+    def _write(self, s):
+        s = "\r" + s
+        if self._elide:
+            col = os.get_terminal_size().columns
+            if len(s) > col:
+                s = s[: col - 1] + ".."
+        sys.stderr.write(s)
+        sys.stderr.flush()
 
     def start(self, name):
         self._active += 1
@@ -133,8 +141,16 @@ class Progress(object):
         self.update(msg="finished " + name)
         self._active -= 1
 
-    def update(self, inc=1, msg=""):
+    def update(self, inc=1, msg=None):
+        """Updates the progress indicator.
+
+        Args:
+            inc: The number of items completed.
+            msg: The message to display. If None, use the last message.
+        """
         self._done += inc
+        if msg is None:
+            msg = self._last_msg
         self._last_msg = msg
 
         if _NOT_TTY or IsTraceToStderr():
@@ -148,10 +164,9 @@ class Progress(object):
                 return
 
         if self._total <= 0:
-            sys.stderr.write(
-                "\r%s: %d,%s" % (self._title, self._done, CSI_ERASE_LINE_AFTER)
+            self._write(
+                "%s: %d,%s" % (self._title, self._done, CSI_ERASE_LINE_AFTER)
             )
-            sys.stderr.flush()
         else:
             p = (100 * self._done) / self._total
             if self._show_jobs:
@@ -165,8 +180,8 @@ class Progress(object):
                 elapsed = f" {elapsed_str(elapsed_sec)} |"
             else:
                 elapsed = ""
-            sys.stderr.write(
-                "\r%s: %2d%% %s(%d%s/%d%s)%s %s%s%s"
+            self._write(
+                "%s: %2d%% %s(%d%s/%d%s)%s %s%s"
                 % (
                     self._title,
                     p,
@@ -178,10 +193,8 @@ class Progress(object):
                     elapsed,
                     msg,
                     CSI_ERASE_LINE_AFTER,
-                    "\n" if self._print_newline else "",
                 )
             )
-            sys.stderr.flush()
 
     def end(self):
         self._update_event.set()
@@ -190,15 +203,14 @@ class Progress(object):
 
         duration = duration_str(time.time() - self._start)
         if self._total <= 0:
-            sys.stderr.write(
-                "\r%s: %d, done in %s%s\n"
+            self._write(
+                "%s: %d, done in %s%s\n"
                 % (self._title, self._done, duration, CSI_ERASE_LINE_AFTER)
             )
-            sys.stderr.flush()
         else:
             p = (100 * self._done) / self._total
-            sys.stderr.write(
-                "\r%s: %3d%% (%d%s/%d%s), done in %s%s\n"
+            self._write(
+                "%s: %3d%% (%d%s/%d%s), done in %s%s\n"
                 % (
                     self._title,
                     p,
@@ -210,4 +222,3 @@ class Progress(object):
                     CSI_ERASE_LINE_AFTER,
                 )
             )
-            sys.stderr.flush()
