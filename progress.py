@@ -103,7 +103,7 @@ class Progress(object):
         self._show_elapsed = show_elapsed
         self._update_event = _threading.Event()
         self._update_thread = _threading.Thread(
-            target=self._update_loop,
+            target=self._refresh_loop,
         )
         self._update_thread.daemon = True
 
@@ -116,11 +116,11 @@ class Progress(object):
         elif show_elapsed:
             self._update_thread.start()
 
-    def _update_loop(self):
+    def _refresh_loop(self):
         while True:
             if self._update_event.is_set():
                 return
-            self.update(inc=0, msg=self._last_msg)
+            self.refresh()
             time.sleep(1)
 
     def start(self, name):
@@ -132,6 +132,9 @@ class Progress(object):
     def finish(self, name):
         self.update(msg="finished " + name)
         self._active -= 1
+
+    def refresh(self, inc=0):
+        self.update(inc, msg=self._last_msg)
 
     def update(self, inc=1, msg=""):
         self._done += inc
