@@ -66,7 +66,7 @@ from command import (
 from error import RepoChangedException, GitError
 import platform_utils
 from project import SyncBuffer
-from progress import Progress
+from progress import Progress, elapsed_str
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
@@ -590,21 +590,21 @@ later is required to fix a server side protocol bug.
         if need_unload:
             m.outer_client.manifest.Unload()
 
-    def _FetchProjectList(self, opt, projects):
+    def _FetchProjectList(self, opt, sync_dict, projects):
         """Main function of the fetch worker.
 
         The projects we're given share the same underlying git object store, so
         we have to fetch them in serial.
 
-        Delegates most of the work to _FetchHelper.
+        Delegates most of the work to _FetchOne.
 
         Args:
             opt: Program options returned from optparse.  See _Options().
             projects: Projects to fetch.
         """
-        return [self._FetchOne(opt, x) for x in projects]
+        return [self._FetchOne(opt, sync_dict, x) for x in projects]
 
-    def _FetchOne(self, opt, project):
+    def _FetchOne(self, opt, sync_dict, project):
         """Fetch git objects for a single project.
 
         Args:
@@ -615,6 +615,8 @@ later is required to fix a server side protocol bug.
             Whether the fetch was successful.
         """
         start = time.time()
+        k = f"{project.name} @ {project.relpath}"
+        sync_dict[k] = start
         success = False
         remote_fetched = False
         buf = io.StringIO()
@@ -660,14 +662,30 @@ later is required to fix a server side protocol bug.
                 % (project.name, type(e).__name__, str(e)),
                 file=sys.stderr,
             )
+            del sync_dict[k]
             raise
 
         finish = time.time()
+        del sync_dict[k]
         return _FetchOneResult(success, project, start, finish, remote_fetched)
 
     @classmethod
     def _FetchInitChild(cls, ssh_proxy):
         cls.ssh_proxy = ssh_proxy
+
+    def _GetLongestSyncMessage(self, sync_dict):
+        if len(sync_dict) == 0:
+            return None
+
+        earliest_time = float("inf")
+        earliest_proj = None
+        for project, t in sync_dict.items():
+            if t < earliest_time:
+                earliest_time = t
+                earliest_proj = project
+
+        elapsed = time.time() - earliest_time
+        return f"{elapsed_str(elapsed)} {earliest_proj}"
 
     def _Fetch(self, projects, opt, err_event, ssh_proxy):
         ret = True
@@ -681,7 +699,26 @@ later is required to fix a server side protocol bug.
             delay=False,
             quiet=opt.quiet,
             show_elapsed=True,
+            elide=True,
         )
+
+        sync_dict = multiprocessing.Manager().dict()
+        sync_event = _threading.Event()
+
+        def _MonitorSyncLoop():
+            while True:
+                if sync_event.is_set():
+                    return
+                msg = self._GetLongestSyncMessage(sync_dict)
+                if msg:
+                    pm.update(inc=0, msg=msg)
+                else:
+                    pm.refresh()
+                time.sleep(1)
+
+        sync_progress_thread = _threading.Thread(target=_MonitorSyncLoop)
+        sync_progress_thread.daemon = True
+        sync_progress_thread.start()
 
         objdir_project_map = dict()
         for project in projects:
@@ -712,7 +749,7 @@ later is required to fix a server side protocol bug.
                         ret = False
                     else:
                         fetched.add(project.gitdir)
-                    pm.update(msg=f"Last synced: {project.name}")
+                    pm.refresh(inc=1)
                 if not ret and opt.fail_fast:
                     break
             return ret
@@ -727,7 +764,7 @@ later is required to fix a server side protocol bug.
         if len(projects_list) == 1 or jobs == 1:
             self._FetchInitChild(ssh_proxy)
             if not _ProcessResults(
-                self._FetchProjectList(opt, x) for x in projects_list
+                self._FetchProjectList(opt, sync_dict, x) for x in projects_list
             ):
                 ret = False
         else:
@@ -750,7 +787,7 @@ later is required to fix a server side protocol bug.
                 jobs, initializer=self._FetchInitChild, initargs=(ssh_proxy,)
             ) as pool:
                 results = pool.imap_unordered(
-                    functools.partial(self._FetchProjectList, opt),
+                    functools.partial(self._FetchProjectList, opt, sync_dict),
                     projects_list,
                     chunksize=chunksize,
                 )
@@ -764,6 +801,7 @@ later is required to fix a server side protocol bug.
         # crash.
         del Sync.ssh_proxy
 
+        sync_event.set()
         pm.end()
         self._fetch_times.Save()
 
