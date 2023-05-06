@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e2248fd_1a12f3e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160071
+      },
+      "writtenOn": "2023-05-06T01:09:25Z",
+      "side": 1,
+      "message": "Oops, I guess I uploaded this twice by accident.",
+      "revId": "f68c24165cc9a9815346050f260c3457329a2a19",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
