@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a74191f_c497981e",
+        "filename": "progress.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-09T21:32:25Z",
+      "side": 1,
+      "message": "nit: looks like all calls to write start with \\r; so instead of passing it around, we can write \\r to stderr directly. If you do that, we should update this line to\n\n    s \u003d s[: col - 2] + \"..\"\n\nit\u0027s also possible that message has new line (e.g. see self._print_newline); so in that case we should not trim it.",
+      "revId": "54ed695e5e474f85422589ff3213c6d8d9fbb018",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afe9a18c_097dbd28",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-09T21:32:25Z",
+      "side": 1,
+      "message": "what if we store this in self._sync_dict; that way we don\u0027t need to pass it around",
+      "revId": "54ed695e5e474f85422589ff3213c6d8d9fbb018",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
