@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c452df_7b8535ca",
+        "filename": "progress.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-09T23:17:37Z",
+      "side": 1,
+      "message": "afaict print_newline isn\u0027t used anywhere, incl the chromeos fork, so deleted. and handled the \\r",
+      "parentUuid": "0a74191f_c497981e",
+      "revId": "54ed695e5e474f85422589ff3213c6d8d9fbb018",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "afe9a18c_097dbd28",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-09T21:32:25Z",
       "side": 1,
       "message": "what if we store this in self._sync_dict; that way we don\u0027t need to pass it around",
+      "revId": "54ed695e5e474f85422589ff3213c6d8d9fbb018",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "730a9676_9883baec",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 705,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-09T23:17:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afe9a18c_097dbd28",
       "revId": "54ed695e5e474f85422589ff3213c6d8d9fbb018",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
