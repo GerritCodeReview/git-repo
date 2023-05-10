@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a77ce8_eab122e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-10T20:15:17Z",
+      "side": 1,
+      "message": "@vapier@google.com, could you also review or nominate someone else?",
+      "revId": "26122d529cafd2ac4524735d8e97ec48785f6e89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b27f198a_f8181c72",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 713,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-10T20:15:17Z",
+      "side": 1,
+      "message": "```suggestion\n                pm.update(inc\u003d0, msg\u003dself._GetLongestSyncMessage())\n                if sync_event.wait(timeout\u003d1):\n                    return\n```",
+      "range": {
+        "startLine": 710,
+        "startChar": 0,
+        "endLine": 713,
+        "endChar": 29
+      },
+      "revId": "26122d529cafd2ac4524735d8e97ec48785f6e89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
