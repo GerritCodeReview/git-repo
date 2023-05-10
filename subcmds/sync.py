@@ -1805,44 +1805,40 @@ class _FetchTimes(object):
 
     def __init__(self, manifest):
         self._path = os.path.join(manifest.repodir, ".repo_fetchtimes.json")
-        self._times = None
-        self._seen = set()
+        self._saved_times = None
+        self._seen_times = {}
 
     def Get(self, project):
         self._Load()
-        return self._times.get(project.name, _ONE_DAY_S)
+        return self._saved_times.get(project.name, _ONE_DAY_S)
 
     def Set(self, project, t):
-        self._Load()
         name = project.name
-        old = self._times.get(name, t)
-        self._seen.add(name)
-        a = self._ALPHA
-        self._times[name] = (a * t) + ((1 - a) * old)
+
+        # For shared projects, save the longest time.
+        self._seen_times[name] = max(self._seen_times.get(name, 0), t)
 
     def _Load(self):
-        if self._times is None:
+        if self._saved_times is None:
             try:
                 with open(self._path) as f:
-                    self._times = json.load(f)
+                    self._saved_times = json.load(f)
             except (IOError, ValueError):
                 platform_utils.remove(self._path, missing_ok=True)
-                self._times = {}
+                self._saved_times = {}
 
     def Save(self):
-        if self._times is None:
+        if self._saved_times is None:
             return
 
-        to_delete = []
-        for name in self._times:
-            if name not in self._seen:
-                to_delete.append(name)
-        for name in to_delete:
-            del self._times[name]
+        for name, t in self._seen_times.items():
+          # Keep a moving average across the previous/current sync runs.
+          old = self._saved_times.get(name, t)
+          self._seen_times[name] = (self._ALPHA * t) + ((1 - self._ALPHA) * old)
 
         try:
             with open(self._path, "w") as f:
-                json.dump(self._times, f, indent=2)
+                json.dump(self._seen_times, f, indent=2)
         except (IOError, TypeError):
             platform_utils.remove(self._path, missing_ok=True)
 
