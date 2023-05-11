@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e4ae923_5882c1e7",
+        "filename": "SUBMITTING_PATCHES.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-11T19:20:46Z",
+      "side": 1,
+      "message": "nit: button?",
+      "range": {
+        "startLine": 186,
+        "startChar": 63,
+        "endLine": 186,
+        "endChar": 70
+      },
+      "revId": "85d3d89a633c008592576dfe81d9e6df831235bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
