@@ -22,6 +22,30 @@
       },
       "revId": "85d3d89a633c008592576dfe81d9e6df831235bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d17a3b5_8ff211ce",
+        "filename": "SUBMITTING_PATCHES.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-11T19:27:52Z",
+      "side": 1,
+      "message": "there is no button that i\u0027m aware of.  you have to apply the label through the reply dialog.  the CQ+2 quick button in Chromium GoB hosts is a custom plugin that only we have.",
+      "parentUuid": "2e4ae923_5882c1e7",
+      "range": {
+        "startLine": 186,
+        "startChar": 63,
+        "endLine": 186,
+        "endChar": 70
+      },
+      "revId": "85d3d89a633c008592576dfe81d9e6df831235bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
