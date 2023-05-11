@@ -1,18 +1,19 @@
+# Submitting Changes
+
+Here's a short overview of the process.
+
+*   Make small logical changes.
+*   [Provide a meaningful commit message][commit-message-style].
+*   Make sure all code is under the Apache License, 2.0.
+*   Publish your changes for review.
+    *   `git push origin HEAD:refs/for/main`
+*   Make corrections if requested.
+*   [Verify your changes on Gerrit.](#verify)
+*   [Send to the commit queue for testing & merging.](#cq)
+
 [TOC]
 
-# Short Version
-
- - Make small logical changes.
- - [Provide a meaningful commit message][commit-message-style].
- - Make sure all code is under the Apache License, 2.0.
- - Publish your changes for review.
- - Make corrections if requested.
- - Verify your changes on gerrit so they can be submitted.
-
-   `git push https://gerrit-review.googlesource.com/git-repo HEAD:refs/for/main`
-
-
-# Long Version
+## Long Version
 
 I wanted a file describing how to submit patches for repo,
 so I started with the one found in the core Git distribution
@@ -174,12 +175,16 @@ commit. If you make the requested changes you will need to amend your commit
 and push it to the review server again.
 
 
-## Verify your changes on gerrit
+## Verify your changes on Gerrit {#verify}
 
 After you receive a Code-Review+2 from the maintainer, select the Verified
-button on the gerrit page for the change. This verifies that you have tested
+button on the Gerrit page for the change. This verifies that you have tested
 your changes and notifies the maintainer that they are ready to be submitted.
-The maintainer will then submit your changes to the repository.
 
+## Merge your changes via the commit queue {#cq}
+
+Once a change is ready to be merged, select the Commit-Queue+2 setting on the
+Gerrit page for it. This tells the CI system to test the change, and if it
+passes all the checks, automatically merges it.
 
 [commit-message-style]: https://chris.beams.io/posts/git-commit/
