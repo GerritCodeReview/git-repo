@@ -341,10 +341,12 @@ to update the working directory files.
                     quiet=opt.quiet,
                 )
             except wrapper.CloneFailure:
+                err_msg = "fatal: double check your --repo-rev setting."
                 print(
-                    "fatal: double check your --repo-rev setting.",
+                    err_msg,
                     file=sys.stderr,
                 )
+                self.git_event_log.ErrorEvent(err_msg)
                 sys.exit(1)
             branch = rp.GetBranch("default")
             branch.merge = remote_ref
