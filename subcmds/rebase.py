@@ -206,7 +206,9 @@ branch but need to incorporate new upstream changes "underneath" them.
                     ret += 1
 
         if ret:
-            out.fail("%i projects had errors", ret)
+            msg_fmt = "%d projects had errors"
+            self.git_event_log.ErrorEvent(msg_fmt % (ret), msg_fmt)
+            out.fail(msg_fmt, ret)
             out.nl()
 
         return ret

@@ -657,6 +657,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
                 branch.uploaded = True
             except UploadError as e:
+                self.git_event_log.ErrorEvent("upload error: " + str(e))
                 branch.error = e
                 branch.uploaded = False
                 have_errors = True
