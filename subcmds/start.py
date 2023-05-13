@@ -168,4 +168,5 @@ revision specified in the manifest.
                     % (p.RelPath(local=opt.this_manifest_only), nb),
                     file=sys.stderr,
                 )
+            self.git_event_log.ErrorEvent("cannot start at least one project")
             sys.exit(1)
