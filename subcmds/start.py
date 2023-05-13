@@ -168,4 +168,6 @@ revision specified in the manifest.
                     % (p.RelPath(local=opt.this_manifest_only), nb),
                     file=sys.stderr,
                 )
+            msg_fmt = "cannot start %d project(s)"
+            self.git_event_log.ErrorEvent(msg_fmt % (len(err)), msg_fmt)
             sys.exit(1)

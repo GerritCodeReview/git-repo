@@ -1695,32 +1695,29 @@ later is required to fix a server side protocol bug.
 
         # If we saw an error, exit with code 1 so that other scripts can check.
         if err_event.is_set():
-            print("\nerror: Unable to fully sync the tree.", file=sys.stderr)
+            # Add a new line so it's easier to read.
+            print("\n", file=sys.stderr)
+
+            def print_and_log(err_msg):
+                self.git_event_log.ErrorEvent(err_msg)
+                print(err_msg, file=sys.stderr)
+
+            print_and_log("error: Unable to fully sync the tree")
             if err_network_sync:
-                print(
-                    "error: Downloading network changes failed.",
-                    file=sys.stderr,
-                )
+                print_and_log("error: Downloading network changes failed.")
             if err_update_projects:
-                print(
-                    "error: Updating local project lists failed.",
-                    file=sys.stderr,
-                )
+                print_and_log("error: Updating local project lists failed.")
             if err_update_linkfiles:
-                print(
-                    "error: Updating copyfiles or linkfiles failed.",
-                    file=sys.stderr,
-                )
+                print_and_log("error: Updating copyfiles or linkfiles failed.")
             if err_checkout:
-                print(
-                    "error: Checking out local projects failed.",
-                    file=sys.stderr,
-                )
+                print_and_log("error: Checking out local projects failed.")
                 if err_results:
+                    # Don't log repositories, as it may contain sensitive info.
                     print(
                         "Failing repos:\n%s" % "\n".join(err_results),
                         file=sys.stderr,
                     )
+            # Not useful to log.
             print(
                 'Try re-running with "-j1 --fail-fast" to exit at the first '
                 "error.",

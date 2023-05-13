@@ -198,9 +198,11 @@ class EventLog(object):
             event["value"] = value
             self._log.append(event)
 
-    def ErrorEvent(self, msg, fmt):
+    def ErrorEvent(self, msg, fmt=None):
         """Append a 'error' event to the current log."""
         error_event = self._CreateEventDict("error")
+        if fmt is None:
+            fmt = msg
         error_event["msg"] = msg
         error_event["fmt"] = fmt
         self._log.append(error_event)
