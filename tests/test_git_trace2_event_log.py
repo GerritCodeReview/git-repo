@@ -223,7 +223,7 @@ class EventLogTestCase(unittest.TestCase):
         self.assertEqual(len(self._log_data), 2)
         command_event = self._log_data[1]
         self.verifyCommonKeys(self._log_data[0], expected_event_name="version")
-        self.verifyCommonKeys(command_event, expected_event_name="command")
+        self.verifyCommonKeys(command_event, expected_event_name="cmd_name")
         # Check for 'command' event specific fields.
         self.assertIn("name", command_event)
         self.assertIn("subcommands", command_event)
