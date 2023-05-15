@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbfebed6_60fff2c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-15T20:13:29Z",
+      "side": 1,
+      "message": "`cmd_name`? or should the commit use `cmd_event`",
+      "range": {
+        "startLine": 10,
+        "startChar": 32,
+        "endLine": 10,
+        "endChar": 41
+      },
+      "revId": "0ad0a1ac2c8e51762f33e5e28fc394696c0cc98b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
