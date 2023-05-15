@@ -65,13 +65,13 @@ class EventLog(object):
         if env is None:
             env = os.environ
 
-        now = datetime.datetime.utcnow()
+        self.start = datetime.datetime.utcnow()
 
         # Save both our sid component and the complete sid.
         # We use our sid component (self._sid) as the unique filename prefix and
         # the full sid (self._full_sid) in the log itself.
         self._sid = "repo-%s-P%08x" % (
-            now.strftime("%Y%m%dT%H%M%SZ"),
+            self.start.strftime("%Y%m%dT%H%M%SZ"),
             os.getpid(),
         )
         parent_sid = env.get(KEY)
@@ -136,6 +136,8 @@ class EventLog(object):
         if result is None:
             result = 0
         exit_event["code"] = result
+        time_delta = datetime.datetime.utcnow() - self.start
+        exit_event["t_abs"] = time_delta.total_seconds()
         self._log.append(exit_event)
 
     def CommandEvent(self, name, subcommands):
