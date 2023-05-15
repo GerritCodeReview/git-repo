@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5155f7e_b06b0bee",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-15T15:02:09Z",
+      "side": 1,
+      "message": "Should this also include `ret`?",
+      "range": {
+        "startLine": 209,
+        "startChar": 43,
+        "endLine": 209,
+        "endChar": 47
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79324fe8_eef4d1b6",
+        "filename": "subcmds/start.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-15T15:02:09Z",
+      "side": 1,
+      "message": "Same question here, would it be useful to specify how many/which projects?",
+      "range": {
+        "startLine": 171,
+        "startChar": 56,
+        "endLine": 171,
+        "endChar": 76
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efa18825_a617c6c1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-15T15:02:09Z",
+      "side": 1,
+      "message": "nit: period",
+      "range": {
+        "startLine": 1698,
+        "startChar": 50,
+        "endLine": 1698,
+        "endChar": 51
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23b6bcb7_afe78c28",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1720,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-15T15:02:09Z",
+      "side": 1,
+      "message": "nit: period",
+      "range": {
+        "startLine": 1720,
+        "startChar": 30,
+        "endLine": 1720,
+        "endChar": 31
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
