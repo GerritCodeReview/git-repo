@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c370268_ef01e7a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-15T22:20:39Z",
+      "side": 1,
+      "message": "looks like \"command\" event was intentional (see: https://gerrit-review.googlesource.com/c/git-repo/+/300343); so I\u0027m just adding t_abs for now.",
+      "revId": "578e51a637f96b2ccdb74e276e3597961b8c0c7d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
