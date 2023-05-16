@@ -16,6 +16,23 @@
       "message": "Thanks for taking a look!",
       "revId": "2769401838dd1a0c0b246048e7c098d703a2b30b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae628641_29187334",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2407,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-16T23:44:47Z",
+      "side": 1,
+      "message": "Looks like we will be mixing depth with clone filter, and that may not be desired (http://b/274340522#comment7). \n\nIIUC, technically we will still be unshallowing, but the experience won\u0027t be as bad with filter option. Instead of patching this edge case and potentially opening more (e.g. sha1 commit hash not used), I wonder if it would make more sense to step back and see if we shouldn\u0027t be using --depth at all and just rely on filters (some kind of design doc will be needed). If not, we should at least update commit message to be more accurate.",
+      "revId": "2769401838dd1a0c0b246048e7c098d703a2b30b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
