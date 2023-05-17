@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29436a62_2d9ad2f5",
+        "filename": "subcmds/rebase.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-17T04:40:41Z",
+      "side": 1,
+      "message": "Not that useful for our purposes (we need low cardinality; so we use msg_fmt), but I can see being useful in general. Done.",
+      "parentUuid": "f5155f7e_b06b0bee",
+      "range": {
+        "startLine": 209,
+        "startChar": 43,
+        "endLine": 209,
+        "endChar": 47
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79324fe8_eef4d1b6",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-05-15T15:02:09Z",
       "side": 1,
       "message": "Same question here, would it be useful to specify how many/which projects?",
+      "range": {
+        "startLine": 171,
+        "startChar": 56,
+        "endLine": 171,
+        "endChar": 76
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed7c6ce2_f2cb008e",
+        "filename": "subcmds/start.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-17T04:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79324fe8_eef4d1b6",
       "range": {
         "startLine": 171,
         "startChar": 56,
@@ -70,6 +118,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "789ad9c6_a3ddf9c6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-17T04:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "efa18825_a617c6c1",
+      "range": {
+        "startLine": 1698,
+        "startChar": 50,
+        "endLine": 1698,
+        "endChar": 51
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23b6bcb7_afe78c28",
@@ -83,6 +155,30 @@
       "writtenOn": "2023-05-15T15:02:09Z",
       "side": 1,
       "message": "nit: period",
+      "range": {
+        "startLine": 1720,
+        "startChar": 30,
+        "endLine": 1720,
+        "endChar": 31
+      },
+      "revId": "d5477cedcd225d3f0964eb2e6a1c5c8645b9fa92",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb02b8b_5a11a2bb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1720,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-17T04:40:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23b6bcb7_afe78c28",
       "range": {
         "startLine": 1720,
         "startChar": 30,
