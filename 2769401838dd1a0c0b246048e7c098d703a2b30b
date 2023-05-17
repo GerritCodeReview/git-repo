@@ -51,6 +51,24 @@
       "parentUuid": "ae628641_29187334",
       "revId": "2769401838dd1a0c0b246048e7c098d703a2b30b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59466ad5_9936e862",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2407,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-17T17:59:55Z",
+      "side": 1,
+      "message": "Got it. I suggest you start the doc and see from there. This CL might be a good step forward, but I\u0027d be good to get review from git core folks  before we start making any changes.\n\nThanks!",
+      "parentUuid": "0f7c848f_ae50d627",
+      "revId": "2769401838dd1a0c0b246048e7c098d703a2b30b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
