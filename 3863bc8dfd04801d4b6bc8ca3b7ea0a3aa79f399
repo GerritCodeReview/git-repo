@@ -52,6 +52,24 @@
       "parentUuid": "a372973b_ba91cc7b",
       "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1e7158b_7aeea31b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1156555
+      },
+      "writtenOn": "2023-05-22T17:10:45Z",
+      "side": 1,
+      "message": "So just to bring this back up because I\u0027m still not clear on why you don\u0027t want this patch:\n\n1. It seems like repo is still under active development. I just tried to rebase this change and there\u0027s now a ton of merge conflicts because there\u0027s a lot of new stuff being added/changed in this file. So I\u0027m confused as to how \"repo is being deprecated\".\n2. Autosquash will also work without repo. It is meant to keep branches of local changes but squash them before uploading to Gerrit, which is a valid use-case in git-only land as well. \n\nIs there another way I can land this feature?",
+      "parentUuid": "36fd0762_6caa3545",
+      "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
