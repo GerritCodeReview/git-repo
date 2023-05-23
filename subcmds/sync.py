@@ -79,6 +79,8 @@ _ONE_DAY_S = 24 * 60 * 60
 _REPO_AUTO_GC = "REPO_AUTO_GC"
 _AUTO_GC = os.environ.get(_REPO_AUTO_GC) == "1"
 
+_REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
+
 
 class _FetchOneResult(NamedTuple):
     """_FetchOne return value.
@@ -638,6 +640,7 @@ later is required to fix a server side protocol bug.
                 ssh_proxy=self.ssh_proxy,
                 clone_filter=project.manifest.CloneFilter,
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
+                clone_filter_for_depth=project.manifest.CloneFilterForDepth,
             )
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched
@@ -1439,6 +1442,7 @@ later is required to fix a server side protocol bug.
                 submodules=mp.manifest.HasSubmodules,
                 clone_filter=mp.manifest.CloneFilter,
                 partial_clone_exclude=mp.manifest.PartialCloneExclude,
+                clone_filter_for_depth=mp.manifest.CloneFilterForDepth,
             )
             finish = time.time()
             self.event_log.AddSync(
@@ -1588,6 +1592,15 @@ later is required to fix a server side protocol bug.
             _PostRepoUpgrade(manifest, quiet=opt.quiet)
 
         mp = manifest.manifestProject
+
+        if _REPO_ALLOW_SHALLOW is not None:
+            if _REPO_ALLOW_SHALLOW == "1":
+                mp.ConfigureCloneFilterForDepth(None)
+            elif (
+                _REPO_ALLOW_SHALLOW == "0" and mp.clone_filter_for_depth is None
+            ):
+                mp.ConfigureCloneFilterForDepth("blob:none")
+
         if opt.mp_update:
             self._UpdateAllManifestProjects(opt, mp, manifest_name)
         else:

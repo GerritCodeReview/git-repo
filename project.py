@@ -1186,6 +1186,7 @@ class Project(object):
         ssh_proxy=None,
         clone_filter=None,
         partial_clone_exclude=set(),
+        clone_filter_for_depth=None,
     ):
         """Perform only the network IO portion of the sync process.
         Local working directory/branch state is not affected.
@@ -1294,6 +1295,10 @@ class Project(object):
             depth = self.clone_depth
         else:
             depth = self.manifest.manifestProject.depth
+
+        if depth and clone_filter_for_depth:
+            depth = None
+            clone_filter = clone_filter_for_depth
 
         # See if we can skip the network fetch entirely.
         remote_fetched = False
@@ -3884,6 +3889,11 @@ class ManifestProject(MetaProject):
         return self.config.GetString("repo.partialcloneexclude")
 
     @property
+    def clone_filter_for_depth(self):
+        """Replace shallow clone with partial clone."""
+        return self.config.GetString("repo.clonefilterfordepth")
+
+    @property
     def manifest_platform(self):
         """The --platform argument from `repo init`."""
         return self.config.GetString("manifest.platform")
@@ -3960,6 +3970,7 @@ class ManifestProject(MetaProject):
             manifest_name=spec.manifestName,
             this_manifest_only=True,
             outer_manifest=False,
+            clone_filter_for_depth=mp.clone_filter_for_depth,
         )
 
     def Sync(
@@ -3990,6 +4001,7 @@ class ManifestProject(MetaProject):
         tags="",
         this_manifest_only=False,
         outer_manifest=True,
+        clone_filter_for_depth=None,
     ):
         """Sync the manifest and all submanifests.
 
@@ -4034,6 +4046,8 @@ class ManifestProject(MetaProject):
                 current sub manifest.
             outer_manifest: a boolean, whether to start at the outermost
                 manifest.
+            clone_filter_for_depth: a string, when specified replaces shallow
+                clones with partial.
 
         Returns:
             a boolean, whether the sync was successful.
@@ -4296,6 +4310,9 @@ class ManifestProject(MetaProject):
                     file=sys.stderr,
                 )
 
+        if clone_filter_for_depth is not None:
+            self.ConfigureCloneFilterForDepth(clone_filter_for_depth)
+
         if use_superproject is not None:
             self.config.SetBoolean("repo.superproject", use_superproject)
 
@@ -4310,6 +4327,7 @@ class ManifestProject(MetaProject):
                 submodules=submodules,
                 clone_filter=clone_filter,
                 partial_clone_exclude=self.manifest.PartialCloneExclude,
+                clone_filter_for_depth=self.manifest.CloneFilterForDepth,
             ).success
             if not success:
                 r = self.GetRemote()
@@ -4413,6 +4431,18 @@ class ManifestProject(MetaProject):
                     return False
 
         return True
+
+    def ConfigureCloneFilterForDepth(self, clone_filter_for_depth):
+        """Configure clone filter to replace shallow clones.
+
+        Args:
+            clone_filter_for_depth: a string or None, e.g. 'blob:none' will
+            disable shallow clones and replace with partial clone. None will
+            enable shallow clones.
+        """
+        self.config.SetString(
+            "repo.clonefilterfordepth", clone_filter_for_depth
+        )
 
     def _ConfigureDepth(self, depth):
         """Configure the depth we'll sync down.
