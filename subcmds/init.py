@@ -113,6 +113,7 @@ to update the working directory files.
         return {
             "REPO_MANIFEST_URL": "manifest_url",
             "REPO_MIRROR_LOCATION": "reference",
+            "REPO_SHALLOW": "allow_shallow",
         }
 
     def _SyncManifest(self, opt):
@@ -125,6 +126,9 @@ to update the working directory files.
         # manifest project is special and is created when instantiating the
         # manifest which happens before we parse options.
         self.manifest.manifestProject.clone_depth = opt.manifest_depth
+        clone_filter_for_depth = (
+            "blob:none" if (opt.allow_shallow == "0") else None
+        )
         if not self.manifest.manifestProject.Sync(
             manifest_url=opt.manifest_url,
             manifest_branch=opt.manifest_branch,
@@ -140,6 +144,7 @@ to update the working directory files.
             partial_clone=opt.partial_clone,
             clone_filter=opt.clone_filter,
             partial_clone_exclude=opt.partial_clone_exclude,
+            clone_filter_for_depth=clone_filter_for_depth,
             clone_bundle=opt.clone_bundle,
             git_lfs=opt.git_lfs,
             use_superproject=opt.use_superproject,

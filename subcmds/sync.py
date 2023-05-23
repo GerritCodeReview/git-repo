@@ -461,6 +461,11 @@ later is required to fix a server side protocol bug.
             help=SUPPRESS_HELP,
         )
 
+    def _RegisteredEnvironmentOptions(self):
+        return {
+            "REPO_SHALLOW": "allow_shallow",
+        }
+
     def _GetBranch(self, manifest_project):
         """Returns the branch name for getting the approved smartsync manifest.
 
@@ -638,6 +643,7 @@ later is required to fix a server side protocol bug.
                 ssh_proxy=self.ssh_proxy,
                 clone_filter=project.manifest.CloneFilter,
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
+                clone_filter_for_depth=project.manifest.CloneFilterForDepth,
             )
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched
@@ -1439,6 +1445,7 @@ later is required to fix a server side protocol bug.
                 submodules=mp.manifest.HasSubmodules,
                 clone_filter=mp.manifest.CloneFilter,
                 partial_clone_exclude=mp.manifest.PartialCloneExclude,
+                clone_filter_for_depth=mp.manifest.CloneFilterForDepth,
             )
             finish = time.time()
             self.event_log.AddSync(
@@ -1588,6 +1595,13 @@ later is required to fix a server side protocol bug.
             _PostRepoUpgrade(manifest, quiet=opt.quiet)
 
         mp = manifest.manifestProject
+
+        if opt.allow_shallow is not None:
+            if opt.allow_shallow == "1":
+                mp.ConfigureCloneFilterForDepth(None)
+            elif opt.allow_shallow == "0" and mp.clone_filter_for_depth is None:
+                mp.ConfigureCloneFilterForDepth("blob:none")
+
         if opt.mp_update:
             self._UpdateAllManifestProjects(opt, mp, manifest_name)
         else:
