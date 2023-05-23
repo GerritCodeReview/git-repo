@@ -638,6 +638,7 @@ later is required to fix a server side protocol bug.
                 ssh_proxy=self.ssh_proxy,
                 clone_filter=project.manifest.CloneFilter,
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
+                clone_filter_for_depth=project.manifest.CloneFilterForDepth,
             )
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched
@@ -1439,6 +1440,7 @@ later is required to fix a server side protocol bug.
                 submodules=mp.manifest.HasSubmodules,
                 clone_filter=mp.manifest.CloneFilter,
                 partial_clone_exclude=mp.manifest.PartialCloneExclude,
+                clone_filter_for_depth=mp.manifest.CloneFilterForDepth,
             )
             finish = time.time()
             self.event_log.AddSync(

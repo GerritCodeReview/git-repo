@@ -982,6 +982,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         return None
 
     @property
+    def CloneFilterForDepth(self):
+        if self.manifestProject.clone_filter_for_depth:
+            return self.manifestProject.clone_filter_for_depth
+        return None
+
+    @property
     def PartialCloneExclude(self):
         exclude = self.manifest.manifestProject.partial_clone_exclude or ""
         return set(x.strip() for x in exclude.split(","))

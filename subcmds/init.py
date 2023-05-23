@@ -140,6 +140,7 @@ to update the working directory files.
             partial_clone=opt.partial_clone,
             clone_filter=opt.clone_filter,
             partial_clone_exclude=opt.partial_clone_exclude,
+            clone_filter_for_depth=opt.clone_filter_for_depth,
             clone_bundle=opt.clone_bundle,
             git_lfs=opt.git_lfs,
             use_superproject=opt.use_superproject,

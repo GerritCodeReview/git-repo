@@ -376,6 +376,9 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--clone-filter', action='store', default='blob:none',
                    help='filter for use with --partial-clone '
                         '[default: %default]')
+  group.add_option('--clone-filter-for-depth', action='store', default=None,
+                   help='disables shallow clones and replaces with partial '
+                        'clone filter [default: %default]')
   group.add_option('--use-superproject', action='store_true', default=None,
                    help='use the manifest superproject to sync projects; implies -c')
   group.add_option('--no-use-superproject', action='store_false',
