@@ -20,6 +20,8 @@ from command import InteractiveCommand, MirrorSafeCommand
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
 from wrapper import Wrapper
 
+_REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
+
 
 class Init(InteractiveCommand, MirrorSafeCommand):
     COMMON = True
@@ -125,6 +127,9 @@ to update the working directory files.
         # manifest project is special and is created when instantiating the
         # manifest which happens before we parse options.
         self.manifest.manifestProject.clone_depth = opt.manifest_depth
+        clone_filter_for_depth = (
+            "blob:none" if (_REPO_ALLOW_SHALLOW == "0") else None
+        )
         if not self.manifest.manifestProject.Sync(
             manifest_url=opt.manifest_url,
             manifest_branch=opt.manifest_branch,
@@ -140,6 +145,7 @@ to update the working directory files.
             partial_clone=opt.partial_clone,
             clone_filter=opt.clone_filter,
             partial_clone_exclude=opt.partial_clone_exclude,
+            clone_filter_for_depth=clone_filter_for_depth,
             clone_bundle=opt.clone_bundle,
             git_lfs=opt.git_lfs,
             use_superproject=opt.use_superproject,
