@@ -175,6 +175,24 @@
       "parentUuid": "f9d5775b_39589454",
       "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e04d778_46bfbff3",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-05-24T23:08:10Z",
+      "side": 1,
+      "message": "Also, decided on REPO_SHALLOW envvar with \u00270\u0027 and \u00271\u0027 toggling the behavior where partial blobless clone replaces a shallow one.\n\nDon\u0027t really want to complicate things by allowing arbitrary user input",
+      "parentUuid": "702f63d6_4bab11df",
+      "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
