@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd10198c_2deb5c03",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-24T15:27:32Z",
+      "side": 1,
+      "message": "we should make this change too",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebe47554_2ccdefd4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-24T15:27:32Z",
+      "side": 1,
+      "message": "https://git-scm.com/docs/git-config#Documentation/git-config.txt-corepager",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74d11691_2efd0c55",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-24T15:27:32Z",
+      "side": 1,
+      "message": "let\u0027s add a comment here that the default LESS value is aligned with git\u0027s default pager behavior",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b7fcb7e_3851c174",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-24T15:27:32Z",
+      "side": 1,
+      "message": "use `os.environ.setdefault(\"LESS\", ...` to avoid the `if` statement",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
