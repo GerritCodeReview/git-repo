@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e396e438_59d548d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-24T21:26:50Z",
+      "side": 1,
+      "message": "i had noticed this at some point and thought it was odd, but since we don\u0027t use it much in CrOS, i didn\u0027t look deeper\n\n+Josip for visibility in case we get some bugs for triaging",
+      "revId": "ad27703d278f28d7323b7b9fd21f67aad34ba368",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
