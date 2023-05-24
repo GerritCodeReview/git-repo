@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0a90d11_ebde7b28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-05-24T00:10:07Z",
+      "side": 1,
+      "message": "sokcevic@google.com Looking for high level review in response to go/git-repo-shallow.\n\nOutstanding:\n- Finalize opt-in / opt-out\n- event_log changes to track results of experiment\n- testing ...",
+      "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
