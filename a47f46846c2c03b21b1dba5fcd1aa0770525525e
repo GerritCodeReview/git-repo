@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c7f0865_13796eeb",
+        "filename": "progress.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T22:00:33Z",
+      "side": 1,
+      "message": "```suggestion\n    return f\"{total} job{\u0027s\u0027 if total \u003e 1 else \u0027\u0027}\"\n\n```",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 0
+      },
+      "revId": "a47f46846c2c03b21b1dba5fcd1aa0770525525e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "088633e2_d197a47d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T22:00:33Z",
+      "side": 1,
+      "message": "nit: we are modifying what this function does. It should be renamed.",
+      "revId": "a47f46846c2c03b21b1dba5fcd1aa0770525525e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
