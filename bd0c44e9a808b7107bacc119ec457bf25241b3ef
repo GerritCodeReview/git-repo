@@ -33,6 +33,40 @@
       "message": "make sure to follow this advice if this CL or similar lands",
       "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58d79de5_639140af",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T18:33:39Z",
+      "side": 1,
+      "message": "I suggest we don\u0027t add argument for now since we have other options to experiment with. Please correct me if I\u0027m wrong, user can already use existing cli arguments to achieve the same thing.\n\nWith this, we\u0027d ask user to run the following\n\n`repo init --depth\u003d1 --clone-filter-for-depth\u003dblob:none`\n\nWhich is the same as:\n\n`repo init --depth\u003d\"\" --partial-clone`\n\nIf that\u0027s correct, then I don\u0027t think adding the cli option is good long term solution either.",
+      "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "007c46d0_59940792",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T18:33:39Z",
+      "side": 1,
+      "message": "instead of using this for MVP, why not read envvar, e.g.\n\n    clone_filter_for_depth\u003dos.environ.get(\"REPO_DEPTH_FILTER\")\n    \nor we could use gitconfig too, might play nicer with git-core tooling if we want to automate experiment\n\nthis is also a good place to emit trace2 event:\n\n    this.event_log.DefParamRepoEvents(...)",
+      "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
