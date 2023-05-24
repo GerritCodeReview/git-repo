@@ -2573,6 +2573,7 @@ class Project(object):
                     current_branch_only=current_branch_only and depth,
                     initial=False,
                     alt_dir=alt_dir,
+                    tags=tags,
                     depth=None,
                     ssh_proxy=ssh_proxy,
                     clone_filter=clone_filter,
