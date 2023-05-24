@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8aac38f5_aadd12e7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T17:21:21Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b0591bf5_93281993",
+      "revId": "131fc96381e112b0aa7a1012243e2ed5cfd3ec01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c697b10_cc9151c1",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "618de5c1_6b7b91ff",
+        "filename": "subcmds/start.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T17:21:21Z",
+      "side": 1,
+      "message": "I need non formatted version too (second argument in ErrorEvent).",
+      "parentUuid": "8c697b10_cc9151c1",
+      "revId": "131fc96381e112b0aa7a1012243e2ed5cfd3ec01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0d2fb81_df2db600",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-05-24T09:08:16Z",
       "side": 1,
       "message": "use an f-string.  then the str() isn\u0027t needed.",
+      "revId": "131fc96381e112b0aa7a1012243e2ed5cfd3ec01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff251a51_d9f39236",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T17:21:21Z",
+      "side": 1,
+      "message": "Done in https://gerrit-review.git.corp.google.com/c/git-repo/+/374914",
+      "parentUuid": "f0d2fb81_df2db600",
       "revId": "131fc96381e112b0aa7a1012243e2ed5cfd3ec01",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
