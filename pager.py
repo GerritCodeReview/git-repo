@@ -118,7 +118,10 @@ def _BecomePager(pager):
     # available versions of 'less', a better 'more'.
     _a, _b, _c = select.select([0], [], [0])
 
-    os.environ["LESS"] = "FRSX"
+    # This matches the behavior of git, which sets $LESS to `FRX` if it is not
+    # set. See:
+    # https://git-scm.com/docs/git-config#Documentation/git-config.txt-corepager
+    os.environ.setdefault("LESS", "FRX")
 
     try:
         os.execvp(pager, [pager])
