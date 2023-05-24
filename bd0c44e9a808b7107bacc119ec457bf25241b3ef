@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "84ea0716_4576bdfc",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-05-24T19:04:02Z",
+      "side": 1,
+      "message": "I am assuming that this corresponds to (Major, Minor) in the normal Semantic Versioning sense ?",
+      "parentUuid": "f8abfeb2_070ef96b",
+      "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58d79de5_639140af",
         "filename": "repo",
         "patchSetId": 2
@@ -54,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "349e4e94_4b17b07e",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-05-24T19:04:02Z",
+      "side": 1,
+      "message": "I am looking to differentiate from --clone-filter which is most often set to blob:limit\u003d10M",
+      "parentUuid": "58d79de5_639140af",
+      "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "007c46d0_59940792",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
@@ -65,6 +101,24 @@
       "writtenOn": "2023-05-24T18:33:39Z",
       "side": 1,
       "message": "instead of using this for MVP, why not read envvar, e.g.\n\n    clone_filter_for_depth\u003dos.environ.get(\"REPO_DEPTH_FILTER\")\n    \nor we could use gitconfig too, might play nicer with git-core tooling if we want to automate experiment\n\nthis is also a good place to emit trace2 event:\n\n    this.event_log.DefParamRepoEvents(...)",
+      "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9d5775b_39589454",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-05-24T19:04:02Z",
+      "side": 1,
+      "message": "Are the config values automatically logged when updating the gitconfig? \n- https://gerrit.googlesource.com/git-repo/+/refs/heads/main/subcmds/sync.py#1761\n- https://gerrit.googlesource.com/git-repo/+/refs/heads/main/git_config.py#285",
+      "parentUuid": "007c46d0_59940792",
       "revId": "bd0c44e9a808b7107bacc119ec457bf25241b3ef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
