@@ -76,6 +76,10 @@ def elapsed_str(total):
     return ret
 
 
+def jobs_str(total):
+    return f"{total} job{'s' if total > 1 else ''}"
+
+
 class Progress(object):
     def __init__(
         self,
@@ -170,10 +174,7 @@ class Progress(object):
         else:
             p = (100 * self._done) / self._total
             if self._show_jobs:
-                jobs = "[%d job%s] " % (
-                    self._active,
-                    "s" if self._active > 1 else "",
-                )
+                jobs = f"[{jobs_str(self._active)}] "
             else:
                 jobs = ""
             if self._show_elapsed:
