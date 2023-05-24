@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89f50517_556360bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T23:49:32Z",
+      "side": 1,
+      "message": "add a paragraph explaining the change, and attach bug",
+      "revId": "b3090930bf4dfd320f8d6fac2f2f927396149c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40b1c19f_bcd997dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T23:49:32Z",
+      "side": 1,
+      "message": "left nits, but overall approach looks good to me. When you are ready, please request review.",
+      "revId": "b3090930bf4dfd320f8d6fac2f2f927396149c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19489d0c_72c03322",
+        "filename": "subcmds/init.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-24T23:49:32Z",
+      "side": 1,
+      "message": "nit: REPO_ALLOW_SHALLOW would be more descriptive.",
+      "range": {
+        "startLine": 116,
+        "startChar": 13,
+        "endLine": 116,
+        "endChar": 25
+      },
+      "revId": "b3090930bf4dfd320f8d6fac2f2f927396149c76",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
