@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b0591bf5_93281993",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-24T09:08:48Z",
+      "side": 1,
+      "message": "use `tag:` instead of `[tag]` in commit messages",
+      "revId": "131fc96381e112b0aa7a1012243e2ed5cfd3ec01",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8c697b10_cc9151c1",
         "filename": "subcmds/start.py",
         "patchSetId": 4
