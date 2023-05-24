@@ -70,6 +70,24 @@
       "parentUuid": "36fd0762_6caa3545",
       "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fee529fe_96688f87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-24T08:56:36Z",
+      "side": 1,
+      "message": "it\u0027s largely in maintenance mode.  i imagine all the conflicts you saw were because we reformatted the codebase using `black`.\n\ni don\u0027t know what you mean by \"autosquash works without repo\".  there is no `git autosquash` command, nor `git push --autosquash` option.\n\nin order to be considered for merging, you have to show a parallel git command/option.  afaict, this logic only exists in repo.",
+      "parentUuid": "e1e7158b_7aeea31b",
+      "revId": "3863bc8dfd04801d4b6bc8ca3b7ea0a3aa79f399",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
