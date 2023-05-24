@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5b9f25d_b06e81a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160726
+      },
+      "writtenOn": "2023-05-24T15:50:24Z",
+      "side": 1,
+      "message": "Thanks, all comments addressed in patch version 2.",
+      "revId": "eafe9dc81ca2ba107efb5205cc20c3f70e1d30c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

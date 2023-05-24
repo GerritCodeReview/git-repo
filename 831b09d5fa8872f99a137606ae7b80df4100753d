@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "264680ce_1fa3c878",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1160726
+      },
+      "writtenOn": "2023-05-24T15:50:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd10198c_2deb5c03",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ebe47554_2ccdefd4",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-24T15:27:32Z",
       "side": 1,
       "message": "https://git-scm.com/docs/git-config#Documentation/git-config.txt-corepager",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ce5d567_0753a6b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1160726
+      },
+      "writtenOn": "2023-05-24T15:50:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ebe47554_2ccdefd4",
       "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24bd9383_c37d1e9e",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1160726
+      },
+      "writtenOn": "2023-05-24T15:50:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74d11691_2efd0c55",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b7fcb7e_3851c174",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-05-24T15:27:32Z",
       "side": 1,
       "message": "use `os.environ.setdefault(\"LESS\", ...` to avoid the `if` statement",
+      "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7cd9422_4e31f60f",
+        "filename": "pager.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1160726
+      },
+      "writtenOn": "2023-05-24T15:50:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b7fcb7e_3851c174",
       "revId": "831b09d5fa8872f99a137606ae7b80df4100753d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
