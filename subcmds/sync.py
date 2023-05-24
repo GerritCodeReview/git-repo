@@ -66,7 +66,7 @@ from command import (
 from error import RepoChangedException, GitError
 import platform_utils
 from project import SyncBuffer
-from progress import Progress, elapsed_str
+from progress import Progress, elapsed_str, jobs_str
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
@@ -673,7 +673,7 @@ later is required to fix a server side protocol bug.
     def _FetchInitChild(cls, ssh_proxy):
         cls.ssh_proxy = ssh_proxy
 
-    def _GetLongestSyncMessage(self):
+    def _GetSyncProgressMessage(self):
         if len(self._sync_dict) == 0:
             return None
 
@@ -685,7 +685,8 @@ later is required to fix a server side protocol bug.
                 earliest_proj = project
 
         elapsed = time.time() - earliest_time
-        return f"{elapsed_str(elapsed)} {earliest_proj}"
+        jobs = jobs_str(len(self._sync_dict))
+        return f"{jobs} | {elapsed_str(elapsed)} {earliest_proj}"
 
     def _Fetch(self, projects, opt, err_event, ssh_proxy):
         ret = True
@@ -707,7 +708,7 @@ later is required to fix a server side protocol bug.
 
         def _MonitorSyncLoop():
             while True:
-                pm.update(inc=0, msg=self._GetLongestSyncMessage())
+                pm.update(inc=0, msg=self._GetSyncProgressMessage())
                 if sync_event.wait(timeout=1):
                     return
 
