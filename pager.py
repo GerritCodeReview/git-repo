@@ -118,7 +118,8 @@ def _BecomePager(pager):
     # available versions of 'less', a better 'more'.
     _a, _b, _c = select.select([0], [], [0])
 
-    os.environ["LESS"] = "FRSX"
+    if "LESS" not in os.getenv:
+        os.environ["LESS"] = "FRSX"
 
     try:
         os.execvp(pager, [pager])
