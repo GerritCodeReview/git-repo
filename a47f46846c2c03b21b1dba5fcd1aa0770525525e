@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35720df0_7f6df3ab",
+        "filename": "progress.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-25T15:45:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c7f0865_13796eeb",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 0
+      },
+      "revId": "a47f46846c2c03b21b1dba5fcd1aa0770525525e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "088633e2_d197a47d",
@@ -37,6 +61,24 @@
       "writtenOn": "2023-05-24T22:00:33Z",
       "side": 1,
       "message": "nit: we are modifying what this function does. It should be renamed.",
+      "revId": "a47f46846c2c03b21b1dba5fcd1aa0770525525e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30ed89c3_554a297f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 676,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-05-25T15:45:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "088633e2_d197a47d",
       "revId": "a47f46846c2c03b21b1dba5fcd1aa0770525525e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
