@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0f3fc08_66fa5be1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-26T19:57:07Z",
+      "side": 1,
+      "message": "`gitc: drop support` would be better to scope it",
+      "revId": "c9deaf79755dbb7e1033ff37fa8275a07d25c3b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8609cd2d_a555e55f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-26T19:57:07Z",
+      "side": 1,
+      "message": "add a `Bug:` tag to tie it to the bug",
+      "revId": "c9deaf79755dbb7e1033ff37fa8275a07d25c3b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9230455_9012108a",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-05-26T19:57:07Z",
+      "side": 1,
+      "message": "make sure to do this",
+      "revId": "c9deaf79755dbb7e1033ff37fa8275a07d25c3b0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
