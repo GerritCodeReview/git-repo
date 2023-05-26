@@ -45,7 +45,7 @@ from git_config import RepoConfig
 from git_trace2_event_log import EventLog
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from command import GitcAvailableCommand, GitcClientCommand
+from command import GitcAvailableCommand
 from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
@@ -306,8 +306,7 @@ class _Repo(object):
         gitc_manifest = None
         gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
         if gitc_client_name:
-            gitc_manifest = GitcClient(self.repodir, gitc_client_name)
-            repo_client.isGitcClient = True
+            pass
 
         try:
             cmd = self.commands[name](
@@ -335,18 +334,8 @@ class _Repo(object):
             )
             return 1
 
-        if (
-            isinstance(cmd, GitcAvailableCommand)
-            and not gitc_utils.get_gitc_manifest_dir()
-        ):
-            print(
-                "fatal: '%s' requires GITC to be available" % name,
-                file=sys.stderr,
-            )
-            return 1
-
-        if isinstance(cmd, GitcClientCommand) and not gitc_client_name:
-            print("fatal: '%s' requires a GITC client" % name, file=sys.stderr)
+        if isinstance(cmd, GitcAvailableCommand):
+            print("GITC is not supported")
             return 1
 
         try:

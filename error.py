@@ -101,6 +101,10 @@ class GitError(RepoError):
 
     def __str__(self):
         return self.message
+    
+
+class GitcUnsupportedError(RepoExitError):
+    """Gitc no longer supported."""
 
 
 class UploadError(RepoError):

@@ -77,10 +77,8 @@ class RepoWrapperUnitTest(RepoWrapperTestCase):
 
     def test_gitc_init_parser(self):
         """Make sure 'gitc-init' GetParser works."""
-        parser = self.wrapper.GetParser(gitc_init=True)
-        opts, args = parser.parse_args([])
-        self.assertEqual([], args)
-        self.assertIsNone(opts.manifest_file)
+        with self.assertRaises(SystemExit):
+            self.wrapper.GetParser(gitc_init=True)
 
     def test_get_gitc_manifest_dir_no_gitc(self):
         """
