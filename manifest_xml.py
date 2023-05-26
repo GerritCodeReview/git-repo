@@ -21,7 +21,6 @@ import sys
 import xml.dom.minidom
 import urllib.parse
 
-import gitc_utils
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 from git_superproject import Superproject
@@ -2299,12 +2298,5 @@ class GitcClient(RepoClient, GitcManifest):
 
     def __init__(self, repodir, gitc_client_name):
         """Initialize the GitcManifest object."""
-        self.gitc_client_name = gitc_client_name
-        self.gitc_client_dir = os.path.join(
-            gitc_utils.get_gitc_manifest_dir(), gitc_client_name
-        )
-
-        super().__init__(
-            repodir, os.path.join(self.gitc_client_dir, ".manifest")
-        )
-        self.isGitcClient = True
+        print("GITC is not supported")
+        sys.exit(1)

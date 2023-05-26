@@ -53,7 +53,6 @@ from error import ManifestParseError
 from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
-import gitc_utils
 from manifest_xml import GitcClient, RepoClient
 from pager import RunPager, TerminatePager
 from wrapper import WrapperPath, Wrapper
@@ -298,10 +297,6 @@ class _Repo(object):
                 outer_client=outer_client,
             )
         gitc_manifest = None
-        gitc_client_name = gitc_utils.parse_clientdir(os.getcwd())
-        if gitc_client_name:
-            gitc_manifest = GitcClient(self.repodir, gitc_client_name)
-            repo_client.isGitcClient = True
 
         try:
             cmd = self.commands[name](
@@ -329,18 +324,12 @@ class _Repo(object):
             )
             return 1
 
-        if (
-            isinstance(cmd, GitcAvailableCommand)
-            and not gitc_utils.get_gitc_manifest_dir()
-        ):
-            print(
-                "fatal: '%s' requires GITC to be available" % name,
-                file=sys.stderr,
-            )
+        if isinstance(cmd, GitcAvailableCommand):
+            print("GITC is not supported")
             return 1
 
-        if isinstance(cmd, GitcClientCommand) and not gitc_client_name:
-            print("fatal: '%s' requires a GITC client" % name, file=sys.stderr)
+        if isinstance(cmd, GitcClientCommand):
+            print("GITC is not supported")
             return 1
 
         try:
