@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16b85fac_f50fcdcb",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-26T15:28:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "38be9de4_c653c501",
+      "revId": "9ea744ea78ca85d02a518669fb3f9aec051176c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "248d67ce_c87664d0",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-05-26T03:00:49Z",
       "side": 1,
       "message": "would it be easier to not check the items up front, but check earliest_proj is not None ?",
+      "revId": "9ea744ea78ca85d02a518669fb3f9aec051176c1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a440544_00569c21",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-05-26T15:28:46Z",
+      "side": 1,
+      "message": "yup, done.",
+      "parentUuid": "248d67ce_c87664d0",
       "revId": "9ea744ea78ca85d02a518669fb3f9aec051176c1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
