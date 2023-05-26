@@ -25,7 +25,7 @@ import pytest
 import command
 from subcmds import sync
 from project import SyncNetworkHalfResult
-from error import GitError, RepoExitError
+from error import GitError, RepoExitError, GitcUnsupportedError
 
 
 @pytest.mark.parametrize(
@@ -377,3 +377,8 @@ class SyncCommand(unittest.TestCase):
             self.cmd.Execute(self.opt, [])
             self.assertIn(self.sync_local_half_error, e.aggregate_errors)
             self.assertIn(self.sync_network_half_error, e.aggregate_errors)
+
+    def test_gitc_manifest(self):
+        self.cmd.gitc_manifest = self.manifest
+        with self.assertRaises(GitcUnsupportedError):
+            self.cmd.Execute(self.opt, [])

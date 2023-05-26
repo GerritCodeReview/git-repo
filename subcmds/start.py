@@ -13,17 +13,15 @@
 # limitations under the License.
 
 import functools
-import os
 import sys
 
 from command import Command, DEFAULT_LOCAL_JOBS
 from git_config import IsImmutable
 from git_command import git
-import gitc_utils
 from progress import Progress
-from project import SyncBuffer, Project
+from project import Project
 from typing import NamedTuple
-from error import RepoExitError
+from error import RepoExitError, GitcUnsupportedError
 
 
 class ExecuteOneResult(NamedTuple):
@@ -113,50 +111,14 @@ revision specified in the manifest.
             if len(projects) < 1:
                 projects = ["."]  # start it in the local project by default
 
+        if self.gitc_manifest:
+            raise GitcUnsupportedError()
+
         all_projects = self.GetProjects(
             projects,
             missing_ok=bool(self.gitc_manifest),
             all_manifests=not opt.this_manifest_only,
         )
-
-        # This must happen after we find all_projects, since GetProjects may
-        # need the local directory, which will disappear once we save the GITC
-        # manifest.
-        if self.gitc_manifest:
-            gitc_projects = self.GetProjects(
-                projects, manifest=self.gitc_manifest, missing_ok=True
-            )
-            for project in gitc_projects:
-                if project.old_revision:
-                    project.already_synced = True
-                else:
-                    project.already_synced = False
-                    project.old_revision = project.revisionExpr
-                project.revisionExpr = None
-            # Save the GITC manifest.
-            gitc_utils.save_manifest(self.gitc_manifest)
-
-            # Make sure we have a valid CWD.
-            if not os.path.exists(os.getcwd()):
-                os.chdir(self.manifest.topdir)
-
-            pm = Progress("Syncing %s" % nb, len(all_projects), quiet=opt.quiet)
-            for project in all_projects:
-                gitc_project = self.gitc_manifest.paths[project.relpath]
-                # Sync projects that have not been opened.
-                if not gitc_project.already_synced:
-                    proj_localdir = os.path.join(
-                        self.gitc_manifest.gitc_client_dir, project.relpath
-                    )
-                    project.worktree = proj_localdir
-                    if not os.path.exists(proj_localdir):
-                        os.makedirs(proj_localdir)
-                    project.Sync_NetworkHalf()
-                    sync_buf = SyncBuffer(self.manifest.manifestProject.config)
-                    project.Sync_LocalHalf(sync_buf)
-                    project.revisionId = gitc_project.old_revision
-                pm.update(msg="")
-            pm.end()
 
         def _ProcessResults(_pool, pm, results):
             for result in results:

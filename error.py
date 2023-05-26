@@ -107,6 +107,10 @@ class GitError(RepoError):
         return self.message
 
 
+class GitcUnsupportedError(RepoExitError):
+    """Gitc no longer supported."""
+
+
 class UploadError(RepoError):
     """A bundle upload to Gerrit did not succeed."""
 
