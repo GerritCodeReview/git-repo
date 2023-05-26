@@ -54,7 +54,6 @@ from git_command import git_require
 from git_config import GetUrlCookieFile
 from git_refs import R_HEADS, HEAD
 import git_superproject
-import gitc_utils
 from project import Project
 from project import RemoteSpec
 from command import (
@@ -70,6 +69,7 @@ from error import (
     SyncError,
     UpdateManifestError,
     RepoUnhandledExceptionError,
+    GitcUnsupportedError,
 )
 import platform_utils
 from project import SyncBuffer, DeleteWorktreeError
@@ -77,7 +77,6 @@ from progress import Progress, elapsed_str, jobs_str
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
-from manifest_xml import GitcManifest
 
 _ONE_DAY_S = 24 * 60 * 60
 
@@ -1677,50 +1676,6 @@ later is required to fix a server side protocol bug.
         self._UpdateProjectsRevisionId(
             opt, args, superproject_logging_data, manifest
         )
-
-        if self.gitc_manifest:
-            gitc_manifest_projects = self.GetProjects(args, missing_ok=True)
-            gitc_projects = []
-            opened_projects = []
-            for project in gitc_manifest_projects:
-                if (
-                    project.relpath in self.gitc_manifest.paths
-                    and self.gitc_manifest.paths[project.relpath].old_revision
-                ):
-                    opened_projects.append(project.relpath)
-                else:
-                    gitc_projects.append(project.relpath)
-
-            if not args:
-                gitc_projects = None
-
-            if gitc_projects != [] and not opt.local_only:
-                print(
-                    "Updating GITC client: %s"
-                    % self.gitc_manifest.gitc_client_name
-                )
-                manifest = GitcManifest(
-                    self.repodir, self.gitc_manifest.gitc_client_name
-                )
-                if manifest_name:
-                    manifest.Override(manifest_name)
-                else:
-                    manifest.Override(manifest.manifestFile)
-                gitc_utils.generate_gitc_manifest(
-                    self.gitc_manifest, manifest, gitc_projects
-                )
-                print("GITC client successfully synced.")
-
-            # The opened projects need to be synced as normal, therefore we
-            # generate a new args list to represent the opened projects.
-            # TODO: make this more reliable -- if there's a project name/path
-            # overlap, this may choose the wrong project.
-            args = [
-                os.path.relpath(manifest.paths[path].worktree, os.getcwd())
-                for path in opened_projects
-            ]
-            if not args:
-                return
 
         all_projects = self.GetProjects(
             args,

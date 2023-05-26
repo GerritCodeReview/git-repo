@@ -21,10 +21,7 @@ from color import Coloring
 from command import (
     PagedCommand,
     MirrorSafeCommand,
-    GitcAvailableCommand,
-    GitcClientCommand,
 )
-import gitc_utils
 from wrapper import Wrapper
 from error import RepoExitError
 
@@ -79,25 +76,12 @@ Displays detailed usage information about a command.
     def PrintCommonCommandsBody(self):
         print("The most commonly used repo commands are:")
 
-        def gitc_supported(cmd):
-            if not isinstance(cmd, GitcAvailableCommand) and not isinstance(
-                cmd, GitcClientCommand
-            ):
-                return True
-            if self.client.isGitcClient:
-                return True
-            if isinstance(cmd, GitcClientCommand):
-                return False
-            if gitc_utils.get_gitc_manifest_dir():
-                return True
-            return False
-
         commandNames = list(
             sorted(
                 [
                     name
                     for name, command in all_commands.items()
-                    if command.COMMON and gitc_supported(command)
+                    if command.COMMON
                 ]
             )
         )

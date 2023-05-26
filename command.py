@@ -75,7 +75,6 @@ class Command(object):
         repodir=None,
         client=None,
         manifest=None,
-        gitc_manifest=None,
         git_event_log=None,
         outer_client=None,
         outer_manifest=None,
@@ -84,7 +83,6 @@ class Command(object):
         self.client = client
         self.outer_client = outer_client or client
         self.manifest = manifest
-        self.gitc_manifest = gitc_manifest
         self.git_event_log = git_event_log
         self.outer_manifest = outer_manifest
 
@@ -503,12 +501,6 @@ class PagedCommand(Command):
 class MirrorSafeCommand(object):
     """Command permits itself to run within a mirror, and does not require a
     working directory.
-    """
-
-
-class GitcAvailableCommand(object):
-    """Command that requires GITC to be available, but does not require the
-    local client to be a GITC client.
     """
 
 
