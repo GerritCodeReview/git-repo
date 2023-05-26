@@ -21,7 +21,6 @@ import sys
 import xml.dom.minidom
 import urllib.parse
 
-import gitc_utils
 from git_config import GitConfig
 from git_refs import R_HEADS, HEAD
 from git_superproject import Superproject
@@ -2248,21 +2247,6 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         return diff
 
 
-class GitcManifest(XmlManifest):
-    """Parser for GitC (git-in-the-cloud) manifests."""
-
-    def _ParseProject(self, node, parent=None):
-        """Override _ParseProject and add support for GITC specific attributes."""  # noqa: E501
-        return super()._ParseProject(
-            node, parent=parent, old_revision=node.getAttribute("old-revision")
-        )
-
-    def _output_manifest_project_extras(self, p, e):
-        """Output GITC Specific Project attributes"""
-        if p.old_revision:
-            e.setAttribute("old-revision", str(p.old_revision))
-
-
 class RepoClient(XmlManifest):
     """Manages a repo client checkout."""
 
@@ -2315,19 +2299,3 @@ class RepoClient(XmlManifest):
 
         # TODO: Completely separate manifest logic out of the client.
         self.manifest = self
-
-
-class GitcClient(RepoClient, GitcManifest):
-    """Manages a GitC client checkout."""
-
-    def __init__(self, repodir, gitc_client_name):
-        """Initialize the GitcManifest object."""
-        self.gitc_client_name = gitc_client_name
-        self.gitc_client_dir = os.path.join(
-            gitc_utils.get_gitc_manifest_dir(), gitc_client_name
-        )
-
-        super().__init__(
-            repodir, os.path.join(self.gitc_client_dir, ".manifest")
-        )
-        self.isGitcClient = True

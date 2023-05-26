@@ -149,7 +149,7 @@ if not REPO_REV:
 BUG_URL = 'https://issues.gerritcodereview.com/issues/new?component=1370071'
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 35)
+VERSION = (2, 36)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -273,16 +273,16 @@ gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 def GetParser(gitc_init=False):
   """Setup the CLI parser."""
   if gitc_init:
-    usage = 'repo gitc-init -c client [options] [-u] url'
+    sys.exit('repo: fatal: GITC not supported.')
   else:
     usage = 'repo init [options] [-u] url'
 
   parser = optparse.OptionParser(usage=usage)
-  InitParser(parser, gitc_init=gitc_init)
+  InitParser(parser)
   return parser
 
 
-def InitParser(parser, gitc_init=False):
+def InitParser(parser):
   """Setup the CLI parser."""
   # NB: Keep in sync with command.py:_CommonOptions().
 
@@ -325,12 +325,8 @@ def InitParser(parser, gitc_init=False):
   # Options that only affect manifest project, and not any of the projects
   # specified in the manifest itself.
   group = parser.add_option_group('Manifest (only) checkout options')
-  cbr_opts = ['--current-branch']
-  # The gitc-init subcommand allocates -c itself, but a lot of init users
-  # want -c, so try to satisfy both as best we can.
-  if not gitc_init:
-    cbr_opts += ['-c']
-  group.add_option(*cbr_opts, default=True,
+
+  group.add_option('--current-branch', '-c', default=True,
                    dest='current_branch_only', action='store_true',
                    help='fetch only current manifest branch from server (default)')
   group.add_option('--no-current-branch',
@@ -410,14 +406,6 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--config-name',
                    action='store_true', default=False,
                    help='Always prompt for name/e-mail')
-
-  # gitc-init specific settings.
-  if gitc_init:
-    group = parser.add_option_group('GITC options')
-    group.add_option('-f', '--manifest-file',
-                     help='Optional manifest file to use for this GITC client.')
-    group.add_option('-c', '--gitc-client',
-                     help='Name of the gitc_client instance to create or modify.')
 
   return parser
 
@@ -582,26 +570,6 @@ def _Init(args, gitc_init=False):
   rev = opt.repo_rev or REPO_REV
 
   try:
-    if gitc_init:
-      gitc_manifest_dir = get_gitc_manifest_dir()
-      if not gitc_manifest_dir:
-        print('fatal: GITC filesystem is not available. Exiting...',
-              file=sys.stderr)
-        sys.exit(1)
-      gitc_client = opt.gitc_client
-      if not gitc_client:
-        gitc_client = gitc_parse_clientdir(os.getcwd())
-      if not gitc_client:
-        print('fatal: GITC client (-c) is required.', file=sys.stderr)
-        sys.exit(1)
-      client_dir = os.path.join(gitc_manifest_dir, gitc_client)
-      if not os.path.exists(client_dir):
-        os.makedirs(client_dir)
-      os.chdir(client_dir)
-      if os.path.exists(repodir):
-        # This GITC Client has already initialized repo so continue.
-        return
-
     os.mkdir(repodir)
   except OSError as e:
     if e.errno != errno.EEXIST:
