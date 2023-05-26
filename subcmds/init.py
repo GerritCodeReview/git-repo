@@ -84,8 +84,8 @@ to update the working directory files.
     def _CommonOptions(self, p):
         """Disable due to re-use of Wrapper()."""
 
-    def _Options(self, p, gitc_init=False):
-        Wrapper().InitParser(p, gitc_init=gitc_init)
+    def _Options(self, p):
+        Wrapper().InitParser(p)
         m = p.add_option_group("Multi-manifest")
         m.add_option(
             "--outer-manifest",
