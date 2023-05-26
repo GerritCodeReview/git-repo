@@ -270,19 +270,15 @@ home_dot_repo = os.path.join(repo_config_dir, '.repoconfig')
 gpg_dir = os.path.join(home_dot_repo, 'gnupg')
 
 
-def GetParser(gitc_init=False):
+def GetParser():
   """Setup the CLI parser."""
-  if gitc_init:
-    usage = 'repo gitc-init -c client [options] [-u] url'
-  else:
-    usage = 'repo init [options] [-u] url'
-
+  usage = 'repo init [options] [-u] url'
   parser = optparse.OptionParser(usage=usage)
-  InitParser(parser, gitc_init=gitc_init)
+  InitParser(parser)
   return parser
 
 
-def InitParser(parser, gitc_init=False):
+def InitParser(parser):
   """Setup the CLI parser."""
   # NB: Keep in sync with command.py:_CommonOptions().
 
@@ -325,11 +321,7 @@ def InitParser(parser, gitc_init=False):
   # Options that only affect manifest project, and not any of the projects
   # specified in the manifest itself.
   group = parser.add_option_group('Manifest (only) checkout options')
-  cbr_opts = ['--current-branch']
-  # The gitc-init subcommand allocates -c itself, but a lot of init users
-  # want -c, so try to satisfy both as best we can.
-  if not gitc_init:
-    cbr_opts += ['-c']
+  cbr_opts = ['--current-branch', '-c']
   group.add_option(*cbr_opts, default=True,
                    dest='current_branch_only', action='store_true',
                    help='fetch only current manifest branch from server (default)')
@@ -410,14 +402,6 @@ def InitParser(parser, gitc_init=False):
   group.add_option('--config-name',
                    action='store_true', default=False,
                    help='Always prompt for name/e-mail')
-
-  # gitc-init specific settings.
-  if gitc_init:
-    group = parser.add_option_group('GITC options')
-    group.add_option('-f', '--manifest-file',
-                     help='Optional manifest file to use for this GITC client.')
-    group.add_option('-c', '--gitc-client',
-                     help='Name of the gitc_client instance to create or modify.')
 
   return parser
 
@@ -502,31 +486,6 @@ def get_gitc_manifest_dir():
   return _gitc_manifest_dir
 
 
-def gitc_parse_clientdir(gitc_fs_path):
-  """Parse a path in the GITC FS and return its client name.
-
-  Args:
-      gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
-
-  Returns:
-      The GITC client name.
-  """
-  if gitc_fs_path == GITC_FS_ROOT_DIR:
-    return None
-  if not gitc_fs_path.startswith(GITC_FS_ROOT_DIR):
-    manifest_dir = get_gitc_manifest_dir()
-    if manifest_dir == '':
-      return None
-    if manifest_dir[-1] != '/':
-      manifest_dir += '/'
-    if gitc_fs_path == manifest_dir:
-      return None
-    if not gitc_fs_path.startswith(manifest_dir):
-      return None
-    return gitc_fs_path.split(manifest_dir)[1].split('/')[0]
-  return gitc_fs_path.split(GITC_FS_ROOT_DIR)[1].split('/')[0]
-
-
 class CloneFailure(Exception):
 
   """Indicate the remote clone of repo itself failed.
@@ -561,10 +520,10 @@ def check_repo_rev(dst, rev, repo_verify=True, quiet=False):
   return (remote_ref, rev)
 
 
-def _Init(args, gitc_init=False):
+def _Init(args):
   """Installs repo by cloning it over the network.
   """
-  parser = GetParser(gitc_init=gitc_init)
+  parser = GetParser()
   opt, args = parser.parse_args(args)
   if args:
     if not opt.manifest_url:
@@ -582,26 +541,6 @@ def _Init(args, gitc_init=False):
   rev = opt.repo_rev or REPO_REV
 
   try:
-    if gitc_init:
-      gitc_manifest_dir = get_gitc_manifest_dir()
-      if not gitc_manifest_dir:
-        print('fatal: GITC filesystem is not available. Exiting...',
-              file=sys.stderr)
-        sys.exit(1)
-      gitc_client = opt.gitc_client
-      if not gitc_client:
-        gitc_client = gitc_parse_clientdir(os.getcwd())
-      if not gitc_client:
-        print('fatal: GITC client (-c) is required.', file=sys.stderr)
-        sys.exit(1)
-      client_dir = os.path.join(gitc_manifest_dir, gitc_client)
-      if not os.path.exists(client_dir):
-        os.makedirs(client_dir)
-      os.chdir(client_dir)
-      if os.path.exists(repodir):
-        # This GITC Client has already initialized repo so continue.
-        return
-
     os.mkdir(repodir)
   except OSError as e:
     if e.errno != errno.EEXIST:
@@ -1180,9 +1119,6 @@ class Requirements(object):
 
 
 def _Usage():
-  gitc_usage = ""
-  if get_gitc_manifest_dir():
-    gitc_usage = "  gitc-init Initialize a GITC Client.\n"
 
   print(
       """usage: repo COMMAND [ARGS]
@@ -1192,8 +1128,7 @@ repo is not yet installed.  Use "repo init" to install it here.
 The most commonly used repo commands are:
 
   init      Install repo in the current working directory
-""" + gitc_usage +
-      """  help      Display detailed help on a command
+  help      Display detailed help on a command
 
 For access to the full online help, install repo ("repo init").
 """)
@@ -1203,8 +1138,8 @@ For access to the full online help, install repo ("repo init").
 
 def _Help(args):
   if args:
-    if args[0] in {'init', 'gitc-init'}:
-      parser = GetParser(gitc_init=args[0] == 'gitc-init')
+    if args[0] in {'init'}:
+      parser = GetParser()
       parser.print_help()
       sys.exit(0)
     else:
@@ -1298,8 +1233,11 @@ def main(orig_args):
   cwd = os.getcwd()
   if get_gitc_manifest_dir() and cwd.startswith(get_gitc_manifest_dir()):
     print('error: repo cannot be used in the GITC local manifest directory.'
-          '\nIf you want to work on this GITC client please rerun this '
-          'command from the corresponding client under /gitc/',
+          '\nGITC clients are no longer supported',
+          file=sys.stderr)
+    sys.exit(1)
+  if cwd.startswith(GITC_FS_ROOT_DIR):
+    print('error: repo no longer supports GITC clients.',
           file=sys.stderr)
     sys.exit(1)
   if not repo_main:
@@ -1316,11 +1254,11 @@ def main(orig_args):
       _Version()
     if not cmd:
       _NotInstalled()
-    if cmd == 'init' or cmd == 'gitc-init':
+    if cmd == 'init':
       if my_git:
         _SetDefaultsTo(my_git)
       try:
-        _Init(args, gitc_init=(cmd == 'gitc-init'))
+        _Init(args)
       except CloneFailure:
         path = os.path.join(repodir, S_repo)
         print("fatal: cloning the git-repo repository failed, will remove "
