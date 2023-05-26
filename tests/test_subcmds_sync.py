@@ -25,7 +25,7 @@ import pytest
 import command
 from subcmds import sync
 from project import SyncNetworkHalfResult
-from error import GitError, RepoExitError
+from error import GitError, RepoExitError, GitcUnsupportedError
 
 
 @pytest.mark.parametrize(
