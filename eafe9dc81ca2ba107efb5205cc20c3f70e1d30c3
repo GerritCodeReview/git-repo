@@ -33,6 +33,23 @@
       "message": "you should set Verified+1 once you\u0027re happy with it",
       "revId": "eafe9dc81ca2ba107efb5205cc20c3f70e1d30c3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ffa755a_f82b9007",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160726
+      },
+      "writtenOn": "2023-05-26T14:34:44Z",
+      "side": 1,
+      "message": "Thanks, is this correct?",
+      "revId": "eafe9dc81ca2ba107efb5205cc20c3f70e1d30c3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
