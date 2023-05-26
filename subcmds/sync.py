@@ -677,15 +677,15 @@ later is required to fix a server side protocol bug.
         cls.ssh_proxy = ssh_proxy
 
     def _GetSyncProgressMessage(self):
-        if len(self._sync_dict) == 0:
-            return None
-
         earliest_time = float("inf")
         earliest_proj = None
         for project, t in self._sync_dict.items():
             if t < earliest_time:
                 earliest_time = t
                 earliest_proj = project
+
+        if not earliest_proj:
+            return None
 
         elapsed = time.time() - earliest_time
         jobs = jobs_str(len(self._sync_dict))
