@@ -679,16 +679,20 @@ later is required to fix a server side protocol bug.
     def _GetSyncProgressMessage(self):
         earliest_time = float("inf")
         earliest_proj = None
-        for project, t in self._sync_dict.items():
+        items = self._sync_dict.items()
+        for project, t in items:
             if t < earliest_time:
                 earliest_time = t
                 earliest_proj = project
 
         if not earliest_proj:
-            return None
+            # This function is called when sync is still running but in some
+            # cases (by chance), _sync_dict can contain no entries. Return some
+            # text to indicate that sync is still working.
+            return "..working.."
 
         elapsed = time.time() - earliest_time
-        jobs = jobs_str(len(self._sync_dict))
+        jobs = jobs_str(len(items))
         return f"{jobs} | {elapsed_str(elapsed)} {earliest_proj}"
 
     def _Fetch(self, projects, opt, err_event, ssh_proxy):
