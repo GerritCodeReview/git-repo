@@ -111,6 +111,7 @@ following DTD:
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name  CDATA #REQUIRED>
   <!ATTLIST remove-project optional  CDATA #IMPLIED>
+  <!ATTLIST remove-project path  CDATA #IMPLIED>
 
   <!ELEMENT repo-hooks EMPTY>
   <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
@@ -483,6 +484,9 @@ own definition.
 
 Attribute `optional`: Set to true to ignore remove-project elements with no
 matching `project` element.
+
+Attribute `path` can be used to only remove projects with matching `path`,
+meaning the named project mounted at other locations are left alone.
 
 ### Element repo-hooks
 
