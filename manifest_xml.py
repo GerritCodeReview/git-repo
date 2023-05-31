@@ -1536,11 +1536,28 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
             if node.nodeName == "remove-project":
                 name = self._reqatt(node, "name")
+                path = node.getAttribute("path")
 
                 if name in self._projects:
-                    for p in self._projects[name]:
-                        del self._paths[p.relpath]
-                    del self._projects[name]
+                    for projname, projects in list(self._projects.items()):
+                        if projname == name:
+                            for p in projects:
+                                # If remove-project has path
+                                # only delete matching projects
+                                if path:
+                                    if path == p.relpath:
+                                        self._projects[projname].remove(p)
+                                        del self._paths[p.relpath]
+                                else:
+                                    del self._paths[p.relpath]
+                                    try:
+                                        del self._projects[name]
+                                    except Exception:
+                                        # Originally deleted all occurrences
+                                        # of the name once, now deletes all
+                                        # every time found which fails when
+                                        # repeated, ignore, delete is ok
+                                        pass
 
                     # If the manifest removes the hooks project, treat it as if
                     # it deleted
