@@ -996,6 +996,38 @@ class RemoveProjectElementTests(ManifestParseTestCase):
         )
         self.assertEqual(manifest.projects, [])
 
+    def test_remove_using_optional_path_attrib(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="project1" path="tests/path1" />
+  <project name="project1" path="tests/path2" />
+  <project name="project2" />
+  <project name="project3" />
+  <project name="project4" path="tests/path3" />
+  <project name="project4" path="tests/path4" />
+
+  <remove-project name="project1" path="tests/path2" />
+  <remove-project name="project3" />
+  <remove-project name="project4" />
+</manifest>
+"""
+        )
+        found_proj1_path1 = False
+        found_proj2 = False
+        for proj in manifest.projects:
+            if proj.name == 'project1':
+                found_proj1_path1 = True
+                self.assertEqual(proj.relpath, 'tests/path1')
+            if proj.name == 'project2':
+                found_proj2 = True
+            self.assertNotEqual(proj.name, 'project3')
+            self.assertNotEqual(proj.name, 'project4')
+        self.assertTrue(found_proj1_path1)
+        self.assertTrue(found_proj2)
+
 
 class ExtendProjectElementTests(ManifestParseTestCase):
     """Tests for <extend-project>."""
