@@ -109,8 +109,9 @@ following DTD:
   <!ATTLIST extend-project upstream CDATA #IMPLIED>
 
   <!ELEMENT remove-project EMPTY>
-  <!ATTLIST remove-project name  CDATA #REQUIRED>
-  <!ATTLIST remove-project optional  CDATA #IMPLIED>
+  <!ATTLIST remove-project name     CDATA #IMPLIED>
+  <!ATTLIST remove-project path     CDATA #IMPLIED>
+  <!ATTLIST remove-project optional CDATA #IMPLIED>
 
   <!ELEMENT repo-hooks EMPTY>
   <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
@@ -473,13 +474,24 @@ of the repo client.
 
 ### Element remove-project
 
-Deletes the named project from the internal manifest table, possibly
+Deletes a project from the internal manifest table, possibly
 allowing a subsequent project element in the same manifest file to
 replace the project with a different source.
 
 This element is mostly useful in a local manifest file, where
 the user can remove a project, and possibly replace it with their
 own definition.
+
+The project `name` or project `path` can be used to specify the remove target
+meaning one of them is required. If only name is specified, all
+projects with that name are removed.
+
+If both name and path are specified, only projects with the same name and
+path are removed, meaning projects with the same name but in other
+locations are kept.
+
+If only path is specified, a matching project is removed regardless of its
+name. Logic otherwise behaves like both are specified.
 
 Attribute `optional`: Set to true to ignore remove-project elements with no
 matching `project` element.
