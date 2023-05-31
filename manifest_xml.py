@@ -1535,16 +1535,52 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 self._contactinfo = ContactInfo(bugurl)
 
             if node.nodeName == "remove-project":
-                name = self._reqatt(node, "name")
+                name = node.getAttribute("name")
+                path = node.getAttribute("path")
+
+                # Name or path needed.
+                # If we only got path, find matching name.
+                # Project path is considered unique, name is not.
+                if not name:
+                    if not path:
+                        raise ManifestParseError(
+                            "remove-project must have name and/or path "
+                        )
+                    else:
+                        for projname, projects in list(self._projects.items()):
+                            for p in projects:
+                                if path == p.relpath:
+                                    name = projname
+                                    break
+                        if not name and not XmlBool(node, "optional", False):
+                            raise ManifestParseError(
+                                "remove-project no matching name found "
+                                "for path %s" % path
+                            )
 
                 if name in self._projects:
-                    for p in self._projects[name]:
-                        del self._paths[p.relpath]
-                    del self._projects[name]
+                    for projname, projects in list(self._projects.items()):
+                        if projname == name:
+                            for p in projects:
+                                # If remove-project has path
+                                # only delete matching projects
+                                if path:
+                                    if path == p.relpath:
+                                        self._projects[projname].remove(p)
+                                        del self._paths[p.relpath]
+                                else:
+                                    del self._paths[p.relpath]
+                                    try:
+                                        del self._projects[name]
+                                    except Exception:
+                                        # Originally deleted all occurrences
+                                        # of the name once, now deletes all
+                                        # every time found which fails when
+                                        # repeated, ignore, delete is ok
+                                        pass
 
                     # If the manifest removes the hooks project, treat it as if
-                    # it deleted
-                    # the repo-hooks element too.
+                    # it deleted the repo-hooks element too.
                     if repo_hooks_project == name:
                         repo_hooks_project = None
                 elif not XmlBool(node, "optional", False):
