@@ -1535,22 +1535,45 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 self._contactinfo = ContactInfo(bugurl)
 
             if node.nodeName == "remove-project":
-                name = self._reqatt(node, "name")
+                name = node.getAttribute("name")
+                path = node.getAttribute("path")
 
-                if name in self._projects:
-                    for p in self._projects[name]:
-                        del self._paths[p.relpath]
-                    del self._projects[name]
+                # Name or path needed.
+                if not name and not path:
+                    raise ManifestParseError(
+                        "remove-project must have name and/or path "
+                    )
 
-                    # If the manifest removes the hooks project, treat it as if
-                    # it deleted
-                    # the repo-hooks element too.
-                    if repo_hooks_project == name:
-                        repo_hooks_project = None
-                elif not XmlBool(node, "optional", False):
+                removed_project = ""
+
+                # Find and remove projects based on name and/or path
+                for projname, projects in list(self._projects.items()):
+                    for p in projects:
+                        if name == projname and not path:
+                            del self._paths[p.relpath]
+                            if not removed_project:
+                                del self._projects[name]
+                                removed_project = name
+                        elif (name == projname and path == p.relpath) or (
+                            path == p.relpath and not name
+                        ):
+                            self._projects[projname].remove(p)
+                            del self._paths[p.relpath]
+                            removed_project = p.name
+
+                # If the manifest removes the hooks project, treat it as if
+                # it deleted the repo-hooks element too.
+                if (
+                    (removed_project)
+                    and (removed_project not in self._projects)
+                    and (repo_hooks_project == removed_project)
+                ):
+                    repo_hooks_project = None
+
+                if not removed_project and not XmlBool(node, "optional", False):
                     raise ManifestParseError(
                         "remove-project element specifies non-existent "
-                        "project: %s" % name
+                        "project: %s" % node.toxml()
                     )
 
         # Store repo hooks project information.
