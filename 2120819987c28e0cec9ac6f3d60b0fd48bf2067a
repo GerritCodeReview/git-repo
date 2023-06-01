@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2abcc60c_27e5ed23",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-01T12:15:42Z",
+      "side": 1,
+      "message": "Hey people, it\u0027s the --nmu guy back again here ...\n\nLocal format and unit tests I ran:\ntox -e lint -- manifest_xml.py\n./run_tests -v tests/test_manifest_xml.py\n\nLocal function test I ran is a setup of\nmini-google-android.xml\nsystem-stuff.xml\nvendor-stuff.xml\n\nThe lower two include the first one as shared source but they use different top folders, and I tried different cases of extend-project, remove-project + add project (with and without path in the remove) and all output from manifest -o test.xml seems to behave as wanted.",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
