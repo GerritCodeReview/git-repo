@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d18abc6_a7fd5c16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-02T14:39:43Z",
+      "side": 1,
+      "message": "this small block of code that you\u0027re changing is literally the only place that `\u003cremove-project\u003e` elements are checked, so there\u0027s no need to worry about impacting other places\n\nhaving the code support name || path || name\u0026\u0026path doesn\u0027t seem that difficult",
+      "parentUuid": "74e76716_9a1814f0",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a242aaae_f800ab80",
         "filename": "docs/manifest-format.md",
         "patchSetId": 1

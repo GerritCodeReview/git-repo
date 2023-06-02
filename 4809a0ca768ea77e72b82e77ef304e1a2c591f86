@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b33a762_f52ad21c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-02T14:39:43Z",
+      "side": 1,
+      "message": "you should update tests/test_manifest_xml.py to add test coverage for this new attribute/behavior",
+      "revId": "4809a0ca768ea77e72b82e77ef304e1a2c591f86",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
