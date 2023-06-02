@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "74e76716_9a1814f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-02T07:09:57Z",
+      "side": 1,
+      "message": "Yeah that also works, like I knew name becomes path if path is empty, but wasn\u0027t sure if that happened later or something sneaky.",
+      "parentUuid": "9f9ed69e_d043b5d2",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a242aaae_f800ab80",
