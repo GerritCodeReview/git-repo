@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f9ed69e_d043b5d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-02T07:03:35Z",
+      "side": 1,
+      "message": "I used getAttribute, so it wont fail if not there, worst case string returned is empty, and then the \"if path\" lower down only triggers if string is not empty, I absolutely didn\u0027t want to fail like _everyone_ else for not having path. \u003d)\n\nIf you\u0027re suggesting to do changes so name could also be optional and then (path or name) is mandatory ... then yeah that sounds like a cool idea, but that scares me, like it would require more understanding of everywhere else that could impact, so I would want to do that in another change in that case.\n\nI\u0027ll do some extra checks for if remove has path but the project being treated does not though, didnt test that on later patch sets.",
+      "parentUuid": "5f586ca0_67549bc6",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a242aaae_f800ab80",
         "filename": "docs/manifest-format.md",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2023-06-01T17:13:11Z",
       "side": 1,
       "message": "i know it\u0027s inconsistent, but the CDATA col is supposed to be aligned.  can you fix the remove-project section so that\u0027s true ?",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8271fa3c_ce0f6742",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-02T07:03:35Z",
+      "side": 1,
+      "message": "Sure, fixed",
+      "parentUuid": "a242aaae_f800ab80",
       "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
