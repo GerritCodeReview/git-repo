@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "12b4bcd4_c055ec2d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-05T11:26:42Z",
+      "side": 1,
+      "message": "The \"doesn\u0027t seem that difficult\", I absolutely believe you feel that way \u003d) me though, not the same. I\u0027m not as familiar with this code, I\u0027m just happy I found something that fixes this \"bug\" of removing all same name projects since that is an issue.\n\nCould we do some gentleman agreement that I also add the feature to remove by either name or path in next commit, and we can merge this enabler for us first? Status on main is blocking us and noone here needs to \"not use name\" kind of, even though I agree with the concept so I can keep looking at that for user friendly purposes?",
+      "parentUuid": "0d18abc6_a7fd5c16",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a242aaae_f800ab80",
         "filename": "docs/manifest-format.md",
         "patchSetId": 1
