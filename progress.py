@@ -23,7 +23,7 @@ except ImportError:
 
 from repo_trace import IsTraceToStderr
 
-_NOT_TTY = not os.isatty(2)
+_TTY = sys.stderr.isatty()
 
 # This will erase all content in the current line (wherever the cursor is).
 # It does not move the cursor, so this is usually followed by \r to move to
@@ -97,7 +97,8 @@ class Progress(object):
         self._start = time.time()
         self._show = not delay
         self._units = units
-        self._elide = elide
+        self._elide = elide and _TTY
+
         # Only show the active jobs section if we run more than one in parallel.
         self._show_jobs = False
         self._active = 0
@@ -129,7 +130,7 @@ class Progress(object):
     def _write(self, s):
         s = "\r" + s
         if self._elide:
-            col = os.get_terminal_size().columns
+            col = os.get_terminal_size(sys.stderr.fileno()).columns
             if len(s) > col:
                 s = s[: col - 1] + ".."
         sys.stderr.write(s)
@@ -157,7 +158,7 @@ class Progress(object):
             msg = self._last_msg
         self._last_msg = msg
 
-        if _NOT_TTY or IsTraceToStderr():
+        if not _TTY or IsTraceToStderr():
             return
 
         elapsed_sec = time.time() - self._start
@@ -199,7 +200,7 @@ class Progress(object):
 
     def end(self):
         self._update_event.set()
-        if _NOT_TTY or IsTraceToStderr() or not self._show:
+        if not _TTY or IsTraceToStderr() or not self._show:
             return
 
         duration = duration_str(time.time() - self._start)
