@@ -16,6 +16,29 @@
       "message": "like",
       "revId": "551285fa35ccd0836513e9cf64ee8d3372e5e3f4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "98a3c7c3_0e77cceb",
+        "filename": "progress.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1161186
+      },
+      "writtenOn": "2023-06-07T10:40:25Z",
+      "side": 1,
+      "message": "Hi, Gavin\n\nIt seems this line causes the \"Inappropriate ioctl for device\" problem when redirect the stdout via pipe, not sure if there is any suggestions for such case.\n```\n$ repo sync | tee /tmp/test.log\nException in thread Thread-1:\nTraceback (most recent call last):\n  File \"/usr/lib/python3.8/threading.py\", line 932, in _bootstrap_inner\n    self.run()\n  File \"/usr/lib/python3.8/threading.py\", line 870, in run\n    self._target(*self._args, **self._kwargs)\n  File \"/home/liuyq/data/android/master/.repo/repo/progress.py\", line 125, in _update_loop\n    self.update(inc\u003d0)\n  File \"/home/liuyq/data/android/master/.repo/repo/progress.py\", line 184, in update\n    self._write(\n  File \"/home/liuyq/data/android/master/.repo/repo/progress.py\", line 132, in _write\n    col \u003d os.get_terminal_size().columns\nOSError: [Errno 25] Inappropriate ioctl for device\nException in thread Thread-2:\nTraceback (most recent call last):\n  File \"/usr/lib/python3.8/threading.py\", line 932, in _bootstrap_inner\n    self.run()\n  File \"/usr/lib/python3.8/threading.py\", line 870, in run\n    self._target(*self._args, **self._kwargs)\n  File \"/home/liuyq/data/android/master/.repo/repo/subcmds/sync.py\", line 718, in _MonitorSyncLoop\n    pm.update(inc\u003d0, msg\u003dself._GetSyncProgressMessage())\n  File \"/home/liuyq/data/android/master/.repo/repo/progress.py\", line 184, in update\n    self._write(\n  File \"/home/liuyq/data/android/master/.repo/repo/progress.py\", line 132, in _write\n    col \u003d os.get_terminal_size().columns\nOSError: [Errno 25] Inappropriate ioctl for device\nTraceback (most recent call last):\n  File \"/home/liuyq/data/android/master/.repo/repo/main.py\", line 837, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n  File \"/home/liuyq/data/android/master/.repo/repo/main.py\", line 813, in _Main\n    result \u003d repo._Run(name, gopts, argv) or 0\n  File \"/home/liuyq/data/android/master/.repo/repo/main.py\", line 283, in _Run\n    result \u003d run()\n  File \"/home/liuyq/data/android/master/.repo/repo/main.py\", line 266, in \u003clambda\u003e\n    run \u003d lambda: self._RunLong(name, gopts, argv) or 0\n  File \"/home/liuyq/data/android/master/.repo/repo/main.py\", line 384, in _RunLong\n    result \u003d cmd.Execute(copts, cargs)\n  File \"/home/liuyq/data/android/master/.repo/repo/subcmds/sync.py\", line 1685, in Execute\n    result \u003d self._FetchMain(\n  File \"/home/liuyq/data/android/master/.repo/repo/subcmds/sync.py\", line 841, in _FetchMain\n    result \u003d self._Fetch(to_fetch, opt, err_event, ssh_proxy)\n  File \"/home/liuyq/data/android/master/.repo/repo/subcmds/sync.py\", line 787, in _Fetch\n    pm.update(inc\u003d0, msg\u003d\"warming up\")\n  File \"/home/liuyq/data/android/master/.repo/repo/progress.py\", line 184, in update\n    self._write(\n  File \"/home/liuyq/data/android/master/.repo/repo/progress.py\", line 132, in _write\n    col \u003d os.get_terminal_size().columns\nOSError: [Errno 25] Inappropriate ioctl for device\n18:34:06 P15v:master$ \n```",
+      "range": {
+        "startLine": 128,
+        "startChar": 21,
+        "endLine": 128,
+        "endChar": 38
+      },
+      "revId": "551285fa35ccd0836513e9cf64ee8d3372e5e3f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
