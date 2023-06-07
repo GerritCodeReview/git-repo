@@ -97,14 +97,7 @@ class Progress(object):
         self._start = time.time()
         self._show = not delay
         self._units = units
-
-        try:
-          # OSError is raised if stdout is not connected to a terminal, e.g.
-          # piped into tee.
-          os.get_terminal_size()
-          self._elide = elide
-        except OSError:
-          self._elide = False
+        self._elide = elide and sys.stderr.isatty()
 
         # Only show the active jobs section if we run more than one in parallel.
         self._show_jobs = False
@@ -137,7 +130,7 @@ class Progress(object):
     def _write(self, s):
         s = "\r" + s
         if self._elide:
-            col = os.get_terminal_size().columns
+            col = os.get_terminal_size(sys.stderr.fileno()).columns
             if len(s) > col:
                 s = s[: col - 1] + ".."
         sys.stderr.write(s)
