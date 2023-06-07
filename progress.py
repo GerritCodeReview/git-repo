@@ -97,7 +97,15 @@ class Progress(object):
         self._start = time.time()
         self._show = not delay
         self._units = units
-        self._elide = elide
+
+        try:
+          # OSError is raised if stdout is not connected to a terminal, e.g.
+          # piped into tee.
+          os.get_terminal_size()
+          self._elide = elide
+        except OSError:
+          self._elide = False
+
         # Only show the active jobs section if we run more than one in parallel.
         self._show_jobs = False
         self._active = 0
