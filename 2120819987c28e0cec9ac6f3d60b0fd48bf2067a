@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d0e29395_346e4871",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-07T20:08:04Z",
+      "side": 1,
+      "message": "i understand your hesitation ... the repo code base is kind of large \u0026 hairy \u0026 not well documented.  however, literally all of the `\u003cremove-project\u003e` logic is in this small block of code under `if node.nodeName \u003d\u003d \"remove-project\":` you\u0027ve already fully modified.  there is no other place in the codebase you have to worry about changing or having behavior get wonky.",
+      "parentUuid": "12b4bcd4_c055ec2d",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a242aaae_f800ab80",
         "filename": "docs/manifest-format.md",
         "patchSetId": 1
