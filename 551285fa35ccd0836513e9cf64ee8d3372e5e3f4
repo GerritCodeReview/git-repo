@@ -67,6 +67,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ff83e231_ae6970f4",
+        "filename": "progress.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-08T03:12:11Z",
+      "side": 1,
+      "message": "off-by-one error here -- you need to truncate another char",
+      "revId": "551285fa35ccd0836513e9cf64ee8d3372e5e3f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a4f24af4_b2b44420",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
