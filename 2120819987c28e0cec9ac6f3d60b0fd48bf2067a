@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b401d46c_ac08eb7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-08T07:24:28Z",
+      "side": 1,
+      "message": "Sure thing, so I took another look at it, and it occurred to me I could get away without messing with previous behavior or the repo-hooks and so on, by finding the name first.\n\nQuite happy with that, so if only path is used, then it behaves like both are defined, and I made use of the existing optional attribute and so on in the sanity. Tests updated and my own local tests also still work fine.\n\nThe document I wasnt sure about, like required/implied, I didnt find any \"one of these is required\" type of elements to use?",
+      "parentUuid": "d0e29395_346e4871",
+      "revId": "2120819987c28e0cec9ac6f3d60b0fd48bf2067a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a242aaae_f800ab80",
         "filename": "docs/manifest-format.md",
         "patchSetId": 1
