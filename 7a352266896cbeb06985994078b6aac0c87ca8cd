@@ -16,6 +16,24 @@
       "message": "this works, but feels like we should use a more standard thing like `sys.stderr.isatty()` ?\n\n`self._elide \u003d elide and sys.stderr.isatty()`",
       "revId": "7a352266896cbeb06985994078b6aac0c87ca8cd",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb6e833e_1f004ea0",
+        "filename": "progress.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-06-08T17:09:35Z",
+      "side": 1,
+      "message": "standard thing is good",
+      "parentUuid": "ceaad57a_70f3d954",
+      "revId": "7a352266896cbeb06985994078b6aac0c87ca8cd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
