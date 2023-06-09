@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e6aa91b_8dd55e3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-09T06:58:37Z",
+      "side": 1,
+      "message": "I should have set status to resolved I guess. Still the question on the updated documentation though, cheers ...",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
