@@ -52,6 +52,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6e545ab_a9317d31",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-14T14:29:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22959764_c0ed96d2",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85af4ae6_a2e13a8d",
@@ -65,6 +83,24 @@
       "writtenOn": "2023-06-14T05:20:37Z",
       "side": 1,
       "message": "```suggestion\nIf both name and path are specified, only projects with the same name and\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d25e65b_184f8194",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-14T14:29:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "85af4ae6_a2e13a8d",
       "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +122,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a23bcaf9_81c9fec0",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-14T14:29:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a67c1742_ffb95283",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1de929b_9fa7c799",
@@ -99,6 +153,24 @@
       "writtenOn": "2023-06-14T05:20:37Z",
       "side": 1,
       "message": "```suggestion\nIf only path is specified, a matching project is removed regardless of its\nname.\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5da8f12b_e3a68cdf",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-14T14:29:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1de929b_9fa7c799",
       "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -126,6 +198,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8964e407_e1bb329e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1548,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-14T14:29:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f27f3c3_a3cced15",
+      "range": {
+        "startLine": 1544,
+        "startChar": 0,
+        "endLine": 1548,
+        "endChar": 25
+      },
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dfc06d19_a79f21ac",
@@ -139,6 +235,24 @@
       "writtenOn": "2023-06-14T05:20:37Z",
       "side": 1,
       "message": "i think this logic overall can be made simpler by not walking the lists multiple times.  something like:\n\n```\nremoved_project \u003d False\n\nfor projname, projects in list(self._projects.items()):\n    for p in projects:\n        if (\n            (not path and name \u003d\u003d projname) or\n            (path \u003d\u003d p.relpath and not name) or\n            (path \u003d\u003d p.relpath and name \u003d\u003d projname)\n        ):\n            removed_project \u003d True\n            self._projects[projname].remove(p)\n\n    # If we deleted all the projects, clear out the name.\n    if not self._projects[projname]:\n        del self._projects[projname]\n\nif not removed_project and not XmlBool(node, \"optional\", False):\n    raise ManifestParseError(...)\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c916a8d8_3f6946c1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1550,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-14T14:29:32Z",
+      "side": 1,
+      "message": "I didn\u0027t get exactly this to work, but almost, so most importantly not looping over same things twice as you pointed out, that is now ok, thanks for suggestion.\n\nI still dont understand the repo-hook properly but hope I didnt cause any regression there at least? That is what made me use a string in the removed_project instead of bool.",
+      "parentUuid": "dfc06d19_a79f21ac",
       "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
