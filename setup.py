@@ -40,7 +40,7 @@ setuptools.setup(
     long_description_content_type="text/plain",
     url="https://gerrit.googlesource.com/git-repo/",
     project_urls={
-        "Bug Tracker": "https://bugs.chromium.org/p/gerrit/issues/list?q=component:Applications%3Erepo",  # noqa: E501
+        "Bug Tracker": "https://issues.gerritcodereview.com/issues?q=is:open%20componentid:1370071",  # noqa: E501
     },
     # https://pypi.org/classifiers/
     classifiers=[

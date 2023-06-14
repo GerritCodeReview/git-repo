@@ -8,7 +8,7 @@ that you can put anywhere in your path.
 
 * Homepage: <https://gerrit.googlesource.com/git-repo/>
 * Mailing list: [repo-discuss on Google Groups][repo-discuss]
-* Bug reports: <https://bugs.chromium.org/p/gerrit/issues/list?q=component:Applications%3Erepo>
+* Bug reports: <https://issues.gerritcodereview.com/issues?q=is:open%20componentid:1370071>
 * Source: <https://gerrit.googlesource.com/git-repo/>
 * Overview: <https://source.android.com/source/developing.html>
 * Docs: <https://source.android.com/source/using-repo.html>
@@ -50,6 +50,6 @@ $ chmod a+rx ~/.bin/repo
 ```
 
 
-[new-bug]: https://bugs.chromium.org/p/gerrit/issues/entry?template=Repo+tool+issue
-[issue tracker]: https://bugs.chromium.org/p/gerrit/issues/list?q=component:Applications%3Erepo
+[new-bug]: https://issues.gerritcodereview.com/issues/new?component=1370071
+[issue tracker]: https://issues.gerritcodereview.com/issues?q=is:open%20componentid:1370071
 [repo-discuss]: https://groups.google.com/forum/#!forum/repo-discuss
