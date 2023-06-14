@@ -33,6 +33,114 @@
       "message": "Can I ask you guys to +2 this now or is there something else needed from me? Cheers ...",
       "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22959764_c0ed96d2",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-14T05:20:37Z",
+      "side": 1,
+      "message": "```suggestion\nmeaning one of them is required. If only name is specified, all\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85af4ae6_a2e13a8d",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-14T05:20:37Z",
+      "side": 1,
+      "message": "```suggestion\nIf both name and path are specified, only projects with the same name and\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a67c1742_ffb95283",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-14T05:20:37Z",
+      "side": 1,
+      "message": "```suggestion\npath are removed, meaning projects with the same name but in other\nlocations are kept.\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1de929b_9fa7c799",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-14T05:20:37Z",
+      "side": 1,
+      "message": "```suggestion\nIf only path is specified, a matching project is removed regardless of its\nname.\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f27f3c3_a3cced15",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1548,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-14T05:20:37Z",
+      "side": 1,
+      "message": "```suggestion\n                if not name and not path:\n                    raise ManifestParseError(\n                        \"remove-project must have name and/or path\"\n                    )\n```\n\nseparate this from the logic below to avoid excessive nesting",
+      "range": {
+        "startLine": 1544,
+        "startChar": 0,
+        "endLine": 1548,
+        "endChar": 25
+      },
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfc06d19_a79f21ac",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1550,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-14T05:20:37Z",
+      "side": 1,
+      "message": "i think this logic overall can be made simpler by not walking the lists multiple times.  something like:\n\n```\nremoved_project \u003d False\n\nfor projname, projects in list(self._projects.items()):\n    for p in projects:\n        if (\n            (not path and name \u003d\u003d projname) or\n            (path \u003d\u003d p.relpath and not name) or\n            (path \u003d\u003d p.relpath and name \u003d\u003d projname)\n        ):\n            removed_project \u003d True\n            self._projects[projname].remove(p)\n\n    # If we deleted all the projects, clear out the name.\n    if not self._projects[projname]:\n        del self._projects[projname]\n\nif not removed_project and not XmlBool(node, \"optional\", False):\n    raise ManifestParseError(...)\n```",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
