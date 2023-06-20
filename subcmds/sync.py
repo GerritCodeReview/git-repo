@@ -1676,6 +1676,13 @@ later is required to fix a server side protocol bug.
         err_update_projects = False
         err_update_linkfiles = False
 
+        # Log the repo projects by existing and new.
+        existing = [x for x in all_projects if x.Exists]
+        mp.config.SetString("repo.existing_project_count", len(existing))
+        mp.config.SetString(
+            "repo.new_project_count", len(all_projects) - len(existing)
+        )
+
         self._fetch_times = _FetchTimes(manifest)
         if not opt.local_only:
             with multiprocessing.Manager() as manager:
