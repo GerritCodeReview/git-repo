@@ -255,6 +255,24 @@
       "parentUuid": "dfc06d19_a79f21ac",
       "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "566a9c9d_b02bcc0d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1550,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-20T16:05:48Z",
+      "side": 1,
+      "message": "let\u0027s lean on the unittests.  if this change ends up having a bug, we\u0027ll add more unittest coverage when fixing it.",
+      "parentUuid": "c916a8d8_3f6946c1",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
