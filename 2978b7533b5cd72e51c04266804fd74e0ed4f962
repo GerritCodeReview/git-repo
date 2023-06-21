@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5f9124b_6680a4af",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1544,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-21T07:17:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa4de571_74ad4ebc",
+      "revId": "2978b7533b5cd72e51c04266804fd74e0ed4f962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b905cf9_f12033f5",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-06-20T16:05:48Z",
       "side": 1,
       "message": "```suggestion\n                # Find and remove projects based on name and/or path.\n```",
+      "revId": "2978b7533b5cd72e51c04266804fd74e0ed4f962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a945ee27_c2a51afc",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1549,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-21T07:17:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b905cf9_f12033f5",
       "revId": "2978b7533b5cd72e51c04266804fd74e0ed4f962",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -75,6 +111,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba9320c1_28c68d1a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-21T07:17:44Z",
+      "side": 1,
+      "message": "More optimized, but slighty harder to understand? But sure, fixed.",
+      "parentUuid": "c5de4a96_8f221e39",
+      "range": {
+        "startLine": 1557,
+        "startChar": 0,
+        "endLine": 1559,
+        "endChar": 26
+      },
+      "revId": "2978b7533b5cd72e51c04266804fd74e0ed4f962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "920e1cb6_db452536",
@@ -88,6 +148,30 @@
       "writtenOn": "2023-06-20T16:05:48Z",
       "side": 1,
       "message": "```suggestion\n                    removed_project\n                    and removed_project not in self._projects\n                    and repo_hooks_project \u003d\u003d removed_project\n```",
+      "range": {
+        "startLine": 1567,
+        "startChar": 0,
+        "endLine": 1569,
+        "endChar": 63
+      },
+      "revId": "2978b7533b5cd72e51c04266804fd74e0ed4f962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8200fa2_5e34f90f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1569,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-21T07:17:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "920e1cb6_db452536",
       "range": {
         "startLine": 1567,
         "startChar": 0,

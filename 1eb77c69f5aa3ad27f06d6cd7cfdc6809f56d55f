@@ -273,6 +273,24 @@
       "parentUuid": "c916a8d8_3f6946c1",
       "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33ba8474_ade3d4a0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1550,
+      "author": {
+        "id": 1160957
+      },
+      "writtenOn": "2023-06-21T07:17:44Z",
+      "side": 1,
+      "message": "Alright, sounds good",
+      "parentUuid": "566a9c9d_b02bcc0d",
+      "revId": "1eb77c69f5aa3ad27f06d6cd7cfdc6809f56d55f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
