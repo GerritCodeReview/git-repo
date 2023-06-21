@@ -135,6 +135,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "94ab6b35_9d5d149a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1559,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-21T14:50:12Z",
+      "side": 1,
+      "message": "no idea about optimization.  i find the new version more readable as it\u0027s clear that it requires `path` to be set vs noticing the same test exists in both subchecks.\n\ni guess if you think bigger scope here and use a truth table, you\u0027ve expanded all 4 cases explicitly, and maybe that\u0027s more clear.  *shrug*",
+      "parentUuid": "ba9320c1_28c68d1a",
+      "range": {
+        "startLine": 1557,
+        "startChar": 0,
+        "endLine": 1559,
+        "endChar": 26
+      },
+      "revId": "2978b7533b5cd72e51c04266804fd74e0ed4f962",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "920e1cb6_db452536",
