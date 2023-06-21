@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0abbad1_7cd835e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-21T15:04:08Z",
+      "side": 1,
+      "message": "when making changes to a single subcommand, please prefix with like `sync:`",
+      "revId": "d92deb4521babfa7f1a9e2325057bf97d8c0e2f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e83d321e_dde87616",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1680,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-21T15:04:08Z",
+      "side": 1,
+      "message": "```suggestion\n        existing \u003d [x for x in all_projects if x.Exists]\n```\n\nusing `x` for the throw away iterator makes it consistent and easier to read and shorter lines",
+      "revId": "d92deb4521babfa7f1a9e2325057bf97d8c0e2f6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
