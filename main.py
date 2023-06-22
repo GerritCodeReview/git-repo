@@ -25,6 +25,7 @@ import netrc
 import optparse
 import os
 import shlex
+import signal
 import sys
 import textwrap
 import time
@@ -95,6 +96,7 @@ else:
             file=sys.stderr,
         )
 
+KEYBOARD_INTERRUPT_EXIT = 128 + signal.SIGINT
 
 global_options = optparse.OptionParser(
     usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]",
@@ -374,7 +376,11 @@ class _Repo(object):
         git_trace2_event_log.StartEvent()
         git_trace2_event_log.CommandEvent(name="repo", subcommands=[name])
 
-        try:
+        def execute_command_helper():
+            """
+            Execute the subcommand.
+            """
+            nonlocal result
             cmd.CommonValidateOptions(copts, cargs)
             cmd.ValidateOptions(copts, cargs)
 
@@ -409,6 +415,24 @@ class _Repo(object):
                     if hasattr(copts, "manifest_branch"):
                         child_argv.extend(["--manifest-branch", spec.revision])
                     result = self._Run(name, gopts, child_argv) or result
+                return result
+
+        def execute_command():
+            """
+            Execute the command and log uncaught exceptions.
+            """
+            try:
+                execute_command_helper()
+            except (KeyboardInterrupt, SystemExit, Exception) as e:
+                ok = isinstance(e, SystemExit) and not e.code
+                if not ok:
+                    exception_name = type(e).__name__
+                    msg = f"RepoExitError:{exception_name}"
+                    git_trace2_event_log.ErrorEvent(msg, msg)
+                raise
+
+        try:
+            execute_command()
         except (
             DownloadError,
             ManifestInvalidRevisionError,
@@ -447,6 +471,12 @@ class _Repo(object):
         except SystemExit as e:
             if e.code:
                 result = e.code
+            raise
+        except KeyboardInterrupt:
+            result = KEYBOARD_INTERRUPT_EXIT
+            raise
+        except Exception:
+            result = 1
             raise
         finally:
             finish = time.time()
@@ -813,7 +843,7 @@ def _Main(argv):
         result = repo._Run(name, gopts, argv) or 0
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
-        result = 1
+        result = KEYBOARD_INTERRUPT_EXIT
     except ManifestParseError as mpe:
         print("fatal: %s" % mpe, file=sys.stderr)
         result = 1
