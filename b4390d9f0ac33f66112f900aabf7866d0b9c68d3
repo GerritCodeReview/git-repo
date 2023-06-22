@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad0c6e91_2d51c7be",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-22T23:01:13Z",
+      "side": 1,
+      "message": "`main:` or `repo:` would be a good scope here",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca3bd2d3_40a1b85a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-22T23:01:13Z",
+      "side": 1,
+      "message": "why ?  repo should be existing non-zero (1) already.  why is that showing as success ?",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c3cb91d_9c743bda",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-22T23:01:13Z",
+      "side": 1,
+      "message": "this belongs below the python version checks.  this section isn\u0027t a generic-module-constants space.",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08388de2_088c3ce7",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-22T23:01:13Z",
+      "side": 1,
+      "message": "please add a comment explaining \"why 130\".  \"this is what shells exit when SIGINT is encountered\" is OK.  although at that point, you should write it as such: `KEYBOARD_INTERRUPT_EXIT \u003d 128 + signal.SIGINT`.",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
