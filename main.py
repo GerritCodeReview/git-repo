@@ -25,6 +25,7 @@ import netrc
 import optparse
 import os
 import shlex
+import signal
 import sys
 import textwrap
 import time
@@ -95,6 +96,7 @@ else:
             file=sys.stderr,
         )
 
+KEYBOARD_INTERRUPT_EXIT = 128 + signal.SIGINT
 
 global_options = optparse.OptionParser(
     usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]",
@@ -286,6 +288,7 @@ class _Repo(object):
     def _RunLong(self, name, gopts, argv):
         """Execute the (longer running) requested subcommand."""
         result = 0
+        result_reason = ""
         SetDefaultColoring(gopts.color)
 
         git_trace2_event_log = EventLog()
@@ -419,16 +422,22 @@ class _Repo(object):
                 file=sys.stderr,
             )
             if isinstance(e, NoManifestException):
+                result_reason = "NoManifestException"
                 print(
                     "error: manifest missing or unreadable -- please run init",
                     file=sys.stderr,
                 )
+            elif isinstance(e, DownloadError):
+                result_reason = "DownloadError"
+            else:
+                result_reason = "ManifestInvalidRevisionError"
             result = 1
         except NoSuchProjectError as e:
             if e.name:
                 print("error: project %s not found" % e.name, file=sys.stderr)
             else:
                 print("error: no project in current directory", file=sys.stderr)
+            result_reason = "NoSuchProjectError"
             result = 1
         except InvalidProjectGroupsError as e:
             if e.name:
@@ -443,10 +452,22 @@ class _Repo(object):
                     "the current directory",
                     file=sys.stderr,
                 )
+            result_reason = "InvalidProjectGroupsError"
             result = 1
         except SystemExit as e:
             if e.code:
                 result = e.code
+            else:
+                result = 1
+            result_reason = "SystemExit"
+            raise
+        except KeyboardInterrupt:
+            result_reason = "KeyboardInterrupt"
+            result = KEYBOARD_INTERRUPT_EXIT
+            raise
+        except Exception:
+            result_reason = "UnhandledException"
+            result = 1
             raise
         finally:
             finish = time.time()
@@ -471,6 +492,9 @@ class _Repo(object):
                 cmd.manifest.manifestProject.config.DumpConfigDict()
             )
             git_trace2_event_log.ExitEvent(result)
+            if result_reason != "":
+                msg = "RepoExitError:{}".format(result_reason)
+                git_trace2_event_log.ErrorEvent(msg, msg)
 
             if gopts.event_log:
                 cmd.event_log.Write(
@@ -813,7 +837,7 @@ def _Main(argv):
         result = repo._Run(name, gopts, argv) or 0
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
-        result = 1
+        result = KEYBOARD_INTERRUPT_EXIT
     except ManifestParseError as mpe:
         print("fatal: %s" % mpe, file=sys.stderr)
         result = 1
