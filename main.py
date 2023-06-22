@@ -25,6 +25,7 @@ import netrc
 import optparse
 import os
 import shlex
+import signal
 import sys
 import textwrap
 import time
@@ -95,6 +96,7 @@ else:
             file=sys.stderr,
         )
 
+KEYBOARD_INTERRUPT_EXIT = 128 + signal.SIGINT
 
 global_options = optparse.OptionParser(
     usage="repo [-p|--paginate|--no-pager] COMMAND [ARGS]",
@@ -447,6 +449,9 @@ class _Repo(object):
         except SystemExit as e:
             if e.code:
                 result = e.code
+            raise
+        except KeyboardInterrupt:
+            result = KEYBOARD_INTERRUPT_EXIT
             raise
         finally:
             finish = time.time()
@@ -813,7 +818,7 @@ def _Main(argv):
         result = repo._Run(name, gopts, argv) or 0
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
-        result = 1
+        result = KEYBOARD_INTERRUPT_EXIT
     except ManifestParseError as mpe:
         print("fatal: %s" % mpe, file=sys.stderr)
         result = 1
