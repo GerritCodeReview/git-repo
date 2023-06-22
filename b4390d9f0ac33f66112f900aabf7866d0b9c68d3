@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "235b0b5f_ac2f8ae4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-06-22T23:46:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad0c6e91_2d51c7be",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca3bd2d3_40a1b85a",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-22T23:01:13Z",
       "side": 1,
       "message": "why ?  repo should be existing non-zero (1) already.  why is that showing as success ?",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c1cb4fa_5c81f877",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-06-22T23:46:44Z",
+      "side": 1,
+      "message": "The program exits with exit-code 1. If you follow the code you will see this is not what is logged in the ExitEvent though.\n\n```\ndef _RunLong(self, name, gopts, argv): \n...\n    try:\n        ...    \n    finally:\n        ...\n        git_trace2_event_log.ExitEvent(result) # result is 0\n```\n\n- https://gerrit.googlesource.com/git-repo/+/be71c2f80fa115e8256211fd0e3116d93cfae93e/main.py#288\n\n- https://gerrit.googlesource.com/git-repo/+/be71c2f80fa115e8256211fd0e3116d93cfae93e/main.py#473",
+      "parentUuid": "ca3bd2d3_40a1b85a",
       "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -65,6 +101,42 @@
       "writtenOn": "2023-06-22T23:01:13Z",
       "side": 1,
       "message": "please add a comment explaining \"why 130\".  \"this is what shells exit when SIGINT is encountered\" is OK.  although at that point, you should write it as such: `KEYBOARD_INTERRUPT_EXIT \u003d 128 + signal.SIGINT`.",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89ef0ba6_28ec631c",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-06-22T23:46:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08388de2_088c3ce7",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2a15f8f_37afa8ab",
+        "filename": "main.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-06-22T23:46:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c3cb91d_9c743bda",
       "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
