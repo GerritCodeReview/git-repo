@@ -72,6 +72,7 @@ from subcmds import all_commands
 # python-3.6 is in Ubuntu Bionic.
 MIN_PYTHON_VERSION_SOFT = (3, 6)
 MIN_PYTHON_VERSION_HARD = (3, 6)
+KEYBOARD_INTERRUPT_EXIT = 130
 
 if sys.version_info.major < 3:
     print(
@@ -448,6 +449,9 @@ class _Repo(object):
             if e.code:
                 result = e.code
             raise
+        except KeyboardInterrupt:
+            result = KEYBOARD_INTERRUPT_EXIT
+            raise
         finally:
             finish = time.time()
             elapsed = finish - start
@@ -813,7 +817,7 @@ def _Main(argv):
         result = repo._Run(name, gopts, argv) or 0
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
-        result = 1
+        result = KEYBOARD_INTERRUPT_EXIT
     except ManifestParseError as mpe:
         print("fatal: %s" % mpe, file=sys.stderr)
         result = 1
