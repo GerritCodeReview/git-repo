@@ -26,6 +26,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e9d6f2f_15c0e209",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-23T22:08:44Z",
+      "side": 1,
+      "message": "this isn\u0027t an error.  it shouldn\u0027t be treated as such.  `sys.exit(0)` is a normal exit and will hit this codepath.",
+      "revId": "6df64f13d19366952e8cc088bb4f3214d9924fe8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95a0ebce_0cd9efde",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-23T22:08:44Z",
+      "side": 1,
+      "message": "shouldn\u0027t this be str() of the exception itself ?  otherwise we don\u0027t know what exception we\u0027re seeing.",
+      "revId": "6df64f13d19366952e8cc088bb4f3214d9924fe8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e2dee94_53f7ba40",
         "filename": "main.py",
         "patchSetId": 4
@@ -37,6 +71,40 @@
       "writtenOn": "2023-06-23T20:17:50Z",
       "side": 1,
       "message": "exit event should be last, move after L497",
+      "revId": "6df64f13d19366952e8cc088bb4f3214d9924fe8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14e2c5a2_6d7594a6",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-23T22:08:44Z",
+      "side": 1,
+      "message": "pythonic is `if not result_reason:`",
+      "revId": "6df64f13d19366952e8cc088bb4f3214d9924fe8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d30cff9_2c27ff91",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 496,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-23T22:08:44Z",
+      "side": 1,
+      "message": "use f-strings and never `.format()`",
       "revId": "6df64f13d19366952e8cc088bb4f3214d9924fe8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
