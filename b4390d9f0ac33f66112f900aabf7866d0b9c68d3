@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "90e6d487_dde2de11",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-23T00:23:46Z",
+      "side": 1,
+      "message": "what about `ManifestParseError` ?",
+      "parentUuid": "5c1cb4fa_5c81f877",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9c3cb91d_9c743bda",
         "filename": "main.py",
         "patchSetId": 1

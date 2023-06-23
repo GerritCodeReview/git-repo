@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3b308df_0a0e4228",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-23T00:23:46Z",
+      "side": 1,
+      "message": "please don\u0027t self Code-Review.  it\u0027s meaningless, and it causes Gerrit to warn.  if you want to indicate you\u0027ve tested things, Verified+1 suffices.",
+      "revId": "3998c49658f2e3ac8b69485678f3e11146c9a216",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
