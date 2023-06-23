@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "832e5a01_c560f755",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-06-23T20:17:50Z",
+      "side": 1,
+      "message": "looks like result_reason is always `type(e).__name__` if e is set. Maybe we can refactor the code so it\u0027s less error prune.\n\nmaybe something like:\n\n    def run_cmd():\n      # content of try\n     \n    def error_logger_wrapper(cmd):\n      try:\n        cmd()\n      except Exception as e:\n        msg \u003d \"RepoExitError:{}\".format(type(e).__name__)\n        git_trace2_event_log.ErrorEvent(msg, msg)\n        raise\n      \n    def error_handler_wrapper(cmd):\n      try:\n        cmd()\n      # all except cases\n      return result\n    \n    result \u003d error_handler_wrapper(error_logger_wrapper(cmd))",
+      "range": {
+        "startLine": 291,
+        "startChar": 8,
+        "endLine": 291,
+        "endChar": 21
+      },
+      "revId": "6df64f13d19366952e8cc088bb4f3214d9924fe8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e2dee94_53f7ba40",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 494,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-06-23T20:17:50Z",
+      "side": 1,
+      "message": "exit event should be last, move after L497",
+      "revId": "6df64f13d19366952e8cc088bb4f3214d9924fe8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
