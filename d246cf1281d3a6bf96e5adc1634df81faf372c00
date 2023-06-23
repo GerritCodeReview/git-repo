@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750d99ed_96fa368c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-06-23T19:53:36Z",
+      "side": 1,
+      "message": "Says that I don\u0027t have permissions to submit. Does anyone know what is going on?",
+      "revId": "d246cf1281d3a6bf96e5adc1634df81faf372c00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
