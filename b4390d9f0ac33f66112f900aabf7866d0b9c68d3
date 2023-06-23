@@ -89,6 +89,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b0758a7_9d99faf2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-06-23T17:31:57Z",
+      "side": 1,
+      "message": "Good call. I updated to ensure non-zero eixt code logged for all exceptions",
+      "parentUuid": "90e6d487_dde2de11",
+      "revId": "b4390d9f0ac33f66112f900aabf7866d0b9c68d3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9c3cb91d_9c743bda",
