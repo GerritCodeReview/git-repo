@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a44033d5_ee04f80e",
+        "filename": "main.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-06-24T03:55:36Z",
+      "side": 1,
+      "message": "second arg of ErrorEvent is optional. if not set, it will be equal to the first one.\n\n```suggestion\n                    git_trace2_event_log.ErrorEvent(\n                        f\"RepoExitError:{exception_name}\")\n```",
+      "range": {
+        "startLine": 429,
+        "startChar": 0,
+        "endLine": 430,
+        "endChar": 61
+      },
+      "revId": "1f664b894ada350357a6b8683bb093703afdc126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
