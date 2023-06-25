@@ -34,6 +34,24 @@
       "parentUuid": "750d99ed_96fa368c",
       "revId": "d246cf1281d3a6bf96e5adc1634df81faf372c00",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b031319_e48928a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-06-25T20:59:41Z",
+      "side": 1,
+      "message": "because you aren\u0027t supposed to submit.  use CQ+2 to merge via the CQ.",
+      "parentUuid": "21927b40_50bb55ed",
+      "revId": "d246cf1281d3a6bf96e5adc1634df81faf372c00",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
