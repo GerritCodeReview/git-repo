@@ -54,6 +54,7 @@ from error import ManifestParseError
 from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
+from error import RepoExitError
 import gitc_utils
 from manifest_xml import GitcClient, RepoClient
 from pager import RunPager, TerminatePager
@@ -422,12 +423,18 @@ class _Repo(object):
             """
             try:
                 execute_command_helper()
-            except (KeyboardInterrupt, SystemExit, Exception) as e:
+            except (
+                KeyboardInterrupt,
+                SystemExit,
+                Exception,
+                RepoExitError,
+            ) as e:
                 ok = isinstance(e, SystemExit) and not e.code
                 if not ok:
                     exception_name = type(e).__name__
                     git_trace2_event_log.ErrorEvent(
-                        f"RepoExitError:{exception_name}")
+                        f"RepoExitError:{exception_name}"
+                    )
                 raise
 
         try:
@@ -466,13 +473,16 @@ class _Repo(object):
                     "the current directory",
                     file=sys.stderr,
                 )
-            result = 1
+            result = e.exit_code
         except SystemExit as e:
             if e.code:
                 result = e.code
             raise
         except KeyboardInterrupt:
             result = KEYBOARD_INTERRUPT_EXIT
+            raise
+        except RepoExitError as e:
+            result = e.exit_code
             raise
         except Exception:
             result = 1
@@ -840,6 +850,13 @@ def _Main(argv):
             SetTraceToStderr()
 
         result = repo._Run(name, gopts, argv) or 0
+    except RepoExitError as e:
+        exception_name = type(e).__name__
+        aggregate_errors = e.aggregate_errors or []
+        if aggregate_errors:
+            print(f"{exception_name} Aggregate Errors")
+            for err in aggregate_errors:
+                print(err)
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
         result = KEYBOARD_INTERRUPT_EXIT
