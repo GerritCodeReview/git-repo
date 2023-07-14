@@ -63,7 +63,7 @@ from command import (
     MirrorSafeCommand,
     WORKER_BATCH_SIZE,
 )
-from error import RepoChangedException, GitError
+from error import RepoChangedException, GitError, RepoError, RepoExitError
 import platform_utils
 from project import SyncBuffer
 from progress import Progress, elapsed_str, jobs_str
@@ -94,6 +94,7 @@ class _FetchOneResult(NamedTuple):
     """
 
     success: bool
+    errors: List[Exception]
     project: Project
     start: float
     finish: float
@@ -110,6 +111,7 @@ class _FetchResult(NamedTuple):
 
     success: bool
     projects: Set[str]
+    errors: List[Exception]
 
 
 class _FetchMainResult(NamedTuple):
@@ -120,6 +122,7 @@ class _FetchMainResult(NamedTuple):
     """
 
     all_projects: List[Project]
+    errors: List[Exception]
 
 
 class _CheckoutOneResult(NamedTuple):
@@ -133,6 +136,7 @@ class _CheckoutOneResult(NamedTuple):
     """
 
     success: bool
+    errors: List[Exception]
     project: Project
     start: float
     finish: float
@@ -588,6 +592,7 @@ later is required to fix a server side protocol bug.
                         file=sys.stderr,
                     )
                 if update_result.fatal and opt.use_superproject is not None:
+                    # TODO raise an exit error instead ...
                     sys.exit(1)
         if need_unload:
             m.outer_client.manifest.Unload()
@@ -621,6 +626,7 @@ later is required to fix a server side protocol bug.
         self._sync_dict[k] = start
         success = False
         remote_fetched = False
+        errors = []
         buf = io.StringIO()
         try:
             sync_result = project.Sync_NetworkHalf(
@@ -644,6 +650,8 @@ later is required to fix a server side protocol bug.
             )
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched
+            if sync_result.errors:
+                errors.extend(sync_result.errors)
 
             output = buf.getvalue()
             if (opt.verbose or not success) and output:
@@ -659,6 +667,7 @@ later is required to fix a server side protocol bug.
             print(f"Keyboard interrupt while processing {project.name}")
         except GitError as e:
             print("error.GitError: Cannot fetch %s" % str(e), file=sys.stderr)
+            errors.append(e)
         except Exception as e:
             print(
                 "error: Cannot fetch %s (%s: %s)"
@@ -666,11 +675,14 @@ later is required to fix a server side protocol bug.
                 file=sys.stderr,
             )
             del self._sync_dict[k]
+            errors.append(e)
             raise
 
         finish = time.time()
         del self._sync_dict[k]
-        return _FetchOneResult(success, project, start, finish, remote_fetched)
+        return _FetchOneResult(
+            success, errors, project, start, finish, remote_fetched
+        )
 
     @classmethod
     def _FetchInitChild(cls, ssh_proxy):
@@ -701,6 +713,7 @@ later is required to fix a server side protocol bug.
         jobs = opt.jobs_network
         fetched = set()
         remote_fetched = set()
+        errors = []
         pm = Progress(
             "Fetching",
             len(projects),
@@ -744,6 +757,8 @@ later is required to fix a server side protocol bug.
                         finish,
                         success,
                     )
+                    if result.errors:
+                        errors.extend(result.errors)
                     if result.remote_fetched:
                         remote_fetched.add(project)
                     # Check for any errors before running any more tasks.
@@ -811,7 +826,7 @@ later is required to fix a server side protocol bug.
         if not self.outer_client.manifest.IsArchive:
             self._GCProjects(projects, opt, err_event)
 
-        return _FetchResult(ret, fetched)
+        return _FetchResult(ret, fetched, errors)
 
     def _FetchMain(
         self, opt, args, all_projects, err_event, ssh_proxy, manifest
@@ -830,6 +845,7 @@ later is required to fix a server side protocol bug.
             List of all projects that should be checked out.
         """
         rp = manifest.repoProject
+        errors = []
 
         to_fetch = []
         now = time.time()
@@ -841,6 +857,9 @@ later is required to fix a server side protocol bug.
         result = self._Fetch(to_fetch, opt, err_event, ssh_proxy)
         success = result.success
         fetched = result.projects
+        if result.errors:
+            errors.extend(result.errors)
+
         if not success:
             err_event.set()
 
@@ -852,8 +871,8 @@ later is required to fix a server side protocol bug.
                     "\nerror: Exited sync due to fetch errors.\n",
                     file=sys.stderr,
                 )
-                sys.exit(1)
-            return _FetchMainResult([])
+                raise RepoExitError()
+            return _FetchMainResult([], errors)
 
         # Iteratively fetch missing and/or nested unregistered submodules.
         previously_missing_set = set()
@@ -881,11 +900,13 @@ later is required to fix a server side protocol bug.
             result = self._Fetch(missing, opt, err_event, ssh_proxy)
             success = result.success
             new_fetched = result.projects
+            if result.errors:
+                errors.extend(result.errors)
             if not success:
                 err_event.set()
             fetched.update(new_fetched)
 
-        return _FetchMainResult(all_projects)
+        return _FetchMainResult(all_projects, errors)
 
     def _CheckoutOne(self, detach_head, force_sync, project):
         """Checkout work tree for one project
@@ -903,6 +924,7 @@ later is required to fix a server side protocol bug.
             project.manifest.manifestProject.config, detach_head=detach_head
         )
         success = False
+        errors = []
         try:
             project.Sync_LocalHalf(syncbuf, force_sync=force_sync)
             success = syncbuf.Finish()
@@ -912,6 +934,7 @@ later is required to fix a server side protocol bug.
                 % (project.name, str(e)),
                 file=sys.stderr,
             )
+            errors.append(e)
         except Exception as e:
             print(
                 "error: Cannot checkout %s: %s: %s"
@@ -923,9 +946,9 @@ later is required to fix a server side protocol bug.
         if not success:
             print("error: Cannot checkout %s" % (project.name), file=sys.stderr)
         finish = time.time()
-        return _CheckoutOneResult(success, project, start, finish)
+        return _CheckoutOneResult(success, errors, project, start, finish)
 
-    def _Checkout(self, all_projects, opt, err_results):
+    def _Checkout(self, all_projects, opt, err_results, checkout_errors):
         """Checkout projects listed in all_projects
 
         Args:
@@ -947,6 +970,10 @@ later is required to fix a server side protocol bug.
                 self.event_log.AddSync(
                     project, event_log.TASK_SYNC_LOCAL, start, finish, success
                 )
+
+                if result.errors:
+                    checkout_errors.extend(result.errors)
+
                 # Check for any errors before running any more tasks.
                 # ...we'll let existing jobs finish, though.
                 if not success:
@@ -1215,6 +1242,7 @@ later is required to fix a server side protocol bug.
                         if not project.DeleteWorktree(
                             quiet=opt.quiet, force=opt.force_remove_dirty
                         ):
+                            # TODO -- append to errors (create in params)
                             return 1
 
         new_project_paths.sort()
@@ -1288,7 +1316,9 @@ later is required to fix a server side protocol bug.
                 "manifest",
                 file=sys.stderr,
             )
-            sys.exit(1)
+            # TODO replace this with an exit error
+            raise RepoExitError()
+            # sys.exit(1)
 
         manifest_server = manifest.manifest_server
         if not opt.quiet:
@@ -1463,7 +1493,9 @@ later is required to fix a server side protocol bug.
                 mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
             )
             if not clean:
-                sys.exit(1)
+                # TODO - Update this with an exit error
+                # sys.exit(1)
+                raise RepoExitError()
             self._ReloadManifest(manifest_name, mp.manifest)
 
     def ValidateOptions(self, opt, args):
@@ -1544,6 +1576,21 @@ later is required to fix a server side protocol bug.
         opt.jobs_checkout = min(opt.jobs_checkout, jobs_soft_limit)
 
     def Execute(self, opt, args):
+        errors = []
+        try:
+            self._ExecuteHelper(opt, args, errors)
+        except KeyboardInterrupt as e:
+            print("caught a keyboard interrupt")
+            print(e)
+            errors.append(e)
+            raise
+        except RepoExitError:
+            raise
+        except RepoError as e:
+            errors.append(e)
+            raise RepoExitError(aggregate_errors=errors)
+
+    def _ExecuteHelper(self, opt, args, errors):
         manifest = self.outer_manifest
         if not opt.outer_manifest:
             manifest = self.manifest
@@ -1607,7 +1654,11 @@ later is required to fix a server side protocol bug.
                 mp.ConfigureCloneFilterForDepth("blob:none")
 
         if opt.mp_update:
-            self._UpdateAllManifestProjects(opt, mp, manifest_name)
+            try:
+                self._UpdateAllManifestProjects(opt, mp, manifest_name)
+            except RepoError:
+                # TODO handle this with an appropriate exit Error.
+                raise
         else:
             print("Skipping update of local manifest project.")
 
@@ -1692,6 +1743,8 @@ later is required to fix a server side protocol bug.
                     result = self._FetchMain(
                         opt, args, all_projects, err_event, ssh_proxy, manifest
                     )
+                    if result.errors:
+                        errors.extend(result.errors)
                     all_projects = result.all_projects
 
             if opt.network_only:
@@ -1709,7 +1762,7 @@ later is required to fix a server side protocol bug.
                         "`repo sync -l` will update some local checkouts.",
                         file=sys.stderr,
                     )
-                    sys.exit(1)
+                    raise RepoExitError(aggregate_errors=errors)
 
         for m in self.ManifestList(opt):
             if m.IsMirror or m.IsArchive:
@@ -1724,7 +1777,7 @@ later is required to fix a server side protocol bug.
                         "\nerror: Local checkouts *not* updated.",
                         file=sys.stderr,
                     )
-                    sys.exit(1)
+                    raise RepoExitError(aggregate_errors=errors)
 
             err_update_linkfiles = not self.UpdateCopyLinkfileList(m)
             if err_update_linkfiles:
@@ -1734,11 +1787,13 @@ later is required to fix a server side protocol bug.
                         "\nerror: Local update copyfile or linkfile failed.",
                         file=sys.stderr,
                     )
-                    sys.exit(1)
+                    raise RepoExitError(aggregate_errors=errors)
 
         err_results = []
         # NB: We don't exit here because this is the last step.
-        err_checkout = not self._Checkout(all_projects, opt, err_results)
+        err_checkout = not self._Checkout(
+            all_projects, opt, err_results, errors
+        )
         if err_checkout:
             err_event.set()
 
@@ -1781,7 +1836,7 @@ later is required to fix a server side protocol bug.
                 "error.",
                 file=sys.stderr,
             )
-            sys.exit(1)
+            raise RepoExitError(aggregate_errors=errors)
 
         # Log the previous sync analysis state from the config.
         self.git_event_log.LogDataConfigEvents(
