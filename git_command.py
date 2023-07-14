@@ -18,7 +18,7 @@ import sys
 import subprocess
 from typing import Any, Optional
 
-from error import GitError
+from error import GitCommandError, DEFAULT_GIT_FAIL_MESSAGE
 from git_refs import HEAD
 import platform_utils
 from repo_trace import REPO_TRACE, IsTrace, Trace
@@ -244,6 +244,9 @@ class GitCommand(object):
             if not gitdir:
                 gitdir = project.gitdir
 
+        self.project = project
+        self.cmdv = cmdv
+
         # Git on Windows wants its paths only using / for reliability.
         if platform_utils.isWindows():
             if objdir:
@@ -332,7 +335,11 @@ class GitCommand(object):
                     stderr=stderr,
                 )
             except Exception as e:
-                raise GitError("%s: %s" % (command[1], e))
+                raise GitCommandError(
+                    message="%s: %s" % (command[1], e),
+                    project=project.name if project else None,
+                    command_args=cmdv,
+                )
 
             if ssh_proxy:
                 ssh_proxy.add_client(p)
@@ -367,3 +374,19 @@ class GitCommand(object):
 
     def Wait(self):
         return self.rc
+
+    def CheckForErrors(self, message=DEFAULT_GIT_FAIL_MESSAGE):
+        """Will raise a GitCommandError if command failed"""
+        stdout = None
+        if self.stdout:
+            stdout = self.stdout[:100]
+        if self.rc == 0:
+            return None
+        project = self.project.name if self.project else None
+        raise GitCommandError(
+            message=message,
+            project=project,
+            command_args=self.cmdv,
+            git_rc=self.rc,
+            git_stdout=stdout,
+        )

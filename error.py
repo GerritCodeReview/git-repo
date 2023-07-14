@@ -12,8 +12,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from typing import List
 
-class ManifestParseError(Exception):
+DEFAULT_GIT_FAIL_MESSAGE = "git command failure"
+
+
+class BaseRepoError(Exception):
+    """All repo specific exceptions derive from BaseRepoError."""
+
+
+class RepoError(BaseRepoError):
+    """Exceptions thrown inside repo that can be handled outside of main.py."""
+
+    def __init__(self, *args, project: str = None) -> None:
+        super().__init__(*args)
+        self.project = project
+
+
+class RepoExitError(BaseRepoError):
+    """Exception thrown that result in termination of repo program.
+    - Should only be handled in main.py
+    """
+
+    def __init__(
+        self,
+        *args,
+        exit_code: int = 1,
+        aggregate_errors: List[Exception] = None,
+        **kwargs,
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        self.exit_code = exit_code
+        self.aggregate_errors = aggregate_errors
+
+
+class RepoUnhandledExceptionError(RepoExitError):
+    """Exception that maintains error as reason for program exit."""
+
+    def __init__(
+        self,
+        error: BaseException,
+        **kwargs,
+    ) -> None:
+        super().__init__(error, **kwargs)
+        self.error = error
+
+
+class ManifestParseError(RepoExitError):
     """Failed to parse the manifest file."""
 
 
@@ -25,11 +70,11 @@ class ManifestInvalidPathError(ManifestParseError):
     """A path used in <copyfile> or <linkfile> is incorrect."""
 
 
-class NoManifestException(Exception):
+class NoManifestException(RepoExitError):
     """The required manifest does not exist."""
 
-    def __init__(self, path, reason):
-        super().__init__(path, reason)
+    def __init__(self, path, reason, **kwargs):
+        super().__init__(path, reason, **kwargs)
         self.path = path
         self.reason = reason
 
@@ -37,55 +82,90 @@ class NoManifestException(Exception):
         return self.reason
 
 
-class EditorError(Exception):
+class EditorError(RepoError):
     """Unspecified error from the user's text editor."""
 
-    def __init__(self, reason):
-        super().__init__(reason)
+    def __init__(self, reason, **kwargs):
+        super().__init__(reason, **kwargs)
         self.reason = reason
 
     def __str__(self):
         return self.reason
 
 
-class GitError(Exception):
+class GitError(RepoError):
     """Unspecified internal error from git."""
 
-    def __init__(self, command):
-        super().__init__(command)
-        self.command = command
+    def __init__(self, message, command_args=None, **kwargs):
+        super().__init__(message, **kwargs)
+        self.message = message
+        self.command_args = command_args
 
     def __str__(self):
-        return self.command
+        return self.message
 
 
-class UploadError(Exception):
+class GitCommandError(GitError):
+    """Error raised from a failed git command."""
+
+    def __init__(
+        self,
+        message: str = DEFAULT_GIT_FAIL_MESSAGE,
+        git_rc: int = None,
+        git_stdout: str = None,
+        **kwargs,
+    ):
+        super().__init__(
+            message,
+            **kwargs,
+        )
+        self.git_rc = git_rc
+        self.git_stdout = git_stdout
+
+    def __str__(self):
+        args = "[]" if not self.command_args else " ".join(self.command_args)
+        error_type = type(self).__name__
+        return f"""{error_type}: {self.message}
+    Project: {self.project}
+    Args: {args}
+    Stdout: {self.git_stdout}"""
+
+
+class UploadError(RepoError):
     """A bundle upload to Gerrit did not succeed."""
 
-    def __init__(self, reason):
-        super().__init__(reason)
+    def __init__(self, reason, **kwargs):
+        super().__init__(reason, **kwargs)
         self.reason = reason
 
     def __str__(self):
         return self.reason
 
 
-class DownloadError(Exception):
+class DownloadError(RepoExitError):
     """Cannot download a repository."""
 
-    def __init__(self, reason):
-        super().__init__(reason)
+    def __init__(self, reason, **kwargs):
+        super().__init__(reason, **kwargs)
         self.reason = reason
 
     def __str__(self):
         return self.reason
 
 
-class NoSuchProjectError(Exception):
+class SyncError(RepoExitError):
+    """Cannot sync repo."""
+
+
+class UpdateManifestError(RepoExitError):
+    """Cannot update manifest."""
+
+
+class NoSuchProjectError(RepoExitError):
     """A specified project does not exist in the work tree."""
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self, name=None, **kwargs):
+        super().__init__(**kwargs)
         self.name = name
 
     def __str__(self):
@@ -94,11 +174,11 @@ class NoSuchProjectError(Exception):
         return self.name
 
 
-class InvalidProjectGroupsError(Exception):
+class InvalidProjectGroupsError(RepoExitError):
     """A specified project is not suitable for the specified groups"""
 
-    def __init__(self, name=None):
-        super().__init__(name)
+    def __init__(self, name=None, **kwargs):
+        super().__init__(**kwargs)
         self.name = name
 
     def __str__(self):
@@ -107,7 +187,7 @@ class InvalidProjectGroupsError(Exception):
         return self.name
 
 
-class RepoChangedException(Exception):
+class RepoChangedException(BaseRepoError):
     """Thrown if 'repo sync' results in repo updating its internal
     repo or manifest repositories.  In this special case we must
     use exec to re-execute repo with the new code and manifest.
@@ -118,7 +198,7 @@ class RepoChangedException(Exception):
         self.extra_args = extra_args or []
 
 
-class HookError(Exception):
+class HookError(RepoError):
     """Thrown if a 'repo-hook' could not be run.
 
     The common case is that the file wasn't present when we tried to run it.
