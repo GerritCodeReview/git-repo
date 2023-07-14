@@ -118,7 +118,7 @@ If no project is specified try to use current directory as a project.
                                 ),
                                 file=sys.stderr,
                             )
-                        sys.exit(1)
+                        raise NoSuchProjectError()
                 else:
                     project = projects[0]
                     print("Defaulting to cwd project", project.name)
