@@ -17,12 +17,15 @@ import os
 import shutil
 import tempfile
 import unittest
+import time
 from unittest import mock
 
 import pytest
 
 import command
 from subcmds import sync
+from project import SyncNetworkHalfResult
+from error import GitError, RepoExitError
 
 
 @pytest.mark.parametrize(
@@ -233,3 +236,83 @@ class GetPreciousObjectsState(unittest.TestCase):
         self.assertFalse(
             self.cmd._GetPreciousObjectsState(self.project, self.opt)
         )
+
+
+class SyncCommand(unittest.TestCase):
+    """Tests for cmd.Execute."""
+
+    def setUp(self):
+        """Common setup."""
+        self.repodir = tempfile.mkdtemp(".repo")
+        self.manifest = manifest = mock.MagicMock(
+            repodir=self.repodir,
+        )
+
+        git_event_log = mock.MagicMock(ErrorEvent=mock.Mock(return_value=None))
+        self.outer_client = outer_client = mock.MagicMock()
+        outer_client.manifest.IsArchive = True
+        manifest.manifestProject.worktree = "worktree_path/"
+        manifest.repoProject.LastFetch = time.time()
+        self.sync_network_half_error = None
+        self.sync_local_half_error = None
+        self.cmd = sync.Sync(
+            manifest=manifest,
+            outer_client=outer_client,
+            git_event_log=git_event_log,
+        )
+
+        def Sync_NetworkHalf(*args, **kwargs):
+            return SyncNetworkHalfResult(True, self.sync_network_half_error)
+
+        def Sync_LocalHalf(*args, **kwargs):
+            if self.sync_local_half_error:
+                raise self.sync_local_half_error
+
+        self.project = p = mock.MagicMock(
+            use_git_worktrees=False,
+            UseAlternates=False,
+            name="project",
+            Sync_NetworkHalf=Sync_NetworkHalf,
+            Sync_LocalHalf=Sync_LocalHalf,
+            RelPath=mock.Mock(return_value="rel_path"),
+        )
+        p.manifest.GetProjectsWithName.return_value = [p]
+
+        mock.patch.object(
+            sync,
+            "_PostRepoFetch",
+            return_value=None,
+        ).start()
+
+        mock.patch.object(
+            self.cmd, "GetProjects", return_value=[self.project]
+        ).start()
+
+        opt, _ = self.cmd.OptionParser.parse_args([])
+        opt.clone_bundle = False
+        opt.jobs = 4
+        opt.quiet = True
+        opt.use_superproject = False
+        opt.current_branch_only = True
+        opt.optimized_fetch = True
+        opt.retry_fetches = 1
+        opt.prune = False
+        opt.auto_gc = False
+        opt.repo_verify = False
+        self.opt = opt
+
+    def tearDown(self):
+        mock.patch.stopall()
+
+    def test_command_exit_error(self):
+        """Ensure unsuccessful commands raise expected errors."""
+        self.sync_network_half_error = GitError(
+            "sync_network_half_error error", project=self.project
+        )
+        self.sync_local_half_error = GitError(
+            "sync_local_half_error", project=self.project
+        )
+        with self.assertRaises(RepoExitError) as e:
+            self.cmd.Execute(self.opt, [])
+            self.assertIn(self.sync_local_half_error, e.aggregate_errors)
+            self.assertIn(self.sync_network_half_error, e.aggregate_errors)
