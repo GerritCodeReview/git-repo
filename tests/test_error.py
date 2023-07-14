@@ -19,6 +19,12 @@ import pickle
 import unittest
 
 import error
+import project
+
+imports = [
+    error,
+    project,
+]
 
 
 class PickleTests(unittest.TestCase):
@@ -26,10 +32,11 @@ class PickleTests(unittest.TestCase):
 
     def getExceptions(self):
         """Return all our custom exceptions."""
-        for name in dir(error):
-            cls = getattr(error, name)
-            if isinstance(cls, type) and issubclass(cls, Exception):
-                yield cls
+        for entry in imports:
+            for name in dir(entry):
+                cls = getattr(entry, name)
+                if isinstance(cls, type) and issubclass(cls, Exception):
+                    yield cls
 
     def testExceptionLookup(self):
         """Make sure our introspection logic works."""
