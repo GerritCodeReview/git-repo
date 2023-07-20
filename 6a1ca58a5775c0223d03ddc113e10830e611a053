@@ -35,6 +35,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "740a1c09_22e67cd9",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "Goog call",
+      "parentUuid": "54e85603_f996c390",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06a2aa80_8bacafac",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "sg.",
+      "parentUuid": "be201c20_05d28750",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5e9c0da_2d15380a",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-07-20T22:20:46Z",
       "side": 1,
       "message": "Why not make `project` a part of `RepoError`? If it\u0027s a part of `BaseRepoError`, it inherits to all child-classes and at least `RepoExitError`, which aggregates other errors, doesn\u0027t seem to need it. Am I missing something here?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56c99be5_54fab9c4",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "Nope. this makes sense",
+      "parentUuid": "c5e9c0da_2d15380a",
       "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -71,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "60f64cbb_a51127ce",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "GitError is raised a bunch of places within git-repo. GitCommandError is meant to indicate that the error actually originated from the execution of a git command.",
+      "parentUuid": "f8fa54f2_443172bc",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fba7e402_c78c6c73",
         "filename": "error.py",
         "patchSetId": 15
@@ -82,6 +154,24 @@
       "writtenOn": "2023-07-20T22:20:46Z",
       "side": 1,
       "message": "Nit: Can we add typings for this too for consistency?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "236b5ee4_a883239e",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "sure",
+      "parentUuid": "fba7e402_c78c6c73",
       "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -99,6 +189,24 @@
       "writtenOn": "2023-07-20T22:20:46Z",
       "side": 1,
       "message": "Nit: This makes the type of `args` static-time ambiguous, i.e., it could be a list or a str. Why not use `\"[]\"` str instead?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7775f80c_f7ea3084",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "sg.",
+      "parentUuid": "579c1f12_5356916b",
       "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -122,6 +230,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a6ae60d5_bf9f569c",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "command and message are the same thing. Message is passed into GitError and stored as command.",
+      "parentUuid": "2b44e0b9_3078f7f0",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "379a9a80_5c6e91be",
         "filename": "error.py",
         "patchSetId": 15
@@ -139,6 +265,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "86db99a9_02bf55d9",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "Not sure, it is an existing error - just took a cue from the fact that main.py handles it (assumed that it is supposed to exit the program).",
+      "parentUuid": "379a9a80_5c6e91be",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a30d1d3a_19260b38",
         "filename": "error.py",
         "patchSetId": 15
@@ -150,6 +294,24 @@
       "writtenOn": "2023-07-20T22:20:46Z",
       "side": 1,
       "message": "Should this take `**kwargs` too?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64c6dac9_9a65dc8b",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "yup",
+      "parentUuid": "a30d1d3a_19260b38",
       "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -222,6 +384,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5dcfaa01_4f4a8b77",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1471,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "good call. Thanks",
+      "parentUuid": "5fdbbc94_2c9b2631",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61dc89e9_5b290b43",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1471,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "Mostly because there are a number of different execution paths for Sync_LocalHalf and I would need to ensure that all of them work. (i.e. it is called within this file in a couple of places, inside of subcommands sync.py and start.py)\n\nYou are not wrong though.",
+      "parentUuid": "2efa73f5_2a54804a",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f65bb6e2_203e62b6",
@@ -256,6 +454,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c102d88_ced80e95",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1510,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "sg",
+      "parentUuid": "3caba2cd_9394fc80",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2d0c273_f59fe4cf",
@@ -269,6 +485,24 @@
       "writtenOn": "2023-07-20T22:20:46Z",
       "side": 1,
       "message": "Nit: Can we dedupe this somehow? Maybe just read the errors from syncbuf or even simply writing the error message to a variable and using it here?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e0c7aa6_81ba8810",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-20T23:24:54Z",
+      "side": 1,
+      "message": "sg.",
+      "parentUuid": "e2d0c273_f59fe4cf",
       "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
