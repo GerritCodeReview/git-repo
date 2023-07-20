@@ -1,0 +1,276 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54e85603_f996c390",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Nit: use `str` type instead. `Text` is deprecated; see https://docs.python.org/3/library/typing.html#typing.Text",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be201c20_05d28750",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Nit: Add return type to be consistent with `RepoExitError`.",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5e9c0da_2d15380a",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Why not make `project` a part of `RepoError`? If it\u0027s a part of `BaseRepoError`, it inherits to all child-classes and at least `RepoExitError`, which aggregates other errors, doesn\u0027t seem to need it. Am I missing something here?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8fa54f2_443172bc",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "How is this different from `GitError`?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fba7e402_c78c6c73",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Nit: Can we add typings for this too for consistency?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "579c1f12_5356916b",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Nit: This makes the type of `args` static-time ambiguous, i.e., it could be a list or a str. Why not use `\"[]\"` str instead?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b44e0b9_3078f7f0",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Is there a reason for not printing the `message` here? Having the failure message here would be helpful.",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "379a9a80_5c6e91be",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "I\u0027m curious what context this is used under. Say I have permissions issue and I cannot download 1/5 projects in my manifest. Shouldn\u0027t repo be still downloading the remaining 4/5 projects? Or is it expected to exit here?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a30d1d3a_19260b38",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Should this take `**kwargs` too?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6947fcc0_2083382f",
+        "filename": "main.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "We\u0027re aggregating these errors in our go/repo-dashboard so I\u0027m wondering if adding the project name to the traces log will affect that. Say if 100 different projects have the same error message, since the project name is different here, our error table will count them as 100 different errors, wouldn\u0027t it?\n\nNot an expert in the dashboard, Maybe Joanna might have a better opinion on this.",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3710bc72_085ed269",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Do we still need the success parameter? Can success just be `not errors`?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2efa73f5_2a54804a",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1471,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Why not make the fn throw an error? If the fn is not dependent on the content of this list and will return after appending an error, I think it\u0027s cleaner for the fn to simply throw an error when something goes wrong.",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fdbbc94_2c9b2631",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1471,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Do not use mutable default args. Python does not re-construct this list everytime the fn is called and it is confusing to read; see https://docs.python-guide.org/writing/gotchas/#mutable-default-arguments",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f65bb6e2_203e62b6",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1480,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Nit: dedup",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3caba2cd_9394fc80",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1510,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Nit: dedup",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2d0c273_f59fe4cf",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-20T22:20:46Z",
+      "side": 1,
+      "message": "Nit: Can we dedupe this somehow? Maybe just read the errors from syncbuf or even simply writing the error message to a variable and using it here?",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
