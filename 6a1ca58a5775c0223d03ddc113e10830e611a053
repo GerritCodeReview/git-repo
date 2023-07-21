@@ -246,6 +246,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6585b569_018f725d",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-21T18:23:53Z",
+      "side": 1,
+      "message": "Good call. I updated GitError to use `message` instead of `command` - it was poorly named",
+      "parentUuid": "a6ae60d5_bf9f569c",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "379a9a80_5c6e91be",
