@@ -350,6 +350,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "274d930f_ff9dee4f",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-21T18:11:47Z",
+      "side": 1,
+      "message": "I\u0027ll make \u0027success\u0027 a property (it\u0027s exactly that not error) ...",
+      "parentUuid": "3710bc72_085ed269",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2efa73f5_2a54804a",
@@ -433,6 +451,24 @@
       "writtenOn": "2023-07-20T22:20:46Z",
       "side": 1,
       "message": "Nit: dedup",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d868fdb_f4a47b05",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1480,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-21T18:11:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f65bb6e2_203e62b6",
       "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
