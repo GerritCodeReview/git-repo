@@ -737,6 +737,7 @@ later is required to fix a server side protocol bug.
                     start = result.start
                     finish = result.finish
                     self._fetch_times.Set(project, finish - start)
+                    self._local_sync_state.SetFetchTime(project)
                     self.event_log.AddSync(
                         project,
                         event_log.TASK_SYNC_NETWORK,
@@ -807,6 +808,7 @@ later is required to fix a server side protocol bug.
         sync_event.set()
         pm.end()
         self._fetch_times.Save()
+        self._local_sync_state.Save()
 
         if not self.outer_client.manifest.IsArchive:
             self._GCProjects(projects, opt, err_event)
@@ -949,7 +951,9 @@ later is required to fix a server side protocol bug.
                 )
                 # Check for any errors before running any more tasks.
                 # ...we'll let existing jobs finish, though.
-                if not success:
+                if success:
+                    self._local_sync_state.SetCheckoutTime(project)
+                else:
                     ret = False
                     err_results.append(
                         project.RelPath(local=opt.this_manifest_only)
@@ -961,20 +965,18 @@ later is required to fix a server side protocol bug.
                 pm.update(msg=project.name)
             return ret
 
-        return (
-            self.ExecuteInParallel(
-                opt.jobs_checkout,
-                functools.partial(
-                    self._CheckoutOne, opt.detach_head, opt.force_sync
-                ),
-                all_projects,
-                callback=_ProcessResults,
-                output=Progress(
-                    "Checking out", len(all_projects), quiet=opt.quiet
-                ),
-            )
-            and not err_results
+        proc_res = self.ExecuteInParallel(
+            opt.jobs_checkout,
+            functools.partial(
+                self._CheckoutOne, opt.detach_head, opt.force_sync
+            ),
+            all_projects,
+            callback=_ProcessResults,
+            output=Progress("Checking out", len(all_projects), quiet=opt.quiet),
         )
+
+        self._local_sync_state.Save()
+        return proc_res and not err_results
 
     @staticmethod
     def _GetPreciousObjectsState(project: Project, opt):
@@ -1684,6 +1686,7 @@ later is required to fix a server side protocol bug.
         )
 
         self._fetch_times = _FetchTimes(manifest)
+        self._local_sync_state = _LocalSyncState(manifest)
         if not opt.local_only:
             with multiprocessing.Manager() as manager:
                 with ssh.ProxyManager(manager) as ssh_proxy:
@@ -1898,12 +1901,64 @@ class _FetchTimes(object):
             platform_utils.remove(self._path, missing_ok=True)
 
 
+class _LocalSyncState(object):
+    _LAST_FETCH = "last_fetch"
+    _LAST_CHECKOUT = "last_checkout"
+
+    def __init__(self, manifest):
+        self._path = os.path.join(manifest.repodir, ".repo_localsyncstate.json")
+        self._time = time.time()
+        self._state = None
+        self._Load()
+
+    def SetFetchTime(self, project):
+        self._Set(project, self._LAST_FETCH)
+
+    def SetCheckoutTime(self, project):
+        self._Set(project, self._LAST_CHECKOUT)
+
+    def GetFetchTime(self, project):
+        return self._Get(project, self._LAST_FETCH)
+
+    def GetCheckoutTime(self, project):
+        return self._Get(project, self._LAST_CHECKOUT)
+
+    def _Get(self, project, key):
+        self._Load()
+        p = project.relpath
+        if p not in self._state:
+            return
+        return self._state[p].get(key)
+
+    def _Set(self, project, key):
+        p = project.relpath
+        if p not in self._state:
+            self._state[p] = {}
+        self._state[p][key] = self._time
+
+    def _Load(self):
+        if self._state is None:
+            try:
+                with open(self._path) as f:
+                    self._state = json.load(f)
+            except (IOError, ValueError):
+                platform_utils.remove(self._path, missing_ok=True)
+                self._state = {}
+
+    def Save(self):
+        if not self._state:
+            return
+        try:
+            with open(self._path, "w") as f:
+                json.dump(self._state, f, indent=2)
+        except (IOError, TypeError):
+            platform_utils.remove(self._path, missing_ok=True)
+
+
 # This is a replacement for xmlrpc.client.Transport using urllib2
 # and supporting persistent-http[s]. It cannot change hosts from
 # request to request like the normal transport, the real url
 # is passed during initialization.
-
-
 class PersistentTransport(xmlrpc.client.Transport):
     def __init__(self, orig_host):
         self.orig_host = orig_host

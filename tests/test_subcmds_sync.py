@@ -14,6 +14,8 @@
 """Unittests for the subcmds/sync.py module."""
 
 import os
+import shutil
+import tempfile
 import unittest
 from unittest import mock
 
@@ -102,6 +104,79 @@ def test_cli_jobs(argv, jobs_manifest, jobs, jobs_net, jobs_check):
             assert opts.jobs == jobs
             assert opts.jobs_network == jobs_net
             assert opts.jobs_checkout == jobs_check
+
+
+class LocalSyncState(unittest.TestCase):
+    """Tests for _LocalSyncState."""
+
+    _TIME = 10
+
+    def setUp(self):
+        """Common setup."""
+        self.repodir = tempfile.mkdtemp(".repo")
+        self.manifest = mock.MagicMock(
+            repodir=self.repodir,
+        )
+        self.state = self._new_state()
+
+    def tearDown(self):
+        """Common teardown."""
+        shutil.rmtree(self.repodir)
+
+    def _new_state(self):
+        with mock.patch("time.time", return_value=self._TIME):
+            return sync._LocalSyncState(self.manifest)
+
+    def test_set(self):
+        """Times are set."""
+        p = mock.MagicMock(relpath="projA")
+        self.state.SetFetchTime(p)
+        self.state.SetCheckoutTime(p)
+        self.assertEqual(self.state.GetFetchTime(p), self._TIME)
+        self.assertEqual(self.state.GetCheckoutTime(p), self._TIME)
+
+    def test_update(self):
+        """Times are updated."""
+        with open(self.state._path, "w") as f:
+            f.write(
+                """
+            {
+              "projB": {
+                "last_fetch": 5,
+                "last_checkout": 7
+              }
+            }
+            """
+            )
+
+        # Initialize state to read from the new file.
+        self.state = self._new_state()
+        projA = mock.MagicMock(relpath="projA")
+        projB = mock.MagicMock(relpath="projB")
+        self.assertEqual(self.state.GetFetchTime(projA), None)
+        self.assertEqual(self.state.GetFetchTime(projB), 5)
+        self.assertEqual(self.state.GetCheckoutTime(projB), 7)
+
+        self.state.SetFetchTime(projA)
+        self.state.SetFetchTime(projB)
+        self.assertEqual(self.state.GetFetchTime(projA), self._TIME)
+        self.assertEqual(self.state.GetFetchTime(projB), self._TIME)
+        self.assertEqual(self.state.GetCheckoutTime(projB), 7)
+
+    def test_save_to_file(self):
+        """Data is saved under repodir."""
+        p = mock.MagicMock(relpath="projA")
+        self.state.SetFetchTime(p)
+        self.state.Save()
+        self.assertEqual(
+            os.listdir(self.repodir), [".repo_localsyncstate.json"]
+        )
+
+    def test_nonexistent_project(self):
+        """Data is saved under repodir."""
+        p = mock.MagicMock(relpath="projC")
+        self.assertEqual(self.state.GetFetchTime(p), None)
+        self.assertEqual(self.state.GetCheckoutTime(p), None)
 
 
 class GetPreciousObjectsState(unittest.TestCase):
