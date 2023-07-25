@@ -269,6 +269,30 @@
       },
       "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adafc686_8a02608b",
+        "filename": "project.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 2563,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T21:36:00Z",
+      "side": 1,
+      "message": "actually why not\n```suggestion\n        for try_n in range(retry_fetches)\n            gitcmd \u003d GitCommand(\n            ....\n\n            if try_n \u003d\u003d retry_fetches - 1:\n              gitcmd.CheckForErrors()\n```\n?",
+      "parentUuid": "793707bc_1eed673a",
+      "range": {
+        "startLine": 2541,
+        "startChar": 0,
+        "endLine": 2563,
+        "endChar": 25
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
