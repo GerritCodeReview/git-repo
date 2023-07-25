@@ -237,6 +237,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6bced47_b2db6a23",
+        "filename": "main.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 879,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-25T23:29:33Z",
+      "side": 1,
+      "message": "Yea.",
+      "parentUuid": "da343088_183c7c26",
+      "range": {
+        "startLine": 869,
+        "startChar": 8,
+        "endLine": 879,
+        "endChar": 51
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b62bddb3_9567b446",
