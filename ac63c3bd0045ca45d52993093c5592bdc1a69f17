@@ -135,6 +135,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eaeeb973_bf0cbecc",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T23:12:50Z",
+      "side": 1,
+      "message": "\u003e I\u0027m thinking that we can create error categories\n\nI agree that this is a lot better than creating a one-to-one mapping. My question was more of \"Can NoManifestException have have different error codes for different scenario?\". If the answer is no and if it is that this error is going into a category and would share the exit code with its sibling errors, passing the error code here violates DRY since every flow that throws this error has to pass the same exit code to instantiate this exception.",
+      "parentUuid": "0c84d3ac_ac981558",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43a97d96_7571ac72",
         "filename": "git_command.py",
         "patchSetId": 26
