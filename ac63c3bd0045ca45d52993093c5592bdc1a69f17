@@ -3,6 +3,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cbacaa10_f6642fe5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 26
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T17:53:57Z",
+      "side": 1,
+      "message": "Can you add a more descriptive commit message and potentially details more lines below to summarize each file. I think it would be easier and faster if reviewers started out with high level info.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "954cb3cc_96314ae1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 26
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T17:53:57Z",
+      "side": 1,
+      "message": "Please include a bug",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40c1fe21_e246b950",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T17:53:57Z",
+      "side": 1,
+      "message": "halfway through the review, will look finish project.py and sync.py in a bit.\nIn the future, could big changes be split up into smaller ones",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "730009eb_af728e6a",
         "filename": "error.py",
         "patchSetId": 26
@@ -20,6 +77,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6283e13_4d1921b9",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T17:53:57Z",
+      "side": 1,
+      "message": "nit: missing \".\"",
+      "range": {
+        "startLine": 379,
+        "startChar": 56,
+        "endLine": 379,
+        "endChar": 58
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e88d4610_c3ee7851",
         "filename": "git_command.py",
         "patchSetId": 26
@@ -31,6 +111,52 @@
       "writtenOn": "2023-07-25T01:41:01Z",
       "side": 1,
       "message": "Is there reason for trimming the stdout at 100 lines? How long could these logs get?",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da343088_183c7c26",
+        "filename": "main.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 879,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T17:53:57Z",
+      "side": 1,
+      "message": "```suggestion\n        result \u003d e.exit_code\n        if aggregate_errors:\n          print(f\"{exception_name} Aggregate Errors\")\n          for i in range(MAX_PRINT_ERRORS):\n            print(aggregate_errors[i])\n          if len(aggregate_errors) \u003e MAX_PRINT_ERRORS:\n            diff \u003d len(aggregate_errors) - MAX_PRINT_ERRORS\n            print(f\"+{diff} additional errors ...\")\n```\nalso can we replace 5 with MAX_PRINT_ERRORS so it\u0027s immediately obvious what the number represents?",
+      "range": {
+        "startLine": 869,
+        "startChar": 8,
+        "endLine": 879,
+        "endChar": 51
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b62bddb3_9567b446",
+        "filename": "project.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T17:53:57Z",
+      "side": 1,
+      "message": "any reason this shouldn\u0027t go in errors.py, to be consistent and have one place for developers to look for existing Exceptions?",
+      "range": {
+        "startLine": 74,
+        "startChar": 6,
+        "endLine": 74,
+        "endChar": 26
+      },
       "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

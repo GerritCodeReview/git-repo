@@ -389,6 +389,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bec34cd9_d7e9b937",
+        "filename": "main.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T17:53:57Z",
+      "side": 1,
+      "message": "Yes we\u0027d get 100 \"different\" errors for the error that is actually the same.\n\nWe could feed a \"fmt\" value into ErrorEvent which is just the skeleton string and a %s placeholder for the `project` and that\u0027s what would get logged in the `err_msg_fmt` column. although I assume having data on the subprojects that \"triggered\" this error would be useful in debugging...",
+      "parentUuid": "6947fcc0_2083382f",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3710bc72_085ed269",
         "filename": "project.py",
         "patchSetId": 15
