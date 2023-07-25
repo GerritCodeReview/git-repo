@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e90be0bf_90ac208d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T22:04:20Z",
+      "side": 1,
+      "message": "This CL adds an initial logging module. Once Jason\u0027s changes are in, I will follow up with updating all print calls with the `RepoLogger`.",
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8a72b76_0f61e01c",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T22:04:20Z",
+      "side": 1,
+      "message": "The `Coloring` module in repo takes git config as a parameter to let users configure specific colors.\n\nI don\u0027t think all points in the code would have access to git config and it\u0027s simpler to just override it for logging purposes. This also lets us reuse the `Coloring` logic instead of re-inventing the wheel.\n\nI\u0027ve still written this in a way where we can pass config from code. I could remove this option completely and only rely on default mock config or vice-versa.",
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c38c0081_a1be0950",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T22:04:20Z",
+      "side": 1,
+      "message": "I will add a fn to log repo exceptions in a follow up CL once Jason\u0027s changes are in.",
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
