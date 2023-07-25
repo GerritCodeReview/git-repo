@@ -58,6 +58,46 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4ac8262_2b897ba4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T21:20:24Z",
+      "side": 1,
+      "message": "doing sync.py next",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e59643a_faae0aba",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T21:20:24Z",
+      "side": 1,
+      "message": "does `outside of main.py` imply something useful i\u0027m missing?\ndo you mean `inside`? thrown inside repo but not handled until the process goes back to main.py right?",
+      "range": {
+        "startLine": 25,
+        "startChar": 57,
+        "endLine": 25,
+        "endChar": 64
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "730009eb_af728e6a",
@@ -71,6 +111,29 @@
       "writtenOn": "2023-07-25T01:41:01Z",
       "side": 1,
       "message": "Which exit codes can this error have? I\u0027m not sure if each `RepoExitError` has an unique exit code or errors like these can have any exit code. If it is any, how is the code decided?",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43a97d96_7571ac72",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T21:20:24Z",
+      "side": 1,
+      "message": "what\u0027s the reason for keeping this in a separate function that we\u0027d have to call every time instead of incorporating into `__init__` where the command actually gets run? If there\u0027s a good technical reason for this, we should document it in the code.",
+      "range": {
+        "startLine": 378,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 23
+      },
       "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -156,6 +219,53 @@
         "startChar": 6,
         "endLine": 74,
         "endChar": 26
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "582e1ece_2f8a6899",
+        "filename": "project.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T21:20:24Z",
+      "side": 1,
+      "message": "I half take this back. If this is strongly related to this file only, then maybe makes sense to keep here and i see other errors already living here. But I think we should be consistent. e.g. should GitCommandError live in git_command.py then?",
+      "parentUuid": "b62bddb3_9567b446",
+      "range": {
+        "startLine": 74,
+        "startChar": 6,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "793707bc_1eed673a",
+        "filename": "project.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 2563,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-25T21:20:24Z",
+      "side": 1,
+      "message": "```suggestion\n        for try_n in range(retry_fetches)\n            gitcmd \u003d GitCommand(\n            ....\n            \n            try:\n                gitcmd.CheckForErrors()\n            except GitCommandError:\n                # Can\u0027t recover from errors on the last try\n                if try_n \u003d\u003d retry_fetches - 1:\n                    raise\n```",
+      "range": {
+        "startLine": 2541,
+        "startChar": 0,
+        "endLine": 2563,
+        "endChar": 25
       },
       "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
