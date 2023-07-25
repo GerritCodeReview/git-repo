@@ -117,6 +117,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c84d3ac_ac981558",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-25T22:42:05Z",
+      "side": 1,
+      "message": "I\u0027m wondering how important it is to try and make a unique exit code per Exit condition (starting to have a change of heart). I\u0027m thinking that we can create error categories (with specific exit codes) but don\u0027t need to be 1-to-1 with exit errors ...\n\nTrying to maintain a error --\u003e code map seems to violate DRY \n\nWDYT ?",
+      "parentUuid": "730009eb_af728e6a",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43a97d96_7571ac72",
         "filename": "git_command.py",
         "patchSetId": 26
@@ -285,6 +303,30 @@
       "side": 1,
       "message": "actually why not\n```suggestion\n        for try_n in range(retry_fetches)\n            gitcmd \u003d GitCommand(\n            ....\n\n            if try_n \u003d\u003d retry_fetches - 1:\n              gitcmd.CheckForErrors()\n```\n?",
       "parentUuid": "793707bc_1eed673a",
+      "range": {
+        "startLine": 2541,
+        "startChar": 0,
+        "endLine": 2563,
+        "endChar": 25
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "850ad853_da392df0",
+        "filename": "project.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 2563,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-25T22:42:05Z",
+      "side": 1,
+      "message": "Yea, I like that",
+      "parentUuid": "adafc686_8a02608b",
       "range": {
         "startLine": 2541,
         "startChar": 0,
