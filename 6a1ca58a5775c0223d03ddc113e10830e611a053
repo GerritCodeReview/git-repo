@@ -141,6 +141,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34f26a0f_b4cffff1",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T01:23:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "60f64cbb_a51127ce",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fba7e402_c78c6c73",
@@ -295,6 +313,24 @@
       "side": 1,
       "message": "Not sure, it is an existing error - just took a cue from the fact that main.py handles it (assumed that it is supposed to exit the program).",
       "parentUuid": "379a9a80_5c6e91be",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2267584e_20a9941f",
+        "filename": "error.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T01:23:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "86db99a9_02bf55d9",
       "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
