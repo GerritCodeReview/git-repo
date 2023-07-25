@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "730009eb_af728e6a",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T01:41:01Z",
+      "side": 1,
+      "message": "Which exit codes can this error have? I\u0027m not sure if each `RepoExitError` has an unique exit code or errors like these can have any exit code. If it is any, how is the code decided?",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e88d4610_c3ee7851",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-25T01:41:01Z",
+      "side": 1,
+      "message": "Is there reason for trimming the stdout at 100 lines? How long could these logs get?",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
