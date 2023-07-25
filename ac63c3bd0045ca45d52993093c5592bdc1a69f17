@@ -122,6 +122,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb64cc22_84f6ea2c",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-25T23:49:12Z",
+      "side": 1,
+      "message": "So to your point, no `outside of main.py` doesn\u0027t add anything useful.",
+      "parentUuid": "7c0699af_46cf2696",
+      "range": {
+        "startLine": 25,
+        "startChar": 57,
+        "endLine": 25,
+        "endChar": 64
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "730009eb_af728e6a",
