@@ -40,6 +40,10 @@ GIT_DIR = "GIT_DIR"
 
 LAST_GITDIR = None
 LAST_CWD = None
+DEFAULT_GIT_FAIL_MESSAGE = "git command failure"
+# Common line length limit
+GIT_ERROR_STDOUT_LINES = 1
+GIT_ERROR_STDERR_LINES = 1
 
 
 class _GitCall(object):
@@ -237,12 +241,17 @@ class GitCommand(object):
         cwd=None,
         gitdir=None,
         objdir=None,
+        verify_command=False,
     ):
         if project:
             if not cwd:
                 cwd = project.worktree
             if not gitdir:
                 gitdir = project.gitdir
+
+        self.project = project
+        self.cmdv = cmdv
+        self.verify_command = verify_command
 
         # Git on Windows wants its paths only using / for reliability.
         if platform_utils.isWindows():
@@ -332,7 +341,11 @@ class GitCommand(object):
                     stderr=stderr,
                 )
             except Exception as e:
-                raise GitError("%s: %s" % (command[1], e))
+                raise GitCommandError(
+                    message="%s: %s" % (command[1], e),
+                    project=project.name if project else None,
+                    command_args=cmdv,
+                )
 
             if ssh_proxy:
                 ssh_proxy.add_client(p)
@@ -365,5 +378,63 @@ class GitCommand(object):
             env.pop(key, None)
         return env
 
-    def Wait(self):
-        return self.rc
+    def Wait(self, message=DEFAULT_GIT_FAIL_MESSAGE):
+        if not self.verify_command or self.rc == 0:
+            return self.rc
+
+        stdout = (
+            "\n".join(self.stdout.split("\n")[:GIT_ERROR_STDOUT_LINES])
+            if self.stdout
+            else None
+        )
+
+        stderr = (
+            "\n".join(self.stderr.split("\n")[:GIT_ERROR_STDERR_LINES])
+            if self.stderr
+            else None
+        )
+        project = self.project.name if self.project else None
+        raise GitCommandError(
+            message=message,
+            project=project,
+            command_args=self.cmdv,
+            git_rc=self.rc,
+            git_stdout=stdout,
+            git_stderr=stderr,
+        )
+
+
+class GitCommandError(GitError):
+    """
+    Error raised from a failed git command.
+    Note that GitError can refer to any Git related error (e.g. branch not
+    specified for project.py 'UploadForReview'), while GitCommandError is
+    raised exclusively from non-zero exit codes returned from git commands.
+    """
+
+    def __init__(
+        self,
+        message: str = DEFAULT_GIT_FAIL_MESSAGE,
+        git_rc: int = None,
+        git_stdout: str = None,
+        git_stderr: str = None,
+        **kwargs,
+    ):
+        super().__init__(
+            message,
+            **kwargs,
+        )
+        self.git_rc = git_rc
+        self.git_stdout = git_stdout
+        self.git_stderr = git_stderr
+
+    def __str__(self):
+        args = "[]" if not self.command_args else " ".join(self.command_args)
+        error_type = type(self).__name__
+        return f"""{error_type}: {self.message}
+    Project: {self.project}
+    Args: {args}
+    Stdout:
+{self.git_stdout}
+    Stderr:
+{self.git_stderr}"""
