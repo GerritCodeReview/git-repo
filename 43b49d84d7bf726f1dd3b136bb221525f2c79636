@@ -18,6 +18,92 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "69a0be37_17cb579b",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-26T16:56:48Z",
+      "side": 1,
+      "message": "please add a test file and tests for this\n\nhttp://shortn/_NjtT3Ra08V",
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b90706a_836f3f8d",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-26T16:56:48Z",
+      "side": 1,
+      "message": "can you make this more descriptive to describe what this file actually does. e.g. \"Logic for printing user-friendly logs in repo.\" or something",
+      "range": {
+        "startLine": 15,
+        "startChar": 3,
+        "endLine": 15,
+        "endChar": 26
+      },
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41612759_c70fe328",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-26T16:56:48Z",
+      "side": 1,
+      "message": "was using this discussed anywhere?\nI believe we really want to avoid adding dependencies to `repo`",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 26
+      },
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1929c80_cb17f6e2",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-26T16:56:48Z",
+      "side": 1,
+      "message": "nit: afaik these don\u0027t need to be separate and it would be more clear if it was just\n\n`SEPARATOR \u003d \"\u003d\" * 80`",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 16
+      },
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b8a72b76_0f61e01c",
@@ -48,6 +134,29 @@
       "writtenOn": "2023-07-25T22:04:20Z",
       "side": 1,
       "message": "I will add a fn to log repo exceptions in a follow up CL once Jason\u0027s changes are in.",
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "528a868a_2398c883",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-26T16:56:48Z",
+      "side": 1,
+      "message": "missing docstring",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 16
+      },
       "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
