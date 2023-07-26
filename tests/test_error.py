@@ -19,6 +19,15 @@ import pickle
 import unittest
 
 import error
+import project
+import git_command
+from subcmds import all_modules
+
+imports = all_modules + [
+    error,
+    project,
+    git_command,
+]
 
 
 class PickleTests(unittest.TestCase):
@@ -26,10 +35,11 @@ class PickleTests(unittest.TestCase):
 
     def getExceptions(self):
         """Return all our custom exceptions."""
-        for name in dir(error):
-            cls = getattr(error, name)
-            if isinstance(cls, type) and issubclass(cls, Exception):
-                yield cls
+        for entry in imports:
+            for name in dir(entry):
+                cls = getattr(entry, name)
+                if isinstance(cls, type) and issubclass(cls, Exception):
+                    yield cls
 
     def testExceptionLookup(self):
         """Make sure our introspection logic works."""
