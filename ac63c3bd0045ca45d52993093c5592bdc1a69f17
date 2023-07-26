@@ -248,6 +248,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df80df8b_156b6b9d",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-26T15:42:00Z",
+      "side": 1,
+      "message": "If this is the only reason then I think the solution should be to do this refactoring in a separate CL. Then this CL can also get rebased on top of it after it merges and get a little smaller.",
+      "parentUuid": "91ca727d_05f6821e",
+      "range": {
+        "startLine": 378,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 23
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6283e13_4d1921b9",
         "filename": "git_command.py",
         "patchSetId": 26
