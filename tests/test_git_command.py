@@ -16,6 +16,7 @@
 
 import re
 import os
+import subprocess
 import unittest
 
 try:
@@ -63,6 +64,56 @@ class GitCommandTest(unittest.TestCase):
         self.assertEqual(
             r.get("GIT_OBJECT_DIRECTORY"), os.path.join("wow", "objects")
         )
+
+
+class GitCommandWaitTest(unittest.TestCase):
+    """Tests the GitCommand class .Wait()"""
+
+    def setUp(self):
+        class MockPopen(object):
+            rc = 0
+
+            def communicate(
+                self, input: str = None, timeout: float = None
+            ) -> [str, str]:
+                """Mock communicate fn."""
+                return ["", ""]
+
+            def wait(self, timeout=None):
+                return self.rc
+
+        self.popen = popen = MockPopen()
+
+        def popen_mock(*args, **kwargs):
+            return popen
+
+        def realpath_mock(val):
+            return val
+
+        mock.patch.object(subprocess, "Popen", side_effect=popen_mock).start()
+
+        mock.patch.object(
+            os.path, "realpath", side_effect=realpath_mock
+        ).start()
+
+    def tearDown(self):
+        mock.patch.stopall()
+
+    def test_raises_when_verify_non_zero_result(self):
+        self.popen.rc = 1
+        r = git_command.GitCommand(None, ["status"], verify_command=True)
+        with self.assertRaises(git_command.GitCommandError):
+            r.Wait()
+
+    def test_returns_when_no_verify_non_zero_result(self):
+        self.popen.rc = 1
+        r = git_command.GitCommand(None, ["status"], verify_command=False)
+        self.assertEqual(1, r.Wait())
+
+    def test_default_returns_non_zero_result(self):
+        self.popen.rc = 1
+        r = git_command.GitCommand(None, ["status"])
+        self.assertEqual(1, r.Wait())
 
 
 class GitCallUnitTest(unittest.TestCase):
