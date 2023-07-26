@@ -358,6 +358,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9be15c0_fdb34125",
+        "filename": "project.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-26T00:08:20Z",
+      "side": 1,
+      "message": "Here is what I have been doing:\n- Exceptions inside of error.py are covered by test_error.py\n    - These tests ensure that the exceptions are pickled/unpickled correctly.\n- I\u0027ve been putting all non-trivial exceptions inside of error.py\n\n\nI think we should do this:\n- Update tests to check Exceptions throughout repo codebase\n- Keep specific errors co-located with file where it makes sense",
+      "parentUuid": "582e1ece_2f8a6899",
+      "range": {
+        "startLine": 74,
+        "startChar": 6,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "793707bc_1eed673a",
         "filename": "project.py",
         "patchSetId": 26
