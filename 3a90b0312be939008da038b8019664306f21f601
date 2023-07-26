@@ -22,6 +22,30 @@
       },
       "revId": "3a90b0312be939008da038b8019664306f21f601",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16dfff93_4fb2aab7",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-26T01:01:52Z",
+      "side": 1,
+      "message": "RepoExitError is an Exception, so that is preventing the next block from executing. Do you have a different suggestion?",
+      "parentUuid": "2ef04f7a_eac8daf5",
+      "range": {
+        "startLine": 1611,
+        "startChar": 0,
+        "endLine": 1612,
+        "endChar": 17
+      },
+      "revId": "3a90b0312be939008da038b8019664306f21f601",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

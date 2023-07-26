@@ -224,6 +224,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "91ca727d_05f6821e",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-26T01:01:52Z",
+      "side": 1,
+      "message": "Mostly because it would require a large amount of refactoring to do that (outside the scope of a single change). That is the direction that we would like to move to",
+      "parentUuid": "43a97d96_7571ac72",
+      "range": {
+        "startLine": 378,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 23
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6283e13_4d1921b9",
         "filename": "git_command.py",
         "patchSetId": 26
@@ -370,6 +394,30 @@
       "side": 1,
       "message": "Here is what I have been doing:\n- Exceptions inside of error.py are covered by test_error.py\n    - These tests ensure that the exceptions are pickled/unpickled correctly.\n- I\u0027ve been putting all non-trivial exceptions inside of error.py\n\n\nI think we should do this:\n- Update tests to check Exceptions throughout repo codebase\n- Keep specific errors co-located with file where it makes sense",
       "parentUuid": "582e1ece_2f8a6899",
+      "range": {
+        "startLine": 74,
+        "startChar": 6,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "338ca0a5_2b654095",
+        "filename": "project.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-26T01:01:52Z",
+      "side": 1,
+      "message": "Marking this as resolved.",
+      "parentUuid": "e9be15c0_fdb34125",
       "range": {
         "startLine": 74,
         "startChar": 6,
