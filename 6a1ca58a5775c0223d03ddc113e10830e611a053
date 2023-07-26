@@ -443,6 +443,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3c13473_90b329a0",
+        "filename": "main.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-26T00:26:31Z",
+      "side": 1,
+      "message": "The only alternative i can think of is we add a `project` to the git_trace dict and then add another field in http://shortn/_hbqFdjqvyn to hold it. I don\u0027t know if we can justify that, given we can just parse this on our end,  so i\u0027m fine with doing this.",
+      "parentUuid": "0648c7de_a88c477a",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3710bc72_085ed269",
         "filename": "project.py",
         "patchSetId": 15
