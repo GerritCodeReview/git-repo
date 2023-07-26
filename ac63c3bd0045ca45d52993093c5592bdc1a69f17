@@ -201,6 +201,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27526682_dbec772c",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-26T22:20:53Z",
+      "side": 1,
+      "message": "Ah, I missed the question, yes all it needs is to pass an exit_code arg. `exit_code: int \u003d 1,`",
+      "parentUuid": "eaeeb973_bf0cbecc",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43a97d96_7571ac72",
         "filename": "git_command.py",
         "patchSetId": 26
@@ -260,6 +278,30 @@
       "side": 1,
       "message": "If this is the only reason then I think the solution should be to do this refactoring in a separate CL. Then this CL can also get rebased on top of it after it merges and get a little smaller.",
       "parentUuid": "91ca727d_05f6821e",
+      "range": {
+        "startLine": 378,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 23
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3120d4f_960cec69",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-26T22:20:53Z",
+      "side": 1,
+      "message": "Okay, here it the plan:\n- I\u0027ll update git_command with this suggestion (but do it in a backwards compatible way)\n- That CL will also include changes from error.py tests/test_error.py and subcmds/\\_\\_init\\_\\_.py\n- https://gerrit-review.git.corp.google.com/c/git-repo/+/380994\n\n- Will include remaining changes here as a follow-up cl",
+      "parentUuid": "df80df8b_156b6b9d",
       "range": {
         "startLine": 378,
         "startChar": 8,
