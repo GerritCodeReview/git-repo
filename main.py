@@ -427,7 +427,8 @@ class _Repo(object):
                 if not ok:
                     exception_name = type(e).__name__
                     git_trace2_event_log.ErrorEvent(
-                        f"RepoExitError:{exception_name}")
+                        f"RepoExitError:{exception_name}"
+                    )
                 raise
 
         try:
