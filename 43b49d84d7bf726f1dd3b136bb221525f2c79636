@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e99043b2_f7c6399c",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-26T19:18:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "69a0be37_17cb579b",
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b90706a_836f3f8d",
@@ -48,6 +66,30 @@
       "writtenOn": "2023-07-26T16:56:48Z",
       "side": 1,
       "message": "can you make this more descriptive to describe what this file actually does. e.g. \"Logic for printing user-friendly logs in repo.\" or something",
+      "range": {
+        "startLine": 15,
+        "startChar": 3,
+        "endLine": 15,
+        "endChar": 26
+      },
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5a7846b_4e9e074e",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-26T19:18:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b90706a_836f3f8d",
       "range": {
         "startLine": 15,
         "startChar": 3,
@@ -154,6 +196,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "f9be4913_fa05e8c2",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-26T19:18:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1929c80_cb17f6e2",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 16
+      },
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b8a72b76_0f61e01c",
         "filename": "repo_logging.py",
         "patchSetId": 6
@@ -199,6 +265,30 @@
       "writtenOn": "2023-07-26T16:56:48Z",
       "side": 1,
       "message": "missing docstring",
+      "range": {
+        "startLine": 64,
+        "startChar": 8,
+        "endLine": 64,
+        "endChar": 16
+      },
+      "revId": "43b49d84d7bf726f1dd3b136bb221525f2c79636",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d880727c_74760229",
+        "filename": "repo_logging.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-26T19:18:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "528a868a_2398c883",
       "range": {
         "startLine": 64,
         "startChar": 8,
