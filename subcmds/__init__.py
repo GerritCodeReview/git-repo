@@ -16,6 +16,7 @@ import os
 
 # A mapping of the subcommand name to the class that implements it.
 all_commands = {}
+all_modules = []
 
 my_dir = os.path.dirname(__file__)
 for py in os.listdir(my_dir):
@@ -42,6 +43,7 @@ for py in os.listdir(my_dir):
         name = name.replace("_", "-")
         cmd.NAME = name
         all_commands[name] = cmd
+        all_modules.append(mod)
 
 # Add 'branch' as an alias for 'branches'.
 all_commands["branch"] = all_commands["branches"]
