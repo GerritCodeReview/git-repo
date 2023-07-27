@@ -219,6 +219,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "74d13aea_100ad3b9",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-27T23:10:59Z",
+      "side": 1,
+      "message": "So everytime when someone instantiates `NoManifestException`, do they have to pass `exit_code \u003d 1`. If that\u0027s the case, why not set it here?",
+      "parentUuid": "27526682_dbec772c",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43a97d96_7571ac72",
         "filename": "git_command.py",
         "patchSetId": 26
