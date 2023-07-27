@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbda19b1_21b1e1d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-27T19:46:08Z",
+      "side": 1,
+      "message": "can you mention git_command behavior change as well",
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "bc78f461_3b742741",
@@ -14,6 +31,69 @@
       "writtenOn": "2023-07-26T21:52:26Z",
       "side": 1,
       "message": "As requested, broken up https://gerrit-review.git.corp.google.com/c/git-repo/+/379614 into smaller pieces.",
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b073bf7f_2d41b2e2",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-27T19:46:08Z",
+      "side": 1,
+      "message": "this is unused afaict",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 27
+      },
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d28b463_325f4006",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-27T19:46:08Z",
+      "side": 1,
+      "message": "please add testing for this new behavior before merging",
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2f10e4b_f6ede77d",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-27T19:46:08Z",
+      "side": 1,
+      "message": "it\u0027s not clear why GitCommandError is necessary when we already have GitError and when should the code throw one over the other\n\ncan you document this info?",
+      "range": {
+        "startLine": 395,
+        "startChar": 4,
+        "endLine": 395,
+        "endChar": 49
+      },
       "revId": "f204d09d93d4622117053a9d2084ec600375228a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
