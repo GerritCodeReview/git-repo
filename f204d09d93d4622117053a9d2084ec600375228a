@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "c91a4514_e5689862",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-27T23:11:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbda19b1_21b1e1d1",
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "bc78f461_3b742741",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -58,6 +76,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e37de950_a6af6e92",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-27T23:11:34Z",
+      "side": 1,
+      "message": "Yea. Good catch",
+      "parentUuid": "b073bf7f_2d41b2e2",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 27
+      },
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d28b463_325f4006",
@@ -75,6 +117,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b2c9765_d5d31158",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-27T23:11:34Z",
+      "side": 1,
+      "message": "Yup.",
+      "parentUuid": "2d28b463_325f4006",
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b2f10e4b_f6ede77d",
@@ -88,6 +148,30 @@
       "writtenOn": "2023-07-27T19:46:08Z",
       "side": 1,
       "message": "it\u0027s not clear why GitCommandError is necessary when we already have GitError and when should the code throw one over the other\n\ncan you document this info?",
+      "range": {
+        "startLine": 395,
+        "startChar": 4,
+        "endLine": 395,
+        "endChar": 49
+      },
+      "revId": "f204d09d93d4622117053a9d2084ec600375228a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc840160_3a0b678c",
+        "filename": "git_command.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-27T23:11:34Z",
+      "side": 1,
+      "message": "Yup.",
+      "parentUuid": "b2f10e4b_f6ede77d",
       "range": {
         "startLine": 395,
         "startChar": 4,
