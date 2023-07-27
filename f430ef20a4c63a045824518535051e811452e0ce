@@ -16,6 +16,80 @@
       "message": "Updated the changelist. Thanks for the reviews!",
       "revId": "f430ef20a4c63a045824518535051e811452e0ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf54798d_9bd6c74f",
+        "filename": "error.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-07-27T23:36:42Z",
+      "side": 1,
+      "message": "Should this be BaseRepoError?",
+      "range": {
+        "startLine": 39,
+        "startChar": 31,
+        "endLine": 39,
+        "endChar": 40
+      },
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40c87066_f8b854a1",
+        "filename": "error.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-07-27T23:36:42Z",
+      "side": 1,
+      "message": "Will this be used in threads/mulktiprocessing? If so, I suggest to pick a different name to make it obvious. Perhaps, `RepoUnhlandedConcurrentException`?",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ed3abe9_4767612e",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-07-27T23:36:42Z",
+      "side": 1,
+      "message": "Why do we want message and when will such information be useful?",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a901f8_7cb73fc0",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-07-27T23:36:42Z",
+      "side": 1,
+      "message": "it seems weird to trim stdout to 80 chars. What\u0027s the motivation behind it? Perhaps first line is better choice.\n\nAlso, stderr usually contains error why a command failed and we should use that.",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
