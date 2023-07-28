@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d28d74ab_1cc7cf7a",
+        "filename": "error.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-28T00:15:15Z",
+      "side": 1,
+      "message": "No, `OSError` etc. should also be valid aggregate errors.",
+      "parentUuid": "cf54798d_9bd6c74f",
+      "range": {
+        "startLine": 39,
+        "startChar": 31,
+        "endLine": 39,
+        "endChar": 40
+      },
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "40c87066_f8b854a1",
         "filename": "error.py",
         "patchSetId": 7
@@ -54,6 +78,24 @@
       "writtenOn": "2023-07-27T23:36:42Z",
       "side": 1,
       "message": "Will this be used in threads/mulktiprocessing? If so, I suggest to pick a different name to make it obvious. Perhaps, `RepoUnhlandedConcurrentException`?",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ebe83306_e54d3893",
+        "filename": "error.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-28T00:15:15Z",
+      "side": 1,
+      "message": "So sortof ...\n\nIt is not expected that this specific error is raised inside of a thread/process. It is intended to wrap an exception that may have been raised in a subprocess/thread.",
+      "parentUuid": "40c87066_f8b854a1",
       "revId": "f430ef20a4c63a045824518535051e811452e0ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -77,6 +119,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0d765f86_32070a55",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-28T00:15:15Z",
+      "side": 1,
+      "message": "There are a number of places where .Wait is called and a custom message is added for non-zero result:\n- https://gerrit.googlesource.com/git-repo/+/c657844efe40b97700c3654989bdbe3a33e409d7/project.py#2761",
+      "parentUuid": "0ed3abe9_4767612e",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a9a901f8_7cb73fc0",
         "filename": "git_command.py",
         "patchSetId": 7
@@ -88,6 +148,24 @@
       "writtenOn": "2023-07-27T23:36:42Z",
       "side": 1,
       "message": "it seems weird to trim stdout to 80 chars. What\u0027s the motivation behind it? Perhaps first line is better choice.\n\nAlso, stderr usually contains error why a command failed and we should use that.",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41db8a46_7560999a",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-28T00:15:15Z",
+      "side": 1,
+      "message": "First line is a good suggestion. Yup can add stderr - perhaps conditional n \u0027merge_output\u0027 param for GitCommand ...",
+      "parentUuid": "a9a901f8_7cb73fc0",
       "revId": "f430ef20a4c63a045824518535051e811452e0ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
