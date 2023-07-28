@@ -16,6 +16,24 @@
       "message": "ptal, w/ tests",
       "revId": "d933c5948f0500eebc49a1939f05cb911259c4b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db7c8490_31891e7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-28T16:25:30Z",
+      "side": 1,
+      "message": "nice! still lgtm",
+      "parentUuid": "512c4727_0f3ecc4c",
+      "revId": "d933c5948f0500eebc49a1939f05cb911259c4b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
