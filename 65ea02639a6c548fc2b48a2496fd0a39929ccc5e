@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1899b246_64f20e37",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-07-28T16:32:14Z",
+      "side": 1,
+      "message": "`repo_logging: Add repo_logging module`\nscope commit to make scanning history easier",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 18
+      },
+      "revId": "65ea02639a6c548fc2b48a2496fd0a39929ccc5e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
