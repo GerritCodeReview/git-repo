@@ -124,6 +124,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8306af62_ed889975",
+        "filename": "error.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T17:32:56Z",
+      "side": 1,
+      "message": "Resolving, since the expectation is that it is not used in a separate process/thread.",
+      "parentUuid": "ebe83306_e54d3893",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ed3abe9_4767612e",
