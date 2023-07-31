@@ -65,6 +65,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3141903_15d8b4a4",
+        "filename": "error.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T17:17:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d28d74ab_1cc7cf7a",
+      "range": {
+        "startLine": 39,
+        "startChar": 31,
+        "endLine": 39,
+        "endChar": 40
+      },
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40c87066_f8b854a1",
@@ -166,6 +190,24 @@
       "side": 1,
       "message": "First line is a good suggestion. Yup can add stderr - perhaps conditional n \u0027merge_output\u0027 param for GitCommand ...",
       "parentUuid": "a9a901f8_7cb73fc0",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5505bd9_457427fa",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T17:17:16Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "41db8a46_7560999a",
       "revId": "f430ef20a4c63a045824518535051e811452e0ce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
