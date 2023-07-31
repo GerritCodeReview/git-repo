@@ -366,6 +366,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04e50165_be61df92",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T21:58:57Z",
+      "side": 1,
+      "message": "This comment no longer relevant due to - https://gerrit-review.git.corp.google.com/c/git-repo/+/380994",
+      "parentUuid": "f3120d4f_960cec69",
+      "range": {
+        "startLine": 378,
+        "startChar": 8,
+        "endLine": 378,
+        "endChar": 23
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6283e13_4d1921b9",
@@ -389,6 +413,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed756677_534b0fd6",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 379,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T21:58:57Z",
+      "side": 1,
+      "message": "This comment no longer relevant due to - https://gerrit-review.git.corp.google.com/c/git-repo/+/380994",
+      "parentUuid": "d6283e13_4d1921b9",
+      "range": {
+        "startLine": 379,
+        "startChar": 56,
+        "endLine": 379,
+        "endChar": 58
+      },
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e88d4610_c3ee7851",
@@ -402,6 +450,24 @@
       "writtenOn": "2023-07-25T01:41:01Z",
       "side": 1,
       "message": "Is there reason for trimming the stdout at 100 lines? How long could these logs get?",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25cf428b_2bebc4a5",
+        "filename": "git_command.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 382,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T21:58:57Z",
+      "side": 1,
+      "message": "This comment no longer relevant due to - https://gerrit-review.git.corp.google.com/c/git-repo/+/380994",
+      "parentUuid": "e88d4610_c3ee7851",
       "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
