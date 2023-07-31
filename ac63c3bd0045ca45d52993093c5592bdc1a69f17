@@ -253,6 +253,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e94eb509_b14d0262",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-31T21:23:07Z",
+      "side": 1,
+      "message": "Makes sense; once that part is sorted out, I think these exceptions shouldn\u0027t require users passing an exit code.",
+      "parentUuid": "21063516_5d431572",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "43a97d96_7571ac72",

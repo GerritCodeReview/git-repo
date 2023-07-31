@@ -564,6 +564,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99803af4_f8fe1d1e",
+        "filename": "project.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 1471,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-07-31T21:23:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "61dc89e9_5b290b43",
+      "revId": "6a1ca58a5775c0223d03ddc113e10830e611a053",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f65bb6e2_203e62b6",
