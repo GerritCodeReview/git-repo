@@ -177,6 +177,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b560689_21a1f739",
+        "filename": "git_command.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T18:06:06Z",
+      "side": 1,
+      "message": "Note that places such as (https://gerrit.googlesource.com/git-repo/+/c657844efe40b97700c3654989bdbe3a33e409d7/project.py#2260) pretty much just include some of the command arguments.\n\nGiven that it is not obvious that this is necessary, I\u0027ll just get rid of it...",
+      "parentUuid": "0d765f86_32070a55",
+      "revId": "f430ef20a4c63a045824518535051e811452e0ce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9a901f8_7cb73fc0",
