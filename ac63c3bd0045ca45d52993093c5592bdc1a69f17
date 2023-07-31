@@ -237,6 +237,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "21063516_5d431572",
+        "filename": "error.py",
+        "patchSetId": 26
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-07-31T18:10:30Z",
+      "side": 1,
+      "message": "By default the `exit_code` is 1. I haven\u0027t yet considered which errors should correspond to specific exit codes ...",
+      "parentUuid": "74d13aea_100ad3b9",
+      "revId": "ac63c3bd0045ca45d52993093c5592bdc1a69f17",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "43a97d96_7571ac72",
         "filename": "git_command.py",
         "patchSetId": 26
