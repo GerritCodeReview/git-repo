@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "068183d1_e1d7db39",
+        "filename": "main.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-08-01T14:04:39Z",
+      "side": 1,
+      "message": "yeah sry this was not clear.\n\nthis line can be removed if line 877 is replaced with `if e.aggregate_errors` (and all aggregate_errors -\u003e e.aggregate_errors)\n\nof keep this line and remove line 877",
+      "parentUuid": "3215edb5_f6622ca6",
+      "range": {
+        "startLine": 870,
+        "startChar": 8,
+        "endLine": 870,
+        "endChar": 51
+      },
+      "revId": "c4f18f3dcaaf2e0069fa143a86cf279f4b59617b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "07989c3c_27c65382",
         "filename": "subcmds/sync.py",
         "patchSetId": 28
