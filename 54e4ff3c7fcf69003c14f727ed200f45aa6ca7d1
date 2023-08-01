@@ -16,6 +16,24 @@
       "message": "i think some tests could be added at least for project.py and sync.py",
       "revId": "54e4ff3c7fcf69003c14f727ed200f45aa6ca7d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddbeb64b_98a10705",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 43
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-08-01T19:22:21Z",
+      "side": 1,
+      "message": "unresolving",
+      "parentUuid": "f2e90eb4_f9afce6b",
+      "revId": "54e4ff3c7fcf69003c14f727ed200f45aa6ca7d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
