@@ -34,6 +34,24 @@
       "parentUuid": "f2e90eb4_f9afce6b",
       "revId": "54e4ff3c7fcf69003c14f727ed200f45aa6ca7d1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5389264a_51513b6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 43
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-01T22:07:47Z",
+      "side": 1,
+      "message": "I added tests for sync.py\n\nproject.py would be pretty difficult to create tests for (See constructor for details ...)\n\n```\n    def __init__(\n        self,\n        manifest,\n        name,\n        remote,\n        gitdir,\n        objdir,\n        worktree,\n        relpath,\n        revisionExpr,\n        revisionId,\n        rebase\u003dTrue,\n        groups\u003dNone,\n        sync_c\u003dFalse,\n        sync_s\u003dFalse,\n        sync_tags\u003dTrue,\n        clone_depth\u003dNone,\n        upstream\u003dNone,\n        parent\u003dNone,\n        use_git_worktrees\u003dFalse,\n        is_derived\u003dFalse,\n        dest_branch\u003dNone,\n        optimized_fetch\u003dFalse,\n        retry_fetches\u003d0,\n        old_revision\u003dNone,\n    ):\n ```",
+      "parentUuid": "ddbeb64b_98a10705",
+      "revId": "54e4ff3c7fcf69003c14f727ed200f45aa6ca7d1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
