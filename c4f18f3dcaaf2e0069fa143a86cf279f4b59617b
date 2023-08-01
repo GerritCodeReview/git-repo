@@ -72,6 +72,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5819de39_e64151cf",
+        "filename": "main.py",
+        "patchSetId": 28
+      },
+      "lineNbr": 870,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-01T19:01:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "068183d1_e1d7db39",
+      "range": {
+        "startLine": 870,
+        "startChar": 8,
+        "endLine": 870,
+        "endChar": 51
+      },
+      "revId": "c4f18f3dcaaf2e0069fa143a86cf279f4b59617b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07989c3c_27c65382",
