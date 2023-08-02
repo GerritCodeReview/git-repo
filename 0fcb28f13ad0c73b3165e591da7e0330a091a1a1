@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b07416b9_52815506",
+        "filename": "main.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-02T18:17:01Z",
+      "side": 1,
+      "message": "I guess this would make my error aggregated duplicate given it tries to achieve the same result. \n\nI guess this duplicates what my logger tries to achieve here: https://gerrit.googlesource.com/git-repo/+/8c35d948cfa76ec685ad36fb1cb3a0fcc749f428/repo_logging.py#68. I guess I will update my logger to take the `RepoExitError` after this change.",
+      "revId": "0fcb28f13ad0c73b3165e591da7e0330a091a1a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3079b76_8eb18584",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 1342,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-02T18:17:01Z",
+      "side": 1,
+      "message": "Nit: dedup error msg.",
+      "revId": "0fcb28f13ad0c73b3165e591da7e0330a091a1a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3be03c95_9cb5ce6a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-02T18:17:01Z",
+      "side": 1,
+      "message": "Nit: dedup error msg.",
+      "revId": "0fcb28f13ad0c73b3165e591da7e0330a091a1a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
