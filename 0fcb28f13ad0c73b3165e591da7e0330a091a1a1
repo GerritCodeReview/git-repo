@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "73ddaab7_ce60e3b5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 1342,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-02T18:27:19Z",
+      "side": 1,
+      "message": "Ah, good call. No need to have print statement when error is raised/propagated ...",
+      "parentUuid": "c3079b76_8eb18584",
+      "revId": "0fcb28f13ad0c73b3165e591da7e0330a091a1a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3be03c95_9cb5ce6a",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-08-02T18:17:01Z",
       "side": 1,
       "message": "Nit: dedup error msg.",
+      "revId": "0fcb28f13ad0c73b3165e591da7e0330a091a1a1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae281e6c_d6bd79b4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 45
+      },
+      "lineNbr": 1436,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-02T18:27:19Z",
+      "side": 1,
+      "message": "Good call.",
+      "parentUuid": "3be03c95_9cb5ce6a",
       "revId": "0fcb28f13ad0c73b3165e591da7e0330a091a1a1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
