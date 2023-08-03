@@ -203,8 +203,8 @@ class EventLog(object):
         error_event = self._CreateEventDict("error")
         if fmt is None:
             fmt = msg
-        error_event["msg"] = msg
-        error_event["fmt"] = fmt
+        error_event["msg"] = f"RepoErrorEvent:{msg}"
+        error_event["fmt"] = f"RepoErrorEvent:{fmt}"
         self._log.append(error_event)
 
     def _GetEventTargetPath(self):
