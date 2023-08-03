@@ -19,6 +19,8 @@ from color import Coloring
 from command import InteractiveCommand, MirrorSafeCommand
 from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
 from wrapper import Wrapper
+from error import UpdateManifestError
+from error import RepoUnhandledExceptionError
 
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
@@ -156,7 +158,10 @@ to update the working directory files.
             git_event_log=self.git_event_log,
             manifest_name=opt.manifest_name,
         ):
-            sys.exit(1)
+            manifest_name = opt.manifest_name
+            raise UpdateManifestError(
+                f"Unable to sync manifest {manifest_name}"
+            )
 
     def _Prompt(self, prompt, value):
         print("%-10s [%s]: " % (prompt, value), end="", flush=True)
@@ -346,14 +351,15 @@ to update the working directory files.
                     repo_verify=opt.repo_verify,
                     quiet=opt.quiet,
                 )
-            except wrapper.CloneFailure:
+            except wrapper.CloneFailure as e:
                 err_msg = "fatal: double check your --repo-rev setting."
                 print(
                     err_msg,
                     file=sys.stderr,
                 )
                 self.git_event_log.ErrorEvent(err_msg)
-                sys.exit(1)
+                raise RepoUnhandledExceptionError(e)
+
             branch = rp.GetBranch("default")
             branch.merge = remote_ref
             rp.work_git.reset("--hard", rev)

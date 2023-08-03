@@ -20,6 +20,11 @@ import sys
 from command import Command, DEFAULT_LOCAL_JOBS
 from git_command import git
 from progress import Progress
+from error import RepoError, RepoExitError
+
+
+class AbandonError(RepoExitError):
+    """Exit error when abandon command fails."""
 
 
 class Abandon(Command):
@@ -68,28 +73,37 @@ It is equivalent to "git branch -D <branchname>".
             branches = nb
 
         ret = {}
+        errors = []
         for name in branches:
-            status = project.AbandonBranch(name)
+            status = None
+            try:
+                status = project.AbandonBranch(name)
+            except RepoError as e:
+                status = False
+                errors.append(e)
             if status is not None:
                 ret[name] = status
-        return (ret, project)
+
+        return (ret, project, errors)
 
     def Execute(self, opt, args):
         nb = args[0].split()
         err = defaultdict(list)
         success = defaultdict(list)
+        aggregate_errors = []
         all_projects = self.GetProjects(
             args[1:], all_manifests=not opt.this_manifest_only
         )
         _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
 
         def _ProcessResults(_pool, pm, states):
-            for results, project in states:
+            for results, project, errors in states:
                 for branch, status in results.items():
                     if status:
                         success[branch].append(project)
                     else:
                         err[branch].append(project)
+                aggregate_errors.extend(errors)
                 pm.update(msg="")
 
         self.ExecuteInParallel(
@@ -116,13 +130,13 @@ It is equivalent to "git branch -D <branchname>".
                         " " * len(err_msg) + " | %s" % _RelPath(proj),
                         file=sys.stderr,
                     )
-            sys.exit(1)
+            raise AbandonError(aggregate_errors=aggregate_errors)
         elif not success:
             print(
                 "error: no project has local branch(es) : %s" % nb,
                 file=sys.stderr,
             )
-            sys.exit(1)
+            raise AbandonError(aggregate_errors=aggregate_errors)
         else:
             # Everything below here is displaying status.
             if opt.quiet:
