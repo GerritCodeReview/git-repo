@@ -16,11 +16,11 @@ import multiprocessing
 import os
 import optparse
 import re
-import sys
 
 from event_log import EventLog
 from error import NoSuchProjectError
 from error import InvalidProjectGroupsError
+from error import RepoExitError
 import progress
 
 
@@ -40,6 +40,10 @@ WORKER_BATCH_SIZE = 32
 # How many jobs to run in parallel by default?  This assumes the jobs are
 # largely I/O bound and do not hit the network.
 DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
+
+
+class UsageError(RepoExitError):
+    """Exception thrown with invalid command usage."""
 
 
 class Command(object):
@@ -215,7 +219,7 @@ class Command(object):
     def Usage(self):
         """Display usage and terminate."""
         self.OptionParser.print_usage()
-        sys.exit(1)
+        raise UsageError()
 
     def CommonValidateOptions(self, opt, args):
         """Validate common options."""

@@ -19,6 +19,7 @@ import subprocess
 from typing import Any, Optional
 
 from error import GitError
+from error import RepoExitError
 from git_refs import HEAD
 import platform_utils
 from repo_trace import REPO_TRACE, IsTrace, Trace
@@ -44,6 +45,7 @@ DEFAULT_GIT_FAIL_MESSAGE = "git command failure"
 # Common line length limit
 GIT_ERROR_STDOUT_LINES = 1
 GIT_ERROR_STDERR_LINES = 1
+INVALID_GIT_EXIT_CODE = 126
 
 
 class _GitCall(object):
@@ -51,8 +53,9 @@ class _GitCall(object):
     def version_tuple(self):
         ret = Wrapper().ParseGitVersion()
         if ret is None:
-            print("fatal: unable to detect git version", file=sys.stderr)
-            sys.exit(1)
+            msg = "fatal: unable to detect git version"
+            print(msg, file=sys.stderr)
+            raise GitRequireError(msg)
         return ret
 
     def __getattr__(self, name):
@@ -167,10 +170,9 @@ def git_require(min_version, fail=False, msg=""):
         need = ".".join(map(str, min_version))
         if msg:
             msg = " for " + msg
-        print(
-            "fatal: git %s or later required%s" % (need, msg), file=sys.stderr
-        )
-        sys.exit(1)
+        error_msg = "fatal: git %s or later required%s" % (need, msg)
+        print(error_msg, file=sys.stderr)
+        raise GitRequireError(error_msg)
     return False
 
 
@@ -401,6 +403,13 @@ class GitCommand(object):
             git_stdout=stdout,
             git_stderr=stderr,
         )
+
+
+class GitRequireError(RepoExitError):
+    """Error raised when git version is unavailable or invalid."""
+
+    def __init__(self, message, exit_code: int = INVALID_GIT_EXIT_CODE):
+        super().__init__(message, exit_code=exit_code)
 
 
 class GitCommandError(GitError):
