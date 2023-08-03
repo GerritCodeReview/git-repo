@@ -338,8 +338,8 @@ class EventLogTestCase(unittest.TestCase):
         # Check for 'error' event specific fields.
         self.assertIn("msg", error_event)
         self.assertIn("fmt", error_event)
-        self.assertEqual(error_event["msg"], msg)
-        self.assertEqual(error_event["fmt"], fmt)
+        self.assertEqual(error_event["msg"], f"RepoErrorEvent:{msg}")
+        self.assertEqual(error_event["fmt"], f"RepoErrorEvent:{fmt}")
 
     def test_write_with_filename(self):
         """Test Write() with a path to a file exits with None."""
