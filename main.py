@@ -436,6 +436,10 @@ class _Repo(object):
                 exception_name = type(e).__name__
                 if isinstance(e, RepoUnhandledExceptionError):
                     exception_name = type(e.error).__name__
+                if not ok:
+                    git_trace2_event_log.ErrorEvent(
+                        f"RepoExitError:{exception_name}"
+                    )
                 if isinstance(e, RepoExitError):
                     aggregated_errors = e.aggregate_errors or []
                     for error in aggregated_errors:
@@ -452,10 +456,6 @@ class _Repo(object):
                         git_trace2_event_log.ErrorEvent(
                             f"AggregateExitError:{error_info}"
                         )
-                if not ok:
-                    git_trace2_event_log.ErrorEvent(
-                        f"RepoExitError:{exception_name}"
-                    )
                 raise
 
         try:
