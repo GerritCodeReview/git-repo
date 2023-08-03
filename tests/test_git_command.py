@@ -204,12 +204,12 @@ class GitRequireTests(unittest.TestCase):
 
     def test_older_fatal(self):
         """Test fatal require calls with old versions."""
-        with self.assertRaises(SystemExit) as e:
+        with self.assertRaises(git_command.GitRequireError) as e:
             git_command.git_require((2,), fail=True)
             self.assertNotEqual(0, e.code)
 
     def test_older_fatal_msg(self):
         """Test fatal require calls with old versions and message."""
-        with self.assertRaises(SystemExit) as e:
+        with self.assertRaises(git_command.GitRequireError) as e:
             git_command.git_require((2,), fail=True, msg="so sad")
             self.assertNotEqual(0, e.code)
