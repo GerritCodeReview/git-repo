@@ -2003,8 +2003,8 @@ class Project(object):
             name: The name of the branch to abandon.
 
         Returns:
-            True if the abandon succeeded; False if it didn't; None if the
-            branch didn't exist.
+            True if the abandon succeeded; Raises GitCommandError if it didn't;
+            None if the branch didn't exist.
         """
         rev = R_HEADS + name
         all_refs = self.bare_ref.all
@@ -2025,16 +2025,14 @@ class Project(object):
                 )
             else:
                 self._Checkout(revid, quiet=True)
-
-        return (
-            GitCommand(
-                self,
-                ["branch", "-D", name],
-                capture_stdout=True,
-                capture_stderr=True,
-            ).Wait()
-            == 0
-        )
+        GitCommand(
+            self,
+            ["branch", "-D", name],
+            capture_stdout=True,
+            capture_stderr=True,
+            verify_command=True,
+        ).Wait()
+        return True
 
     def PruneHeads(self):
         """Prune any topic branches already merged into upstream."""
