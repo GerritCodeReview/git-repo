@@ -21,12 +21,16 @@ import unittest
 import error
 import project
 import git_command
+import fetch
+import command
 from subcmds import all_modules
 
 imports = all_modules + [
     error,
     project,
     git_command,
+    fetch,
+    command,
 ]
 
 
