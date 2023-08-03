@@ -56,6 +56,10 @@ class RepoUnhandledExceptionError(RepoExitError):
         self.error = error
 
 
+class UsageError(RepoExitError):
+    """Exception thrown with invalid command usage."""
+
+
 class ManifestParseError(RepoExitError):
     """Failed to parse the manifest file."""
 

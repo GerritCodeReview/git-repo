@@ -18,6 +18,11 @@ import subprocess
 import sys
 from urllib.parse import urlparse
 from urllib.request import urlopen
+from error import RepoExitError
+
+
+class FetchFileError(RepoExitError):
+    """Exit error when fetch_file fails."""
 
 
 def fetch_file(url, verbose=False):
@@ -29,6 +34,7 @@ def fetch_file(url, verbose=False):
     scheme = urlparse(url).scheme
     if scheme == "gs":
         cmd = ["gsutil", "cat", url]
+        errors = []
         try:
             result = subprocess.run(
                 cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True
@@ -41,9 +47,10 @@ def fetch_file(url, verbose=False):
                 )
             return result.stdout
         except subprocess.CalledProcessError as e:
+            errors.append(e)
             print(
                 'fatal: error running "gsutil": %s' % e.stderr, file=sys.stderr
             )
-        sys.exit(1)
+        raise FetchFileError(aggregate_errors=errors)
     with urlopen(url) as f:
         return f.read()
