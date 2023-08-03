@@ -21,7 +21,7 @@ from typing import List
 
 from command import DEFAULT_LOCAL_JOBS, InteractiveCommand
 from editor import Editor
-from error import UploadError
+from error import UploadError, RepoExitError
 from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
@@ -29,6 +29,10 @@ from project import ReviewableBranch
 
 
 _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
+
+
+class UploadExitError(RepoExitError):
+    """Indicates that there is an upload command error requiring a sys exit."""
 
 
 def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
@@ -86,7 +90,7 @@ def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
 def _die(fmt, *args):
     msg = fmt % args
     print("error: %s" % msg, file=sys.stderr)
-    sys.exit(1)
+    raise UploadExitError(msg)
 
 
 def _SplitEmails(values):
@@ -697,7 +701,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 )
 
         if have_errors:
-            sys.exit(1)
+            raise branch.error
 
     def _GetMergeBranch(self, project, local_branch=None):
         if local_branch is None:
