@@ -887,11 +887,10 @@ def _Main(argv):
         result = KEYBOARD_INTERRUPT_EXIT
     except RepoChangedException as rce:
         # If repo changed, re-exec ourselves.
-        #
         argv = list(sys.argv)
         argv.extend(rce.extra_args)
         try:
-            os.execv(sys.executable, [__file__] + argv)
+            os.execv(sys.executable, [sys.executable, __file__] + argv)
         except OSError as e:
             print("fatal: cannot restart repo after upgrade", file=sys.stderr)
             print("fatal: %s" % e, file=sys.stderr)
