@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8150925_7f744962",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-07T04:39:42Z",
+      "side": 1,
+      "message": "normally this sort of thing isn\u0027t necessary.  can you please put an explanation in the commit message as to why we\u0027re doing this ?\n\nhttps://cbea.ms/git-commit/",
+      "revId": "f80236b865daf9839fe3fd6d055735b513b46739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
