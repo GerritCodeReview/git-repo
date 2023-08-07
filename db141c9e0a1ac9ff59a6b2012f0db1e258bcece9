@@ -46,6 +46,30 @@
       },
       "revId": "db141c9e0a1ac9ff59a6b2012f0db1e258bcece9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3159d40_c904acc6",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-07T18:10:59Z",
+      "side": 1,
+      "message": "I\u0027ll revert this and we can revisit this later ...",
+      "parentUuid": "c9745d3d_c18c7906",
+      "range": {
+        "startLine": 439,
+        "startChar": 14,
+        "endLine": 443,
+        "endChar": 0
+      },
+      "revId": "db141c9e0a1ac9ff59a6b2012f0db1e258bcece9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
