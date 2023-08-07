@@ -22,6 +22,30 @@
       },
       "revId": "db141c9e0a1ac9ff59a6b2012f0db1e258bcece9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9745d3d_c18c7906",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-07T17:27:17Z",
+      "side": 1,
+      "message": "It only matters if you get a query like:\n- https://source.corp.google.com/piper///depot/google3/devtools/gerritcodereview/plx/git_submodules/git_sessions_in_android.sql;rcl\u003d550985742;l\u003d151\n\nwhere you are only taking the first LIMIT number of ErrorEvent from repo",
+      "parentUuid": "8906092c_ba74fe33",
+      "range": {
+        "startLine": 439,
+        "startChar": 14,
+        "endLine": 443,
+        "endChar": 0
+      },
+      "revId": "db141c9e0a1ac9ff59a6b2012f0db1e258bcece9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
