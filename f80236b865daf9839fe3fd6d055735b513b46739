@@ -16,6 +16,24 @@
       "message": "normally this sort of thing isn\u0027t necessary.  can you please put an explanation in the commit message as to why we\u0027re doing this ?\n\nhttps://cbea.ms/git-commit/",
       "revId": "f80236b865daf9839fe3fd6d055735b513b46739",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c0bd34_36c45aa2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1164522
+      },
+      "writtenOn": "2023-08-07T10:39:49Z",
+      "side": 1,
+      "message": "https://docs.python.org/3/library/os.html#os.execve\n\n\"In either case, the arguments to the child process should start with the name of the command being run, but this is not enforced.\"\n\nThis is how execve is supposed to be used. (which seems reasonable since argv[0] is the executed binary path on linux)\n\nNot including it breaks the forked python since it does now know where it is running from. (but annoying it has fallback attempts, so it often actually does work - but not always, which causes flakes in infra)",
+      "parentUuid": "d8150925_7f744962",
+      "revId": "f80236b865daf9839fe3fd6d055735b513b46739",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
