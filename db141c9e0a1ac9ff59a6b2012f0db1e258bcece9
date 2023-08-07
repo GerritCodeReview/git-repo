@@ -70,6 +70,30 @@
       },
       "revId": "db141c9e0a1ac9ff59a6b2012f0db1e258bcece9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87a3d13d_4db4b92c",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 443,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-08-07T18:14:17Z",
+      "side": 1,
+      "message": "sg i think we should find a solution for this in the query itself rather than rely on code to do things in a certain order",
+      "parentUuid": "c3159d40_c904acc6",
+      "range": {
+        "startLine": 439,
+        "startChar": 14,
+        "endLine": 443,
+        "endChar": 0
+      },
+      "revId": "db141c9e0a1ac9ff59a6b2012f0db1e258bcece9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
