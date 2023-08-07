@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "550529db_5d0a80d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1047143
+      },
+      "writtenOn": "2023-08-07T22:07:27Z",
+      "side": 1,
+      "message": "FYI I don\u0027t check gerrit-review host often.\nplease feel free to ping for reviews",
+      "revId": "f4644ab5ac2107dbca28a06e2a739c018579d525",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
