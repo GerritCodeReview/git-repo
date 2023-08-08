@@ -15,8 +15,26 @@
 import functools
 import sys
 
+from typing import NamedTuple
 from command import Command, DEFAULT_LOCAL_JOBS
 from progress import Progress
+from project import Project
+from error import GitError, RepoExitError
+
+
+class CheckoutBranchResult(NamedTuple):
+    # Whether the Project is on the branch (i.e. branch exists and no errors)
+    result: bool
+    project: Project
+    error: Exception
+
+
+class CheckoutCommandError(RepoExitError):
+    """Exception thrown when checkout command fails."""
+
+
+class MissingBranchError(RepoExitError):
+    """Exception thrown when no project has specified branch."""
 
 
 class Checkout(Command):
@@ -41,23 +59,30 @@ The command is equivalent to:
 
     def _ExecuteOne(self, nb, project):
         """Checkout one project."""
-        return (project.CheckoutBranch(nb), project)
+        error = None
+        result = None
+        try:
+            result = project.CheckoutBranch(nb)
+        except GitError as e:
+            error = e
+        return CheckoutBranchResult(result, project, error)
 
     def Execute(self, opt, args):
         nb = args[0]
         err = []
+        err_projects = []
         success = []
         all_projects = self.GetProjects(
             args[1:], all_manifests=not opt.this_manifest_only
         )
 
         def _ProcessResults(_pool, pm, results):
-            for status, project in results:
-                if status is not None:
-                    if status:
-                        success.append(project)
-                    else:
-                        err.append(project)
+            for result in results:
+                if result.error is not None:
+                    err.append(result.error)
+                    err_projects.append(result.project)
+                elif result.result:
+                    success.append(result.project)
                 pm.update(msg="")
 
         self.ExecuteInParallel(
@@ -70,13 +95,14 @@ The command is equivalent to:
             ),
         )
 
-        if err:
-            for p in err:
+        if err_projects:
+            for p in err_projects:
                 print(
                     "error: %s/: cannot checkout %s" % (p.relpath, nb),
                     file=sys.stderr,
                 )
-            sys.exit(1)
+            raise CheckoutCommandError(aggregate_errors=err)
         elif not success:
-            print("error: no project has branch %s" % nb, file=sys.stderr)
-            sys.exit(1)
+            msg = f"error: no project has branch {nb}"
+            print(msg, file=sys.stderr)
+            raise MissingBranchError(msg)

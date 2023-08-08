@@ -18,6 +18,11 @@ import sys
 from command import Command, MirrorSafeCommand
 from subcmds.sync import _PostRepoUpgrade
 from subcmds.sync import _PostRepoFetch
+from error import RepoExitError
+
+
+class SelfupdateError(RepoExitError):
+    """Exit error for failed selfupdate command."""
 
 
 class Selfupdate(Command, MirrorSafeCommand):
@@ -58,9 +63,10 @@ need to be performed by an end-user.
             _PostRepoUpgrade(self.manifest)
 
         else:
-            if not rp.Sync_NetworkHalf().success:
+            result = rp.Sync_NetworkHalf()
+            if result.error:
                 print("error: can't update repo", file=sys.stderr)
-                sys.exit(1)
+                raise SelfupdateError(aggregate_errors=[result.error])
 
             rp.bare_git.gc("--auto")
             _PostRepoFetch(rp, repo_verify=opt.repo_verify, verbose=True)
