@@ -34,6 +34,24 @@
       "parentUuid": "114a6e33_31cf6e09",
       "revId": "4252aa3aeb007dd6b6cf40816b02076312737bf6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "842960a6_4c4227ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-08T04:01:49Z",
+      "side": 1,
+      "message": "thx.  i know it\u0027s nitty, but the repo history is full of history with short messages and assumed background that makes it hard to understand why it does things",
+      "parentUuid": "3dd8be91_dc601db9",
+      "revId": "4252aa3aeb007dd6b6cf40816b02076312737bf6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
