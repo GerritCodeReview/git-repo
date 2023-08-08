@@ -16,6 +16,24 @@
       "message": "line is too long for commit messages\n\nthis is the repo project which isn\u0027t tied to any particular project.  \"some builders\" doesn\u0027t have any context/meaning here.  you\u0027re talking about Chromium builders, so should say that explicitly.\n\n\"forked python\" is unclear.  should frame it like \"Chromium\u0027s custom Python build used by vpython relies on argv[0] to find its own internal files\".\n\n\"now\" -\u003e \"not\"",
       "revId": "4252aa3aeb007dd6b6cf40816b02076312737bf6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd8be91_dc601db9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-08-08T02:40:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "114a6e33_31cf6e09",
+      "revId": "4252aa3aeb007dd6b6cf40816b02076312737bf6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
