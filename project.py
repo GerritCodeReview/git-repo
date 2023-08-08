@@ -1733,8 +1733,7 @@ class Project(object):
         cmd.append(
             "refs/changes/%2.2d/%d/%d" % (change_id % 100, change_id, patch_id)
         )
-        if GitCommand(self, cmd, bare=True).Wait() != 0:
-            return None
+        GitCommand(self, cmd, bare=True, verify_command=True).Wait()
         return DownloadedChange(
             self,
             self.GetRevisionId(),
@@ -1911,7 +1910,10 @@ class Project(object):
 
         all_refs = self.bare_ref.all
         if R_HEADS + name in all_refs:
-            return GitCommand(self, ["checkout", "-q", name, "--"]).Wait() == 0
+            GitCommand(
+                self, ["checkout", "-q", name, "--"], verify_command=True
+            ).Wait()
+            return True
 
         branch = self.GetBranch(name)
         branch.remote = self.GetRemote()
@@ -1938,15 +1940,13 @@ class Project(object):
             branch.Save()
             return True
 
-        if (
-            GitCommand(
-                self, ["checkout", "-q", "-b", branch.name, revid]
-            ).Wait()
-            == 0
-        ):
-            branch.Save()
-            return True
-        return False
+        GitCommand(
+            self,
+            ["checkout", "-q", "-b", branch.name, revid],
+            verify_command=True,
+        ).Wait()
+        branch.Save()
+        return True
 
     def CheckoutBranch(self, name):
         """Checkout a local topic branch.
@@ -1986,15 +1986,14 @@ class Project(object):
             )
             return True
 
-        return (
-            GitCommand(
-                self,
-                ["checkout", name, "--"],
-                capture_stdout=True,
-                capture_stderr=True,
-            ).Wait()
-            == 0
-        )
+        GitCommand(
+            self,
+            ["checkout", name, "--"],
+            capture_stdout=True,
+            capture_stderr=True,
+            verify_command=True,
+        ).Wait()
+        return True
 
     def AbandonBranch(self, name):
         """Destroy a local topic branch.
@@ -4458,9 +4457,12 @@ class ManifestProject(MetaProject):
             syncbuf.Finish()
 
             if is_new or self.CurrentBranch is None:
-                if not self.StartBranch("default"):
+                try:
+                    self.StartBranch("default")
+                except GitError as e:
+                    msg = str(e)
                     print(
-                        "fatal: cannot create default in manifest",
+                        f"fatal: cannot create default in manifest {msg}",
                         file=sys.stderr,
                     )
                     return False
