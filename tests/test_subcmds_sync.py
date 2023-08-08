@@ -175,11 +175,73 @@ class LocalSyncState(unittest.TestCase):
             os.listdir(self.repodir), [".repo_localsyncstate.json"]
         )
 
+    def test_partial_sync(self):
+        """Partial sync state is detected."""
+        with open(self.state._path, "w") as f:
+            f.write(
+                """
+            {
+              "projA": {
+                "last_fetch": 5,
+                "last_checkout": 5
+              },
+              "projB": {
+                "last_fetch": 5,
+                "last_checkout": 5
+              }
+            }
+            """
+            )
+
+        # Initialize state to read from the new file.
+        self.state = self._new_state()
+        projA = mock.MagicMock(relpath="projA")
+        projB = mock.MagicMock(relpath="projB")
+        self.assertEqual(self.state.IsPartiallySynced(), False)
+
+        self.state.SetFetchTime(projB)
+        self.state.SetCheckoutTime(projB)
+        self.assertEqual(self.state.IsPartiallySynced(), True)
+
     def test_nonexistent_project(self):
         """Unsaved projects don't have data."""
         p = mock.MagicMock(relpath="projC")
         self.assertEqual(self.state.GetFetchTime(p), None)
         self.assertEqual(self.state.GetCheckoutTime(p), None)
+
+    def test_prune_removed_projects(self):
+        """Removed projects are pruned."""
+        with open(self.state._path, "w") as f:
+            f.write(
+                """
+            {
+              "projA": {
+                "last_fetch": 5
+              },
+              "projB": {
+                "last_fetch": 7
+              }
+            }
+            """
+            )
+
+        def mock_exists(path):
+            if "projA" in path:
+                return False
+            return True
+
+        projA = mock.MagicMock(relpath="projA")
+        projB = mock.MagicMock(relpath="projB")
+        self.state = self._new_state()
+        self.assertEqual(self.state.GetFetchTime(projA), 5)
+        self.assertEqual(self.state.GetFetchTime(projB), 7)
+        with mock.patch("os.path.exists", side_effect=mock_exists):
+            self.state.PruneRemovedProjects()
+        self.assertIsNone(self.state.GetFetchTime(projA))
+
+        self.state = self._new_state()
+        self.assertIsNone(self.state.GetFetchTime(projA))
+        self.assertEqual(self.state.GetFetchTime(projB), 7)
 
 
 class GetPreciousObjectsState(unittest.TestCase):
