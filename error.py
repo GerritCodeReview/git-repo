@@ -56,6 +56,10 @@ class RepoUnhandledExceptionError(RepoExitError):
         self.error = error
 
 
+class SilentRepoExitError(RepoExitError):
+    """RepoExitError that should no include CLI logging of issue/issues."""
+
+
 class ManifestParseError(RepoExitError):
     """Failed to parse the manifest file."""
 
@@ -123,6 +127,10 @@ class DownloadError(RepoExitError):
 
     def __str__(self):
         return self.reason
+
+
+class InvalidArgumentsError(RepoExitError):
+    """Invalid command Arguments."""
 
 
 class SyncError(RepoExitError):
