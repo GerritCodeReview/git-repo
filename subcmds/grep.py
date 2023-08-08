@@ -17,8 +17,10 @@ import sys
 
 from color import Coloring
 from command import DEFAULT_LOCAL_JOBS, PagedCommand
-from error import GitError
+from error import GitError, InvalidArgumentsError, SilentRepoExitError
 from git_command import GitCommand
+from typing import NamedTuple
+from project import Project
 
 
 class GrepColoring(Coloring):
@@ -26,6 +28,20 @@ class GrepColoring(Coloring):
         Coloring.__init__(self, config, "grep")
         self.project = self.printer("project", attr="bold")
         self.fail = self.printer("fail", fg="red")
+
+
+class ExecuteOneResult(NamedTuple):
+    """Result from an execute instance."""
+
+    project: Project
+    rc: int
+    stdout: str
+    stderr: str
+    error: GitError
+
+
+class GrepCommandError(SilentRepoExitError):
+    """Grep command failure. Since Grep output already """
 
 
 class Grep(PagedCommand):
@@ -246,11 +262,18 @@ contain a line that matches both expressions:
                 bare=False,
                 capture_stdout=True,
                 capture_stderr=True,
+                verify_command=True,
             )
         except GitError as e:
-            return (project, -1, None, str(e))
+            return ExecuteOneResult(project, -1, None, str(e), e)
 
-        return (project, p.Wait(), p.stdout, p.stderr)
+        try:
+            error = None
+            rc = p.Wait()
+        except GitError as e:
+            rc = 1
+            error = e
+        return ExecuteOneResult(project, rc, p.stdout, p.stderr, error)
 
     @staticmethod
     def _ProcessResults(full_name, have_rev, opt, _pool, out, results):
@@ -258,31 +281,40 @@ contain a line that matches both expressions:
         bad_rev = False
         have_match = False
         _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
+        errors = []
 
-        for project, rc, stdout, stderr in results:
-            if rc < 0:
+        for result in results:
+            if result.rc < 0:
                 git_failed = True
-                out.project("--- project %s ---" % _RelPath(project))
+                out.project("--- project %s ---" % _RelPath(result.project))
                 out.nl()
-                out.fail("%s", stderr)
+                out.fail("%s", result.stderr)
                 out.nl()
+                errors.append(result.error)
                 continue
 
-            if rc:
+            if result.rc:
                 # no results
-                if stderr:
-                    if have_rev and "fatal: ambiguous argument" in stderr:
+                if result.stderr:
+                    if (
+                        have_rev
+                        and "fatal: ambiguous argument" in result.stderr
+                    ):
                         bad_rev = True
                     else:
-                        out.project("--- project %s ---" % _RelPath(project))
+                        out.project(
+                            "--- project %s ---" % _RelPath(result.project)
+                        )
                         out.nl()
-                        out.fail("%s", stderr.strip())
+                        out.fail("%s", result.stderr.strip())
                         out.nl()
+                    if result.error is not None:
+                        errors.append(result.error)
                 continue
             have_match = True
 
             # We cut the last element, to avoid a blank line.
-            r = stdout.split("\n")
+            r = result.stdout.split("\n")
             r = r[0:-1]
 
             if have_rev and full_name:
@@ -290,13 +322,13 @@ contain a line that matches both expressions:
                     rev, line = line.split(":", 1)
                     out.write("%s", rev)
                     out.write(":")
-                    out.project(_RelPath(project))
+                    out.project(_RelPath(result.project))
                     out.write("/")
                     out.write("%s", line)
                     out.nl()
             elif full_name:
                 for line in r:
-                    out.project(_RelPath(project))
+                    out.project(_RelPath(result.project))
                     out.write("/")
                     out.write("%s", line)
                     out.nl()
@@ -304,7 +336,7 @@ contain a line that matches both expressions:
                 for line in r:
                     print(line)
 
-        return (git_failed, bad_rev, have_match)
+        return (git_failed, bad_rev, have_match, errors)
 
     def Execute(self, opt, args):
         out = GrepColoring(self.manifest.manifestProject.config)
@@ -333,16 +365,14 @@ contain a line that matches both expressions:
         have_rev = False
         if opt.revision:
             if "--cached" in cmd_argv:
-                print(
-                    "fatal: cannot combine --cached and --revision",
-                    file=sys.stderr,
-                )
-                sys.exit(1)
+                msg = "fatal: cannot combine --cached and --revision"
+                print(msg, file=sys.stderr)
+                raise InvalidArgumentsError(msg)
             have_rev = True
             cmd_argv.extend(opt.revision)
         cmd_argv.append("--")
 
-        git_failed, bad_rev, have_match = self.ExecuteInParallel(
+        git_failed, bad_rev, have_match, errors = self.ExecuteInParallel(
             opt.jobs,
             functools.partial(self._ExecuteOne, cmd_argv),
             projects,
@@ -354,12 +384,12 @@ contain a line that matches both expressions:
         )
 
         if git_failed:
-            sys.exit(1)
+            raise GrepCommandError(
+                "error: git failures", aggregate_errors=errors
+            )
         elif have_match:
             sys.exit(0)
         elif have_rev and bad_rev:
             for r in opt.revision:
                 print("error: can't search revision %s" % r, file=sys.stderr)
-            sys.exit(1)
-        else:
-            sys.exit(1)
+        raise GrepCommandError(aggregate_errors=errors)

@@ -57,6 +57,7 @@ from error import RepoChangedException
 from error import RepoExitError
 from error import RepoUnhandledExceptionError
 from error import RepoError
+from error import SilentRepoExitError
 import gitc_utils
 from manifest_xml import GitcClient, RepoClient
 from pager import RunPager, TerminatePager
@@ -872,16 +873,18 @@ def _Main(argv):
 
         result = repo._Run(name, gopts, argv) or 0
     except RepoExitError as e:
-        exception_name = type(e).__name__
+        if not isinstance(e, SilentRepoExitError):
+            exception_name = type(e).__name__
+            result = e.exit_code
+            print("fatal: %s" % e, file=sys.stderr)
+            if e.aggregate_errors:
+                print(f"{exception_name} Aggregate Errors")
+                for err in e.aggregate_errors[:MAX_PRINT_ERRORS]:
+                    print(err)
+            if len(e.aggregate_errors) > MAX_PRINT_ERRORS:
+                diff = len(e.aggregate_errors) - MAX_PRINT_ERRORS
+                print(f"+{diff} additional errors ...")
         result = e.exit_code
-        print("fatal: %s" % e, file=sys.stderr)
-        if e.aggregate_errors:
-            print(f"{exception_name} Aggregate Errors")
-            for err in e.aggregate_errors[:MAX_PRINT_ERRORS]:
-                print(err)
-        if len(e.aggregate_errors) > MAX_PRINT_ERRORS:
-            diff = len(e.aggregate_errors) - MAX_PRINT_ERRORS
-            print(f"+{diff} additional errors ...")
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
         result = KEYBOARD_INTERRUPT_EXIT

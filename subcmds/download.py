@@ -16,9 +16,13 @@ import re
 import sys
 
 from command import Command
-from error import GitError, NoSuchProjectError
+from error import GitError, NoSuchProjectError, RepoExitError
 
 CHANGE_RE = re.compile(r"^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$")
+
+
+class DownloadCommandError(RepoExitError):
+    """Error raised when download command fails."""
 
 
 class Download(Command):
@@ -137,15 +141,16 @@ If no project is specified try to use current directory as a project.
                 )
 
     def Execute(self, opt, args):
+        try:
+            self._ExecuteHelper(opt, args)
+        except Exception as e:
+            if isinstance(e, RepoExitError):
+                raise e
+            raise DownloadCommandError(aggregate_errors=[e])
+
+    def _ExecuteHelper(self, opt, args):
         for project, change_id, ps_id in self._ParseChangeIds(opt, args):
             dl = project.DownloadPatchSet(change_id, ps_id)
-            if not dl:
-                print(
-                    "[%s] change %d/%d not found"
-                    % (project.name, change_id, ps_id),
-                    file=sys.stderr,
-                )
-                sys.exit(1)
 
             if not opt.revert and not dl.commits:
                 print(
@@ -201,4 +206,4 @@ If no project is specified try to use current directory as a project.
                     % (project.name, mode, dl.commit),
                     file=sys.stderr,
                 )
-                sys.exit(1)
+                raise

@@ -26,6 +26,11 @@ from command import (
 )
 import gitc_utils
 from wrapper import Wrapper
+from error import RepoExitError
+
+
+class InvalidHelpCommand(RepoExitError):
+    """Invalid command passed into help."""
 
 
 class Help(PagedCommand, MirrorSafeCommand):
@@ -202,7 +207,7 @@ Displays detailed usage information about a command.
                 print(
                     "repo: '%s' is not a repo command." % name, file=sys.stderr
                 )
-                sys.exit(1)
+                raise InvalidHelpCommand(name)
 
             self._PrintCommandHelp(cmd)
 
