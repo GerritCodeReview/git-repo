@@ -1866,6 +1866,14 @@ later is required to fix a server side protocol bug.
             mp.config.GetSyncAnalysisStateData(), "current_sync_state"
         )
 
+        self._local_sync_state.PruneRemovedProjects()
+        if self._local_sync_state.IsPartiallySynced():
+            print(
+                "warning: Partial syncs are not supported. For the best "
+                "experience, sync the entire tree.",
+                file=sys.stderr,
+            )
+
         if not opt.quiet:
             print("repo sync has finished successfully.")
 
@@ -1975,7 +1983,10 @@ class _LocalSyncState(object):
     _LAST_CHECKOUT = "last_checkout"
 
     def __init__(self, manifest):
-        self._path = os.path.join(manifest.repodir, ".repo_localsyncstate.json")
+        self._manifest = manifest
+        self._path = os.path.join(
+            self._manifest.repodir, ".repo_localsyncstate.json"
+        )
         self._time = time.time()
         self._state = None
         self._Load()
@@ -2022,6 +2033,34 @@ class _LocalSyncState(object):
                 json.dump(self._state, f, indent=2)
         except (IOError, TypeError):
             platform_utils.remove(self._path, missing_ok=True)
+
+    def PruneRemovedProjects(self):
+        """Remove entries don't exist on disk and save."""
+        if not self._state:
+            return
+        delete = set()
+        for path in self._state:
+            gitdir = os.path.join(self._manifest.topdir, path, ".git")
+            if not os.path.exists(gitdir):
+                delete.add(path)
+        if not delete:
+            return
+        for path in delete:
+            del self._state[path]
+        self.Save()
+
+    def IsPartiallySynced(self):
+        """Return whether a partial sync state is detected."""
+        self._Load()
+        prev_checkout_t = None
+        for data in self._state.values():
+            checkout_t = data.get(self._LAST_CHECKOUT)
+            if not checkout_t:
+                return True
+            prev_checkout_t = prev_checkout_t or checkout_t
+            if prev_checkout_t != checkout_t:
+                return True
+        return False
 
 
 # This is a replacement for xmlrpc.client.Transport using urllib2
