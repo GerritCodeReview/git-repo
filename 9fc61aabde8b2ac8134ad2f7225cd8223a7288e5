@@ -16,6 +16,23 @@
       "message": "Any concerns from Android perspective?",
       "revId": "9fc61aabde8b2ac8134ad2f7225cd8223a7288e5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "758e84df_b8df9fa5",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2037,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-08T20:08:10Z",
+      "side": 1,
+      "message": "please add docstrings to all funcs, even just a one-liner",
+      "revId": "9fc61aabde8b2ac8134ad2f7225cd8223a7288e5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
