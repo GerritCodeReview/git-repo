@@ -34,6 +34,24 @@
       "parentUuid": "7f8f6132_61d1af1a",
       "revId": "b05f6eef08908b9979e0d8fd186d4b6560cadd9b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dc88f3a_ad60c021",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-10T19:21:50Z",
+      "side": 1,
+      "message": "Just updated w/ comments explaining why this is different",
+      "parentUuid": "ee145bb4_69e4fa86",
+      "revId": "b05f6eef08908b9979e0d8fd186d4b6560cadd9b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
