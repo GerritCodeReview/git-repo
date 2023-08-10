@@ -16,6 +16,24 @@
       "message": "How is result different from `not error`? Can we use computed @property here?",
       "revId": "b05f6eef08908b9979e0d8fd186d4b6560cadd9b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee145bb4_69e4fa86",
+        "filename": "subcmds/checkout.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-10T19:04:46Z",
+      "side": 1,
+      "message": "So \"result\" captures whether the branch exists. I\u0027ll update project.py `CheckoutBranch` and the name of ExecuteOneResult so that things are less confusing",
+      "parentUuid": "7f8f6132_61d1af1a",
+      "revId": "b05f6eef08908b9979e0d8fd186d4b6560cadd9b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
