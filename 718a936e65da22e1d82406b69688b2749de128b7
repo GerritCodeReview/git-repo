@@ -16,6 +16,24 @@
       "message": "delete this too ?\n\ndelete this entire module actually ?",
       "revId": "718a936e65da22e1d82406b69688b2749de128b7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bd69ff4_38338a59",
+        "filename": "gitc_utils.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-10T17:15:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "22ed5a4d_27b04b66",
+      "revId": "718a936e65da22e1d82406b69688b2749de128b7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
