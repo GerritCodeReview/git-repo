@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91a521f9_c7882be8",
+        "filename": "main.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-11T19:15:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fbbe498_6fdecab2",
+      "revId": "bc9c131c803197439f9fa5fd899d7770dba7b8ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5578ba5e_b72bb503",
@@ -31,6 +49,30 @@
       "writtenOn": "2023-08-11T15:27:53Z",
       "side": 1,
       "message": "```suggestion\n    sys.exit(\u0027repo: fatal: GITC not supported.\u0027)\n```",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 15
+      },
+      "revId": "bc9c131c803197439f9fa5fd899d7770dba7b8ae",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b5138a8_434a804c",
+        "filename": "repo",
+        "patchSetId": 7
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-11T19:15:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5578ba5e_b72bb503",
       "range": {
         "startLine": 276,
         "startChar": 0,
