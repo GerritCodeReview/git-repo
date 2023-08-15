@@ -88,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac0588bf_7b8b2db7",
+        "filename": "subcmds/start.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-15T18:58:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d64212b9_f7a9a008",
+      "revId": "1c98cca09c4e2483f5c19f2df9a691f0fd4e56aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a8be511_4154b4c5",
@@ -101,6 +119,24 @@
       "writtenOn": "2023-08-11T19:51:15Z",
       "side": 1,
       "message": "all funcs should have a docstring, even if only a one-liner",
+      "revId": "1c98cca09c4e2483f5c19f2df9a691f0fd4e56aa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4a679d4_e7e85f1c",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-15T18:58:46Z",
+      "side": 1,
+      "message": "Test no longer exists since gitc_manifest is no longer",
+      "parentUuid": "7a8be511_4154b4c5",
       "revId": "1c98cca09c4e2483f5c19f2df9a691f0fd4e56aa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
