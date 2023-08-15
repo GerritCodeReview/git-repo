@@ -489,7 +489,8 @@ class SuperprojectTestCase(unittest.TestCase):
 
                     self.assertTrue(self._superproject._Fetch())
                     self.assertEqual(
-                        mock_git_command.call_args.args,
+                        # TODO: Once we require Python 3.8+, use 'mock_git_command.call_args.args'.
+                        mock_git_command.call_args[0],
                         (
                             None,
                             [
@@ -509,7 +510,8 @@ class SuperprojectTestCase(unittest.TestCase):
                     # If branch for revision exists, set as --negotiation-tip.
                     self.assertTrue(self._superproject._Fetch())
                     self.assertEqual(
-                        mock_git_command.call_args.args,
+                        # TODO: Once we require Python 3.8+, use 'mock_git_command.call_args.args'.
+                        mock_git_command.call_args[0],
                         (
                             None,
                             [
