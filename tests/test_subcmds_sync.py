@@ -116,15 +116,19 @@ class LocalSyncState(unittest.TestCase):
 
     def setUp(self):
         """Common setup."""
-        self.repodir = tempfile.mkdtemp(".repo")
+        self.topdir = tempfile.mkdtemp("LocalSyncState")
+        self.repodir = os.path.join(self.topdir, ".repo")
+        os.makedirs(self.repodir)
+
         self.manifest = mock.MagicMock(
+            topdir=self.topdir,
             repodir=self.repodir,
         )
         self.state = self._new_state()
 
     def tearDown(self):
         """Common teardown."""
-        shutil.rmtree(self.repodir)
+        shutil.rmtree(self.topdir)
 
     def _new_state(self):
         with mock.patch("time.time", return_value=self._TIME):
