@@ -42,8 +42,11 @@ For example, if you want to change the manifest branch, you can simply run
     change the git URL/branch that this tracks, re-run `repo init` with the new
     settings.
 
-*   `.repo_fetchtimes.json`: Used by `repo sync` to record stats when syncing
-    the various projects.
+*   `.repo_fetchtimes.json`: Used by `repo sync` to record fetch times when
+    syncing the various projects.
+
+*   `.repo_localsyncstate.json`: Used by `repo sync` to detect and warn on
+    on partial tree syncs (which are unsupported).
 
 ### Manifests
 
