@@ -16,6 +16,24 @@
       "message": "we should rephrase this to clarify that, for repo itself, partial syncs are fine.  it\u0027s for projects who use repo who often want to tell their own users/devs that partial syncs are not supported.",
       "revId": "bf0129a0e26ea23e6f8170bc1b97b4c217597c44",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e9369d_17077b3f",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-08-17T22:21:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11151dd8_28c63039",
+      "revId": "bf0129a0e26ea23e6f8170bc1b97b4c217597c44",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
