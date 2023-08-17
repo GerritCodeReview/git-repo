@@ -21,7 +21,7 @@ from typing import List
 
 from command import DEFAULT_LOCAL_JOBS, InteractiveCommand
 from editor import Editor
-from error import UploadError, RepoExitError
+from error import UploadError, SilentRepoExitError, GitError
 from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
@@ -31,7 +31,7 @@ from project import ReviewableBranch
 _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
 
 
-class UploadExitError(RepoExitError):
+class UploadExitError(SilentRepoExitError):
     """Indicates that there is an upload command error requiring a sys exit."""
 
 
@@ -534,6 +534,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
     def _UploadAndReport(self, opt, todo, original_people):
         have_errors = False
+        aggregate_errors = []
         for branch in todo:
             try:
                 people = copy.deepcopy(original_people)
@@ -660,9 +661,10 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 )
 
                 branch.uploaded = True
-            except UploadError as e:
+            except (UploadError, GitError) as e:
                 self.git_event_log.ErrorEvent(f"upload error: {e}")
                 branch.error = e
+                aggregate_errors.append(e)
                 branch.uploaded = False
                 have_errors = True
 
@@ -701,7 +703,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 )
 
         if have_errors:
-            raise branch.error
+            raise UploadExitError(aggregate_errors=aggregate_errors)
 
     def _GetMergeBranch(self, project, local_branch=None):
         if local_branch is None:
