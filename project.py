@@ -1116,7 +1116,8 @@ class Project(object):
             if not re.match(r"^.+[+-][0-9]+$", label):
                 raise UploadError(
                     f'invalid label syntax "{label}": labels use forms like '
-                    "CodeReview+1 or Verified-1"
+                    "CodeReview+1 or Verified-1",
+                    project=self.name,
                 )
 
         if dest_branch is None:
@@ -1132,7 +1133,7 @@ class Project(object):
 
         url = branch.remote.ReviewUrl(self.UserEmail, validate_certs)
         if url is None:
-            raise UploadError("review not configured")
+            raise UploadError("review not configured", project=self.name)
         cmd = ["push"]
         if dryrun:
             cmd.append("-n")
@@ -1177,8 +1178,9 @@ class Project(object):
             ref_spec = ref_spec + "%" + ",".join(opts)
         cmd.append(ref_spec)
 
-        if GitCommand(self, cmd, bare=True).Wait() != 0:
-            raise UploadError("Upload failed")
+        GitCommand(
+            self, cmd, bare=True, capture_stderr=True, verify_command=True
+        ).Wait()
 
         if not dryrun:
             msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
