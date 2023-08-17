@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eabb690b_8b77894e",
+        "filename": "main.py",
+        "patchSetId": 48
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-17T18:16:04Z",
+      "side": 1,
+      "message": "imports, at least stdlib, should be sorted\n\nwe should prob look into integrating isort with our formatter/tests",
+      "revId": "32b59565b7bd41ec1a121869823557f0b2b022d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
