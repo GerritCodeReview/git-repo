@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bbaed31_068ea138",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-17T19:08:34Z",
+      "side": 1,
+      "message": "This was the cause of b/296316540 - branch is not defined in this scope.",
+      "range": {
+        "startLine": 706,
+        "startChar": 0,
+        "endLine": 706,
+        "endChar": 12
+      },
+      "revId": "c6415e8f4da9b001a62ba25e21336c21e83e8747",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
