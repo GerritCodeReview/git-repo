@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "8cd55e50_1cdf858f",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-18T22:32:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68922bc0_23ea9508",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ad75c840_6a64fedc",
         "filename": "subcmds/upload.py",
         "patchSetId": 7
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a992572_083a7a7a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-18T22:32:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db9a6486_12d7cb6a",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9794f3d9_2cbcdbff",
@@ -65,6 +101,24 @@
       "writtenOn": "2023-08-18T21:29:26Z",
       "side": 1,
       "message": "```suggestion\n# Copyright (C) 2023 The Android Open Source Project\n```",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b43159e_9ac2a3a1",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-18T22:32:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9794f3d9_2cbcdbff",
       "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +140,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae0e34e4_3f7b023b",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-18T22:32:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39aaeab1_0c19e108",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3295086b_58eeb68d",
@@ -99,6 +171,24 @@
       "writtenOn": "2023-08-18T21:29:26Z",
       "side": 1,
       "message": "this is a stdlib import, not repo, so this belongs with the block above",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e322987a_49601129",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-18T22:32:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3295086b_58eeb68d",
       "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -120,6 +210,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "574e3898_2b342723",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-18T22:32:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71eb803e_49a7686b",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab33ebc7_488f87b3",
@@ -133,6 +241,30 @@
       "writtenOn": "2023-08-18T21:29:26Z",
       "side": 1,
       "message": "you don\u0027t tear these down anywhere which means they bleeds into other tests.  you need a `tearDown` func to stop them.\n\nor use context managers.  or use decorators on the tests.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 60
+      },
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ac684fe_a2f0a494",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-08-18T22:32:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab33ebc7_488f87b3",
       "range": {
         "startLine": 36,
         "startChar": 0,
