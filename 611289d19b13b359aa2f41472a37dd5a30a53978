@@ -1,0 +1,146 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68922bc0_23ea9508",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "please add docstrings to all funcs, even if it\u0027s just a one-liner",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad75c840_6a64fedc",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "i assume this func is just refactoring the existing contents so don\u0027t really need to review it",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db9a6486_12d7cb6a",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "```suggestion\n    def _UploadAndReport(self, opt, todo, people):\n```\n\npeople is no longer modified in this func, so don\u0027t have to give it a unique name",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9794f3d9_2cbcdbff",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "```suggestion\n# Copyright (C) 2023 The Android Open Source Project\n```",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39aaeab1_0c19e108",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "```suggestion\n\"\"\"Unittests for the subcmds/upload.py module.\"\"\"\n```",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3295086b_58eeb68d",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "this is a stdlib import, not repo, so this belongs with the block above",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71eb803e_49a7686b",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "local exceptions are called Errors.  we pretty much never want to use `Exception` in our own classes.",
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab33ebc7_488f87b3",
+        "filename": "tests/test_subcmds_upload.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-18T21:29:26Z",
+      "side": 1,
+      "message": "you don\u0027t tear these down anywhere which means they bleeds into other tests.  you need a `tearDown` func to stop them.\n\nor use context managers.  or use decorators on the tests.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 39,
+        "endChar": 60
+      },
+      "revId": "611289d19b13b359aa2f41472a37dd5a30a53978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
