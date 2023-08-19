@@ -2212,7 +2212,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         toProjects = manifest.paths
 
         fromKeys = sorted(fromProjects.keys())
-        toKeys = sorted(toProjects.keys())
+        toKeys = set(toProjects.keys())
 
         diff = {
             "added": [],
@@ -2223,13 +2223,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         }
 
         for proj in fromKeys:
+            fromProj = fromProjects[proj]
             if proj not in toKeys:
-                diff["removed"].append(fromProjects[proj])
-            elif not fromProjects[proj].Exists:
+                diff["removed"].append(fromProj)
+            elif not fromProj.Exists:
                 diff["missing"].append(toProjects[proj])
                 toKeys.remove(proj)
             else:
-                fromProj = fromProjects[proj]
                 toProj = toProjects[proj]
                 try:
                     fromRevId = fromProj.GetCommitRevisionId()
@@ -2241,7 +2241,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         diff["changed"].append((fromProj, toProj))
                 toKeys.remove(proj)
 
-        for proj in toKeys:
+        for proj in sorted(toKeys):
             diff["added"].append(toProjects[proj])
 
         return diff
