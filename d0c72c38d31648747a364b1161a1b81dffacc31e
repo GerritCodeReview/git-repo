@@ -16,6 +16,24 @@
       "message": "please stick to `tag:` style, not `[tag]`\n\nalso, we scope based on the subcommand, so this would be `sync: ...`",
       "revId": "d0c72c38d31648747a364b1161a1b81dffacc31e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfe32dc2_357c9323",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-21T23:41:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f8a7b91b_2ca94664",
+      "revId": "d0c72c38d31648747a364b1161a1b81dffacc31e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
