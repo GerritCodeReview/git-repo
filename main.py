@@ -21,6 +21,7 @@ which takes care of execing this entry point.
 """
 
 import getpass
+import json
 import netrc
 import optparse
 import os
@@ -30,7 +31,6 @@ import sys
 import textwrap
 import time
 import urllib.request
-import json
 
 try:
     import kerberos
