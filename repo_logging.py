@@ -44,10 +44,6 @@ class ConfigMock:
 class RepoLogger(logging.Logger):
     """Repo Logging Module."""
 
-    # Aggregates error-level logs. This is used to generate an error summary
-    # section at the end of a command execution.
-    errors = multiprocessing.Manager().list()
-
     def __init__(self, name, config=None, **kwargs):
         super().__init__(name, **kwargs)
         self.config = config if config else ConfigMock()
@@ -56,8 +52,6 @@ class RepoLogger(logging.Logger):
     def error(self, msg, *args, **kwargs):
         """Print and aggregate error-level logs."""
         colored_error = self.colorer.error(msg, *args)
-        RepoLogger.errors.append(colored_error)
-
         super().error(colored_error, **kwargs)
 
     def warning(self, msg, *args, **kwargs):
@@ -67,8 +61,3 @@ class RepoLogger(logging.Logger):
 
     def log_aggregated_errors(self):
         """Print all aggregated logs."""
-        super().error(self.colorer.error(SEPARATOR))
-        super().error(
-            self.colorer.error("Repo command failed due to following errors:")
-        )
-        super().error("\n".join(RepoLogger.errors))
