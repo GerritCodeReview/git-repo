@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "914ef8ee_03a3556e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1165287
+      },
+      "writtenOn": "2023-08-21T21:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0c27dbb_1acfe0f8",
+      "revId": "8ae99e19f15904c95d297ab96b0e551fe3f50d18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba076ab4_0da0957a",
@@ -37,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b55b562c_73434919",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1165287
+      },
+      "writtenOn": "2023-08-21T21:13:33Z",
+      "side": 1,
+      "message": "It\u0027s actually negligible but I thought that it would not hurt to use a more relevant data structure with no negative impact on the code complexity.\n\nMore details about potential improvements in https://issues.gerritcodereview.com/issues/295282548 but they need a lot more knowledge about the repo codebase to be done properly.",
+      "parentUuid": "ba076ab4_0da0957a",
+      "revId": "8ae99e19f15904c95d297ab96b0e551fe3f50d18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "360aa1a5_bcb41921",
         "filename": "manifest_xml.py",
         "patchSetId": 1
@@ -48,6 +84,30 @@
       "writtenOn": "2023-08-21T18:15:01Z",
       "side": 1,
       "message": "```suggestion\n        diff[\"added\"].extend(toProjects[x] for x in sorted(toKeys))\n```",
+      "range": {
+        "startLine": 2244,
+        "startChar": 0,
+        "endLine": 2245,
+        "endChar": 50
+      },
+      "revId": "8ae99e19f15904c95d297ab96b0e551fe3f50d18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b265bf47_2205e103",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2245,
+      "author": {
+        "id": 1165287
+      },
+      "writtenOn": "2023-08-21T21:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "360aa1a5_bcb41921",
       "range": {
         "startLine": 2244,
         "startChar": 0,
