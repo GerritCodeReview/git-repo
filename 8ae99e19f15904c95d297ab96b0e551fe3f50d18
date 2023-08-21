@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f0c27dbb_1acfe0f8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-21T18:15:44Z",
+      "side": 1,
+      "message": "please prefix/scope the commit message so logs are easier to scan\n\n`manifest_xml: use a set in projectsDiff to speed things up`",
+      "revId": "8ae99e19f15904c95d297ab96b0e551fe3f50d18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba076ab4_0da0957a",
         "filename": "/COMMIT_MSG",
         "patchSetId": 1
