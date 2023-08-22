@@ -268,6 +268,7 @@ class ReviewableBranch(object):
         validate_certs=True,
         push_options=None,
     ):
+        raise UploadError('bleh')
         self.project.UploadForReview(
             branch=self.name,
             people=people,
