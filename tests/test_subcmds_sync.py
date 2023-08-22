@@ -119,6 +119,7 @@ class LocalSyncState(unittest.TestCase):
         self.repodir = tempfile.mkdtemp(".repo")
         self.manifest = mock.MagicMock(
             repodir=self.repodir,
+            repoProject=mock.MagicMock(relpath=".repo/repo"),
         )
         self.state = self._new_state()
 
@@ -126,8 +127,8 @@ class LocalSyncState(unittest.TestCase):
         """Common teardown."""
         shutil.rmtree(self.repodir)
 
-    def _new_state(self):
-        with mock.patch("time.time", return_value=self._TIME):
+    def _new_state(self, time=_TIME):
+        with mock.patch("time.time", return_value=time):
             return sync._LocalSyncState(self.manifest)
 
     def test_set(self):
@@ -201,6 +202,23 @@ class LocalSyncState(unittest.TestCase):
         self.state.SetFetchTime(projB)
         self.state.SetCheckoutTime(projB)
         self.assertEqual(self.state.IsPartiallySynced(), True)
+
+    def test_ignore_repo_project(self):
+        """Sync data for repo project is ignored when checking partial sync."""
+        p = mock.MagicMock(relpath="projA")
+        self.state.SetFetchTime(p)
+        self.state.SetCheckoutTime(p)
+        self.state.SetFetchTime(self.manifest.repoProject)
+        self.state.Save()
+        self.assertEqual(self.state.IsPartiallySynced(), False)
+
+        self.state = self._new_state(self._TIME + 1)
+        self.state.SetFetchTime(self.manifest.repoProject)
+        self.assertEqual(
+            self.state.GetFetchTime(self.manifest.repoProject), self._TIME + 1
+        )
+        self.assertEqual(self.state.GetFetchTime(p), self._TIME)
+        self.assertEqual(self.state.IsPartiallySynced(), False)
 
     def test_nonexistent_project(self):
         """Unsaved projects don't have data."""
