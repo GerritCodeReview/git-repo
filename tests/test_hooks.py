@@ -14,8 +14,9 @@
 
 """Unittests for the hooks.py module."""
 
-import hooks
 import unittest
+
+import hooks
 
 
 class RepoHookShebang(unittest.TestCase):

@@ -22,4 +22,5 @@ import sys
 
 import update_manpages
 
+
 sys.exit(update_manpages.main(sys.argv[1:]))

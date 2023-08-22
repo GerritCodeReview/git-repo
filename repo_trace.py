@@ -21,12 +21,13 @@ To also include trace outputs in stderr do `repo --trace_to_stderr ...`
 """
 
 import contextlib
-import sys
 import os
-import time
+import sys
 import tempfile
+import time
 
 import platform_utils
+
 
 # Env var to implicitly turn on tracing.
 REPO_TRACE = "REPO_TRACE"

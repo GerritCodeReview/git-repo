@@ -18,6 +18,7 @@ import subprocess
 import sys
 from urllib.parse import urlparse
 from urllib.request import urlopen
+
 from error import RepoExitError
 
 

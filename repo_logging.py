@@ -19,6 +19,7 @@ import multiprocessing
 
 from color import Coloring
 
+
 SEPARATOR = "=" * 80
 
 

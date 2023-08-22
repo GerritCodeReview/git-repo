@@ -26,34 +26,38 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import NamedTuple, List
+from typing import List, NamedTuple
 import urllib.parse
 
 from color import Coloring
+from error import DownloadError
+from error import GitError
+from error import ManifestInvalidPathError
+from error import ManifestInvalidRevisionError
+from error import ManifestParseError
+from error import NoManifestException
+from error import RepoError
+from error import UploadError
 import fetch
-from git_command import GitCommand, git_require
-from git_config import (
-    GitConfig,
-    IsId,
-    GetSchemeFromUrl,
-    GetUrlCookieFile,
-    ID_RE,
-)
+from git_command import git_require
+from git_command import GitCommand
+from git_config import GetSchemeFromUrl
+from git_config import GetUrlCookieFile
+from git_config import GitConfig
+from git_config import ID_RE
+from git_config import IsId
+from git_refs import GitRefs
+from git_refs import HEAD
+from git_refs import R_HEADS
+from git_refs import R_M
+from git_refs import R_PUB
+from git_refs import R_TAGS
+from git_refs import R_WORKTREE_M
 import git_superproject
 from git_trace2_event_log import EventLog
-from error import (
-    GitError,
-    UploadError,
-    DownloadError,
-    RepoError,
-)
-from error import ManifestInvalidRevisionError, ManifestInvalidPathError
-from error import NoManifestException, ManifestParseError
 import platform_utils
 import progress
 from repo_trace import Trace
-
-from git_refs import GitRefs, HEAD, R_HEADS, R_TAGS, R_PUB, R_M, R_WORKTREE_M
 
 
 class SyncNetworkHalfResult(NamedTuple):

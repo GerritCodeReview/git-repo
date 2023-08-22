@@ -16,7 +16,10 @@ import re
 import sys
 
 from command import Command
-from error import GitError, NoSuchProjectError, RepoExitError
+from error import GitError
+from error import NoSuchProjectError
+from error import RepoExitError
+
 
 CHANGE_RE = re.compile(r"^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$")
 

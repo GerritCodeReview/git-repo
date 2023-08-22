@@ -16,20 +16,19 @@ import errno
 import functools
 import io
 import multiprocessing
-import re
 import os
+import re
 import signal
-import sys
 import subprocess
+import sys
 
 from color import Coloring
-from command import (
-    DEFAULT_LOCAL_JOBS,
-    Command,
-    MirrorSafeCommand,
-    WORKER_BATCH_SIZE,
-)
+from command import Command
+from command import DEFAULT_LOCAL_JOBS
+from command import MirrorSafeCommand
+from command import WORKER_BATCH_SIZE
 from error import ManifestInvalidRevisionError
+
 
 _CAN_COLOR = [
     "branch",

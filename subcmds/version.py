@@ -15,8 +15,11 @@
 import platform
 import sys
 
-from command import Command, MirrorSafeCommand
-from git_command import git, RepoSourceVersion, user_agent
+from command import Command
+from command import MirrorSafeCommand
+from git_command import git
+from git_command import RepoSourceVersion
+from git_command import user_agent
 from git_refs import HEAD
 from wrapper import Wrapper
 

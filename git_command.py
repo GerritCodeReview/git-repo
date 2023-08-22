@@ -14,16 +14,19 @@
 
 import functools
 import os
-import sys
 import subprocess
+import sys
 from typing import Any, Optional
 
 from error import GitError
 from error import RepoExitError
 from git_refs import HEAD
 import platform_utils
-from repo_trace import REPO_TRACE, IsTrace, Trace
+from repo_trace import IsTrace
+from repo_trace import REPO_TRACE
+from repo_trace import Trace
 from wrapper import Wrapper
+
 
 GIT = "git"
 # NB: These do not need to be kept in sync with the repo launcher script.

@@ -12,12 +12,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from ctypes import addressof
+from ctypes import byref
+from ctypes import c_buffer
+from ctypes import c_ubyte
+from ctypes import FormatError
+from ctypes import get_last_error
+from ctypes import Structure
+from ctypes import Union
+from ctypes import WinDLL
+from ctypes import WinError
+from ctypes.wintypes import BOOL
+from ctypes.wintypes import BOOLEAN
+from ctypes.wintypes import DWORD
+from ctypes.wintypes import HANDLE
+from ctypes.wintypes import LPCWSTR
+from ctypes.wintypes import LPDWORD
+from ctypes.wintypes import LPVOID
+from ctypes.wintypes import ULONG
+from ctypes.wintypes import USHORT
+from ctypes.wintypes import WCHAR
 import errno
 
-from ctypes import WinDLL, get_last_error, FormatError, WinError, addressof
-from ctypes import c_buffer, c_ubyte, Structure, Union, byref
-from ctypes.wintypes import BOOL, BOOLEAN, LPCWSTR, DWORD, HANDLE
-from ctypes.wintypes import WCHAR, USHORT, LPVOID, ULONG, LPDWORD
 
 kernel32 = WinDLL("kernel32", use_last_error=True)
 

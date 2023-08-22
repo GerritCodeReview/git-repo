@@ -18,6 +18,7 @@
 import os
 import subprocess
 import sys
+
 import pytest
 
 
@@ -38,12 +39,20 @@ def run_flake8():
     ).returncode
 
 
+def run_isort():
+    """Returns the exit code from isort."""
+    return subprocess.run(
+        [sys.executable, "-m", "isort", "--check", ROOT_DIR], check=False
+    ).returncode
+
+
 def main(argv):
     """The main entry."""
     checks = (
         lambda: pytest.main(argv),
         run_black,
         run_flake8,
+        run_isort,
     )
     return 0 if all(not c() for c in checks) else 1
 

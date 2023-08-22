@@ -17,6 +17,7 @@ import sys
 
 import pager
 
+
 COLORS = {
     None: -1,
     "normal": -1,

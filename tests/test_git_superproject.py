@@ -21,10 +21,11 @@ import tempfile
 import unittest
 from unittest import mock
 
+from test_manifest_xml import sort_attributes
+
 import git_superproject
 import git_trace2_event_log
 import manifest_xml
-from test_manifest_xml import sort_attributes
 
 
 class SuperprojectTestCase(unittest.TestCase):

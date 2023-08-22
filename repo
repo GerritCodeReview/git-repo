@@ -254,11 +254,13 @@ import re
 import shutil
 import stat
 
+
 if sys.version_info[0] == 3:
-  import urllib.request
   import urllib.error
+  import urllib.request
 else:
   import imp
+
   import urllib2
   urllib = imp.new_module('urllib')
   urllib.request = urllib2

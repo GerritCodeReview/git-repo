@@ -14,10 +14,11 @@
 
 """Unittests for the git_command.py module."""
 
-import re
 import os
+import re
 import subprocess
 import unittest
+
 
 try:
     from unittest import mock
