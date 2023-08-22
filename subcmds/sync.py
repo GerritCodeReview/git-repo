@@ -2007,7 +2007,11 @@ class _LocalSyncState(object):
         """Return whether a partial sync state is detected."""
         self._Load()
         prev_checkout_t = None
-        for data in self._state.values():
+        for path, data in self._state.items():
+            if path == self._manifest.repoProject.relpath:
+                # The repo project isn't included in most syncs so we should
+                # ignore it here.
+                continue
             checkout_t = data.get(self._LAST_CHECKOUT)
             if not checkout_t:
                 return True
