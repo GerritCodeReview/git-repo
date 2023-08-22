@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "85d71910_16a7b694",
+        "filename": "repo_logging.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-22T00:32:31Z",
+      "side": 0,
+      "message": "With Jason\u0027s changes, we no longer need to aggregate these errors within the logger.",
+      "revId": "11cb96030ed5a0c322b5262c10a6af1a70486981",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
