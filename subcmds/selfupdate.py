@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from optparse import SUPPRESS_HELP
+import optparse
 import sys
 
 from command import Command, MirrorSafeCommand
@@ -52,7 +52,7 @@ need to be performed by an end-user.
             "--repo-upgraded",
             dest="repo_upgraded",
             action="store_true",
-            help=SUPPRESS_HELP,
+            help=optparse.SUPPRESS_HELP,
         )
 
     def Execute(self, opt, args):

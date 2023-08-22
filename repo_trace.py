@@ -20,11 +20,11 @@ Temporary: Tracing is always on. Set `REPO_TRACE=0` to turn off.
 To also include trace outputs in stderr do `repo --trace_to_stderr ...`
 """
 
+import contextlib
 import sys
 import os
 import time
 import tempfile
-from contextlib import ContextDecorator
 
 import platform_utils
 
@@ -68,7 +68,7 @@ def _SetTraceFile(quiet):
     _TRACE_FILE = _GetTraceFile(quiet)
 
 
-class Trace(ContextDecorator):
+class Trace(contextlib.ContextDecorator):
     """Used to capture and save git traces."""
 
     def _time(self):

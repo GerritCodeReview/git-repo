@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from collections import defaultdict
+import collections
 import functools
 import itertools
 import sys
@@ -88,8 +88,8 @@ It is equivalent to "git branch -D <branchname>".
 
     def Execute(self, opt, args):
         nb = args[0].split()
-        err = defaultdict(list)
-        success = defaultdict(list)
+        err = collections.defaultdict(list)
+        success = collections.defaultdict(list)
         aggregate_errors = []
         all_projects = self.GetProjects(
             args[1:], all_manifests=not opt.this_manifest_only

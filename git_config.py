@@ -15,7 +15,7 @@
 import contextlib
 import datetime
 import errno
-from http.client import HTTPException
+import http.client
 import json
 import os
 import re
@@ -650,7 +650,7 @@ class Remote(object):
                     raise UploadError("%s: %s" % (self.review, str(e)))
                 except urllib.error.URLError as e:
                     raise UploadError("%s: %s" % (self.review, str(e)))
-                except HTTPException as e:
+                except http.client.HTTPException as e:
                     raise UploadError(
                         "%s: %s" % (self.review, e.__class__.__name__)
                     )

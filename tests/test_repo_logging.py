@@ -14,7 +14,7 @@
 
 """Unit test for repo_logging module."""
 import unittest
-from unittest.mock import MagicMock
+from unittest import mock
 
 from repo_logging import RepoLogger
 
@@ -30,7 +30,7 @@ class TestRepoLogger(unittest.TestCase):
             nonlocal result
             result = log.getMessage()
 
-        mock_out = MagicMock()
+        mock_out = mock.MagicMock()
         mock_out.level = 0
         mock_out.handle = mock_handler
         logger.addHandler(mock_out)
@@ -49,7 +49,7 @@ class TestRepoLogger(unittest.TestCase):
             nonlocal result
             result = log.getMessage()
 
-        mock_out = MagicMock()
+        mock_out = mock.MagicMock()
         mock_out.level = 0
         mock_out.handle = mock_handler
         logger.addHandler(mock_out)
@@ -88,7 +88,7 @@ class TestRepoLogger(unittest.TestCase):
             nonlocal result
             result.append(log.getMessage())
 
-        mock_out = MagicMock()
+        mock_out = mock.MagicMock()
         mock_out.level = 0
         mock_out.handle = mock_handler
         logger.addHandler(mock_out)

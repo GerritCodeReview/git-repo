@@ -19,7 +19,7 @@ import io
 import json
 import multiprocessing
 import netrc
-from optparse import SUPPRESS_HELP
+import optparse
 import os
 import socket
 import sys
@@ -481,7 +481,7 @@ later is required to fix a server side protocol bug.
             "--repo-upgraded",
             dest="repo_upgraded",
             action="store_true",
-            help=SUPPRESS_HELP,
+            help=optparse.SUPPRESS_HELP,
         )
 
     def _GetBranch(self, manifest_project):

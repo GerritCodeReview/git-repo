@@ -18,8 +18,8 @@ Most code lives in this module so it can be unittested.
 """
 
 from pathlib import Path
-from functools import partial
 import argparse
+import functools
 import multiprocessing
 import os
 import re
@@ -112,7 +112,9 @@ def main(argv):
 
         # Run all cmd in parallel, and wait for them to finish.
         with multiprocessing.Pool() as pool:
-            pool.map(partial(worker, cwd=tempdir, check=True), cmdlist)
+            pool.map(
+                functools.partial(worker, cwd=tempdir, check=True), cmdlist
+            )
 
     for tmp_path in MANDIR.glob("*.1.tmp"):
         path = tmp_path.parent / tmp_path.stem
