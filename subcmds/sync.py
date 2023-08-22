@@ -1696,7 +1696,7 @@ later is required to fix a server side protocol bug.
         )
 
         self._fetch_times = _FetchTimes(manifest)
-        self._local_sync_state = _LocalSyncState(manifest)
+        self._local_sync_state = LocalSyncState(manifest)
         if not opt.local_only:
             with multiprocessing.Manager() as manager:
                 with ssh.ProxyManager(manager) as ssh_proxy:
@@ -1932,7 +1932,7 @@ class _FetchTimes(object):
             platform_utils.remove(self._path, missing_ok=True)
 
 
-class _LocalSyncState(object):
+class LocalSyncState(object):
     _LAST_FETCH = "last_fetch"
     _LAST_CHECKOUT = "last_checkout"
 
