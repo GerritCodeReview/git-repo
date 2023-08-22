@@ -17,8 +17,9 @@
 import unittest
 from unittest import mock
 
+from error import GitError
+from error import UploadError
 from subcmds import upload
-from error import UploadError, GitError
 
 
 class UnexpectedError(Exception):

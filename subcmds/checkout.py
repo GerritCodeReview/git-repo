@@ -14,12 +14,14 @@
 
 import functools
 import sys
-
 from typing import NamedTuple
-from command import Command, DEFAULT_LOCAL_JOBS
+
+from command import Command
+from command import DEFAULT_LOCAL_JOBS
+from error import GitError
+from error import RepoExitError
 from progress import Progress
 from project import Project
-from error import GitError, RepoExitError
 
 
 class CheckoutBranchResult(NamedTuple):

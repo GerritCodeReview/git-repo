@@ -13,14 +13,14 @@
 # limitations under the License.
 
 import multiprocessing
-import os
 import optparse
+import os
 import re
 
-from event_log import EventLog
-from error import NoSuchProjectError
 from error import InvalidProjectGroupsError
+from error import NoSuchProjectError
 from error import RepoExitError
+from event_log import EventLog
 import progress
 
 

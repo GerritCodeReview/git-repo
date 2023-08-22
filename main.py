@@ -21,6 +21,7 @@ which takes care of execing this entry point.
 """
 
 import getpass
+import json
 import netrc
 import optparse
 import os
@@ -30,7 +31,7 @@ import sys
 import textwrap
 import time
 import urllib.request
-import json
+
 
 try:
     import kerberos
@@ -38,31 +39,34 @@ except ImportError:
     kerberos = None
 
 from color import SetDefaultColoring
-import event_log
-from repo_trace import SetTrace, Trace, SetTraceToStderr
-from git_command import user_agent
-from git_config import RepoConfig
-from git_trace2_event_log import EventLog
 from command import InteractiveCommand
 from command import MirrorSafeCommand
-from subcmds.version import Version
 from editor import Editor
 from error import DownloadError
+from error import GitcUnsupportedError
 from error import InvalidProjectGroupsError
 from error import ManifestInvalidRevisionError
 from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
+from error import RepoError
 from error import RepoExitError
 from error import RepoUnhandledExceptionError
-from error import RepoError
 from error import SilentRepoExitError
-from error import GitcUnsupportedError
+import event_log
+from git_command import user_agent
+from git_config import RepoConfig
+from git_trace2_event_log import EventLog
 from manifest_xml import RepoClient
-from pager import RunPager, TerminatePager
-from wrapper import WrapperPath, Wrapper
-
+from pager import RunPager
+from pager import TerminatePager
+from repo_trace import SetTrace
+from repo_trace import SetTraceToStderr
+from repo_trace import Trace
 from subcmds import all_commands
+from subcmds.version import Version
+from wrapper import Wrapper
+from wrapper import WrapperPath
 
 
 # NB: These do not need to be kept in sync with the repo launcher script.

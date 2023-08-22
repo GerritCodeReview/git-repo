@@ -22,16 +22,18 @@ Examples:
   UpdateProjectsResult = superproject.UpdateProjectsRevisionId(projects)
 """
 
-import hashlib
 import functools
+import hashlib
 import os
 import sys
 import time
 from typing import NamedTuple
 
-from git_command import git_require, GitCommand
+from git_command import git_require
+from git_command import GitCommand
 from git_config import RepoConfig
 from git_refs import GitRefs
+
 
 _SUPERPROJECT_GIT_NAME = "superproject.git"
 _SUPERPROJECT_MANIFEST_NAME = "superproject_override.xml"

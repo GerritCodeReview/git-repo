@@ -17,9 +17,9 @@ import glob
 import io
 import os
 
-from command import DEFAULT_LOCAL_JOBS, PagedCommand
-
 from color import Coloring
+from command import DEFAULT_LOCAL_JOBS
+from command import PagedCommand
 import platform_utils
 
 

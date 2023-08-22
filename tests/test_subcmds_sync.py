@@ -16,16 +16,17 @@
 import os
 import shutil
 import tempfile
-import unittest
 import time
+import unittest
 from unittest import mock
 
 import pytest
 
 import command
-from subcmds import sync
+from error import GitError
+from error import RepoExitError
 from project import SyncNetworkHalfResult
-from error import GitError, RepoExitError
+from subcmds import sync
 
 
 @pytest.mark.parametrize(

@@ -17,16 +17,17 @@
 Most code lives in this module so it can be unittested.
 """
 
-from pathlib import Path
 import argparse
 import functools
 import multiprocessing
 import os
+from pathlib import Path
 import re
 import shutil
 import subprocess
 import sys
 import tempfile
+
 
 TOPDIR = Path(__file__).resolve().parent.parent
 MANDIR = TOPDIR.joinpath("man")

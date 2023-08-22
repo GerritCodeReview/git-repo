@@ -18,26 +18,24 @@ import os
 import platform
 import re
 import sys
-import xml.dom.minidom
 import urllib.parse
+import xml.dom.minidom
 
+from error import ManifestInvalidPathError
+from error import ManifestInvalidRevisionError
+from error import ManifestParseError
 from git_config import GitConfig
-from git_refs import R_HEADS, HEAD
+from git_refs import HEAD
+from git_refs import R_HEADS
 from git_superproject import Superproject
 import platform_utils
-from project import (
-    Annotation,
-    RemoteSpec,
-    Project,
-    RepoProject,
-    ManifestProject,
-)
-from error import (
-    ManifestParseError,
-    ManifestInvalidPathError,
-    ManifestInvalidRevisionError,
-)
+from project import Annotation
+from project import ManifestProject
+from project import Project
+from project import RemoteSpec
+from project import RepoProject
 from wrapper import Wrapper
+
 
 MANIFEST_FILE_NAME = "manifest.xml"
 LOCAL_MANIFEST_NAME = "local_manifest.xml"

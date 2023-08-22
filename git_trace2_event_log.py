@@ -37,7 +37,8 @@ import sys
 import tempfile
 import threading
 
-from git_command import GitCommand, RepoSourceVersion
+from git_command import GitCommand
+from git_command import RepoSourceVersion
 
 
 class EventLog(object):

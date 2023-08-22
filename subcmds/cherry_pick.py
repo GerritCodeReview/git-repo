@@ -14,9 +14,11 @@
 
 import re
 import sys
+
 from command import Command
-from git_command import GitCommand
 from error import GitError
+from git_command import GitCommand
+
 
 CHANGE_ID_RE = re.compile(r"^\s*Change-Id: I([0-9a-f]{40})\s*$")
 

@@ -16,11 +16,15 @@ import os
 import sys
 
 from color import Coloring
-from command import InteractiveCommand, MirrorSafeCommand
-from git_command import git_require, MIN_GIT_VERSION_SOFT, MIN_GIT_VERSION_HARD
-from wrapper import Wrapper
-from error import UpdateManifestError
+from command import InteractiveCommand
+from command import MirrorSafeCommand
 from error import RepoUnhandledExceptionError
+from error import UpdateManifestError
+from git_command import git_require
+from git_command import MIN_GIT_VERSION_HARD
+from git_command import MIN_GIT_VERSION_SOFT
+from wrapper import Wrapper
+
 
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 

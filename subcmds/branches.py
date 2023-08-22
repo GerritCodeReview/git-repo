@@ -16,7 +16,8 @@ import itertools
 import sys
 
 from color import Coloring
-from command import Command, DEFAULT_LOCAL_JOBS
+from command import Command
+from command import DEFAULT_LOCAL_JOBS
 
 
 class BranchColoring(Coloring):

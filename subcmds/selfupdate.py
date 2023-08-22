@@ -15,10 +15,11 @@
 import optparse
 import sys
 
-from command import Command, MirrorSafeCommand
-from subcmds.sync import _PostRepoUpgrade
-from subcmds.sync import _PostRepoFetch
+from command import Command
+from command import MirrorSafeCommand
 from error import RepoExitError
+from subcmds.sync import _PostRepoFetch
+from subcmds.sync import _PostRepoUpgrade
 
 
 class SelfupdateError(RepoExitError):

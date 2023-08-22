@@ -22,9 +22,9 @@ import tempfile
 import unittest
 
 import error
-import manifest_xml
 import git_command
 import git_config
+import manifest_xml
 import platform_utils
 import project
 

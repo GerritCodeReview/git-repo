@@ -19,6 +19,7 @@ import sys
 
 import platform_utils
 
+
 active = False
 pager_process = None
 old_stdout = None

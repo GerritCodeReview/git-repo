@@ -17,10 +17,12 @@ import functools
 import itertools
 import sys
 
-from command import Command, DEFAULT_LOCAL_JOBS
+from command import Command
+from command import DEFAULT_LOCAL_JOBS
+from error import RepoError
+from error import RepoExitError
 from git_command import git
 from progress import Progress
-from error import RepoError, RepoExitError
 
 
 class AbandonError(RepoExitError):

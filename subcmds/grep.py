@@ -14,12 +14,15 @@
 
 import functools
 import sys
+from typing import NamedTuple
 
 from color import Coloring
-from command import DEFAULT_LOCAL_JOBS, PagedCommand
-from error import GitError, InvalidArgumentsError, SilentRepoExitError
+from command import DEFAULT_LOCAL_JOBS
+from command import PagedCommand
+from error import GitError
+from error import InvalidArgumentsError
+from error import SilentRepoExitError
 from git_command import GitCommand
-from typing import NamedTuple
 from project import Project
 
 

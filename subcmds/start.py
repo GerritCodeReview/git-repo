@@ -14,14 +14,15 @@
 
 import functools
 import sys
+from typing import NamedTuple
 
-from command import Command, DEFAULT_LOCAL_JOBS
-from git_config import IsImmutable
+from command import Command
+from command import DEFAULT_LOCAL_JOBS
+from error import RepoExitError
 from git_command import git
+from git_config import IsImmutable
 from progress import Progress
 from project import Project
-from typing import NamedTuple
-from error import RepoExitError
 
 
 class ExecuteOneResult(NamedTuple):

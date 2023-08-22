@@ -25,12 +25,13 @@ import socket
 import sys
 import tempfile
 import time
-from typing import NamedTuple, List, Set
+from typing import List, NamedTuple, Set
 import urllib.error
 import urllib.parse
 import urllib.request
 import xml.parsers.expat
 import xmlrpc.client
+
 
 try:
     import threading as _threading
@@ -49,33 +50,34 @@ except ImportError:
         return (256, 256)
 
 
+from command import Command
+from command import DEFAULT_LOCAL_JOBS
+from command import MirrorSafeCommand
+from command import WORKER_BATCH_SIZE
+from error import GitError
+from error import RepoChangedException
+from error import RepoExitError
+from error import RepoUnhandledExceptionError
+from error import SyncError
+from error import UpdateManifestError
 import event_log
 from git_command import git_require
 from git_config import GetUrlCookieFile
-from git_refs import R_HEADS, HEAD
+from git_refs import HEAD
+from git_refs import R_HEADS
 import git_superproject
+import platform_utils
+from progress import elapsed_str
+from progress import jobs_str
+from progress import Progress
+from project import DeleteWorktreeError
 from project import Project
 from project import RemoteSpec
-from command import (
-    Command,
-    DEFAULT_LOCAL_JOBS,
-    MirrorSafeCommand,
-    WORKER_BATCH_SIZE,
-)
-from error import (
-    RepoChangedException,
-    GitError,
-    RepoExitError,
-    SyncError,
-    UpdateManifestError,
-    RepoUnhandledExceptionError,
-)
-import platform_utils
-from project import SyncBuffer, DeleteWorktreeError
-from progress import Progress, elapsed_str, jobs_str
+from project import SyncBuffer
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
+
 
 _ONE_DAY_S = 24 * 60 * 60
 

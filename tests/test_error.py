@@ -18,12 +18,13 @@ import inspect
 import pickle
 import unittest
 
-import error
-import project
-import git_command
-import fetch
 import command
+import error
+import fetch
+import git_command
+import project
 from subcmds import all_modules
+
 
 imports = all_modules + [
     error,

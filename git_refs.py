@@ -13,8 +13,10 @@
 # limitations under the License.
 
 import os
-from repo_trace import Trace
+
 import platform_utils
+from repo_trace import Trace
+
 
 HEAD = "HEAD"
 R_CHANGES = "refs/changes/"

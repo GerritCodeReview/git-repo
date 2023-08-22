@@ -15,7 +15,8 @@
 import itertools
 
 from color import Coloring
-from command import DEFAULT_LOCAL_JOBS, PagedCommand
+from command import DEFAULT_LOCAL_JOBS
+from command import PagedCommand
 
 
 class Prune(PagedCommand):
