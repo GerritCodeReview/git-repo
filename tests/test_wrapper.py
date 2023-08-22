@@ -14,7 +14,7 @@
 
 """Unittests for the wrapper.py module."""
 
-from io import StringIO
+import io
 import os
 import re
 import sys
@@ -47,8 +47,10 @@ class RepoWrapperUnitTest(RepoWrapperTestCase):
     def test_version(self):
         """Make sure _Version works."""
         with self.assertRaises(SystemExit) as e:
-            with mock.patch("sys.stdout", new_callable=StringIO) as stdout:
-                with mock.patch("sys.stderr", new_callable=StringIO) as stderr:
+            with mock.patch("sys.stdout", new_callable=io.StringIO) as stdout:
+                with mock.patch(
+                    "sys.stderr", new_callable=io.StringIO
+                ) as stderr:
                     self.wrapper._Version()
         self.assertEqual(0, e.exception.code)
         self.assertEqual("", stderr.getvalue())
