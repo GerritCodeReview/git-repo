@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "130102ce_9a03e6ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-22T15:27:19Z",
+      "side": 1,
+      "message": "let\u0027s use the bug you opened for discussion\n\nalso, please add a `Bug:` tag to your commit message to point to it",
+      "parentUuid": "b55b562c_73434919",
+      "revId": "8ae99e19f15904c95d297ab96b0e551fe3f50d18",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "360aa1a5_bcb41921",
         "filename": "manifest_xml.py",
         "patchSetId": 1
