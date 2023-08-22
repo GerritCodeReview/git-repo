@@ -110,7 +110,7 @@ def test_cli_jobs(argv, jobs_manifest, jobs, jobs_net, jobs_check):
 
 
 class LocalSyncState(unittest.TestCase):
-    """Tests for _LocalSyncState."""
+    """Tests for LocalSyncState."""
 
     _TIME = 10
 
@@ -128,7 +128,7 @@ class LocalSyncState(unittest.TestCase):
 
     def _new_state(self):
         with mock.patch("time.time", return_value=self._TIME):
-            return sync._LocalSyncState(self.manifest)
+            return sync.LocalSyncState(self.manifest)
 
     def test_set(self):
         """Times are set."""
