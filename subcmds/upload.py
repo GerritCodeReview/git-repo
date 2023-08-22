@@ -26,6 +26,7 @@ from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
 from project import ReviewableBranch
+from subcmds.sync import LocalSyncState
 
 
 _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
@@ -804,6 +805,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             if not hook.Run(
                 project_list=pending_proj_names, worktree_list=pending_worktrees
             ):
+                if LocalSyncState(manifest).IsPartiallySynced():
+                    print(
+                        "Partially synced tree detected. Syncing all projects "
+                        "may resolve issues you're seeing.",
+                        file=sys.stderr,
+                    )
                 ret = 1
         if ret:
             return ret
