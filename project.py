@@ -465,7 +465,13 @@ class _LinkFile(object):
             try:
                 # Remove existing file first, since it might be read-only.
                 if os.path.lexists(absDest):
-                    platform_utils.remove(absDest)
+                    try:
+                        platform_utils.remove(absDest)
+                    except OSError as e:
+                        # Supports replacing empty directory with a link
+                        # for submodule emulation.
+                        if e.errno == errno.EISDIR:
+                            os.rmdir(absDest)
                 else:
                     dest_dir = os.path.dirname(absDest)
                     if not platform_utils.isdir(dest_dir):
