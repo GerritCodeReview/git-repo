@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5bfee6d2_61e63b1a",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T03:41:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed9a26c1_994d17b3",
+      "revId": "90d0f69d073d498dcaa9d36fc4aaaecb019e5bf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7ed7677_b42fef9c",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-08-22T20:57:01Z",
       "side": 1,
       "message": "not a new issue, but maybe we should sort it out sooner rather than later.  terminal escape sequences don\u0027t really belong in log output (the `\\r`).  they\u0027re for interacting with the terminal only.  and to that end, we already have `color.py::Coloring` for interacting with the terminal.  not to mention `progress.py::Progress`.\n\nit feels like we\u0027re standing up parallel output systems that have no interaction at all, and (unless i missed it), have no plans to reconcile, which means we\u0027re digging ourselves deeper.",
+      "revId": "90d0f69d073d498dcaa9d36fc4aaaecb019e5bf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a154b31_06e019e0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1111,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T03:41:53Z",
+      "side": 1,
+      "message": "Good point, I removed all `\\r` and `\\n` prefixes within log messages in sync. I will keep this in mind for my future logger updating CLs too.",
+      "parentUuid": "f7ed7677_b42fef9c",
       "revId": "90d0f69d073d498dcaa9d36fc4aaaecb019e5bf9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
