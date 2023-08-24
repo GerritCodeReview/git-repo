@@ -23,7 +23,6 @@ class TestRepoLogger(unittest.TestCase):
     def test_error_logs_error(self):
         """Test if error fn outputs logs."""
         logger = RepoLogger(__name__)
-        RepoLogger.errors[:] = []
         result = None
 
         def mock_handler(log):
@@ -42,7 +41,6 @@ class TestRepoLogger(unittest.TestCase):
     def test_warning_logs_error(self):
         """Test if warning fn outputs logs."""
         logger = RepoLogger(__name__)
-        RepoLogger.errors[:] = []
         result = None
 
         def mock_handler(log):
@@ -58,30 +56,9 @@ class TestRepoLogger(unittest.TestCase):
 
         self.assertEqual(result, "You know the rules and so do I (do I)")
 
-    def test_error_aggregates_error_msg(self):
-        """Test if error fn aggregates error logs."""
-        logger = RepoLogger(__name__)
-        RepoLogger.errors[:] = []
-
-        logger.error("A full commitment's what I'm thinking of")
-        logger.error("You wouldn't get this from any other guy")
-        logger.error("I just wanna tell you how I'm feeling")
-        logger.error("Gotta make you understand")
-
-        self.assertEqual(
-            RepoLogger.errors[:],
-            [
-                "A full commitment's what I'm thinking of",
-                "You wouldn't get this from any other guy",
-                "I just wanna tell you how I'm feeling",
-                "Gotta make you understand",
-            ],
-        )
-
     def test_log_aggregated_errors_logs_aggregated_errors(self):
         """Test if log_aggregated_errors outputs aggregated errors."""
         logger = RepoLogger(__name__)
-        RepoLogger.errors[:] = []
         result = []
 
         def mock_handler(log):
@@ -96,7 +73,13 @@ class TestRepoLogger(unittest.TestCase):
         logger.error("Never gonna give you up")
         logger.error("Never gonna let you down")
         logger.error("Never gonna run around and desert you")
-        logger.log_aggregated_errors()
+        logger.log_aggregated_errors(
+            [
+                "Never gonna give you up",
+                "Never gonna let you down",
+                "Never gonna run around and desert you",
+            ]
+        )
 
         self.assertEqual(
             result,
