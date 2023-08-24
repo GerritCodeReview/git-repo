@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d90d310_7bf390d1",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                \"Keyboard interrupt while processing %s\", project.name\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6fa64365_3d2cbd97",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n            self.logger.error(\"error.GitError: Cannot fetch %s\", e)\n```\n\nnow that you\u0027re using logger APIs, you need to pass them as args and not interp the string directly.  this avoids `%` escaping and crashing the logger.",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00fc74b0_d3c9cd44",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                e,\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9ebbeb0_15bb43aa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                self.logger.error(\"%s\", e)\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6407a81d_601a1963",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                \"error.GitError: Cannot checkout %s: %s\", project.name, e\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91a6479b_92da4d71",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                e,\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40191327_a0f4c1e4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1113,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                        \"%s: not shared, disabling pruning.\", relpath\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0f03cd9_e1b9a332",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                self.logger.error(\"%s\", err_msg)\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6a4d0d6_4a2987de",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1876,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-24T15:18:19Z",
+      "side": 1,
+      "message": "```suggestion\n                \"repo version %s is current\", rp.work_git.describe(HEAD)\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
