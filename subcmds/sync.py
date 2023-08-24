@@ -22,7 +22,6 @@ import netrc
 import optparse
 import os
 import socket
-import sys
 import tempfile
 import time
 from typing import List, NamedTuple, Set
@@ -73,7 +72,24 @@ from progress import Progress
 from project import DeleteWorktreeError
 from project import Project
 from project import RemoteSpec
-from project import SyncBuffer
+from repo_logging import RepoLogger
+from command import (
+    Command,
+    DEFAULT_LOCAL_JOBS,
+    MirrorSafeCommand,
+    WORKER_BATCH_SIZE,
+)
+from error import (
+    RepoChangedException,
+    GitError,
+    RepoExitError,
+    SyncError,
+    UpdateManifestError,
+    RepoUnhandledExceptionError,
+)
+import platform_utils
+from project import SyncBuffer, DeleteWorktreeError
+from progress import Progress, elapsed_str, jobs_str
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
@@ -270,6 +286,7 @@ later is required to fix a server side protocol bug.
     # A value of 0 means we want parallel jobs, but we'll determine the default
     # value later on.
     PARALLEL_JOBS = 0
+    logger = RepoLogger(__file__)
 
     def _Options(self, p, show_smart=True):
         p.add_option(
@@ -580,7 +597,7 @@ later is required to fix a server side protocol bug.
                 superproject_logging_data["superproject"] = False
                 superproject_logging_data["noworktree"] = True
                 if opt.use_superproject is not False:
-                    print(
+                    self.logger.warning(
                         f"{m.path_prefix}: not using superproject because "
                         "there is no working tree."
                     )
@@ -602,13 +619,12 @@ later is required to fix a server side protocol bug.
                 need_unload = True
             else:
                 if print_messages:
-                    print(
+                    self.logger.warning(
                         f"{m.path_prefix}: warning: Update of revisionId from "
                         "superproject has failed, repo sync will not use "
                         "superproject to fetch the source. ",
                         "Please resync with the --no-use-superproject option "
                         "to avoid this repo warning.",
-                        file=sys.stderr,
                     )
                 if update_result.fatal and opt.use_superproject is not None:
                     raise SuperprojectError()
@@ -676,21 +692,24 @@ later is required to fix a server side protocol bug.
                 print("\n" + output.rstrip())
 
             if not success:
-                print(
-                    "error: Cannot fetch %s from %s"
-                    % (project.name, project.remote.url),
-                    file=sys.stderr,
+                self.logger.error(
+                    "error: Cannot fetch %s from %s",
+                    project.name,
+                    project.remote.url,
                 )
         except KeyboardInterrupt:
-            print(f"Keyboard interrupt while processing {project.name}")
+            self.logger.error(
+                f"Keyboard interrupt while processing {project.name}"
+            )
         except GitError as e:
-            print("error.GitError: Cannot fetch %s" % str(e), file=sys.stderr)
+            self.logger.error("error.GitError: Cannot fetch %s" % str(e))
             errors.append(e)
         except Exception as e:
-            print(
-                "error: Cannot fetch %s (%s: %s)"
-                % (project.name, type(e).__name__, str(e)),
-                file=sys.stderr,
+            self.logger.error(
+                "error: Cannot fetch %s (%s: %s)",
+                project.name,
+                type(e).__name__,
+                str(e),
             )
             del self._sync_dict[k]
             errors.append(e)
@@ -887,14 +906,13 @@ later is required to fix a server side protocol bug.
         if opt.network_only:
             # Bail out now; the rest touches the working tree.
             if err_event.is_set():
-                print(
-                    "\nerror: Exited sync due to fetch errors.\n",
-                    file=sys.stderr,
-                )
-                raise SyncError(
+                e = SyncError(
                     "error: Exited sync due to fetch errors.",
                     aggregate_errors=errors,
                 )
+
+                self.logger.error(e)
+                raise e
             return _FetchMainResult([], errors)
 
         # Iteratively fetch missing and/or nested unregistered submodules.
@@ -954,22 +972,21 @@ later is required to fix a server side protocol bug.
             )
             success = syncbuf.Finish()
         except GitError as e:
-            print(
-                "error.GitError: Cannot checkout %s: %s"
-                % (project.name, str(e)),
-                file=sys.stderr,
+            self.logger.error(
+                "error.GitError: Cannot checkout %s: %s", project.name, str(e)
             )
             errors.append(e)
         except Exception as e:
-            print(
-                "error: Cannot checkout %s: %s: %s"
-                % (project.name, type(e).__name__, str(e)),
-                file=sys.stderr,
+            self.logger.error(
+                "error: Cannot checkout %s: %s: %s",
+                project.name,
+                type(e).__name__,
+                str(e),
             )
             raise
 
         if not success:
-            print("error: Cannot checkout %s" % (project.name), file=sys.stderr)
+            self.logger.error("error: Cannot checkout %s", project.name)
         finish = time.time()
         return _CheckoutOneResult(success, errors, project, start, finish)
 
@@ -1088,25 +1105,29 @@ later is required to fix a server side protocol bug.
             )
             if expected:
                 if not opt.quiet:
-                    print(
-                        "\r%s: Shared project %s found, disabling pruning."
-                        % (relpath, project.name)
+                    self.logger.info(
+                        "%s: Shared project %s found, disabling pruning.",
+                        relpath,
+                        project.name,
                     )
+
                 if git_require((2, 7, 0)):
                     project.EnableRepositoryExtension("preciousObjects")
                 else:
                     # This isn't perfect, but it's the best we can do with old
                     # git.
-                    print(
-                        "\r%s: WARNING: shared projects are unreliable when "
+                    self.logger.warning(
+                        "%s: WARNING: shared projects are unreliable when "
                         "using old versions of git; please upgrade to "
-                        "git-2.7.0+." % (relpath,),
-                        file=sys.stderr,
+                        "git-2.7.0+.",
+                        relpath,
                     )
                     project.config.SetString("gc.pruneExpire", "never")
             else:
                 if not opt.quiet:
-                    print(f"\r{relpath}: not shared, disabling pruning.")
+                    self.logger.info(
+                        f"{relpath}: not shared, disabling pruning."
+                    )
                 project.config.SetString("extensions.preciousObjects", None)
                 project.config.SetString("gc.pruneExpire", None)
 
@@ -1303,10 +1324,9 @@ later is required to fix a server side protocol bug.
                 try:
                     old_copylinkfile_paths = json.load(fp)
                 except Exception:
-                    print(
-                        "error: %s is not a json formatted file."
-                        % copylinkfile_path,
-                        file=sys.stderr,
+                    self.logger.error(
+                        "error: %s is not a json formatted file.",
+                        copylinkfile_path,
                     )
                     platform_utils.remove(copylinkfile_path)
                     raise
@@ -1341,7 +1361,7 @@ later is required to fix a server side protocol bug.
 
         manifest_server = manifest.manifest_server
         if not opt.quiet:
-            print("Using manifest server %s" % manifest_server)
+            self.logger.info("Using manifest server %s", manifest_server)
 
         if "@" not in manifest_server:
             username = None
@@ -1363,15 +1383,12 @@ later is required to fix a server side protocol bug.
                             if auth:
                                 username, _account, password = auth
                             else:
-                                print(
-                                    "No credentials found for %s in .netrc"
-                                    % parse_result.hostname,
-                                    file=sys.stderr,
+                                self.logger.error(
+                                    "No credentials found for %s in .netrc",
+                                    parse_result.hostname,
                                 )
                     except netrc.NetrcParseError as e:
-                        print(
-                            "Error parsing .netrc file: %s" % e, file=sys.stderr
-                        )
+                        self.logger.error("Error parsing .netrc file: %s", e)
 
             if username and password:
                 manifest_server = manifest_server.replace(
@@ -1517,10 +1534,9 @@ later is required to fix a server side protocol bug.
 
     def ValidateOptions(self, opt, args):
         if opt.force_broken:
-            print(
+            self.logger.warning(
                 "warning: -f/--force-broken is now the default behavior, and "
-                "the options are deprecated",
-                file=sys.stderr,
+                "the options are deprecated"
             )
         if opt.network_only and opt.detach_head:
             self.OptionParser.error("cannot combine -n and -d")
@@ -1545,11 +1561,10 @@ later is required to fix a server side protocol bug.
             opt.prune = True
 
         if opt.auto_gc is None and _AUTO_GC:
-            print(
+            self.logger.error(
                 f"Will run `git gc --auto` because {_REPO_AUTO_GC} is set.",
                 f"{_REPO_AUTO_GC} is deprecated and will be removed in a ",
                 "future release.  Use `--auto-gc` instead.",
-                file=sys.stderr,
             )
             opt.auto_gc = True
 
@@ -1626,10 +1641,10 @@ later is required to fix a server side protocol bug.
                 try:
                     platform_utils.remove(smart_sync_manifest_path)
                 except OSError as e:
-                    print(
+                    self.logger.error(
                         "error: failed to remove existing smart sync override "
-                        "manifest: %s" % e,
-                        file=sys.stderr,
+                        "manifest: %s",
+                        e,
                     )
 
         err_event = multiprocessing.Event()
@@ -1640,11 +1655,10 @@ later is required to fix a server side protocol bug.
         if cb:
             base = rp.GetBranch(cb).merge
             if not base or not base.startswith("refs/heads/"):
-                print(
+                self.logger.warning(
                     "warning: repo is not tracking a remote branch, so it will "
                     "not receive updates; run `repo init --repo-rev=stable` to "
-                    "fix.",
-                    file=sys.stderr,
+                    "fix."
                 )
 
         for m in self.ManifestList(opt):
@@ -1667,7 +1681,7 @@ later is required to fix a server side protocol bug.
         if opt.mp_update:
             self._UpdateAllManifestProjects(opt, mp, manifest_name)
         else:
-            print("Skipping update of local manifest project.")
+            self.logger.info("Skipping update of local manifest project.")
 
         # Now that the manifests are up-to-date, setup options whose defaults
         # might be in the manifest.
@@ -1719,12 +1733,11 @@ later is required to fix a server side protocol bug.
             if err_event.is_set():
                 err_network_sync = True
                 if opt.fail_fast:
-                    print(
-                        "\nerror: Exited sync due to fetch errors.\n"
+                    self.logger.error(
+                        "error: Exited sync due to fetch errors.\n"
                         "Local checkouts *not* updated. Resolve network issues "
                         "& retry.\n"
-                        "`repo sync -l` will update some local checkouts.",
-                        file=sys.stderr,
+                        "`repo sync -l` will update some local checkouts."
                     )
                     raise SyncFailFastError(aggregate_errors=errors)
 
@@ -1742,10 +1755,7 @@ later is required to fix a server side protocol bug.
                 if isinstance(e, DeleteWorktreeError):
                     errors.extend(e.aggregate_errors)
                 if opt.fail_fast:
-                    print(
-                        "\nerror: Local checkouts *not* updated.",
-                        file=sys.stderr,
-                    )
+                    self.logger.error("error: Local checkouts *not* updated.")
                     raise SyncFailFastError(aggregate_errors=errors)
 
             err_update_linkfiles = False
@@ -1756,9 +1766,8 @@ later is required to fix a server side protocol bug.
                 errors.append(e)
                 err_event.set()
                 if opt.fail_fast:
-                    print(
-                        "\nerror: Local update copyfile or linkfile failed.",
-                        file=sys.stderr,
+                    self.logger.error(
+                        "error: Local update copyfile or linkfile failed."
                     )
                     raise SyncFailFastError(aggregate_errors=errors)
 
@@ -1781,12 +1790,10 @@ later is required to fix a server side protocol bug.
 
         # If we saw an error, exit with code 1 so that other scripts can check.
         if err_event.is_set():
-            # Add a new line so it's easier to read.
-            print("\n", file=sys.stderr)
 
             def print_and_log(err_msg):
                 self.git_event_log.ErrorEvent(err_msg)
-                print(err_msg, file=sys.stderr)
+                self.logger.error(err_msg)
 
             print_and_log("error: Unable to fully sync the tree")
             if err_network_sync:
@@ -1799,15 +1806,13 @@ later is required to fix a server side protocol bug.
                 print_and_log("error: Checking out local projects failed.")
                 if err_results:
                     # Don't log repositories, as it may contain sensitive info.
-                    print(
-                        "Failing repos:\n%s" % "\n".join(err_results),
-                        file=sys.stderr,
+                    self.logger.error(
+                        "Failing repos:\n%s", "\n".join(err_results)
                     )
             # Not useful to log.
-            print(
+            self.logger.error(
                 'Try re-running with "-j1 --fail-fast" to exit at the first '
-                "error.",
-                file=sys.stderr,
+                "error."
             )
             raise SyncError(aggregate_errors=errors)
 
@@ -1824,14 +1829,13 @@ later is required to fix a server side protocol bug.
 
         self._local_sync_state.PruneRemovedProjects()
         if self._local_sync_state.IsPartiallySynced():
-            print(
+            self.logger.warning(
                 "warning: Partial syncs are not supported. For the best "
-                "experience, sync the entire tree.",
-                file=sys.stderr,
+                "experience, sync the entire tree."
             )
 
         if not opt.quiet:
-            print("repo sync has finished successfully.")
+            self.logger.info("repo sync has finished successfully.")
 
 
 def _PostRepoUpgrade(manifest, quiet=False):
@@ -1854,7 +1858,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
 
 def _PostRepoFetch(rp, repo_verify=True, verbose=False):
     if rp.HasChanges:
-        print("info: A new version of repo is available", file=sys.stderr)
+        Sync.logger.info("info: A new version of repo is available")
         wrapper = Wrapper()
         try:
             rev = rp.bare_git.describe(rp.GetRevisionId())
@@ -1876,18 +1880,16 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
                 rp.work_git.reset("--keep", new_rev)
             except GitError as e:
                 raise RepoUnhandledExceptionError(e)
-            print("info: Restarting repo with latest version", file=sys.stderr)
+            Sync.logger.info("info: Restarting repo with latest version")
             raise RepoChangedException(["--repo-upgraded"])
         else:
-            print(
-                "warning: Skipped upgrade to unverified version",
-                file=sys.stderr,
+            Sync.logger.warning(
+                "warning: Skipped upgrade to unverified version"
             )
     else:
         if verbose:
-            print(
-                "repo version %s is current" % rp.work_git.describe(HEAD),
-                file=sys.stderr,
+            Sync.logger.info(
+                "repo version %s is current" % rp.work_git.describe(HEAD)
             )
 
 
