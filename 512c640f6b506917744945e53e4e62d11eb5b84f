@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c7c07e0_100b23f6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 686,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d90d310_7bf390d1",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fa64365_3d2cbd97",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-08-24T15:18:19Z",
       "side": 1,
       "message": "```suggestion\n            self.logger.error(\"error.GitError: Cannot fetch %s\", e)\n```\n\nnow that you\u0027re using logger APIs, you need to pass them as args and not interp the string directly.  this avoids `%` escaping and crashing the logger.",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d12c91e_ac6d92e4",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 689,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fa64365_3d2cbd97",
       "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a1cce06_9542fd1e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00fc74b0_d3c9cd44",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d9ebbeb0_15bb43aa",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-08-24T15:18:19Z",
       "side": 1,
       "message": "```suggestion\n                self.logger.error(\"%s\", e)\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "090068c9_e8ad26cd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 898,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "One of the design we agreed upon was for our custom logger to accept exceptions. This is done by choice.",
+      "parentUuid": "d9ebbeb0_15bb43aa",
       "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d53ea43_387768ec",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 960,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6407a81d_601a1963",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91a6479b_92da4d71",
@@ -103,6 +193,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3de5839a_8a4b610d",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 968,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91a6479b_92da4d71",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40191327_a0f4c1e4",
@@ -116,6 +224,24 @@
       "writtenOn": "2023-08-24T15:18:19Z",
       "side": 1,
       "message": "```suggestion\n                        \"%s: not shared, disabling pruning.\", relpath\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad691cbc_480c13cf",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1113,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40191327_a0f4c1e4",
       "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -139,6 +265,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a4303030_06db4fed",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Given the `RepoLogger` also colors the errors messages, it ends up combining this anyway. Is there a reason to do this?",
+      "parentUuid": "f0f03cd9_e1b9a332",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6a4d0d6_4a2987de",
         "filename": "subcmds/sync.py",
         "patchSetId": 12
@@ -150,6 +294,24 @@
       "writtenOn": "2023-08-24T15:18:19Z",
       "side": 1,
       "message": "```suggestion\n                \"repo version %s is current\", rp.work_git.describe(HEAD)\n```",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10f4b2e0_f82276e2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1876,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6a4d0d6_4a2987de",
       "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90a31ca3_9ac0e60c",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-24T18:24:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31f8067e_e899ace4",
+      "revId": "90d0f69d073d498dcaa9d36fc4aaaecb019e5bf9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f7ed7677_b42fef9c",
