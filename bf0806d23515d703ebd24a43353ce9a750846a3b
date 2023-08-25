@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "899f4154_7a684c37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2023-08-25T19:54:15Z",
+      "side": 1,
+      "message": "was the previous change just an accident? (is it possible to add test coverage for this case to avoid future regressions?)",
+      "revId": "bf0806d23515d703ebd24a43353ce9a750846a3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
