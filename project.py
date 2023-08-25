@@ -1182,9 +1182,7 @@ class Project(object):
             ref_spec = ref_spec + "%" + ",".join(opts)
         cmd.append(ref_spec)
 
-        GitCommand(
-            self, cmd, bare=True, capture_stderr=True, verify_command=True
-        ).Wait()
+        GitCommand(self, cmd, bare=True, verify_command=True).Wait()
 
         if not dryrun:
             msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
