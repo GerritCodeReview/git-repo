@@ -34,6 +34,24 @@
       "parentUuid": "899f4154_7a684c37",
       "revId": "bf0806d23515d703ebd24a43353ce9a750846a3b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8143c676_23c96066",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2023-08-28T13:34:49Z",
+      "side": 1,
+      "message": "My only concern is how we can avoid this sort of oops situation again. I am fine calling adding tests to this area as out of scope for this defect fix, but still something we should think about hardening.",
+      "parentUuid": "3ecb3d6e_073349ef",
+      "revId": "bf0806d23515d703ebd24a43353ce9a750846a3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
