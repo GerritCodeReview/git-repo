@@ -283,6 +283,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "85b18cf7_567043f9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-28T18:46:24Z",
+      "side": 1,
+      "message": "i\u0027m not sure what you mean.  we can\u0027t pass a string to Coloring that might have a `%` in it either.  it\u0027ll crash in both cases.",
+      "parentUuid": "a4303030_06db4fed",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6a4d0d6_4a2987de",
         "filename": "subcmds/sync.py",
         "patchSetId": 12
