@@ -22,6 +22,29 @@
       },
       "revId": "013893134128485109d37d3dff072d582de201f1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1edc52e8_9ddf4dd4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2023-08-29T19:59:30Z",
+      "side": 1,
+      "message": "It seems like this would be undesirable, as this would dirty the git state.\n\nThis won\u0027t be supported by Android\u0027s infra, as all copyfile/linkfile entries must be outside of existing git directories in our setups (so that gerrit-managed manifest-\u003esuperproject translation functions)",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "013893134128485109d37d3dff072d582de201f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
