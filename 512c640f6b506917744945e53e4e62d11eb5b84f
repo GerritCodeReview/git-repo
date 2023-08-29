@@ -301,6 +301,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "36626be1_e5ce30e0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-29T18:40:59Z",
+      "side": 1,
+      "message": "Why would it fail if the msg contains a `%` sign?",
+      "parentUuid": "85b18cf7_567043f9",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6a4d0d6_4a2987de",
         "filename": "subcmds/sync.py",
         "patchSetId": 12
