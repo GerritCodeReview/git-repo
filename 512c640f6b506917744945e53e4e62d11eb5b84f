@@ -319,6 +319,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5284bc6c_ec33483f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-30T19:04:59Z",
+      "side": 1,
+      "message": "coloring does % interpolation.  look at the implementation:\n\n```\nclass LogColoring(Coloring):\n    \"\"\"Coloring outstream for logging.\"\"\"  \n\n    def __init__(self, config):\n        super().__init__(config, \"logs\")\n        self.error \u003d self.colorer(\"error\", fg\u003d\"red\")\n        self.warning \u003d self.colorer(\"warn\", fg\u003d\"yellow\")\n...\n    def colorer(self, opt\u003dNone, fg\u003dNone, bg\u003dNone, attr\u003dNone):\n        if self._on:\n            c \u003d self._parse(opt, fg, bg, attr)\n\n            def f(fmt, *args):\n                output \u003d fmt % args\n                return \"\".join([c, output, RESET])\n\n            return f\n```\n\nyou can easily verify this too:\n\n```\n$ python -c \u0027import repo_logging; logger \u003d repo_logging.RepoLogger(\"foo\"); logger.error(\"%s\")\u0027\nTraceback (most recent call last):\n  File \"\u003cstring\u003e\", line 1, in \u003cmodule\u003e\n  File \".../repo/repo_logging.py\", line 59, in error\n    colored_error \u003d self.colorer.error(msg, *args)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \".../repo/color.py\", line 167, in f\n    output \u003d fmt % args\n             ~~~~^~~~~~\nTypeError: not enough arguments for format string\n```\n\nlooks like the logging module has some logic to automatically insert `%s` for you if you only pass one argument.  i thought it would crash, but maybe it only crashes if you have multiple args but not the right number of `%`.\n\n```\n$ python\n\u003e\u003e\u003e import logging\n\n\u003e\u003e\u003e logging.error(\"%s\")\nERROR:root:%s\n\n\u003e\u003e\u003e logging.error(\"%s %s\", 1)\n--- Logging error ---\nTraceback (most recent call last):\n...\n\n\u003e\u003e\u003e logging.error(\"%s %s\", 1, 2, 3)\n--- Logging error ---\nTraceback (most recent call last):\n```",
+      "parentUuid": "36626be1_e5ce30e0",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f6a4d0d6_4a2987de",
         "filename": "subcmds/sync.py",
         "patchSetId": 12
