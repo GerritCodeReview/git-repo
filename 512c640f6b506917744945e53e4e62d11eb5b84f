@@ -335,6 +335,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "47dbd8d0_ee301ad8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 1780,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-30T20:29:50Z",
+      "side": 1,
+      "message": "I made an assumption that `RepoLogger` will interpret format strings as format strings, as in, calling `logger.error(\"%s\")` would be invalid. But this makes sense. I will update this; thanks for the explanation!",
+      "parentUuid": "5284bc6c_ec33483f",
+      "revId": "512c640f6b506917744945e53e4e62d11eb5b84f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6a4d0d6_4a2987de",
