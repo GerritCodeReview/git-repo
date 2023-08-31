@@ -16,6 +16,24 @@
       "message": "```suggestion\n        super().error(\"\\n\".join(str(x) for x in errors))\n```\n\ni think we ban `map`",
       "revId": "67cc15b801da2f1be2d297b9fe7a76c5a680ec0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74a09f9e_a6667342",
+        "filename": "repo_logging.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-31T22:29:35Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "90e997a1_a02a4fd7",
+      "revId": "67cc15b801da2f1be2d297b9fe7a76c5a680ec0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
