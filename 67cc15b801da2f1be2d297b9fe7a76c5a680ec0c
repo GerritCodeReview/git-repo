@@ -34,6 +34,24 @@
       "parentUuid": "90e997a1_a02a4fd7",
       "revId": "67cc15b801da2f1be2d297b9fe7a76c5a680ec0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e4f76c0_96e95f45",
+        "filename": "repo_logging.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-31T22:31:40Z",
+      "side": 1,
+      "message": "Clicking on `Apply Fix` did not apply it for some reason. I will update this in the follow-up CL where I update to log formatter.",
+      "parentUuid": "74a09f9e_a6667342",
+      "revId": "67cc15b801da2f1be2d297b9fe7a76c5a680ec0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
