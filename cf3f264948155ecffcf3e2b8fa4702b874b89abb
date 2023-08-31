@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0508b843_42936400",
+        "filename": "repo_logging.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-31T20:58:32Z",
+      "side": 1,
+      "message": "I originally created a `RepoLogger` class because it was designed to aggregate error logs too, which this CL removes: go/improve-repo-error-reporting. I still want to keep this class since it contains the logic for `log_aggregated_errors`.\n\nAs for the formatting part, I wanted to reuse the `Coloring` logic that repo already has instead of reinventing the wheel. I will make a follow-up CL to wrap coloring within `logging.Formatter` and use it within `RepoLogger` given that\u0027s more cleaner.",
+      "parentUuid": "f5a96b84_e4491b71",
+      "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec0aa15a_e129a1db",
         "filename": "repo_logging.py",
         "patchSetId": 17
@@ -31,6 +49,24 @@
       "writtenOn": "2023-08-31T03:38:20Z",
       "side": 1,
       "message": "this feels weird to special case Exception.  if we\u0027re going to str() everything, wouldn\u0027t the correct typing be `Any` ?",
+      "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5a68d8f_70693684",
+        "filename": "repo_logging.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-31T20:58:32Z",
+      "side": 1,
+      "message": "I wanted to keep this restrictive enough. With Jason\u0027s changes passing exceptions around repo, we agreed on allowing Exceptions along with str. I don\u0027t have a strong opinion against `any` though.",
+      "parentUuid": "ec0aa15a_e129a1db",
       "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -48,6 +84,24 @@
       "writtenOn": "2023-08-31T03:38:20Z",
       "side": 1,
       "message": "```suggestion\n            logger.error(\"error.GitError: Cannot fetch %s\", e)\n```",
+      "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "618dce98_75cd5699",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-31T20:58:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30ccb7b9_4727b274",
       "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
