@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80d08ca0_67211dd5",
+        "filename": "repo_logging.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-08-31T21:01:33Z",
+      "side": 1,
+      "message": "My previous comment is a bit confusing. I will update `RepoLogger` to use `logging.Formatter` for coloring in a follow-up CL. I don\u0027t want to make too many changes in this one.",
+      "parentUuid": "0508b843_42936400",
+      "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec0aa15a_e129a1db",
