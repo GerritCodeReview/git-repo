@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5a96b84_e4491b71",
+        "filename": "repo_logging.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-31T03:38:20Z",
+      "side": 1,
+      "message": "thinking more, i don\u0027t think we\u0027re doing this correctly.  we want to format log output.  that is what `logging.Formatter` is for.\n\nlook at how we do it in chromite:\nhttps://chromium.googlesource.com/chromiumos/chromite/+/HEAD/lib/commandline.py\n`class ColoredFormatter(logging.Formatter):`\n\nthen look at `SetupLogging` and how we install that formatter.\n\nthis feedback might not be a blocker for this particular CL.  i mention it because you\u0027re making a lot of changes in RepoLogger that would simply go away if we changed how formatting is handled.",
+      "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec0aa15a_e129a1db",
+        "filename": "repo_logging.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-31T03:38:20Z",
+      "side": 1,
+      "message": "this feels weird to special case Exception.  if we\u0027re going to str() everything, wouldn\u0027t the correct typing be `Any` ?",
+      "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30ccb7b9_4727b274",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 17
+      },
+      "lineNbr": 690,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-08-31T03:38:20Z",
+      "side": 1,
+      "message": "```suggestion\n            logger.error(\"error.GitError: Cannot fetch %s\", e)\n```",
+      "revId": "cf3f264948155ecffcf3e2b8fa4702b874b89abb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
