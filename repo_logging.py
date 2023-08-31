@@ -15,7 +15,7 @@
 """Logic for printing user-friendly logs in repo."""
 
 import logging
-import multiprocessing
+from typing import Any, List
 
 from color import Coloring
 
@@ -45,31 +45,25 @@ class ConfigMock:
 class RepoLogger(logging.Logger):
     """Repo Logging Module."""
 
-    # Aggregates error-level logs. This is used to generate an error summary
-    # section at the end of a command execution.
-    errors = multiprocessing.Manager().list()
-
-    def __init__(self, name, config=None, **kwargs):
+    def __init__(self, name: str, config=None, **kwargs):
         super().__init__(name, **kwargs)
         self.config = config if config else ConfigMock()
         self.colorer = LogColoring(self.config)
 
-    def error(self, msg, *args, **kwargs):
+    def error(self, msg: Any, *args, **kwargs):
         """Print and aggregate error-level logs."""
-        colored_error = self.colorer.error(msg, *args)
-        RepoLogger.errors.append(colored_error)
-
+        colored_error = self.colorer.error(str(msg), *args)
         super().error(colored_error, **kwargs)
 
-    def warning(self, msg, *args, **kwargs):
+    def warning(self, msg: Any, *args, **kwargs):
         """Print warning-level logs with coloring."""
-        colored_warning = self.colorer.warning(msg, *args)
+        colored_warning = self.colorer.warning(str(msg), *args)
         super().warning(colored_warning, **kwargs)
 
-    def log_aggregated_errors(self):
+    def log_aggregated_errors(self, errors: List[Exception]):
         """Print all aggregated logs."""
         super().error(self.colorer.error(SEPARATOR))
         super().error(
             self.colorer.error("Repo command failed due to following errors:")
         )
-        super().error("\n".join(RepoLogger.errors))
+        super().error("\n".join(map(str, errors)))
