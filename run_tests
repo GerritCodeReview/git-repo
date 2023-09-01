@@ -27,8 +27,16 @@ ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 def run_black():
     """Returns the exit code from black."""
+    # Black by default only matches .py files.  We have to list standalone
+    # scripts manually.
+    extra_programs = [
+        "repo",
+        "run_tests",
+        "release/update-manpages",
+    ]
     return subprocess.run(
-        [sys.executable, "-m", "black", "--check", ROOT_DIR], check=False
+        [sys.executable, "-m", "black", "--check", ROOT_DIR] + extra_programs,
+        check=False,
     ).returncode
 
 
