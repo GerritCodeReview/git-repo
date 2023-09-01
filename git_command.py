@@ -13,6 +13,7 @@
 # limitations under the License.
 
 import functools
+import json
 import os
 import subprocess
 import sys
@@ -21,6 +22,7 @@ from typing import Any, Optional
 from error import GitError
 from error import RepoExitError
 from git_refs import HEAD
+from git_trace2_event_log_base import BaseEventLog
 import platform_utils
 from repo_trace import IsTrace
 from repo_trace import REPO_TRACE
@@ -45,6 +47,7 @@ GIT_DIR = "GIT_DIR"
 LAST_GITDIR = None
 LAST_CWD = None
 DEFAULT_GIT_FAIL_MESSAGE = "git command failure"
+ERROR_EVENT_LOGGING_PREFIX = "RepoGitCommandError"
 # Common line length limit
 GIT_ERROR_STDOUT_LINES = 1
 GIT_ERROR_STDERR_LINES = 1
@@ -67,7 +70,7 @@ class _GitCall(object):
         def fun(*cmdv):
             command = [name]
             command.extend(cmdv)
-            return GitCommand(None, command).Wait() == 0
+            return GitCommand(None, command, add_event_log=False).Wait() == 0
 
         return fun
 
@@ -103,6 +106,41 @@ def RepoSourceVersion():
         setattr(RepoSourceVersion, "version", ver)
 
     return ver
+
+
+@functools.lru_cache(maxsize=None)
+def GetEventTargetPath():
+    """Get the 'trace2.eventtarget' path from git configuration.
+
+    Returns:
+        path: git config's 'trace2.eventtarget' path if it exists, or None
+    """
+    path = None
+    cmd = ["config", "--get", "trace2.eventtarget"]
+    # TODO(https://crbug.com/gerrit/13706): Use GitConfig when it supports
+    # system git config variables.
+    p = GitCommand(
+        None,
+        cmd,
+        capture_stdout=True,
+        capture_stderr=True,
+        bare=True,
+        add_event_log=False,
+    )
+    retval = p.Wait()
+    if retval == 0:
+        # Strip trailing carriage-return in path.
+        path = p.stdout.rstrip("\n")
+    elif retval != 1:
+        # `git config --get` is documented to produce an exit status of `1`
+        # if the requested variable is not present in the configuration.
+        # Report any other return value as an error.
+        print(
+            "repo: error: 'git config --get' call failed with return code: "
+            "%r, stderr: %r" % (retval, p.stderr),
+            file=sys.stderr,
+        )
+    return path
 
 
 class UserAgent(object):
@@ -236,17 +274,18 @@ class GitCommand(object):
         self,
         project,
         cmdv,
-        bare=False,
-        input=None,
-        capture_stdout=False,
-        capture_stderr=False,
-        merge_output=False,
-        disable_editor=False,
-        ssh_proxy=None,
-        cwd=None,
-        gitdir=None,
-        objdir=None,
+        bare=False,  # only used for env
+        input=None,  # usedin in communication with subprocess ...
+        capture_stdout=False,  # used to determing stdout
+        capture_stderr=False,  # used to determing stderr
+        merge_output=False,  # used to determing stderr
+        disable_editor=False,  # only used for env.
+        ssh_proxy=None,  # used start and end.
+        cwd=None,  # used a LOT
+        gitdir=None,  # only used for env.
+        objdir=None,  # only used for env.
         verify_command=False,
+        add_event_log=True,
     ):
         if project:
             if not cwd:
@@ -265,7 +304,7 @@ class GitCommand(object):
             if gitdir:
                 gitdir = gitdir.replace("\\", "/")
 
-        env = _build_env(
+        self.env = env = _build_env(
             disable_editor=disable_editor,
             ssh_proxy=ssh_proxy,
             objdir=objdir,
@@ -276,11 +315,12 @@ class GitCommand(object):
         command = [GIT]
         if bare:
             cwd = None
-        command.append(cmdv[0])
+        command_name = cmdv[0]
+        command.append(command_name)
         # Need to use the --progress flag for fetch/clone so output will be
         # displayed as by default git only does progress output if stderr is a
         # TTY.
-        if sys.stderr.isatty() and cmdv[0] in ("fetch", "clone"):
+        if sys.stderr.isatty() and command_name in ("fetch", "clone"):
             if "--progress" not in cmdv and "--quiet" not in cmdv:
                 command.append("--progress")
         command.extend(cmdv[1:])
@@ -293,6 +333,55 @@ class GitCommand(object):
             else (subprocess.PIPE if capture_stderr else None)
         )
 
+        event_log = (
+            BaseEventLog(env=env, add_init_count=True)
+            if add_event_log
+            else None
+        )
+
+        try:
+            self._RunCommand(
+                command,
+                env,
+                stdin=stdin,
+                stdout=stdout,
+                stderr=stderr,
+                ssh_proxy=ssh_proxy,
+                cwd=cwd,
+                input=input,
+            )
+            self.VerifyCommand()
+        except GitCommandError as e:
+            if event_log is not None:
+                error_info = json.dumps(
+                    {
+                        "ErrorType": type(e).__name__,
+                        "Project": e.project,
+                        "CommandName": command_name,
+                        "Message": str(e),
+                        "ReturnCode": str(e.git_rc)
+                        if e.git_rc is not None
+                        else None,
+                    }
+                )
+                event_log.ErrorEvent(
+                    f"{ERROR_EVENT_LOGGING_PREFIX}:{error_info}"
+                )
+                event_log.Write(GetEventTargetPath())
+            if isinstance(e, GitPopenCommandError):
+                raise
+
+    def _RunCommand(
+        self,
+        command,
+        env,
+        stdin=None,
+        stdout=None,
+        stderr=None,
+        ssh_proxy=None,
+        cwd=None,
+        input=None,
+    ):
         dbg = ""
         if IsTrace():
             global LAST_CWD
@@ -346,10 +435,10 @@ class GitCommand(object):
                     stderr=stderr,
                 )
             except Exception as e:
-                raise GitCommandError(
+                raise GitPopenCommandError(
                     message="%s: %s" % (command[1], e),
-                    project=project.name if project else None,
-                    command_args=cmdv,
+                    project=self.project.name if self.project else None,
+                    command_args=self.cmdv,
                 )
 
             if ssh_proxy:
@@ -383,16 +472,14 @@ class GitCommand(object):
             env.pop(key, None)
         return env
 
-    def Wait(self):
-        if not self.verify_command or self.rc == 0:
-            return self.rc
-
+    def VerifyCommand(self):
+        if self.rc == 0:
+            return None
         stdout = (
             "\n".join(self.stdout.split("\n")[:GIT_ERROR_STDOUT_LINES])
             if self.stdout
             else None
         )
-
         stderr = (
             "\n".join(self.stderr.split("\n")[:GIT_ERROR_STDERR_LINES])
             if self.stderr
@@ -406,6 +493,11 @@ class GitCommand(object):
             git_stdout=stdout,
             git_stderr=stderr,
         )
+
+    def Wait(self):
+        if self.verify_command:
+            self.VerifyCommand()
+        return self.rc
 
 
 class GitRequireError(RepoExitError):
@@ -449,3 +541,9 @@ class GitCommandError(GitError):
 {self.git_stdout}
     Stderr:
 {self.git_stderr}"""
+
+
+class GitPopenCommandError(GitError):
+    """
+    Error raised when subprocess.Popen fails for a GitCommand
+    """
