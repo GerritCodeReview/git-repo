@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b4d6361_8adb342f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 707,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-09-05T19:39:53Z",
+      "side": 1,
+      "message": "shouldn\u0027t this print if `opt.verbose` (and output)?",
+      "range": {
+        "startLine": 706,
+        "startChar": 12,
+        "endLine": 707,
+        "endChar": 45
+      },
+      "revId": "e892f89e24ab5fe51b380c127f3c1814099f21df",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
