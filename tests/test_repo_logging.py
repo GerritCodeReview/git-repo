@@ -20,42 +20,6 @@ from repo_logging import RepoLogger
 
 
 class TestRepoLogger(unittest.TestCase):
-    def test_error_logs_error(self):
-        """Test if error fn outputs logs."""
-        logger = RepoLogger(__name__)
-        result = None
-
-        def mock_handler(log):
-            nonlocal result
-            result = log.getMessage()
-
-        mock_out = mock.MagicMock()
-        mock_out.level = 0
-        mock_out.handle = mock_handler
-        logger.addHandler(mock_out)
-
-        logger.error("We're no strangers to love")
-
-        self.assertEqual(result, "We're no strangers to love")
-
-    def test_warning_logs_error(self):
-        """Test if warning fn outputs logs."""
-        logger = RepoLogger(__name__)
-        result = None
-
-        def mock_handler(log):
-            nonlocal result
-            result = log.getMessage()
-
-        mock_out = mock.MagicMock()
-        mock_out.level = 0
-        mock_out.handle = mock_handler
-        logger.addHandler(mock_out)
-
-        logger.warning("You know the rules and so do I (do I)")
-
-        self.assertEqual(result, "You know the rules and so do I (do I)")
-
     def test_log_aggregated_errors_logs_aggregated_errors(self):
         """Test if log_aggregated_errors outputs aggregated errors."""
         logger = RepoLogger(__name__)

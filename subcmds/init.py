@@ -23,10 +23,13 @@ from error import UpdateManifestError
 from git_command import git_require
 from git_command import MIN_GIT_VERSION_HARD
 from git_command import MIN_GIT_VERSION_SOFT
+from repo_logging import RepoLogger
 from wrapper import Wrapper
 
 
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
+
+logger = RepoLogger(__file__)
 
 
 class Init(InteractiveCommand, MirrorSafeCommand):
@@ -187,15 +190,8 @@ to update the working directory files.
             mp.config.SetString("user.email", gc.GetString("user.email"))
 
         if not opt.quiet and not existing_checkout or opt.verbose:
-            print()
-            print(
-                "Your identity is: %s <%s>"
-                % (
-                    mp.config.GetString("user.name"),
-                    mp.config.GetString("user.email"),
-                )
-            )
-            print(
+            logger.info("Your identity is: %s <%s>", mp.config.GetString("user.name"), mp.config.GetString("user.email"))
+            logger.info(
                 "If you want to change this, please re-run 'repo init' with "
                 "--config-name"
             )
