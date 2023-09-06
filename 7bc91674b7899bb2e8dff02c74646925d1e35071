@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d77a3216_d489656e",
+        "filename": "repo_logging.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-06T17:26:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dd4f009_0d191534",
+      "revId": "7bc91674b7899bb2e8dff02c74646925d1e35071",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "587bb995_fe16b2e5",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e58007f_737a2ea6",
+        "filename": "repo_logging.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-06T17:26:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "587bb995_fe16b2e5",
+      "revId": "7bc91674b7899bb2e8dff02c74646925d1e35071",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8499344d_5dbbb02b",
@@ -48,6 +84,24 @@
       "writtenOn": "2023-09-06T16:59:23Z",
       "side": 1,
       "message": "```suggestion\n        super().error(\"\\n\".join(str(e) for e in errors))\n```\n\njoin takes an iterable, so pass it a generator rather than constructing a list",
+      "revId": "7bc91674b7899bb2e8dff02c74646925d1e35071",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "443d9786_6e8d9f94",
+        "filename": "repo_logging.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-06T17:26:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8499344d_5dbbb02b",
       "revId": "7bc91674b7899bb2e8dff02c74646925d1e35071",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
