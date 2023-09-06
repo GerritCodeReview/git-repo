@@ -1,0 +1,2 @@
+2023-09-06 17:39:31,996 - my_logger - DEBUG - This is a debug message.
+2023-09-06 17:39:48,044 - my_logger - DEBUG - This is a debug message.

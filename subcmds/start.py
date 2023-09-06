@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import functools
-import sys
 from typing import NamedTuple
 
 from command import Command
@@ -23,6 +22,10 @@ from git_command import git
 from git_config import IsImmutable
 from progress import Progress
 from project import Project
+from repo_logging import RepoLogger
+
+
+logger = RepoLogger(__file__)
 
 
 class ExecuteOneResult(NamedTuple):
@@ -95,10 +98,7 @@ revision specified in the manifest.
                 nb, branch_merge=branch_merge, revision=revision
             )
         except Exception as e:
-            print(
-                "error: unable to checkout %s: %s" % (project.name, e),
-                file=sys.stderr,
-            )
+            logger.error("error: unable to checkout %s: %s", project.name, e)
             error = e
         return ExecuteOneResult(project, error)
 
@@ -136,10 +136,10 @@ revision specified in the manifest.
 
         if err_projects:
             for p in err_projects:
-                print(
-                    "error: %s/: cannot start %s"
-                    % (p.RelPath(local=opt.this_manifest_only), nb),
-                    file=sys.stderr,
+                logger.error(
+                    "error: %s/: cannot start %s",
+                    p.RelPath(local=opt.this_manifest_only),
+                    nb,
                 )
             msg_fmt = "cannot start %d project(s)"
             self.git_event_log.ErrorEvent(
