@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dd4f009_0d191534",
+        "filename": "repo_logging.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-06T16:59:23Z",
+      "side": 1,
+      "message": "i\u0027d be somewhat inclined to mark these with `_` prefixes to indicate we don\u0027t expect them to be used outside the module",
+      "revId": "7bc91674b7899bb2e8dff02c74646925d1e35071",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "587bb995_fe16b2e5",
+        "filename": "repo_logging.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-06T16:59:23Z",
+      "side": 1,
+      "message": "add class docstring please",
+      "revId": "7bc91674b7899bb2e8dff02c74646925d1e35071",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8499344d_5dbbb02b",
+        "filename": "repo_logging.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-06T16:59:23Z",
+      "side": 1,
+      "message": "```suggestion\n        super().error(\"\\n\".join(str(e) for e in errors))\n```\n\njoin takes an iterable, so pass it a generator rather than constructing a list",
+      "revId": "7bc91674b7899bb2e8dff02c74646925d1e35071",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
