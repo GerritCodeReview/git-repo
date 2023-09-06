@@ -15,7 +15,7 @@
 """Logic for printing user-friendly logs in repo."""
 
 import logging
-from typing import Any, List
+from typing import List
 
 from color import Coloring
 
@@ -23,16 +23,7 @@ from color import Coloring
 SEPARATOR = "=" * 80
 
 
-class LogColoring(Coloring):
-    """Coloring outstream for logging."""
-
-    def __init__(self, config):
-        super().__init__(config, "logs")
-        self.error = self.colorer("error", fg="red")
-        self.warning = self.colorer("warn", fg="yellow")
-
-
-class ConfigMock:
+class _ConfigMock:
     """Default coloring config to use when Logging.config is not set."""
 
     def __init__(self):
@@ -42,28 +33,45 @@ class ConfigMock:
         return self.default_values.get(x, None)
 
 
+class _LogColoring(Coloring):
+    """Coloring outstream for logging."""
+
+    def __init__(self, config):
+        super().__init__(config, "logs")
+        self.error = self.colorer("error", fg="red")
+        self.warning = self.colorer("warn", fg="yellow")
+        self.levelMap = {
+            "WARNING": self.warning,
+            "ERROR": self.error,
+        }
+
+
+class _LogColoringFormatter(logging.Formatter):
+    """Coloring formatter for logging."""
+
+    def __init__(self, config=None, *args, **kwargs):
+        self.config = config if config else _ConfigMock()
+        self.colorer = _LogColoring(self.config)
+        super().__init__(*args, **kwargs)
+
+    def format(self, record):
+        """Formats |record| with color."""
+        msg = super().format(record)
+        colorer = self.colorer.levelMap.get(record.levelname)
+        return msg if not colorer else colorer(msg)
+
+
 class RepoLogger(logging.Logger):
     """Repo Logging Module."""
 
     def __init__(self, name: str, config=None, **kwargs):
         super().__init__(name, **kwargs)
-        self.config = config if config else ConfigMock()
-        self.colorer = LogColoring(self.config)
-
-    def error(self, msg: Any, *args, **kwargs):
-        """Print and aggregate error-level logs."""
-        colored_error = self.colorer.error(str(msg), *args)
-        super().error(colored_error, **kwargs)
-
-    def warning(self, msg: Any, *args, **kwargs):
-        """Print warning-level logs with coloring."""
-        colored_warning = self.colorer.warning(str(msg), *args)
-        super().warning(colored_warning, **kwargs)
+        handler = logging.StreamHandler()
+        handler.setFormatter(_LogColoringFormatter(config))
+        self.addHandler(handler)
 
     def log_aggregated_errors(self, errors: List[Exception]):
         """Print all aggregated logs."""
-        super().error(self.colorer.error(SEPARATOR))
-        super().error(
-            self.colorer.error("Repo command failed due to following errors:")
-        )
-        super().error("\n".join(map(str, errors)))
+        super().error(SEPARATOR)
+        super().error("Repo command failed due to following errors:")
+        super().error("\n".join(str(e) for e in errors))
