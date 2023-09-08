@@ -69,6 +69,24 @@
       "parentUuid": "3658214d_fb1728f4",
       "revId": "7bf4e32c79a10e3b33604d040d112432f19eae5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "047176c7_e3b26577",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-08T22:38:53Z",
+      "side": 1,
+      "message": "you could make an argument that, for the user configs, we should be respecting XDG for locating a cache dir and saving the cache there.  but that\u0027s not an argument for \"don\u0027t cache the user config\".\n\nhowever, for the user gitconfig, you could argue about not caching the result because it breaks include tracking.",
+      "parentUuid": "d1e53536_47c247eb",
+      "revId": "7bf4e32c79a10e3b33604d040d112432f19eae5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
