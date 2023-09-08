@@ -21,7 +21,7 @@ import re
 import ssl
 import subprocess
 import sys
-from typing import Union
+from typing import Optional
 import urllib.error
 import urllib.request
 
@@ -120,7 +120,7 @@ class GitConfig(object):
             return self.defaults.Has(name, include_defaults=True)
         return False
 
-    def GetInt(self, name: str) -> Union[int, None]:
+    def GetInt(self, name: str) -> Optional[int]:
         """Returns an integer from the configuration file.
 
         This follows the git config syntax.
@@ -177,7 +177,7 @@ class GitConfig(object):
             config_dict[key] = self.GetString(key)
         return config_dict
 
-    def GetBoolean(self, name: str) -> Union[str, None]:
+    def GetBoolean(self, name: str) -> Optional[bool]:
         """Returns a boolean from the configuration file.
 
         Returns:
@@ -205,7 +205,7 @@ class GitConfig(object):
             value = "true" if value else "false"
         self.SetString(name, value)
 
-    def GetString(self, name: str, all_keys: bool = False) -> Union[str, None]:
+    def GetString(self, name: str, all_keys: bool = False) -> Optional[str]:
         """Get the first value for a key, or None if it is not defined.
 
         This configuration file is used first, if the key is not
