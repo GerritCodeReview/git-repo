@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a13af831_0b49a01f",
+        "filename": "git_config.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-08T22:40:55Z",
+      "side": 1,
+      "message": "XDG logic should be hoisted to a dedicated module.  this isn\u0027t the only file we load out of ~/.  we want all of them to respect XDG layout.\n\ni would model the API on the standard https://pypi.org/project/xdg-base-dirs/ module.",
+      "revId": "ac11679790486a645503da659bfaff0a21c3dcf2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
