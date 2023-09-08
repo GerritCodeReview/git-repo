@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fd93d21_b0277090",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-08T21:44:32Z",
+      "side": 1,
+      "message": "i strongly doubt the veracity of this statement.  you need to provide data.",
+      "revId": "7bf4e32c79a10e3b33604d040d112432f19eae5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3658214d_fb1728f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-08T21:44:32Z",
+      "side": 1,
+      "message": "the cache is used in way more places than the user\u0027s home dir.  it\u0027s used in every single git project checked out by the manifest.  that\u0027s easily 1000 calls in CrOS or Android.",
+      "revId": "7bf4e32c79a10e3b33604d040d112432f19eae5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
