@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5c4aade_c5ff2eb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1150568
+      },
+      "writtenOn": "2023-09-08T03:36:58Z",
+      "side": 1,
+      "message": "Hi Jason,\nI am not use to contributing in git-repo.\n\nPlease let me know how I can make this CL better.\n\nI run the test locally and fix the one I had an impact on, but somehow the bot still found some failure.\nI am unable to understand what to do to fix them",
+      "revId": "a71d0cddb70941b0cb3213df5c6136d2dffbdb2b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
