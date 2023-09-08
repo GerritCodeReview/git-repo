@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23c00b4e_dab0c88c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1150568
+      },
+      "writtenOn": "2023-09-08T21:41:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e8d5a5e7_91e4b0de",
+      "revId": "dce80652c8f99f8e0b480c4cd4d1697466cd8b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d49ec30c_a3d47809",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-09-08T21:37:06Z",
       "side": 1,
       "message": "period at the end",
+      "revId": "dce80652c8f99f8e0b480c4cd4d1697466cd8b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "072159cd_2e7d9b01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1150568
+      },
+      "writtenOn": "2023-09-08T21:41:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d49ec30c_a3d47809",
       "revId": "dce80652c8f99f8e0b480c4cd4d1697466cd8b07",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b66b491_6b797298",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1150568
+      },
+      "writtenOn": "2023-09-08T21:41:46Z",
+      "side": 1,
+      "message": "I did one better and remove all the Union",
+      "parentUuid": "27e98e67_895d379a",
+      "revId": "dce80652c8f99f8e0b480c4cd4d1697466cd8b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3e4b6ded_2ae6527d",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-09-08T21:37:06Z",
       "side": 1,
       "message": "```suggestion\n    def GetBoolean(self, name: str) -\u003e Optional[bool]:\n```",
+      "revId": "dce80652c8f99f8e0b480c4cd4d1697466cd8b07",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3e3481b_339d00d7",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1150568
+      },
+      "writtenOn": "2023-09-08T21:41:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e4b6ded_2ae6527d",
       "revId": "dce80652c8f99f8e0b480c4cd4d1697466cd8b07",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
