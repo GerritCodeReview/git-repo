@@ -23,7 +23,7 @@ import git_config
 
 def fixture(*paths):
     """Return a path relative to test/fixtures."""
-    return os.path.join(os.path.dirname(__file__), "fixtures", *paths)
+    return [os.path.join(os.path.dirname(__file__), "fixtures", *paths)]
 
 
 class GitConfigReadOnlyTests(unittest.TestCase):
@@ -112,7 +112,7 @@ class GitConfigReadWriteTests(unittest.TestCase):
 
     def get_config(self):
         """Get a new GitConfig instance."""
-        return git_config.GitConfig(self.tmpfile.name)
+        return git_config.GitConfig([self.tmpfile.name])
 
     def test_SetString(self):
         """Test SetString behavior."""
