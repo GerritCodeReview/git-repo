@@ -33,7 +33,6 @@ from git_refs import R_CHANGES
 from git_refs import R_HEADS
 from git_refs import R_TAGS
 import platform_utils
-from repo_trace import Trace
 
 
 # Prefix that is prepended to all the keys of SyncAnalysisState's data
@@ -79,7 +78,7 @@ class GitConfig(object):
     @classmethod
     def ForSystem(cls):
         if cls._ForSystem is None:
-            cls._ForSystem = cls(configfile=cls._SYSTEM_CONFIG)
+            cls._ForSystem = cls(configfile=[cls._SYSTEM_CONFIG])
         return cls._ForSystem
 
     @classmethod
@@ -90,13 +89,15 @@ class GitConfig(object):
 
     @staticmethod
     def _getUserConfig():
-        return os.path.expanduser("~/.gitconfig")
+        xdg_config = os.path.join(os.environ.get('XDG_CONFIG_HOME', os.path.expanduser('~/.config')), "git/config")
+        home_config = os.path.expanduser("~/.gitconfig")
+        return [xdg_config, home_config]
 
     @classmethod
     def ForRepository(cls, gitdir, defaults=None):
-        return cls(configfile=os.path.join(gitdir, "config"), defaults=defaults)
+        return cls(configfile=[os.path.join(gitdir, "config")], defaults=defaults)
 
-    def __init__(self, configfile, defaults=None, jsonFile=None):
+    def __init__(self, configfile: list[str], defaults=None, jsonFile=None):
         self.file = configfile
         self.defaults = defaults
         self._cache_dict = None
@@ -107,8 +108,8 @@ class GitConfig(object):
         self._json = jsonFile
         if self._json is None:
             self._json = os.path.join(
-                os.path.dirname(self.file),
-                ".repo_" + os.path.basename(self.file) + ".json",
+                os.path.dirname(self.file[0]),
+                ".repo_" + os.path.basename(self.file[0]) + ".json",
             )
 
     def ClearCache(self):
@@ -180,7 +181,7 @@ class GitConfig(object):
             config_dict[key] = self.GetString(key)
         return config_dict
 
-    def GetBoolean(self, name: str) -> Union[str, None]:
+    def GetBoolean(self, name: str) -> Union[bool, None]:
         """Returns a boolean from the configuration file.
 
         Returns:
@@ -249,7 +250,8 @@ class GitConfig(object):
         if value is None:
             if old:
                 del self._cache[key]
-                self._do("--unset-all", name)
+                for f in self.file:
+                    self._do(f, "--unset-all", name)
 
         elif isinstance(value, list):
             if len(value) == 0:
@@ -260,13 +262,16 @@ class GitConfig(object):
 
             elif old != value:
                 self._cache[key] = list(value)
-                self._do("--replace-all", name, value[0])
+                for f in self.file:
+                    self._do(f, "--replace-all", name, value[0])
                 for i in range(1, len(value)):
-                    self._do("--add", name, value[i])
+                    for f in self.file:
+                        self._do(f, "--add", name, value[i])
 
         elif len(old) != 1 or old[0] != value:
             self._cache[key] = [value]
-            self._do("--replace-all", name, value)
+            for f in self.file:
+                self._do(f, "--replace-all", name, value)
 
     def GetRemote(self, name):
         """Get the remote.$name.* configuration values as an object."""
@@ -353,23 +358,28 @@ class GitConfig(object):
         return self._cache_dict
 
     def _Read(self):
-        d = self._ReadJson()
-        if d is None:
-            d = self._ReadGit()
-            self._SaveJson(d)
-        return d
+        for f in self.file:
+            if not self._CheckTime(f):
+                self._UpdateJson()
+                break
+        return self._ReadJson()
+
+    def _CheckTime(self, file: str):
+        try:
+            if os.path.getmtime(self._json) <= os.path.getmtime(file):
+                platform_utils.remove(self._json)
+                return False
+        except OSError:
+            return False
+        return True
+
+    def _UpdateJson(self):
+        self._SaveJson(self._ReadGit())
 
     def _ReadJson(self):
         try:
-            if os.path.getmtime(self._json) <= os.path.getmtime(self.file):
-                platform_utils.remove(self._json)
-                return None
-        except OSError:
-            return None
-        try:
-            with Trace(": parsing %s", self.file):
-                with open(self._json) as fd:
-                    return json.load(fd)
+            with open(self._json) as fd:
+                return json.load(fd)
         except (IOError, ValueError):
             platform_utils.remove(self._json, missing_ok=True)
             return None
@@ -389,29 +399,30 @@ class GitConfig(object):
 
         """
         c = {}
-        if not os.path.exists(self.file):
-            return c
+        for f in self.file:
+            if not os.path.exists(f):
+               continue
 
-        d = self._do("--null", "--list")
-        for line in d.rstrip("\0").split("\0"):
-            if "\n" in line:
-                key, val = line.split("\n", 1)
-            else:
-                key = line
-                val = None
+            d = self._do(f, "--null", "--list")
+            for line in d.rstrip("\0").split("\0"):
+                if "\n" in line:
+                    key, val = line.split("\n", 1)
+                else:
+                    key = line
+                    val = None
 
-            if key in c:
-                c[key].append(val)
-            else:
-                c[key] = [val]
+                if key in c:
+                    c[key].append(val)
+                else:
+                    c[key] = [val]
 
         return c
 
-    def _do(self, *args):
-        if self.file == self._SYSTEM_CONFIG:
+    def _do(self, file, *args):
+        if file == self._SYSTEM_CONFIG:
             command = ["config", "--system", "--includes"]
         else:
-            command = ["config", "--file", self.file, "--includes"]
+            command = ["config", "--file", file, "--includes"]
         command.extend(args)
 
         p = GitCommand(None, command, capture_stdout=True, capture_stderr=True)
@@ -726,7 +737,7 @@ class Remote(object):
 class Branch(object):
     """Configuration options related to a single branch."""
 
-    def __init__(self, config, name):
+    def __init__(self, config:GitConfig, name):
         self._config = config
         self.name = name
         self.merge = self._Get("merge")
@@ -754,7 +765,7 @@ class Branch(object):
             self._Set("merge", self.merge)
 
         else:
-            with open(self._config.file, "a") as fd:
+            with open(self._config.file[0], "a") as fd:
                 fd.write('[branch "%s"]\n' % self.name)
                 if self.remote:
                     fd.write("\tremote = %s\n" % self.remote.name)
