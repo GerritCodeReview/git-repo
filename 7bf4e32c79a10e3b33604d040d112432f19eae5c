@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "93bfe348_b1d8dd29",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1150568
+      },
+      "writtenOn": "2023-09-08T21:50:38Z",
+      "side": 1,
+      "message": "I was thinking about only one git config, for which the cost is negligeable.\nI wasn\u0027t thinking about the 1000 calls accross all local git folders",
+      "parentUuid": "1fd93d21_b0277090",
+      "revId": "7bf4e32c79a10e3b33604d040d112432f19eae5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3658214d_fb1728f4",
         "filename": "/COMMIT_MSG",
         "patchSetId": 4
@@ -31,6 +49,24 @@
       "writtenOn": "2023-09-08T21:44:32Z",
       "side": 1,
       "message": "the cache is used in way more places than the user\u0027s home dir.  it\u0027s used in every single git project checked out by the manifest.  that\u0027s easily 1000 calls in CrOS or Android.",
+      "revId": "7bf4e32c79a10e3b33604d040d112432f19eae5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1e53536_47c247eb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1150568
+      },
+      "writtenOn": "2023-09-08T21:50:38Z",
+      "side": 1,
+      "message": "Oh, right.\nI was surprised to see a file in my home directory related to repo and wanted to understand why.\n\nShould we keep the json only for local git and remove it for global or system wide git ?",
+      "parentUuid": "3658214d_fb1728f4",
       "revId": "7bf4e32c79a10e3b33604d040d112432f19eae5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
