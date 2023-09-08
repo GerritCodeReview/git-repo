@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d0963d_d372ce36",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-08T21:42:24Z",
+      "side": 1,
+      "message": "you should rebase this onto the latest branch so it can merge",
+      "revId": "fb25e61048ce9e9f02f9fcf626de54a08f5ee148",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
