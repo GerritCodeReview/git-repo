@@ -16,7 +16,6 @@ import contextlib
 import datetime
 import errno
 import http.client
-import json
 import os
 import re
 import ssl
@@ -97,20 +96,13 @@ class GitConfig(object):
     def ForRepository(cls, gitdir, defaults=None):
         return cls(configfile=[os.path.join(gitdir, "config")], defaults=defaults)
 
-    def __init__(self, configfile: list[str], defaults=None, jsonFile=None):
+    def __init__(self, configfile: list[str], defaults=None):
         self.file = configfile
         self.defaults = defaults
         self._cache_dict = None
         self._section_dict = None
         self._remotes = {}
         self._branches = {}
-
-        self._json = jsonFile
-        if self._json is None:
-            self._json = os.path.join(
-                os.path.dirname(self.file[0]),
-                ".repo_" + os.path.basename(self.file[0]) + ".json",
-            )
 
     def ClearCache(self):
         """Clear the in-memory cache of config."""
@@ -354,42 +346,8 @@ class GitConfig(object):
     @property
     def _cache(self):
         if self._cache_dict is None:
-            self._cache_dict = self._Read()
+            self._cache_dict = self._ReadGit()
         return self._cache_dict
-
-    def _Read(self):
-        for f in self.file:
-            if not self._CheckTime(f):
-                self._UpdateJson()
-                break
-        return self._ReadJson()
-
-    def _CheckTime(self, file: str):
-        try:
-            if os.path.getmtime(self._json) <= os.path.getmtime(file):
-                platform_utils.remove(self._json)
-                return False
-        except OSError:
-            return False
-        return True
-
-    def _UpdateJson(self):
-        self._SaveJson(self._ReadGit())
-
-    def _ReadJson(self):
-        try:
-            with open(self._json) as fd:
-                return json.load(fd)
-        except (IOError, ValueError):
-            platform_utils.remove(self._json, missing_ok=True)
-            return None
-
-    def _SaveJson(self, cache):
-        try:
-            with open(self._json, "w") as fd:
-                json.dump(cache, fd, indent=2)
-        except (IOError, TypeError):
-            platform_utils.remove(self._json, missing_ok=True)
 
     def _ReadGit(self):
         """
