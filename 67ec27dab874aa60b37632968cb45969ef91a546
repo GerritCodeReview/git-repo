@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee0cd1f_710180bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1165287
+      },
+      "writtenOn": "2023-09-09T13:57:47Z",
+      "side": 1,
+      "message": "Waiting for the answer to be acknolewged to submit the patch",
+      "revId": "67ec27dab874aa60b37632968cb45969ef91a546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "57098e36_68cc6612",
@@ -14,6 +31,24 @@
       "writtenOn": "2023-09-09T12:07:28Z",
       "side": 1,
       "message": "seems like we could move this above ?\n\n```\ndiff \u003d {\n  \"added\": [toProjects[x] for x in sorted(toKeys)],\n  ...\n```",
+      "revId": "67ec27dab874aa60b37632968cb45969ef91a546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c73c7c33_cccc73c1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2244,
+      "author": {
+        "id": 1165287
+      },
+      "writtenOn": "2023-09-09T13:57:47Z",
+      "side": 1,
+      "message": "Not quite because `toKeys` has a content which is changed over the iterations (\"toKeys.remove(proj)\")",
+      "parentUuid": "57098e36_68cc6612",
       "revId": "67ec27dab874aa60b37632968cb45969ef91a546",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
