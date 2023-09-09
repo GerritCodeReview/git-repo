@@ -51,6 +51,24 @@
       "parentUuid": "57098e36_68cc6612",
       "revId": "67ec27dab874aa60b37632968cb45969ef91a546",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "303a85b9_386c888c",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2244,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-09T21:17:36Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c73c7c33_cccc73c1",
+      "revId": "67ec27dab874aa60b37632968cb45969ef91a546",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
