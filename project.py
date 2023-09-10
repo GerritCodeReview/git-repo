@@ -1443,6 +1443,8 @@ class Project(object):
         rather than the id of the current git object (for example, a tag)
 
         """
+        if ID_RE.match(self.revisionExpr):
+            return self.revisionExpr
         if not self.revisionExpr.startswith(R_TAGS):
             return self.GetRevisionId(self._allrefs)
 
