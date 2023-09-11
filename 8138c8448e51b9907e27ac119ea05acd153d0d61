@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68e416bf_264daa55",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1446,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-11T10:26:50Z",
+      "side": 1,
+      "message": "```suggestion\n        if IsId(self.revisionExpr):\n```",
+      "revId": "8138c8448e51b9907e27ac119ea05acd153d0d61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7d53c6_c54ecb75",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1447,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-11T10:26:50Z",
+      "side": 1,
+      "message": "```suggestion\n        if self.revisionId:\n            return self.revisionId\n```\n\ni think this is actually what we want",
+      "range": {
+        "startLine": 1446,
+        "startChar": 0,
+        "endLine": 1447,
+        "endChar": 36
+      },
+      "revId": "8138c8448e51b9907e27ac119ea05acd153d0d61",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
