@@ -44,7 +44,6 @@ from git_command import GitCommand
 from git_config import GetSchemeFromUrl
 from git_config import GetUrlCookieFile
 from git_config import GitConfig
-from git_config import ID_RE
 from git_config import IsId
 from git_refs import GitRefs
 from git_refs import HEAD
@@ -1354,10 +1353,8 @@ class Project(object):
         remote_fetched = False
         if not (
             optimized_fetch
-            and (
-                ID_RE.match(self.revisionExpr)
-                and self._CheckForImmutableRevision()
-            )
+            and IsId(self.revisionExpr)
+            and self._CheckForImmutableRevision()
         ):
             remote_fetched = True
             try:
@@ -1674,7 +1671,7 @@ class Project(object):
             )
 
         branch.remote = self.GetRemote()
-        if not ID_RE.match(self.revisionExpr):
+        if not IsId(self.revisionExpr):
             # In case of manifest sync the revisionExpr might be a SHA1.
             branch.merge = self.revisionExpr
             if not branch.merge.startswith("refs/"):
@@ -1924,9 +1921,7 @@ class Project(object):
         branch = self.GetBranch(name)
         branch.remote = self.GetRemote()
         branch.merge = branch_merge
-        if not branch.merge.startswith("refs/") and not ID_RE.match(
-            branch_merge
-        ):
+        if not branch.merge.startswith("refs/") and not IsId(branch_merge):
             branch.merge = R_HEADS + branch_merge
 
         if revision is None:
@@ -2077,7 +2072,7 @@ class Project(object):
                 )
                 b.Wait()
             finally:
-                if ID_RE.match(old):
+                if IsId(old):
                     self.bare_git.DetachHead(old)
                 else:
                     self.bare_git.SetHead(old)
@@ -2379,7 +2374,6 @@ class Project(object):
         retry_sleep_initial_sec=4.0,
         retry_exp_factor=2.0,
     ) -> bool:
-        is_sha1 = False
         tag_name = None
         # The depth should not be used when fetching to a mirror because
         # it will result in a shallow repository that cannot be cloned or
@@ -2391,8 +2385,7 @@ class Project(object):
         if depth:
             current_branch_only = True
 
-        if ID_RE.match(self.revisionExpr) is not None:
-            is_sha1 = True
+        is_sha1 = bool(IsId(self.revisionExpr))
 
         if current_branch_only:
             if self.revisionExpr.startswith(R_TAGS):
@@ -2419,7 +2412,7 @@ class Project(object):
                 # * otherwise, fetch all branches to make sure we end up with
                 #   the specific commit.
                 if self.upstream:
-                    current_branch_only = not ID_RE.match(self.upstream)
+                    current_branch_only = not IsId(self.upstream)
                 else:
                     current_branch_only = False
 
