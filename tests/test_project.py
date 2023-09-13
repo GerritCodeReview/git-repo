@@ -507,7 +507,7 @@ class ManifestPropertiesFetchedCorrectly(unittest.TestCase):
             self.assertFalse(fakeproj.partial_clone)
 
             fakeproj.config.SetString("repo.depth", "48")
-            self.assertEqual(fakeproj.depth, "48")
+            self.assertEqual(fakeproj.depth, 48)
 
             fakeproj.config.SetString("repo.clonefilter", "blob:limit=10M")
             self.assertEqual(fakeproj.clone_filter, "blob:limit=10M")
