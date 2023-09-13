@@ -4562,13 +4562,16 @@ class ManifestProject(MetaProject):
         # Opt.depth will be non-None if user actually passed --depth to repo
         # init.
         if depth is not None:
-            if depth > 0:
-                # Positive values will set the depth.
-                depth = str(depth)
-            else:
-                # Negative numbers will clear the depth; passing None to
-                # SetString will do that.
+            try:
+                if int(depth) > 0:
+                    # Positive values will set the depth.
+                    depth = str(depth)
+                else:
+                    # Negative numbers will clear the depth; passing None to
+                    # SetString will do that.
+                    depth = None
+            except ValueError:
                 depth = None
-
+                _warn("depth: invalid integer value: '%s'", depth)
             # We store the depth in the main manifest project.
             self.config.SetString("repo.depth", depth)
