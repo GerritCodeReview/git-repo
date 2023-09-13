@@ -3,6 +3,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fa8650e2_cff18676",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-13T14:30:48Z",
+      "side": 1,
+      "message": "the prefix should be `project:` to align with the module",
+      "revId": "43a582acb03eb9bada745cd8360c8a2f03e4116f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d91a71ef_b2a1d958",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-13T14:30:48Z",
+      "side": 1,
+      "message": "i think we use `Fix` not `Fix issue`.  we prob should clarify that in our docs.",
+      "revId": "43a582acb03eb9bada745cd8360c8a2f03e4116f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7bc6c655_61ed3894",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
