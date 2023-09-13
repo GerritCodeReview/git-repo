@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "dad31c69_b6f7e756",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-09-13T16:59:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8368236f_0dcf859f",
+      "revId": "2f7f29d3f66e5b847adb531056aecb4fdc8e9cce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "19a28e01_8a74828a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea5db928_13d6ca2b",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-09-13T16:59:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2e7ff9a_84cd6c2a",
+      "revId": "2f7f29d3f66e5b847adb531056aecb4fdc8e9cce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a1b39cb_002bed0a",
@@ -65,6 +101,24 @@
       "writtenOn": "2023-09-13T16:05:37Z",
       "side": 1,
       "message": "same here",
+      "revId": "2f7f29d3f66e5b847adb531056aecb4fdc8e9cce",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce175299_36305d84",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 514,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-09-13T16:59:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2a1b39cb_002bed0a",
       "revId": "2f7f29d3f66e5b847adb531056aecb4fdc8e9cce",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
