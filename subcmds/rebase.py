@@ -17,6 +17,10 @@ import sys
 from color import Coloring
 from command import Command
 from git_command import GitCommand
+from repo_logging import RepoLogger
+
+
+logger = RepoLogger(__file__)
 
 
 class RebaseColoring(Coloring):
@@ -104,17 +108,15 @@ branch but need to incorporate new upstream changes "underneath" them.
         one_project = len(all_projects) == 1
 
         if opt.interactive and not one_project:
-            print(
-                "error: interactive rebase not supported with multiple "
-                "projects",
-                file=sys.stderr,
+            logger.error(
+                "error: interactive rebase not supported with multiple projects"
             )
+
             if len(args) == 1:
-                print(
-                    "note: project %s is mapped to more than one path"
-                    % (args[0],),
-                    file=sys.stderr,
+                logger.warn(
+                    "note: project %s is mapped to more than one path", args[0]
                 )
+
             return 1
 
         # Setup the common git rebase args that we use for all projects.
@@ -145,10 +147,9 @@ branch but need to incorporate new upstream changes "underneath" them.
             cb = project.CurrentBranch
             if not cb:
                 if one_project:
-                    print(
-                        "error: project %s has a detached HEAD"
-                        % _RelPath(project),
-                        file=sys.stderr,
+                    logger.error(
+                        "error: project %s has a detached HEAD",
+                        _RelPath(project),
                     )
                     return 1
                 # Ignore branches with detached HEADs.
@@ -157,10 +158,9 @@ branch but need to incorporate new upstream changes "underneath" them.
             upbranch = project.GetBranch(cb)
             if not upbranch.LocalMerge:
                 if one_project:
-                    print(
-                        "error: project %s does not track any remote branches"
-                        % _RelPath(project),
-                        file=sys.stderr,
+                    logger.error(
+                        "error: project %s does not track any remote branches",
+                        _RelPath(project),
                     )
                     return 1
                 # Ignore branches without remotes.
