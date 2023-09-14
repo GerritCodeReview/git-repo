@@ -29,10 +29,12 @@ from git_command import GitCommand
 from git_refs import R_HEADS
 from hooks import RepoHook
 from project import ReviewableBranch
+from repo_logging import RepoLogger
 from subcmds.sync import LocalSyncState
 
 
 _DEFAULT_UNUSUAL_COMMIT_THRESHOLD = 5
+logger = RepoLogger(__file__)
 
 
 class UploadExitError(SilentRepoExitError):
@@ -70,16 +72,16 @@ def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
     # If any branch has many commits, prompt the user.
     if many_commits:
         if len(branches) > 1:
-            print(
+            logger.warn(
                 "ATTENTION: One or more branches has an unusually high number "
                 "of commits."
             )
         else:
-            print(
+            logger.warn(
                 "ATTENTION: You are uploading an unusually high number of "
                 "commits."
             )
-        print(
+        logger.warn(
             "YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across "
             "branches?)"
         )
@@ -93,7 +95,7 @@ def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
 
 def _die(fmt, *args):
     msg = fmt % args
-    print("error: %s" % msg, file=sys.stderr)
+    logger.error("error: %s", msg)
     raise UploadExitError(msg)
 
 
@@ -748,16 +750,13 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             for result in results:
                 project, avail = result
                 if avail is None:
-                    print(
+                    logger.error(
                         'repo: error: %s: Unable to upload branch "%s". '
                         "You might be able to fix the branch by running:\n"
-                        "  git branch --set-upstream-to m/%s"
-                        % (
-                            project.RelPath(local=opt.this_manifest_only),
-                            project.CurrentBranch,
-                            project.manifest.branch,
-                        ),
-                        file=sys.stderr,
+                        "  git branch --set-upstream-to m/%s",
+                        project.RelPath(local=opt.this_manifest_only),
+                        project.CurrentBranch,
+                        project.manifest.branch,
                     )
                 elif avail:
                     pending.append(result)
@@ -772,14 +771,11 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
 
         if not pending:
             if opt.branch is None:
-                print(
-                    "repo: error: no branches ready for upload", file=sys.stderr
-                )
+                logger.error("repo: error: no branches ready for upload")
             else:
-                print(
-                    'repo: error: no branches named "%s" ready for upload'
-                    % (opt.branch,),
-                    file=sys.stderr,
+                logger.error(
+                    'repo: error: no branches named "%s" ready for upload',
+                    opt.branch,
                 )
             return 1
 
@@ -809,10 +805,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 project_list=pending_proj_names, worktree_list=pending_worktrees
             ):
                 if LocalSyncState(manifest).IsPartiallySynced():
-                    print(
+                    logger.error(
                         "Partially synced tree detected. Syncing all projects "
-                        "may resolve issues you're seeing.",
-                        file=sys.stderr,
+                        "may resolve issues you're seeing."
                     )
                 ret = 1
         if ret:

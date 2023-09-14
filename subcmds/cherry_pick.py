@@ -18,9 +18,11 @@ import sys
 from command import Command
 from error import GitError
 from git_command import GitCommand
+from repo_logging import RepoLogger
 
 
 CHANGE_ID_RE = re.compile(r"^\s*Change-Id: I([0-9a-f]{40})\s*$")
+logger = RepoLogger(__file__)
 
 
 class CherryPick(Command):
@@ -52,7 +54,7 @@ change id will be added.
         try:
             p.Wait()
         except GitError:
-            print(p.stderr, file=sys.stderr)
+            logger.error(p.stderr)
             raise
 
         sha1 = p.stdout.strip()
@@ -67,9 +69,7 @@ change id will be added.
         try:
             p.Wait()
         except GitError:
-            print(
-                "error: Failed to retrieve old commit message", file=sys.stderr
-            )
+            logger.error("error: Failed to retrieve old commit message")
             raise
 
         old_msg = self._StripHeader(p.stdout)
@@ -85,14 +85,13 @@ change id will be added.
         try:
             p.Wait()
         except GitError as e:
-            print(str(e))
-            print(
+            logger.error(e)
+            logger.warn(
                 "NOTE: When committing (please see above) and editing the "
                 "commit message, please remove the old Change-Id-line and "
                 "add:"
             )
-            print(self._GetReference(sha1), file=sys.stderr)
-            print(file=sys.stderr)
+            logger.error(self._GetReference(sha1))
             raise
 
         if p.stdout:
@@ -115,10 +114,7 @@ change id will be added.
         try:
             p.Wait()
         except GitError:
-            print(
-                "error: Failed to update commit message",
-                file=sys.stderr,
-            )
+            logger.error("error: Failed to update commit message")
             raise
 
     def _IsChangeId(self, line):

@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import functools
-import sys
 from typing import NamedTuple
 
 from command import Command
@@ -22,6 +21,10 @@ from error import GitError
 from error import RepoExitError
 from progress import Progress
 from project import Project
+from repo_logging import RepoLogger
+
+
+logger = RepoLogger(__file__)
 
 
 class CheckoutBranchResult(NamedTuple):
@@ -99,12 +102,9 @@ The command is equivalent to:
 
         if err_projects:
             for p in err_projects:
-                print(
-                    "error: %s/: cannot checkout %s" % (p.relpath, nb),
-                    file=sys.stderr,
-                )
+                logger.error("error: %s/: cannot checkout %s", p.relpath, nb)
             raise CheckoutCommandError(aggregate_errors=err)
         elif not success:
             msg = f"error: no project has branch {nb}"
-            print(msg, file=sys.stderr)
+            logger.error(msg)
             raise MissingBranchError(msg)
