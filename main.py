@@ -32,6 +32,8 @@ import textwrap
 import time
 import urllib.request
 
+from repo_logging import RepoLogger
+
 
 try:
     import kerberos
@@ -69,6 +71,9 @@ from wrapper import Wrapper
 from wrapper import WrapperPath
 
 
+logger = RepoLogger(__file__)
+
+
 # NB: These do not need to be kept in sync with the repo launcher script.
 # These may be much newer as it allows the repo launcher to roll between
 # different repo releases while source versions might require a newer python.
@@ -82,25 +87,22 @@ MIN_PYTHON_VERSION_SOFT = (3, 6)
 MIN_PYTHON_VERSION_HARD = (3, 6)
 
 if sys.version_info.major < 3:
-    print(
+    logger.error(
         "repo: error: Python 2 is no longer supported; "
-        "Please upgrade to Python {}.{}+.".format(*MIN_PYTHON_VERSION_SOFT),
-        file=sys.stderr,
+        "Please upgrade to Python %d.%d+.", *MIN_PYTHON_VERSION_SOFT
     )
     sys.exit(1)
 else:
     if sys.version_info < MIN_PYTHON_VERSION_HARD:
-        print(
+        logger.error(
             "repo: error: Python 3 version is too old; "
-            "Please upgrade to Python {}.{}+.".format(*MIN_PYTHON_VERSION_SOFT),
-            file=sys.stderr,
+            "Please upgrade to Python %d.%d+.", *MIN_PYTHON_VERSION_SOFT
         )
         sys.exit(1)
     elif sys.version_info < MIN_PYTHON_VERSION_SOFT:
-        print(
+        logger.error(
             "repo: warning: your Python 3 version is no longer supported; "
-            "Please upgrade to Python {}.{}+.".format(*MIN_PYTHON_VERSION_SOFT),
-            file=sys.stderr,
+            "Please upgrade to Python %d.%d+.", *MIN_PYTHON_VERSION_SOFT
         )
 
 KEYBOARD_INTERRUPT_EXIT = 128 + signal.SIGINT
@@ -309,7 +311,7 @@ class _Repo(object):
             )
 
         if Wrapper().gitc_parse_clientdir(os.getcwd()):
-            print("GITC is not supported.", file=sys.stderr)
+            logger.error("GITC is not supported.")
             raise GitcUnsupportedError()
 
         try:
@@ -322,18 +324,16 @@ class _Repo(object):
                 git_event_log=git_trace2_event_log,
             )
         except KeyError:
-            print(
-                "repo: '%s' is not a repo command.  See 'repo help'." % name,
-                file=sys.stderr,
+            logger.error(
+                "repo: '%s' is not a repo command.  See 'repo help'.", name
             )
             return 1
 
         Editor.globalConfig = cmd.client.globalConfig
 
         if not isinstance(cmd, MirrorSafeCommand) and cmd.manifest.IsMirror:
-            print(
-                "fatal: '%s' requires a working directory" % name,
-                file=sys.stderr,
+            logger.error(
+                "fatal: '%s' requires a working directory", name
             )
             return 1
 
@@ -341,13 +341,11 @@ class _Repo(object):
             copts, cargs = cmd.OptionParser.parse_args(argv)
             copts = cmd.ReadEnvironmentOptions(copts)
         except NoManifestException as e:
-            print(
-                "error: in `%s`: %s" % (" ".join([name] + argv), str(e)),
-                file=sys.stderr,
+            logger.error(
+                "error: in `%s`: %s", " ".join([name] + argv), e
             )
-            print(
-                "error: manifest missing or unreadable -- please run init",
-                file=sys.stderr,
+            logger.error(
+                "error: manifest missing or unreadable -- please run init"
             )
             return 1
 
@@ -453,34 +451,29 @@ class _Repo(object):
             ManifestInvalidRevisionError,
             NoManifestException,
         ) as e:
-            print(
-                "error: in `%s`: %s" % (" ".join([name] + argv), str(e)),
-                file=sys.stderr,
+            logger.error(
+                "error: in `%s`: %s", " ".join([name] + argv), e
             )
             if isinstance(e, NoManifestException):
-                print(
-                    "error: manifest missing or unreadable -- please run init",
-                    file=sys.stderr,
+                logger.error(
+                    "error: manifest missing or unreadable -- please run init"
                 )
             result = e.exit_code
         except NoSuchProjectError as e:
             if e.name:
-                print("error: project %s not found" % e.name, file=sys.stderr)
+                logger.error("error: project %s not found", e.name)
             else:
-                print("error: no project in current directory", file=sys.stderr)
+                logger.error("error: no project in current directory")
             result = e.exit_code
         except InvalidProjectGroupsError as e:
             if e.name:
-                print(
-                    "error: project group must be enabled for project %s"
-                    % e.name,
-                    file=sys.stderr,
+                logger.error(
+                    "error: project group must be enabled for project %s", e.name
                 )
             else:
-                print(
+                logger.error(
                     "error: project group must be enabled for the project in "
-                    "the current directory",
-                    file=sys.stderr,
+                    "the current directory"
                 )
             result = e.exit_code
         except SystemExit as e:
@@ -547,7 +540,7 @@ def _CheckWrapperVersion(ver_str, repo_path):
         repo_path = "~/bin/repo"
 
     if not ver_str:
-        print("no --wrapper-version argument", file=sys.stderr)
+        logger.error("no --wrapper-version argument")
         sys.exit(1)
 
     # Pull out the version of the repo launcher we know about to compare.
@@ -556,7 +549,7 @@ def _CheckWrapperVersion(ver_str, repo_path):
 
     exp_str = ".".join(map(str, exp))
     if ver < MIN_REPO_VERSION:
-        print(
+        logger.error(
             """
 repo: error:
 !!! Your version of repo %s is too old.
@@ -565,42 +558,32 @@ repo: error:
 !!! You must upgrade before you can continue:
 
     cp %s %s
-"""
-            % (ver_str, min_str, exp_str, WrapperPath(), repo_path),
-            file=sys.stderr,
-        )
+""", ver_str, min_str, exp_str, WrapperPath(), repo_path)
         sys.exit(1)
 
     if exp > ver:
-        print(
-            "\n... A new version of repo (%s) is available." % (exp_str,),
-            file=sys.stderr,
+        logger.warn(
+            "\n... A new version of repo (%s) is available.", exp_str
         )
         if os.access(repo_path, os.W_OK):
-            print(
+            logger.warn(
                 """\
 ... You should upgrade soon:
     cp %s %s
-"""
-                % (WrapperPath(), repo_path),
-                file=sys.stderr,
-            )
+""", WrapperPath(), repo_path)
         else:
-            print(
+            logger.warn(
                 """\
 ... New version is available at: %s
 ... The launcher is run from: %s
 !!! The launcher is not writable.  Please talk to your sysadmin or distro
 !!! to get an update installed.
-"""
-                % (WrapperPath(), repo_path),
-                file=sys.stderr,
-            )
+""", WrapperPath(), repo_path)
 
 
 def _CheckRepoDir(repo_dir):
     if not repo_dir:
-        print("no --repo-dir argument", file=sys.stderr)
+        logger.error("no --repo-dir argument")
         sys.exit(1)
 
 
@@ -861,18 +844,7 @@ def _Main(argv):
         result = repo._Run(name, gopts, argv) or 0
     except RepoExitError as e:
         if not isinstance(e, SilentRepoExitError):
-            exception_name = type(e).__name__
-            print("fatal: %s" % e, file=sys.stderr)
-            if e.aggregate_errors:
-                print(f"{exception_name} Aggregate Errors")
-                for err in e.aggregate_errors[:MAX_PRINT_ERRORS]:
-                    print(err)
-            if (
-                e.aggregate_errors
-                and len(e.aggregate_errors) > MAX_PRINT_ERRORS
-            ):
-                diff = len(e.aggregate_errors) - MAX_PRINT_ERRORS
-                print(f"+{diff} additional errors ...")
+            logger.log_aggregated_errors(e)
         result = e.exit_code
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)

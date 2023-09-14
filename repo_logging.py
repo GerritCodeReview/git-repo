@@ -15,12 +15,13 @@
 """Logic for printing user-friendly logs in repo."""
 
 import logging
-from typing import List
 
 from color import Coloring
+from error import RepoExitError
 
 
 SEPARATOR = "=" * 80
+MAX_PRINT_ERRORS = 5
 
 
 class _ConfigMock:
@@ -70,8 +71,17 @@ class RepoLogger(logging.Logger):
         handler.setFormatter(_LogColoringFormatter(config))
         self.addHandler(handler)
 
-    def log_aggregated_errors(self, errors: List[Exception]):
+    def log_aggregated_errors(self, err: RepoExitError):
         """Print all aggregated logs."""
-        super().error(SEPARATOR)
-        super().error("Repo command failed due to following errors:")
-        super().error("\n".join(str(e) for e in errors))
+        self.error(SEPARATOR)
+
+        if not err.aggregate_errors:
+            self.error("Repo command failed: %s", type(err).__name__)
+            return
+
+        self.error("Repo command failed due to the following `%s` errors:", type(err).__name__)
+        self.error("\n".join(str(e) for e in err.aggregate_errors[:MAX_PRINT_ERRORS]))
+
+        diff = len(err.aggregate_errors) - MAX_PRINT_ERRORS
+        if diff:
+            self.error("+%d additional errors...", diff)
