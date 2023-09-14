@@ -13,13 +13,16 @@
 # limitations under the License.
 
 import optparse
-import sys
 
 from command import Command
 from command import MirrorSafeCommand
 from error import RepoExitError
+from repo_logging import RepoLogger
 from subcmds.sync import _PostRepoFetch
 from subcmds.sync import _PostRepoUpgrade
+
+
+logger = RepoLogger(__file__)
 
 
 class SelfupdateError(RepoExitError):
@@ -66,7 +69,7 @@ need to be performed by an end-user.
         else:
             result = rp.Sync_NetworkHalf()
             if result.error:
-                print("error: can't update repo", file=sys.stderr)
+                logger.error("error: can't update repo")
                 raise SelfupdateError(aggregate_errors=[result.error])
 
             rp.bare_git.gc("--auto")
