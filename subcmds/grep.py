@@ -24,6 +24,10 @@ from error import InvalidArgumentsError
 from error import SilentRepoExitError
 from git_command import GitCommand
 from project import Project
+from repo_logging import RepoLogger
+
+
+logger = RepoLogger(__file__)
 
 
 class GrepColoring(Coloring):
@@ -371,7 +375,7 @@ contain a line that matches both expressions:
         if opt.revision:
             if "--cached" in cmd_argv:
                 msg = "fatal: cannot combine --cached and --revision"
-                print(msg, file=sys.stderr)
+                logger.error(msg)
                 raise InvalidArgumentsError(msg)
             have_rev = True
             cmd_argv.extend(opt.revision)
@@ -396,5 +400,5 @@ contain a line that matches both expressions:
             sys.exit(0)
         elif have_rev and bad_rev:
             for r in opt.revision:
-                print("error: can't search revision %s" % r, file=sys.stderr)
+                logger.error("error: can't search revision %s", r)
         raise GrepCommandError(aggregate_errors=errors)

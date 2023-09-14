@@ -28,8 +28,10 @@ from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
 from command import WORKER_BATCH_SIZE
 from error import ManifestInvalidRevisionError
+from repo_logging import RepoLogger
 
 
+logger = RepoLogger(__file__)
 _CAN_COLOR = [
     "branch",
     "diff",
@@ -293,10 +295,10 @@ without iterating through the remaining projects.
             rc = rc or errno.EINTR
         except Exception as e:
             # Catch any other exceptions raised
-            print(
-                "forall: unhandled error, terminating the pool: %s: %s"
-                % (type(e).__name__, e),
-                file=sys.stderr,
+            logger.error(
+                "forall: unhandled error, terminating the pool: %s: %s",
+                type(e).__name__,
+                e,
             )
             rc = rc or getattr(e, "errno", 1)
         if rc != 0:
