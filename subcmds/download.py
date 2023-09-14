@@ -19,9 +19,11 @@ from command import Command
 from error import GitError
 from error import NoSuchProjectError
 from error import RepoExitError
+from repo_logging import RepoLogger
 
 
 CHANGE_RE = re.compile(r"^([1-9][0-9]*)(?:[/\.-]([1-9][0-9]*))?$")
+logger = RepoLogger(__file__)
 
 
 class DownloadCommandError(RepoExitError):
@@ -109,21 +111,16 @@ If no project is specified try to use current directory as a project.
                     except NoSuchProjectError:
                         project = None
                     if project not in projects:
-                        print(
+                        logger.error(
                             "error: %s matches too many projects; please "
-                            "re-run inside the project checkout." % (a,),
-                            file=sys.stderr,
+                            "re-run inside the project checkout.",
+                            a,
                         )
                         for project in projects:
-                            print(
-                                "  %s/ @ %s"
-                                % (
-                                    project.RelPath(
-                                        local=opt.this_manifest_only
-                                    ),
-                                    project.revisionExpr,
-                                ),
-                                file=sys.stderr,
+                            logger.error(
+                                "  %s/ @ %s",
+                                project.RelPath(local=opt.this_manifest_only),
+                                project.revisionExpr,
                             )
                         raise NoSuchProjectError()
                 else:
@@ -156,18 +153,21 @@ If no project is specified try to use current directory as a project.
             dl = project.DownloadPatchSet(change_id, ps_id)
 
             if not opt.revert and not dl.commits:
-                print(
-                    "[%s] change %d/%d has already been merged"
-                    % (project.name, change_id, ps_id),
-                    file=sys.stderr,
+                logger.error(
+                    "[%s] change %d/%d has already been merged",
+                    project.name,
+                    change_id,
+                    ps_id,
                 )
                 continue
 
             if len(dl.commits) > 1:
-                print(
-                    "[%s] %d/%d depends on %d unmerged changes:"
-                    % (project.name, change_id, ps_id, len(dl.commits)),
-                    file=sys.stderr,
+                logger.error(
+                    "[%s] %d/%d depends on %d unmerged changes:",
+                    project.name,
+                    change_id,
+                    ps_id,
+                    len(dl.commits),
                 )
                 for c in dl.commits:
                     print("  %s" % (c), file=sys.stderr)
@@ -204,9 +204,10 @@ If no project is specified try to use current directory as a project.
                         project._Checkout(dl.commit)
 
             except GitError:
-                print(
-                    "[%s] Could not complete the %s of %s"
-                    % (project.name, mode, dl.commit),
-                    file=sys.stderr,
+                logger.error(
+                    "[%s] Could not complete the %s of %s",
+                    project.name,
+                    mode,
+                    dl.commit,
                 )
                 raise
