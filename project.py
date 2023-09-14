@@ -56,7 +56,11 @@ import git_superproject
 from git_trace2_event_log import EventLog
 import platform_utils
 import progress
+from repo_logging import RepoLogger
 from repo_trace import Trace
+
+
+logger = RepoLogger(__file__)
 
 
 class SyncNetworkHalfResult(NamedTuple):
@@ -113,16 +117,6 @@ def _lwrite(path, content):
     except OSError:
         platform_utils.remove(lock)
         raise
-
-
-def _error(fmt, *args):
-    msg = fmt % args
-    print("error: %s" % msg, file=sys.stderr)
-
-
-def _warn(fmt, *args):
-    msg = fmt % args
-    print("warn: %s" % msg, file=sys.stderr)
 
 
 def not_rev(r):
@@ -436,7 +430,7 @@ class _CopyFile(object):
                 mode = mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
                 os.chmod(dest, mode)
             except IOError:
-                _error("Cannot copy file %s to %s", src, dest)
+                logger.error("error: Cannot copy file %s to %s", src, dest)
 
 
 class _LinkFile(object):
@@ -471,7 +465,9 @@ class _LinkFile(object):
                         os.makedirs(dest_dir)
                 platform_utils.symlink(relSrc, absDest)
             except IOError:
-                _error("Cannot link file %s to %s", relSrc, absDest)
+                logger.error(
+                    "error: Cannot link file %s to %s", relSrc, absDest
+                )
 
     def _Link(self):
         """Link the self.src & self.dest paths.
@@ -499,8 +495,9 @@ class _LinkFile(object):
             dest = _SafeExpandPath(self.topdir, self.dest)
             # Entity contains a wild card.
             if os.path.exists(dest) and not platform_utils.isdir(dest):
-                _error(
-                    "Link error: src with wildcard, %s must be a directory",
+                logger.error(
+                    "error: Link error: src with wildcard, %s must be a "
+                    "directory",
                     dest,
                 )
             else:
@@ -1201,7 +1198,7 @@ class Project(object):
                 tar.extractall(path=path)
                 return True
         except (IOError, tarfile.TarError) as e:
-            _error("Cannot extract archive %s: %s", tarpath, str(e))
+            logger.error("error: Cannot extract archive %s: %s", tarpath, e)
         return False
 
     def Sync_NetworkHalf(
@@ -1234,10 +1231,7 @@ class Project(object):
                 )
                 msg_args = self.name
                 msg = msg_template % msg_args
-                _error(
-                    msg_template,
-                    msg_args,
-                )
+                logger.error(msg_template, msg_args)
                 return SyncNetworkHalfResult(
                     False, SyncNetworkHalfError(msg, project=self.name)
                 )
@@ -1250,7 +1244,7 @@ class Project(object):
             try:
                 self._FetchArchive(tarpath, cwd=topdir)
             except GitError as e:
-                _error("%s", e)
+                logger.error("error: %s", e)
                 return SyncNetworkHalfResult(False, e)
 
             # From now on, we only need absolute tarpath.
@@ -1267,7 +1261,7 @@ class Project(object):
             try:
                 platform_utils.remove(tarpath)
             except OSError as e:
-                _warn("Cannot remove archive %s: %s", tarpath, str(e))
+                logger.warn("warn: Cannot remove archive %s: %s", tarpath, e)
             self._CopyAndLinkFiles()
             return SyncNetworkHalfResult(True)
 
@@ -1762,17 +1756,17 @@ class Project(object):
         """
         if self.IsDirty():
             if force:
-                print(
+                logger.warn(
                     "warning: %s: Removing dirty project: uncommitted changes "
-                    "lost." % (self.RelPath(local=False),),
-                    file=sys.stderr,
+                    "lost.",
+                    self.RelPath(local=False),
                 )
             else:
                 msg = (
                     "error: %s: Cannot remove project: uncommitted"
                     "changes are present.\n" % self.RelPath(local=False)
                 )
-                print(msg, file=sys.stderr)
+                logger.error(msg)
                 raise DeleteDirtyWorktreeError(msg, project=self)
 
         if not quiet:
@@ -1819,12 +1813,11 @@ class Project(object):
             platform_utils.rmtree(self.gitdir)
         except OSError as e:
             if e.errno != errno.ENOENT:
-                print("error: %s: %s" % (self.gitdir, e), file=sys.stderr)
-                print(
+                logger.error("error: %s: %s", self.gitdir, e)
+                logger.error(
                     "error: %s: Failed to delete obsolete checkout; remove "
-                    "manually, then run `repo sync -l`."
-                    % (self.RelPath(local=False),),
-                    file=sys.stderr,
+                    "manually, then run `repo sync -l`.",
+                    self.RelPath(local=False),
                 )
                 raise DeleteWorktreeError(aggregate_errors=[e])
 
@@ -1840,10 +1833,7 @@ class Project(object):
                     platform_utils.remove(path)
                 except OSError as e:
                     if e.errno != errno.ENOENT:
-                        print(
-                            "error: %s: Failed to remove: %s" % (path, e),
-                            file=sys.stderr,
-                        )
+                        logger.error("error: %s: Failed to remove: %s", path, e)
                         failed = True
                         errors.append(e)
             dirs[:] = [
@@ -1862,10 +1852,7 @@ class Project(object):
                     platform_utils.remove(d)
                 except OSError as e:
                     if e.errno != errno.ENOENT:
-                        print(
-                            "error: %s: Failed to remove: %s" % (d, e),
-                            file=sys.stderr,
-                        )
+                        logger.error("error: %s: Failed to remove: %s", d, e)
                         failed = True
                         errors.append(e)
             elif not platform_utils.listdir(d):
@@ -1873,21 +1860,16 @@ class Project(object):
                     platform_utils.rmdir(d)
                 except OSError as e:
                     if e.errno != errno.ENOENT:
-                        print(
-                            "error: %s: Failed to remove: %s" % (d, e),
-                            file=sys.stderr,
-                        )
+                        logger.error("error: %s: Failed to remove: %s", d, e)
                         failed = True
                         errors.append(e)
         if failed:
-            print(
-                "error: %s: Failed to delete obsolete checkout."
-                % (self.RelPath(local=False),),
-                file=sys.stderr,
+            logger.error(
+                "error: %s: Failed to delete obsolete checkout.",
+                self.RelPath(local=False),
             )
-            print(
+            logger.error(
                 "       Remove manually, then run `repo sync -l`.",
-                file=sys.stderr,
             )
             raise DeleteWorktreeError(aggregate_errors=errors)
 
@@ -2781,7 +2763,7 @@ class Project(object):
                         print("Curl output:\n%s" % output)
                 return False
             elif curlret and not verbose and output:
-                print("%s" % output, file=sys.stderr)
+                logger.error("%s", output)
 
         if os.path.exists(tmpPath):
             if curlret == 0 and self._IsValidBundle(tmpPath, quiet):
@@ -2800,10 +2782,7 @@ class Project(object):
                     return True
                 else:
                     if not quiet:
-                        print(
-                            "Invalid clone.bundle file; ignoring.",
-                            file=sys.stderr,
-                        )
+                        logger.error("Invalid clone.bundle file; ignoring.")
                     return False
         except OSError:
             return False
@@ -2923,9 +2902,8 @@ class Project(object):
                     self._CheckDirReference(self.objdir, self.gitdir)
                 except GitError as e:
                     if force_sync:
-                        print(
-                            "Retrying clone after deleting %s" % self.gitdir,
-                            file=sys.stderr,
+                        logger.error(
+                            "Retrying clone after deleting %s", self.gitdir
                         )
                         try:
                             platform_utils.rmtree(
@@ -3046,8 +3024,8 @@ class Project(object):
                 # hardlink below.
                 if not filecmp.cmp(stock_hook, dst, shallow=False):
                     if not quiet:
-                        _warn(
-                            "%s: Not replacing locally modified %s hook",
+                        logger.warn(
+                            "warn: %s: Not replacing locally modified %s hook",
                             self.RelPath(local=False),
                             name,
                         )
@@ -3158,7 +3136,12 @@ class Project(object):
                 src = platform_utils.realpath(src_path)
                 # Fail if the links are pointing to the wrong place.
                 if src != dst:
-                    _error("%s is different in %s vs %s", name, destdir, srcdir)
+                    logger.error(
+                        "error: %s is different in %s vs %s",
+                        name,
+                        destdir,
+                        srcdir,
+                    )
                     raise GitError(
                         "--force-sync not enabled; cannot overwrite a local "
                         "work tree. If you're comfortable with the "
@@ -4206,7 +4189,7 @@ class ManifestProject(MetaProject):
                 "manifest.standalone"
             )
             if was_standalone_manifest and not manifest_url:
-                print(
+                logger.error(
                     "fatal: repo was initialized with a standlone manifest, "
                     "cannot be re-initialized without --manifest-url/-u"
                 )
@@ -4224,7 +4207,7 @@ class ManifestProject(MetaProject):
         is_new = not self.Exists
         if is_new:
             if not manifest_url:
-                print("fatal: manifest url is required.", file=sys.stderr)
+                logger.error("fatal: manifest url is required.")
                 return False
 
             if verbose:
@@ -4280,7 +4263,7 @@ class ManifestProject(MetaProject):
                 if manifest_branch == "HEAD":
                     manifest_branch = self.ResolveRemoteHead()
                     if manifest_branch is None:
-                        print("fatal: unable to resolve HEAD", file=sys.stderr)
+                        logger.error("fatal: unable to resolve HEAD")
                         return False
                 self.revisionExpr = manifest_branch
             else:
@@ -4305,7 +4288,7 @@ class ManifestProject(MetaProject):
         elif platform in all_platforms:
             groups.append(platformize(platform))
         elif platform != "none":
-            print("fatal: invalid platform flag", file=sys.stderr)
+            logger.error("fatal: invalid platform flag", file=sys.stderr)
             return False
         self.config.SetString("manifest.platform", platform)
 
@@ -4326,35 +4309,29 @@ class ManifestProject(MetaProject):
 
         if worktree:
             if mirror:
-                print(
-                    "fatal: --mirror and --worktree are incompatible",
-                    file=sys.stderr,
-                )
+                logger.error("fatal: --mirror and --worktree are incompatible")
                 return False
             if submodules:
-                print(
-                    "fatal: --submodules and --worktree are incompatible",
-                    file=sys.stderr,
+                logger.error(
+                    "fatal: --submodules and --worktree are incompatible"
                 )
                 return False
             self.config.SetBoolean("repo.worktree", worktree)
             if is_new:
                 self.use_git_worktrees = True
-            print("warning: --worktree is experimental!", file=sys.stderr)
+            logger.warn("warning: --worktree is experimental!")
 
         if archive:
             if is_new:
                 self.config.SetBoolean("repo.archive", archive)
             else:
-                print(
+                logger.error(
                     "fatal: --archive is only supported when initializing a "
-                    "new workspace.",
-                    file=sys.stderr,
+                    "new workspace."
                 )
-                print(
+                logger.error(
                     "Either delete the .repo folder in this workspace, or "
-                    "initialize in another location.",
-                    file=sys.stderr,
+                    "initialize in another location."
                 )
                 return False
 
@@ -4362,24 +4339,21 @@ class ManifestProject(MetaProject):
             if is_new:
                 self.config.SetBoolean("repo.mirror", mirror)
             else:
-                print(
+                logger.error(
                     "fatal: --mirror is only supported when initializing a new "
-                    "workspace.",
-                    file=sys.stderr,
+                    "workspace."
                 )
-                print(
+                logger.error(
                     "Either delete the .repo folder in this workspace, or "
-                    "initialize in another location.",
-                    file=sys.stderr,
+                    "initialize in another location."
                 )
                 return False
 
         if partial_clone is not None:
             if mirror:
-                print(
+                logger.error(
                     "fatal: --mirror and --partial-clone are mutually "
-                    "exclusive",
-                    file=sys.stderr,
+                    "exclusive"
                 )
                 return False
             self.config.SetBoolean("repo.partialclone", partial_clone)
@@ -4409,11 +4383,10 @@ class ManifestProject(MetaProject):
 
             self.config.SetBoolean("repo.git-lfs", git_lfs)
             if not is_new:
-                print(
+                logger.warn(
                     "warning: Changing --git-lfs settings will only affect new "
                     "project checkouts.\n"
-                    "         Existing projects will require manual updates.\n",
-                    file=sys.stderr,
+                    "         Existing projects will require manual updates.\n"
                 )
 
         if clone_filter_for_depth is not None:
@@ -4437,9 +4410,7 @@ class ManifestProject(MetaProject):
             ).success
             if not success:
                 r = self.GetRemote()
-                print(
-                    "fatal: cannot obtain manifest %s" % r.url, file=sys.stderr
-                )
+                logger.error("fatal: cannot obtain manifest %s", r.url)
 
                 # Better delete the manifest git dir if we created it; otherwise
                 # next time (when user fixes problems) we won't go through the
@@ -4460,14 +4431,13 @@ class ManifestProject(MetaProject):
                     self.StartBranch("default")
                 except GitError as e:
                     msg = str(e)
-                    print(
-                        f"fatal: cannot create default in manifest {msg}",
-                        file=sys.stderr,
+                    logger.error(
+                        "fatal: cannot create default in manifest %s", msg
                     )
                     return False
 
             if not manifest_name:
-                print("fatal: manifest name (-m) is required.", file=sys.stderr)
+                logger.error("fatal: manifest name (-m) is required.")
                 return False
 
         elif is_new:
@@ -4482,11 +4452,8 @@ class ManifestProject(MetaProject):
         try:
             self.manifest.Link(manifest_name)
         except ManifestParseError as e:
-            print(
-                "fatal: manifest '%s' not available" % manifest_name,
-                file=sys.stderr,
-            )
-            print("fatal: %s" % str(e), file=sys.stderr)
+            logger.error("fatal: manifest '%s' not available", manifest_name)
+            logger.error("fatal: %s", e)
             return False
 
         if not this_manifest_only:
@@ -4528,13 +4495,13 @@ class ManifestProject(MetaProject):
                 submanifest = ""
                 if self.manifest.path_prefix:
                     submanifest = f"for {self.manifest.path_prefix} "
-                print(
-                    f"warning: git update of superproject {submanifest}failed, "
+                logger.warn(
+                    "warning: git update of superproject %s failed, "
                     "repo sync will not use superproject to fetch source; "
                     "while this error is not fatal, and you can continue to "
                     "run repo sync, please run repo init with the "
                     "--no-use-superproject option to stop seeing this warning",
-                    file=sys.stderr,
+                    submanifest,
                 )
                 if sync_result.fatal and use_superproject is not None:
                     return False
