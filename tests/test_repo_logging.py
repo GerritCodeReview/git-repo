@@ -15,48 +15,39 @@
 """Unit test for repo_logging module."""
 import unittest
 from unittest import mock
+from error import RepoExitError
 
-from repo_logging import RepoLogger
+from repo_logging import SEPARATOR, RepoLogger
 
 
 class TestRepoLogger(unittest.TestCase):
-    def test_log_aggregated_errors_logs_aggregated_errors(self):
-        """Test if log_aggregated_errors outputs aggregated errors."""
+    @mock.patch.object(RepoLogger, 'error')
+    def test_log_aggregated_errors_logs_aggregated_errors(self, mock_error):
+        """Test if log_aggregated_errors logs a list of aggregated errors."""
         logger = RepoLogger(__name__)
-        result = []
+        logger.log_aggregated_errors(RepoExitError(aggregate_errors=[
+            Exception("foo"),
+            Exception("bar"),
+            Exception("baz"),
+            Exception("hello"),
+            Exception("world"),
+            Exception("test"),
+        ]))
 
-        def mock_handler(log):
-            nonlocal result
-            result.append(log.getMessage())
+        mock_error.assert_has_calls([
+            mock.call(SEPARATOR),
+            mock.call("Repo command failed due to the following `%s` errors:", "RepoExitError"),
+            mock.call("foo\nbar\nbaz\nhello\nworld"),
+            mock.call("+%d additional errors...", 1)
+        ])
 
-        mock_out = mock.MagicMock()
-        mock_out.level = 0
-        mock_out.handle = mock_handler
-        logger.addHandler(mock_out)
+    @mock.patch.object(RepoLogger, 'error')
+    def test_log_aggregated_errors_logs_single_error(self, mock_error):
+        """Test if log_aggregated_errors logs when aggregated_errors is empty."""
+        logger = RepoLogger(__name__)
+        logger.log_aggregated_errors(RepoExitError())
 
-        logger.error("Never gonna give you up")
-        logger.error("Never gonna let you down")
-        logger.error("Never gonna run around and desert you")
-        logger.log_aggregated_errors(
-            [
-                "Never gonna give you up",
-                "Never gonna let you down",
-                "Never gonna run around and desert you",
-            ]
-        )
-
-        self.assertEqual(
-            result,
-            [
-                "Never gonna give you up",
-                "Never gonna let you down",
-                "Never gonna run around and desert you",
-                "=" * 80,
-                "Repo command failed due to following errors:",
-                (
-                    "Never gonna give you up\n"
-                    "Never gonna let you down\n"
-                    "Never gonna run around and desert you"
-                ),
-            ],
-        )
+        mock_error.assert_has_calls([
+            mock.call(SEPARATOR),
+            mock.call("Repo command failed: %s", "RepoExitError"),
+        ])
