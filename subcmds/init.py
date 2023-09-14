@@ -23,8 +23,11 @@ from error import UpdateManifestError
 from git_command import git_require
 from git_command import MIN_GIT_VERSION_HARD
 from git_command import MIN_GIT_VERSION_SOFT
+from repo_logging import RepoLogger
 from wrapper import Wrapper
 
+
+logger = RepoLogger(__file__)
 
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
@@ -330,11 +333,11 @@ to update the working directory files.
     def Execute(self, opt, args):
         git_require(MIN_GIT_VERSION_HARD, fail=True)
         if not git_require(MIN_GIT_VERSION_SOFT):
-            print(
-                "repo: warning: git-%s+ will soon be required; please upgrade "
-                "your version of git to maintain support."
-                % (".".join(str(x) for x in MIN_GIT_VERSION_SOFT),),
-                file=sys.stderr,
+            logger.warning(
+                "repo: warning: git-%s+ will soon be required; "
+                "please upgrade your version of git to maintain "
+                "support.",
+                ".".join(str(x) for x in MIN_GIT_VERSION_SOFT),
             )
 
         rp = self.manifest.repoProject
@@ -357,10 +360,7 @@ to update the working directory files.
                 )
             except wrapper.CloneFailure as e:
                 err_msg = "fatal: double check your --repo-rev setting."
-                print(
-                    err_msg,
-                    file=sys.stderr,
-                )
+                logger.error(err_msg)
                 self.git_event_log.ErrorEvent(err_msg)
                 raise RepoUnhandledExceptionError(e)
 
