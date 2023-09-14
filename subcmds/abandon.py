@@ -15,7 +15,6 @@
 import collections
 import functools
 import itertools
-import sys
 
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
@@ -23,6 +22,10 @@ from error import RepoError
 from error import RepoExitError
 from git_command import git
 from progress import Progress
+from repo_logging import RepoLogger
+
+
+logger = RepoLogger(__file__)
 
 
 class AbandonError(RepoExitError):
@@ -126,18 +129,12 @@ It is equivalent to "git branch -D <branchname>".
         if err:
             for br in err.keys():
                 err_msg = "error: cannot abandon %s" % br
-                print(err_msg, file=sys.stderr)
+                logger.error(err_msg)
                 for proj in err[br]:
-                    print(
-                        " " * len(err_msg) + " | %s" % _RelPath(proj),
-                        file=sys.stderr,
-                    )
+                    logger.error(" " * len(err_msg) + " | %s", _RelPath(proj))
             raise AbandonError(aggregate_errors=aggregate_errors)
         elif not success:
-            print(
-                "error: no project has local branch(es) : %s" % nb,
-                file=sys.stderr,
-            )
+            logger.error("error: no project has local branch(es) : %s", nb)
             raise AbandonError(aggregate_errors=aggregate_errors)
         else:
             # Everything below here is displaying status.

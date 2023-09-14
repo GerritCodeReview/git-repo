@@ -17,6 +17,10 @@ import os
 import sys
 
 from command import PagedCommand
+from repo_logging import RepoLogger
+
+
+logger = RepoLogger(__file__)
 
 
 class Manifest(PagedCommand):
@@ -132,7 +136,7 @@ to indicate the remote ref to push changes to via 'repo upload'.
             manifest.SetUseLocalManifests(not opt.ignore_local_manifests)
 
             if opt.json:
-                print("warning: --json is experimental!", file=sys.stderr)
+                logger.warn("warning: --json is experimental!")
                 doc = manifest.ToDict(
                     peg_rev=opt.peg_rev,
                     peg_rev_upstream=opt.peg_rev_upstream,
@@ -159,13 +163,13 @@ to indicate the remote ref to push changes to via 'repo upload'.
             if output_file != "-":
                 fd.close()
                 if manifest.path_prefix:
-                    print(
-                        f"Saved {manifest.path_prefix} submanifest to "
-                        f"{output_file}",
-                        file=sys.stderr,
+                    logger.warn(
+                        "Saved %s submanifest to %s",
+                        manifest.path_prefix,
+                        output_file,
                     )
                 else:
-                    print(f"Saved manifest to {output_file}", file=sys.stderr)
+                    logger.warn("Saved manifest to %s", output_file)
 
     def ValidateOptions(self, opt, args):
         if args:

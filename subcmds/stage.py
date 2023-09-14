@@ -17,6 +17,10 @@ import sys
 from color import Coloring
 from command import InteractiveCommand
 from git_command import GitCommand
+from repo_logging import RepoLogger
+
+
+logger = RepoLogger(__file__)
 
 
 class _ProjectList(Coloring):
@@ -62,7 +66,7 @@ The '%prog' command stages files to prepare the next commit.
             if p.IsDirty()
         ]
         if not all_projects:
-            print("no projects have uncommitted modifications", file=sys.stderr)
+            logger.error("no projects have uncommitted modifications")
             return
 
         out = _ProjectList(self.manifest.manifestProject.config)
