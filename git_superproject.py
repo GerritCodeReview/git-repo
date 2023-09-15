@@ -69,9 +69,9 @@ class UpdateProjectsResult(NamedTuple):
 class Superproject(object):
     """Get commit ids from superproject.
 
-    Initializes a local copy of a superproject for the manifest. This allows
-    lookup of commit ids for all projects. It contains _project_commit_ids which
-    is a dictionary with project/commit id entries.
+    Initializes a bare local copy of a superproject for the manifest. This
+    allows lookup of commit ids for all projects. It contains
+    _project_commit_ids which is a dictionary with project/commit id entries.
     """
 
     def __init__(
@@ -235,7 +235,8 @@ class Superproject(object):
         p = GitCommand(
             None,
             cmd,
-            cwd=self._work_git,
+            gitdir=self._work_git,
+            bare=True,
             capture_stdout=True,
             capture_stderr=True,
         )
@@ -271,7 +272,8 @@ class Superproject(object):
         p = GitCommand(
             None,
             cmd,
-            cwd=self._work_git,
+            gitdir=self._work_git,
+            bare=True,
             capture_stdout=True,
             capture_stderr=True,
         )
