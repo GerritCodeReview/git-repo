@@ -769,7 +769,10 @@ def run_git(*args, **kwargs):
     kwargs.setdefault("capture_output", True)
     kwargs.setdefault("check", True)
     try:
-        return run_command([GIT] + list(args), **kwargs)
+	    return run_command([GIT,
+                                '--git-dir=%s' % (kwargs.get('cwd', os.getcwd()))]
+                               + list(args),
+                               **kwargs)
     except OSError as e:
         print(file=sys.stderr)
         print('repo: error: "%s" is not available' % GIT, file=sys.stderr)
