@@ -838,7 +838,7 @@ def SetGitTrace2ParentSid(env=None):
 
     KEY = "GIT_TRACE2_PARENT_SID"
 
-    now = datetime.datetime.utcnow()
+    now = datetime.datetime.now(datetime.UTC)
     value = "repo-%s-P%08x" % (now.strftime("%Y%m%dT%H%M%SZ"), os.getpid())
 
     # If it's already set, then append ourselves.
