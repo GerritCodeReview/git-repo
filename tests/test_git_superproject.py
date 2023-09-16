@@ -108,7 +108,9 @@ class SuperprojectTestCase(unittest.TestCase):
             self.assertRegex(log_entry["sid"], self.FULL_SID_REGEX)
         else:
             self.assertRegex(log_entry["sid"], self.SELF_SID_REGEX)
-        self.assertRegex(log_entry["time"], r"^\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z$")
+        self.assertRegex(
+            log_entry["time"], r"^\d+-\d+-\d+T\d+:\d+:\d+\.\d+\+\d+:\d+Z$"
+        )
 
     def readLog(self, log_path):
         """Helper function to read log data into a list."""
