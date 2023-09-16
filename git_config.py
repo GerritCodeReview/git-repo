@@ -795,7 +795,7 @@ class SyncAnalysisState:
                 to be logged.
         """
         self._config = config
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now(datetime.timezone.utc)
         self._Set("main.synctime", now.isoformat(timespec="microseconds") + "Z")
         self._Set("main.version", "1")
         self._Set("sys.argv", sys.argv)
