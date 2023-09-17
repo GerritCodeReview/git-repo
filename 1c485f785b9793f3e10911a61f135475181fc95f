@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a8faa1d_42eceb6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-17T16:05:44Z",
+      "side": 1,
+      "message": "you shouldn\u0027t Cdoe-Review your own CLs",
+      "revId": "1c485f785b9793f3e10911a61f135475181fc95f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
