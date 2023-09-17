@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44a4d1ea_3946ee4a",
+        "filename": "git_config.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1025752
+      },
+      "writtenOn": "2023-09-17T15:54:04Z",
+      "side": 1,
+      "message": "actually I should also remove Z here.",
+      "revId": "7f9a412f3739a2074384feb440fbfd53a3ef4b0f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
