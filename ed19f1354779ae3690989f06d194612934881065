@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "377a2f44_c41e55f2",
+        "filename": "tests/test_git_superproject.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-17T15:47:11Z",
+      "side": 1,
+      "message": "this should assert that we only use `00:00` as the timezone",
+      "revId": "ed19f1354779ae3690989f06d194612934881065",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2195a141_a9d9fde1",
+        "filename": "tests/test_git_trace2_event_log.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-17T15:47:11Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "ed19f1354779ae3690989f06d194612934881065",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
