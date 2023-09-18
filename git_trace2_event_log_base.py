@@ -71,7 +71,7 @@ class BaseEventLog(object):
         if env is None:
             env = os.environ
 
-        self.start = datetime.datetime.utcnow()
+        self.start = datetime.datetime.now(datetime.UTC)
 
         # Save both our sid component and the complete sid.
         # We use our sid component (self._sid) as the unique filename prefix and
@@ -126,7 +126,7 @@ class BaseEventLog(object):
             "event": event_name,
             "sid": self._full_sid,
             "thread": threading.current_thread().name,
-            "time": datetime.datetime.utcnow().isoformat() + "Z",
+            "time": datetime.datetime.now(datetime.UTC).isoformat() + "Z",
         }
 
     def StartEvent(self):
@@ -147,7 +147,7 @@ class BaseEventLog(object):
         if result is None:
             result = 0
         exit_event["code"] = result
-        time_delta = datetime.datetime.utcnow() - self.start
+        time_delta = datetime.datetime.now(datetime.UTC) - self.start
         exit_event["t_abs"] = time_delta.total_seconds()
         self._log.append(exit_event)
 
