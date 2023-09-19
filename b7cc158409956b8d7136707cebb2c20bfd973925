@@ -22,6 +22,30 @@
       },
       "revId": "b7cc158409956b8d7136707cebb2c20bfd973925",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12459074_f0e35697",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-09-19T19:46:58Z",
+      "side": 1,
+      "message": "This appears to be the case if we\u0027re using the default configuration for urllib.parse, however the configuration we\u0027re applying at https://gerrit.googlesource.com/git-repo/+/7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a/manifest_xml.py#56 results in different output.\n\neg:\n\n```\n\u003e\u003e\u003e manifestUrl \u003d \u0027ssh://gerrit:29418/Manifest.git\u0027\n\u003e\u003e\u003e fetchUrl \u003d \u0027git@github.com:myorg\u0027\n\u003e\u003e\u003e urllib.parse.urljoin(manifestUrl, fetchUrl)\n\u0027ssh://gerrit:29418/git@github.com:myorg\u0027\n```\n\nvs default config:\n\n```\n\u003e\u003e\u003e manifestUrl \u003d \u0027ssh://gerrit:29418/Manifest.git\u0027\n\u003e\u003e\u003e fetchUrl \u003d \u0027git@github.com:myorg\u0027\n\u003e\u003e\u003e urllib.parse.urljoin(manifestUrl, fetchUrl)\n\u0027git@github.com:myorg\u0027\n```\n\nThis appears to be mucking with the internal functioning of urllib in a way that forces urljoin() to construct only relative paths for at least some common url scenarios.\n\nAdditionally, even with the default configuration, urllib does something like this:\n```\n\u003e\u003e\u003e manifestUrl \u003d \u0027http://gerrit/Manifest.git\u0027\n\u003e\u003e\u003e fetchUrl \u003d \u0027git@github.com:myorg\u0027\n\u003e\u003e\u003e urllib.parse.urljoin(manifestUrl, fetchUrl)\n\u0027http://gerrit/git@github.com:myorg\u0027\n```\n\nwhich seems like undesirable behaviour to me 😊",
+      "parentUuid": "70b57521_2055f0cd",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "b7cc158409956b8d7136707cebb2c20bfd973925",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
