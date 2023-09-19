@@ -34,6 +34,24 @@
       "parentUuid": "4bea2941_07c69641",
       "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80dee33b_913990ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2023-09-19T21:49:25Z",
+      "side": 1,
+      "message": "If we wanted to support the `alternative scp-like syntax`, identifying that it\u0027s that syntax and supporting it without needing the attribute would be ideal. Maybe by automatically converting it to a ssh url to ensure any other future operations work.\n\nIt looks like git parses these by first [checking for](https://github.com/git/git/blob/d4a83d07b8cc66d4afac2f33a8af729f2ba93bba/connect.c#L1084) `://` for urls, then using [this logic](https://github.com/git/git/blob/d4a83d07b8cc66d4afac2f33a8af729f2ba93bba/connect.c#L696) to differentiate between ssh and local paths.  But since we\u0027re supporting relative paths, we can\u0027t support local path overrides here (you can still use `file://`), so something similar could differentiate between ssh paths and relative paths.",
+      "parentUuid": "6c13410b_5e82d3da",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
