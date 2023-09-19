@@ -185,6 +185,10 @@ Attribute `revision`: Name of a Git branch (e.g. `main` or
 `refs/heads/main`). Remotes with their own revision will override
 the default revision.
 
+Attribute `is-absolute-fetch-url`: Boolean indicating whether the
+specified `fetch` value is absolute or relative to the manifest
+host.
+
 ### Element default
 
 At most one default element may be specified.  Its remote and

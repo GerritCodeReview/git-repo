@@ -1113,3 +1113,28 @@ class ExtendProjectElementTests(ManifestParseTestCase):
         )
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].upstream, "bar")
+
+class RemoteAbsoluteUrlTests(ManifestParseTestCase):
+    """Tests for is-absolute-fetch-url for remotes"""
+
+    def test_is_absolute(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" is-absolute-fetch-url="true"/>
+</manifest>
+"""
+        )
+
+        self.assertEqual("http://localhost", manifest.remotes["default-remote"].fetchUrl)
+
+    def test_is_not_absoluate(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+</manifest>
+"""
+        )
+
+        self.assertEqual("http://localhost", manifest.remotes["default-remote"].fetchUrl)
