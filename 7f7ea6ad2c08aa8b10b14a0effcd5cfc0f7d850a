@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bea2941_07c69641",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-19T20:13:53Z",
+      "side": 1,
+      "message": "it\u0027s been a while since i looked at this code, but do we really need an explicit manifest attribute ?  can\u0027t we make this \"just work\" if someone specifies an absolute URI ?",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
