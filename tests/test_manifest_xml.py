@@ -1128,3 +1128,22 @@ class ExtendProjectElementTests(ManifestParseTestCase):
         )
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].upstream, "bar")
+
+
+class NormalizeUrlTests(ManifestParseTestCase):
+    """Tests for is-absolute-fetch-url for remotes"""
+
+    def test_has_trailing_slash(self):
+        url = "http://foo.com/bar/baz/"
+        self.assertEqual("http://foo.com/bar/baz", manifest_xml.normalize_url(url))
+
+    def test_has_no_scheme(self):
+        url = "foo.com/baf/bat"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
+        url = "git@foo.com/baf/bat"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
+    def test_has_no_scheme_matches_scp_like_syntax(self):
+        url = "git@foo.com:bar/baf"
+        self.assertEqual("ssh://git@foo.com/bar/baf", manifest_xml.normalize_url(url))
