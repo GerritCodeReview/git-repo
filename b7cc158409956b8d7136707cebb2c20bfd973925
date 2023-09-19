@@ -46,6 +46,30 @@
       },
       "revId": "b7cc158409956b8d7136707cebb2c20bfd973925",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4ded87b_2ab879a2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2023-09-19T21:32:18Z",
+      "side": 1,
+      "message": "That config is to support some operations on schemes not normally recognized by python.\n\n`git@github.com:myorg` isn\u0027t a URL, the [git docs](https://git-scm.com/docs/git-fetch#_git_urls) label it as an `alternative scp-like syntax` for ssh urls. I think the equivalent URL would be `ssh://git@github.com/myorg`, which works with `urljoin` even without the custom config.",
+      "parentUuid": "12459074_f0e35697",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "b7cc158409956b8d7136707cebb2c20bfd973925",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
