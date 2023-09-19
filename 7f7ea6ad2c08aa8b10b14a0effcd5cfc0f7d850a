@@ -16,6 +16,24 @@
       "message": "it\u0027s been a while since i looked at this code, but do we really need an explicit manifest attribute ?  can\u0027t we make this \"just work\" if someone specifies an absolute URI ?",
       "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c13410b_5e82d3da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-09-19T20:53:14Z",
+      "side": 1,
+      "message": "What does \"just work\" look like here?  How do we want to conclude that it\u0027s an absolute URI? \n\nI\u0027ve added some context to the previous comment and I\u0027m open to suggestions as to how to approach this here, but it seems like what we\u0027re doing right now is open to some inherent weirdness w.r.t how urllib handles this given the current configuration.",
+      "parentUuid": "4bea2941_07c69641",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
