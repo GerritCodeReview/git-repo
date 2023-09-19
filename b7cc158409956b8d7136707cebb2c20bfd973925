@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b57521_2055f0cd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2023-09-19T18:27:43Z",
+      "side": 1,
+      "message": "Are you sure? We do this frequently, `urllib.parse.urljoin` will largely use the second argument if it\u0027s an absolute url.",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "b7cc158409956b8d7136707cebb2c20bfd973925",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
