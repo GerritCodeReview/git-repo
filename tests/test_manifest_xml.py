@@ -1128,3 +1128,20 @@ class ExtendProjectElementTests(ManifestParseTestCase):
         )
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].upstream, "bar")
+
+
+class RemoteNonUrlTests(ManifestParseTestCase):
+    """Tests for is-absolute-fetch-url for remotes"""
+
+    def test_is_non_url(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default" fetch="git@foo.com:bar"/>
+</manifest>
+"""
+        )
+
+        self.assertEqual(
+            "git@foo.com:bar", manifest.remotes["default"].fetchUrl
+        )
