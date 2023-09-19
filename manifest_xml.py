@@ -182,7 +182,16 @@ class _XmlRemote:
     def _resolveFetchUrl(self):
         if self.fetchUrl is None:
             return ""
+
         url = self.fetchUrl.rstrip("/")
+
+        # check if our fetch URL is actually have a URL or something like:
+        # git@github.com:foo/bar
+        # if the latter, use that instead
+        parsed_url = urllib.parse.urlparse(url)
+        if parsed_url.scheme == "":
+            return parsed_url.path
+
         manifestUrl = self.manifestUrl.rstrip("/")
         # urljoin will gets confused over quite a few things.  The ones we care
         # about here are:
