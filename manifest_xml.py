@@ -117,6 +117,20 @@ def XmlInt(node, attr, default=None):
         raise ManifestParseError(f'manifest: invalid {attr}="{value}" integer')
 
 
+def normalize_url(url):
+    url = url.rstrip("/")
+
+    parsed_url = urllib.parse.urlparse(url)
+
+    # check if our URL is missing a schema and conforms to the
+    # SCP-like syntax for git (eg: git@github.com:foo/bar) and
+    # convert it so that urljoin is happier
+    if parsed_url.scheme == "" and re.match(r"^[^:]+@[^:]+:[^/]+/.+", url):
+        return "ssh://" + url.replace(":", "/", 1)
+
+    return url
+
+
 class _Default:
     """Project defaults within the manifest."""
 
@@ -180,20 +194,24 @@ class _XmlRemote:
     def _resolveFetchUrl(self):
         if self.fetchUrl is None:
             return ""
-        url = self.fetchUrl.rstrip("/")
-        manifestUrl = self.manifestUrl.rstrip("/")
+
+        fetch_url = normalize_url(self.fetchUrl)
+        manifest_url = normalize_url(self.manifestUrl)
+
         # urljoin will gets confused over quite a few things.  The ones we care
         # about here are:
         # * no scheme in the base url, like <hostname:port>
         # We handle no scheme by replacing it with an obscure protocol, gopher
         # and then replacing it with the original when we are done.
 
-        if manifestUrl.find(":") != manifestUrl.find("/") - 1:
-            url = urllib.parse.urljoin("gopher://" + manifestUrl, url)
-            url = re.sub(r"^gopher://", "", url)
+        if manifest_url.find(":") != manifest_url.find("/") - 1:
+            fetch_url = urllib.parse.urljoin(
+                "gopher://" + manifest_url, fetch_url
+            )
+            fetch_url = re.sub(r"^gopher://", "", fetch_url)
         else:
-            url = urllib.parse.urljoin(manifestUrl, url)
-        return url
+            fetch_url = urllib.parse.urljoin(manifest_url, fetch_url)
+        return fetch_url
 
     def ToRemoteSpec(self, projectName):
         fetchUrl = self.resolvedFetchUrl.rstrip("/")
