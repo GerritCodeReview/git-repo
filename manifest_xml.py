@@ -152,6 +152,7 @@ class _XmlRemote(object):
         manifestUrl=None,
         review=None,
         revision=None,
+        isAbsoluteFetchUrl=False,
     ):
         self.name = name
         self.fetchUrl = fetch
@@ -160,6 +161,7 @@ class _XmlRemote(object):
         self.remoteAlias = alias
         self.reviewUrl = review
         self.revision = revision
+        self.isAbsoluteFetchUrl = isAbsoluteFetchUrl
         self.resolvedFetchUrl = self._resolveFetchUrl()
         self.annotations = []
 
@@ -182,6 +184,10 @@ class _XmlRemote(object):
     def _resolveFetchUrl(self):
         if self.fetchUrl is None:
             return ""
+
+        if self.isAbsoluteFetchUrl:
+            return self.fetchUrl
+
         url = self.fetchUrl.rstrip("/")
         manifestUrl = self.manifestUrl.rstrip("/")
         # urljoin will gets confused over quite a few things.  The ones we care
@@ -499,6 +505,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             e.setAttribute("review", r.reviewUrl)
         if r.revision is not None:
             e.setAttribute("revision", r.revision)
+        if r.isAbsoluteFetchUrl is not None:
+            e.setAttribute("is-absolute-fetch-url", r.isAbsoluteFetchUrl)
 
         for a in r.annotations:
             if a.keep == "true":
@@ -1656,8 +1664,16 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             revision = None
         manifestUrl = self.manifestProject.config.GetString("remote.origin.url")
 
+        isAbsoluteFetchUrl = XmlBool(node, "is-absolute-fetch-url", False)
         remote = _XmlRemote(
-            name, alias, fetch, pushUrl, manifestUrl, review, revision
+            name,
+            alias,
+            fetch,
+            pushUrl,
+            manifestUrl,
+            review,
+            revision,
+            isAbsoluteFetchUrl,
         )
 
         for n in node.childNodes:
