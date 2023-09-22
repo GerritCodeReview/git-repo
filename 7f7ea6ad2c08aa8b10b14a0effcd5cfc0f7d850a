@@ -88,6 +88,24 @@
       "parentUuid": "8fb98d96_e4228376",
       "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f58fecfc_45986796",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-09-22T20:10:36Z",
+      "side": 1,
+      "message": "so the problem you\u0027re having is that you\u0027re trying to use schema-less URIs in your manifest ?  if you added proper schemas everywhere, pretty sure repo would \"just work\".\n\nnot that i\u0027m against making schema-less URIs work.  but it\u0027s def not something that manifest authors should have to opt-in to like this.",
+      "parentUuid": "7ac7a9c2_5255f4fc",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
