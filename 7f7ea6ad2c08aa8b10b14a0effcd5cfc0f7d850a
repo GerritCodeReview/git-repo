@@ -70,6 +70,24 @@
       "parentUuid": "80dee33b_913990ec",
       "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ac7a9c2_5255f4fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-09-22T17:01:27Z",
+      "side": 1,
+      "message": "Sorry, got sidetracked.  I\u0027m trying to address the symptoms of the problem. ie: the github provided URL doesn\u0027t work as one would expect. I\u0027m happy to go with the suggested alternative of just munging those URLs so that it will work, however, because it treats the symptom I\u0027m experiencing.",
+      "parentUuid": "8fb98d96_e4228376",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
