@@ -286,6 +286,7 @@ class GitCommand(object):
         objdir=None,
         verify_command=False,
         add_event_log=True,
+        log_as_error=True,
     ):
         if project:
             if not cwd:
@@ -362,6 +363,7 @@ class GitCommand(object):
                         "ReturnCode": str(e.git_rc)
                         if e.git_rc is not None
                         else None,
+                        "IsError": log_as_error,
                     }
                 )
                 event_log.ErrorEvent(
