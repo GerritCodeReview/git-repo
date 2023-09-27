@@ -205,7 +205,9 @@ class ReviewableBranch(object):
                 "--",
             )
             try:
-                self._commit_cache = self.project.bare_git.rev_list(*args)
+                self._commit_cache = self.project.bare_git.rev_list(
+                    *args, log_as_error=self.base_exists
+                )
             except GitError:
                 # We weren't able to probe the commits for this branch.  Was it
                 # tracking a branch that no longer exists?  If so, return no
@@ -1593,7 +1595,9 @@ class Project(object):
         # See if we can perform a fast forward merge.  This can happen if our
         # branch isn't in the exact same state as we last published.
         try:
-            self.work_git.merge_base("--is-ancestor", HEAD, revid)
+            self.work_git.merge_base(
+                "--is-ancestor", HEAD, revid, log_as_error=False
+            )
             # Skip the published logic.
             pub = False
         except GitError:
@@ -2304,15 +2308,26 @@ class Project(object):
             # if revision (sha or tag) is not present then following function
             # throws an error.
             self.bare_git.rev_list(
-                "-1", "--missing=allow-any", "%s^0" % self.revisionExpr, "--"
+                "-1",
+                "--missing=allow-any",
+                "%s^0" % self.revisionExpr,
+                "--",
+                log_as_error=False,
             )
             if self.upstream:
                 rev = self.GetRemote().ToLocal(self.upstream)
                 self.bare_git.rev_list(
-                    "-1", "--missing=allow-any", "%s^0" % rev, "--"
+                    "-1",
+                    "--missing=allow-any",
+                    "%s^0" % rev,
+                    "--",
+                    log_as_error=False,
                 )
                 self.bare_git.merge_base(
-                    "--is-ancestor", self.revisionExpr, rev
+                    "--is-ancestor",
+                    self.revisionExpr,
+                    rev,
+                    log_as_error=False,
                 )
             return True
         except GitError:
@@ -3612,7 +3627,7 @@ class Project(object):
             self.update_ref("-d", name, old)
             self._project.bare_ref.deleted(name)
 
-        def rev_list(self, *args, **kw):
+        def rev_list(self, *args, log_as_error=True, **kw):
             if "format" in kw:
                 cmdv = ["log", "--pretty=format:%s" % kw["format"]]
             else:
@@ -3626,6 +3641,7 @@ class Project(object):
                 capture_stdout=True,
                 capture_stderr=True,
                 verify_command=True,
+                log_as_error=log_as_error,
             )
             p.Wait()
             return p.stdout.splitlines()
@@ -3653,7 +3669,7 @@ class Project(object):
             """
             name = name.replace("_", "-")
 
-            def runner(*args, **kwargs):
+            def runner(*args, log_as_error=True, **kwargs):
                 cmdv = []
                 config = kwargs.pop("config", None)
                 for k in kwargs:
@@ -3674,6 +3690,7 @@ class Project(object):
                     capture_stdout=True,
                     capture_stderr=True,
                     verify_command=True,
+                    log_as_error=log_as_error,
                 )
                 p.Wait()
                 r = p.stdout
