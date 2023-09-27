@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "14eb4c4f_9e571652",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-09-27T18:32:23Z",
+      "side": 1,
+      "message": "The line break after \"Source:\" i added manually as the URL is already 72 chars long... the space after \"https:\" seems to be getting added automatically by some script/post-commit hook... Investigating...",
+      "parentUuid": "90e90f24_04514528",
+      "revId": "b9b1704979e57efd5731e20809f8295c1811cf42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a5de19a5_f47778f8",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-09-27T18:27:19Z",
       "side": 1,
       "message": "please avoid inline comments",
+      "revId": "b9b1704979e57efd5731e20809f8295c1811cf42",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3152ca81_9b97cac3",
+        "filename": "tox.ini",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-09-27T18:32:23Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cfadaf83_78418c14",
       "revId": "b9b1704979e57efd5731e20809f8295c1811cf42",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
