@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "783849b5_16b3dae0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167416
+      },
+      "writtenOn": "2023-09-27T05:08:44Z",
+      "side": 1,
+      "message": "383434: manifest_xml: use a set instead of (sorted) list in projectsDiff | https://gerrit-review.googlesource.com/c/git-repo/+/383434",
+      "revId": "25d6c7cc108bea4c81e124623bcf7f4b6832a914",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
