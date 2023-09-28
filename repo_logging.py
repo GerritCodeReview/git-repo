@@ -88,5 +88,5 @@ class RepoLogger(logging.Logger):
         )
 
         diff = len(err.aggregate_errors) - MAX_PRINT_ERRORS
-        if diff:
+        if diff > 0:
             self.error("+%d additional errors...", diff)
