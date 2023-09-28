@@ -15,6 +15,7 @@
 import functools
 import json
 import os
+import re
 import subprocess
 import sys
 from typing import Any, Optional
@@ -24,6 +25,7 @@ from error import RepoExitError
 from git_refs import HEAD
 from git_trace2_event_log_base import BaseEventLog
 import platform_utils
+from repo_logging import RepoLogger
 from repo_trace import IsTrace
 from repo_trace import REPO_TRACE
 from repo_trace import Trace
@@ -53,6 +55,8 @@ GIT_ERROR_STDOUT_LINES = 1
 GIT_ERROR_STDERR_LINES = 1
 INVALID_GIT_EXIT_CODE = 126
 
+logger = RepoLogger(__file__)
+
 
 class _GitCall(object):
     @functools.lru_cache(maxsize=None)
@@ -60,7 +64,7 @@ class _GitCall(object):
         ret = Wrapper().ParseGitVersion()
         if ret is None:
             msg = "fatal: unable to detect git version"
-            print(msg, file=sys.stderr)
+            logger.error(msg)
             raise GitRequireError(msg)
         return ret
 
@@ -135,10 +139,9 @@ def GetEventTargetPath():
         # `git config --get` is documented to produce an exit status of `1`
         # if the requested variable is not present in the configuration.
         # Report any other return value as an error.
-        print(
+        logger.error(
             "repo: error: 'git config --get' call failed with return code: "
-            "%r, stderr: %r" % (retval, p.stderr),
-            file=sys.stderr,
+            "%r, stderr: %r", retval, p.stderr
         )
     return path
 
@@ -212,7 +215,7 @@ def git_require(min_version, fail=False, msg=""):
         if msg:
             msg = " for " + msg
         error_msg = "fatal: git %s or later required%s" % (need, msg)
-        print(error_msg, file=sys.stderr)
+        logger.error(error_msg)
         raise GitRequireError(error_msg)
     return False
 
@@ -517,6 +520,27 @@ class GitCommandError(GitError):
     raised exclusively from non-zero exit codes returned from git commands.
     """
 
+    # Custom suggestions to augment git stderr with.
+    error_to_suggestion = {
+        re.compile(
+            "couldn't find remote ref .*"
+        ): "Check if the provided ref exists in the remote.",
+        re.compile("unable to access '.*': .*"): (
+            "Please make sure you have the correct access rights and the "
+            "repository exists."
+        ),
+        re.compile(
+            "'.*' does not appear to be a git repository"
+        ): "Are you running this repo command outside of a repo workspace?",
+        re.compile(
+            "not a git repository: '.*'"
+        ): "Are you running this repo command outside of a repo workspace?",
+        re.compile("cannot .*: You have unstaged changes."): (
+            "You need to commit, stash, or delete these unstaged changes before"
+            " re-running the command."
+        ),
+    }
+
     def __init__(
         self,
         message: str = DEFAULT_GIT_FAIL_MESSAGE,
@@ -530,8 +554,20 @@ class GitCommandError(GitError):
             **kwargs,
         )
         self.git_rc = git_rc
-        self.git_stdout = git_stdout
-        self.git_stderr = git_stderr
+        self.git_stdout = self.augument_stderr(git_stdout)
+        self.git_stderr = self.augument_stderr(git_stderr)
+
+    @staticmethod
+    def augument_stderr(stderr):
+        """Augments the given stderr with helpful suggestions."""
+        if not stderr:
+            return stderr
+
+        for err, log in GitCommandError.error_to_suggestion.items():
+            if err.search(stderr):
+                return f"{stderr}\n{log}"
+
+        return stderr
 
     def __str__(self):
         args = "[]" if not self.command_args else " ".join(self.command_args)
