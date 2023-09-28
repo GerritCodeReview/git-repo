@@ -1112,10 +1112,9 @@ later is required to fix a server side protocol bug.
             )
             if expected:
                 if not opt.quiet:
-                    logger.info(
-                        "%s: Shared project %s found, disabling pruning.",
-                        relpath,
-                        project.name,
+                    print(
+                        "\r%s: Shared project %s found, disabling pruning."
+                        % (relpath, project.name)
                     )
 
                 if git_require((2, 7, 0)):
@@ -1132,7 +1131,7 @@ later is required to fix a server side protocol bug.
                     project.config.SetString("gc.pruneExpire", "never")
             else:
                 if not opt.quiet:
-                    logger.info("%s: not shared, disabling pruning.", relpath)
+                    print(f"\r{relpath}: not shared, disabling pruning.")
                 project.config.SetString("extensions.preciousObjects", None)
                 project.config.SetString("gc.pruneExpire", None)
 
@@ -1366,7 +1365,7 @@ later is required to fix a server side protocol bug.
 
         manifest_server = manifest.manifest_server
         if not opt.quiet:
-            logger.info("Using manifest server %s", manifest_server)
+            print("Using manifest server %s" % manifest_server)
 
         if "@" not in manifest_server:
             username = None
@@ -1699,7 +1698,7 @@ later is required to fix a server side protocol bug.
         if opt.mp_update:
             self._UpdateAllManifestProjects(opt, mp, manifest_name, errors)
         else:
-            logger.info("Skipping update of local manifest project.")
+            print("Skipping update of local manifest project.")
 
         # Now that the manifests are up-to-date, setup options whose defaults
         # might be in the manifest.
@@ -1855,7 +1854,7 @@ later is required to fix a server side protocol bug.
             )
 
         if not opt.quiet:
-            logger.info("repo sync has finished successfully.")
+            print("repo sync has finished successfully.")
 
 
 def _PostRepoUpgrade(manifest, quiet=False):
@@ -1878,7 +1877,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
 
 def _PostRepoFetch(rp, repo_verify=True, verbose=False):
     if rp.HasChanges:
-        logger.info("info: A new version of repo is available")
+        logger.warn("info: A new version of repo is available")
         wrapper = Wrapper()
         try:
             rev = rp.bare_git.describe(rp.GetRevisionId())
@@ -1900,13 +1899,13 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
                 rp.work_git.reset("--keep", new_rev)
             except GitError as e:
                 raise RepoUnhandledExceptionError(e)
-            logger.info("info: Restarting repo with latest version")
+            print("info: Restarting repo with latest version")
             raise RepoChangedException(["--repo-upgraded"])
         else:
             logger.warning("warning: Skipped upgrade to unverified version")
     else:
         if verbose:
-            logger.info(
+            print(
                 "repo version %s is current", rp.work_git.describe(HEAD)
             )
 
