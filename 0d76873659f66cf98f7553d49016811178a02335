@@ -162,6 +162,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "7e169b71_618748fe",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1857,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-28T19:05:50Z",
+      "side": 1,
+      "message": "Extracted this into a separate CL: http://go/grev/387974",
+      "parentUuid": "96a71b37_eb101eba",
+      "range": {
+        "startLine": 1857,
+        "startChar": 0,
+        "endLine": 1857,
+        "endChar": 12
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "20e68f1f_370baef8",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
