@@ -15,6 +15,7 @@
 import functools
 import json
 import os
+import re
 import subprocess
 import sys
 from typing import Any, Optional
@@ -517,6 +518,27 @@ class GitCommandError(GitError):
     raised exclusively from non-zero exit codes returned from git commands.
     """
 
+    # Custom suggestions to augment git stderr with.
+    error_to_suggestion = {
+        re.compile(
+            "couldn't find remote ref .*"
+        ): "Check if the provided ref exists in the remote.",
+        re.compile("unable to access '.*': .*"): (
+            "Please make sure you have the correct access rights and the "
+            "repository exists."
+        ),
+        re.compile(
+            "'.*' does not appear to be a git repository"
+        ): "Are you running this repo command outside of a repo workspace?",
+        re.compile(
+            "not a git repository: '.*'"
+        ): "Are you running this repo command outside of a repo workspace?",
+        re.compile("cannot .*: You have unstaged changes."): (
+            "You need to commit, stash, or delete these unstaged changes before"
+            " re-running the command."
+        ),
+    }
+
     def __init__(
         self,
         message: str = DEFAULT_GIT_FAIL_MESSAGE,
@@ -531,7 +553,19 @@ class GitCommandError(GitError):
         )
         self.git_rc = git_rc
         self.git_stdout = git_stdout
-        self.git_stderr = git_stderr
+        self.git_stderr = self.augument_stderr(git_stderr)
+
+    @staticmethod
+    def augument_stderr(stderr):
+        """Augments the given stderr with helpful suggestions."""
+        if not stderr:
+            return stderr
+
+        for err, log in GitCommandError.error_to_suggestion.items():
+            if err.search(stderr):
+                return f"{stderr}\n{log}"
+
+        return stderr
 
     def __str__(self):
         args = "[]" if not self.command_args else " ".join(self.command_args)
