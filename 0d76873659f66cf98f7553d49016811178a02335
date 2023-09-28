@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1d0d2dc_6ca53a96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-09-28T16:23:49Z",
+      "side": 1,
+      "message": "Changing stdout/stderr for subprocess changes things in a pretty impactful way. SEE https://b.corp.google.com/issues/297097597\n\nThe disruption of real time output from GitCommand would affect many parts of repo.\n\n \nSince this is for user consumption - perhaps we can do this as a post processing step when aggregated errors are logged ?",
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec856310_4dec890b",
@@ -19,6 +36,76 @@
         "startChar": 0,
         "endLine": 285,
         "endChar": 8
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ac7a18_9242c59c",
+        "filename": "git_command.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-09-28T16:23:49Z",
+      "side": 1,
+      "message": "e.g.\ncapture_stdout and capture_stderr have additional side effects. \n- https://b.corp.google.com/issues/297097597",
+      "parentUuid": "ec856310_4dec890b",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 8
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23d1f0ea_08e8341f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1857,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-09-28T16:23:49Z",
+      "side": 1,
+      "message": "Curious as to why you are reverting this - so to speak",
+      "range": {
+        "startLine": 1857,
+        "startChar": 0,
+        "endLine": 1857,
+        "endChar": 12
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20e68f1f_370baef8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1880,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-09-28T16:23:49Z",
+      "side": 1,
+      "message": "Cool",
+      "range": {
+        "startLine": 1880,
+        "startChar": 19,
+        "endLine": 1880,
+        "endChar": 20
       },
       "revId": "0d76873659f66cf98f7553d49016811178a02335",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
