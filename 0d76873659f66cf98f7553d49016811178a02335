@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec856310_4dec890b",
+        "filename": "git_command.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-09-28T16:02:03Z",
+      "side": 1,
+      "message": "I\u0027d be very careful about this. Doing so will change the streaming nature of the GitCommand --\u003e CLI. I\u0027ve received release blocker bugs based on a similar change",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 8
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
