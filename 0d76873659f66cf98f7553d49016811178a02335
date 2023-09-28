@@ -136,6 +136,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "96a71b37_eb101eba",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1857,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-28T17:38:15Z",
+      "side": 1,
+      "message": "Yep, I guess for logs under `quiet`, that would be ideal. For now, the current impl is wrong and I\u0027m just fixing it.",
+      "parentUuid": "868249b7_71439662",
+      "range": {
+        "startLine": 1857,
+        "startChar": 0,
+        "endLine": 1857,
+        "endChar": 12
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "20e68f1f_370baef8",
