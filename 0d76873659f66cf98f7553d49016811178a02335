@@ -112,6 +112,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "868249b7_71439662",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1857,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-09-28T17:30:15Z",
+      "side": 1,
+      "message": "If I understand the documentation correctly, shouldn\u0027t it be:\n\n```\nif not opt.quiet:\n    Logger.setLevel(INFO)\n    \n\n...\n    logger.info(message)\n```\n\nI accept this change on a temporary basis, but it feels a little bit off\n\n?",
+      "parentUuid": "fd38b901_2a4a6466",
+      "range": {
+        "startLine": 1857,
+        "startChar": 0,
+        "endLine": 1857,
+        "endChar": 12
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "20e68f1f_370baef8",
