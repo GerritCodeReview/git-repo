@@ -90,6 +90,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fd38b901_2a4a6466",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 1857,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-28T17:19:38Z",
+      "side": 1,
+      "message": "So python\u0027s default level of logging is warning and above. This just means these logs wouldn\u0027t be printed at all. The official documentation recommends using print in these cases[1]. I missed this when I updated sync.\n\n[1] https://docs.python.org/3/howto/logging.html#when-to-use-logging",
+      "parentUuid": "23d1f0ea_08e8341f",
+      "range": {
+        "startLine": 1857,
+        "startChar": 0,
+        "endLine": 1857,
+        "endChar": 12
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "20e68f1f_370baef8",
         "filename": "subcmds/sync.py",
         "patchSetId": 9
