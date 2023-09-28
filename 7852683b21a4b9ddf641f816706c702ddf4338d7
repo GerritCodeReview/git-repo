@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "012ddd69_9068adbb",
+        "filename": "git_command.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-28T07:38:46Z",
+      "side": 1,
+      "message": "Since this change captures stdout/stderr by default now, logging the error here. I see places in the codebase where we set `capture_stderr \u003d True` but do not print the stderr manually. So I guess this should be helpful. Any concerns on this adding duplicate logs?",
+      "revId": "7852683b21a4b9ddf641f816706c702ddf4338d7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
