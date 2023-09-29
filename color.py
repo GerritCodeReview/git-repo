@@ -194,7 +194,7 @@ class Coloring:
         if not opt:
             return _Color(fg, bg, attr)
 
-        v = self._config.GetString("%s.%s" % (self._section, opt))
+        v = self._config.GetString(f"{self._section}.{opt}")
         if v is None:
             return _Color(fg, bg, attr)
 
