@@ -70,7 +70,7 @@ def _key(name):
     return ".".join(parts)
 
 
-class GitConfig(object):
+class GitConfig:
     _ForUser = None
 
     _ForSystem = None
@@ -370,7 +370,7 @@ class GitConfig(object):
             with Trace(": parsing %s", self.file):
                 with open(self._json) as fd:
                     return json.load(fd)
-        except (IOError, ValueError):
+        except (OSError, ValueError):
             platform_utils.remove(self._json, missing_ok=True)
             return None
 
@@ -378,7 +378,7 @@ class GitConfig(object):
         try:
             with open(self._json, "w") as fd:
                 json.dump(cache, fd, indent=2)
-        except (IOError, TypeError):
+        except (OSError, TypeError):
             platform_utils.remove(self._json, missing_ok=True)
 
     def _ReadGit(self):
@@ -418,7 +418,7 @@ class GitConfig(object):
         if p.Wait() == 0:
             return p.stdout
         else:
-            raise GitError("git config %s: %s" % (str(args), p.stderr))
+            raise GitError(f"git config {str(args)}: {p.stderr}")
 
 
 class RepoConfig(GitConfig):
@@ -430,7 +430,7 @@ class RepoConfig(GitConfig):
         return os.path.join(repo_config_dir, ".repoconfig/config")
 
 
-class RefSpec(object):
+class RefSpec:
     """A Git refspec line, split into its components:
 
     forced:  True if the line starts with '+'
@@ -541,7 +541,7 @@ def GetUrlCookieFile(url, quiet):
     yield cookiefile, None
 
 
-class Remote(object):
+class Remote:
     """Configuration options related to a remote."""
 
     def __init__(self, config, name):
@@ -651,13 +651,11 @@ class Remote(object):
                             userEmail, host, port
                         )
                 except urllib.error.HTTPError as e:
-                    raise UploadError("%s: %s" % (self.review, str(e)))
+                    raise UploadError(f"{self.review}: {str(e)}")
                 except urllib.error.URLError as e:
-                    raise UploadError("%s: %s" % (self.review, str(e)))
+                    raise UploadError(f"{self.review}: {str(e)}")
                 except http.client.HTTPException as e:
-                    raise UploadError(
-                        "%s: %s" % (self.review, e.__class__.__name__)
-                    )
+                    raise UploadError(f"{self.review}: {e.__class__.__name__}")
 
                 REVIEW_CACHE[u] = self._review_url
         return self._review_url + self.projectname
@@ -666,7 +664,7 @@ class Remote(object):
         username = self._config.GetString("review.%s.username" % self.review)
         if username is None:
             username = userEmail.split("@")[0]
-        return "ssh://%s@%s:%s/" % (username, host, port)
+        return f"ssh://{username}@{host}:{port}/"
 
     def ToLocal(self, rev):
         """Convert a remote revision string to something we have locally."""
@@ -715,15 +713,15 @@ class Remote(object):
         self._Set("fetch", list(map(str, self.fetch)))
 
     def _Set(self, key, value):
-        key = "remote.%s.%s" % (self.name, key)
+        key = f"remote.{self.name}.{key}"
         return self._config.SetString(key, value)
 
     def _Get(self, key, all_keys=False):
-        key = "remote.%s.%s" % (self.name, key)
+        key = f"remote.{self.name}.{key}"
         return self._config.GetString(key, all_keys=all_keys)
 
 
-class Branch(object):
+class Branch:
     """Configuration options related to a single branch."""
 
     def __init__(self, config, name):
@@ -762,11 +760,11 @@ class Branch(object):
                     fd.write("\tmerge = %s\n" % self.merge)
 
     def _Set(self, key, value):
-        key = "branch.%s.%s" % (self.name, key)
+        key = f"branch.{self.name}.{key}"
         return self._config.SetString(key, value)
 
     def _Get(self, key, all_keys=False):
-        key = "branch.%s.%s" % (self.name, key)
+        key = f"branch.{self.name}.{key}"
         return self._config.GetString(key, all_keys=all_keys)
 
 

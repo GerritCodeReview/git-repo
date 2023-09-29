@@ -46,7 +46,7 @@ class UsageError(RepoExitError):
     """Exception thrown with invalid command usage."""
 
 
-class Command(object):
+class Command:
     """Base class for any command line action in repo."""
 
     # Singleton for all commands to track overall repo command execution and
@@ -290,7 +290,7 @@ class Command(object):
                 output.end()
 
     def _ResetPathToProjectMap(self, projects):
-        self._by_path = dict((p.worktree, p) for p in projects)
+        self._by_path = {p.worktree: p for p in projects}
 
     def _UpdatePathToProjectMap(self, project):
         self._by_path[project.worktree] = project
@@ -476,8 +476,7 @@ class Command(object):
             top = self.manifest
         yield top
         if not opt.this_manifest_only:
-            for child in top.all_children:
-                yield child
+            yield from top.all_children
 
 
 class InteractiveCommand(Command):
@@ -498,11 +497,11 @@ class PagedCommand(Command):
         return True
 
 
-class MirrorSafeCommand(object):
+class MirrorSafeCommand:
     """Command permits itself to run within a mirror, and does not require a
     working directory.
     """
 
 
-class GitcClientCommand(object):
+class GitcClientCommand:
     """Command that requires the local client to be a GITC client."""

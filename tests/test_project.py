@@ -48,7 +48,7 @@ def TempGitTree():
         yield tempdir
 
 
-class FakeProject(object):
+class FakeProject:
     """A fake for Project for basic functionality."""
 
     def __init__(self, worktree):
@@ -151,7 +151,7 @@ class CopyLinkTestCase(unittest.TestCase):
                     # "".
                     break
                 result = os.path.exists(path)
-                msg.append("\tos.path.exists(%s): %s" % (path, result))
+                msg.append(f"\tos.path.exists({path}): {result}")
                 if result:
                     msg.append("\tcontents: %r" % os.listdir(path))
                     break
