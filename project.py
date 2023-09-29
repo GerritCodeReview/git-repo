@@ -3394,7 +3394,8 @@ class Project(object):
         # Now that the dir should be empty, clear it out, and symlink it over.
         platform_utils.rmdir(dotgit)
         platform_utils.symlink(
-            os.path.relpath(gitdir, os.path.dirname(dotgit)), dotgit
+            os.path.relpath(gitdir, os.path.dirname(os.path.realpath(dotgit))),
+            dotgit,
         )
 
     def _get_symlink_error_message(self):
