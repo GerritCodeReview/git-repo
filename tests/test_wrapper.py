@@ -418,7 +418,7 @@ class SetupGnuPG(RepoWrapperTestCase):
                 self.wrapper.home_dot_repo, "gnupg"
             )
             self.assertTrue(self.wrapper.SetupGnuPG(True))
-            with open(os.path.join(tempdir, "keyring-version"), "r") as fp:
+            with open(os.path.join(tempdir, "keyring-version")) as fp:
                 data = fp.read()
             self.assertEqual(
                 ".".join(str(x) for x in self.wrapper.KEYRING_VERSION),

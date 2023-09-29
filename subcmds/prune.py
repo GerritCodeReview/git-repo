@@ -84,7 +84,9 @@ class Prune(PagedCommand):
 
             if not branch.base_exists:
                 print(
-                    "(ignoring: tracking branch is gone: %s)" % (branch.base,)
+                    "(ignoring: tracking branch is gone: {})".format(
+                        branch.base
+                    )
                 )
             else:
                 commits = branch.commits

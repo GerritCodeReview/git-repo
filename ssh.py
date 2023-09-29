@@ -165,7 +165,7 @@ class ProxyManager:
         # Check to see whether we already think that the master is running; if
         # we think it's already running, return right away.
         if port is not None:
-            key = "%s:%s" % (host, port)
+            key = f"{host}:{port}"
         else:
             key = host
 
