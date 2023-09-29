@@ -198,9 +198,8 @@ class _Repo:
         if short:
             commands = " ".join(sorted(self.commands))
             wrapped_commands = textwrap.wrap(commands, width=77)
-            print(
-                "Available commands:\n  %s" % ("\n  ".join(wrapped_commands),)
-            )
+            help_commands = "".join(f"\n  {x}" for x in wrapped_commands)
+            print(f"Available commands:{help_commands}")
             print("\nRun `repo help <command>` for command-specific details.")
             print("Bug reports:", Wrapper().BUG_URL)
         else:
@@ -236,7 +235,7 @@ class _Repo:
         if name in self.commands:
             return name, []
 
-        key = "alias.%s" % (name,)
+        key = f"alias.{name}"
         alias = RepoConfig.ForRepository(self.repodir).GetString(key)
         if alias is None:
             alias = RepoConfig.ForUser().GetString(key)

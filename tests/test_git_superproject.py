@@ -34,7 +34,7 @@ class SuperprojectTestCase(unittest.TestCase):
     PARENT_SID_KEY = "GIT_TRACE2_PARENT_SID"
     PARENT_SID_VALUE = "parent_sid"
     SELF_SID_REGEX = r"repo-\d+T\d+Z-.*"
-    FULL_SID_REGEX = r"^%s/%s" % (PARENT_SID_VALUE, SELF_SID_REGEX)
+    FULL_SID_REGEX = rf"^{PARENT_SID_VALUE}/{SELF_SID_REGEX}"
 
     def setUp(self):
         """Set up superproject every time."""
