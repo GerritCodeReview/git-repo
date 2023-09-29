@@ -87,25 +87,17 @@ synced and their revisions won't be found.
     def _printRawDiff(self, diff, pretty_format=None, local=False):
         _RelPath = lambda p: p.RelPath(local=local)
         for project in diff["added"]:
-            self.printText(
-                "A %s %s" % (_RelPath(project), project.revisionExpr)
-            )
+            self.printText(f"A {_RelPath(project)} {project.revisionExpr}")
             self.out.nl()
 
         for project in diff["removed"]:
-            self.printText(
-                "R %s %s" % (_RelPath(project), project.revisionExpr)
-            )
+            self.printText(f"R {_RelPath(project)} {project.revisionExpr}")
             self.out.nl()
 
         for project, otherProject in diff["changed"]:
             self.printText(
-                "C %s %s %s"
-                % (
-                    _RelPath(project),
-                    project.revisionExpr,
-                    otherProject.revisionExpr,
-                )
+                f"C {_RelPath(project)} {project.revisionExpr} "
+                f"{otherProject.revisionExpr}"
             )
             self.out.nl()
             self._printLogs(
@@ -118,12 +110,8 @@ synced and their revisions won't be found.
 
         for project, otherProject in diff["unreachable"]:
             self.printText(
-                "U %s %s %s"
-                % (
-                    _RelPath(project),
-                    project.revisionExpr,
-                    otherProject.revisionExpr,
-                )
+                f"U {_RelPath(project)} {project.revisionExpr} "
+                f"{otherProject.revisionExpr}"
             )
             self.out.nl()
 

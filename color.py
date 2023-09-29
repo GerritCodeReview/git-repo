@@ -103,7 +103,7 @@ def SetDefaultColoring(state):
         DEFAULT = "never"
 
 
-class Coloring(object):
+class Coloring:
     def __init__(self, config, section_type):
         self._section = "color.%s" % section_type
         self._config = config
@@ -194,7 +194,7 @@ class Coloring(object):
         if not opt:
             return _Color(fg, bg, attr)
 
-        v = self._config.GetString("%s.%s" % (self._section, opt))
+        v = self._config.GetString(f"{self._section}.{opt}")
         if v is None:
             return _Color(fg, bg, attr)
 
