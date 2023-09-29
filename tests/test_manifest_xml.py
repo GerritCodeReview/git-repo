@@ -198,13 +198,13 @@ class ValueTests(unittest.TestCase):
     def test_bool_true(self):
         """Check XmlBool true values."""
         for value in ("yes", "true", "1"):
-            node = self._get_node('<node a="%s"/>' % (value,))
+            node = self._get_node(f'<node a="{value}"/>')
             self.assertTrue(manifest_xml.XmlBool(node, "a"))
 
     def test_bool_false(self):
         """Check XmlBool false values."""
         for value in ("no", "false", "0"):
-            node = self._get_node('<node a="%s"/>' % (value,))
+            node = self._get_node(f'<node a="{value}"/>')
             self.assertFalse(manifest_xml.XmlBool(node, "a"))
 
     def test_int_default(self):
@@ -220,7 +220,7 @@ class ValueTests(unittest.TestCase):
     def test_int_good(self):
         """Check XmlInt numeric handling."""
         for value in (-1, 0, 1, 50000):
-            node = self._get_node('<node a="%s"/>' % (value,))
+            node = self._get_node(f'<node a="{value}"/>')
             self.assertEqual(value, manifest_xml.XmlInt(node, "a"))
 
     def test_int_invalid(self):

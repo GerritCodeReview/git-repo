@@ -1393,7 +1393,7 @@ later is required to fix a server side protocol bug.
 
             if username and password:
                 manifest_server = manifest_server.replace(
-                    "://", "://%s:%s@" % (username, password), 1
+                    "://", f"://{username}:{password}@", 1
                 )
 
         transport = PersistentTransport(manifest_server)
