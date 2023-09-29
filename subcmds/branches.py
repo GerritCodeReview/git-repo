@@ -28,7 +28,7 @@ class BranchColoring(Coloring):
         self.notinproject = self.printer("notinproject", fg="red")
 
 
-class BranchInfo(object):
+class BranchInfo:
     def __init__(self, name):
         self.name = name
         self.current = 0
@@ -174,7 +174,7 @@ is shown, then the branch appears in all projects.
                         if _RelPath(p) not in have:
                             paths.append(_RelPath(p))
 
-                s = " %s %s" % (in_type, ", ".join(paths))
+                s = f" {in_type} {', '.join(paths)}"
                 if not i.IsSplitCurrent and (width + 7 + len(s) < 80):
                     fmt = out.current if i.IsCurrent else fmt
                     fmt(s)
