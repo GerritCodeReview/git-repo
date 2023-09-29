@@ -131,7 +131,7 @@ This is similar to running: repo forall -c 'echo "$REPO_PATH : $REPO_PROJECT"'.
             elif opt.path_only and not opt.name_only:
                 lines.append("%s" % (_getpath(project)))
             else:
-                lines.append("%s : %s" % (_getpath(project), project.name))
+                lines.append(f"{_getpath(project)} : {project.name}")
 
         if lines:
             lines.sort()

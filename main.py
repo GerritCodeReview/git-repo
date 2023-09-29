@@ -186,7 +186,7 @@ global_options.add_option(
 )
 
 
-class _Repo(object):
+class _Repo:
     def __init__(self, repodir):
         self.repodir = repodir
         self.commands = all_commands
@@ -199,7 +199,9 @@ class _Repo(object):
             commands = " ".join(sorted(self.commands))
             wrapped_commands = textwrap.wrap(commands, width=77)
             print(
-                "Available commands:\n  %s" % ("\n  ".join(wrapped_commands),)
+                "Available commands:\n  {}".format(
+                    "\n  ".join(wrapped_commands)
+                )
             )
             print("\nRun `repo help <command>` for command-specific details.")
             print("Bug reports:", Wrapper().BUG_URL)
@@ -236,7 +238,7 @@ class _Repo(object):
         if name in self.commands:
             return name, []
 
-        key = "alias.%s" % (name,)
+        key = f"alias.{name}"
         alias = RepoConfig.ForRepository(self.repodir).GetString(key)
         if alias is None:
             alias = RepoConfig.ForUser().GetString(key)
@@ -789,7 +791,7 @@ def init_http():
             mgr.add_password(p[1], "https://%s/" % host, p[0], p[2])
     except netrc.NetrcParseError:
         pass
-    except IOError:
+    except OSError:
         pass
     handlers.append(_BasicAuthHandler(mgr))
     handlers.append(_DigestAuthHandler(mgr))
