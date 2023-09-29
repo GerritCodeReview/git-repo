@@ -63,9 +63,7 @@ class Version(Command, MirrorSafeCommand):
             # Python 3 returns a named tuple, but Python 2 is simpler.
             print(uname)
         else:
-            print(
-                "OS %s %s (%s)" % (uname.system, uname.release, uname.version)
-            )
+            print("OS {system} {release} ({version})".format_map(vars(uname)))
             print(
                 "CPU %s (%s)"
                 % (

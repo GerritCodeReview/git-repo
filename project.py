@@ -365,19 +365,19 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
     for part in components:
         if part in {".", ".."}:
             raise ManifestInvalidPathError(
-                '%s: "%s" not allowed in paths' % (subpath, part)
+                f'{subpath}: "{part}" not allowed in paths'
             )
 
         path = os.path.join(path, part)
         if platform_utils.islink(path):
             raise ManifestInvalidPathError(
-                "%s: traversing symlinks not allow" % (path,)
+                f"{path}: traversing symlinks not allow"
             )
 
         if os.path.exists(path):
             if not os.path.isfile(path) and not platform_utils.isdir(path):
                 raise ManifestInvalidPathError(
-                    "%s: only regular files & directories allowed" % (path,)
+                    f"{path}: only regular files & directories allowed"
                 )
 
     if skipfinal:
@@ -409,11 +409,11 @@ class _CopyFile:
 
         if platform_utils.isdir(src):
             raise ManifestInvalidPathError(
-                "%s: copying from directory not supported" % (self.src,)
+                f"{self.src}: copying from directory not supported"
             )
         if platform_utils.isdir(dest):
             raise ManifestInvalidPathError(
-                "%s: copying to directory not allowed" % (self.dest,)
+                f"{self.dest}: copying to directory not allowed"
             )
 
         # Copy file if it does not exist or is out of date.
@@ -957,15 +957,11 @@ class Project:
                 f_status = "-"
 
             if i and i.src_path:
-                line = " %s%s\t%s => %s (%s%%)" % (
-                    i_status,
-                    f_status,
-                    i.src_path,
-                    p,
-                    i.level,
+                line = (
+                    f" {i_status}{f_status}\t{i.src_path} => {p} ({i.level}%)"
                 )
             else:
-                line = " %s%s\t%s" % (i_status, f_status, p)
+                line = f" {i_status}{f_status}\t{p}"
 
             if i and not f:
                 out.added("%s", line)
@@ -1157,7 +1153,7 @@ class Project:
         if dest_branch.startswith(R_HEADS):
             dest_branch = dest_branch[len(R_HEADS) :]
 
-        ref_spec = "%s:refs/for/%s" % (R_HEADS + branch.name, dest_branch)
+        ref_spec = f"{R_HEADS + branch.name}:refs/for/{dest_branch}"
         opts = []
         if auto_topic:
             opts += ["topic=" + branch.name]
@@ -1182,7 +1178,7 @@ class Project:
         GitCommand(self, cmd, bare=True, verify_command=True).Wait()
 
         if not dryrun:
-            msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
+            msg = f"posted to {branch.remote.review} for {dest_branch}"
             self.bare_git.UpdateRef(
                 R_PUB + branch.name, R_HEADS + branch.name, message=msg
             )
@@ -1444,7 +1440,7 @@ class Project:
             return self.bare_git.rev_list(self.revisionExpr, "-1")[0]
         except GitError:
             raise ManifestInvalidRevisionError(
-                "revision %s in %s not found" % (self.revisionExpr, self.name)
+                f"revision {self.revisionExpr} in {self.name} not found"
             )
 
     def GetRevisionId(self, all_refs=None):
@@ -1461,7 +1457,7 @@ class Project:
             return self.bare_git.rev_parse("--verify", "%s^0" % rev)
         except GitError:
             raise ManifestInvalidRevisionError(
-                "revision %s in %s not found" % (self.revisionExpr, self.name)
+                f"revision {self.revisionExpr} in {self.name} not found"
             )
 
     def SetRevisionId(self, revisionId):
@@ -1773,9 +1769,7 @@ class Project:
                 raise DeleteDirtyWorktreeError(msg, project=self)
 
         if not quiet:
-            print(
-                "%s: Deleting obsolete checkout." % (self.RelPath(local=False),)
-            )
+            print(f"{self.RelPath(local=False)}: Deleting obsolete checkout.")
 
         # Unlock and delink from the main worktree.  We don't use git's worktree
         # remove because it will recursively delete projects -- we handle that
@@ -1968,7 +1962,7 @@ class Project:
             # target branch, but otherwise take no other action.
             _lwrite(
                 self.work_git.GetDotgitPath(subpath=HEAD),
-                "ref: %s%s\n" % (R_HEADS, name),
+                f"ref: {R_HEADS}{name}\n",
             )
             return True
 
@@ -2277,7 +2271,7 @@ class Project:
             self.config.SetString("core.repositoryFormatVersion", str(version))
 
         # Enable the extension!
-        self.config.SetString("extensions.%s" % (key,), value)
+        self.config.SetString(f"extensions.{key}", value)
 
     def ResolveRemoteHead(self, name=None):
         """Find out what the default branch (HEAD) points to.
@@ -2290,8 +2284,8 @@ class Project:
             name = self.remote.name
 
         # The output will look like (NB: tabs are separators):
-        # ref: refs/heads/master	HEAD
-        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44	HEAD
+        # ref: refs/heads/master    HEAD
+        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44  HEAD
         output = self.bare_git.ls_remote(
             "-q", "--symref", "--exit-code", name, "HEAD"
         )
@@ -2447,7 +2441,7 @@ class Project:
                 old_packed_lines = []
 
                 for r in sorted(all_refs):
-                    line = "%s %s\n" % (all_refs[r], r)
+                    line = f"{all_refs[r]} {r}\n"
                     tmp_packed_lines.append(line)
                     if r not in tmp:
                         old_packed_lines.append(line)
@@ -2617,7 +2611,7 @@ class Project:
             # one.
             if not verbose and gitcmd.stdout:
                 print(
-                    "\n%s:\n%s" % (self.name, gitcmd.stdout),
+                    f"\n{self.name}:\n{gitcmd.stdout}",
                     end="",
                     file=output_redir,
                 )
@@ -2752,7 +2746,7 @@ class Project:
             proc = None
             with Trace("Fetching bundle: %s", " ".join(cmd)):
                 if verbose:
-                    print("%s: Downloading bundle: %s" % (self.name, srcUrl))
+                    print(f"{self.name}: Downloading bundle: {srcUrl}")
                 stdout = None if verbose else subprocess.PIPE
                 stderr = None if verbose else subprocess.STDOUT
                 try:
@@ -2810,7 +2804,7 @@ class Project:
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
                 raise GitError(
-                    "%s checkout %s " % (self.name, rev), project=self.name
+                    f"{self.name} checkout {rev} ", project=self.name
                 )
 
     def _CherryPick(self, rev, ffonly=False, record_origin=False):
@@ -2824,7 +2818,7 @@ class Project:
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
                 raise GitError(
-                    "%s cherry-pick %s " % (self.name, rev), project=self.name
+                    f"{self.name} cherry-pick {rev} ", project=self.name
                 )
 
     def _LsRemote(self, refs):
@@ -2841,9 +2835,7 @@ class Project:
         cmd.append("--")
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
-                raise GitError(
-                    "%s revert %s " % (self.name, rev), project=self.name
-                )
+                raise GitError(f"{self.name} revert {rev} ", project=self.name)
 
     def _ResetHard(self, rev, quiet=True):
         cmd = ["reset", "--hard"]
@@ -2852,7 +2844,7 @@ class Project:
         cmd.append(rev)
         if GitCommand(self, cmd).Wait() != 0:
             raise GitError(
-                "%s reset --hard %s " % (self.name, rev), project=self.name
+                f"{self.name} reset --hard {rev} ", project=self.name
             )
 
     def _SyncSubmodules(self, quiet=True):
@@ -2871,18 +2863,14 @@ class Project:
             cmd.extend(["--onto", onto])
         cmd.append(upstream)
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(
-                "%s rebase %s " % (self.name, upstream), project=self.name
-            )
+            raise GitError(f"{self.name} rebase {upstream} ", project=self.name)
 
     def _FastForward(self, head, ffonly=False):
         cmd = ["merge", "--no-stat", head]
         if ffonly:
             cmd.append("--ff-only")
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(
-                "%s merge %s " % (self.name, head), project=self.name
-            )
+            raise GitError(f"{self.name} merge {head} ", project=self.name)
 
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         init_git_dir = not os.path.exists(self.gitdir)
@@ -3160,8 +3148,9 @@ class Project:
                         "--force-sync not enabled; cannot overwrite a local "
                         "work tree. If you're comfortable with the "
                         "possibility of losing the work tree's git metadata,"
-                        " use `repo sync --force-sync {0}` to "
-                        "proceed.".format(self.RelPath(local=False)),
+                        " use "
+                        f"`repo sync --force-sync {self.RelPath(local=False)}` "
+                        "to proceed.",
                         project=self.name,
                     )
 
@@ -3675,12 +3664,12 @@ class Project:
                 config = kwargs.pop("config", None)
                 for k in kwargs:
                     raise TypeError(
-                        "%s() got an unexpected keyword argument %r" % (name, k)
+                        f"{name}() got an unexpected keyword argument {k!r}"
                     )
                 if config is not None:
                     for k, v in config.items():
                         cmdv.append("-c")
-                        cmdv.append("%s=%s" % (k, v))
+                        cmdv.append(f"{k}={v}")
                 cmdv.append(name)
                 cmdv.extend(args)
                 p = GitCommand(
