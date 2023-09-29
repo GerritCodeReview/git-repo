@@ -186,9 +186,7 @@ def _create_symlink(source, link_name, dwFlags):
             error_desc = FormatError(code).strip()
             if code == ERROR_PRIVILEGE_NOT_HELD:
                 raise OSError(errno.EPERM, error_desc, link_name)
-            _raise_winerror(
-                code, 'Error creating symbolic link "{}"'.format(link_name)
-            )
+            _raise_winerror(code, f'Error creating symbolic link "{link_name}"')
 
 
 def islink(path):
@@ -210,7 +208,7 @@ def readlink(path):
     )
     if reparse_point_handle == INVALID_HANDLE_VALUE:
         _raise_winerror(
-            get_last_error(), 'Error opening symbolic link "{}"'.format(path)
+            get_last_error(), f'Error opening symbolic link "{path}"'
         )
     target_buffer = c_buffer(MAXIMUM_REPARSE_DATA_BUFFER_SIZE)
     n_bytes_returned = DWORD()
@@ -227,7 +225,7 @@ def readlink(path):
     CloseHandle(reparse_point_handle)
     if not io_result:
         _raise_winerror(
-            get_last_error(), 'Error reading symbolic link "{}"'.format(path)
+            get_last_error(), f'Error reading symbolic link "{path}"'
         )
     rdb = REPARSE_DATA_BUFFER.from_buffer(target_buffer)
     if rdb.ReparseTag == IO_REPARSE_TAG_SYMLINK:
@@ -236,11 +234,11 @@ def readlink(path):
         return rdb.MountPointReparseBuffer.PrintName
     # Unsupported reparse point type.
     _raise_winerror(
-        ERROR_NOT_SUPPORTED, 'Error reading symbolic link "{}"'.format(path)
+        ERROR_NOT_SUPPORTED, f'Error reading symbolic link "{path}"'
     )
 
 
 def _raise_winerror(code, error_desc):
     win_error_desc = FormatError(code).strip()
-    error_desc = "{0}: {1}".format(error_desc, win_error_desc)
+    error_desc = f"{error_desc}: {win_error_desc}"
     raise WinError(code, error_desc)
