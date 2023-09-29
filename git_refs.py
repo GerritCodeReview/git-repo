@@ -28,7 +28,7 @@ R_WORKTREE_M = R_WORKTREE + "m/"
 R_M = "refs/remotes/m/"
 
 
-class GitRefs(object):
+class GitRefs:
     def __init__(self, gitdir):
         self._gitdir = gitdir
         self._phyref = None
@@ -105,9 +105,9 @@ class GitRefs(object):
     def _ReadPackedRefs(self):
         path = os.path.join(self._gitdir, "packed-refs")
         try:
-            fd = open(path, "r")
+            fd = open(path)
             mtime = os.path.getmtime(path)
-        except IOError:
+        except OSError:
             return
         except OSError:
             return

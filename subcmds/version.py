@@ -64,7 +64,9 @@ class Version(Command, MirrorSafeCommand):
             print(uname)
         else:
             print(
-                "OS %s %s (%s)" % (uname.system, uname.release, uname.version)
+                "OS {} {} ({})".format(
+                    uname.system, uname.release, uname.version
+                )
             )
             print(
                 "CPU %s (%s)"
