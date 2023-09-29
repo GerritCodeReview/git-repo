@@ -75,5 +75,5 @@ def import_release_key(opts):
     run(
         opts,
         ["gpg", "--import-ownertrust"],
-        input=f"{KEYID_DSA}:6:\n".encode("utf-8"),
+        input=f"{KEYID_DSA}:6:\n".encode(),
     )
