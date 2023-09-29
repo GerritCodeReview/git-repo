@@ -19,12 +19,7 @@ import os
 import re
 import subprocess
 import unittest
-
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 import git_command
 import wrapper
