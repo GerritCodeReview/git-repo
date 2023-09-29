@@ -290,7 +290,7 @@ class Command:
                 output.end()
 
     def _ResetPathToProjectMap(self, projects):
-        self._by_path = dict((p.worktree, p) for p in projects)
+        self._by_path = {p.worktree: p for p in projects}
 
     def _UpdatePathToProjectMap(self, project):
         self._by_path[project.worktree] = project
@@ -476,8 +476,7 @@ class Command:
             top = self.manifest
         yield top
         if not opt.this_manifest_only:
-            for child in top.all_children:
-                yield child
+            yield from top.all_children
 
 
 class InteractiveCommand(Command):

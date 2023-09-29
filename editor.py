@@ -104,9 +104,7 @@ least one of these before using this command.""",  # noqa: E501
             try:
                 rc = subprocess.Popen(args, shell=shell).wait()
             except OSError as e:
-                raise EditorError(
-                    "editor failed, %s: %s %s" % (str(e), editor, path)
-                )
+                raise EditorError(f"editor failed, {str(e)}: {editor} {path}")
             if rc != 0:
                 raise EditorError(
                     "editor failed with exit status %d: %s %s"

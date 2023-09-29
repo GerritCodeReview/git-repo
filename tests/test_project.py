@@ -151,7 +151,7 @@ class CopyLinkTestCase(unittest.TestCase):
                     # "".
                     break
                 result = os.path.exists(path)
-                msg.append("\tos.path.exists(%s): %s" % (path, result))
+                msg.append(f"\tos.path.exists({path}): {result}")
                 if result:
                     msg.append("\tcontents: %r" % os.listdir(path))
                     break
