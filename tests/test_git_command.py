@@ -19,12 +19,7 @@ import os
 import re
 import subprocess
 import unittest
-
-
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 import git_command
 import wrapper
@@ -72,7 +67,7 @@ class GitCommandWaitTest(unittest.TestCase):
     """Tests the GitCommand class .Wait()"""
 
     def setUp(self):
-        class MockPopen(object):
+        class MockPopen:
             rc = 0
 
             def __init__(self):

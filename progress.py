@@ -52,11 +52,11 @@ def duration_str(total):
     uses microsecond resolution.  This makes for noisy output.
     """
     hours, mins, secs = convert_to_hms(total)
-    ret = "%.3fs" % (secs,)
+    ret = f"{secs:.3f}s"
     if mins:
-        ret = "%im%s" % (mins, ret)
+        ret = f"{mins}m{ret}"
     if hours:
-        ret = "%ih%s" % (hours, ret)
+        ret = f"{hours}h{ret}"
     return ret
 
 
@@ -67,7 +67,7 @@ def elapsed_str(total):
     be used when displaying elapsed time in a progress indicator.
     """
     hours, mins, secs = convert_to_hms(total)
-    ret = f"{int(secs):>02d}"
+    ret = f"{secs:>02d}"
     if total >= 3600:
         # Show leading zeroes if over an hour.
         ret = f"{mins:>02d}:{ret}"
@@ -82,7 +82,7 @@ def jobs_str(total):
     return f"{total} job{'s' if total > 1 else ''}"
 
 
-class Progress(object):
+class Progress:
     def __init__(
         self,
         title,

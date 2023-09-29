@@ -57,8 +57,8 @@ def _validate_winpath(path):
     if _winpath_is_valid(path):
         return path
     raise ValueError(
-        'Path "{}" must be a relative path or an absolute '
-        "path starting with a drive letter".format(path)
+        f'Path "{path}" must be a relative path or an absolute '
+        "path starting with a drive letter"
     )
 
 
@@ -193,10 +193,9 @@ def _walk_windows_impl(top, topdown, onerror, followlinks):
     for name in dirs:
         new_path = os.path.join(top, name)
         if followlinks or not islink(new_path):
-            for x in _walk_windows_impl(
+            yield from _walk_windows_impl(
                 new_path, topdown, onerror, followlinks
-            ):
-                yield x
+            )
     if not topdown:
         yield top, dirs, nondirs
 
