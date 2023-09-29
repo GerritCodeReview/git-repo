@@ -22,7 +22,7 @@ from error import HookError
 from git_refs import HEAD
 
 
-class RepoHook(object):
+class RepoHook:
     """A RepoHook contains information about a script to run as a hook.
 
     Hooks are used to run a python script before running an upload (for
@@ -180,7 +180,7 @@ class RepoHook(object):
                 abort_if_user_denies was passed to the consturctor.
         """
         hooks_config = self._hooks_project.config
-        git_approval_key = "repo.hooks.%s.%s" % (self._hook_type, subkey)
+        git_approval_key = f"repo.hooks.{self._hook_type}.{subkey}"
 
         # Get the last value that the user approved for this hook; may be None.
         old_val = hooks_config.GetString(git_approval_key)
@@ -193,7 +193,7 @@ class RepoHook(object):
             else:
                 # Give the user a reason why we're prompting, since they last
                 # told us to "never ask again".
-                prompt = "WARNING: %s\n\n" % (changed_prompt,)
+                prompt = f"WARNING: {changed_prompt}\n\n"
         else:
             prompt = ""
 
@@ -241,7 +241,7 @@ class RepoHook(object):
         return self._CheckForHookApprovalHelper(
             "approvedmanifest",
             self._manifest_url,
-            "Run hook scripts from %s" % (self._manifest_url,),
+            f"Run hook scripts from {self._manifest_url}",
             "Manifest URL has changed since %s was allowed."
             % (self._hook_type,),
         )
@@ -262,7 +262,7 @@ class RepoHook(object):
             "approvedhash",
             self._GetHash(),
             prompt % (self._GetMustVerb(), self._script_fullpath),
-            "Scripts have changed since %s was allowed." % (self._hook_type,),
+            f"Scripts have changed since {self._hook_type} was allowed.",
         )
 
     @staticmethod

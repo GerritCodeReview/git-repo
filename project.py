@@ -152,7 +152,7 @@ def _ProjectHooks():
     return _project_hook_list
 
 
-class DownloadedChange(object):
+class DownloadedChange:
     _commit_cache = None
 
     def __init__(self, project, base, change_id, ps_id, commit):
@@ -178,7 +178,7 @@ class DownloadedChange(object):
         return self._commit_cache
 
 
-class ReviewableBranch(object):
+class ReviewableBranch:
     _commit_cache = None
     _base_exists = None
 
@@ -319,7 +319,7 @@ class DiffColoring(Coloring):
         self.fail = self.printer("fail", fg="red")
 
 
-class Annotation(object):
+class Annotation:
     def __init__(self, name, value, keep):
         self.name = name
         self.value = value
@@ -365,19 +365,19 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
     for part in components:
         if part in {".", ".."}:
             raise ManifestInvalidPathError(
-                '%s: "%s" not allowed in paths' % (subpath, part)
+                f'{subpath}: "{part}" not allowed in paths'
             )
 
         path = os.path.join(path, part)
         if platform_utils.islink(path):
             raise ManifestInvalidPathError(
-                "%s: traversing symlinks not allow" % (path,)
+                f"{path}: traversing symlinks not allow"
             )
 
         if os.path.exists(path):
             if not os.path.isfile(path) and not platform_utils.isdir(path):
                 raise ManifestInvalidPathError(
-                    "%s: only regular files & directories allowed" % (path,)
+                    f"{path}: only regular files & directories allowed"
                 )
 
     if skipfinal:
@@ -386,7 +386,7 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
     return path
 
 
-class _CopyFile(object):
+class _CopyFile:
     """Container for <copyfile> manifest element."""
 
     def __init__(self, git_worktree, src, topdir, dest):
@@ -409,11 +409,11 @@ class _CopyFile(object):
 
         if platform_utils.isdir(src):
             raise ManifestInvalidPathError(
-                "%s: copying from directory not supported" % (self.src,)
+                f"{self.src}: copying from directory not supported"
             )
         if platform_utils.isdir(dest):
             raise ManifestInvalidPathError(
-                "%s: copying to directory not allowed" % (self.dest,)
+                f"{self.dest}: copying to directory not allowed"
             )
 
         # Copy file if it does not exist or is out of date.
@@ -431,11 +431,11 @@ class _CopyFile(object):
                 mode = os.stat(dest)[stat.ST_MODE]
                 mode = mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
                 os.chmod(dest, mode)
-            except IOError:
+            except OSError:
                 logger.error("error: Cannot copy file %s to %s", src, dest)
 
 
-class _LinkFile(object):
+class _LinkFile:
     """Container for <linkfile> manifest element."""
 
     def __init__(self, git_worktree, src, topdir, dest):
@@ -466,7 +466,7 @@ class _LinkFile(object):
                     if not platform_utils.isdir(dest_dir):
                         os.makedirs(dest_dir)
                 platform_utils.symlink(relSrc, absDest)
-            except IOError:
+            except OSError:
                 logger.error(
                     "error: Cannot link file %s to %s", relSrc, absDest
                 )
@@ -518,7 +518,7 @@ class _LinkFile(object):
                     self.__linkIt(relSrc, absDest)
 
 
-class RemoteSpec(object):
+class RemoteSpec:
     def __init__(
         self,
         name,
@@ -538,7 +538,7 @@ class RemoteSpec(object):
         self.fetchUrl = fetchUrl
 
 
-class Project(object):
+class Project:
     # These objects can be shared between several working trees.
     @property
     def shareable_dirs(self):
@@ -957,15 +957,11 @@ class Project(object):
                 f_status = "-"
 
             if i and i.src_path:
-                line = " %s%s\t%s => %s (%s%%)" % (
-                    i_status,
-                    f_status,
-                    i.src_path,
-                    p,
-                    i.level,
+                line = (
+                    f" {i_status}{f_status}\t{i.src_path} => {p} ({i.level}%)"
                 )
             else:
-                line = " %s%s\t%s" % (i_status, f_status, p)
+                line = f" {i_status}{f_status}\t{p}"
 
             if i and not f:
                 out.added("%s", line)
@@ -1157,7 +1153,7 @@ class Project(object):
         if dest_branch.startswith(R_HEADS):
             dest_branch = dest_branch[len(R_HEADS) :]
 
-        ref_spec = "%s:refs/for/%s" % (R_HEADS + branch.name, dest_branch)
+        ref_spec = f"{R_HEADS + branch.name}:refs/for/{dest_branch}"
         opts = []
         if auto_topic:
             opts += ["topic=" + branch.name]
@@ -1182,7 +1178,7 @@ class Project(object):
         GitCommand(self, cmd, bare=True, verify_command=True).Wait()
 
         if not dryrun:
-            msg = "posted to %s for %s" % (branch.remote.review, dest_branch)
+            msg = f"posted to {branch.remote.review} for {dest_branch}"
             self.bare_git.UpdateRef(
                 R_PUB + branch.name, R_HEADS + branch.name, message=msg
             )
@@ -1198,7 +1194,7 @@ class Project(object):
             with tarfile.open(tarpath, "r") as tar:
                 tar.extractall(path=path)
                 return True
-        except (IOError, tarfile.TarError) as e:
+        except (OSError, tarfile.TarError) as e:
             logger.error("error: Cannot extract archive %s: %s", tarpath, e)
         return False
 
@@ -1309,7 +1305,7 @@ class Project(object):
                     alt_dir = os.path.join(
                         self.objdir, "objects", fd.readline().rstrip()
                     )
-            except IOError:
+            except OSError:
                 alt_dir = None
         else:
             alt_dir = None
@@ -1444,7 +1440,7 @@ class Project(object):
             return self.bare_git.rev_list(self.revisionExpr, "-1")[0]
         except GitError:
             raise ManifestInvalidRevisionError(
-                "revision %s in %s not found" % (self.revisionExpr, self.name)
+                f"revision {self.revisionExpr} in {self.name} not found"
             )
 
     def GetRevisionId(self, all_refs=None):
@@ -1461,7 +1457,7 @@ class Project(object):
             return self.bare_git.rev_parse("--verify", "%s^0" % rev)
         except GitError:
             raise ManifestInvalidRevisionError(
-                "revision %s in %s not found" % (self.revisionExpr, self.name)
+                f"revision {self.revisionExpr} in {self.name} not found"
             )
 
     def SetRevisionId(self, revisionId):
@@ -1773,9 +1769,7 @@ class Project(object):
                 raise DeleteDirtyWorktreeError(msg, project=self)
 
         if not quiet:
-            print(
-                "%s: Deleting obsolete checkout." % (self.RelPath(local=False),)
-            )
+            print(f"{self.RelPath(local=False)}: Deleting obsolete checkout.")
 
         # Unlock and delink from the main worktree.  We don't use git's worktree
         # remove because it will recursively delete projects -- we handle that
@@ -1968,7 +1962,7 @@ class Project(object):
             # target branch, but otherwise take no other action.
             _lwrite(
                 self.work_git.GetDotgitPath(subpath=HEAD),
-                "ref: %s%s\n" % (R_HEADS, name),
+                f"ref: {R_HEADS}{name}\n",
             )
             return True
 
@@ -2277,7 +2271,7 @@ class Project(object):
             self.config.SetString("core.repositoryFormatVersion", str(version))
 
         # Enable the extension!
-        self.config.SetString("extensions.%s" % (key,), value)
+        self.config.SetString(f"extensions.{key}", value)
 
     def ResolveRemoteHead(self, name=None):
         """Find out what the default branch (HEAD) points to.
@@ -2290,8 +2284,8 @@ class Project(object):
             name = self.remote.name
 
         # The output will look like (NB: tabs are separators):
-        # ref: refs/heads/master	HEAD
-        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44	HEAD
+        # ref: refs/heads/master    HEAD
+        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44  HEAD
         output = self.bare_git.ls_remote(
             "-q", "--symref", "--exit-code", name, "HEAD"
         )
@@ -2447,7 +2441,7 @@ class Project(object):
                 old_packed_lines = []
 
                 for r in sorted(all_refs):
-                    line = "%s %s\n" % (all_refs[r], r)
+                    line = f"{all_refs[r]} {r}\n"
                     tmp_packed_lines.append(line)
                     if r not in tmp:
                         old_packed_lines.append(line)
@@ -2617,7 +2611,7 @@ class Project(object):
             # one.
             if not verbose and gitcmd.stdout:
                 print(
-                    "\n%s:\n%s" % (self.name, gitcmd.stdout),
+                    f"\n{self.name}:\n{gitcmd.stdout}",
                     end="",
                     file=output_redir,
                 )
@@ -2752,7 +2746,7 @@ class Project(object):
             proc = None
             with Trace("Fetching bundle: %s", " ".join(cmd)):
                 if verbose:
-                    print("%s: Downloading bundle: %s" % (self.name, srcUrl))
+                    print(f"{self.name}: Downloading bundle: {srcUrl}")
                 stdout = None if verbose else subprocess.PIPE
                 stderr = None if verbose else subprocess.STDOUT
                 try:
@@ -2810,7 +2804,7 @@ class Project(object):
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
                 raise GitError(
-                    "%s checkout %s " % (self.name, rev), project=self.name
+                    f"{self.name} checkout {rev} ", project=self.name
                 )
 
     def _CherryPick(self, rev, ffonly=False, record_origin=False):
@@ -2824,7 +2818,7 @@ class Project(object):
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
                 raise GitError(
-                    "%s cherry-pick %s " % (self.name, rev), project=self.name
+                    f"{self.name} cherry-pick {rev} ", project=self.name
                 )
 
     def _LsRemote(self, refs):
@@ -2841,9 +2835,7 @@ class Project(object):
         cmd.append("--")
         if GitCommand(self, cmd).Wait() != 0:
             if self._allrefs:
-                raise GitError(
-                    "%s revert %s " % (self.name, rev), project=self.name
-                )
+                raise GitError(f"{self.name} revert {rev} ", project=self.name)
 
     def _ResetHard(self, rev, quiet=True):
         cmd = ["reset", "--hard"]
@@ -2852,7 +2844,7 @@ class Project(object):
         cmd.append(rev)
         if GitCommand(self, cmd).Wait() != 0:
             raise GitError(
-                "%s reset --hard %s " % (self.name, rev), project=self.name
+                f"{self.name} reset --hard {rev} ", project=self.name
             )
 
     def _SyncSubmodules(self, quiet=True):
@@ -2871,18 +2863,14 @@ class Project(object):
             cmd.extend(["--onto", onto])
         cmd.append(upstream)
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(
-                "%s rebase %s " % (self.name, upstream), project=self.name
-            )
+            raise GitError(f"{self.name} rebase {upstream} ", project=self.name)
 
     def _FastForward(self, head, ffonly=False):
         cmd = ["merge", "--no-stat", head]
         if ffonly:
             cmd.append("--ff-only")
         if GitCommand(self, cmd).Wait() != 0:
-            raise GitError(
-                "%s merge %s " % (self.name, head), project=self.name
-            )
+            raise GitError(f"{self.name} merge {head} ", project=self.name)
 
     def _InitGitDir(self, mirror_git=None, force_sync=False, quiet=False):
         init_git_dir = not os.path.exists(self.gitdir)
@@ -3160,8 +3148,9 @@ class Project(object):
                         "--force-sync not enabled; cannot overwrite a local "
                         "work tree. If you're comfortable with the "
                         "possibility of losing the work tree's git metadata,"
-                        " use `repo sync --force-sync {0}` to "
-                        "proceed.".format(self.RelPath(local=False)),
+                        " use "
+                        f"`repo sync --force-sync {self.RelPath(local=False)}` "
+                        "to proceed.",
                         project=self.name,
                     )
 
@@ -3227,7 +3216,7 @@ class Project(object):
         # Rewrite the internal state files to use relative paths between the
         # checkouts & worktrees.
         dotgit = os.path.join(self.worktree, ".git")
-        with open(dotgit, "r") as fp:
+        with open(dotgit) as fp:
             # Figure out the checkout->worktree path.
             setting = fp.read()
             assert setting.startswith("gitdir:")
@@ -3475,7 +3464,7 @@ class Project(object):
         )
         return logs
 
-    class _GitGetByExec(object):
+    class _GitGetByExec:
         def __init__(self, project, bare, gitdir):
             self._project = project
             self._bare = bare
@@ -3530,7 +3519,7 @@ class Project(object):
                     except StopIteration:
                         break
 
-                    class _Info(object):
+                    class _Info:
                         def __init__(self, path, omode, nmode, oid, nid, state):
                             self.path = path
                             self.src_path = None
@@ -3584,7 +3573,7 @@ class Project(object):
             try:
                 with open(path) as fd:
                     line = fd.readline()
-            except IOError as e:
+            except OSError as e:
                 raise NoManifestException(path, str(e))
             try:
                 line = line.decode()
@@ -3675,12 +3664,12 @@ class Project(object):
                 config = kwargs.pop("config", None)
                 for k in kwargs:
                     raise TypeError(
-                        "%s() got an unexpected keyword argument %r" % (name, k)
+                        f"{name}() got an unexpected keyword argument {k!r}"
                     )
                 if config is not None:
                     for k, v in config.items():
                         cmdv.append("-c")
-                        cmdv.append("%s=%s" % (k, v))
+                        cmdv.append(f"{k}={v}")
                 cmdv.append(name)
                 cmdv.extend(args)
                 p = GitCommand(
@@ -3716,7 +3705,7 @@ class _DirtyError(LocalSyncFail):
         return "contains uncommitted changes"
 
 
-class _InfoMessage(object):
+class _InfoMessage:
     def __init__(self, project, text):
         self.project = project
         self.text = text
@@ -3728,7 +3717,7 @@ class _InfoMessage(object):
         syncbuf.out.nl()
 
 
-class _Failure(object):
+class _Failure:
     def __init__(self, project, why):
         self.project = project
         self.why = why
@@ -3740,7 +3729,7 @@ class _Failure(object):
         syncbuf.out.nl()
 
 
-class _Later(object):
+class _Later:
     def __init__(self, project, action):
         self.project = project
         self.action = action
@@ -3766,7 +3755,7 @@ class _SyncColoring(Coloring):
         self.fail = self.printer("fail", fg="red")
 
 
-class SyncBuffer(object):
+class SyncBuffer:
     def __init__(self, config, detach_head=False):
         self._messages = []
         self._failures = []
