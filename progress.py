@@ -52,7 +52,7 @@ def duration_str(total):
     uses microsecond resolution.  This makes for noisy output.
     """
     hours, mins, secs = convert_to_hms(total)
-    ret = "%.3fs" % (secs,)
+    ret = "{:.3f}s".format(secs)
     if mins:
         ret = "%im%s" % (mins, ret)
     if hours:
@@ -82,7 +82,7 @@ def jobs_str(total):
     return f"{total} job{'s' if total > 1 else ''}"
 
 
-class Progress(object):
+class Progress:
     def __init__(
         self,
         title,

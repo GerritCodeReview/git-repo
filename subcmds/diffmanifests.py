@@ -88,13 +88,13 @@ synced and their revisions won't be found.
         _RelPath = lambda p: p.RelPath(local=local)
         for project in diff["added"]:
             self.printText(
-                "A %s %s" % (_RelPath(project), project.revisionExpr)
+                "A {} {}".format(_RelPath(project), project.revisionExpr)
             )
             self.out.nl()
 
         for project in diff["removed"]:
             self.printText(
-                "R %s %s" % (_RelPath(project), project.revisionExpr)
+                "R {} {}".format(_RelPath(project), project.revisionExpr)
             )
             self.out.nl()
 

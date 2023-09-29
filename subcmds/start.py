@@ -130,7 +130,7 @@ revision specified in the manifest.
             all_projects,
             callback=_ProcessResults,
             output=Progress(
-                "Starting %s" % (nb,), len(all_projects), quiet=opt.quiet
+                "Starting {}".format(nb), len(all_projects), quiet=opt.quiet
             ),
         )
 

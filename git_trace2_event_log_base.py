@@ -42,7 +42,7 @@ import threading
 p_init_count = 0
 
 
-class BaseEventLog(object):
+class BaseEventLog:
     """Event log that records events that occurred during a repo invocation.
 
     Events are written to the log as a consecutive JSON entries, one per line.
@@ -76,7 +76,7 @@ class BaseEventLog(object):
         # Save both our sid component and the complete sid.
         # We use our sid component (self._sid) as the unique filename prefix and
         # the full sid (self._full_sid) in the log itself.
-        self._sid = "repo-%s-P%08x" % (
+        self._sid = "repo-{}-P{:08x}".format(
             self.start.strftime("%Y%m%dT%H%M%SZ"),
             os.getpid(),
         )

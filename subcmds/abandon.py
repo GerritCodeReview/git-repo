@@ -117,7 +117,7 @@ It is equivalent to "git branch -D <branchname>".
             all_projects,
             callback=_ProcessResults,
             output=Progress(
-                "Abandon %s" % (nb,), len(all_projects), quiet=opt.quiet
+                "Abandon {}".format(nb), len(all_projects), quiet=opt.quiet
             ),
         )
 
@@ -152,4 +152,4 @@ It is equivalent to "git branch -D <branchname>".
                             _RelPath(p) for p in success[br]
                         )
                     )
-                print("%s%s| %s\n" % (br, " " * (width - len(br)), result))
+                print("{}{}| {}\n".format(br, " " * (width - len(br)), result))

@@ -100,7 +100,9 @@ class GitConfigReadOnlyTests(unittest.TestCase):
             ("intg", 10737418240),
         )
         for key, value in TESTS:
-            self.assertEqual(value, self.config.GetInt("section.%s" % (key,)))
+            self.assertEqual(
+                value, self.config.GetInt("section.{}".format(key))
+            )
 
 
 class GitConfigReadWriteTests(unittest.TestCase):

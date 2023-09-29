@@ -215,7 +215,7 @@ to update the working directory files.
 
             if not opt.quiet:
                 print()
-            print("Your identity is: %s <%s>" % (name, email))
+            print("Your identity is: {} <{}>".format(name, email))
             print("is this correct [y/N]? ", end="", flush=True)
             a = sys.stdin.readline().strip().lower()
             if a in ("yes", "y", "t", "true"):

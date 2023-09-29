@@ -142,7 +142,7 @@ def _GetTraceFile(quiet):
 def _ClearOldTraces():
     """Clear the oldest commands if trace file is too big."""
     try:
-        with open(_TRACE_FILE, "r", errors="ignore") as f:
+        with open(_TRACE_FILE, errors="ignore") as f:
             if os.path.getsize(f.name) / (1024 * 1024) <= _MAX_SIZE:
                 return
             trace_lines = f.readlines()

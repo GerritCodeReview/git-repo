@@ -96,7 +96,7 @@ The command is equivalent to:
             all_projects,
             callback=_ProcessResults,
             output=Progress(
-                "Checkout %s" % (nb,), len(all_projects), quiet=opt.quiet
+                "Checkout {}".format(nb), len(all_projects), quiet=opt.quiet
             ),
         )
 

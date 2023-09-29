@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding:utf-8 -*-
 #
 # Copyright (C) 2008 The Android Open Source Project
 #
@@ -22,7 +21,6 @@ It is used to get an initial repo client checkout, and after that it runs the
 copy of repo in the checkout.
 """
 
-from __future__ import print_function
 
 import datetime
 import os
@@ -36,11 +34,11 @@ import sys
 # bit more flexible with older systems.  See that file for more details on the
 # versions we select.
 MIN_PYTHON_VERSION_SOFT = (3, 6)
-MIN_PYTHON_VERSION_HARD = (3, 5)
+MIN_PYTHON_VERSION_HARD = (3, 6)
 
 
 # Keep basic logic in sync with repo_trace.py.
-class Trace(object):
+class Trace:
     """Trace helper logic."""
 
     REPO_TRACE = "REPO_TRACE"
@@ -99,7 +97,7 @@ def check_python_version():
         # bridge the gap.  This is the fallback anyways so perf isn't critical.
         min_major, min_minor = MIN_PYTHON_VERSION_SOFT
         for inc in range(0, 10):
-            reexec("python{}.{}".format(min_major, min_minor + inc))
+            reexec(f"python{min_major}.{min_minor + inc}")
 
         # Fallback to older versions if possible.
         for inc in range(
@@ -108,7 +106,7 @@ def check_python_version():
             # Don't downgrade, and don't reexec ourselves (which would infinite loop).
             if (min_major, min_minor - inc) <= (major, minor):
                 break
-            reexec("python{}.{}".format(min_major, min_minor - inc))
+            reexec(f"python{min_major}.{min_minor - inc}")
 
         # Try the generic Python 3 wrapper, but only if it's new enough.  If it
         # isn't, we want to just give up below and make the user resolve things.
@@ -598,7 +596,9 @@ def run_command(cmd, **kwargs):
             file=sys.stderr,
         )
         print(
-            "  cwd: %s\n  cmd: %r" % (kwargs.get("cwd", os.getcwd()), cmd),
+            "  cwd: {}\n  cmd: {!r}".format(
+                kwargs.get("cwd", os.getcwd()), cmd
+            ),
             file=sys.stderr,
         )
 
@@ -625,12 +625,12 @@ def get_gitc_manifest_dir():
     if _gitc_manifest_dir is None:
         _gitc_manifest_dir = ""
         try:
-            with open(GITC_CONFIG_FILE, "r") as gitc_config:
+            with open(GITC_CONFIG_FILE) as gitc_config:
                 for line in gitc_config:
                     match = re.match("gitc_dir=(?P<gitc_manifest_dir>.*)", line)
                     if match:
                         _gitc_manifest_dir = match.group("gitc_manifest_dir")
-        except IOError:
+        except OSError:
             pass
     return _gitc_manifest_dir
 
@@ -722,7 +722,9 @@ def _Init(args, gitc_init=False):
     except OSError as e:
         if e.errno != errno.EEXIST:
             print(
-                "fatal: cannot make %s directory: %s" % (repodir, e.strerror),
+                "fatal: cannot make {} directory: {}".format(
+                    repodir, e.strerror
+                ),
                 file=sys.stderr,
             )
             # Don't raise CloneFailure; that would delete the
@@ -820,7 +822,9 @@ def _CheckGitVersion():
     if ver_act < MIN_GIT_VERSION:
         need = ".".join(map(str, MIN_GIT_VERSION))
         print(
-            "fatal: git %s or later required; found %s" % (need, ver_act.full),
+            "fatal: git {} or later required; found {}".format(
+                need, ver_act.full
+            ),
             file=sys.stderr,
         )
         raise CloneFailure()
@@ -839,7 +843,9 @@ def SetGitTrace2ParentSid(env=None):
     KEY = "GIT_TRACE2_PARENT_SID"
 
     now = datetime.datetime.now(datetime.timezone.utc)
-    value = "repo-%s-P%08x" % (now.strftime("%Y%m%dT%H%M%SZ"), os.getpid())
+    value = "repo-{}-P{:08x}".format(
+        now.strftime("%Y%m%dT%H%M%SZ"), os.getpid()
+    )
 
     # If it's already set, then append ourselves.
     if KEY in env:
@@ -894,7 +900,9 @@ def SetupGnuPG(quiet):
     except OSError as e:
         if e.errno != errno.EEXIST:
             print(
-                "fatal: cannot make %s directory: %s" % (gpg_dir, e.strerror),
+                "fatal: cannot make {} directory: {}".format(
+                    gpg_dir, e.strerror
+                ),
                 file=sys.stderr,
             )
             sys.exit(1)
@@ -954,7 +962,7 @@ def _GetRepoConfig(name):
         return None
     else:
         print(
-            "repo: error: git %s failed:\n%s" % (" ".join(cmd), ret.stderr),
+            "repo: error: git {} failed:\n{}".format(" ".join(cmd), ret.stderr),
             file=sys.stderr,
         )
         raise RunError()
@@ -1067,7 +1075,7 @@ def _Clone(url, cwd, clone_bundle, quiet, verbose):
         os.mkdir(cwd)
     except OSError as e:
         print(
-            "fatal: cannot make %s directory: %s" % (cwd, e.strerror),
+            "fatal: cannot make {} directory: {}".format(cwd, e.strerror),
             file=sys.stderr,
         )
         raise CloneFailure()
@@ -1107,7 +1115,7 @@ def resolve_repo_rev(cwd, committish):
         ret = run_git(
             "rev-parse",
             "--verify",
-            "%s^{commit}" % (committish,),
+            "{}^{{commit}}".format(committish),
             cwd=cwd,
             check=False,
         )
@@ -1120,7 +1128,7 @@ def resolve_repo_rev(cwd, committish):
         rev = resolve("refs/remotes/origin/%s" % committish)
         if rev is None:
             print(
-                'repo: error: unknown branch "%s"' % (committish,),
+                'repo: error: unknown branch "{}"'.format(committish),
                 file=sys.stderr,
             )
             raise CloneFailure()
@@ -1133,7 +1141,8 @@ def resolve_repo_rev(cwd, committish):
         rev = resolve(remote_ref)
         if rev is None:
             print(
-                'repo: error: unknown tag "%s"' % (committish,), file=sys.stderr
+                'repo: error: unknown tag "{}"'.format(committish),
+                file=sys.stderr,
             )
             raise CloneFailure()
         return (remote_ref, rev)
@@ -1141,12 +1150,12 @@ def resolve_repo_rev(cwd, committish):
     # See if it's a short branch name.
     rev = resolve("refs/remotes/origin/%s" % committish)
     if rev:
-        return ("refs/heads/%s" % (committish,), rev)
+        return ("refs/heads/{}".format(committish), rev)
 
     # See if it's a tag.
     rev = resolve("refs/tags/%s" % committish)
     if rev:
-        return ("refs/tags/%s" % (committish,), rev)
+        return ("refs/tags/{}".format(committish), rev)
 
     # See if it's a commit.
     rev = resolve(committish)
@@ -1155,7 +1164,8 @@ def resolve_repo_rev(cwd, committish):
 
     # Give up!
     print(
-        'repo: error: unable to resolve "%s"' % (committish,), file=sys.stderr
+        'repo: error: unable to resolve "{}"'.format(committish),
+        file=sys.stderr,
     )
     raise CloneFailure()
 
@@ -1214,7 +1224,7 @@ def _FindRepo():
     return (repo, os.path.join(curdir, repodir))
 
 
-class _Options(object):
+class _Options:
     help = False
     version = False
 
@@ -1225,7 +1235,7 @@ def _ExpandAlias(name):
     if name in {"gitc-init", "help", "init"}:
         return name, []
 
-    alias = _GetRepoConfig("alias.%s" % (name,))
+    alias = _GetRepoConfig("alias.{}".format(name))
     if alias is None:
         return name, []
 
@@ -1258,7 +1268,7 @@ def _ParseArguments(args):
     return cmd, opt, arg
 
 
-class Requirements(object):
+class Requirements:
     """Helper for checking repo's system requirements."""
 
     REQUIREMENTS_NAME = "requirements.json"
@@ -1280,7 +1290,7 @@ class Requirements(object):
         try:
             with open(path, "rb") as f:
                 data = f.read()
-        except EnvironmentError:
+        except OSError:
             # NB: EnvironmentError is used for Python 2 & 3 compatibility.
             # If we couldn't open the file, assume it's an old source tree.
             return None
@@ -1393,16 +1403,18 @@ def _Help(args):
 def _Version():
     """Show version information."""
     print("<repo not installed>")
-    print("repo launcher version %s" % (".".join(str(x) for x in VERSION),))
-    print("       (from %s)" % (__file__,))
-    print("git %s" % (ParseGitVersion().full,))
+    print("repo launcher version {}".format(".".join(str(x) for x in VERSION)))
+    print("       (from {})".format(__file__))
+    print("git {}".format(ParseGitVersion().full))
     print("Python %s" % sys.version)
     uname = platform.uname()
     if sys.version_info.major < 3:
         # Python 3 returns a named tuple, but Python 2 is simpler.
         print(uname)
     else:
-        print("OS %s %s (%s)" % (uname.system, uname.release, uname.version))
+        print(
+            "OS {} {} ({})".format(uname.system, uname.release, uname.version)
+        )
         print(
             "CPU %s (%s)"
             % (uname.machine, uname.processor if uname.processor else "unknown")

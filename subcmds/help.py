@@ -150,7 +150,7 @@ Displays detailed usage information about a command.
     def _PrintAllCommandHelp(self):
         for name in sorted(all_commands):
             cmd = all_commands[name](manifest=self.manifest)
-            self._PrintCommandHelp(cmd, header_prefix="[%s] " % (name,))
+            self._PrintCommandHelp(cmd, header_prefix="[{}] ".format(name))
 
     def _Options(self, p):
         p.add_option(

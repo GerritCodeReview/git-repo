@@ -58,7 +58,7 @@ INVALID_GIT_EXIT_CODE = 126
 logger = RepoLogger(__file__)
 
 
-class _GitCall(object):
+class _GitCall:
     @functools.lru_cache(maxsize=None)
     def version_tuple(self):
         ret = Wrapper().ParseGitVersion()
@@ -148,7 +148,7 @@ def GetEventTargetPath():
     return path
 
 
-class UserAgent(object):
+class UserAgent:
     """Mange User-Agent settings when talking to external services
 
     We follow the style as documented here:
@@ -196,7 +196,7 @@ class UserAgent(object):
     def git(self):
         """The UA when running git."""
         if self._git_ua is None:
-            self._git_ua = "git/%s (%s) git-repo/%s" % (
+            self._git_ua = "git/{} ({}) git-repo/{}".format(
                 git.version_tuple().full,
                 self.os,
                 RepoSourceVersion(),
@@ -216,7 +216,7 @@ def git_require(min_version, fail=False, msg=""):
         need = ".".join(map(str, min_version))
         if msg:
             msg = " for " + msg
-        error_msg = "fatal: git %s or later required%s" % (need, msg)
+        error_msg = "fatal: git {} or later required{}".format(need, msg)
         logger.error(error_msg)
         raise GitRequireError(error_msg)
     return False
@@ -243,7 +243,7 @@ def _build_env(
         env["GIT_SSH"] = ssh_proxy.proxy
         env["GIT_SSH_VARIANT"] = "ssh"
     if "http_proxy" in env and "darwin" == sys.platform:
-        s = "'http.proxy=%s'" % (env["http_proxy"],)
+        s = "'http.proxy={}'".format(env["http_proxy"])
         p = env.get("GIT_CONFIG_PARAMETERS")
         if p is not None:
             s = p + " " + s
@@ -272,7 +272,7 @@ def _build_env(
     return env
 
 
-class GitCommand(object):
+class GitCommand:
     """Wrapper around a single git invocation."""
 
     def __init__(
@@ -468,7 +468,7 @@ class GitCommand(object):
                 )
             except Exception as e:
                 raise GitPopenCommandError(
-                    message="%s: %s" % (command[1], e),
+                    message="{}: {}".format(command[1], e),
                     project=self.project.name if self.project else None,
                     command_args=self.cmdv,
                 )

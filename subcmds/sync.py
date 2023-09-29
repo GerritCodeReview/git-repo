@@ -21,7 +21,6 @@ import multiprocessing
 import netrc
 import optparse
 import os
-import socket
 import sys
 import tempfile
 import time
@@ -943,7 +942,7 @@ later is required to fix a server side protocol bug.
                 break
             # Stop us from non-stopped fetching actually-missing repos: If set
             # of missing repos has not been changed from last fetch, we break.
-            missing_set = set(p.name for p in missing)
+            missing_set = {p.name for p in missing}
             if previously_missing_set == missing_set:
                 break
             previously_missing_set = missing_set
@@ -1265,7 +1264,7 @@ later is required to fix a server side protocol bug.
         old_project_paths = []
 
         if os.path.exists(file_path):
-            with open(file_path, "r") as fd:
+            with open(file_path) as fd:
                 old_project_paths = fd.read().split("\n")
             # In reversed order, so subfolders are deleted before parent folder.
             for path in sorted(old_project_paths, reverse=True):
@@ -1376,7 +1375,7 @@ later is required to fix a server side protocol bug.
             else:
                 try:
                     info = netrc.netrc()
-                except IOError:
+                except OSError:
                     # .netrc file does not exist or could not be opened.
                     pass
                 else:
@@ -1396,7 +1395,7 @@ later is required to fix a server side protocol bug.
 
             if username and password:
                 manifest_server = manifest_server.replace(
-                    "://", "://%s:%s@" % (username, password), 1
+                    "://", "://{}:{}@".format(username, password), 1
                 )
 
         transport = PersistentTransport(manifest_server)
@@ -1417,7 +1416,7 @@ later is required to fix a server side protocol bug.
                     "TARGET_PRODUCT" in os.environ
                     and "TARGET_BUILD_VARIANT" in os.environ
                 ):
-                    target = "%s-%s" % (
+                    target = "{}-{}".format(
                         os.environ["TARGET_PRODUCT"],
                         os.environ["TARGET_BUILD_VARIANT"],
                     )
@@ -1435,7 +1434,7 @@ later is required to fix a server side protocol bug.
                 try:
                     with open(smart_sync_manifest_path, "w") as f:
                         f.write(manifest_str)
-                except IOError as e:
+                except OSError as e:
                     raise SmartSyncError(
                         "error: cannot write manifest to %s:\n%s"
                         % (smart_sync_manifest_path, e),
@@ -1446,7 +1445,7 @@ later is required to fix a server side protocol bug.
                 raise SmartSyncError(
                     "error: manifest server RPC call failed: %s" % manifest_str
                 )
-        except (socket.error, IOError, xmlrpc.client.Fault) as e:
+        except (OSError, xmlrpc.client.Fault) as e:
             raise SmartSyncError(
                 "error: cannot connect to manifest server %s:\n%s"
                 % (manifest.manifest_server, e),
@@ -1908,7 +1907,7 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             print("repo version %s is current" % rp.work_git.describe(HEAD))
 
 
-class _FetchTimes(object):
+class _FetchTimes:
     _ALPHA = 0.5
 
     def __init__(self, manifest):
@@ -1931,7 +1930,7 @@ class _FetchTimes(object):
             try:
                 with open(self._path) as f:
                     self._saved = json.load(f)
-            except (IOError, ValueError):
+            except (OSError, ValueError):
                 platform_utils.remove(self._path, missing_ok=True)
                 self._saved = {}
 
@@ -1947,11 +1946,11 @@ class _FetchTimes(object):
         try:
             with open(self._path, "w") as f:
                 json.dump(self._seen, f, indent=2)
-        except (IOError, TypeError):
+        except (OSError, TypeError):
             platform_utils.remove(self._path, missing_ok=True)
 
 
-class LocalSyncState(object):
+class LocalSyncState:
     _LAST_FETCH = "last_fetch"
     _LAST_CHECKOUT = "last_checkout"
 
@@ -1994,7 +1993,7 @@ class LocalSyncState(object):
             try:
                 with open(self._path) as f:
                     self._state = json.load(f)
-            except (IOError, ValueError):
+            except (OSError, ValueError):
                 platform_utils.remove(self._path, missing_ok=True)
                 self._state = {}
 
@@ -2004,7 +2003,7 @@ class LocalSyncState(object):
         try:
             with open(self._path, "w") as f:
                 json.dump(self._state, f, indent=2)
-        except (IOError, TypeError):
+        except (OSError, TypeError):
             platform_utils.remove(self._path, missing_ok=True)
 
     def PruneRemovedProjects(self):
@@ -2137,7 +2136,7 @@ class PersistentTransport(xmlrpc.client.Transport):
             try:
                 p.feed(data)
             except xml.parsers.expat.ExpatError as e:
-                raise IOError(
+                raise OSError(
                     f"Parsing the manifest failed: {e}\n"
                     f"Please report this to your manifest server admin.\n"
                     f'Here is the full response:\n{data.decode("utf-8")}'
