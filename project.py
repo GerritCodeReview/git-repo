@@ -2290,8 +2290,8 @@ class Project(object):
             name = self.remote.name
 
         # The output will look like (NB: tabs are separators):
-        # ref: refs/heads/master	HEAD
-        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44	HEAD
+        # ref: refs/heads/master    HEAD
+        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44  HEAD
         output = self.bare_git.ls_remote(
             "-q", "--symref", "--exit-code", name, "HEAD"
         )
@@ -3394,7 +3394,8 @@ class Project(object):
         # Now that the dir should be empty, clear it out, and symlink it over.
         platform_utils.rmdir(dotgit)
         platform_utils.symlink(
-            os.path.relpath(gitdir, os.path.dirname(dotgit)), dotgit
+            os.path.relpath(gitdir, os.path.dirname(os.path.realpath(dotgit))),
+            dotgit,
         )
 
     def _get_symlink_error_message(self):
