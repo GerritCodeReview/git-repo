@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6ff029d_bf429f72",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-29T07:40:58Z",
+      "side": 1,
+      "message": "The hard part of this problem is there is no simple way to capture and stream stderr at the same time. Afaiu, python subprocess creates a child process and passes unix fd for the streams. When `PIPE` is set, it creates a stream and sends it\u0027s int fd to the child process. So there is no straight-forward way to stream and read at the same time.\n\nI do see this bug though. Git writes all its diagnostic logs to stderr which includes things like progress bar while pushing so this would def break that.\n\nI\u0027ve reset `capture_stdout` and `capture_stderr`. My change currently only works for calls where we explicitly capture stderr.\n\nI\u0027m currently looking into a non-noisy way for capturing and manually logging the stream. Will close this comment after the fix.",
+      "parentUuid": "d1d0d2dc_6ca53a96",
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec856310_4dec890b",
         "filename": "git_command.py",
         "patchSetId": 9
@@ -55,6 +73,30 @@
       "side": 1,
       "message": "e.g.\ncapture_stdout and capture_stderr have additional side effects. \n- https://b.corp.google.com/issues/297097597",
       "parentUuid": "ec856310_4dec890b",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 285,
+        "endChar": 8
+      },
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a82d36b_23e7e265",
+        "filename": "git_command.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-29T07:40:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2ac7a18_9242c59c",
       "range": {
         "startLine": 285,
         "startChar": 0,
