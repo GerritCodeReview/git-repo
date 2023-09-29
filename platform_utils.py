@@ -57,8 +57,8 @@ def _validate_winpath(path):
     if _winpath_is_valid(path):
         return path
     raise ValueError(
-        'Path "{}" must be a relative path or an absolute '
-        "path starting with a drive letter".format(path)
+        f'Path "{path}" must be a relative path or an absolute '
+        "path starting with a drive letter"
     )
 
 
