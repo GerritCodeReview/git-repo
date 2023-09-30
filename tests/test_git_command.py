@@ -74,6 +74,10 @@ class GitCommandWaitTest(unittest.TestCase):
         class MockPopen(object):
             rc = 0
 
+            def __init__(self):
+                self.stdout = []
+                self.stderr = []
+
             def communicate(
                 self, input: str = None, timeout: float = None
             ) -> [str, str]:
@@ -214,3 +218,28 @@ class GitRequireTests(unittest.TestCase):
         with self.assertRaises(git_command.GitRequireError) as e:
             git_command.git_require((2,), fail=True, msg="so sad")
             self.assertNotEqual(0, e.code)
+
+
+class GitCommandErrorTest(unittest.TestCase):
+    """Test for the GitCommandError class."""
+
+    def test_augument_stderr(self):
+        self.assertEqual(
+            git_command.GitCommandError.augument_stderr(
+                "couldn't find remote ref refs/heads/foo"
+            ),
+            (
+                "couldn't find remote ref refs/heads/foo\n"
+                "Check if the provided ref exists in the remote."
+            ),
+        )
+
+        self.assertEqual(
+            git_command.GitCommandError.augument_stderr(
+                "'foobar' does not appear to be a git repository"
+            ),
+            (
+                "'foobar' does not appear to be a git repository\n"
+                "Are you running this repo command outside of a repo workspace?"
+            ),
+        )
