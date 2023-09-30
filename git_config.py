@@ -165,6 +165,10 @@ class GitConfig(object):
             )
             return None
 
+    def SetInt(self, name: str, value: int):
+        """Set an integer."""
+        self.SetString(name, value)
+
     def DumpConfigDict(self):
         """Returns the current configuration dict.
 
