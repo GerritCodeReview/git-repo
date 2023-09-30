@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22de9e9d_227e12dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-30T00:00:26Z",
+      "side": 1,
+      "message": "I\u0027ve updated the code to capture stderr from subprocess and somehow hackily write it back to the stderr. This should maintain streaming nature of calls and also capture the error within `GitCommandError`. Wdyt?",
+      "parentUuid": "d6ff029d_bf429f72",
+      "revId": "0d76873659f66cf98f7553d49016811178a02335",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec856310_4dec890b",
         "filename": "git_command.py",
         "patchSetId": 9

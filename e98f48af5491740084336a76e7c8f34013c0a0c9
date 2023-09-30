@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "129a8a65_a7cc4658",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-30T00:00:26Z",
+      "side": 1,
+      "message": "git writes diagnostic logs such as upload progress to stderr by default. Setting this to one just ignores the actual error. Would this break anything?",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e61e572_a1a0702e",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-09-30T00:00:26Z",
+      "side": 1,
+      "message": "afaiu, io.TextIOWrapper buffers until `io.DEFAULT_BUFFER_SIZE`, which 8192, before returning. I guess that shouldn\u0027t be a problem.",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
