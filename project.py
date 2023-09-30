@@ -3982,7 +3982,7 @@ class ManifestProject(MetaProject):
     @property
     def depth(self):
         """Partial clone depth."""
-        return self.config.GetString("repo.depth")
+        return self.config.GetInt("repo.depth")
 
     @property
     def clone_filter(self):
