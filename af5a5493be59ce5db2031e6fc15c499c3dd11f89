@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b5d7fd7_9f8c1e83",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-10-02T17:46:40Z",
+      "side": 1,
+      "message": "Try this out with `repo upload`. it would be interesting to know if there is a difference in the rate that the buffers are flushed/streamed to stdout/stderr.\n\nI recall having an issue that I couldn\u0027t reconcile",
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
