@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ebc2d22_2aaa2fcd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-02T14:51:03Z",
+      "side": 1,
+      "message": "This is my first attempt at submitting a change to a Gerrit repo, so please take that into account (let me know what I should be doing differently). Is there a way to link this change to the bug it fixes (b/302680231)?",
+      "revId": "5188388228e55bde2342ae0d5da25b2ac7ba4daa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
