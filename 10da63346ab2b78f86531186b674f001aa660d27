@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dfe4cdef_618dfd01",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-02T18:41:20Z",
+      "side": 1,
+      "message": "please scope commits.  `project:` would work here.",
+      "revId": "10da63346ab2b78f86531186b674f001aa660d27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db8c80ee_90352f0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-02T18:41:20Z",
+      "side": 1,
+      "message": "we use `Bug:` tags in this project",
+      "revId": "10da63346ab2b78f86531186b674f001aa660d27",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
