@@ -16,6 +16,24 @@
       "message": "Try this out with `repo upload`. it would be interesting to know if there is a difference in the rate that the buffers are flushed/streamed to stdout/stderr.\n\nI recall having an issue that I couldn\u0027t reconcile",
       "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5e4d40e_74b87d2f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-02T18:17:43Z",
+      "side": 1,
+      "message": "I already did. I\u0027ve attached the screenshot in the other comment: https://gerrit-review.git.corp.google.com/c/git-repo/+/387774/comment/0e61e572_a1a0702e/",
+      "parentUuid": "4b5d7fd7_9f8c1e83",
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
