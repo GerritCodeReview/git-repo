@@ -22,6 +22,30 @@
       },
       "revId": "3fae0831197ec60aeaa48cdb162c225c24301b41",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f75786_e471364f",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2295,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-02T15:25:31Z",
+      "side": 1,
+      "message": "It turns out that \u0027black\u0027 is what\u0027s replacing the tabs with spaces, but not when run from the command line, only when the editor runs black on save. If I run black manually, it shows no diff. I\u0027ve [reported the issue with the plugin](https://github.com/thep0y/python-black/issues/41).",
+      "parentUuid": "f445f8e3_45e4b0c3",
+      "range": {
+        "startLine": 2293,
+        "startChar": 0,
+        "endLine": 2295,
+        "endChar": 0
+      },
+      "revId": "3fae0831197ec60aeaa48cdb162c225c24301b41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
