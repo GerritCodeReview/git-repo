@@ -96,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fc38f124_ade7d6c4",
+        "filename": "git_command.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-03T22:47:51Z",
+      "side": 1,
+      "message": "\u003e Perhaps you can add tests that enumerate\n\nAdded test cases.\n\n\u003e wondering if we could keep this logic in the same spot as above.\n\n`_RunCommand` needs to know the difference between the caller reading stderr Vs us reading it to know if it should do a blocking `communicate` call Vs logging the stderr stream as done here. I feel `_RunCommand` deciding this is better. Wdyt?",
+      "parentUuid": "6e42788e_118246fd",
+      "range": {
+        "startLine": 403,
+        "startChar": 31,
+        "endLine": 403,
+        "endChar": 32
+      },
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c42e664_ac44fe6f",
         "filename": "git_command.py",
         "patchSetId": 19
@@ -107,6 +131,24 @@
       "writtenOn": "2023-10-03T18:59:57Z",
       "side": 1,
       "message": "So I am wondering if we actually want to modify the error outside of what is logged by git normally - Since they are suggestions for users only I\u0027d like to keep them that way. If at all possible I\u0027d like to keep the trace 2 logs consistent.\n\nHere is what I am thinking:\n\n`RepoError` could have an `detailed_message()` message that by default would return same value as `__str__` and `RepoLogger` could use e.detailed_message() whenever available.\n\nPerhaps keep in the aggregate error logs?",
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10c21b91_00cd4fae",
+        "filename": "git_command.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-03T22:47:51Z",
+      "side": 1,
+      "message": "\u003e If at all possible I\u0027d like to keep the trace 2 logs consistent.\nI moved suggestion to a separate property. `__str__` would just print it if a suggestion is available. I guess this should keep suggestion separate from trace2 logs.",
+      "parentUuid": "1c42e664_ac44fe6f",
       "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
