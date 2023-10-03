@@ -69,6 +69,46 @@
       "message": "@jasonnc@google.com ping.",
       "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e42788e_118246fd",
+        "filename": "git_command.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-10-03T18:59:57Z",
+      "side": 1,
+      "message": "This makes me uneasy. Perhaps you can add tests that enumerate:\n- Inputs for GitCommand\nv.s.\n- The expected values passed to Popen\n\nAlso, wondering if we could keep this logic in the same spot as above. \n\nFor a template SEE:\n- https://gerrit-review.git.corp.google.com/c/git-repo/+/380994",
+      "range": {
+        "startLine": 403,
+        "startChar": 31,
+        "endLine": 403,
+        "endChar": 32
+      },
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c42e664_ac44fe6f",
+        "filename": "git_command.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-10-03T18:59:57Z",
+      "side": 1,
+      "message": "So I am wondering if we actually want to modify the error outside of what is logged by git normally - Since they are suggestions for users only I\u0027d like to keep them that way. If at all possible I\u0027d like to keep the trace 2 logs consistent.\n\nHere is what I am thinking:\n\n`RepoError` could have an `detailed_message()` message that by default would return same value as `__str__` and `RepoLogger` could use e.detailed_message() whenever available.\n\nPerhaps keep in the aggregate error logs?",
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
