@@ -151,6 +151,24 @@
       "parentUuid": "b49761b6_aecf0ee8",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8998a262_d5f3059b",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-03T03:08:03Z",
+      "side": 1,
+      "message": "preferred according to what ?  if the value is never used, we shouldn\u0027t be returning it as it\u0027ll just confuse people.",
+      "parentUuid": "ab5f9b4c_e0ec5d63",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
