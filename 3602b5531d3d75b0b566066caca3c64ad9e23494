@@ -205,6 +205,24 @@
       "parentUuid": "03c87647_c75d6afe",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53d05bad_91f0b001",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-03T15:43:50Z",
+      "side": 1,
+      "message": "In the latest patch, I\u0027ve addressed the concern, no longer returning any value for `alt_home` and simply relying on the side-effect to avoid confusing users. I\u0027ve also incorporated Windows compatibility.",
+      "parentUuid": "90b9b3e8_8b628f15",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
