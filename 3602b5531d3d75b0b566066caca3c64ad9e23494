@@ -187,6 +187,24 @@
       "parentUuid": "8998a262_d5f3059b",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90b9b3e8_8b628f15",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-03T15:35:18Z",
+      "side": 1,
+      "message": "I explored creating a re-usable plugin for pytest with an `alt_home` fixture (https://pypi.org/project/pytest-home), but then I learned that a function-scoped fixture isn\u0027t viable in this environment because the tests utilize unittest constructs and the `setupClass` (where git operations are run) happens before any function-scoped fixture. Therefore, it\u0027s not possible to simply utilize a function-scoped fixture.",
+      "parentUuid": "03c87647_c75d6afe",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
