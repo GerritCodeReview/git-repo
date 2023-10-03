@@ -169,6 +169,24 @@
       "parentUuid": "ab5f9b4c_e0ec5d63",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03c87647_c75d6afe",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-03T14:41:43Z",
+      "side": 1,
+      "message": "The [pytest fixtures docs](https://docs.pytest.org/en/latest/how-to/fixtures.html) don\u0027t explicitly state that a simple return is preferred, but looking at many of the examples, `yield` is only used when some cleanup follows. In all other cases, `return` is used.\n\n\u003e if the value is never used, we shouldn\u0027t be returning it as it\u0027ll just confuse people.\n\nMy reasoning was this - yes, it\u0027s unused in the current state, but should a future function wish to reference the home directory, perhaps to test something with `.gitconfig`, it can solicit `alt_home`. For example:\n\n```\ndef test_corrupt_gitconfig(alt_home):\n  alt_home.joinpath(\u0027.gitconfig\u0027).write_text(\u0027bad syntax\u0027)\n  ...\n```\n\nOr less aggressively:\n\n```\ndef test_files_in_home(alt_home):\n  ...\n  assert len(list(alt_home.glob(\u0027.gitignore_global\u0027))) \u003d\u003d 1\n```\n\nIn my experience, if a fixture creates some thing, it should return a reference to that thing if there\u0027s any likelihood that a caller of that fixture might find it useful.\n\nThat said, I notice that the \u0027corrupt_gitconfig\u0027 example points to a possible problem with this session-scoped fixture. Any change to the home directory is going to have an effect across tests. Maybe the fixture shouldn\u0027t be session-scoped.\n\nI\u0027ve also realized since writing this that the technique doesn\u0027t honor Windows, where USERPROFILE needs to be set to affect `~`/`os.path.expanduser`. I see I\u0027ve [dealt with this problem before](https://github.com/pypa/setuptools/commit/f866311d60f54499c3637309e3429780d8c8f218), suggesting maybe this behavior should be generalized into a library.\n\nIn light of these concerns, I\u0027m going to revisit the approach altogether.",
+      "parentUuid": "8998a262_d5f3059b",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
