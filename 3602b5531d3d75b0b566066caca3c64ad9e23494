@@ -259,6 +259,24 @@
       "parentUuid": "9f7be8aa_ec8f5c1e",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32b90ddb_e51a0ca0",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-04T18:57:09Z",
+      "side": 1,
+      "message": "sorry, but i\u0027m not seeing how `GitCheckoutTestCase.setUpClass` is relevant here.  we\u0027re talking about $HOME init.  that `setUpClass` is creating a tempdir under the global tempdirectory, it isn\u0027t under the $HOME dir.  nuking \u0026 recreating the $HOME dir across tests should have no impact on the tempdir created there.\n\ni guess if the user had setup the global tempdir under $HOME this would be a problem, but that\u0027s certainly not how Linux or macOS works.  although, even if it was, wouldn\u0027t the class setup run before the per-function $HOME ?  so it would be created/persistent in the right place and not under the fake $HOME tree.",
+      "parentUuid": "f73ab6a3_d9f9d500",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
