@@ -51,6 +51,24 @@
       "parentUuid": "0e61e572_a1a0702e",
       "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2426fc37_1c83a54d",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-04T04:26:55Z",
+      "side": 1,
+      "message": "this assumes the output is line delimited which doesn\u0027t work for progress bar type things which is common in slow download/upload operations.  this should be reading chunks at a time and passing them along.\n\nyour screenshots suggest there\u0027s quite a regression in this space -- the output looks significantly different doesn\u0027t it ?\n\nsounds like we want to resurrect:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/297422",
+      "parentUuid": "0ba0481b_e96ff74e",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
