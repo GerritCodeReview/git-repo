@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64d13f6a_deb0f28b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-04T02:36:10Z",
+      "side": 1,
+      "message": "this seems to be an internal bug.  can we please use the public gerrit tracker so people can access them.\n\nin this case, you can just put the relevant details into the commit message as to how you ran into problems.",
+      "revId": "959d60a362af47f52677fee7221e590c4f0d5f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60768750_b9bd71ff",
+        "filename": "tests/conftest.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-04T02:36:10Z",
+      "side": 1,
+      "message": "use `platform_utils.isWindows()` instead",
+      "revId": "959d60a362af47f52677fee7221e590c4f0d5f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
