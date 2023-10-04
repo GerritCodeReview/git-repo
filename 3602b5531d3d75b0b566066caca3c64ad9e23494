@@ -277,6 +277,24 @@
       "parentUuid": "f73ab6a3_d9f9d500",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a443db7_0302f93b",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-04T21:00:52Z",
+      "side": 1,
+      "message": "No problem. This issue is somewhat obscure.\n\nOne aspect of the issue is that, because my Git client is configured to [sign tags](https://github.com/jaraco/dotfiles/blob/2349dfbf9f9a418e1d26199193527846781056b4/.gitconfig#L13-L14), that implies `git tag --annotate`, so when `GitCheckoutTestCase.setUpClass` is called, it [attempts to tag a commit](https://gerrit.googlesource.com/git-repo/+/refs/heads/main/tests/test_wrapper.py#497), which in my environment opens an editor to solicit the message for the annotated tag, opening vim and blocking forever or opening `subl -nowait` depending on whether `EDITOR` was filtered by `tox`. On my Linux host, the gpg key isn\u0027t installed, so `setUpTest` fails earlier on `git commit`.\n\nSetting $HOME in advance of that `setUpClass` causes the `git` subprocess to resolve `~/.gitconfig` not to the user\u0027s config and bypasses all issues triggered by honoring the tester\u0027s git config.\n\nSetting $HOME after `setUpClass` runs has no effect on `setUpClass` so any undesirable behaviors are still encountered.\n\nIf you\u0027d like to experience the issue for yourself, I suspect you can replicate the issue I encountered by putting `commit.gpgsign\u003dtrue` or `tag.gpgsign\u003dtrue` in your config. You may also need to add `user.signingkey\u003d0123456789ABCDEF`.",
+      "parentUuid": "32b90ddb_e51a0ca0",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
