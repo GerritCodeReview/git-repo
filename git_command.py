@@ -15,6 +15,7 @@
 import functools
 import json
 import os
+import re
 import subprocess
 import sys
 from typing import Any, Optional
@@ -24,6 +25,7 @@ from error import RepoExitError
 from git_refs import HEAD
 from git_trace2_event_log_base import BaseEventLog
 import platform_utils
+from repo_logging import RepoLogger
 from repo_trace import IsTrace
 from repo_trace import REPO_TRACE
 from repo_trace import Trace
@@ -50,8 +52,10 @@ DEFAULT_GIT_FAIL_MESSAGE = "git command failure"
 ERROR_EVENT_LOGGING_PREFIX = "RepoGitCommandError"
 # Common line length limit
 GIT_ERROR_STDOUT_LINES = 1
-GIT_ERROR_STDERR_LINES = 1
+GIT_ERROR_STDERR_LINES = 10
 INVALID_GIT_EXIT_CODE = 126
+
+logger = RepoLogger(__file__)
 
 
 class _GitCall(object):
@@ -60,7 +64,7 @@ class _GitCall(object):
         ret = Wrapper().ParseGitVersion()
         if ret is None:
             msg = "fatal: unable to detect git version"
-            print(msg, file=sys.stderr)
+            logger.error(msg)
             raise GitRequireError(msg)
         return ret
 
@@ -135,10 +139,11 @@ def GetEventTargetPath():
         # `git config --get` is documented to produce an exit status of `1`
         # if the requested variable is not present in the configuration.
         # Report any other return value as an error.
-        print(
+        logger.error(
             "repo: error: 'git config --get' call failed with return code: "
-            "%r, stderr: %r" % (retval, p.stderr),
-            file=sys.stderr,
+            "%r, stderr: %r",
+            retval,
+            p.stderr,
         )
     return path
 
@@ -212,7 +217,7 @@ def git_require(min_version, fail=False, msg=""):
         if msg:
             msg = " for " + msg
         error_msg = "fatal: git %s or later required%s" % (need, msg)
-        print(error_msg, file=sys.stderr)
+        logger.error(error_msg)
         raise GitRequireError(error_msg)
     return False
 
@@ -297,6 +302,7 @@ class GitCommand(object):
         self.project = project
         self.cmdv = cmdv
         self.verify_command = verify_command
+        self.stdout, self.stderr = None, None
 
         # Git on Windows wants its paths only using / for reliability.
         if platform_utils.isWindows():
@@ -384,6 +390,18 @@ class GitCommand(object):
         cwd=None,
         input=None,
     ):
+        # This option pipes the subprocess's stderr and hackily streams it back
+        # to stderr. This is used to capture error logs from the subprocess into
+        # GitCommandError. This is only enabled when no custom stream is set
+        # because we shouldn't create duplicate logs and change the behavior of
+        # pipe when caller is already handling the i/o streams. In cases, such
+        # as `git push`, where git logs diagnostic logs to stderr, it just
+        # doesn't block printing to stderr until the subprocess has exited.
+        stream_stderr = False
+        if not (stdin or stdout or stderr):
+            stream_stderr = True
+            stderr = subprocess.PIPE
+
         dbg = ""
         if IsTrace():
             global LAST_CWD
@@ -430,8 +448,6 @@ class GitCommand(object):
                     command,
                     cwd=cwd,
                     env=env,
-                    encoding="utf-8",
-                    errors="backslashreplace",
                     stdin=stdin,
                     stdout=stdout,
                     stderr=stderr,
@@ -449,11 +465,44 @@ class GitCommand(object):
             self.process = p
 
             try:
-                self.stdout, self.stderr = p.communicate(input=input)
+                if not stream_stderr:
+                    self.stdout, self.stderr = p.communicate(input=input)
+
+                    if stdout:
+                        self.stdout = self.stdout.decode('utf-8', 'backslashreplace')
+
+                    if stderr:
+                        self.stderr = self.stderr.decode('utf-8', 'backslashreplace')
+                else:
+                    self.stderr = self._Tee(p.stderr, sys.stderr)
+
             finally:
                 if ssh_proxy:
                     ssh_proxy.remove_client(p)
             self.rc = p.wait()
+
+
+    @staticmethod
+    def _Tee(in_stream, out_stream):
+        """
+        Writes text from in_stream to out_stream while recording in buffer.
+
+        Assumes in_stream can be read in chunks and is not line buffered.
+        """
+        buffer = ""
+        chunk = in_stream.read(4096)
+        while chunk:
+            # Convert to str.
+            if not hasattr(chunk, 'encode'):
+                chunk = chunk.decode('utf-8', 'backslashreplace')
+
+            buffer += chunk
+            out_stream.write(chunk)
+            out_stream.flush()
+
+            chunk = in_stream.read(4096)
+
+        return buffer
 
     @staticmethod
     def _GetBasicEnv():
@@ -517,6 +566,29 @@ class GitCommandError(GitError):
     raised exclusively from non-zero exit codes returned from git commands.
     """
 
+    # Custom suggestions to augment git stderr with.
+    error_to_suggestion = {
+        re.compile(
+            "couldn't find remote ref .*"
+        ): "Check if the provided ref exists in the remote.",
+        re.compile("unable to access '.*': .*"): (
+            "Please make sure you have the correct access rights and the "
+            "repository exists."
+        ),
+        re.compile(
+            "'.*' does not appear to be a git repository"
+        ): "Are you running this repo command outside of a repo workspace?",
+        re.compile(
+            "not a git repository: '.*'"
+        ): "Are you running this repo command outside of a repo workspace?",
+        re.compile(
+            "not a git repository (or any of the parent directories): .*"
+        ): "Are you running this repo command outside of a repo workspace?",
+        re.compile(
+            "not a git repository (or any parent up to mount point .*)"
+        ): "Are you running this repo command outside of a repo workspace?",
+    }
+
     def __init__(
         self,
         message: str = DEFAULT_GIT_FAIL_MESSAGE,
@@ -533,16 +605,37 @@ class GitCommandError(GitError):
         self.git_stdout = git_stdout
         self.git_stderr = git_stderr
 
+    @property
+    @functools.lru_cache
+    def suggestion(self):
+        """Returns helpful next steps for the given stderr."""
+        if not self.git_stderr:
+            return self.git_stderr
+
+        for err, suggestion in self.error_to_suggestion.items():
+            if err.search(self.git_stderr):
+                return suggestion
+
+        return None
+
     def __str__(self):
         args = "[]" if not self.command_args else " ".join(self.command_args)
         error_type = type(self).__name__
-        return f"""{error_type}: {self.message}
-    Project: {self.project}
-    Args: {args}
-    Stdout:
-{self.git_stdout}
-    Stderr:
-{self.git_stderr}"""
+        string = f"{error_type}: '{args}' on {self.project} failed"
+
+        if self.message != DEFAULT_GIT_FAIL_MESSAGE:
+            string += f": {self.message}"
+
+        if self.git_stdout:
+            string += f"\nstdout: {self.git_stdout}"
+
+        if self.git_stderr:
+            string += f"\nstderr: {self.git_stderr}"
+
+        if self.suggestion:
+            string += f"\nsuggestion: {self.suggestion}"
+
+        return string
 
 
 class GitPopenCommandError(GitError):
