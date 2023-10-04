@@ -69,6 +69,24 @@
       "parentUuid": "0ba0481b_e96ff74e",
       "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c531f0bc_7a4eae88",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-04T23:14:29Z",
+      "side": 1,
+      "message": "\u003e sounds like we want to resurrect: https://gerrit-review.googlesource.com/c/git-repo/+/297422\n\nI didn\u0027t know repo used to have this! Thanks for this CL.\n\n\u003e this assumes the output is line delimited\n\nI didn\u0027t realize `io.TextIOWrapper` by default even without any args so I guess that explains the regression. I took a page out of go/grev/297422 and updated the code.\n\nI\u0027m not adding all the non-blocking I/O logic since we only care about tee-ing stderr in this case.\n\nUpdated screenshots:\nCurrent Impl: http://screen/AMfqwNKrKJbsD5T\nNew Impl: http://screen/3MW9Lu8qKpNLosZ",
+      "parentUuid": "2426fc37_1c83a54d",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
