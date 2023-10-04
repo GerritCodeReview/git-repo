@@ -241,6 +241,24 @@
       "parentUuid": "53d05bad_91f0b001",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f73ab6a3_d9f9d500",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-04T12:52:11Z",
+      "side": 1,
+      "message": "It\u0027s not possible to use a function-scoped fixture because the class-scoped unittest setup (`GitCheckoutTestCase.setUpClass`) relies on the alternate home, but function-scoped fixtures are executed after class-scoped fixtures.\n\nMy preference would be to make the git repo setup a function-scoped fixture, but I can see it was explicitly set up as a class-level fixture as a performance optimization.\n\nIt\u0027s conceivable we could add yet another fixture that checks or enforces that the home directory is empty on each test, and I considered doing that when I realized that this change doesn\u0027t affect the persistence of changes in $HOME across tests. That is, prior to this change, if a test affected $HOME, it too would persist across tests, so this change is no worse than the prior behavior. At least now, if something is altered in $HOME, it will be isolated to the session and won\u0027t mutate the user\u0027s environment.",
+      "parentUuid": "9f7be8aa_ec8f5c1e",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

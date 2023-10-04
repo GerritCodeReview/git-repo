@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "303de3ba_b7f46d14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-04T12:52:11Z",
+      "side": 1,
+      "message": "Thanks for the tip. I\u0027ll do that next time. I\u0027ve updated the description summarizing the motivation.",
+      "parentUuid": "64d13f6a_deb0f28b",
+      "revId": "959d60a362af47f52677fee7221e590c4f0d5f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60768750_b9bd71ff",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-04T02:36:10Z",
       "side": 1,
       "message": "use `platform_utils.isWindows()` instead",
+      "revId": "959d60a362af47f52677fee7221e590c4f0d5f0b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43b00d7d_f54dcad6",
+        "filename": "tests/conftest.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-04T12:52:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "60768750_b9bd71ff",
       "revId": "959d60a362af47f52677fee7221e590c4f0d5f0b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
