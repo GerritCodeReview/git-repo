@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49baa9d5_834942dc",
+        "filename": "tests/conftest.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T19:08:42Z",
+      "side": 1,
+      "message": "would be nice to note that `alt_home` comes from the `pytest-home` module.  google search doesn\u0027t turn up any hits.",
+      "revId": "b27ebbed7128c11eb60195bcaca5423c727e3049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba16ea7d_8b2c18a8",
+        "filename": "tests/conftest.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T19:08:42Z",
+      "side": 1,
+      "message": "i would have called it `tmp_homedir` to match the pytest naming, but i won\u0027t bikeshed it further :p",
+      "revId": "b27ebbed7128c11eb60195bcaca5423c727e3049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b91b7d74_f9d6b1b4",
+        "filename": "tox.ini",
+        "patchSetId": 14
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T19:08:42Z",
+      "side": 1,
+      "message": "```suggestion\n    pytest-home \u003e\u003d 0.4\n    pytest-timeout\n```\n\nnit: keep sorted",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "b27ebbed7128c11eb60195bcaca5423c727e3049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

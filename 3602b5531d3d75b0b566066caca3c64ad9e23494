@@ -439,6 +439,24 @@
       "parentUuid": "e10629da_cf8247d6",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52a18215_bc58573f",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T19:08:42Z",
+      "side": 1,
+      "message": "that\u0027s some 3d chess moves right there.  i approve.",
+      "parentUuid": "0da8d715_69a3c70b",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
