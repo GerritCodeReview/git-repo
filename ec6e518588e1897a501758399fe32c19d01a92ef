@@ -34,6 +34,24 @@
       "parentUuid": "34da28fa_bc366a02",
       "revId": "ec6e518588e1897a501758399fe32c19d01a92ef",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e12c46ee_43db1f20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-05T21:17:14Z",
+      "side": 1,
+      "message": "I\u0027ve quickly put together a doc with this: go/tee-repo-stderr. This contains all the design decisions. Please let me know if you need more information.",
+      "parentUuid": "26bcb74c_aa7eba31",
+      "revId": "ec6e518588e1897a501758399fe32c19d01a92ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
