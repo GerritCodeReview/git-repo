@@ -367,6 +367,24 @@
       "parentUuid": "56b19582_94f03e3c",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e95ce5_06901b55",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T16:45:08Z",
+      "side": 1,
+      "message": "running rmtree on the dir is not simpler imo.  letting it orphan the dir and just creating a new one on each run, and letting the overall pytest framework delete everything at the end in one swoop sounds simpler to me.  overhead wise, doesn\u0027t seem significant since we shouldn\u0027t really be creating anything in $HOME to begin with.\n\nthis seems to work for me\n\n```py\ndef _set_homedir(home, mp):\n    vars \u003d [\"HOME\"] + platform_utils.isWindows() * [\"USERPROFILE\"]\n    for var in vars:\n        mp.setenv(var, str(home))\n\n@pytest.fixture(autouse\u003dTrue, scope\u003d\"session\")\ndef session_tmp_homedir(tmp_path_factory, monkeysession):\n    home \u003d tmp_path_factory.mktemp(\"home\")\n    _set_homedir(home, monkeysession)\n    return home\n\n@pytest.fixture(autouse\u003dTrue)\ndef tmp_homedir(tmp_path, monkeypatch):\n    _set_homedir(tmp_path, monkeypatch)\n    return tmp_path\n```\n\nand if we wanted to RVO it to save a few LOC:\n\n```py\ndef _set_homedir(home, mp):\n    vars \u003d [\"HOME\"] + platform_utils.isWindows() * [\"USERPROFILE\"]\n    for var in vars:\n        mp.setenv(var, str(home))\n    return home\n\n@pytest.fixture(autouse\u003dTrue, scope\u003d\"session\")\ndef session_tmp_homedir(tmp_path_factory, monkeysession):\n    return _set_homedir(tmp_path_factory.mktemp(\"home\"), monkeysession)\n\n@pytest.fixture(autouse\u003dTrue)\ndef tmp_homedir(tmp_path, monkeypatch):\n    return _set_homedir(tmp_path, monkeypatch)\n```",
+      "parentUuid": "f5931051_09920b0c",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
