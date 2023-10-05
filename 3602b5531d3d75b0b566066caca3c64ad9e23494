@@ -331,6 +331,24 @@
       "parentUuid": "e1637b37_0093b1d8",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56b19582_94f03e3c",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T14:38:12Z",
+      "side": 1,
+      "message": "it\u0027s somewhat of a sep concern ($HOME shouldn\u0027t bleed into tests, either state outside of the testsuite, or across tests), but the solution is basically the same.\n\nwe don\u0027t need to manually rmtree the dir, we just need a fresh one, and let the framework nuke the toplevel tmpdir when done.\n\n```\n@pytest.fixture\ndef tmp_homedir(tmp_path_factory, monkeysession):\n    vars \u003d [\"HOME\"] + platform_utils.isWindows() * [\"USERPROFILE\"]\n    home \u003d tmp_path_factory.mktemp(\"home\")\n    for var in vars:\n        monkeysession.setenv(var, str(home))\n    return home\n\n@pytest.fixture(autouse\u003dTrue, scope\u003d\"session\")\ndef _early_session_homedir(tmp_homedir):\n    \"\"\"...\"\"\"\n\n@pytest.fixture(autouse\u003dTrue)\ndef _per_test_homedir(tmp_homedir):\n    \"\"\"...\"\"\"\n```\n\ni haven\u0027t tried this, but seems like it should work ?",
+      "parentUuid": "07e21d7f_7777f4a1",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
