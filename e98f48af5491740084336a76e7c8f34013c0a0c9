@@ -105,6 +105,24 @@
       "parentUuid": "c531f0bc_7a4eae88",
       "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db4efb55_633ab3b8",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-05T04:48:45Z",
+      "side": 1,
+      "message": "\u003e the output is still diff in not a good way\n\nThe previous implementation was reading the stream in `4096` byte chunks too so I thought this was acceptable. That impl has similar logs[1].\n\n\u003e maybe you want to add `--progress` to the upload step when running `git push`?\n\nDone[2]. Adding `--progress` seems to give similar logs to before capturing. \n\n[1] http://screen/3eEvgjSD8ANZKK3\n[2] http://screen/9iqmDjYaafVbrwg",
+      "parentUuid": "f85a0c8a_59f160d5",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
