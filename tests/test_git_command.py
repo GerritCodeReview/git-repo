@@ -14,6 +14,7 @@
 
 """Unittests for the git_command.py module."""
 
+import io
 import os
 import re
 import subprocess
@@ -74,6 +75,10 @@ class GitCommandWaitTest(unittest.TestCase):
         class MockPopen(object):
             rc = 0
 
+            def __init__(self):
+                self.stdout = io.BufferedReader(io.BytesIO())
+                self.stderr = io.BufferedReader(io.BytesIO())
+
             def communicate(
                 self, input: str = None, timeout: float = None
             ) -> [str, str]:
@@ -115,6 +120,115 @@ class GitCommandWaitTest(unittest.TestCase):
         self.popen.rc = 1
         r = git_command.GitCommand(None, ["status"])
         self.assertEqual(1, r.Wait())
+
+
+class GitCommandStreamLogsTest(unittest.TestCase):
+    """Tests the GitCommand class stderr log streaming cases."""
+
+    def setUp(self):
+        self.mock_process = mock.MagicMock()
+        self.mock_process.communicate.return_value = (None, None)
+        self.mock_process.wait.return_value = 0
+
+        self.mock_popen = mock.MagicMock()
+        self.mock_popen.return_value = self.mock_process
+        mock.patch("subprocess.Popen", self.mock_popen).start()
+
+    def tearDown(self):
+        mock.patch.stopall()
+
+    def test_does_not_stream_logs_when_input_is_set(self):
+        git_command.GitCommand(None, ["status"], input="foo")
+
+        self.mock_popen.assert_called_once_with(
+            ["git", "status"],
+            cwd=None,
+            env=mock.ANY,
+            encoding="utf-8",
+            errors="backslashreplace",
+            stdin=subprocess.PIPE,
+            stdout=None,
+            stderr=None,
+        )
+        self.mock_process.communicate.assert_called_once_with(input="foo")
+        self.mock_process.stderr.read.assert_not_called()
+
+    def test_does_not_stream_logs_when_stdout_is_set(self):
+        git_command.GitCommand(None, ["status"], capture_stdout=True)
+
+        self.mock_popen.assert_called_once_with(
+            ["git", "status"],
+            cwd=None,
+            env=mock.ANY,
+            encoding="utf-8",
+            errors="backslashreplace",
+            stdin=None,
+            stdout=subprocess.PIPE,
+            stderr=None,
+        )
+        self.mock_process.communicate.assert_called_once_with(input=None)
+        self.mock_process.stderr.read.assert_not_called()
+
+    def test_does_not_stream_logs_when_stderr_is_set(self):
+        git_command.GitCommand(None, ["status"], capture_stderr=True)
+
+        self.mock_popen.assert_called_once_with(
+            ["git", "status"],
+            cwd=None,
+            env=mock.ANY,
+            encoding="utf-8",
+            errors="backslashreplace",
+            stdin=None,
+            stdout=None,
+            stderr=subprocess.PIPE,
+        )
+        self.mock_process.communicate.assert_called_once_with(input=None)
+        self.mock_process.stderr.read.assert_not_called()
+
+    def test_does_not_stream_logs_when_merge_output_is_set(self):
+        git_command.GitCommand(None, ["status"], merge_output=True)
+
+        self.mock_popen.assert_called_once_with(
+            ["git", "status"],
+            cwd=None,
+            env=mock.ANY,
+            encoding="utf-8",
+            errors="backslashreplace",
+            stdin=None,
+            stdout=None,
+            stderr=subprocess.STDOUT,
+        )
+        self.mock_process.communicate.assert_called_once_with(input=None)
+        self.mock_process.stderr.read.assert_not_called()
+
+    @mock.patch("sys.stderr")
+    def test_streams_stderr_when_no_stream_is_set(self, mock_stderr):
+        logs = "\n".join(
+            [
+                "Enumerating objects: 5, done.",
+                "Counting objects: 100% (5/5), done.",
+                "Writing objects: 100% (3/3), 330 bytes | 330 KiB/s, done.",
+                "remote: Processing changes: refs: 1, new: 1, done ",
+                "remote: SUCCESS",
+            ]
+        )
+        self.mock_process.stderr = io.BufferedReader(
+            io.BytesIO(bytes(logs, "utf-8"))
+        )
+
+        cmd = git_command.GitCommand(None, ["push"])
+
+        self.mock_popen.assert_called_once_with(
+            ["git", "push"],
+            cwd=None,
+            env=mock.ANY,
+            stdin=None,
+            stdout=None,
+            stderr=subprocess.PIPE,
+        )
+        self.mock_process.communicate.assert_not_called()
+        mock_stderr.write.assert_called_once_with(logs)
+        self.assertEqual(cmd.stderr, logs)
 
 
 class GitCallUnitTest(unittest.TestCase):
@@ -214,3 +328,22 @@ class GitRequireTests(unittest.TestCase):
         with self.assertRaises(git_command.GitRequireError) as e:
             git_command.git_require((2,), fail=True, msg="so sad")
             self.assertNotEqual(0, e.code)
+
+
+class GitCommandErrorTest(unittest.TestCase):
+    """Test for the GitCommandError class."""
+
+    def test_augument_stderr(self):
+        self.assertEqual(
+            git_command.GitCommandError(
+                git_stderr="couldn't find remote ref refs/heads/foo"
+            ).suggestion,
+            "Check if the provided ref exists in the remote.",
+        )
+
+        self.assertEqual(
+            git_command.GitCommandError(
+                git_stderr="'foobar' does not appear to be a git repository"
+            ).suggestion,
+            "Are you running this repo command outside of a repo workspace?",
+        )
