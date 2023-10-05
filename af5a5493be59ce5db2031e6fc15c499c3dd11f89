@@ -168,6 +168,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5cf5503b_d1d50647",
+        "filename": "git_command.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-10-05T22:01:11Z",
+      "side": 1,
+      "message": "I think that they make more sense together. However, link the doc that you wrote and try to describe or improve the subsequent code block:\n```\ntry:\n                if not stream_stderr:\n                    self.stdout, self.stderr \u003d p.communicate(input\u003dinput)\n                else:\n                    self.stderr \u003d self._Tee(p.stderr, sys.stderr)\n```\n\nThat might help with understanding enough that this comment becomes a nit.",
+      "parentUuid": "7e14e844_5eba5af3",
+      "range": {
+        "startLine": 403,
+        "startChar": 31,
+        "endLine": 403,
+        "endChar": 32
+      },
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c42e664_ac44fe6f",
         "filename": "git_command.py",
         "patchSetId": 19
