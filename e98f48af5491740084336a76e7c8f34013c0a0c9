@@ -87,6 +87,24 @@
       "parentUuid": "2426fc37_1c83a54d",
       "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f85a0c8a_59f160d5",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T04:28:41Z",
+      "side": 1,
+      "message": "the output is still diff in not a good way -- afaict, users don\u0027t receive feedback on slow pushes which def comes up with Chromium \u0026 Android users\n\nmaybe you want to add `--progress` to the upload step when running `git push` ?",
+      "parentUuid": "c531f0bc_7a4eae88",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
