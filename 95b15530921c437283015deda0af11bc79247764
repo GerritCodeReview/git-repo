@@ -16,6 +16,24 @@
       "message": "I\u0027ve done some testing and confirmed that Git doesn\u0027t rely on `$USERPROFILE` to resolve `~/.gitconfig`. Instead, it appears to prefer `$HOMEDRIVE$HOMEPATH` (https://github.com/git/git/blob/3a06386e314565108ad56a9bdb8f7b80ac52fb69/compat/mingw.c#L2634-L2655).",
       "revId": "95b15530921c437283015deda0af11bc79247764",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ea7979c_3e819878",
+        "filename": "tests/conftest.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-05T00:27:02Z",
+      "side": 1,
+      "message": "I filed a [bug upstream](https://github.com/git-for-windows/git/issues/4625) about Git\u0027s improper preference for HOMEPATH and in the meantime, I\u0027ve devised a [workaround in pytest-home](https://github.com/jaraco/pytest-home/pull/2) that I can port to here.",
+      "parentUuid": "a91db9b3_694c93f5",
+      "revId": "95b15530921c437283015deda0af11bc79247764",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
