@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af553dd3_b91e43ae",
+        "filename": "git_command.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-05T05:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ed96461_0e131aeb",
+      "revId": "e2713751058069a42aa19f660c8208dde7838666",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ac68db7_095eec9a",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-05T04:57:35Z",
       "side": 1,
       "message": "a dict doesn\u0027t seem like the right fit.  you never index it anywhere, just iterate over it as tuples of 2 items.  so write it as a tuple of tuples ?\n\nalso please use caps in module constants.  and use a `_` prefix since it\u0027s internal.",
+      "revId": "e2713751058069a42aa19f660c8208dde7838666",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "338bb4ad_c510b370",
+        "filename": "git_command.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-05T05:49:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ac68db7_095eec9a",
       "revId": "e2713751058069a42aa19f660c8208dde7838666",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
