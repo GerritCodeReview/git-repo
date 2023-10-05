@@ -403,6 +403,24 @@
       "parentUuid": "39e95ce5_06901b55",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e10629da_cf8247d6",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-05T18:16:12Z",
+      "side": 1,
+      "message": "\u003e I suspect this approach is not saving an rmtree operation\n\nI was wrong about this. I just read up on the source of tmp_path_factory (and tmp_path), and the default `tmp_path_retention_policy` is `all`, meaning all temp paths are retained for `tmp_path_retention_count` runs (3 by default).\n\nSo you\u0027re right - the proposed approach is going to cause a lot more disk activity (and potential cleanup errors) during the test than your suggested approach and would also leave the user without the lingering artifacts for debugging where they might expect them.\n\nI can probably adopt your approach and address some of my concerns by replacing the use of `tmp_path` with another `tmp_path_factory` invocation. That could also make the implementation more symmetric.\n\nI\u0027ll explore that.",
+      "parentUuid": "084af490_849e0ab7",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
