@@ -349,6 +349,24 @@
       "parentUuid": "07e21d7f_7777f4a1",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5931051_09920b0c",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-05T15:36:13Z",
+      "side": 1,
+      "message": "That won\u0027t work. You can\u0027t have a session-scoped fixture dependent on a function-scoped fixture (or any lower level fixture). The first fixture, `tmp_homedir`, is implicitly a function-scoped fixture (same as if you\u0027d specified `pytest.fixture(scope\u003d\u0027function\u0027)`).\n\nIf we wanted to embark on making everything function-scoped, including the `GitCheckoutTestCase`, we could rely on the tempdir functionality for cleanup, but because of that test, the home dir needs to be created at the class scope or higher, meaning it can only be cleaned up at the class scope or higher, unless we instead alter it explicitly as `clean_home` does.\n\nMoreover, even if the three-fixture approach could work, I\u0027d prefer the implementation I\u0027ve presented, which is fewer functions and better separation of concerns. How do you feel about moving forward with the approach as drafted and leaving further improvements for later?",
+      "parentUuid": "56b19582_94f03e3c",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
