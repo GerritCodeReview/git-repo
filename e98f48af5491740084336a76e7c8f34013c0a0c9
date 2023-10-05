@@ -123,6 +123,24 @@
       "parentUuid": "f85a0c8a_59f160d5",
       "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3ec556e_1a900f90",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T04:57:35Z",
+      "side": 1,
+      "message": "the issue isn\u0027t the chunk size.  afaict, the progress bars weren\u0027t shown at all.\n\nthe 4k in the previous code didn\u0027t mean it filled 4k before doing anything.  pretty sure it used select() to wait for any data, and then it read what was there until it was gone, then went back to waiting via select().\n\ni don\u0027t know if Python offers a way to do short blocking reads :/.  what if you did `.read(1)`, then checked to see how much data was queued (somehow?), and then read the rest, then went back to `.read(1)`.",
+      "parentUuid": "db4efb55_633ab3b8",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ed96461_0e131aeb",
+        "filename": "git_command.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T04:57:35Z",
+      "side": 1,
+      "message": "please follow PEP-257 docstring conventions.  i know some of the existing ones in repo are bad, but let\u0027s not add more.\n\nsome details/examples:\nhttps://chromium.googlesource.com/chromiumos/docs/+/HEAD/styleguide/python.md#Describing-arguments-in-docstrings",
+      "revId": "e2713751058069a42aa19f660c8208dde7838666",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ac68db7_095eec9a",
+        "filename": "git_command.py",
+        "patchSetId": 27
+      },
+      "lineNbr": 566,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T04:57:35Z",
+      "side": 1,
+      "message": "a dict doesn\u0027t seem like the right fit.  you never index it anywhere, just iterate over it as tuples of 2 items.  so write it as a tuple of tuples ?\n\nalso please use caps in module constants.  and use a `_` prefix since it\u0027s internal.",
+      "revId": "e2713751058069a42aa19f660c8208dde7838666",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
