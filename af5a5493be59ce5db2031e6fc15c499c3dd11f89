@@ -120,6 +120,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "102e3258_2727cbd4",
+        "filename": "git_command.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-10-05T16:34:24Z",
+      "side": 1,
+      "message": "If you think the logic belongs in _RunCommand, then why not put all of the logic in _RunCommand? Please also name things to be more descriptive ( I realize this isn\u0027t your fault - but it took me a few tries to figure out what is happening )\n\n\n```\n        stdin \u003d subprocess.PIPE if input else None\n        stdout \u003d subprocess.PIPE if capture_stdout else None\n        stderr \u003d (\n            subprocess.STDOUT\n            if merge_output\n            else (subprocess.PIPE if capture_stderr else None)\n        )\n        stream_and_capture_stderr \u003d not (capture_stdout or merge_output)\n        if stream_and_capture_stderr:\n            stderr \u003d subprocess.PIPE\n```",
+      "parentUuid": "fc38f124_ade7d6c4",
+      "range": {
+        "startLine": 403,
+        "startChar": 31,
+        "endLine": 403,
+        "endChar": 32
+      },
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1c42e664_ac44fe6f",
         "filename": "git_command.py",
         "patchSetId": 19
