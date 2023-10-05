@@ -295,6 +295,24 @@
       "parentUuid": "32b90ddb_e51a0ca0",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1637b37_0093b1d8",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-05T01:40:42Z",
+      "side": 1,
+      "message": "ok, so it\u0027s more a matter of ordering here, not the lifetime of things.  creating a tempdir \u0026 setting an envvar is cheap, so add 2 autouse fixtures ?  one for session so it\u0027s executed early and covers things like class init, and one for function so we\u0027re guaranteed fresh state in each test.  and just leave a comment in the session explaining why there\u0027s a \"duplicate\" one.\n\ni\u0027m not doubting you that $HOME settings are bleeding in and causing problems.  we\u0027ve had that happen before.",
+      "parentUuid": "6a443db7_0302f93b",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
