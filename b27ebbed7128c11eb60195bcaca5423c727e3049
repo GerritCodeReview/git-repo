@@ -35,6 +35,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4fa9627_1938a7a9",
+        "filename": "tests/conftest.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-05T19:47:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49baa9d5_834942dc",
+      "revId": "b27ebbed7128c11eb60195bcaca5423c727e3049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "085bbed0_c351d25d",
+        "filename": "tests/conftest.py",
+        "patchSetId": 14
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-05T19:47:30Z",
+      "side": 1,
+      "message": "Now\u0027s the time to change that, before anyone depends on it. Oh, wait. I\u0027ve [already proposed to use it elsewhere](https://github.com/pypa/setuptools/pull/4072). I see that PR hasn\u0027t merged, so it\u0027s probably not too difficult to rename now. I\u0027ve gone with `tmp_home_dir` as separating the words \u0027home\u0027 and \u0027dir\u0027 is also consistent with the pytest and PEP 8 style.",
+      "parentUuid": "ba16ea7d_8b2c18a8",
+      "revId": "b27ebbed7128c11eb60195bcaca5423c727e3049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b91b7d74_f9d6b1b4",
@@ -48,6 +84,30 @@
       "writtenOn": "2023-10-05T19:08:42Z",
       "side": 1,
       "message": "```suggestion\n    pytest-home \u003e\u003d 0.4\n    pytest-timeout\n```\n\nnit: keep sorted",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "b27ebbed7128c11eb60195bcaca5423c727e3049",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adfb7e46_ba07afb1",
+        "filename": "tox.ini",
+        "patchSetId": 14
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-05T19:47:30Z",
+      "side": 1,
+      "message": "Done. I recall catching that earlier the first time I was adding it, but missed it during this recent attempt.",
+      "parentUuid": "b91b7d74_f9d6b1b4",
       "range": {
         "startLine": 36,
         "startChar": 0,
