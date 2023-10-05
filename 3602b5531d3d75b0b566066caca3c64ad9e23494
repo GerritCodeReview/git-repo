@@ -385,6 +385,24 @@
       "parentUuid": "f5931051_09920b0c",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "084af490_849e0ab7",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-05T17:30:03Z",
+      "side": 1,
+      "message": "This new proposed approach has some new problems. By bringing in `tmp_path`, you\u0027re now ending up with another, different, temporary directory. If anything at the session scope, module scope, class scope, or even at the function scope but ahead of tmp_homedir makes any changes to $HOME, they\u0027ll be masked by `tmp_homedir`. Imagine, for example that `GitCheckoutTestCase` were to run `git config --global --set user.email foo@bar`, that setting would be lost when running the test.\n\nAnd since `tmp_path` is a function-scoped fixture, it\u0027s going to be `rmtree`\u0027d at the teardown of every function anyway. I suspect this approach is not saving an rmtree operation or even re-ordering them. I would expect `rmtree` to be run at the end of each test to free up the disk space it consumed. This approach risks creating a confusing state where the home directory is three different things at different scopes (unpatched, patched at session, patched again at function).\n\nMoreover, `tmp_path` is a temporary path shared by all other fixtures and the test itself, meaning if a test did something like:\n\n```\ndef test_something(tmp_path):\n    tmp_path.joinpath(\u0027foo\u0027).write_text(\u0027foo\u0027)\n    ...\n```\n\nIt\u0027s going to be writing to the home directory unintentionally. You could possibly bypass this concern by using `_set_homedir(tmp_path / \"home\", monkeypatch)` (and also creating the subdir), but you\u0027d still have some interaction (`tmp_path.iterdir()` is going to include `home` where it doesn\u0027t with the proposed approach).\n\nI don\u0027t understand why one would want to entangle these concerns and worry about the potential complications that arise from the different states. I do understand the desire to re-use the teardown logic from existing temp path fixtures, but it feels like the tradeoffs here are strongly in favor of mostly decoupled concerns.\n\nWhat do you think about accepting this change, and then subsequently altering it to your preferred design, to include the docstrings necessary to explain the situation?",
+      "parentUuid": "39e95ce5_06901b55",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
