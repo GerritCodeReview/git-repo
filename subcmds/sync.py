@@ -1905,7 +1905,7 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             logger.warning("warning: Skipped upgrade to unverified version")
     else:
         if verbose:
-            print("repo version %s is current", rp.work_git.describe(HEAD))
+            print("repo version %s is current" % rp.work_git.describe(HEAD))
 
 
 class _FetchTimes(object):
