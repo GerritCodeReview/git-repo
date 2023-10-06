@@ -1135,7 +1135,7 @@ class Project(object):
         url = branch.remote.ReviewUrl(self.UserEmail, validate_certs)
         if url is None:
             raise UploadError("review not configured", project=self.name)
-        cmd = ["push"]
+        cmd = ["push", "--progress"]
         if dryrun:
             cmd.append("-n")
 
