@@ -72,6 +72,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7a46bdd_d036a5f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-06T00:20:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "87b06012_82cb298a",
+      "revId": "ec6e518588e1897a501758399fe32c19d01a92ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "39166592_d963f491",
@@ -85,6 +103,30 @@
       "writtenOn": "2023-10-05T21:54:39Z",
       "side": 1,
       "message": "This block needs some explanation. (i.e. trying to store stderr as an attribute when no input and p.communicate will return a None,None tuple)\n\n\nThe doc - was very helpful. Perhaps link here?",
+      "range": {
+        "startLine": 474,
+        "startChar": 0,
+        "endLine": 474,
+        "endChar": 20
+      },
+      "revId": "ec6e518588e1897a501758399fe32c19d01a92ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "745cf488_b26a4103",
+        "filename": "git_command.py",
+        "patchSetId": 30
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-06T00:20:09Z",
+      "side": 1,
+      "message": "I\u0027ve updated the documentation above to be more clear and added some here too and also linked the doc.",
+      "parentUuid": "39166592_d963f491",
       "range": {
         "startLine": 474,
         "startChar": 0,

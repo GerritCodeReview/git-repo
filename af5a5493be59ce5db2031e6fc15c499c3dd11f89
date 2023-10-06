@@ -190,6 +190,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c18bcd7_883e0d8d",
+        "filename": "git_command.py",
+        "patchSetId": 19
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-06T00:20:09Z",
+      "side": 1,
+      "message": "I\u0027ve moved the logic to `_RunCommand`.",
+      "parentUuid": "5cf5503b_d1d50647",
+      "range": {
+        "startLine": 403,
+        "startChar": 31,
+        "endLine": 403,
+        "endChar": 32
+      },
+      "revId": "af5a5493be59ce5db2031e6fc15c499c3dd11f89",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c42e664_ac44fe6f",
