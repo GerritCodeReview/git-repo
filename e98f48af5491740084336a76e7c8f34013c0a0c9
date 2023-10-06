@@ -159,6 +159,24 @@
       "parentUuid": "e3ec556e_1a900f90",
       "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbe0e18_170f9d55",
+        "filename": "git_command.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 476,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-06T00:35:44Z",
+      "side": 1,
+      "message": "Closing this since there is not regression in the output after switching to `read1`.",
+      "parentUuid": "36578467_672f0183",
+      "revId": "e98f48af5491740084336a76e7c8f34013c0a0c9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
