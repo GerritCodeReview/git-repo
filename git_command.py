@@ -619,7 +619,7 @@ class GitCommandError(GitError):
         self.git_stderr = git_stderr
 
     @property
-    @functools.lru_cache
+    @functools.lru_cache(maxsize=None)
     def suggestion(self):
         """Returns helpful next steps for the given stderr."""
         if not self.git_stderr:
