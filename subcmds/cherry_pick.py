@@ -86,7 +86,7 @@ change id will be added.
             p.Wait()
         except GitError as e:
             logger.error(e)
-            logger.warn(
+            logger.warning(
                 "NOTE: When committing (please see above) and editing the "
                 "commit message, please remove the old Change-Id-line and "
                 "add:\n%s",

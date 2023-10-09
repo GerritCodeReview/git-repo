@@ -1877,7 +1877,7 @@ def _PostRepoUpgrade(manifest, quiet=False):
 
 def _PostRepoFetch(rp, repo_verify=True, verbose=False):
     if rp.HasChanges:
-        logger.warn("info: A new version of repo is available")
+        logger.warning("info: A new version of repo is available")
         wrapper = Wrapper()
         try:
             rev = rp.bare_git.describe(rp.GetRevisionId())

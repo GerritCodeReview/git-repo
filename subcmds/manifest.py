@@ -136,7 +136,7 @@ to indicate the remote ref to push changes to via 'repo upload'.
             manifest.SetUseLocalManifests(not opt.ignore_local_manifests)
 
             if opt.json:
-                logger.warn("warning: --json is experimental!")
+                logger.warning("warning: --json is experimental!")
                 doc = manifest.ToDict(
                     peg_rev=opt.peg_rev,
                     peg_rev_upstream=opt.peg_rev_upstream,
@@ -163,13 +163,13 @@ to indicate the remote ref to push changes to via 'repo upload'.
             if output_file != "-":
                 fd.close()
                 if manifest.path_prefix:
-                    logger.warn(
+                    logger.warning(
                         "Saved %s submanifest to %s",
                         manifest.path_prefix,
                         output_file,
                     )
                 else:
-                    logger.warn("Saved manifest to %s", output_file)
+                    logger.warning("Saved manifest to %s", output_file)
 
     def ValidateOptions(self, opt, args):
         if args:

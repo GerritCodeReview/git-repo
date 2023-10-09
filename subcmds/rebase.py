@@ -113,7 +113,7 @@ branch but need to incorporate new upstream changes "underneath" them.
             )
 
             if len(args) == 1:
-                logger.warn(
+                logger.warning(
                     "note: project %s is mapped to more than one path", args[0]
                 )
 

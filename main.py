@@ -566,9 +566,11 @@ repo: error:
         sys.exit(1)
 
     if exp > ver:
-        logger.warn("\n... A new version of repo (%s) is available.", exp_str)
+        logger.warning(
+            "\n... A new version of repo (%s) is available.", exp_str
+        )
         if os.access(repo_path, os.W_OK):
-            logger.warn(
+            logger.warning(
                 """\
 ... You should upgrade soon:
     cp %s %s
@@ -577,7 +579,7 @@ repo: error:
                 repo_path,
             )
         else:
-            logger.warn(
+            logger.warning(
                 """\
 ... New version is available at: %s
 ... The launcher is run from: %s
