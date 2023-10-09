@@ -503,7 +503,7 @@ class GitCommand(object):
             A str containing everything read from the in_stream.
         """
         buffer = ""
-        chunk = in_stream.read1()
+        chunk = in_stream.read1(1000)
         while chunk:
             # Convert to str.
             if not hasattr(chunk, "encode"):
@@ -513,7 +513,7 @@ class GitCommand(object):
             out_stream.write(chunk)
             out_stream.flush()
 
-            chunk = in_stream.read1()
+            chunk = in_stream.read1(1000)
 
         return buffer
 
