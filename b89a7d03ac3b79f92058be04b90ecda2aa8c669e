@@ -16,6 +16,24 @@
       "message": "I set the size to an random 1000... Not sure what value makes sense here...",
       "revId": "b89a7d03ac3b79f92058be04b90ecda2aa8c669e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc4f4882_07c344bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-09T14:30:31Z",
+      "side": 1,
+      "message": "write something like:\n\n```\nread_size \u003d 1024 if sys.version_info \u003c (3, 7) else -1\n```",
+      "parentUuid": "82a94fc2_112f2c8b",
+      "revId": "b89a7d03ac3b79f92058be04b90ecda2aa8c669e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
