@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29c99550_b9717de0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-09T12:47:37Z",
+      "side": 1,
+      "message": "scope this with `main:`",
+      "revId": "5cf3d9ca55ae657310117c8620632d4cc566e437",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "444f3ff7_c9a01ec2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-09T12:47:37Z",
+      "side": 1,
+      "message": "i wonder if we can `del logging.warn` and `del logging.Logger.warn` ...",
+      "revId": "5cf3d9ca55ae657310117c8620632d4cc566e437",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5033677_0b9c0329",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-09T12:47:37Z",
+      "side": 1,
+      "message": "up here",
+      "revId": "5cf3d9ca55ae657310117c8620632d4cc566e437",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
