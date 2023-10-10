@@ -1289,7 +1289,7 @@ class Requirements(object):
 
     @classmethod
     def from_data(cls, data):
-        comment_line = re.compile(rb"^ *#")
+        comment_line = re.compile(br"^ *#")
         strip_data = b"".join(
             x for x in data.splitlines() if not comment_line.match(x)
         )
