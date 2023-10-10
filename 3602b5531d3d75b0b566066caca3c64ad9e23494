@@ -457,6 +457,24 @@
       "parentUuid": "0da8d715_69a3c70b",
       "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "520c9bd5_d0f4ec05",
+        "filename": "tests/conftest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-10T16:00:08Z",
+      "side": 1,
+      "message": "In patchset 17/18, I\u0027ve fallen back to inlining the implementation. Although I\u0027ve begun the work to add pytest-home to the infrastructure to make it available here for CI tests, I\u0027ve realized that due to the [standard practices I follow](https://blog.jaraco.com/skeleton/), the released package will only support Python 3.8+, but this project currently requires Python 3.6+, so postsubmit checks would fail when attempting to install there. For now, I\u0027ve inlined `_set_home` and `tmp_home_dir` with a comment to the upstream implementation and eliminated the dependency.",
+      "parentUuid": "52a18215_bc58573f",
+      "revId": "3602b5531d3d75b0b566066caca3c64ad9e23494",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
