@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5f9fea4_706f9499",
+        "filename": "color.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-11T12:40:31Z",
+      "side": 1,
+      "message": "would formatting with f-string not be nicer?\nlike so:\n`v \u003d self._config.GetString(f\"{self._section}.{opt}\")`\n\nThis applies to other files as well...",
+      "revId": "3e663a75ecde10f5fd008b1e2fc7e4fabdb3bff0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f92a52c8_44d5a4d7",
+        "filename": "git_refs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-11T12:40:31Z",
+      "side": 1,
+      "message": "Drop the duplicate `OSError`",
+      "revId": "3e663a75ecde10f5fd008b1e2fc7e4fabdb3bff0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
