@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1211468f_e5946635",
+        "filename": "color.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-11T15:14:58Z",
+      "side": 1,
+      "message": "In general, I think so. I suspect there\u0027s a reason pyupgrade doesn\u0027t make that translation (maybe it\u0027s not strictly compatible in some cases?). [pyupgrade does indicate that it makes the translation](https://github.com/asottile/pyupgrade#f-strings). Oh, interesting! I ran the same pyupgrade command again `pyupgrade --py36-plus **/*.py` and it produced a new diff. I guess it\u0027s necessary to run the command more than once, to translate from percent formatting to `.format` then from `.format` to \"f-strings\". Done in patchset 2.",
+      "parentUuid": "e5f9fea4_706f9499",
+      "revId": "3e663a75ecde10f5fd008b1e2fc7e4fabdb3bff0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f92a52c8_44d5a4d7",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-11T12:40:31Z",
       "side": 1,
       "message": "Drop the duplicate `OSError`",
+      "revId": "3e663a75ecde10f5fd008b1e2fc7e4fabdb3bff0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0d3f9e4_8ba325ce",
+        "filename": "git_refs.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-11T15:14:58Z",
+      "side": 1,
+      "message": "I couldn\u0027t decide which was duplicate so I flipped a coin 😉. Done in patchset 3.",
+      "parentUuid": "f92a52c8_44d5a4d7",
       "revId": "3e663a75ecde10f5fd008b1e2fc7e4fabdb3bff0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
