@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6283b6cc_52a2582c",
+        "filename": "main.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 573,
+      "author": {
+        "id": 1168480
+      },
+      "writtenOn": "2023-10-12T12:07:00Z",
+      "side": 1,
+      "message": "There\u0027s another logger.warn usage here",
+      "revId": "50d9c90c40f69b3759129e7e7ca2925f7ebfe6bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
