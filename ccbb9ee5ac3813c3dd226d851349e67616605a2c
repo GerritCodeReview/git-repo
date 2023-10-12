@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "922dc9c8_2d8d371b",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-12T18:52:59Z",
+      "side": 1,
+      "message": "It\u0027s what the pyupgrade tool does (https://github.com/asottile/pyupgrade#f-strings). There\u0027s a note there that it doesn\u0027t convert `.format` to f-strings if it \"makes the expression longer or if substitution parameters are sufficiently complicated.\" I suspect one or both of those concerns are at play.\n\nI recommend to minimize the number of manual operations to take place in this change, but to enact those in a separate change if desired.",
+      "parentUuid": "9e13b131_0ea51812",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "514af4b3_1c3ff89e",
         "filename": "git_command.py",
         "patchSetId": 3
