@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e13b131_0ea51812",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-12T10:04:42Z",
+      "side": 1,
+      "message": "why do you here still use format()?",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "514af4b3_1c3ff89e",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-12T10:04:42Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e85156eb_6edaf799",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-12T10:04:42Z",
+      "side": 1,
+      "message": "and here...",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f331e20a_dbaa7b2f",
+        "filename": "hooks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-12T10:04:42Z",
+      "side": 1,
+      "message": "and here... there are more instances...",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
