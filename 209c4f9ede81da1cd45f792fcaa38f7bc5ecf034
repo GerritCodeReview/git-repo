@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cbbad49_bdd00a13",
+        "filename": ".github/workflows/test-ci.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-13T13:00:58Z",
+      "side": 1,
+      "message": "does this version of ubuntu support python3.11 ?  we need to add that to the list here too.\n\nif so, just add a comment why we pinned to ubuntu-20 here.\n\nif not, we\u0027ll have to split the matrix up so we only run 3.6 on old ubuntu and do everything else on recent ones.",
+      "revId": "209c4f9ede81da1cd45f792fcaa38f7bc5ecf034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
