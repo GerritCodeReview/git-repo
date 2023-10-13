@@ -16,6 +16,24 @@
       "message": "\u003e sorry, but python2 isn\u0027t supported\n\nSure, this could be resolved in another way.\n\n`docs/python-support.md` still claims that the launcher should support both 2 and 3, and there is code in the launcher to handle someone launching the script under Python 2.7 and have it relaunch under Python 3.x, which is currently not possible since Python 2.7 will halt immediately due to the syntax error.\n\nCurrently v2.37 breaks on many (most?) common systems unless users manually modify the launcher or take other measures:\n\n- On Ubuntu 18.04/20.04 it breaks due to the shebang since the Python 2.7 recovery no longer works.\n- On Ubuntu 22.04 the launcher never really worked out-of-the-box without either manually making it run under Python 3 (installing `python-is-python3`, modifying the shebang, using a local alias, running it in a virtual environment, etc.).\n\nI created https://gerrit-review.googlesource.com/c/git-repo/+/389394 to instead change the launcher shebang and drop some unreachable fallback code.",
       "revId": "c36287498fe1b2841dd902ccd3a7efb2328c74a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8882112_818439ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-13T19:09:48Z",
+      "side": 1,
+      "message": "that doc was written in 2019 when we wanted to support both.  we no longer need/want to do this, so i\u0027ll update the doc to clarify current status.",
+      "parentUuid": "9bba8f91_ecd24ffa",
+      "revId": "c36287498fe1b2841dd902ccd3a7efb2328c74a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ],
   "submitRequirementResults": [
