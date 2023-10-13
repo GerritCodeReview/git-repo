@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4771361e_bf45f1b3",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-13T20:34:07Z",
+      "side": 1,
+      "message": "Didn\u0027t realize suggestions doesn\u0027t work with removing the complete line.",
+      "parentUuid": "63627857_57a7074d",
+      "revId": "3315194f397bcad72f348258a1aec65d11cd51fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "932f7dec_3289fa79",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-13T20:33:27Z",
       "side": 1,
       "message": "```suggestion\n\n```",
+      "revId": "3315194f397bcad72f348258a1aec65d11cd51fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "242d1e5e_25079095",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1148045
+      },
+      "writtenOn": "2023-10-13T20:34:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "932f7dec_3289fa79",
       "revId": "3315194f397bcad72f348258a1aec65d11cd51fa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
