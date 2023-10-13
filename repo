@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-#
+#!/usr/bin/env python3
 # Copyright (C) 2008 The Android Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,8 +19,6 @@ This is a standalone tool that people may copy to anywhere in their system.
 It is used to get an initial repo client checkout, and after that it runs the
 copy of repo in the checkout.
 """
-
-from __future__ import print_function
 
 import datetime
 import os
@@ -82,13 +78,10 @@ def check_python_version():
     major = ver.major
     minor = ver.minor
 
-    # Abort on very old Python 2 versions.
-    if (major, minor) < (2, 7):
+    if major < 3:
         print(
-            "repo: error: Your Python version is too old. "
-            "Please use Python {}.{} or newer instead.".format(
-                *MIN_PYTHON_VERSION_SOFT
-            ),
+            "repo: error: Python 2 is no longer supported; "
+            "Please upgrade to Python {}.{}+.".format(*MIN_PYTHON_VERSION_HARD),
             file=sys.stderr,
         )
         sys.exit(1)
@@ -137,16 +130,7 @@ def check_python_version():
             reexec("python3")
 
         # We're still here, so diagnose things for the user.
-        if major < 3:
-            print(
-                "repo: error: Python 2 is no longer supported; "
-                "Please upgrade to Python {}.{}+.".format(
-                    *MIN_PYTHON_VERSION_HARD
-                ),
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        elif (major, minor) < MIN_PYTHON_VERSION_HARD:
+        if (major, minor) < MIN_PYTHON_VERSION_HARD:
             print(
                 "repo: error: Python 3 version is too old; "
                 "Please use Python {}.{} or newer.".format(
@@ -1280,8 +1264,7 @@ class Requirements(object):
         try:
             with open(path, "rb") as f:
                 data = f.read()
-        except EnvironmentError:
-            # NB: EnvironmentError is used for Python 2 & 3 compatibility.
+        except OSError:
             # If we couldn't open the file, assume it's an old source tree.
             return None
 
