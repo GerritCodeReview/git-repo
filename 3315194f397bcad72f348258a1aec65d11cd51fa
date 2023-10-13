@@ -86,6 +86,24 @@
       "message": "```suggestion\n                    raise HookError(\"Python 2 is not supported\")\n```",
       "revId": "3315194f397bcad72f348258a1aec65d11cd51fa",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f99e5e3_9466619e",
+        "filename": "hooks.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 380,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-13T20:37:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53886b78_c06d98d1",
+      "revId": "3315194f397bcad72f348258a1aec65d11cd51fa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
