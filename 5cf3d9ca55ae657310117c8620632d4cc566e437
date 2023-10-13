@@ -104,6 +104,24 @@
       "parentUuid": "e5033677_0b9c0329",
       "revId": "5cf3d9ca55ae657310117c8620632d4cc566e437",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a7de360_0feb69d0",
+        "filename": "main.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1145289
+      },
+      "writtenOn": "2023-10-13T23:17:18Z",
+      "side": 1,
+      "message": "I suppose line 74 should be kept. Why can it be deleted?",
+      "parentUuid": "f1318c90_d9ef0762",
+      "revId": "5cf3d9ca55ae657310117c8620632d4cc566e437",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
