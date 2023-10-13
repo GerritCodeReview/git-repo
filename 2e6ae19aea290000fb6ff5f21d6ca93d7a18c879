@@ -87,6 +87,24 @@
       "parentUuid": "e692fda5_880a6627",
       "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46e45758_f2c58a1e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2023-10-13T18:42:36Z",
+      "side": 1,
+      "message": "As you mention in go/repo-shared-project-corruption, because we split internal git state in a way that it does not expect, we need to have `git gc` run with a state that is consistent for the object store as we have created it.\n\nWhen the sync operation triggers `git gc`, GIT_OBJECT_DIRECTORY is treated as mutable, GIT_ALTERNATE_OBJECT_DIRECTORIES (and `objecst/info/alternates`) are treated as immutable.  To prevent corruption in `.repo/project-objects`, we need `git fetch` (specifically the associated `git pack` / `git gc`) to treat project-objects as immutable",
+      "parentUuid": "3e2a454e_ce7ab92a",
+      "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
