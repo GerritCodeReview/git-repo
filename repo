@@ -1289,7 +1289,8 @@ class Requirements(object):
 
     @classmethod
     def from_data(cls, data):
-        comment_line = re.compile(rb"^ *#")
+        # Skip Black formatting to keep the Python 2-compatible `br` string prefix.
+        comment_line = re.compile(br"^ *#")  # fmt: skip
         strip_data = b"".join(
             x for x in data.splitlines() if not comment_line.match(x)
         )
