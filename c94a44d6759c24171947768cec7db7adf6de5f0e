@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e5e7340_48cb22ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-13T20:36:53Z",
+      "side": 1,
+      "message": "https://g-issues.gerritcodereview.com/issues/40014585 \u0026 linked CL provide background as to why we don\u0027t hardcode `python3`",
+      "revId": "c94a44d6759c24171947768cec7db7adf6de5f0e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
