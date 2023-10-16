@@ -16,6 +16,24 @@
       "message": "does this version of ubuntu support python3.11 ?  we need to add that to the list here too.\n\nif so, just add a comment why we pinned to ubuntu-20 here.\n\nif not, we\u0027ll have to split the matrix up so we only run 3.6 on old ubuntu and do everything else on recent ones.",
       "revId": "209c4f9ede81da1cd45f792fcaa38f7bc5ecf034",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74bf4252_b9275b09",
+        "filename": ".github/workflows/test-ci.yml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-16T21:09:49Z",
+      "side": 1,
+      "message": "as per the link in the commit message 20.04 will even support python 3.13",
+      "parentUuid": "9cbbad49_bdd00a13",
+      "revId": "209c4f9ede81da1cd45f792fcaa38f7bc5ecf034",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
