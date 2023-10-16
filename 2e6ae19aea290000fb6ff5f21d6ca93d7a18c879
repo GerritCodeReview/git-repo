@@ -105,6 +105,24 @@
       "parentUuid": "3e2a454e_ce7ab92a",
       "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c312ecd_d20fc624",
+        "filename": "manifest_xml.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1918,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-16T13:18:48Z",
+      "side": 1,
+      "message": "the mapping of GIT_OBJECT_DIRECTORY/GIT_ALTERNATE_OBJECT_DIRECTORIES is handled in git_command.  i don\u0027t think XmlManifest.GetProjectPaths should be swapping paths just to get some side-effect behavior out of projet.Project and how it passes things to git_command.\n\nrepo needs to migrate existing checkouts to the expected state.  that is what my doc goes through.  this CL isn\u0027t transitioning anything afaict.",
+      "parentUuid": "46e45758_f2c58a1e",
+      "revId": "2e6ae19aea290000fb6ff5f21d6ca93d7a18c879",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
