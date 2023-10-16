@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f06411_50ecd6a1",
+        "filename": ".github/workflows/test-ci.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-16T22:18:49Z",
+      "side": 1,
+      "message": "```suggestion\n        # ubuntu-20.04 is the last version that supports python 3.6.\n```",
+      "revId": "a9011d053a5110bcbcd889bfeca3bebd24a209b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
