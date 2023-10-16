@@ -107,6 +107,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "298f3c45_a9aa72b5",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-16T18:21:20Z",
+      "side": 1,
+      "message": "the Google Python style guide doesn\u0027t state a pref between any of the forms:\nhttps://github.com/google/styleguide/blob/gh-pages/pyguide.md#310-strings\n\nthe CrOS style guide orders them: f-string, %, .format (never).\n\nhowever, the Google style guide primary point is \"be consistent\", and in that regard, the repo codebase has largely favored % over .format.\n\nit is pretty rare the diff between % and .format matter where the .format form would be \"better\".  at a glance, this CL seems to line up with that -- replacing `%s` with `{}` is not an improvement.",
+      "parentUuid": "f0674a5a_cfca9279",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "514af4b3_1c3ff89e",
