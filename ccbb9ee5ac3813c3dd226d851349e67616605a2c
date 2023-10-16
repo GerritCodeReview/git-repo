@@ -89,6 +89,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0674a5a_cfca9279",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-16T17:57:08Z",
+      "side": 1,
+      "message": "My understanding was that [.format is preferred to %](https://stackoverflow.com/a/12382738) and that\u0027s the stance that pyupgrade takes. Is there a Google Python style that prefers the older, discouraged syntax?\n\nMy intention was simply to run a tool and do some automatic improvements, but since you asked for it, I manually combed through the codebase and converted most of the `.format` calls to f-strings by hand. It took a few minutes to perform the automated cleanup but most of an hour to do the manual rewriting, but new things are more consistent.",
+      "parentUuid": "db81382e_27e8534b",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "514af4b3_1c3ff89e",
@@ -102,6 +120,24 @@
       "writtenOn": "2023-10-12T10:04:42Z",
       "side": 1,
       "message": "same here",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9ef86fa_7adc68f8",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-16T17:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "514af4b3_1c3ff89e",
       "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -123,6 +159,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "41b1f1e1_9887b72c",
+        "filename": "git_trace2_event_log_base.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-16T17:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e85156eb_6edaf799",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f331e20a_dbaa7b2f",
@@ -136,6 +190,24 @@
       "writtenOn": "2023-10-12T10:04:42Z",
       "side": 1,
       "message": "and here... there are more instances...",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f659d5f_aaa4050a",
+        "filename": "hooks.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-16T17:57:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f331e20a_dbaa7b2f",
       "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
