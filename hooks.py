@@ -12,11 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import errno
-import json
 import os
 import re
-import subprocess
 import sys
 import traceback
 import urllib.parse
@@ -298,39 +295,6 @@ class RepoHook:
 
         return interp
 
-    def _ExecuteHookViaReexec(self, interp, context, **kwargs):
-        """Execute the hook script through |interp|.
-
-        Note: Support for this feature should be dropped ~Jun 2021.
-
-        Args:
-            interp: The Python program to run.
-            context: Basic Python context to execute the hook inside.
-            kwargs: Arbitrary arguments to pass to the hook script.
-
-        Raises:
-            HookError: When the hooks failed for any reason.
-        """
-        # This logic needs to be kept in sync with _ExecuteHookViaImport below.
-        script = f"""
-import json, os, sys
-path = '''{self._script_fullpath}'''
-kwargs = json.loads('''{json.dumps(kwargs)}''')
-context = json.loads('''{json.dumps(context)}''')
-sys.path.insert(0, os.path.dirname(path))
-data = open(path).read()
-exec(compile(data, path, 'exec'), context)
-context['main'](**kwargs)
-"""
-
-        # We pass the script via stdin to avoid OS argv limits.  It also makes
-        # unhandled exception tracebacks less verbose/confusing for users.
-        cmd = [interp, "-c", "import sys; exec(sys.stdin.read())"]
-        proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
-        proc.communicate(input=script.encode("utf-8"))
-        if proc.returncode:
-            raise HookError(f"Failed to run {self._hook_type} hook.")
-
     def _ExecuteHookViaImport(self, data, context, **kwargs):
         """Execute the hook code in |data| directly.
 
@@ -408,30 +372,13 @@ context['main'](**kwargs)
             # See what version of python the hook has been written against.
             data = open(self._script_fullpath).read()
             interp = self._ExtractInterpFromShebang(data)
-            reexec = False
             if interp:
                 prog = os.path.basename(interp)
-                if prog.startswith("python2") and sys.version_info.major != 2:
-                    reexec = True
-                elif prog.startswith("python3") and sys.version_info.major == 2:
-                    reexec = True
-
-            # Attempt to execute the hooks through the requested version of
-            # Python.
-            if reexec:
-                try:
-                    self._ExecuteHookViaReexec(interp, context, **kwargs)
-                except OSError as e:
-                    if e.errno == errno.ENOENT:
-                        # We couldn't find the interpreter, so fallback to
-                        # importing.
-                        reexec = False
-                    else:
-                        raise
+                if prog.startswith("python2"):
+                    raise HookError("Python 2 is not supported")
 
             # Run the hook by importing directly.
-            if not reexec:
-                self._ExecuteHookViaImport(data, context, **kwargs)
+            self._ExecuteHookViaImport(data, context, **kwargs)
         finally:
             # Restore sys.path and CWD.
             sys.path = orig_syspath

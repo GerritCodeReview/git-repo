@@ -72,16 +72,16 @@ def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
     # If any branch has many commits, prompt the user.
     if many_commits:
         if len(branches) > 1:
-            logger.warn(
+            logger.warning(
                 "ATTENTION: One or more branches has an unusually high number "
                 "of commits."
             )
         else:
-            logger.warn(
+            logger.warning(
                 "ATTENTION: You are uploading an unusually high number of "
                 "commits."
             )
-        logger.warn(
+        logger.warning(
             "YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across "
             "branches?)"
         )

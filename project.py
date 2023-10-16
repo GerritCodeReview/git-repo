@@ -1258,7 +1258,7 @@ class Project:
             try:
                 platform_utils.remove(tarpath)
             except OSError as e:
-                logger.warn("warn: Cannot remove archive %s: %s", tarpath, e)
+                logger.warning("warn: Cannot remove archive %s: %s", tarpath, e)
             self._CopyAndLinkFiles()
             return SyncNetworkHalfResult(True)
 
@@ -1755,7 +1755,7 @@ class Project:
         """
         if self.IsDirty():
             if force:
-                logger.warn(
+                logger.warning(
                     "warning: %s: Removing dirty project: uncommitted changes "
                     "lost.",
                     self.RelPath(local=False),
@@ -3027,7 +3027,7 @@ class Project:
                 # hardlink below.
                 if not filecmp.cmp(stock_hook, dst, shallow=False):
                     if not quiet:
-                        logger.warn(
+                        logger.warning(
                             "warn: %s: Not replacing locally modified %s hook",
                             self.RelPath(local=False),
                             name,
@@ -4325,7 +4325,7 @@ class ManifestProject(MetaProject):
             self.config.SetBoolean("repo.worktree", worktree)
             if is_new:
                 self.use_git_worktrees = True
-            logger.warn("warning: --worktree is experimental!")
+            logger.warning("warning: --worktree is experimental!")
 
         if archive:
             if is_new:
@@ -4389,7 +4389,7 @@ class ManifestProject(MetaProject):
 
             self.config.SetBoolean("repo.git-lfs", git_lfs)
             if not is_new:
-                logger.warn(
+                logger.warning(
                     "warning: Changing --git-lfs settings will only affect new "
                     "project checkouts.\n"
                     "         Existing projects will require manual updates.\n"
@@ -4501,7 +4501,7 @@ class ManifestProject(MetaProject):
                 submanifest = ""
                 if self.manifest.path_prefix:
                     submanifest = f"for {self.manifest.path_prefix} "
-                logger.warn(
+                logger.warning(
                     "warning: git update of superproject %s failed, "
                     "repo sync will not use superproject to fetch source; "
                     "while this error is not fatal, and you can continue to "

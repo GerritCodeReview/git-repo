@@ -86,27 +86,19 @@ logger = RepoLogger(__file__)
 MIN_PYTHON_VERSION_SOFT = (3, 6)
 MIN_PYTHON_VERSION_HARD = (3, 6)
 
-if sys.version_info.major < 3:
+if sys.version_info < MIN_PYTHON_VERSION_HARD:
     logger.error(
-        "repo: error: Python 2 is no longer supported; "
+        "repo: error: Python version is too old; "
         "Please upgrade to Python %d.%d+.",
         *MIN_PYTHON_VERSION_SOFT,
     )
     sys.exit(1)
-else:
-    if sys.version_info < MIN_PYTHON_VERSION_HARD:
-        logger.error(
-            "repo: error: Python 3 version is too old; "
-            "Please upgrade to Python %d.%d+.",
-            *MIN_PYTHON_VERSION_SOFT,
-        )
-        sys.exit(1)
-    elif sys.version_info < MIN_PYTHON_VERSION_SOFT:
-        logger.error(
-            "repo: warning: your Python 3 version is no longer supported; "
-            "Please upgrade to Python %d.%d+.",
-            *MIN_PYTHON_VERSION_SOFT,
-        )
+elif sys.version_info < MIN_PYTHON_VERSION_SOFT:
+    logger.error(
+        "repo: warning: your Python version is no longer supported; "
+        "Please upgrade to Python %d.%d+.",
+        *MIN_PYTHON_VERSION_SOFT,
+    )
 
 KEYBOARD_INTERRUPT_EXIT = 128 + signal.SIGINT
 MAX_PRINT_ERRORS = 5
@@ -565,9 +557,11 @@ repo: error:
         sys.exit(1)
 
     if exp > ver:
-        logger.warn("\n... A new version of repo (%s) is available.", exp_str)
+        logger.warning(
+            "\n... A new version of repo (%s) is available.", exp_str
+        )
         if os.access(repo_path, os.W_OK):
-            logger.warn(
+            logger.warning(
                 """\
 ... You should upgrade soon:
     cp %s %s
@@ -576,7 +570,7 @@ repo: error:
                 repo_path,
             )
         else:
-            logger.warn(
+            logger.warning(
                 """\
 ... New version is available at: %s
 ... The launcher is run from: %s
