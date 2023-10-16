@@ -206,11 +206,8 @@ class _Repo:
         if short:
             commands = " ".join(sorted(self.commands))
             wrapped_commands = textwrap.wrap(commands, width=77)
-            print(
-                "Available commands:\n  {}".format(
-                    "\n  ".join(wrapped_commands)
-                )
-            )
+            sep = "\n  "
+            print(f"Available commands:\n  {sep.join(wrapped_commands)}")
             print("\nRun `repo help <command>` for command-specific details.")
             print("Bug reports:", Wrapper().BUG_URL)
         else:

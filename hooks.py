@@ -265,9 +265,7 @@ class RepoHook:
             "approvedhash",
             self._GetHash(),
             prompt % (self._GetMustVerb(), self._script_fullpath),
-            "Scripts have changed since {} was allowed.".format(
-                self._hook_type
-            ),
+            f"Scripts have changed since {self._hook_type} was allowed.",
         )
 
     @staticmethod
@@ -314,20 +312,16 @@ class RepoHook:
             HookError: When the hooks failed for any reason.
         """
         # This logic needs to be kept in sync with _ExecuteHookViaImport below.
-        script = """
+        script = f"""
 import json, os, sys
-path = '''{path}'''
-kwargs = json.loads('''{kwargs}''')
-context = json.loads('''{context}''')
+path = '''{self._script_fullpath}'''
+kwargs = json.loads('''{json.dumps(kwargs)}''')
+context = json.loads('''{json.dumps(context)}''')
 sys.path.insert(0, os.path.dirname(path))
 data = open(path).read()
 exec(compile(data, path, 'exec'), context)
 context['main'](**kwargs)
-""".format(
-            path=self._script_fullpath,
-            kwargs=json.dumps(kwargs),
-            context=json.dumps(context),
-        )
+"""
 
         # We pass the script via stdin to avoid OS argv limits.  It also makes
         # unhandled exception tracebacks less verbose/confusing for users.

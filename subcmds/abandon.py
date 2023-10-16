@@ -152,4 +152,4 @@ It is equivalent to "git branch -D <branchname>".
                             _RelPath(p) for p in success[br]
                         )
                     )
-                print("{}{}| {}\n".format(br, " " * (width - len(br)), result))
+                print(f"{br}{' ' * (width - len(br))}| {result}\n")
