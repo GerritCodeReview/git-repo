@@ -957,12 +957,8 @@ class Project:
                 f_status = "-"
 
             if i and i.src_path:
-                line = " {}{}\t{} => {} ({}%)".format(
-                    i_status,
-                    f_status,
-                    i.src_path,
-                    p,
-                    i.level,
+                line = (
+                    f" {i_status}{f_status}\t{i.src_path} => {p} ({i.level}%)"
                 )
             else:
                 line = f" {i_status}{f_status}\t{p}"
@@ -1182,9 +1178,7 @@ class Project:
         GitCommand(self, cmd, bare=True, verify_command=True).Wait()
 
         if not dryrun:
-            msg = "posted to {} for {}".format(
-                branch.remote.review, dest_branch
-            )
+            msg = f"posted to {branch.remote.review} for {dest_branch}"
             self.bare_git.UpdateRef(
                 R_PUB + branch.name, R_HEADS + branch.name, message=msg
             )
@@ -1446,9 +1440,7 @@ class Project:
             return self.bare_git.rev_list(self.revisionExpr, "-1")[0]
         except GitError:
             raise ManifestInvalidRevisionError(
-                "revision {} in {} not found".format(
-                    self.revisionExpr, self.name
-                )
+                f"revision {self.revisionExpr} in {self.name} not found"
             )
 
     def GetRevisionId(self, all_refs=None):
@@ -1465,9 +1457,7 @@ class Project:
             return self.bare_git.rev_parse("--verify", "%s^0" % rev)
         except GitError:
             raise ManifestInvalidRevisionError(
-                "revision {} in {} not found".format(
-                    self.revisionExpr, self.name
-                )
+                f"revision {self.revisionExpr} in {self.name} not found"
             )
 
     def SetRevisionId(self, revisionId):
@@ -1779,11 +1769,7 @@ class Project:
                 raise DeleteDirtyWorktreeError(msg, project=self)
 
         if not quiet:
-            print(
-                "{}: Deleting obsolete checkout.".format(
-                    self.RelPath(local=False)
-                )
-            )
+            print(f"{self.RelPath(local=False)}: Deleting obsolete checkout.")
 
         # Unlock and delink from the main worktree.  We don't use git's worktree
         # remove because it will recursively delete projects -- we handle that
@@ -2298,8 +2284,8 @@ class Project:
             name = self.remote.name
 
         # The output will look like (NB: tabs are separators):
-        # ref: refs/heads/master	HEAD
-        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44	HEAD
+        # ref: refs/heads/master    HEAD
+        # 5f6803b100bb3cd0f534e96e88c91373e8ed1c44  HEAD
         output = self.bare_git.ls_remote(
             "-q", "--symref", "--exit-code", name, "HEAD"
         )
@@ -3163,8 +3149,8 @@ class Project:
                         "--force-sync not enabled; cannot overwrite a local "
                         "work tree. If you're comfortable with the "
                         "possibility of losing the work tree's git metadata,"
-                        " use `repo sync --force-sync {}` to "
-                        "proceed.".format(self.RelPath(local=False)),
+                        f" use `repo sync --force-sync {self.RelPath(local=False)}` to "
+                        "proceed.",
                         project=self.name,
                     )
 
@@ -3678,9 +3664,7 @@ class Project:
                 config = kwargs.pop("config", None)
                 for k in kwargs:
                     raise TypeError(
-                        "{}() got an unexpected keyword argument {!r}".format(
-                            name, k
-                        )
+                        f"{name}() got an unexpected keyword argument {k!r}"
                     )
                 if config is not None:
                     for k, v in config.items():

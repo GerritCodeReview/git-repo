@@ -196,12 +196,10 @@ class UserAgent:
     def git(self):
         """The UA when running git."""
         if self._git_ua is None:
-            self._git_ua = "git/{} ({}) git-repo/{}".format(
-                git.version_tuple().full,
-                self.os,
-                RepoSourceVersion(),
+            self._git_ua = (
+                f"git/{git.version_tuple().full} ({self.os}) "
+                f"git-repo/{RepoSourceVersion()}"
             )
-
         return self._git_ua
 
 
@@ -243,7 +241,7 @@ def _build_env(
         env["GIT_SSH"] = ssh_proxy.proxy
         env["GIT_SSH_VARIANT"] = "ssh"
     if "http_proxy" in env and "darwin" == sys.platform:
-        s = "'http.proxy={}'".format(env["http_proxy"])
+        s = f"'http.proxy={env['http_proxy']}'"
         p = env.get("GIT_CONFIG_PARAMETERS")
         if p is not None:
             s = p + " " + s

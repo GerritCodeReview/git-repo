@@ -174,7 +174,7 @@ is shown, then the branch appears in all projects.
                         if _RelPath(p) not in have:
                             paths.append(_RelPath(p))
 
-                s = " {} {}".format(in_type, ", ".join(paths))
+                s = f" {in_type} {', '.join(paths)}"
                 if not i.IsSplitCurrent and (width + 7 + len(s) < 80):
                     fmt = out.current if i.IsCurrent else fmt
                     fmt(s)

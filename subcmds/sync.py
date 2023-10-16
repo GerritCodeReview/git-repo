@@ -1416,9 +1416,10 @@ later is required to fix a server side protocol bug.
                     "TARGET_PRODUCT" in os.environ
                     and "TARGET_BUILD_VARIANT" in os.environ
                 ):
-                    target = "{}-{}".format(
-                        os.environ["TARGET_PRODUCT"],
-                        os.environ["TARGET_BUILD_VARIANT"],
+                    target = (
+                        "{TARGET_PRODUCT}-{TARGET_BUILD_VARIANT}".format_map(
+                            os.environ
+                        )
                     )
                     [success, manifest_str] = server.GetApprovedManifest(
                         branch, target
