@@ -125,6 +125,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab4c5bed_7c5b5c19",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-16T19:41:51Z",
+      "side": 1,
+      "message": "I hope it\u0027s okay that I\u0027ve converted .format to f-strings in a separate commit to separate the automatic from the manual changes. I could move the other manual changes to that child commit if you like, but I\u0027m happy with it like this.",
+      "parentUuid": "298f3c45_a9aa72b5",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "514af4b3_1c3ff89e",
