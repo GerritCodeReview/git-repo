@@ -76,9 +76,8 @@ class BaseEventLog:
         # Save both our sid component and the complete sid.
         # We use our sid component (self._sid) as the unique filename prefix and
         # the full sid (self._full_sid) in the log itself.
-        self._sid = "repo-{}-P{:08x}".format(
-            self.start.strftime("%Y%m%dT%H%M%SZ"),
-            os.getpid(),
+        self._sid = (
+            f"repo-{self.start.strftime('%Y%m%dT%H%M%SZ')}-P{os.getpid():08x}"
         )
 
         if add_init_count:

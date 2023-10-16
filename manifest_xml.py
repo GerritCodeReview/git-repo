@@ -1307,9 +1307,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     raise
                 except Exception as e:
                     raise ManifestParseError(
-                        "failed parsing included manifest {}: {}".format(
-                            name, e
-                        )
+                        f"failed parsing included manifest {name}: {e}"
                     )
             else:
                 if parent_groups and node.nodeName == "project":
@@ -1811,9 +1809,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             remote = self._default.remote
         if remote is None:
             raise ManifestParseError(
-                "no remote for project {} within {}".format(
-                    name, self.manifestFile
-                )
+                f"no remote for project {name} within {self.manifestFile}"
             )
 
         revisionExpr = node.getAttribute("revision") or remote.revision

@@ -262,9 +262,7 @@ class RepoHook:
             "approvedhash",
             self._GetHash(),
             prompt % (self._GetMustVerb(), self._script_fullpath),
-            "Scripts have changed since {} was allowed.".format(
-                self._hook_type
-            ),
+            f"Scripts have changed since {self._hook_type} was allowed.",
         )
 
     @staticmethod
