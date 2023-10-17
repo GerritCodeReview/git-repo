@@ -34,6 +34,24 @@
       "parentUuid": "a7e5164d_2a804b45",
       "revId": "cd05d99a338bb6d4a299dd75b3cc37d8aea359e6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "edee11ac_1bd37aca",
+        "filename": "pyproject.toml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-17T13:58:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "900b9413_b208ad61",
+      "revId": "cd05d99a338bb6d4a299dd75b3cc37d8aea359e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
