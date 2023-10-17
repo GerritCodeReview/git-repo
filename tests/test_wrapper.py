@@ -14,6 +14,7 @@
 
 """Unittests for the wrapper.py module."""
 
+import functools
 import io
 import os
 import re
@@ -475,7 +476,7 @@ class GitCheckoutTestCase(RepoWrapperTestCase):
         # Create a repo to operate on, but do it once per-class.
         cls.tempdirobj = tempfile.TemporaryDirectory(prefix="repo-rev-tests")
         cls.GIT_DIR = cls.tempdirobj.name
-        run_git = wrapper.Wrapper().run_git
+        run_git = functools.partial(wrapper.Wrapper().run_git, bare=False)
 
         remote = os.path.join(cls.GIT_DIR, "remote")
         os.mkdir(remote)
