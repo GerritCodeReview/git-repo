@@ -16,6 +16,23 @@
       "message": "The reason the tests are failing is because during test setup, the wrapper is used to create a new \"remote\", including committing new changes, which requires a working directory (https://gerrit.googlesource.com/git-repo/+/refs/heads/main/tests/test_wrapper.py#478). Probably the issue can be fixed by simply bypassing the wrapper behavior for setup.",
       "revId": "c7ca77e823216c987adfa948317098dff0bbdfc6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45709828_348b7cc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-17T16:57:41Z",
+      "side": 1,
+      "message": "I\u0027ve got this diff in a commit, and it allows the test fixtures to succeed by disabling the bare behavior:\n\n```diff\ndiff --git a/repo b/repo\nindex e1e11f3..ca132cc 100755\n--- a/repo\n+++ b/repo\n@@ -764,15 +764,18 @@ def _Init(args, gitc_init\u003dFalse):\n         raise\n \n \n-def run_git(*args, **kwargs):\n+def run_git(*args, bare\u003dTrue, **kwargs):\n     \"\"\"Run git and return execution details.\"\"\"\n     kwargs.setdefault(\"capture_output\", True)\n     kwargs.setdefault(\"check\", True)\n+    command \u003d [GIT]\n+    if bare:\n+        command +\u003d [\"--git-dir\u003d%s\" % (kwargs.get(\"cwd\", os.getcwd()))]\n     try:\n-           return run_command([GIT,\n-                                \u0027--git-dir\u003d%s\u0027 % (kwargs.get(\u0027cwd\u0027, os.getcwd()))]\n-                               + list(args),\n-                               **kwargs)\n+        return run_command(\n+            command + list(args),\n+            **kwargs,\n+        )\n     except OSError as e:\n         print(file\u003dsys.stderr)\n         print(\u0027repo: error: \"%s\" is not available\u0027 % GIT, file\u003dsys.stderr)\ndiff --git a/tests/test_wrapper.py b/tests/test_wrapper.py\nindex ef4dce1..9fdde7d 100644\n--- a/tests/test_wrapper.py\n+++ b/tests/test_wrapper.py\n@@ -14,6 +14,7 @@\n \n \"\"\"Unittests for the wrapper.py module.\"\"\"\n \n+import functools\n import io\n import os\n import re\n@@ -475,7 +476,7 @@ class GitCheckoutTestCase(RepoWrapperTestCase):\n         # Create a repo to operate on, but do it once per-class.\n         cls.tempdirobj \u003d tempfile.TemporaryDirectory(prefix\u003d\"repo-rev-tests\")\n         cls.GIT_DIR \u003d cls.tempdirobj.name\n-        run_git \u003d wrapper.Wrapper().run_git\n+        run_git \u003d functools.partial(wrapper.Wrapper().run_git, bare\u003dFalse)\n \n         remote \u003d os.path.join(cls.GIT_DIR, \"remote\")\n         os.mkdir(remote)\n```\n\nBut then it fails with a different error further down in the tests (more investigation needed).",
+      "revId": "c7ca77e823216c987adfa948317098dff0bbdfc6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
