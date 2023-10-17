@@ -14,6 +14,7 @@
 
 """Unittests for the wrapper.py module."""
 
+import functools
 import io
 import os
 import re
@@ -476,8 +477,22 @@ class GitCheckoutTestCase(RepoWrapperTestCase):
         cls.tempdirobj = tempfile.TemporaryDirectory(prefix="repo-rev-tests")
         cls.GIT_DIR = cls.tempdirobj.name
         run_git = wrapper.Wrapper().run_git
+        remote = cls._create_remote()
+
+        run_git("init", cwd=cls.GIT_DIR)
+        run_git(
+            "fetch",
+            remote,
+            "+refs/heads/*:refs/remotes/origin/*",
+            cwd=cls.GIT_DIR,
+        )
+
+    @classmethod
+    def _create_remote(cls):
+        run_git = functools.partial(wrapper.Wrapper().run_git, bare=False)
 
         remote = os.path.join(cls.GIT_DIR, "remote")
+
         os.mkdir(remote)
 
         # Tests need to assume, that main is default branch at init,
@@ -500,13 +515,7 @@ class GitCheckoutTestCase(RepoWrapperTestCase):
             "rev-list", "HEAD", cwd=remote
         ).stdout.splitlines()
 
-        run_git("init", cwd=cls.GIT_DIR)
-        run_git(
-            "fetch",
-            remote,
-            "+refs/heads/*:refs/remotes/origin/*",
-            cwd=cls.GIT_DIR,
-        )
+        return remote
 
     @classmethod
     def tearDownClass(cls):

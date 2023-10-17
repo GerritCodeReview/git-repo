@@ -764,15 +764,18 @@ def _Init(args, gitc_init=False):
         raise
 
 
-def run_git(*args, **kwargs):
+def run_git(*args, bare=True, **kwargs):
     """Run git and return execution details."""
     kwargs.setdefault("capture_output", True)
     kwargs.setdefault("check", True)
+    command = [GIT]
+    if bare:
+        command += ["--git-dir=%s" % (kwargs.get("cwd", os.getcwd()))]
     try:
-	    return run_command([GIT,
-                                '--git-dir=%s' % (kwargs.get('cwd', os.getcwd()))]
-                               + list(args),
-                               **kwargs)
+        return run_command(
+            command + list(args),
+            **kwargs,
+        )
     except OSError as e:
         print(file=sys.stderr)
         print('repo: error: "%s" is not available' % GIT, file=sys.stderr)
