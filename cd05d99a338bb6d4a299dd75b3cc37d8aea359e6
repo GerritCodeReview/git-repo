@@ -16,6 +16,24 @@
       "message": "@vapier@google.com adding this here makes py36 and py37 fail with\n\nUsage: python -m black [OPTIONS] SRC ...\nTry \u0027python -m black -h\u0027 for help.\n\nError: Invalid value for \u0027-t\u0027 / \u0027--target-version\u0027: \u0027py312\u0027 is not one of \u0027py33\u0027, \u0027py34\u0027, \u0027py35\u0027, \u0027py36\u0027, \u0027py37\u0027, \u0027py38\u0027, \u0027py39\u0027, \u0027py310\u0027, \u0027py311\u0027.\n\nall other python versions pass...",
       "revId": "cd05d99a338bb6d4a299dd75b3cc37d8aea359e6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "900b9413_b208ad61",
+        "filename": "pyproject.toml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-17T10:11:29Z",
+      "side": 1,
+      "message": "sounds like the version of black itself hasn\u0027t been updated yet to the new py312 version\n\ni don\u0027t think it\u0027s super important at this point, or really even in general tbh",
+      "parentUuid": "a7e5164d_2a804b45",
+      "revId": "cd05d99a338bb6d4a299dd75b3cc37d8aea359e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
