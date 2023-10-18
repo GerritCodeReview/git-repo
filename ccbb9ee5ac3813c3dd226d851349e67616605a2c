@@ -161,6 +161,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "054ad981_3f248af0",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-18T13:54:36Z",
+      "side": 1,
+      "message": "That\u0027s a lot more busy work that I\u0027m not interested in doing. I\u0027ve already invested 10x more effort in this cleanup than I feel it should have required. I\u0027ve squashed the two commits and see if that\u0027s acceptable. If not, I\u0027ll just abandon the work.",
+      "parentUuid": "86691ab2_ec45a3ef",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "514af4b3_1c3ff89e",
