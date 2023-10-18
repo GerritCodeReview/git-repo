@@ -1,0 +1,157 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d3c704d_6a9e9ce5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "just some minor things...",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6067537_4ba40cfa",
+        "filename": "git_command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "do we want a space here between required and {msg}?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b20a5635_f7f94035",
+        "filename": "main.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "use `os.linesep` here?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d49030f3_4d3e6a76",
+        "filename": "progress.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "f-string?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9cd9c36_979824ae",
+        "filename": "progress.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "f-string?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7513c601_e3b63a41",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2614,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "use `os.linesep` here?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a374290_153d72ab",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2822,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "trailing comma here for a reason?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d04758fc_be6b0576",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "f-string?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e381409_0504349c",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-18T17:32:14Z",
+      "side": 1,
+      "message": "remove try except block",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
