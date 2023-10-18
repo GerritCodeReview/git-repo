@@ -143,6 +143,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "86691ab2_ec45a3ef",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-18T08:50:55Z",
+      "side": 1,
+      "message": "it\u0027s fine if we want to break things up.  in fact, it\u0027d make things easier to review.  but we shouldn\u0027t do % -\u003e format -\u003e f-strings.\n\nmaybe:\n* 1 CL to delete all the `coding:` cookies and future imports\n* 1 CL to delete all the (object) usage\n* 1 CL for f-string conversions\n* 1 CL for whatever\u0027s left\n\nseems like the first two tasks at least should be trivial to automate with some `sed` calls",
+      "parentUuid": "ab4c5bed_7c5b5c19",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "514af4b3_1c3ff89e",
