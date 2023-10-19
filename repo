@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- coding:utf-8 -*-
 #
 # Copyright (C) 2008 The Android Open Source Project
 #
@@ -21,8 +20,6 @@ This is a standalone tool that people may copy to anywhere in their system.
 It is used to get an initial repo client checkout, and after that it runs the
 copy of repo in the checkout.
 """
-
-from __future__ import print_function
 
 import datetime
 import os
@@ -173,7 +170,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 37)
+VERSION = (2, 38)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
