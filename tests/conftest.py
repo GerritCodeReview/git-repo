@@ -15,6 +15,7 @@
 """Common fixtures for pytests."""
 
 import pathlib
+import subprocess
 
 import pytest
 
@@ -72,3 +73,18 @@ def tmp_home_dir(monkeypatch, tmp_path_factory):
     the function scope.
     """
     return _set_home(monkeypatch, tmp_path_factory.mktemp("home"))
+
+
+def _make_explicit():
+    cmd = ["git", "config", "--global", "safe.bareRepository", "explicit"]
+    subprocess.check_call(cmd)
+
+
+@pytest.fixture(autouse=True, scope="session")
+def bare_explicit_session(session_tmp_home_dir):
+    _make_explicit()
+
+
+@pytest.fixture(autouse=True)
+def bare_explicit(tmp_home_dir):
+    _make_explicit()
