@@ -22,7 +22,7 @@ from error import EditorError
 import platform_utils
 
 
-class Editor(object):
+class Editor:
     """Manages the user's preferred text editor."""
 
     _editor = None

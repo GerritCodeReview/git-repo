@@ -70,7 +70,7 @@ def _key(name):
     return ".".join(parts)
 
 
-class GitConfig(object):
+class GitConfig:
     _ForUser = None
 
     _ForSystem = None
@@ -430,7 +430,7 @@ class RepoConfig(GitConfig):
         return os.path.join(repo_config_dir, ".repoconfig/config")
 
 
-class RefSpec(object):
+class RefSpec:
     """A Git refspec line, split into its components:
 
     forced:  True if the line starts with '+'
@@ -541,7 +541,7 @@ def GetUrlCookieFile(url, quiet):
     yield cookiefile, None
 
 
-class Remote(object):
+class Remote:
     """Configuration options related to a remote."""
 
     def __init__(self, config, name):
@@ -723,7 +723,7 @@ class Remote(object):
         return self._config.GetString(key, all_keys=all_keys)
 
 
-class Branch(object):
+class Branch:
     """Configuration options related to a single branch."""
 
     def __init__(self, config, name):

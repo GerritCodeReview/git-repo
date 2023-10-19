@@ -72,7 +72,7 @@ class GitCommandWaitTest(unittest.TestCase):
     """Tests the GitCommand class .Wait()"""
 
     def setUp(self):
-        class MockPopen(object):
+        class MockPopen:
             rc = 0
 
             def __init__(self):

@@ -48,7 +48,7 @@ def TempGitTree():
         yield tempdir
 
 
-class FakeProject(object):
+class FakeProject:
     """A fake for Project for basic functionality."""
 
     def __init__(self, worktree):

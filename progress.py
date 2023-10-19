@@ -82,7 +82,7 @@ def jobs_str(total):
     return f"{total} job{'s' if total > 1 else ''}"
 
 
-class Progress(object):
+class Progress:
     def __init__(
         self,
         title,

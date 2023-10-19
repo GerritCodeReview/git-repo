@@ -28,7 +28,7 @@ R_WORKTREE_M = R_WORKTREE + "m/"
 R_M = "refs/remotes/m/"
 
 
-class GitRefs(object):
+class GitRefs:
     def __init__(self, gitdir):
         self._gitdir = gitdir
         self._phyref = None

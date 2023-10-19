@@ -152,7 +152,7 @@ def _ProjectHooks():
     return _project_hook_list
 
 
-class DownloadedChange(object):
+class DownloadedChange:
     _commit_cache = None
 
     def __init__(self, project, base, change_id, ps_id, commit):
@@ -178,7 +178,7 @@ class DownloadedChange(object):
         return self._commit_cache
 
 
-class ReviewableBranch(object):
+class ReviewableBranch:
     _commit_cache = None
     _base_exists = None
 
@@ -319,7 +319,7 @@ class DiffColoring(Coloring):
         self.fail = self.printer("fail", fg="red")
 
 
-class Annotation(object):
+class Annotation:
     def __init__(self, name, value, keep):
         self.name = name
         self.value = value
@@ -386,7 +386,7 @@ def _SafeExpandPath(base, subpath, skipfinal=False):
     return path
 
 
-class _CopyFile(object):
+class _CopyFile:
     """Container for <copyfile> manifest element."""
 
     def __init__(self, git_worktree, src, topdir, dest):
@@ -435,7 +435,7 @@ class _CopyFile(object):
                 logger.error("error: Cannot copy file %s to %s", src, dest)
 
 
-class _LinkFile(object):
+class _LinkFile:
     """Container for <linkfile> manifest element."""
 
     def __init__(self, git_worktree, src, topdir, dest):
@@ -518,7 +518,7 @@ class _LinkFile(object):
                     self.__linkIt(relSrc, absDest)
 
 
-class RemoteSpec(object):
+class RemoteSpec:
     def __init__(
         self,
         name,
@@ -538,7 +538,7 @@ class RemoteSpec(object):
         self.fetchUrl = fetchUrl
 
 
-class Project(object):
+class Project:
     # These objects can be shared between several working trees.
     @property
     def shareable_dirs(self):
@@ -3475,7 +3475,7 @@ class Project(object):
         )
         return logs
 
-    class _GitGetByExec(object):
+    class _GitGetByExec:
         def __init__(self, project, bare, gitdir):
             self._project = project
             self._bare = bare
@@ -3530,7 +3530,7 @@ class Project(object):
                     except StopIteration:
                         break
 
-                    class _Info(object):
+                    class _Info:
                         def __init__(self, path, omode, nmode, oid, nid, state):
                             self.path = path
                             self.src_path = None
@@ -3716,7 +3716,7 @@ class _DirtyError(LocalSyncFail):
         return "contains uncommitted changes"
 
 
-class _InfoMessage(object):
+class _InfoMessage:
     def __init__(self, project, text):
         self.project = project
         self.text = text
@@ -3728,7 +3728,7 @@ class _InfoMessage(object):
         syncbuf.out.nl()
 
 
-class _Failure(object):
+class _Failure:
     def __init__(self, project, why):
         self.project = project
         self.why = why
@@ -3740,7 +3740,7 @@ class _Failure(object):
         syncbuf.out.nl()
 
 
-class _Later(object):
+class _Later:
     def __init__(self, project, action):
         self.project = project
         self.action = action
@@ -3766,7 +3766,7 @@ class _SyncColoring(Coloring):
         self.fail = self.printer("fail", fg="red")
 
 
-class SyncBuffer(object):
+class SyncBuffer:
     def __init__(self, config, detach_head=False):
         self._messages = []
         self._failures = []

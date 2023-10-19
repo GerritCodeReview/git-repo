@@ -46,7 +46,7 @@ class UsageError(RepoExitError):
     """Exception thrown with invalid command usage."""
 
 
-class Command(object):
+class Command:
     """Base class for any command line action in repo."""
 
     # Singleton for all commands to track overall repo command execution and
@@ -498,11 +498,11 @@ class PagedCommand(Command):
         return True
 
 
-class MirrorSafeCommand(object):
+class MirrorSafeCommand:
     """Command permits itself to run within a mirror, and does not require a
     working directory.
     """
 
 
-class GitcClientCommand(object):
+class GitcClientCommand:
     """Command that requires the local client to be a GITC client."""
