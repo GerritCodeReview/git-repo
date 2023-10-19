@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "712349cd_7a88f860",
+        "filename": "git_command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "No. There was no space before. If a space is desired, it\u0027s out of scope for this effort. Also, the line above injects a leading space (but only if there\u0027s something in the message), so a space would not be desired.",
+      "parentUuid": "b6067537_4ba40cfa",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b20a5635_f7f94035",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-10-18T17:32:14Z",
       "side": 1,
       "message": "use `os.linesep` here?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17179dd2_6ea4cb5c",
+        "filename": "main.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "No. The original change only used simple newlines, which is preferable when working with Python strings. `os.linesep` is mainly useful when writing to files that need to be platform-specific, and even then, it\u0027s generally preferable to use the file handler to do that. Moreover, this form matches what is already present, so tweaking the behavior is out of scope for this CL.",
+      "parentUuid": "b20a5635_f7f94035",
       "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +105,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b7df066_e36e3e1c",
+        "filename": "progress.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d49030f3_4d3e6a76",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9cd9c36_979824ae",
@@ -82,6 +136,24 @@
       "writtenOn": "2023-10-18T17:32:14Z",
       "side": 1,
       "message": "f-string?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "017cb25d_22900881",
+        "filename": "progress.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a9cd9c36_979824ae",
       "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -103,6 +175,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "638aa4c2_9eed0cf4",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2614,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "No. It wasn\u0027t needed or desirable before and isn\u0027t now, as far as I know.",
+      "parentUuid": "7513c601_e3b63a41",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a374290_153d72ab",
@@ -116,6 +206,24 @@
       "writtenOn": "2023-10-18T17:32:14Z",
       "side": 1,
       "message": "trailing comma here for a reason?",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "29952ded_e1baea70",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2822,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "No reason. I\u0027m guessing after transitioning to `.format()`, the line became too long, causing the `project\u003d` line to wrap when black was applied. If the parameter is on a separate line, a trailing comma is recommended. But then, pyupgrade was run again, converting `.format` to an f-string, once again making the line short enough to fit on one line, but by now the trailing comma already exists and black doesn\u0027t automatically shorten lines with trailing commas. I\u0027ve removed the trailing comma and re-run black and now the expression fits on three lines instead of four.",
+      "parentUuid": "5a374290_153d72ab",
       "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -137,6 +245,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46461a3c_d9c7ebc8",
+        "filename": "subcmds/diffmanifests.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "Done (and a few lines below as well).",
+      "parentUuid": "d04758fc_be6b0576",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e381409_0504349c",
@@ -150,6 +276,24 @@
       "writtenOn": "2023-10-18T17:32:14Z",
       "side": 1,
       "message": "remove try except block",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f61c2be5_d3b4198d",
+        "filename": "tests/test_git_command.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-19T13:51:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e381409_0504349c",
       "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
