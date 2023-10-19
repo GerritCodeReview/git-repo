@@ -2990,6 +2990,17 @@ class Project:
                 self.config.SetBoolean(
                     "core.bare", True if self.manifest.IsMirror else None
                 )
+
+            if not init_obj_dir:
+                # The project might be shared (obj_dir already initialized), but
+                # such information is not available here. Instead of passing it,
+                # set it as shared, and rely to be unset down the execution
+                # path.
+                if git_require((2, 7, 0)):
+                    self.EnableRepositoryExtension("preciousObjects")
+                else:
+                    self.config.SetString("gc.pruneExpire", "never")
+
         except Exception:
             if init_obj_dir and os.path.exists(self.objdir):
                 platform_utils.rmtree(self.objdir)

@@ -1129,8 +1129,6 @@ later is required to fix a server side protocol bug.
                     )
                     project.config.SetString("gc.pruneExpire", "never")
             else:
-                if not opt.quiet:
-                    print(f"\r{relpath}: not shared, disabling pruning.")
                 project.config.SetString("extensions.preciousObjects", None)
                 project.config.SetString("gc.pruneExpire", None)
 
