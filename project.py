@@ -2894,6 +2894,13 @@ class Project(object):
                 self.bare_objdir.init()
 
                 self._UpdateHooks(quiet=quiet)
+                # The project might be shared but such information is not
+                # available here. Instead of passing it, set it as shared, and
+                # rely to be unset down the execution path.
+                if git_require((2, 7, 0)):
+                    self.EnableRepositoryExtension("preciousObjects")
+                else:
+                    self.config.SetString("gc.pruneExpire", "never")
 
                 if self.use_git_worktrees:
                     # Enable per-worktree config file support if possible.  This
