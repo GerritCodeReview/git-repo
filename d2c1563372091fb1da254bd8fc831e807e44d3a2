@@ -16,6 +16,24 @@
       "message": "no space before `:`",
       "revId": "d2c1563372091fb1da254bd8fc831e807e44d3a2",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7e373fd_828707e6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1166846
+      },
+      "writtenOn": "2023-10-19T14:57:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2cbddeb_c0d8f64c",
+      "revId": "d2c1563372091fb1da254bd8fc831e807e44d3a2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
