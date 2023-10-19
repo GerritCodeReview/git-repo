@@ -179,6 +179,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89a7b764_c0a32a6b",
+        "filename": "git_command.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-19T18:34:21Z",
+      "side": 1,
+      "message": "i split out the object/future part CLs\n\nbeing able to review/approve discreet topics means things merge faster, and we can focus on the bits that are actually contentious vs having to approve a 300 line delta across 30+ files.",
+      "parentUuid": "054ad981_3f248af0",
+      "revId": "ccbb9ee5ac3813c3dd226d851349e67616605a2c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "514af4b3_1c3ff89e",
