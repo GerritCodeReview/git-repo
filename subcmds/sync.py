@@ -1908,7 +1908,7 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             print("repo version %s is current" % rp.work_git.describe(HEAD))
 
 
-class _FetchTimes(object):
+class _FetchTimes:
     _ALPHA = 0.5
 
     def __init__(self, manifest):
@@ -1951,7 +1951,7 @@ class _FetchTimes(object):
             platform_utils.remove(self._path, missing_ok=True)
 
 
-class LocalSyncState(object):
+class LocalSyncState:
     _LAST_FETCH = "last_fetch"
     _LAST_CHECKOUT = "last_checkout"
 

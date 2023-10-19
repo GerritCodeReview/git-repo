@@ -42,7 +42,7 @@ import threading
 p_init_count = 0
 
 
-class BaseEventLog(object):
+class BaseEventLog:
     """Event log that records events that occurred during a repo invocation.
 
     Events are written to the log as a consecutive JSON entries, one per line.

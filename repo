@@ -40,7 +40,7 @@ MIN_PYTHON_VERSION_HARD = (3, 5)
 
 
 # Keep basic logic in sync with repo_trace.py.
-class Trace(object):
+class Trace:
     """Trace helper logic."""
 
     REPO_TRACE = "REPO_TRACE"
@@ -1214,7 +1214,7 @@ def _FindRepo():
     return (repo, os.path.join(curdir, repodir))
 
 
-class _Options(object):
+class _Options:
     help = False
     version = False
 
@@ -1258,7 +1258,7 @@ def _ParseArguments(args):
     return cmd, opt, arg
 
 
-class Requirements(object):
+class Requirements:
     """Helper for checking repo's system requirements."""
 
     REQUIREMENTS_NAME = "requirements.json"

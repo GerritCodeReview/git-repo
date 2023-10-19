@@ -66,7 +66,7 @@ class UpdateProjectsResult(NamedTuple):
     fatal: bool
 
 
-class Superproject(object):
+class Superproject:
     """Get commit ids from superproject.
 
     Initializes a local copy of a superproject for the manifest. This allows

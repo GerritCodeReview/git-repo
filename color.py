@@ -103,7 +103,7 @@ def SetDefaultColoring(state):
         DEFAULT = "never"
 
 
-class Coloring(object):
+class Coloring:
     def __init__(self, config, section_type):
         self._section = "color.%s" % section_type
         self._config = config

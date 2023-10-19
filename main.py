@@ -186,7 +186,7 @@ global_options.add_option(
 )
 
 
-class _Repo(object):
+class _Repo:
     def __init__(self, repodir):
         self.repodir = repodir
         self.commands = all_commands

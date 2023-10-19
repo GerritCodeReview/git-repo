@@ -58,7 +58,7 @@ INVALID_GIT_EXIT_CODE = 126
 logger = RepoLogger(__file__)
 
 
-class _GitCall(object):
+class _GitCall:
     @functools.lru_cache(maxsize=None)
     def version_tuple(self):
         ret = Wrapper().ParseGitVersion()
@@ -148,7 +148,7 @@ def GetEventTargetPath():
     return path
 
 
-class UserAgent(object):
+class UserAgent:
     """Mange User-Agent settings when talking to external services
 
     We follow the style as documented here:
@@ -272,7 +272,7 @@ def _build_env(
     return env
 
 
-class GitCommand(object):
+class GitCommand:
     """Wrapper around a single git invocation."""
 
     def __init__(

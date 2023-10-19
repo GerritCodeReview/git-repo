@@ -22,7 +22,7 @@ from error import HookError
 from git_refs import HEAD
 
 
-class RepoHook(object):
+class RepoHook:
     """A RepoHook contains information about a script to run as a hook.
 
     Hooks are used to run a python script before running an upload (for

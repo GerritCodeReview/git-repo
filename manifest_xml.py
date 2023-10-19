@@ -119,7 +119,7 @@ def XmlInt(node, attr, default=None):
         )
 
 
-class _Default(object):
+class _Default:
     """Project defaults within the manifest."""
 
     revisionExpr = None
@@ -142,7 +142,7 @@ class _Default(object):
         return self.__dict__ != other.__dict__
 
 
-class _XmlRemote(object):
+class _XmlRemote:
     def __init__(
         self,
         name,
@@ -354,7 +354,7 @@ class SubmanifestSpec:
         self.groups = groups or []
 
 
-class XmlManifest(object):
+class XmlManifest:
     """manages the repo configuration file"""
 
     def __init__(

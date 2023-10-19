@@ -28,7 +28,7 @@ class BranchColoring(Coloring):
         self.notinproject = self.printer("notinproject", fg="red")
 
 
-class BranchInfo(object):
+class BranchInfo:
     def __init__(self, name):
         self.name = name
         self.current = 0
