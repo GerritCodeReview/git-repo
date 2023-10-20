@@ -1779,7 +1779,6 @@ later is required to fix a server side protocol bug.
                     logger.error("error: Local checkouts *not* updated.")
                     raise SyncFailFastError(aggregate_errors=errors)
 
-            err_update_linkfiles = False
             try:
                 self.UpdateCopyLinkfileList(m)
             except Exception as e:
