@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23f0274d_b68fda43",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-20T10:24:50Z",
+      "side": 1,
+      "message": "it does correct it, but it\u0027ll be a bit spammy.  maybe we should drop that message (when we go from True to False) ?",
+      "revId": "9f04e6200ca21abe9102ae4aae6687dc45346c68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
