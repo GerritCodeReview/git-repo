@@ -385,6 +385,21 @@ class XmlManifestTests(ManifestParseTestCase):
             "</manifest>",
         )
 
+    def test_parse_with_xml_doctype(self):
+        """Check correct manifest parse with DOCTYPE node present."""
+        manifest = self.getXmlManifest(
+            """<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE manifest []>
+<manifest>
+  <remote name="test-remote" fetch="http://localhost" />
+  <default remote="test-remote" revision="refs/heads/main" />
+  <project name="test-project" path="src/test-project"/>
+</manifest>
+"""
+        )
+        self.assertEqual(len(manifest.projects), 1)
+        self.assertEqual(manifest.projects[0].name, "test-project")
+
 
 class IncludeElementTests(ManifestParseTestCase):
     """Tests for <include>."""
