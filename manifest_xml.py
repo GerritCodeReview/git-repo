@@ -1268,7 +1268,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             raise ManifestParseError("no root node in %s" % (path,))
 
         for manifest in root.childNodes:
-            if manifest.nodeName == "manifest":
+            if (
+                manifest.nodeType == manifest.ELEMENT_NODE
+                and manifest.nodeName == "manifest"
+            ):
                 break
         else:
             raise ManifestParseError("no <manifest> in %s" % (path,))
