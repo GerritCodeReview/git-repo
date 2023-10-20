@@ -249,7 +249,7 @@ class SuperprojectTestCase(unittest.TestCase):
         os.mkdir(self._superproject._superproject_path)
         manifest_path = self._superproject._WriteManifestFile()
         self.assertIsNotNone(manifest_path)
-        with open(manifest_path, "r") as fp:
+        with open(manifest_path) as fp:
             manifest_xml_data = fp.read()
         self.assertEqual(
             sort_attributes(manifest_xml_data),
@@ -284,7 +284,7 @@ class SuperprojectTestCase(unittest.TestCase):
                     )
                     self.assertIsNotNone(update_result.manifest_path)
                     self.assertFalse(update_result.fatal)
-                    with open(update_result.manifest_path, "r") as fp:
+                    with open(update_result.manifest_path) as fp:
                         manifest_xml_data = fp.read()
                     self.assertEqual(
                         sort_attributes(manifest_xml_data),
@@ -371,7 +371,7 @@ class SuperprojectTestCase(unittest.TestCase):
                     )
                     self.assertIsNotNone(update_result.manifest_path)
                     self.assertFalse(update_result.fatal)
-                    with open(update_result.manifest_path, "r") as fp:
+                    with open(update_result.manifest_path) as fp:
                         manifest_xml_data = fp.read()
                     # Verify platform/vendor/x's project revision hasn't
                     # changed.
@@ -436,7 +436,7 @@ class SuperprojectTestCase(unittest.TestCase):
                     )
                     self.assertIsNotNone(update_result.manifest_path)
                     self.assertFalse(update_result.fatal)
-                    with open(update_result.manifest_path, "r") as fp:
+                    with open(update_result.manifest_path) as fp:
                         manifest_xml_data = fp.read()
                     # Verify platform/vendor/x's project revision hasn't
                     # changed.

@@ -1265,7 +1265,7 @@ later is required to fix a server side protocol bug.
         old_project_paths = []
 
         if os.path.exists(file_path):
-            with open(file_path, "r") as fd:
+            with open(file_path) as fd:
                 old_project_paths = fd.read().split("\n")
             # In reversed order, so subfolders are deleted before parent folder.
             for path in sorted(old_project_paths, reverse=True):

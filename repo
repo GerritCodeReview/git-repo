@@ -622,7 +622,7 @@ def get_gitc_manifest_dir():
     if _gitc_manifest_dir is None:
         _gitc_manifest_dir = ""
         try:
-            with open(GITC_CONFIG_FILE, "r") as gitc_config:
+            with open(GITC_CONFIG_FILE) as gitc_config:
                 for line in gitc_config:
                     match = re.match("gitc_dir=(?P<gitc_manifest_dir>.*)", line)
                     if match:
