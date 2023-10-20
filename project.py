@@ -431,7 +431,7 @@ class _CopyFile:
                 mode = os.stat(dest)[stat.ST_MODE]
                 mode = mode & ~(stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
                 os.chmod(dest, mode)
-            except IOError:
+            except OSError:
                 logger.error("error: Cannot copy file %s to %s", src, dest)
 
 
@@ -466,7 +466,7 @@ class _LinkFile:
                     if not platform_utils.isdir(dest_dir):
                         os.makedirs(dest_dir)
                 platform_utils.symlink(relSrc, absDest)
-            except IOError:
+            except OSError:
                 logger.error(
                     "error: Cannot link file %s to %s", relSrc, absDest
                 )
@@ -1198,7 +1198,7 @@ class Project:
             with tarfile.open(tarpath, "r") as tar:
                 tar.extractall(path=path)
                 return True
-        except (IOError, tarfile.TarError) as e:
+        except (OSError, tarfile.TarError) as e:
             logger.error("error: Cannot extract archive %s: %s", tarpath, e)
         return False
 
@@ -1309,7 +1309,7 @@ class Project:
                     alt_dir = os.path.join(
                         self.objdir, "objects", fd.readline().rstrip()
                     )
-            except IOError:
+            except OSError:
                 alt_dir = None
         else:
             alt_dir = None
@@ -3584,7 +3584,7 @@ class Project:
             try:
                 with open(path) as fd:
                     line = fd.readline()
-            except IOError as e:
+            except OSError as e:
                 raise NoManifestException(path, str(e))
             try:
                 line = line.decode()

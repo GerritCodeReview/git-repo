@@ -107,8 +107,6 @@ class GitRefs:
         try:
             fd = open(path)
             mtime = os.path.getmtime(path)
-        except IOError:
-            return
         except OSError:
             return
         try:

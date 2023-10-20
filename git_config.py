@@ -370,7 +370,7 @@ class GitConfig:
             with Trace(": parsing %s", self.file):
                 with open(self._json) as fd:
                     return json.load(fd)
-        except (IOError, ValueError):
+        except (OSError, ValueError):
             platform_utils.remove(self._json, missing_ok=True)
             return None
 
@@ -378,7 +378,7 @@ class GitConfig:
         try:
             with open(self._json, "w") as fd:
                 json.dump(cache, fd, indent=2)
-        except (IOError, TypeError):
+        except (OSError, TypeError):
             platform_utils.remove(self._json, missing_ok=True)
 
     def _ReadGit(self):

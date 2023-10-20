@@ -789,7 +789,7 @@ def init_http():
             mgr.add_password(p[1], "https://%s/" % host, p[0], p[2])
     except netrc.NetrcParseError:
         pass
-    except IOError:
+    except OSError:
         pass
     handlers.append(_BasicAuthHandler(mgr))
     handlers.append(_DigestAuthHandler(mgr))

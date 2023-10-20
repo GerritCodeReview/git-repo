@@ -627,7 +627,7 @@ def get_gitc_manifest_dir():
                     match = re.match("gitc_dir=(?P<gitc_manifest_dir>.*)", line)
                     if match:
                         _gitc_manifest_dir = match.group("gitc_manifest_dir")
-        except IOError:
+        except OSError:
             pass
     return _gitc_manifest_dir
 
@@ -1277,7 +1277,7 @@ class Requirements:
         try:
             with open(path, "rb") as f:
                 data = f.read()
-        except EnvironmentError:
+        except OSError:
             # NB: EnvironmentError is used for Python 2 & 3 compatibility.
             # If we couldn't open the file, assume it's an old source tree.
             return None
