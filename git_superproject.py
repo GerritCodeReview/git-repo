@@ -381,7 +381,7 @@ class Superproject:
         try:
             with open(manifest_path, "w", encoding="utf-8") as fp:
                 fp.write(manifest_str)
-        except IOError as e:
+        except OSError as e:
             self._LogError("cannot write manifest to : {} {}", manifest_path, e)
             return None
         return manifest_path
