@@ -943,7 +943,7 @@ later is required to fix a server side protocol bug.
                 break
             # Stop us from non-stopped fetching actually-missing repos: If set
             # of missing repos has not been changed from last fetch, we break.
-            missing_set = set(p.name for p in missing)
+            missing_set = {p.name for p in missing}
             if previously_missing_set == missing_set:
                 break
             previously_missing_set = missing_set
