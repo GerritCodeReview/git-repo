@@ -476,8 +476,7 @@ class Command:
             top = self.manifest
         yield top
         if not opt.this_manifest_only:
-            for child in top.all_children:
-                yield child
+            yield from top.all_children
 
 
 class InteractiveCommand(Command):
