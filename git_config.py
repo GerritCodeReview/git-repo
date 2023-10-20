@@ -180,7 +180,7 @@ class GitConfig:
             config_dict[key] = self.GetString(key)
         return config_dict
 
-    def GetBoolean(self, name: str) -> Union[str, None]:
+    def GetBoolean(self, name: str) -> Union[bool, None]:
         """Returns a boolean from the configuration file.
 
         Returns:
