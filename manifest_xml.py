@@ -857,8 +857,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         self._Load()
         outer = self._outer_client
         yield outer
-        for tree in outer.all_children:
-            yield tree
+        yield from outer.all_children
 
     @property
     def all_children(self):
@@ -867,8 +866,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         for child in self._submanifests.values():
             if child.repo_client:
                 yield child.repo_client
-                for tree in child.repo_client.all_children:
-                    yield tree
+                yield from child.repo_client.all_children
 
     @property
     def path_prefix(self):
