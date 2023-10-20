@@ -3227,7 +3227,7 @@ class Project:
         # Rewrite the internal state files to use relative paths between the
         # checkouts & worktrees.
         dotgit = os.path.join(self.worktree, ".git")
-        with open(dotgit, "r") as fp:
+        with open(dotgit) as fp:
             # Figure out the checkout->worktree path.
             setting = fp.read()
             assert setting.startswith("gitdir:")
