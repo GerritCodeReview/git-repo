@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1af9864_e5c1ce55",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1782,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2023-10-20T20:24:31Z",
+      "side": 0,
+      "message": "TL;DR is that err_update_linkfiles is defined earlier, so this line may be suppressing some errors",
+      "range": {
+        "startLine": 1782,
+        "startChar": 35,
+        "endLine": 1782,
+        "endChar": 40
+      },
+      "revId": "7393f6bc414ae5d140101fffcb48148a36b80f64",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
