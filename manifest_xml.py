@@ -727,10 +727,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             self._output_manifest_project_extras(p, e)
 
             if p.subprojects:
-                subprojects = set(subp.name for subp in p.subprojects)
+                subprojects = {subp.name for subp in p.subprojects}
                 output_projects(p, e, list(sorted(subprojects)))
 
-        projects = set(p.name for p in self._paths.values() if not p.parent)
+        projects = {p.name for p in self._paths.values() if not p.parent}
         output_projects(None, root, list(sorted(projects)))
 
         if self._repo_hooks_project:
@@ -800,10 +800,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             for child in node.childNodes:
                 if child.nodeType == xml.dom.Node.ELEMENT_NODE:
                     attrs = child.attributes
-                    element = dict(
-                        (attrs.item(i).localName, attrs.item(i).value)
+                    element = {
+                        attrs.item(i).localName: attrs.item(i).value
                         for i in range(attrs.length)
-                    )
+                    }
                     if child.nodeName in SINGLE_ELEMENTS:
                         ret[child.nodeName] = element
                     elif child.nodeName in MULTI_ELEMENTS:
@@ -985,7 +985,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
     @property
     def PartialCloneExclude(self):
         exclude = self.manifest.manifestProject.partial_clone_exclude or ""
-        return set(x.strip() for x in exclude.split(","))
+        return {x.strip() for x in exclude.split(",")}
 
     def SetManifestOverride(self, path):
         """Override manifestFile.  The caller must call Unload()"""
