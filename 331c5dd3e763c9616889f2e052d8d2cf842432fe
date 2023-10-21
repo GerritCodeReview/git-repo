@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7763ed0b_76778f63",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1134,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-21T02:10:05Z",
+      "side": 0,
+      "message": "this error message was wrong too ;)",
+      "revId": "331c5dd3e763c9616889f2e052d8d2cf842432fe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

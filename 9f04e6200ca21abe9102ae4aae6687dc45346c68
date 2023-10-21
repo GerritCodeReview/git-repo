@@ -51,6 +51,24 @@
       "message": "Interestingly enough, when I fully tested this, I was getting:\n\n```\nerror.GitError: Cannot fetch git config (\u0027--replace-all\u0027, \u0027core.repositoryFormatVersion\u0027, \u00271\u0027): error: could not lock config file \u003cpath\u003e.git/config: No such file or directory\n```\n\nSo I moved it below. I also think it\u0027s fair to assume we need precious objects only if objdir existed before.\n\nI\u0027m now think that self.EnableRepositoryExtension(\"worktreeConfig\") is also not working well.",
       "revId": "9f04e6200ca21abe9102ae4aae6687dc45346c68",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5d5f586_dacad291",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2901,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-21T02:10:05Z",
+      "side": 1,
+      "message": "makes sense",
+      "parentUuid": "1e7a6722_e2f98d1d",
+      "revId": "9f04e6200ca21abe9102ae4aae6687dc45346c68",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
