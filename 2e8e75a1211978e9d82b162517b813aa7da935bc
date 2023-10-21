@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d785708_d9efe417",
+        "filename": "main.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-21T01:40:27Z",
+      "side": 1,
+      "message": "you switch quote style to nest",
+      "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd1f84c8_6f7c317b",
+        "filename": "project.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 2287,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-21T01:40:27Z",
+      "side": 1,
+      "message": "this should be tabs as it\u0027s the literal example output that git produces",
+      "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab202b5f_30193e95",
+        "filename": "repo",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-21T01:40:27Z",
+      "side": 1,
+      "message": "this file had a bunch of missing f-string conversions that i added",
+      "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8f2df46_133aa367",
+        "filename": "repo",
+        "patchSetId": 12
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-21T01:40:27Z",
+      "side": 1,
+      "message": "f-string\n\nif an expression is too complicated, create a local var for it first",
+      "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

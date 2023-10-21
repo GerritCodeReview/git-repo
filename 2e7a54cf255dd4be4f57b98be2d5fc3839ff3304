@@ -228,6 +228,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f5f4b7e_d96af2cb",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 2822,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-21T01:40:27Z",
+      "side": 1,
+      "message": "we just let black be black at this point",
+      "parentUuid": "29952ded_e1baea70",
+      "revId": "2e7a54cf255dd4be4f57b98be2d5fc3839ff3304",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d04758fc_be6b0576",
