@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3557063b_c87d91fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-21T06:49:33Z",
+      "side": 1,
+      "message": "if you run `flynt` you find way more potential f-strings @vapier@google.com",
+      "revId": "406c491a85982946cc0b55a0474cd875530cb12e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
