@@ -185,9 +185,10 @@ class TeeStringIO(io.StringIO):
 
     def write(self, s: str) -> int:
         """Write to additional destination."""
-        super().write(s)
+        ret = super().write(s)
         if self.io is not None:
             self.io.write(s)
+        return ret
 
 
 class Sync(Command, MirrorSafeCommand):
