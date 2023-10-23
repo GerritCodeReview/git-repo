@@ -2043,6 +2043,7 @@ class LocalSyncState:
 # is passed during initialization.
 class PersistentTransport(xmlrpc.client.Transport):
     def __init__(self, orig_host):
+        super().__init__()
         self.orig_host = orig_host
 
     def request(self, host, handler, request_body, verbose=False):
