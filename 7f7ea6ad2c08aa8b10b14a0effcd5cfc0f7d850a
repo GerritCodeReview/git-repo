@@ -106,6 +106,24 @@
       "parentUuid": "7ac7a9c2_5255f4fc",
       "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5a6801d_004b2746",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-10-23T21:49:01Z",
+      "side": 1,
+      "message": "Finally circling back to this and digesting options.. would a solution like checking to see if the string looks like `git@foobar.com:something` be an acceptable solution?  It looks like gitlab also uses `git@` to the same end, but I\u0027m not entirely certain how much of a convention this is?",
+      "parentUuid": "f58fecfc_45986796",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
