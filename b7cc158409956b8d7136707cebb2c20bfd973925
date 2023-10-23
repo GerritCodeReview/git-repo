@@ -70,6 +70,30 @@
       },
       "revId": "b7cc158409956b8d7136707cebb2c20bfd973925",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2da85046_e9115d75",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-10-23T22:03:29Z",
+      "side": 1,
+      "message": "gotcha.  So basically we\u0027d just convert the URLs into this syntax or alternatively we just exit early with that as the accepted form?",
+      "parentUuid": "b4ded87b_2ab879a2",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 12,
+        "endChar": 25
+      },
+      "revId": "b7cc158409956b8d7136707cebb2c20bfd973925",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
