@@ -16,6 +16,24 @@
       "message": "Turns out I accidentally stomped @vapier@google.com\u0027s changes. I\u0027d like to just revert those back to PS13. I can\u0027t just push that commit (Gerrit refuses), but I could touch that commit and re-push it as a new PS. Let me know what you recommend.",
       "revId": "f20603ad65cbb13f52031c473c2e364dccc682b9",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d0b29b9_76f08393",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1101846
+      },
+      "writtenOn": "2023-10-23T18:37:58Z",
+      "side": 1,
+      "message": "checkout patch set 13 and then run `git commit --amend` to get a new sha1... this will avoid the \"no new change\" error when pushing it...",
+      "parentUuid": "68706743_3f104076",
+      "revId": "f20603ad65cbb13f52031c473c2e364dccc682b9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
