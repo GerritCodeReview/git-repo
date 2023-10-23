@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1efe7c42_75fd17b1",
+        "filename": "main.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-23T16:42:30Z",
+      "side": 1,
+      "message": "I did try nesting, but \"\\n\" isn\u0027t allowed in f-strings until Python 3.12:\n\n```\n git-repo debt/py36 @ py -3.12 -c \"\"\"print(repr(f\u0027{\"\\\\n\"}\u0027))\"\"\"\n\u0027\\n\u0027\n git-repo debt/py36 @ py -3.11 -c \"\"\"print(repr(f\u0027{\"\\\\n\"}\u0027))\"\"\"\n  File \"\u003cstring\u003e\", line 1\n    print(repr(f\u0027{\"\\n\"}\u0027))\n                        ^\nSyntaxError: f-string expression part cannot include a backslash\n```",
+      "parentUuid": "9d785708_d9efe417",
+      "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "dd1f84c8_6f7c317b",
         "filename": "project.py",
         "patchSetId": 12
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-21T01:40:27Z",
       "side": 1,
       "message": "this should be tabs as it\u0027s the literal example output that git produces",
+      "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f42bcb_55aff24c",
+        "filename": "project.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 2287,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-23T16:42:30Z",
+      "side": 1,
+      "message": "Agreed. Unfortunately, my editor has [a bug](https://github.com/thep0y/python-black/issues/41), which currently requires me to disable the plugin any time I edit this file. I\u0027ve reverted this change a few times, and I\u0027ll have to keep doing it while this issue exists. Thanks for catching it.",
+      "parentUuid": "dd1f84c8_6f7c317b",
       "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -65,6 +101,24 @@
       "writtenOn": "2023-10-21T01:40:27Z",
       "side": 1,
       "message": "f-string\n\nif an expression is too complicated, create a local var for it first",
+      "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31cfa797_55f328d1",
+        "filename": "repo",
+        "patchSetId": 12
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-23T16:42:30Z",
+      "side": 1,
+      "message": "I intended to convert all .format to f-strings. I\u0027m unsure how I missed this one. Fixed in latest patchset.",
+      "parentUuid": "b8f2df46_133aa367",
       "revId": "2e8e75a1211978e9d82b162517b813aa7da935bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
