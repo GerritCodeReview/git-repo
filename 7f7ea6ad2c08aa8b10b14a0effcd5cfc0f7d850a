@@ -124,6 +124,24 @@
       "parentUuid": "f58fecfc_45986796",
       "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "829d6ac9_4a16cc11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-24T04:11:04Z",
+      "side": 1,
+      "message": "just parse it using the URI APIs and check if schema is set.  if it isn\u0027t, automatically add `ssh://`.",
+      "parentUuid": "b5a6801d_004b2746",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
