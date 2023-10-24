@@ -34,6 +34,24 @@
       "parentUuid": "0373ca7d_4673fb3d",
       "revId": "9267d587273c0f702d04c9c5cb122972f351f3f5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e36eda1_3e675785",
+        "filename": "Pipfile",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-10-24T21:29:12Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "5b4acfd2_48333f98",
+      "revId": "9267d587273c0f702d04c9c5cb122972f351f3f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
