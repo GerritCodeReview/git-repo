@@ -160,6 +160,24 @@
       "parentUuid": "829d6ac9_4a16cc11",
       "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f969348_f80c9a7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-10-24T18:32:37Z",
+      "side": 1,
+      "message": "Elected to handle this *slightly* differently.  If we just return the parsed fetch URL instead we appear to plumb this through and handle it correctly.  Because the URL looks like:\n\n`git@github.com:foo`\n\nwe\u0027d be translating this to:\n\n`ssh://git@github.com/foo`\n\nIt seems like it\u0027s simpler to just let this propagate through and let `git` itself deal with it.",
+      "parentUuid": "6204555e_c16d8570",
+      "revId": "7f7ea6ad2c08aa8b10b14a0effcd5cfc0f7d850a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
