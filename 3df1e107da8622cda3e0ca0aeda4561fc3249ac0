@@ -129,6 +129,30 @@
       },
       "revId": "3df1e107da8622cda3e0ca0aeda4561fc3249ac0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09f540b7_2a42d804",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-10-24T22:24:51Z",
+      "side": 1,
+      "message": "No, it doesn\u0027t appear to be the case.  Bearing in mind that this is dealing with the `manifestUrl` lacking the schema, not the `fetchUrl`.  eg:\n\n```\n\u003e\u003e\u003e import urllib.parse\n\u003e\u003e\u003e urllib.parse.urljoin(\u0027foo.com/manifest\u0027, \u0027git@github.com\u0027)\n\u0027foo.com/git@github.com\u0027\n\u003e\u003e\u003e urllib.parse.urljoin(\u0027foo.com/manifest\u0027, \u0027https://github.com\u0027)\n\u0027https://github.com\u0027\n\u003e\u003e\u003e urllib.parse.urljoin(\u0027gopher://foo.com/manifest\u0027, \u0027git@github.com\u0027)\n\u0027gopher://foo.com/git@github.com\u0027\n```\n\nIt looks like this code was introduced ~2015 in https://gerrit.googlesource.com/git-repo/+/cb07ba7e3d466a98d0af0771b4f3e21116d69898 to simplify dealing with the manifestUrl.  With the setup as is we get fun stuff like:\n\n```\n\u003e\u003e\u003e urllib.parse.urljoin(\u0027gopher://foo.com/manifest\u0027, \u0027/foo\u0027)\n\u0027gopher://foo.com/foo\u0027\n\u003e\u003e\u003e urllib.parse.urljoin(\u0027foo.com/manifest\u0027, \u0027/foo\u0027)\n\u0027/foo\u0027\n```\n\nI\u0027ve got to confess that I\u0027m not super familiar with details of how `urljoin()` is intended to work here, but either way it looks like we need to separately special case `git@github.com` type URLs",
+      "parentUuid": "1ee8df5f_a699ed2e",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 67
+      },
+      "revId": "3df1e107da8622cda3e0ca0aeda4561fc3249ac0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
