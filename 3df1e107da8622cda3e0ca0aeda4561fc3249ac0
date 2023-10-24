@@ -105,6 +105,30 @@
       },
       "revId": "3df1e107da8622cda3e0ca0aeda4561fc3249ac0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ee8df5f_a699ed2e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-24T22:05:59Z",
+      "side": 1,
+      "message": "what i mean is that this comment block specifically calls out trying to handle schema-less URIs by sticking in `gopher://`.  but you\u0027re adding code to handle schema-less URIs.  which means this gopher logic is basically dead code now right ?",
+      "parentUuid": "39e626b2_d757bba8",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 67
+      },
+      "revId": "3df1e107da8622cda3e0ca0aeda4561fc3249ac0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
