@@ -1527,6 +1527,11 @@ def main(orig_args):
     if reqs:
         reqs.assert_all()
 
+    # Add directory of REPO_MAIN to PYTHONPATH
+    python_paths = os.environ["PYTHONPATH"].split(os.pathsep)
+    new_python_paths = [os.path.join(rel_repo_dir, S_repo)] + python_paths
+    os.environ["PYTHONPATH"] = os.pathsep.join(new_python_paths)
+
     ver_str = ".".join(map(str, VERSION))
     me = [
         sys.executable,
