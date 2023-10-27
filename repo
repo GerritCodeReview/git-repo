@@ -170,7 +170,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 39)
+VERSION = (2, 40)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -1526,6 +1526,16 @@ def main(orig_args):
     reqs = Requirements.from_dir(os.path.dirname(repo_main))
     if reqs:
         reqs.assert_all()
+
+    # Python 3.11 introduces PYTHONSAFEPATH and the -P flag which, if enabled,
+    # does not prepend the script's directory to sys.path by default.
+    # repo relies on this import path, so add directory of REPO_MAIN to
+    # PYTHONPATH so that this continues to work when PYTHONSAFEPATH is enabled.
+    python_paths = []
+    if "PYTHONPATH" in os.environ:
+        python_paths = os.environ["PYTHONPATH"].split(os.pathsep)
+    new_python_paths = [os.path.join(rel_repo_dir, S_repo)] + python_paths
+    os.environ["PYTHONPATH"] = os.pathsep.join(new_python_paths)
 
     ver_str = ".".join(map(str, VERSION))
     me = [
