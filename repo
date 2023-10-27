@@ -1494,6 +1494,14 @@ def main(orig_args):
     if reqs:
         reqs.assert_all()
 
+    # Python 3.11 introduces PYTHONSAFEPATH and the -P flag which, if enabled,
+    # does not prepend the script's directory to sys.path by default.
+    # repo relies on this import path, so add directory of REPO_MAIN to
+    # PYTHONPATH so that this continues to work when PYTHONSAFEPATH is enabled.
+    python_paths = os.environ.get("PYTHONPATH", "").split(os.pathsep)
+    new_python_paths = [os.path.join(rel_repo_dir, S_repo)] + python_paths
+    os.environ["PYTHONPATH"] = os.pathsep.join(new_python_paths)
+
     ver_str = ".".join(map(str, VERSION))
     me = [
         sys.executable,
