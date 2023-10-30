@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b48e989_050b039d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "please prefix with the subcommand that you\u0027re updating -- `upload:` in this case",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "231bc77e_ab8c69e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "please use the public gerrit tracker for repo bugs -- repo is an open source project",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a491a740_43693fea",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "use an f-string",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f9e112b_1dafdf86",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "make it static so we can test it (and add unittests), and call it `_encode_patchset_description`",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb5fd960_abd96385",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "this link doesn\u0027t work.  did you mean this one ?\nhttps://gerrit-review.googlesource.com/Documentation/user-upload.html#patch_set_description",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de3fc42d_7d07deae",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "see the logic i wrote in:\nhttps://gerrit-review.git.corp.google.com/c/git-repo/+/337516/2/project.py\n\nuse `string` and create a set so you don\u0027t do a linear string search for every char",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a77b8b6c_b4ffae04",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "use an f-string -- see my CL above for how",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59fb6733_d33d4b6d",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T20:52:43Z",
+      "side": 1,
+      "message": "this is redundant --\u003e delete",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
