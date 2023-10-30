@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00e3205a_268fc1af",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T10:58:51Z",
+      "side": 1,
+      "message": "repo doesn\u0027t rely on the CWD to find its modules.  if we changed the CWD, we\u0027d break a lot of things.",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76803ca_f9dc2f0d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T10:58:51Z",
+      "side": 1,
+      "message": "need to update this",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00ecab45_0e14b95d",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T10:58:51Z",
+      "side": 1,
+      "message": "this should document why we\u0027re doing this instead of relying on normal (implicit) import paths",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa087cb_f5202b6c",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T10:58:51Z",
+      "side": 1,
+      "message": "```suggestion\n    # Add directory of REPO_MAIN to PYTHONPATH.\n```",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "601d3ca5_c0dd69e6",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 1531,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-10-30T10:58:51Z",
+      "side": 1,
+      "message": "`PYTHONPATH` is not guaranteed to be set in the env, so accessing like this will crash",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
