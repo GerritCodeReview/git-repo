@@ -245,6 +245,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             help="add a label when uploading",
         )
         p.add_option(
+            "--pd",
+            "--patchset-description",
+            dest="patchset_description",
+            help="description for patchset",
+        )
+        p.add_option(
             "--re",
             "--reviewers",
             type="string",
@@ -655,6 +661,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             dest_branch=destination,
             validate_certs=opt.validate_certs,
             push_options=opt.push_options,
+            patchset_description=opt.patchset_description,
         )
 
         branch.uploaded = True
