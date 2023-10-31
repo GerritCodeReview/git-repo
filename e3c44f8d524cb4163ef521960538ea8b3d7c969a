@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dde7df7_7dfce52e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-31T20:53:47Z",
+      "side": 1,
+      "message": "While working on another issue, I noticed this block of code, which will be unreachable now that `repo` will trigger a `SyntaxError` on Python 2.",
+      "revId": "e3c44f8d524cb4163ef521960538ea8b3d7c969a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
