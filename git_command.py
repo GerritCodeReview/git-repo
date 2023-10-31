@@ -421,23 +421,24 @@ class GitCommand:
             if cwd and LAST_CWD != cwd:
                 if LAST_GITDIR or LAST_CWD:
                     dbg += "\n"
-                dbg += ": cd %s\n" % cwd
+                dbg += f": cd {cwd}\n"
                 LAST_CWD = cwd
 
             if GIT_DIR in env and LAST_GITDIR != env[GIT_DIR]:
                 if LAST_GITDIR or LAST_CWD:
                     dbg += "\n"
-                dbg += ": export GIT_DIR=%s\n" % env[GIT_DIR]
+                dbg += f": export GIT_DIR={env[GIT_DIR]}\n"
                 LAST_GITDIR = env[GIT_DIR]
 
             if "GIT_OBJECT_DIRECTORY" in env:
                 dbg += (
-                    ": export GIT_OBJECT_DIRECTORY=%s\n"
-                    % env["GIT_OBJECT_DIRECTORY"]
+                    ": export GIT_OBJECT_DIRECTORY="
+                    f"{env['GIT_OBJECT_DIRECTORY']}\n"
                 )
             if "GIT_ALTERNATE_OBJECT_DIRECTORIES" in env:
-                dbg += ": export GIT_ALTERNATE_OBJECT_DIRECTORIES=%s\n" % (
-                    env["GIT_ALTERNATE_OBJECT_DIRECTORIES"]
+                dbg += (
+                    ": export GIT_ALTERNATE_OBJECT_DIRECTORIES="
+                    f"{env['GIT_ALTERNATE_OBJECT_DIRECTORIES']}\n"
                 )
 
             dbg += ": "

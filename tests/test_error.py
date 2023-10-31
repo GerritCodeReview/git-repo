@@ -63,8 +63,8 @@ class PickleTests(unittest.TestCase):
                 newobj = pickle.loads(p)
             except Exception as e:  # pylint: disable=broad-except
                 self.fail(
-                    "Class %s is unable to be pickled: %s\n"
-                    "Incomplete super().__init__(...) call?" % (cls, e)
+                    f"Class {cls} is unable to be pickled: {e}\n"
+                    "Incomplete super().__init__(...) call?"
                 )
             self.assertIsInstance(newobj, cls)
             self.assertEqual(str(obj), str(newobj))

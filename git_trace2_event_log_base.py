@@ -282,7 +282,7 @@ class BaseEventLog:
                 # Get absolute path.
                 path = os.path.abspath(os.path.expanduser(path))
         else:
-            raise TypeError("path: str required but got %s." % type(path))
+            raise TypeError(f"path: str required but got {type(path)}.")
 
         # Git trace2 requires a directory to write log to.
 
@@ -344,7 +344,7 @@ class BaseEventLog:
                 log_path = f.name
         except FileExistsError as err:
             print(
-                "repo: warning: git trace2 logging failed: %r" % err,
+                f"repo: warning: git trace2 logging failed: {err!r}",
                 file=sys.stderr,
             )
             return None

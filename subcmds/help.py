@@ -111,7 +111,7 @@ Displays detailed usage information about a command.
                 self.nl()
                 self.nl()
 
-                me = "repo %s" % cmd.NAME
+                me = f"repo {cmd.NAME}"
                 body = body.strip()
                 body = body.replace("%prog", me)
 
@@ -182,9 +182,7 @@ Displays detailed usage information about a command.
             try:
                 cmd = all_commands[name](manifest=self.manifest)
             except KeyError:
-                print(
-                    "repo: '%s' is not a repo command." % name, file=sys.stderr
-                )
+                print(f"repo: '{name}' is not a repo command.", file=sys.stderr)
                 raise InvalidHelpCommand(name)
 
             self._PrintCommandHelp(cmd)

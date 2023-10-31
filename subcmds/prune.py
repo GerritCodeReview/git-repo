@@ -68,17 +68,13 @@ class Prune(PagedCommand):
                 project = branch.project
                 out.nl()
                 out.project(
-                    "project %s/"
-                    % project.RelPath(local=opt.this_manifest_only)
+                    f"project {project.RelPath(local=opt.this_manifest_only)}/"
                 )
                 out.nl()
 
             print(
-                "%s %-33s "
-                % (
-                    branch.name == project.CurrentBranch and "*" or " ",
-                    branch.name,
-                ),
+                f"{branch.name == project.CurrentBranch and '*' or ' '} "
+                f"{branch.name:33} ",
                 end="",
             )
 
@@ -88,6 +84,6 @@ class Prune(PagedCommand):
                 commits = branch.commits
                 date = branch.date
                 print(
-                    "(%2d commit%s, %s)"
-                    % (len(commits), len(commits) != 1 and "s" or " ", date)
+                    f"({len(commits):2d} "
+                    f"commit{len(commits) != 1 and 's' or ' '}, {date})"
                 )

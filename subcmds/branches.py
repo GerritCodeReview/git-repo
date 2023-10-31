@@ -179,15 +179,15 @@ is shown, then the branch appears in all projects.
                     fmt = out.current if i.IsCurrent else fmt
                     fmt(s)
                 else:
-                    fmt(" %s:" % in_type)
+                    fmt(f" {in_type}:")
                     fmt = out.current if i.IsCurrent else out.write
                     for p in paths:
                         out.nl()
-                        fmt(width * " " + "          %s" % p)
+                        fmt(width * " " + f"          {p}")
                     fmt = out.write
                     for p in non_cur_paths:
                         out.nl()
-                        fmt(width * " " + "          %s" % p)
+                        fmt(width * " " + f"          {p}")
             else:
                 out.write(" in all projects")
             out.nl()

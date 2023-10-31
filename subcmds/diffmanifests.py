@@ -122,7 +122,7 @@ synced and their revisions won't be found.
             self.printText("added projects : \n")
             self.out.nl()
             for project in diff["added"]:
-                self.printProject("\t%s" % (_RelPath(project)))
+                self.printProject(f"\t{_RelPath(project)}")
                 self.printText(" at revision ")
                 self.printRevision(project.revisionExpr)
                 self.out.nl()
@@ -132,7 +132,7 @@ synced and their revisions won't be found.
             self.printText("removed projects : \n")
             self.out.nl()
             for project in diff["removed"]:
-                self.printProject("\t%s" % (_RelPath(project)))
+                self.printProject(f"\t{_RelPath(project)}")
                 self.printText(" at revision ")
                 self.printRevision(project.revisionExpr)
                 self.out.nl()
@@ -142,7 +142,7 @@ synced and their revisions won't be found.
             self.printText("missing projects : \n")
             self.out.nl()
             for project in diff["missing"]:
-                self.printProject("\t%s" % (_RelPath(project)))
+                self.printProject(f"\t{_RelPath(project)}")
                 self.printText(" at revision ")
                 self.printRevision(project.revisionExpr)
                 self.out.nl()
@@ -152,7 +152,7 @@ synced and their revisions won't be found.
             self.printText("changed projects : \n")
             self.out.nl()
             for project, otherProject in diff["changed"]:
-                self.printProject("\t%s" % (_RelPath(project)))
+                self.printProject(f"\t{_RelPath(project)}")
                 self.printText(" changed from ")
                 self.printRevision(project.revisionExpr)
                 self.printText(" to ")
@@ -172,7 +172,7 @@ synced and their revisions won't be found.
             self.printText("projects with unreachable revisions : \n")
             self.out.nl()
             for project, otherProject in diff["unreachable"]:
-                self.printProject("\t%s " % (_RelPath(project)))
+                self.printProject(f"\t{_RelPath(project)} ")
                 self.printRevision(project.revisionExpr)
                 self.printText(" or ")
                 self.printRevision(otherProject.revisionExpr)

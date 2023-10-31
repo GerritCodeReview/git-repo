@@ -321,7 +321,7 @@ class Superproject:
             return SyncResult(False, should_exit)
         if not self._quiet:
             print(
-                "%s: Initial setup for superproject completed." % self._work_git
+                f"{self._work_git}: Initial setup for superproject completed."
             )
         return SyncResult(True, False)
 

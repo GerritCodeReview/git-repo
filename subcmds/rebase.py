@@ -122,7 +122,7 @@ branch but need to incorporate new upstream changes "underneath" them.
         # Setup the common git rebase args that we use for all projects.
         common_args = ["rebase"]
         if opt.whitespace:
-            common_args.append("--whitespace=%s" % opt.whitespace)
+            common_args.append(f"--whitespace={opt.whitespace}")
         if opt.quiet:
             common_args.append("--quiet")
         if opt.force_rebase:

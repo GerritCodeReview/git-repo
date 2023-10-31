@@ -177,7 +177,7 @@ class ProxyManager:
             return False
 
         # We will make two calls to ssh; this is the common part of both calls.
-        command_base = ["ssh", "-o", "ControlPath %s" % self.sock(), host]
+        command_base = ["ssh", "-o", f"ControlPath {self.sock()}", host]
         if port is not None:
             command_base[1:1] = ["-p", str(port)]
 
@@ -215,8 +215,8 @@ class ProxyManager:
         except Exception as e:
             self._master_broken.value = True
             print(
-                "\nwarn: cannot enable ssh control master for %s:%s\n%s"
-                % (host, port, str(e)),
+                "\nwarn: cannot enable ssh control master for "
+                f"{host}:{port}\n{str(e)}",
                 file=sys.stderr,
             )
             return False

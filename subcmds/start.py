@@ -77,8 +77,8 @@ revision specified in the manifest.
             self.Usage()
 
         nb = args[0]
-        if not git.check_ref_format("heads/%s" % nb):
-            self.OptionParser.error("'%s' is not a valid name" % nb)
+        if not git.check_ref_format(f"heads/{nb}"):
+            self.OptionParser.error(f"'{nb}' is not a valid name")
 
     def _ExecuteOne(self, revision, nb, project):
         """Start one project."""

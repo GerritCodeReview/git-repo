@@ -1363,7 +1363,7 @@ later is required to fix a server side protocol bug.
 
         manifest_server = manifest.manifest_server
         if not opt.quiet:
-            print("Using manifest server %s" % manifest_server)
+            print(f"Using manifest server {manifest_server}")
 
         if "@" not in manifest_server:
             username = None
@@ -1442,7 +1442,7 @@ later is required to fix a server side protocol bug.
                 self._ReloadManifest(manifest_name, manifest)
             else:
                 raise SmartSyncError(
-                    "error: manifest server RPC call failed: %s" % manifest_str
+                    f"error: manifest server RPC call failed: {manifest_str}"
                 )
         except (OSError, xmlrpc.client.Fault) as e:
             raise SmartSyncError(
@@ -1902,7 +1902,7 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             logger.warning("warning: Skipped upgrade to unverified version")
     else:
         if verbose:
-            print("repo version %s is current" % rp.work_git.describe(HEAD))
+            print(f"repo version {rp.work_git.describe(HEAD)} is current")
 
 
 class _FetchTimes:

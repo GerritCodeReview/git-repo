@@ -734,11 +734,11 @@ def run_git(*args, **kwargs):
         return run_command([GIT] + list(args), **kwargs)
     except OSError as e:
         print(file=sys.stderr)
-        print('repo: error: "%s" is not available' % GIT, file=sys.stderr)
-        print("repo: error: %s" % e, file=sys.stderr)
+        print(f'repo: error: "{GIT}" is not available', file=sys.stderr)
+        print(f"repo: error: {e}", file=sys.stderr)
         print(file=sys.stderr)
         print(
-            "Please make sure %s is installed and in your path." % GIT,
+            f"Please make sure {GIT} is installed and in your path.",
             file=sys.stderr,
         )
         sys.exit(1)
@@ -932,8 +932,8 @@ def _InitHttp():
         n = netrc.netrc()
         for host in n.hosts:
             p = n.hosts[host]
-            mgr.add_password(p[1], "http://%s/" % host, p[0], p[2])
-            mgr.add_password(p[1], "https://%s/" % host, p[0], p[2])
+            mgr.add_password(p[1], f"http://{host}/", p[0], p[2])
+            mgr.add_password(p[1], f"https://{host}/", p[0], p[2])
     except Exception:
         pass
     handlers.append(urllib.request.HTTPBasicAuthHandler(mgr))
@@ -991,16 +991,16 @@ def _DownloadBundle(url, cwd, quiet, verbose):
             r = urllib.request.urlopen(url)
         except urllib.error.HTTPError as e:
             if e.code not in [400, 401, 403, 404, 501]:
-                print("warning: Cannot get %s" % url, file=sys.stderr)
-                print("warning: HTTP error %s" % e.code, file=sys.stderr)
+                print(f"warning: Cannot get {url}", file=sys.stderr)
+                print(f"warning: HTTP error {e.code}", file=sys.stderr)
             return False
         except urllib.error.URLError as e:
-            print("fatal: Cannot get %s" % url, file=sys.stderr)
-            print("fatal: error %s" % e.reason, file=sys.stderr)
+            print(f"fatal: Cannot get {url}", file=sys.stderr)
+            print(f"fatal: error {e.reason}", file=sys.stderr)
             raise CloneFailure()
         try:
             if verbose:
-                print("Downloading clone bundle %s" % url, file=sys.stderr)
+                print(f"Downloading clone bundle {url}", file=sys.stderr)
             while True:
                 buf = r.read(8192)
                 if not buf:
@@ -1079,7 +1079,7 @@ def resolve_repo_rev(cwd, committish):
     if committish.startswith("refs/heads/"):
         remote_ref = committish
         committish = committish[len("refs/heads/") :]
-        rev = resolve("refs/remotes/origin/%s" % committish)
+        rev = resolve(f"refs/remotes/origin/{committish}")
         if rev is None:
             print(
                 f'repo: error: unknown branch "{committish}"',
@@ -1102,7 +1102,7 @@ def resolve_repo_rev(cwd, committish):
         return (remote_ref, rev)
 
     # See if it's a short branch name.
-    rev = resolve("refs/remotes/origin/%s" % committish)
+    rev = resolve(f"refs/remotes/origin/{committish}")
     if rev:
         return (f"refs/heads/{committish}", rev)
 
@@ -1144,7 +1144,7 @@ def verify_rev(cwd, remote_ref, rev, quiet):
     env = os.environ.copy()
     _setenv("GNUPGHOME", gpg_dir, env)
     run_git("tag", "-v", cur, cwd=cwd, env=env)
-    return "%s^0" % cur
+    return f"{cur}^0"
 
 
 def _Checkout(cwd, remote_ref, rev, quiet):
@@ -1385,9 +1385,8 @@ def _NotInstalled():
 
 def _NoCommands(cmd):
     print(
-        """error: command '%s' requires repo to be installed first.
-        Use "repo init" to install it here."""
-        % cmd,
+        f"""error: command '{cmd}' requires repo to be installed first.
+        Use "repo init" to install it here.""",
         file=sys.stderr,
     )
     sys.exit(1)
@@ -1411,17 +1410,17 @@ def _SetDefaultsTo(gitdir):
     global REPO_REV
 
     REPO_URL = gitdir
-    ret = run_git("--git-dir=%s" % gitdir, "symbolic-ref", "HEAD", check=False)
+    ret = run_git(f"--git-dir={gitdir}", "symbolic-ref", "HEAD", check=False)
     if ret.returncode:
         # If we're not tracking a branch (bisect/etc...), then fall back to commit.
         print(
-            "repo: warning: %s has no current branch; using HEAD" % gitdir,
+            f"repo: warning: {gitdir} has no current branch; using HEAD",
             file=sys.stderr,
         )
         try:
             ret = run_git("rev-parse", "HEAD", cwd=gitdir)
         except CloneFailure:
-            print("fatal: %s has invalid HEAD" % gitdir, file=sys.stderr)
+            print(f"fatal: {gitdir} has invalid HEAD", file=sys.stderr)
             sys.exit(1)
 
     REPO_REV = ret.stdout.strip()
@@ -1498,14 +1497,14 @@ def main(orig_args):
     me = [
         sys.executable,
         repo_main,
-        "--repo-dir=%s" % rel_repo_dir,
-        "--wrapper-version=%s" % ver_str,
-        "--wrapper-path=%s" % wrapper_path,
+        f"--repo-dir={rel_repo_dir}",
+        f"--wrapper-version={ver_str}",
+        f"--wrapper-path={wrapper_path}",
         "--",
     ]
     me.extend(orig_args)
     exec_command(me)
-    print("fatal: unable to start %s" % repo_main, file=sys.stderr)
+    print(f"fatal: unable to start {repo_main}", file=sys.stderr)
     sys.exit(148)
 
 
