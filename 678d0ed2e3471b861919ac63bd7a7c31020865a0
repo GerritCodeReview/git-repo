@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e456052_38704f92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-31T16:17:37Z",
+      "side": 1,
+      "message": "While hand-editing the format strings, I stumbled on this code that seemed unnecessarily complex, so I took a stab at reducing the complexity. Although somewhat less common to use boolean algebra to compute results, I believe this approach is simpler and more intuitive and symmetric to [similar operations with lists](https://source.corp.google.com/h/gerrit/git-repo/+/main:tests/conftest.py;l\u003d37;drc\u003d024df06ec15d7304fbb5f9a2b1aa44f2af9daf4c). Let me know what you think.",
+      "revId": "678d0ed2e3471b861919ac63bd7a7c31020865a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
