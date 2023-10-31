@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cddee900_514e7263",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b48e989_050b039d",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "231bc77e_ab8c69e2",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-30T20:52:43Z",
       "side": 1,
       "message": "please use the public gerrit tracker for repo bugs -- repo is an open source project",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f7a29f8_944cc0be",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 11
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "231bc77e_ab8c69e2",
       "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "61aa93b3_7dd2a046",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1183,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a491a740_43693fea",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9f9e112b_1dafdf86",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-10-30T20:52:43Z",
       "side": 1,
       "message": "make it static so we can test it (and add unittests), and call it `_encode_patchset_description`",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3fa16a4_ef290d49",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1197,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f9e112b_1dafdf86",
       "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +158,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60ebdf73_6c3da0a3",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1206,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb5fd960_abd96385",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "de3fc42d_7d07deae",
@@ -99,6 +189,24 @@
       "writtenOn": "2023-10-30T20:52:43Z",
       "side": 1,
       "message": "see the logic i wrote in:\nhttps://gerrit-review.git.corp.google.com/c/git-repo/+/337516/2/project.py\n\nuse `string` and create a set so you don\u0027t do a linear string search for every char",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2259790f_7c6a115c",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1208,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de3fc42d_7d07deae",
       "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -120,6 +228,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f38f25d_0ba15490",
+        "filename": "project.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 1210,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a77b8b6c_b4ffae04",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59fb6733_d33d4b6d",
@@ -133,6 +259,24 @@
       "writtenOn": "2023-10-30T20:52:43Z",
       "side": 1,
       "message": "this is redundant --\u003e delete",
+      "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0354d8fd_3763bf22",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1032249
+      },
+      "writtenOn": "2023-10-31T10:48:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59fb6733_d33d4b6d",
       "revId": "838400e75f2627724e266a56c8434a9c20f556ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
