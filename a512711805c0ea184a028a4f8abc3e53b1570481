@@ -16,6 +16,24 @@
       "message": "did you want @google.com here ?",
       "revId": "a512711805c0ea184a028a4f8abc3e53b1570481",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71dbaf96_cff14ab9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 20
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-10-31T16:03:47Z",
+      "side": 1,
+      "message": "Yes. Good idea. I _think_ that value originated from an early commit before I had my git client configured with my corporate identity for GoB repos.",
+      "parentUuid": "864db68e_a2e6987d",
+      "revId": "a512711805c0ea184a028a4f8abc3e53b1570481",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
