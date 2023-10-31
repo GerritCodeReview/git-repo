@@ -79,17 +79,6 @@ def check_python_version():
     major = ver.major
     minor = ver.minor
 
-    # Abort on very old Python 2 versions.
-    if (major, minor) < (2, 7):
-        print(
-            "repo: error: Your Python version is too old. "
-            "Please use Python {}.{} or newer instead.".format(
-                *MIN_PYTHON_VERSION_SOFT
-            ),
-            file=sys.stderr,
-        )
-        sys.exit(1)
-
     # Try to re-exec the version specific Python 3 if needed.
     if (major, minor) < MIN_PYTHON_VERSION_SOFT:
         # Python makes releases ~once a year, so try our min version +10 to help
@@ -134,16 +123,7 @@ def check_python_version():
             reexec("python3")
 
         # We're still here, so diagnose things for the user.
-        if major < 3:
-            print(
-                "repo: error: Python 2 is no longer supported; "
-                "Please upgrade to Python {}.{}+.".format(
-                    *MIN_PYTHON_VERSION_HARD
-                ),
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        elif (major, minor) < MIN_PYTHON_VERSION_HARD:
+        if (major, minor) < MIN_PYTHON_VERSION_HARD:
             print(
                 "repo: error: Python 3 version is too old; "
                 "Please use Python {}.{} or newer.".format(
