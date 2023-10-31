@@ -295,7 +295,7 @@ contain a line that matches both expressions:
         for result in results:
             if result.rc < 0:
                 git_failed = True
-                out.project("--- project %s ---" % _RelPath(result.project))
+                out.project(f"--- project {_RelPath(result.project)} ---")
                 out.nl()
                 out.fail("%s", result.stderr)
                 out.nl()
@@ -312,7 +312,7 @@ contain a line that matches both expressions:
                         bad_rev = True
                     else:
                         out.project(
-                            "--- project %s ---" % _RelPath(result.project)
+                            f"--- project {_RelPath(result.project)} ---"
                         )
                         out.nl()
                         out.fail("%s", result.stderr.strip())

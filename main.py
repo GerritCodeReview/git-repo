@@ -344,7 +344,7 @@ class _Repo:
             if gopts.pager:
                 use_pager = True
             else:
-                use_pager = config.GetBoolean("pager.%s" % name)
+                use_pager = config.GetBoolean(f"pager.{name}")
                 if use_pager is None:
                     use_pager = cmd.WantPager(copts)
             if use_pager:
@@ -703,7 +703,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
 
     def http_error_auth_reqed(self, auth_header, host, req, headers):
         try:
-            spn = "HTTP@%s" % host
+            spn = f"HTTP@{host}"
             authdata = self._negotiate_get_authdata(auth_header, headers)
 
             if self.retried > 3:
@@ -760,7 +760,7 @@ class _KerberosAuthHandler(urllib.request.BaseHandler):
             return None
 
         response = kerberos.authGSSClientResponse(self.context)
-        return "Negotiate %s" % response
+        return f"Negotiate {response}"
 
     def _validate_response(self, authdata):
         if authdata is None:
@@ -784,8 +784,8 @@ def init_http():
         n = netrc.netrc()
         for host in n.hosts:
             p = n.hosts[host]
-            mgr.add_password(p[1], "http://%s/" % host, p[0], p[2])
-            mgr.add_password(p[1], "https://%s/" % host, p[0], p[2])
+            mgr.add_password(p[1], f"http://{host}/", p[0], p[2])
+            mgr.add_password(p[1], f"https://{host}/", p[0], p[2])
     except netrc.NetrcParseError:
         pass
     except OSError:
@@ -858,7 +858,7 @@ def _Main(argv):
             os.execv(sys.executable, [sys.executable, __file__] + argv)
         except OSError as e:
             print("fatal: cannot restart repo after upgrade", file=sys.stderr)
-            print("fatal: %s" % e, file=sys.stderr)
+            print(f"fatal: {e}", file=sys.stderr)
             result = 128
 
     TerminatePager()

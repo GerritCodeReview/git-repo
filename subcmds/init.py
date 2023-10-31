@@ -228,7 +228,7 @@ to update the working directory files.
 
     def _HasColorSet(self, gc):
         for n in ["ui", "diff", "status"]:
-            if gc.Has("color.%s" % n):
+            if gc.Has(f"color.{n}"):
                 return True
         return False
 
@@ -275,10 +275,7 @@ to update the working directory files.
             init_type = ""
 
         print()
-        print(
-            "repo %shas been initialized in %s"
-            % (init_type, self.manifest.topdir)
-        )
+        print(f"repo {init_type}has been initialized in {self.manifest.topdir}")
 
         current_dir = os.getcwd()
         if current_dir != self.manifest.topdir:
@@ -286,7 +283,7 @@ to update the working directory files.
                 "If this is not the directory in which you want to initialize "
                 "repo, please run:"
             )
-            print("   rm -r %s" % os.path.join(self.manifest.topdir, ".repo"))
+            print(f"   rm -r {os.path.join(self.manifest.topdir, '.repo')}")
             print("and try again.")
 
     def ValidateOptions(self, opt, args):

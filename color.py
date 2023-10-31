@@ -63,7 +63,7 @@ def _Color(fg=None, bg=None, attr=None):
             need_sep = True
 
             if fg < 8:
-                code += "3%c" % (ord("0") + fg)
+                code += f"3{ord('0') + fg:c}"
             else:
                 code += "38;5;%d" % fg
 
@@ -72,7 +72,7 @@ def _Color(fg=None, bg=None, attr=None):
                 code += ";"
 
             if bg < 8:
-                code += "4%c" % (ord("0") + bg)
+                code += f"4{ord('0') + bg:c}"
             else:
                 code += "48;5;%d" % bg
         code += "m"
@@ -105,7 +105,7 @@ def SetDefaultColoring(state):
 
 class Coloring:
     def __init__(self, config, section_type):
-        self._section = "color.%s" % section_type
+        self._section = f"color.{section_type}"
         self._config = config
         self._out = sys.stdout
 

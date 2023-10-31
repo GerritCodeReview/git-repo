@@ -121,7 +121,7 @@ change id will be added.
         return CHANGE_ID_RE.match(line)
 
     def _GetReference(self, sha1):
-        return "(cherry picked from commit %s)" % sha1
+        return f"(cherry picked from commit {sha1})"
 
     def _StripHeader(self, commit_msg):
         lines = commit_msg.splitlines()

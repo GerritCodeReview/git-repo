@@ -117,13 +117,11 @@ class Command:
     def OptionParser(self):
         if self._optparse is None:
             try:
-                me = "repo %s" % self.NAME
+                me = f"repo {self.NAME}"
                 usage = self.helpUsage.strip().replace("%prog", me)
             except AttributeError:
-                usage = "repo %s" % self.NAME
-            epilog = (
-                "Run `repo help %s` to view the detailed manual." % self.NAME
-            )
+                usage = f"repo {self.NAME}"
+            epilog = f"Run `repo help {self.NAME}` to view the detailed manual."
             self._optparse = optparse.OptionParser(usage=usage, epilog=epilog)
             self._CommonOptions(self._optparse)
             self._Options(self._optparse)
@@ -421,8 +419,8 @@ class Command:
                 for project in projects:
                     if not missing_ok and not project.Exists:
                         raise NoSuchProjectError(
-                            "%s (%s)"
-                            % (arg, project.RelPath(local=not all_manifests))
+                            f"{arg} "
+                            f"({project.RelPath(local=not all_manifests)})"
                         )
                     if not project.MatchesGroups(groups):
                         raise InvalidProjectGroupsError(arg)

@@ -325,7 +325,7 @@ def DoWorkWrapper(mirror, opt, cmd, shell, config, args):
     try:
         return DoWork(project, mirror, opt, cmd, shell, cnt, config)
     except KeyboardInterrupt:
-        print("%s: Worker interrupted" % project.name)
+        print(f"{project.name}: Worker interrupted")
         raise WorkerKeyboardInterrupt()
 
 
@@ -355,7 +355,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
     setenv("REPO_DEST_BRANCH", project.dest_branch)
     setenv("REPO_I", str(cnt + 1))
     for annotation in project.annotations:
-        setenv("REPO__%s" % (annotation.name), annotation.value)
+        setenv(f"REPO__{annotation.name}", annotation.value)
 
     if mirror:
         setenv("GIT_DIR", project.gitdir)
@@ -371,8 +371,8 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
 
         output = ""
         if (opt.project_header and opt.verbose) or not opt.project_header:
-            output = "skipping %s/" % project.RelPath(
-                local=opt.this_manifest_only
+            output = (
+                f"skipping {project.RelPath(local=opt.this_manifest_only)}/"
             )
         return (1, output)
 
@@ -408,7 +408,7 @@ def DoWork(project, mirror, opt, cmd, shell, cnt, config):
                 project_header_path = project.RelPath(
                     local=opt.this_manifest_only
                 )
-            out.project("project %s/" % project_header_path)
+            out.project(f"project {project_header_path}/")
             out.nl()
             buf.write(output)
             output = buf.getvalue()

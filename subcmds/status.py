@@ -121,7 +121,7 @@ the following meanings:
                 continue
             if item in proj_dirs_parents:
                 self._FindOrphans(
-                    glob.glob("%s/.*" % item) + glob.glob("%s/*" % item),
+                    glob.glob(f"{item}/.*") + glob.glob(f"{item}/*"),
                     proj_dirs,
                     proj_dirs_parents,
                     outstring,

@@ -91,7 +91,7 @@ def _ForkPager(pager):
 
         _BecomePager(pager)
     except Exception:
-        print("fatal: cannot start pager '%s'" % pager, file=sys.stderr)
+        print(f"fatal: cannot start pager '{pager}'", file=sys.stderr)
         sys.exit(255)
 
 

@@ -128,7 +128,7 @@ It is equivalent to "git branch -D <branchname>".
         )
         if err:
             for br in err.keys():
-                err_msg = "error: cannot abandon %s" % br
+                err_msg = f"error: cannot abandon {br}"
                 logger.error(err_msg)
                 for proj in err[br]:
                     logger.error(" " * len(err_msg) + " | %s", _RelPath(proj))

@@ -213,8 +213,7 @@ class RepoHook:
         # For anything else, we'll assume no approval.
         if self._abort_if_user_denies:
             raise HookError(
-                "You must allow the %s hook or use --no-verify."
-                % self._hook_type
+                f"You must allow the {self._hook_type} hook or use --no-verify."
             )
 
         return False
@@ -317,7 +316,7 @@ class RepoHook:
 
         # Running the script should have defined a main() function.
         if "main" not in context:
-            raise HookError('Missing main() in: "%s"' % self._script_fullpath)
+            raise HookError(f'Missing main() in: "{self._script_fullpath}"')
 
         # Call the main function in the hook.  If the hook should cause the
         # build to fail, it will raise an Exception.  We'll catch that convert
@@ -386,9 +385,7 @@ class RepoHook:
     def _CheckHook(self):
         # Bail with a nice error if we can't find the hook.
         if not os.path.isfile(self._script_fullpath):
-            raise HookError(
-                "Couldn't find repo hook: %s" % self._script_fullpath
-            )
+            raise HookError(f"Couldn't find repo hook: {self._script_fullpath}")
 
     def Run(self, **kwargs):
         """Run the hook.
@@ -434,18 +431,18 @@ class RepoHook:
         except SystemExit as e:
             passed = False
             print(
-                "ERROR: %s hooks exited with exit code: %s"
-                % (self._hook_type, str(e)),
+                f"ERROR: {self._hook_type} hooks exited with exit code: "
+                f"{str(e)}",
                 file=sys.stderr,
             )
         except HookError as e:
             passed = False
-            print("ERROR: %s" % str(e), file=sys.stderr)
+            print(f"ERROR: {str(e)}", file=sys.stderr)
 
         if not passed and self._ignore_hooks:
             print(
-                "\nWARNING: %s hooks failed, but continuing anyways."
-                % self._hook_type,
+                f"\nWARNING: {self._hook_type} hooks failed, "
+                "but continuing anyways.",
                 file=sys.stderr,
             )
             passed = True
@@ -488,16 +485,16 @@ class RepoHook:
             "--no-verify",
             dest="bypass_hooks",
             action="store_true",
-            help="Do not run the %s hook." % name,
+            help=f"Do not run the {name} hook.",
         )
         group.add_option(
             "--verify",
             dest="allow_all_hooks",
             action="store_true",
-            help="Run the %s hook without prompting." % name,
+            help=f"Run the {name} hook without prompting.",
         )
         group.add_option(
             "--ignore-hooks",
             action="store_true",
-            help="Do not abort if %s hooks fail." % name,
+            help=f"Do not abort if {name} hooks fail.",
         )

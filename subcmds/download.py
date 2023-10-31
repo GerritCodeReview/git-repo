@@ -170,7 +170,7 @@ If no project is specified try to use current directory as a project.
                     len(dl.commits),
                 )
                 for c in dl.commits:
-                    print("  %s" % (c), file=sys.stderr)
+                    print(f"  {c}", file=sys.stderr)
 
             if opt.cherrypick:
                 mode = "cherry-pick"

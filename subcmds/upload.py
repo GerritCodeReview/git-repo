@@ -378,11 +378,11 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         name = branch.name
         remote = project.GetBranch(name).remote
 
-        key = "review.%s.autoupload" % remote.review
+        key = f"review.{remote.review}.autoupload"
         answer = project.config.GetBoolean(key)
 
         if answer is False:
-            _die("upload blocked by %s = false" % key)
+            _die(f"upload blocked by {key} = false")
 
         if answer is None:
             date = branch.date
@@ -409,9 +409,9 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 )
             )
             for commit in commit_list:
-                print("         %s" % commit)
+                print(f"         {commit}")
 
-            print("to %s (y/N)? " % remote.review, end="", flush=True)
+            print(f"to {remote.review} (y/N)? ", end="", flush=True)
             if opt.yes:
                 print("<--yes>")
                 answer = True
@@ -464,7 +464,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                     )
                 )
                 for commit in commit_list:
-                    script.append("#         %s" % commit)
+                    script.append(f"#         {commit}")
                 b[name] = branch
 
             projects[project_path] = project
@@ -516,12 +516,12 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         name = branch.name
         project = branch.project
 
-        key = "review.%s.autoreviewer" % project.GetBranch(name).remote.review
+        key = f"review.{project.GetBranch(name).remote.review}.autoreviewer"
         raw_list = project.config.GetString(key)
         if raw_list is not None:
             people[0].extend([entry.strip() for entry in raw_list.split(",")])
 
-        key = "review.%s.autocopy" % project.GetBranch(name).remote.review
+        key = f"review.{project.GetBranch(name).remote.review}.autocopy"
         raw_list = project.config.GetString(key)
         if raw_list is not None and len(people[0]) > 0:
             people[1].extend([entry.strip() for entry in raw_list.split(",")])
@@ -550,7 +550,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             changes = [x for x in changes if x not in untracked]
 
         if changes:
-            key = "review.%s.autoupload" % branch.project.remote.review
+            key = f"review.{branch.project.remote.review}.autoupload"
             answer = branch.project.config.GetBoolean(key)
 
             # If they want to auto upload, let's not ask because it
@@ -577,7 +577,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         # Check if topic branches should be sent to the server during
         # upload.
         if opt.auto_topic is not True:
-            key = "review.%s.uploadtopic" % branch.project.remote.review
+            key = f"review.{branch.project.remote.review}.uploadtopic"
             opt.auto_topic = branch.project.config.GetBoolean(key)
 
         def _ExpandCommaList(value):
@@ -590,7 +590,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                     yield ret
 
         # Check if hashtags should be included.
-        key = "review.%s.uploadhashtags" % branch.project.remote.review
+        key = f"review.{branch.project.remote.review}.uploadhashtags"
         hashtags = set(_ExpandCommaList(branch.project.config.GetString(key)))
         for tag in opt.hashtags:
             hashtags.update(_ExpandCommaList(tag))
@@ -598,7 +598,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             hashtags.add(branch.name)
 
         # Check if labels should be included.
-        key = "review.%s.uploadlabels" % branch.project.remote.review
+        key = f"review.{branch.project.remote.review}.uploadlabels"
         labels = set(_ExpandCommaList(branch.project.config.GetString(key)))
         for label in opt.labels:
             labels.update(_ExpandCommaList(label))
@@ -607,7 +607,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         if opt.notify is False:
             notify = "NONE"
         else:
-            key = "review.%s.uploadnotify" % branch.project.remote.review
+            key = f"review.{branch.project.remote.review}.uploadnotify"
             notify = branch.project.config.GetString(key)
 
         destination = opt.dest_branch or branch.project.dest_branch
@@ -721,7 +721,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             local_branch = p.stdout.strip()
         p = GitCommand(
             project,
-            ["config", "--get", "branch.%s.merge" % local_branch],
+            ["config", "--get", f"branch.{local_branch}.merge"],
             capture_stdout=True,
             capture_stderr=True,
         )

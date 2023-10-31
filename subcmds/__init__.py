@@ -32,7 +32,7 @@ for py in os.listdir(my_dir):
             h = clsn.index("_")
             clsn = clsn[0:h] + clsn[h + 1 :].capitalize()
 
-        mod = __import__(__name__, globals(), locals(), ["%s" % name])
+        mod = __import__(__name__, globals(), locals(), [f"{name}"])
         mod = getattr(mod, name)
         try:
             cmd = getattr(mod, clsn)

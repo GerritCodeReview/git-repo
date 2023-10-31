@@ -106,7 +106,7 @@ _ALTERNATES = os.environ.get("REPO_USE_ALTERNATES") == "1"
 
 
 def _lwrite(path, content):
-    lock = "%s.lock" % path
+    lock = f"{path}.lock"
 
     # Maintain Unix line endings on all OS's to match git behavior.
     with open(lock, "w", newline="\n") as fd:
@@ -896,7 +896,7 @@ class Project:
             if output_redir is None:
                 output_redir = sys.stdout
             print(file=output_redir)
-            print("project %s/" % self.RelPath(local), file=output_redir)
+            print(f"project {self.RelPath(local)}/", file=output_redir)
             print('  missing (run "repo sync")', file=output_redir)
             return
 
@@ -987,22 +987,22 @@ class Project:
             cmd.append("--color")
         cmd.append(HEAD)
         if absolute_paths:
-            cmd.append("--src-prefix=a/%s/" % self.RelPath(local))
-            cmd.append("--dst-prefix=b/%s/" % self.RelPath(local))
+            cmd.append(f"--src-prefix=a/{self.RelPath(local)}/")
+            cmd.append(f"--dst-prefix=b/{self.RelPath(local)}/")
         cmd.append("--")
         try:
             p = GitCommand(self, cmd, capture_stdout=True, capture_stderr=True)
             p.Wait()
         except GitError as e:
             out.nl()
-            out.project("project %s/" % self.RelPath(local))
+            out.project(f"project {self.RelPath(local)}/")
             out.nl()
             out.fail("%s", str(e))
             out.nl()
             return False
         if p.stdout:
             out.nl()
-            out.project("project %s/" % self.RelPath(local))
+            out.project(f"project {self.RelPath(local)}/")
             out.nl()
             out.write("%s", p.stdout)
         return p.Wait() == 0
@@ -1099,12 +1099,12 @@ class Project:
         branch = self.GetBranch(branch)
         if not branch.LocalMerge:
             raise GitError(
-                "branch %s does not track a remote" % branch.name,
+                f"branch {branch.name} does not track a remote",
                 project=self.name,
             )
         if not branch.remote.review:
             raise GitError(
-                "remote %s has no review url" % branch.remote.name,
+                f"remote {branch.remote.name} has no review url",
                 project=self.name,
             )
 
@@ -1157,12 +1157,12 @@ class Project:
         opts = []
         if auto_topic:
             opts += ["topic=" + branch.name]
-        opts += ["t=%s" % p for p in hashtags]
+        opts += [f"t={p}" for p in hashtags]
         # NB: No need to encode labels as they've been validated above.
-        opts += ["l=%s" % p for p in labels]
+        opts += [f"l={p}" for p in labels]
 
-        opts += ["r=%s" % p for p in people[0]]
-        opts += ["cc=%s" % p for p in people[1]]
+        opts += [f"r={p}" for p in people[0]]
+        opts += [f"cc={p}" for p in people[1]]
         if notify:
             opts += ["notify=" + notify]
         if private:
@@ -1235,7 +1235,7 @@ class Project:
 
             name = self.relpath.replace("\\", "/")
             name = name.replace("/", "_")
-            tarpath = "%s.tar" % name
+            tarpath = f"{name}.tar"
             topdir = self.manifest.topdir
 
             try:
@@ -1454,7 +1454,7 @@ class Project:
             return all_refs[rev]
 
         try:
-            return self.bare_git.rev_parse("--verify", "%s^0" % rev)
+            return self.bare_git.rev_parse("--verify", f"{rev}^0")
         except GitError:
             raise ManifestInvalidRevisionError(
                 f"revision {self.revisionExpr} in {self.name} not found"
@@ -1677,7 +1677,7 @@ class Project:
                 self._CopyAndLinkFiles()
 
             def _dorebase():
-                self._Rebase(upstream="%s^1" % last_mine, onto=revid)
+                self._Rebase(upstream=f"{last_mine}^1", onto=revid)
 
             syncbuf.later2(self, _dorebase)
             if submodules:
@@ -1999,9 +1999,7 @@ class Project:
 
             revid = self.GetRevisionId(all_refs)
             if head == revid:
-                _lwrite(
-                    self.work_git.GetDotgitPath(subpath=HEAD), "%s\n" % revid
-                )
+                _lwrite(self.work_git.GetDotgitPath(subpath=HEAD), f"{revid}\n")
             else:
                 self._Checkout(revid, quiet=True)
         GitCommand(
@@ -2116,7 +2114,7 @@ class Project:
         re_url = re.compile(r"^submodule\.(.+)\.url=(.*)$")
 
         def parse_gitmodules(gitdir, rev):
-            cmd = ["cat-file", "blob", "%s:.gitmodules" % rev]
+            cmd = ["cat-file", "blob", f"{rev}:.gitmodules"]
             try:
                 p = GitCommand(
                     None,
@@ -2225,7 +2223,7 @@ class Project:
                 continue
 
             if url.startswith(".."):
-                url = urllib.parse.urljoin("%s/" % self.remote.url, url)
+                url = urllib.parse.urljoin(f"{self.remote.url}/", url)
             remote = RemoteSpec(
                 self.remote.name,
                 url=url,
@@ -2304,7 +2302,7 @@ class Project:
             self.bare_git.rev_list(
                 "-1",
                 "--missing=allow-any",
-                "%s^0" % self.revisionExpr,
+                f"{self.revisionExpr}^0",
                 "--",
                 log_as_error=False,
             )
@@ -2313,7 +2311,7 @@ class Project:
                 self.bare_git.rev_list(
                     "-1",
                     "--missing=allow-any",
-                    "%s^0" % rev,
+                    f"{rev}^0",
                     "--",
                     log_as_error=False,
                 )
@@ -2330,8 +2328,8 @@ class Project:
 
     def _FetchArchive(self, tarpath, cwd=None):
         cmd = ["archive", "-v", "-o", tarpath]
-        cmd.append("--remote=%s" % self.remote.url)
-        cmd.append("--prefix=%s/" % self.RelPath(local=False))
+        cmd.append(f"--remote={self.remote.url}")
+        cmd.append(f"--prefix={self.RelPath(local=False)}/")
         cmd.append(self.revisionExpr)
 
         command = GitCommand(
@@ -2432,7 +2430,7 @@ class Project:
                     if ref_id in ids:
                         continue
 
-                    r = "refs/_alt/%s" % ref_id
+                    r = f"refs/_alt/{ref_id}"
                     all_refs[r] = ref_id
                     ids.add(ref_id)
                     tmp.add(r)
@@ -2456,11 +2454,11 @@ class Project:
 
         if clone_filter:
             git_require((2, 19, 0), fail=True, msg="partial clones")
-            cmd.append("--filter=%s" % clone_filter)
+            cmd.append(f"--filter={clone_filter}")
             self.EnableRepositoryExtension("partialclone", self.remote.name)
 
         if depth:
-            cmd.append("--depth=%s" % depth)
+            cmd.append(f"--depth={depth}")
         else:
             # If this repo has shallow objects, then we don't know which refs
             # have shallow objects or not. Tell git to unshallow all fetched
@@ -2521,7 +2519,7 @@ class Project:
             if branch is not None and branch.strip():
                 if not branch.startswith("refs/"):
                     branch = R_HEADS + branch
-                spec.append(str(("+%s:" % branch) + remote.ToLocal(branch)))
+                spec.append(str(f"+{branch}:" + remote.ToLocal(branch)))
 
         # If mirroring repo and we cannot deduce the tag or branch to fetch,
         # fetch whole repo.
@@ -2617,8 +2615,8 @@ class Project:
                 )
             if try_n < retry_fetches - 1:
                 print(
-                    "%s: sleeping %s seconds before retrying"
-                    % (self.name, retry_cur_sleep),
+                    f"{self.name}: sleeping {retry_cur_sleep} seconds "
+                    "before retrying",
                     file=output_redir,
                 )
                 time.sleep(retry_cur_sleep)
@@ -2764,11 +2762,11 @@ class Project:
                 # or above. This return code only appears if -f, --fail is used.
                 if verbose:
                     print(
-                        "%s: Unable to retrieve clone.bundle; ignoring."
-                        % self.name
+                        f"{self.name}: Unable to retrieve "
+                        "clone.bundle; ignoring."
                     )
                     if output:
-                        print("Curl output:\n%s" % output)
+                        print(f"Curl output:\n{output}")
                 return False
             elif curlret and not verbose and output:
                 logger.error("%s", output)
@@ -2853,7 +2851,7 @@ class Project:
             cmd.append("-q")
         if GitCommand(self, cmd).Wait() != 0:
             raise GitError(
-                "%s submodule update --init --recursive " % self.name,
+                f"{self.name} submodule update --init --recursive ",
                 project=self.name,
             )
 
@@ -3121,14 +3119,14 @@ class Project:
 
         if self.revisionId:
             if cur != "" or self.bare_ref.get(ref) != self.revisionId:
-                msg = "manifest set to %s" % self.revisionId
+                msg = f"manifest set to {self.revisionId}"
                 dst = self.revisionId + "^0"
                 active_git.UpdateRef(ref, dst, message=msg, detach=True)
         else:
             remote = self.GetRemote()
             dst = remote.ToLocal(self.revisionExpr)
             if cur != dst:
-                msg = "manifest set to %s" % self.revisionExpr
+                msg = f"manifest set to {self.revisionExpr}"
                 if detach:
                     active_git.UpdateRef(ref, dst, message=msg, detach=True)
                 else:
@@ -3294,9 +3292,7 @@ class Project:
                 )
 
             if init_dotgit:
-                _lwrite(
-                    os.path.join(dotgit, HEAD), "%s\n" % self.GetRevisionId()
-                )
+                _lwrite(os.path.join(dotgit, HEAD), f"{self.GetRevisionId()}\n")
 
                 # Finish checking out the worktree.
                 cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
@@ -3432,7 +3428,7 @@ class Project:
             if out.is_on and color:
                 cmd.append("--color")
             if pretty_format is not None:
-                cmd.append("--pretty=format:%s" % pretty_format)
+                cmd.append(f"--pretty=format:{pretty_format}")
             if oneline:
                 cmd.append("--oneline")
 
@@ -3630,7 +3626,7 @@ class Project:
 
         def rev_list(self, *args, log_as_error=True, **kw):
             if "format" in kw:
-                cmdv = ["log", "--pretty=format:%s" % kw["format"]]
+                cmdv = ["log", f"--pretty=format:{kw['format']}"]
             else:
                 cmdv = ["rev-list"]
             cmdv.extend(args)
@@ -3848,7 +3844,7 @@ class MetaProject(Project):
             objdir=gitdir,
             worktree=worktree,
             remote=RemoteSpec("origin"),
-            relpath=".repo/%s" % name,
+            relpath=f".repo/{name}",
             revisionExpr="refs/heads/master",
             revisionId=None,
             groups=None,

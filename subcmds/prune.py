@@ -68,8 +68,7 @@ class Prune(PagedCommand):
                 project = branch.project
                 out.nl()
                 out.project(
-                    "project %s/"
-                    % project.RelPath(local=opt.this_manifest_only)
+                    f"project {project.RelPath(local=opt.this_manifest_only)}/"
                 )
                 out.nl()
 

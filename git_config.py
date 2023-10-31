@@ -322,7 +322,7 @@ class GitConfig:
     def UrlInsteadOf(self, url):
         """Resolve any url.*.insteadof references."""
         for new_url in self.GetSubSections("url"):
-            for old_url in self.GetString("url.%s.insteadof" % new_url, True):
+            for old_url in self.GetString(f"url.{new_url}.insteadof", True):
                 if old_url is not None and url.startswith(old_url):
                     return new_url + url[len(old_url) :]
         return url
@@ -605,7 +605,7 @@ class Remote:
             if u.startswith("persistent-"):
                 u = u[len("persistent-") :]
             if u.split(":")[0] not in ("http", "https", "sso", "ssh"):
-                u = "http://%s" % u
+                u = f"http://{u}"
             if u.endswith("/Gerrit"):
                 u = u[: len(u) - len("/Gerrit")]
             if u.endswith("/ssh_info"):
@@ -661,7 +661,7 @@ class Remote:
         return self._review_url + self.projectname
 
     def _SshReviewUrl(self, userEmail, host, port):
-        username = self._config.GetString("review.%s.username" % self.review)
+        username = self._config.GetString(f"review.{self.review}.username")
         if username is None:
             username = userEmail.split("@")[0]
         return f"ssh://{username}@{host}:{port}/"
@@ -682,8 +682,7 @@ class Remote:
             return rev
 
         raise GitError(
-            "%s: remote %s does not have %s"
-            % (self.projectname, self.name, rev)
+            f"{self.projectname}: remote {self.name} does not have {rev}"
         )
 
     def WritesTo(self, ref):
@@ -698,7 +697,7 @@ class Remote:
         if mirror:
             dst = "refs/heads/*"
         else:
-            dst = "refs/remotes/%s/*" % self.name
+            dst = f"refs/remotes/{self.name}/*"
         self.fetch = [RefSpec(True, "refs/heads/*", dst)]
 
     def Save(self):
@@ -753,11 +752,11 @@ class Branch:
 
         else:
             with open(self._config.file, "a") as fd:
-                fd.write('[branch "%s"]\n' % self.name)
+                fd.write(f'[branch "{self.name}"]\n')
                 if self.remote:
-                    fd.write("\tremote = %s\n" % self.remote.name)
+                    fd.write(f"\tremote = {self.remote.name}\n")
                 if self.merge:
-                    fd.write("\tmerge = %s\n" % self.merge)
+                    fd.write(f"\tmerge = {self.merge}\n")
 
     def _Set(self, key, value):
         key = f"branch.{self.name}.{key}"

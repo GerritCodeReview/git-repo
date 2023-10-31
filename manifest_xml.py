@@ -86,8 +86,8 @@ def XmlBool(node, attr, default=None):
         return False
     else:
         print(
-            'warning: manifest: %s="%s": ignoring invalid XML boolean'
-            % (attr, value),
+            f'warning: manifest: {attr}="{value}": '
+            "ignoring invalid XML boolean",
             file=sys.stderr,
         )
         return default
@@ -449,7 +449,7 @@ class XmlManifest:
         if path is None:
             path = os.path.join(self.manifestProject.worktree, name)
             if not os.path.isfile(path):
-                raise ManifestParseError("manifest %s not found" % name)
+                raise ManifestParseError(f"manifest {name} not found")
 
         self._load_local_manifests = load_local_manifests
         self._outer_client.manifestFileOverrides[self.path_prefix] = path
@@ -698,7 +698,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 le.setAttribute("dest", lf.dest)
                 e.appendChild(le)
 
-            default_groups = ["all", "name:%s" % p.name, "path:%s" % p.relpath]
+            default_groups = ["all", f"name:{p.name}", f"path:{p.relpath}"]
             egroups = [g for g in p.groups if g not in default_groups]
             if egroups:
                 e.setAttribute("groups", ",".join(egroups))
@@ -1290,8 +1290,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 fp = os.path.join(include_root, name)
                 if not os.path.isfile(fp):
                     raise ManifestParseError(
-                        "include [%s/]%s doesn't exist or isn't a file"
-                        % (include_root, name)
+                        f"include [{include_root}/]{name} doesn't exist "
+                        f"or isn't a file"
                     )
                 try:
                     nodes.extend(
@@ -1355,7 +1355,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     self._default = new_default
                 elif not emptyDefault and new_default != self._default:
                     raise ManifestParseError(
-                        "duplicate default in %s" % (self.manifestFile)
+                        f"duplicate default in {self.manifestFile}"
                     )
 
         if self._default is None:
@@ -1380,7 +1380,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if node.nodeName == "notice":
                 if self._notice is not None:
                     raise ManifestParseError(
-                        "duplicate notice in %s" % (self.manifestFile)
+                        f"duplicate notice in {self.manifestFile}"
                     )
                 self._notice = self._ParseNotice(node)
 
@@ -1389,7 +1389,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 url = self._reqatt(node, "url")
                 if self._manifest_server is not None:
                     raise ManifestParseError(
-                        "duplicate manifest-server in %s" % (self.manifestFile)
+                        f"duplicate manifest-server in {self.manifestFile}"
                     )
                 self._manifest_server = url
 
@@ -1397,13 +1397,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             projects = self._projects.setdefault(project.name, [])
             if project.relpath is None:
                 raise ManifestParseError(
-                    "missing path for %s in %s"
-                    % (project.name, self.manifestFile)
+                    f"missing path for {project.name} in {self.manifestFile}"
                 )
             if project.relpath in self._paths:
                 raise ManifestParseError(
-                    "duplicate path %s in %s"
-                    % (project.relpath, self.manifestFile)
+                    f"duplicate path {project.relpath} in {self.manifestFile}"
                 )
             for tree in submanifest_paths:
                 if project.relpath.startswith(tree):
@@ -1428,7 +1426,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 if name not in self._projects:
                     raise ManifestParseError(
                         "extend-project element specifies non-existent "
-                        "project: %s" % name
+                        f"project: {name}"
                     )
 
                 path = node.getAttribute("path")
@@ -1482,7 +1480,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 # Only one project can be the hooks project
                 if repo_hooks_project is not None:
                     raise ManifestParseError(
-                        "duplicate repo-hooks in %s" % (self.manifestFile)
+                        f"duplicate repo-hooks in {self.manifestFile}"
                     )
 
                 # Get the name of the project and the (space-separated) list of
@@ -1496,7 +1494,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 # There can only be one superproject.
                 if self._superproject:
                     raise ManifestParseError(
-                        "duplicate superproject in %s" % (self.manifestFile)
+                        f"duplicate superproject in {self.manifestFile}"
                     )
                 remote_name = node.getAttribute("remote")
                 if not remote_name:
@@ -1505,8 +1503,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     remote = self._get_remote(node)
                 if remote is None:
                     raise ManifestParseError(
-                        "no remote for superproject %s within %s"
-                        % (name, self.manifestFile)
+                        f"no remote for superproject {name} "
+                        f"within {self.manifestFile}"
                     )
                 revision = node.getAttribute("revision") or remote.revision
                 if not revision:
@@ -1577,13 +1575,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 repo_hooks_projects = self._projects[repo_hooks_project]
             except KeyError:
                 raise ManifestParseError(
-                    "project %s not found for repo-hooks" % (repo_hooks_project)
+                    f"project {repo_hooks_project} not found for repo-hooks"
                 )
 
             if len(repo_hooks_projects) != 1:
                 raise ManifestParseError(
-                    "internal error parsing repo-hooks in %s"
-                    % (self.manifestFile)
+                    f"internal error parsing repo-hooks in {self.manifestFile}"
                 )
             self._repo_hooks_project = repo_hooks_projects[0]
             # Store the enabled hooks in the Project object.
@@ -1593,7 +1590,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         name = None
         m_url = m.GetRemote().url
         if m_url.endswith("/.git"):
-            raise ManifestParseError("refusing to mirror %s" % m_url)
+            raise ManifestParseError(f"refusing to mirror {m_url}")
 
         if self._default and self._default.remote:
             url = self._default.remote.resolvedFetchUrl
@@ -1618,7 +1615,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         if name not in self._projects:
             m.PreSync()
-            gitdir = os.path.join(self.topdir, "%s.git" % name)
+            gitdir = os.path.join(self.topdir, f"{name}.git")
             project = Project(
                 manifest=self,
                 name=name,
@@ -1679,8 +1676,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         d.sync_j = XmlInt(node, "sync-j", None)
         if d.sync_j is not None and d.sync_j <= 0:
             raise ManifestParseError(
-                '%s: sync-j must be greater than 0, not "%s"'
-                % (self.manifestFile, d.sync_j)
+                f"{self.manifestFile}: sync-j must be greater than 0, "
+                f'not "{d.sync_j}"'
             )
 
         d.sync_c = XmlBool(node, "sync-c", False)
@@ -1754,8 +1751,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 msg = self._CheckLocalPath(revision.split("/")[-1])
                 if msg:
                     raise ManifestInvalidPathError(
-                        '<submanifest> invalid "revision": %s: %s'
-                        % (revision, msg)
+                        f'<submanifest> invalid "revision": {revision}: {msg}'
                     )
             else:
                 msg = self._CheckLocalPath(name)
@@ -1820,8 +1816,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             revisionExpr = self._default.revisionExpr
         if not revisionExpr:
             raise ManifestParseError(
-                "no revision for project %s within %s"
-                % (name, self.manifestFile)
+                f"no revision for project {name} within {self.manifestFile}"
             )
 
         path = node.getAttribute("path")
@@ -1873,12 +1868,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 parent, name, path
             )
 
-        default_groups = ["all", "name:%s" % name, "path:%s" % relpath]
+        default_groups = ["all", f"name:{name}", f"path:{relpath}"]
         groups.extend(set(default_groups).difference(groups))
 
         if self.IsMirror and node.hasAttribute("force-path"):
             if XmlBool(node, "force-path", False):
-                gitdir = os.path.join(self.topdir, "%s.git" % path)
+                gitdir = os.path.join(self.topdir, f"{path}.git")
 
         project = Project(
             manifest=self,
@@ -1940,7 +1935,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         relpath = path
         if self.IsMirror:
             worktree = None
-            gitdir = os.path.join(self.topdir, "%s.git" % name)
+            gitdir = os.path.join(self.topdir, f"{name}.git")
             objdir = gitdir
         else:
             if use_remote_name:
@@ -1948,7 +1943,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             else:
                 namepath = f"{name}.git"
             worktree = os.path.join(self.topdir, path).replace("\\", "/")
-            gitdir = os.path.join(self.subdir, "projects", "%s.git" % path)
+            gitdir = os.path.join(self.subdir, "projects", f"{path}.git")
             # We allow people to mix git worktrees & non-git worktrees for now.
             # This allows for in situ migration of repo clients.
             if os.path.exists(gitdir) or not self.UseGitWorktrees:
@@ -1994,9 +1989,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         path = path.rstrip("/")
         name = name.rstrip("/")
         relpath = self._JoinRelpath(parent.relpath, path)
-        gitdir = os.path.join(parent.gitdir, "subprojects", "%s.git" % path)
+        gitdir = os.path.join(parent.gitdir, "subprojects", f"{path}.git")
         objdir = os.path.join(
-            parent.gitdir, "subproject-objects", "%s.git" % name
+            parent.gitdir, "subproject-objects", f"{name}.git"
         )
         if self.IsMirror:
             worktree = None
@@ -2192,8 +2187,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         v = node.getAttribute(attname)
         if not v:
             raise ManifestParseError(
-                "no %s in <%s> within %s"
-                % (attname, node.nodeName, self.manifestFile)
+                f"no {attname} in <{node.nodeName}> within {self.manifestFile}"
             )
         return v
 
