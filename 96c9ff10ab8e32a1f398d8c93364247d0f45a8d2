@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60d8a669_1f5f06cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-11-01T15:31:21Z",
+      "side": 1,
+      "message": "On further consideration, I believe this change should be superseded by go/grev/389794.",
+      "revId": "96c9ff10ab8e32a1f398d8c93364247d0f45a8d2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
