@@ -16,6 +16,24 @@
       "message": "```suggestion\nVERSION \u003d (2, 40)\n```",
       "revId": "dd8a252778b142a4b77e56cbcb591efca30eba8c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdcbc2bf_26dd859e",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-11-01T15:39:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "47ae36d8_f70a1c75",
+      "revId": "dd8a252778b142a4b77e56cbcb591efca30eba8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
