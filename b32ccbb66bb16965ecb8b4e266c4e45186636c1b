@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5bfdca1_2dd8d7aa",
+        "filename": "progress.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-01T01:29:39Z",
+      "side": 0,
+      "message": "you dropped this comment.  yes, it can be explained if you stare at the code and make assumptions, but there\u0027s no need to force people to unpack things like that when a simple comment will do.",
+      "revId": "b32ccbb66bb16965ecb8b4e266c4e45186636c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

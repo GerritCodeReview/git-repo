@@ -16,6 +16,24 @@
       "message": "While hand-editing the format strings, I stumbled on this code that seemed unnecessarily complex, so I took a stab at reducing the complexity. Although somewhat less common to use boolean algebra to compute results, I believe this approach is simpler and more intuitive and symmetric to [similar operations with lists](https://source.corp.google.com/h/gerrit/git-repo/+/main:tests/conftest.py;l\u003d37;drc\u003d024df06ec15d7304fbb5f9a2b1aa44f2af9daf4c). Let me know what you think.",
       "revId": "678d0ed2e3471b861919ac63bd7a7c31020865a0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec4db8ab_22c1e51e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-01T01:29:39Z",
+      "side": 1,
+      "message": "i dunno man, i don\u0027t think i\u0027ve ever seen bool algebra used this way before in Python.  i think part of what makes something readable is common patterns, not a drive for one-lining things.  in fact, the Google Python style guide recommends against comprehensions/generators unless they\u0027re \"simple\", and usually \"simple\" is defined as \"fits on one, maybe two, lines\".  that seems like a pretty analogous situation to this.\nhttps://github.com/google/styleguide/blob/gh-pages/pyguide.md#27-comprehensions--generator-expressions\n\nalso, i\u0027ll note the example you quote in the repo codebase is something you recently wrote, so i don\u0027t think that really serves as \"prior art\" ;).  normally multiplication on lists is using an integer to create an initial vector of an arbitrary length.  which is not a far leap from what you wrote in the conftest code as the boolean is implicitly converted to a 0/1.\n\ni don\u0027t know that this code is a hotpath to warrant making it less readable, although i also don\u0027t know what the microbenchmarks say for either form here.\n\ni might be amenable to changing duration_str by leaving a short comment on the uncommon bool logic style, but i don\u0027t think elapsed_str is salvageable.",
+      "parentUuid": "3e456052_38704f92",
+      "revId": "678d0ed2e3471b861919ac63bd7a7c31020865a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
