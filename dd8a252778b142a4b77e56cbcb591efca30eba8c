@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47ae36d8_f70a1c75",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-01T00:17:46Z",
+      "side": 1,
+      "message": "```suggestion\nVERSION \u003d (2, 40)\n```",
+      "revId": "dd8a252778b142a4b77e56cbcb591efca30eba8c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
