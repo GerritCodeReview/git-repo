@@ -16,6 +16,24 @@
       "message": "you dropped this comment.  yes, it can be explained if you stare at the code and make assumptions, but there\u0027s no need to force people to unpack things like that when a simple comment will do.",
       "revId": "b32ccbb66bb16965ecb8b4e266c4e45186636c1b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce8b6d2_2a9e9188",
+        "filename": "progress.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-11-01T16:15:22Z",
+      "side": 0,
+      "message": "I removed the comment because it felt redundant to the docstring and the implementation, especially when `{:\u003e02d}` didn\u0027t require any explanation for `secs` and there was no comment for \"not showing leading zeros if under an hour\". I\u0027ve restored the comment.",
+      "parentUuid": "a5bfdca1_2dd8d7aa",
+      "revId": "b32ccbb66bb16965ecb8b4e266c4e45186636c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

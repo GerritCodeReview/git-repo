@@ -34,6 +34,24 @@
       "parentUuid": "3e456052_38704f92",
       "revId": "678d0ed2e3471b861919ac63bd7a7c31020865a0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dbd031b_0748f89f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-11-01T16:15:22Z",
+      "side": 1,
+      "message": "To be sure, I\u0027m not optimizing for performance. I\u0027m optimizing for reduced complexity (per the description), replacing loads of state with a simple expression. I believe this functional approach, while a little magical, is more direct and ultimately more readable (as readers become familiar with the concept). I\u0027m less concerned about it being one line than being one _expression_ and avoiding mutable state.\n\nI\u0027d be almost as happy with something like:\n\n```python\nhours_str \u003d f\u0027{hours}h\u0027*bool(hours)\nminutes_str \u003d f\u0027{minutes}m\u0027*bool(mins)\nseconds_str \u003d f\u0027{seconds}s\u0027\nreturn hours_str + minutes_str + seconds_str\n```\n\nI just think these expressions are small enough to warrant collapsing into a single expression.\n\n\u003e i might be amenable to changing duration_str by leaving a short comment on the uncommon bool logic style, but i don\u0027t think elapsed_str is salvageable.\n\nSince you\u0027re reluctant, I was intending to just abandon it, but since you\u0027re warming up to the idea, let me try something I think you\u0027ll like better. This latest patchset still constructs the string in lexical order, avoids boolean algebra in favor of a ternary expression, and still avoids branching and mutated variables.\n\nLet me know what you think.",
+      "parentUuid": "ec4db8ab_22c1e51e",
+      "revId": "678d0ed2e3471b861919ac63bd7a7c31020865a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
