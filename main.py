@@ -48,6 +48,7 @@ from error import DownloadError
 from error import GitcUnsupportedError
 from error import InvalidProjectGroupsError
 from error import ManifestInvalidRevisionError
+from error import ManifestParseError
 from error import NoManifestException
 from error import NoSuchProjectError
 from error import RepoChangedException
@@ -439,6 +440,7 @@ class _Repo:
         except (
             DownloadError,
             ManifestInvalidRevisionError,
+            ManifestParseError,
             NoManifestException,
         ) as e:
             logger.error("error: in `%s`: %s", " ".join([name] + argv), e)
