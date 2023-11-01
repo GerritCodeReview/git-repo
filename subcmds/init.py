@@ -353,7 +353,7 @@ to update the working directory files.
             wrapper = Wrapper()
             try:
                 remote_ref, rev = wrapper.check_repo_rev(
-                    rp.gitdir,
+                    rp.worktree,
                     opt.repo_rev,
                     repo_verify=opt.repo_verify,
                     quiet=opt.quiet,
