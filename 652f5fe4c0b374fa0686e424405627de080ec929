@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efe12163_b151a346",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-11-01T16:21:24Z",
+      "side": 1,
+      "message": "Well shoot. While I was working on a base change, I forgot to pull the suggested edits into my clone and stomped them with the latest patchset.",
+      "revId": "652f5fe4c0b374fa0686e424405627de080ec929",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
