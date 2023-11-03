@@ -1363,13 +1363,9 @@ def _Version():
     print(f"git {ParseGitVersion().full}")
     print(f"Python {sys.version}")
     uname = platform.uname()
-    if sys.version_info.major < 3:
-        # Python 3 returns a named tuple, but Python 2 is simpler.
-        print(uname)
-    else:
-        print(f"OS {uname.system} {uname.release} ({uname.version})")
-        processor = uname.processor if uname.processor else "unknown"
-        print(f"CPU {uname.machine} ({processor})")
+    print(f"OS {uname.system} {uname.release} ({uname.version})")
+    processor = uname.processor if uname.processor else "unknown"
+    print(f"CPU {uname.machine} ({processor})")
     print("Bug reports:", BUG_URL)
     sys.exit(0)
 
