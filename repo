@@ -79,7 +79,7 @@ def check_python_version():
     major = ver.major
     minor = ver.minor
 
-    # Try to re-exec the version specific Python 3 if needed.
+    # Try to re-exec the version specific Python if needed.
     if (major, minor) < MIN_PYTHON_VERSION_SOFT:
         # Python makes releases ~once a year, so try our min version +10 to help
         # bridge the gap.  This is the fallback anyways so perf isn't critical.
@@ -96,36 +96,10 @@ def check_python_version():
                 break
             reexec(f"python{min_major}.{min_minor - inc}")
 
-        # Try the generic Python 3 wrapper, but only if it's new enough.  If it
-        # isn't, we want to just give up below and make the user resolve things.
-        try:
-            proc = subprocess.Popen(
-                [
-                    "python3",
-                    "-c",
-                    "import sys; "
-                    "print(sys.version_info.major, sys.version_info.minor)",
-                ],
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-            )
-            (output, _) = proc.communicate()
-            python3_ver = tuple(int(x) for x in output.decode("utf-8").split())
-        except (OSError, subprocess.CalledProcessError):
-            python3_ver = None
-
-        # If the python3 version looks like it's new enough, give it a try.
-        if (
-            python3_ver
-            and python3_ver >= MIN_PYTHON_VERSION_HARD
-            and python3_ver != (major, minor)
-        ):
-            reexec("python3")
-
         # We're still here, so diagnose things for the user.
         if (major, minor) < MIN_PYTHON_VERSION_HARD:
             print(
-                "repo: error: Python 3 version is too old; "
+                "repo: error: Python version is too old; "
                 "Please use Python {}.{} or newer.".format(
                     *MIN_PYTHON_VERSION_HARD
                 ),
