@@ -1245,7 +1245,6 @@ class Requirements:
             with open(path, "rb") as f:
                 data = f.read()
         except OSError:
-            # NB: EnvironmentError is used for Python 2 & 3 compatibility.
             # If we couldn't open the file, assume it's an old source tree.
             return None
 
