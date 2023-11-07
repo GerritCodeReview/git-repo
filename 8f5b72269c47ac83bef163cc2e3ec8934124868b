@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b65b25f3_f69ca933",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "please add typing info, and all new funcs should have a docstring (at least a short one-liner)",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58c2528f_8f3548a0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "```suggestion\n    # Check if our URL is missing a schema and conforms to the\n```\n\ncomments are full sentences",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53aa0d93_3fec85a9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "```suggestion\n    # SCP-like syntax for git (e.g. git@github.com:foo/bar) and\n```\n\nlet\u0027s link to the manual for reference here:\nhttps://git-scm.com/docs/git-clone#URLS",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "503ca7ea_ceacf992",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "```suggestion\n    # convert it so that urljoin is happier.\n```\n\ncomments are full sentences, so period at the end",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b091be6_184967ed",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "pythonic is testing truthiness, so `not parsed_url.scheme`\n\nthe regex would be good to pull out at least to a constant in the func so we can document that specifically independent of other logic.  i\u0027m on the fence about a module constant + re.compile.  i\u0027ll leave it to you :p.",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e5346d7_4b91c03e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "i don\u0027t think the trailing `.+` is necessary here.  the `+` def isn\u0027t, but i think it\u0027s fine to match just a single `/` and leave it at that.",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40d296b9_968e0dfd",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "this comment is largely obsolete now.  normalize_url will handle the scp-like forms which are hostnames:ports.  the only thing it doesn\u0027t handle are file paths that lack `file://`.",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82bf9b4c_64285302",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T20:20:08Z",
+      "side": 1,
+      "message": "this func needs a docstring that explains these paths are treated as files even though they look like URIs because that\u0027s how git behaves, so we don\u0027t want to auto-add any schema",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
