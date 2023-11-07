@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b5d6ab6_59834bd9",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b65b25f3_f69ca933",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58c2528f_8f3548a0",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-11-07T20:20:08Z",
       "side": 1,
       "message": "```suggestion\n    # Check if our URL is missing a schema and conforms to the\n```\n\ncomments are full sentences",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6385e54f_f80c6f8e",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58c2528f_8f3548a0",
       "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9fccb8f_b25e1db0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "53aa0d93_3fec85a9",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "503ca7ea_ceacf992",
@@ -65,6 +119,24 @@
       "writtenOn": "2023-11-07T20:20:08Z",
       "side": 1,
       "message": "```suggestion\n    # convert it so that urljoin is happier.\n```\n\ncomments are full sentences, so period at the end",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95ad4326_6fb8a398",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "503ca7ea_ceacf992",
       "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -103,6 +175,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b63f6533_c8eabec8",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "I\u0027m fine either way on this, I\u0027ll just drop the extra bit.",
+      "parentUuid": "7e5346d7_4b91c03e",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "572fe791_54dad99a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b091be6_184967ed",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "40d296b9_968e0dfd",
@@ -120,6 +228,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "621b7cad_781e1a29",
+        "filename": "manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40d296b9_968e0dfd",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82bf9b4c_64285302",
@@ -133,6 +259,24 @@
       "writtenOn": "2023-11-07T20:20:08Z",
       "side": 1,
       "message": "this func needs a docstring that explains these paths are treated as files even though they look like URIs because that\u0027s how git behaves, so we don\u0027t want to auto-add any schema",
+      "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfbbedd8_7eb32467",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 10
+      },
+      "lineNbr": 1142,
+      "author": {
+        "id": 1091855
+      },
+      "writtenOn": "2023-11-07T20:54:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82bf9b4c_64285302",
       "revId": "8f5b72269c47ac83bef163cc2e3ec8934124868b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
