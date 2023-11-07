@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a287a38_ec738ed7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-07T22:01:49Z",
+      "side": 1,
+      "message": "```suggestion\ndef normalize_url(url: str) -\u003e str:\n```",
+      "revId": "a7f29a3f3427e397a92bc948ad1b79de3dac4d72",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
