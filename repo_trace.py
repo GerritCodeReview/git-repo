@@ -87,7 +87,10 @@ class Trace(contextlib.ContextDecorator):
         """
         if not IsTrace():
             return
-        self._trace_msg = fmt % args
+        if args:
+            self._trace_msg = fmt % args
+        else:
+            self._trace_msg = fmt
 
         if not _TRACE_FILE:
             _SetTraceFile(quiet)
