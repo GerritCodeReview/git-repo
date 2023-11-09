@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6f304f1_6ac511f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-09T07:34:09Z",
+      "side": 1,
+      "message": "this isn\u0027t really specific to f-strings.  any time we display user/dynamic content as the first arg, we\u0027d run into this.  it\u0027s why some code does things like `...(\"%s\", foo)`.",
+      "revId": "f19ac480bf7655e8424f073d68bfaa93f4128cd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe5c69c_4ca990d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-09T07:34:09Z",
+      "side": 1,
+      "message": "i thought i pointed this out during review of these modules, but i guess that feedback was lost in the process",
+      "revId": "f19ac480bf7655e8424f073d68bfaa93f4128cd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f7a4b8f_0fbb47fb",
+        "filename": "repo_trace.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-09T07:34:09Z",
+      "side": 1,
+      "message": "add a comment here that this replicates standard logging module behavior where it doesn\u0027t expand args if there aren\u0027t any",
+      "revId": "f19ac480bf7655e8424f073d68bfaa93f4128cd8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
