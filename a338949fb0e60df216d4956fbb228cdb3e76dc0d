@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d23f536e_e841c511",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1133306
+      },
+      "writtenOn": "2023-11-09T18:44:20Z",
+      "side": 1,
+      "message": "Good catch.  Note that `MAX_SUBMANIFEST_DEPTH \u003d 8`, at the top of this file.",
+      "revId": "a338949fb0e60df216d4956fbb228cdb3e76dc0d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
