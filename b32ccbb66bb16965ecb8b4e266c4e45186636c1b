@@ -34,6 +34,24 @@
       "parentUuid": "a5bfdca1_2dd8d7aa",
       "revId": "b32ccbb66bb16965ecb8b4e266c4e45186636c1b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef7d973f_507c4021",
+        "filename": "progress.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-09T09:42:36Z",
+      "side": 0,
+      "message": "by that logic, all comments are redundant because we have the code, and the code is the documentation\n\nthe leading zeros \u0026 hour prefix was to show that the format was intentional.  we don\u0027t want to display `01:30` for 1.5 minutes, we want `1:30`.  and we don\u0027t want to display `1:1:30` for 1 hour 1.5 minutes.",
+      "parentUuid": "fce8b6d2_2a9e9188",
+      "revId": "b32ccbb66bb16965ecb8b4e266c4e45186636c1b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7148480_6947d890",
+        "filename": "progress.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-09T09:42:36Z",
+      "side": 1,
+      "message": "```suggestion\n    # Uses (bool(var) * \u0027str\u0027) to render the string only when non-zero.\n```\n\ncomments are full sentences",
+      "revId": "83a179f8f7ebe16ee1327b267f84c82befda4c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2815ca0d_6f7b7072",
+        "filename": "progress.py",
+        "patchSetId": 20
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-09T09:42:36Z",
+      "side": 1,
+      "message": "```suggestion\n    return (\n        # Show leading zeros if over an hour.\n        (f\"{hours}:{mins:\u003e02d}:\" if hours else f\"{mins}:\")\n        + f\"{int(secs):\u003e02d}\"\n    )\n```\n\nif you want to inline \u0026 elide `pre`.  i\u0027m fine either way.",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 36
+      },
+      "revId": "83a179f8f7ebe16ee1327b267f84c82befda4c6f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

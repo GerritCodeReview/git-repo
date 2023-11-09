@@ -52,6 +52,24 @@
       "parentUuid": "ec4db8ab_22c1e51e",
       "revId": "678d0ed2e3471b861919ac63bd7a7c31020865a0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f87f9cf1_0a63e888",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-11-09T09:42:36Z",
+      "side": 1,
+      "message": "i know perf isn\u0027t the goal.  i\u0027m saying that\u0027s one of the few cases where we might accept uncommon or hard to read code. \n\nGoogle has styleguides.  the point of styleguides isn\u0027t to minimize LoC or number of bytes, it\u0027s to focus on long term maintainability.  using uncommon constructs like you\u0027ve done here goes against that.  the tott article you quoted even supports my point: uncommon constructs increases cognitive load in order to process \u0026 understand them.  just because it\u0027s fewer LoC doesn\u0027t mean it\u0027s simpler or that it\u0027s easier to read \u0026 comprehend.\n\n\u003e as readers become familiar with the concept\n\nthis would require the concept be applicable enough to show up in widespread practice.  while i won\u0027t claim to have read the full-breadth of Python code in the world, having worked on it for over a decade now at Google, this is the first time i\u0027ve seen this construct.  and i\u0027m having a hard time thinking back and finding opportunities to use it more often.  especially when i compare it to learning other Pythonic styles that i actively see \u0026 migrate \u0026 remember \u0026 show others in code reviews.\n\ni\u0027m fine with the revised `elapsed_str` form",
+      "parentUuid": "4dbd031b_0748f89f",
+      "revId": "678d0ed2e3471b861919ac63bd7a7c31020865a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
