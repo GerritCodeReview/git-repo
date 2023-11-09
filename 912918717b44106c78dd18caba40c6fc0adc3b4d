@@ -16,6 +16,24 @@
       "message": "The diff looks good. I\u0027m bummed there doesn\u0027t appear to be a good way to ensure the behavior with that config via tests, but I think that\u0027s something we can open a bug around with git-repo folks instead of you having to spend a bunch of time devising a way to do it.",
       "revId": "912918717b44106c78dd18caba40c6fc0adc3b4d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcd81460_67646842",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1167921
+      },
+      "writtenOn": "2023-11-09T21:22:47Z",
+      "side": 1,
+      "message": "I did some more investigation and determined that the reason that go/grev/390214 doesn\u0027t fail, at least for `_Fetch`, is that some of the tests that cover `_Fetch` mock `GitCommand` (bypass invoking git) and the two that don\u0027t (`test_superproject_get_superproject_invalid_branch` and `test_superproject_get_superproject_invalid_url`) are expecting failure. `_LsTree` is unconditionally mocked (never tested). I\u0027ve confirmed that applying that change does in fact trigger the \"cannot use bare repository\" error, but it\u0027s not surfaced because the tests are expecting a failure and don\u0027t recognize the unexpected failure.\n\nIn order to accurately capture the missed expectation in a test, we\u0027d need a way to invoke `_Fetch` (or maybe `_LsTree`) in unit tests that\u0027s not expected to fail and to do that without mocking `GitCommand`.\n\nFetch is harder because it requires a remote... but maybe LsTree could be tested. Currently, LsTree is not tested at all (always mocked). Maybe someone on the Repo team could come up with two tests that invokes _Fetch and _LsTree without mocking the git invocation.",
+      "parentUuid": "8699e151_6263ed28",
+      "revId": "912918717b44106c78dd18caba40c6fc0adc3b4d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
