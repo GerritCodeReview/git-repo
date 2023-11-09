@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a411c26_c189b2d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2023-11-09T20:44:43Z",
+      "side": 1,
+      "message": "Nit: Could use a little bit more in this commit message, at very least mentioning that safe.bareRepository is a Git config (not a repo config or some other config somewhere else).",
+      "revId": "b076d97ffe78c9c9a0a367c62a9580557ed9cce5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c91539ce_51611523",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088094
+      },
+      "writtenOn": "2023-11-09T20:44:43Z",
+      "side": 1,
+      "message": "Nice find. I like this change, but since it\u0027s so subtle, I\u0027d really like to see more explanation in the commit message.",
+      "revId": "b076d97ffe78c9c9a0a367c62a9580557ed9cce5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
