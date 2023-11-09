@@ -305,7 +305,7 @@ class _XmlSubmanifest:
             parent.repodir,
             linkFile,
             parent_groups=",".join(groups) or "",
-            submanifest_path=self.relpath,
+            submanifest_path=os.path.join(parent.path_prefix, self.relpath),
             outer_client=outer_client,
             default_groups=default_groups,
         )
