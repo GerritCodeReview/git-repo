@@ -16,6 +16,29 @@
       "message": "Hello. I noticed that we were not getting very good error messages since version 2.37 in some cases when we had an error in our manifest file. It looks like it is a fairly trivial fix to improve this. It looks like you are the maintainer of repo_logging.py from the history in git. If you are not the right person to review feel free to add somebody else or let me know who can review.",
       "revId": "04d312b6e1b6b67df8a3844e8166a5aa25df052e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0cedfb4_d821377d",
+        "filename": "repo_logging.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1162195
+      },
+      "writtenOn": "2023-11-10T22:19:15Z",
+      "side": 1,
+      "message": "This broke the unit test because it was expecting just this on the line. In patchset #2 I moved the logging of the error string to a separate self.error call to fix this.",
+      "range": {
+        "startLine": 79,
+        "startChar": 47,
+        "endLine": 79,
+        "endChar": 53
+      },
+      "revId": "04d312b6e1b6b67df8a3844e8166a5aa25df052e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
