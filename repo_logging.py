@@ -77,6 +77,7 @@ class RepoLogger(logging.Logger):
 
         if not err.aggregate_errors:
             self.error("Repo command failed: %s", type(err).__name__)
+            self.error("\t%s", str(err))
             return
 
         self.error(
