@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eea2ae4d_ef6840cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1162195
+      },
+      "writtenOn": "2023-11-10T22:02:34Z",
+      "side": 1,
+      "message": "Hello. I noticed that we were not getting very good error messages since version 2.37 in some cases when we had an error in our manifest file. It looks like it is a fairly trivial fix to improve this. It looks like you are the maintainer of repo_logging.py from the history in git. If you are not the right person to review feel free to add somebody else or let me know who can review.",
+      "revId": "04d312b6e1b6b67df8a3844e8166a5aa25df052e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
