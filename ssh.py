@@ -57,8 +57,12 @@ def version():
     except FileNotFoundError:
         print("fatal: ssh not installed", file=sys.stderr)
         sys.exit(1)
-    except subprocess.CalledProcessError:
-        print("fatal: unable to detect ssh version", file=sys.stderr)
+    except subprocess.CalledProcessError as e:
+        print(
+            "fatal: unable to detect ssh version"
+            f" (code={e.returncode}, output={e.stdout})",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
 
