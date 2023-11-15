@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4782f857_6a0d82d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1169420
+      },
+      "writtenOn": "2023-11-15T03:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00e3205a_268fc1af",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a76803ca_f9dc2f0d",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-10-30T10:58:51Z",
       "side": 1,
       "message": "need to update this",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c6a24cf_c89c1d75",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1169420
+      },
+      "writtenOn": "2023-11-15T03:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a76803ca_f9dc2f0d",
       "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -69,6 +105,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4596c7f_dc775961",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1169420
+      },
+      "writtenOn": "2023-11-15T03:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "00ecab45_0e14b95d",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5250f60c_8c8e87b4",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 1530,
+      "author": {
+        "id": 1169420
+      },
+      "writtenOn": "2023-11-15T03:15:17Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "8aa087cb_f5202b6c",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "601d3ca5_c0dd69e6",
@@ -82,6 +154,24 @@
       "writtenOn": "2023-10-30T10:58:51Z",
       "side": 1,
       "message": "`PYTHONPATH` is not guaranteed to be set in the env, so accessing like this will crash",
+      "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62fd704c_5b060d6b",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 1531,
+      "author": {
+        "id": 1169420
+      },
+      "writtenOn": "2023-11-15T03:15:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "601d3ca5_c0dd69e6",
       "revId": "6175a3e5bf101c623c4c0f3814b2cd5dd03f5710",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
