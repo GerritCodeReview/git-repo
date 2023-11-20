@@ -16,6 +16,24 @@
       "message": "please add an explanation of how this can happen.  i\u0027m guessing this really only shows up for `--standalone-manifest`.\n\na unittest would be nice, but if we don\u0027t have that coverage, then leaving a comment in the code would help too -- \"the manifest might not have a merge branch if it isn\u0027t in a git repo, e.g. --standalone-manifest\".",
       "revId": "52e5b8fa3a6428dc0fced6c6e8e2410761969602",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d4b89f2_caaa2a25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-11-20T19:22:33Z",
+      "side": 1,
+      "message": "Updated commit message \u0026 added a comment in the file. Afaict, there\u0027s no coverage for info subcmd.",
+      "parentUuid": "986a926b_a886fa85",
+      "revId": "52e5b8fa3a6428dc0fced6c6e8e2410761969602",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
