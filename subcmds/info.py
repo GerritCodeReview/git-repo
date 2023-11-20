@@ -97,7 +97,9 @@ class Info(PagedCommand):
             self.headtext(self.manifest.default.revisionExpr)
         self.out.nl()
         self.heading("Manifest merge branch: ")
-        self.headtext(mergeBranch)
+        # The manifest might not have a merge branch if it isn't in a git repo,
+        # e.g. if `repo init --standalone-manifest` is used.
+        self.headtext(mergeBranch or "")
         self.out.nl()
         self.heading("Manifest groups: ")
         self.headtext(manifestGroups)
