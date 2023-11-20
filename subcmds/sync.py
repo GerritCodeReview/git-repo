@@ -978,6 +978,10 @@ later is required to fix a server side protocol bug.
                 syncbuf, force_sync=force_sync, errors=errors
             )
             success = syncbuf.Finish()
+        except IOError as e:
+            logger.error(
+                "Cannot checkout %s: %s", project.name, str(e)
+            )
         except GitError as e:
             logger.error(
                 "error.GitError: Cannot checkout %s: %s", project.name, e

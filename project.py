@@ -454,22 +454,34 @@ class _LinkFile:
 
     def __linkIt(self, relSrc, absDest):
         # Link file if it does not exist or is out of date.
-        if not platform_utils.islink(absDest) or (
+        if platform_utils.islink(absDest) and (
             platform_utils.readlink(absDest) != relSrc
         ):
+            return
+        if os.path.lexists(absDest):
             try:
                 # Remove existing file first, since it might be read-only.
-                if os.path.lexists(absDest):
-                    platform_utils.remove(absDest)
-                else:
-                    dest_dir = os.path.dirname(absDest)
-                    if not platform_utils.isdir(dest_dir):
-                        os.makedirs(dest_dir)
-                platform_utils.symlink(relSrc, absDest)
-            except OSError:
-                logger.error(
-                    "error: Cannot link file %s to %s", relSrc, absDest
-                )
+                platform_utils.remove(absDest)
+            except IOError as ex:
+                _error("Cannot remove file %s in preparation for creating link file "
+                    "from %s to %s. Error: %s", absDest, relSrc, absDest, ex)
+                raise
+        else:
+            dest_dir = os.path.dirname(absDest)
+            if not platform_utils.isdir(dest_dir):
+                try:
+                    os.makedirs(dest_dir)
+                except IOError as ex:
+                    _error("Cannot create parent directory for %s when creating link "
+                        "from %s to %s. Error: %s", dest_dir, relSrc, absDest, ex)
+                    raise
+        try:
+            platform_utils.symlink(relSrc, absDest)
+        except OSError as ex:
+            logger.error(
+                "error: Cannot link file %s to %s: %s", relSrc, absDest, ex
+            )
+            raise
 
     def _Link(self):
         """Link the self.src & self.dest paths.
