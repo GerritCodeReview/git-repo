@@ -16,6 +16,24 @@
       "message": "```suggestion\n            f\" (code\u003d{e.returncode}, output\u003d{e.stdout})\",\n```\n\n`.output` is a deprecated alias for `.stdout`",
       "revId": "7f3fffbc2134896a3c94b3a55c878e96c0872373",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4844acfa_9dc92e78",
+        "filename": "ssh.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2023-11-21T08:05:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2dceb06_e0e40496",
+      "revId": "7f3fffbc2134896a3c94b3a55c878e96c0872373",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
