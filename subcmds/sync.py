@@ -14,6 +14,7 @@
 
 import collections
 import functools
+from hooks import RepoHook
 import http.cookiejar as cookielib
 import io
 import json
@@ -515,6 +516,7 @@ later is required to fix a server side protocol bug.
             action="store_true",
             help=optparse.SUPPRESS_HELP,
         )
+        RepoHook.AddOptionGroup(p, "post-sync")
 
     def _GetBranch(self, manifest_project):
         """Returns the branch name for getting the approved smartsync manifest.
@@ -1849,6 +1851,18 @@ later is required to fix a server side protocol bug.
                 "warning: Partial syncs are not supported. For the best "
                 "experience, sync the entire tree."
             )
+
+        hook = RepoHook.FromSubcmd(
+            hook_type="post-sync",
+            manifest=manifest,
+            opt=opt,
+            abort_if_user_denies=True,
+        )
+
+        if not hook.Run(
+                project_list=all_projects, worktree_list=manifest.manifestProject.worktree
+            ):
+            logger.error("Post sync script failed")
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
