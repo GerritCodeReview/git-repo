@@ -2011,7 +2011,7 @@ class LocalSyncState:
         delete = set()
         for path in self._state:
             gitdir = os.path.join(self._manifest.topdir, path, ".git")
-            if not os.path.exists(gitdir):
+            if not os.path.exists(gitdir) or os.path.islink(gitdir):
                 delete.add(path)
         if not delete:
             return
