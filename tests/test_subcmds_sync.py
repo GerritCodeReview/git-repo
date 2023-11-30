@@ -265,6 +265,44 @@ class LocalSyncState(unittest.TestCase):
         self.assertIsNone(self.state.GetFetchTime(projA))
         self.assertEqual(self.state.GetFetchTime(projB), 7)
 
+    def test_prune_removed_and_symlinked_projects(self):
+        """Removed projects that still exists on disk as symlink are pruned."""
+        with open(self.state._path, "w") as f:
+            f.write(
+                """
+            {
+              "projA": {
+                "last_fetch": 5
+              },
+              "projB": {
+                "last_fetch": 7
+              }
+            }
+            """
+            )
+
+        def mock_exists(path):
+            return True
+        
+        def mock_islink(path):
+            if "projB" in path:
+                return True
+            return False
+
+        projA = mock.MagicMock(relpath="projA")
+        projB = mock.MagicMock(relpath="projB")
+        self.state = self._new_state()
+        self.assertEqual(self.state.GetFetchTime(projA), 5)
+        self.assertEqual(self.state.GetFetchTime(projB), 7)
+        with mock.patch("os.path.exists", side_effect=mock_exists):
+            with mock.patch("os.path.islink", side_effect=mock_islink):
+                self.state.PruneRemovedProjects()
+        self.assertIsNone(self.state.GetFetchTime(projB))
+
+        self.state = self._new_state()
+        self.assertIsNone(self.state.GetFetchTime(projB))
+        self.assertEqual(self.state.GetFetchTime(projA), 5)
+
 
 class GetPreciousObjectsState(unittest.TestCase):
     """Tests for _GetPreciousObjectsState."""
