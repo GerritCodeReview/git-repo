@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30f957a_90699c35",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2008,
+      "author": {
+        "id": 3151240
+      },
+      "writtenOn": "2023-11-30T20:49:37Z",
+      "side": 1,
+      "message": "I\u0027d rather keep this change specifically scoped to b/314161804 if that\u0027s ok with you?",
+      "parentUuid": "dc0dece8_3ee1561b",
+      "range": {
+        "startLine": 2008,
+        "startChar": 18,
+        "endLine": 2008,
+        "endChar": 31
+      },
+      "revId": "ec2247179328adf82663e4f4eacb772e34e9a2f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f6fff1c_d845daae",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-11-30T20:37:21Z",
       "side": 1,
       "message": "You\u0027ll want to format this file with black by running `tox -e format` (or just delete this whitespace)",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 286,
+        "endChar": 8
+      },
+      "revId": "ec2247179328adf82663e4f4eacb772e34e9a2f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a15b006e_7d9c9af9",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 3151240
+      },
+      "writtenOn": "2023-11-30T20:49:37Z",
+      "side": 1,
+      "message": "Shoot, I thought I had done that already, thanks!",
+      "parentUuid": "0f6fff1c_d845daae",
       "range": {
         "startLine": 286,
         "startChar": 0,
