@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc0dece8_3ee1561b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 2008,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-11-30T20:37:21Z",
+      "side": 1,
+      "message": "```suggestion\n        \"\"\"Remove entries that don\u0027t exist on disk and save.\"\"\"\n```",
+      "range": {
+        "startLine": 2008,
+        "startChar": 18,
+        "endLine": 2008,
+        "endChar": 31
+      },
+      "revId": "ec2247179328adf82663e4f4eacb772e34e9a2f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f6fff1c_d845daae",
+        "filename": "tests/test_subcmds_sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2023-11-30T20:37:21Z",
+      "side": 1,
+      "message": "You\u0027ll want to format this file with black by running `tox -e format` (or just delete this whitespace)",
+      "range": {
+        "startLine": 286,
+        "startChar": 0,
+        "endLine": 286,
+        "endChar": 8
+      },
+      "revId": "ec2247179328adf82663e4f4eacb772e34e9a2f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
