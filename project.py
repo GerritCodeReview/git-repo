@@ -1277,7 +1277,20 @@ class Project:
         if is_new:
             self._InitGitDir(force_sync=force_sync, quiet=quiet)
         else:
-            self._UpdateHooks(quiet=quiet)
+            try:
+                # At this point, it's possible that gitdir points to an old objdir
+                # (e.g. name changed, but objdir exists). Check references to
+                # ensure that's not the case. See
+                # https://issues.gerritcodereview.com/issues/40013418? for more
+                # details.
+                self._CheckDirReference(self.objdir, self.gitdir)
+
+                self._UpdateHooks(quiet=quiet)
+            except GitError as e:
+                if not force_sync:
+                    raise e
+                # Let _InitGitDir fix the issue, force_sync is always True here.
+                self._InitGitDir(force_sync=True, quiet=quiet)
         self._InitRemote()
 
         if self.UseAlternates:
