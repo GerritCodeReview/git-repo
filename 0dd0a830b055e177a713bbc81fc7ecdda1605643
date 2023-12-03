@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d155cbd_4dc45121",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3162165
+      },
+      "writtenOn": "2023-12-03T12:52:20Z",
+      "side": 1,
+      "message": "repo.joseh./repo syn",
+      "revId": "0dd0a830b055e177a713bbc81fc7ecdda1605643",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
