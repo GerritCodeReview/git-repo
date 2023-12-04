@@ -86,6 +86,24 @@
       "message": "I don\u0027t have permission.",
       "revId": "5e7304bfba4673c120dd81b0db0497a76ef1d686",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc91fb65_2a27f385",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-04T14:11:17Z",
+      "side": 1,
+      "message": "you don\u0027t have permission for what ?",
+      "parentUuid": "c290a8ca_bf831d24",
+      "revId": "5e7304bfba4673c120dd81b0db0497a76ef1d686",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
