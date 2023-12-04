@@ -51,6 +51,24 @@
       "message": "Who can submit this?",
       "revId": "5e7304bfba4673c120dd81b0db0497a76ef1d686",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b502cb21_55826df8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-04T06:35:38Z",
+      "side": 1,
+      "message": "the expectation is that you (CL author) do it:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/SUBMITTING_PATCHES.md#cq",
+      "parentUuid": "7ebe4a2c_8f9158ee",
+      "revId": "5e7304bfba4673c120dd81b0db0497a76ef1d686",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
