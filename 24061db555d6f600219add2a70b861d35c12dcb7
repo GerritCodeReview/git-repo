@@ -50,6 +50,24 @@
       "message": "```\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d 250 passed, 4 deselected in 4.10s \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nwould reformat /b/s/w/ir/x/w/git-repo/subcmds/sync.py\nwould reformat /b/s/w/ir/x/w/git-repo/project.py\n```",
       "revId": "24061db555d6f600219add2a70b861d35c12dcb7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3779eec_974ad7c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1076093
+      },
+      "writtenOn": "2023-12-08T22:58:25Z",
+      "side": 1,
+      "message": "I see it now, let me figure out how to get the correct formatting. It\u0027s not as easy as clang-format built into AOSP gerrit...",
+      "parentUuid": "7960f8f6_97aca87f",
+      "revId": "24061db555d6f600219add2a70b861d35c12dcb7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
