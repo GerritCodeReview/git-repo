@@ -33,6 +33,23 @@
       "message": "fix for tests: http://go/grev/396921. I\u0027ll cq+2 this one once the fix lands",
       "revId": "24061db555d6f600219add2a70b861d35c12dcb7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7960f8f6_97aca87f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2023-12-08T22:57:24Z",
+      "side": 1,
+      "message": "```\n\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d 250 passed, 4 deselected in 4.10s \u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\u003d\nwould reformat /b/s/w/ir/x/w/git-repo/subcmds/sync.py\nwould reformat /b/s/w/ir/x/w/git-repo/project.py\n```",
+      "revId": "24061db555d6f600219add2a70b861d35c12dcb7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
