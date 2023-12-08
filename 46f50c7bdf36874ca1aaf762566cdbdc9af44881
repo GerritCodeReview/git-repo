@@ -92,6 +92,30 @@
       },
       "revId": "46f50c7bdf36874ca1aaf762566cdbdc9af44881",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac67d64a_578fddaa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 1076093
+      },
+      "writtenOn": "2023-12-08T22:24:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09b42ec7_2ffa6ad6",
+      "range": {
+        "startLine": 965,
+        "startChar": 11,
+        "endLine": 967,
+        "endChar": 16
+      },
+      "revId": "46f50c7bdf36874ca1aaf762566cdbdc9af44881",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
