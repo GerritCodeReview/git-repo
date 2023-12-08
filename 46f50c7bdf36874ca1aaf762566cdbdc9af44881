@@ -34,6 +34,46 @@
       "parentUuid": "29426d68_ca08baa9",
       "revId": "46f50c7bdf36874ca1aaf762566cdbdc9af44881",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f7248e_a1370336",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2023-12-08T22:22:20Z",
+      "side": 1,
+      "message": "+sokcevic@ for a second opinion.\n\nThe bug description sounds reasonable. WDYT?",
+      "revId": "46f50c7bdf36874ca1aaf762566cdbdc9af44881",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09b42ec7_2ffa6ad6",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2023-12-08T22:22:20Z",
+      "side": 1,
+      "message": "Please add an entry for `verbose`",
+      "range": {
+        "startLine": 965,
+        "startChar": 11,
+        "endLine": 967,
+        "endChar": 16
+      },
+      "revId": "46f50c7bdf36874ca1aaf762566cdbdc9af44881",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
