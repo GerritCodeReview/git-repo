@@ -1467,7 +1467,12 @@ class Project:
         self.revisionId = revisionId
 
     def Sync_LocalHalf(
-        self, syncbuf, force_sync=False, submodules=False, errors=None
+        self,
+        syncbuf,
+        force_sync=False,
+        submodules=False,
+        errors=None,
+        verbose=False,
     ):
         """Perform only the local IO portion of the sync process.
 
@@ -1548,7 +1553,7 @@ class Project:
                     return
             else:
                 lost = self._revlist(not_rev(revid), HEAD)
-                if lost:
+                if lost and verbose:
                     syncbuf.info(self, "discarding %d commits", len(lost))
 
             try:
@@ -1738,7 +1743,7 @@ class Project:
             self.bare_git.rev_parse("FETCH_HEAD"),
         )
 
-    def DeleteWorktree(self, quiet=False, force=False):
+    def DeleteWorktree(self, verbose=False, force=False):
         """Delete the source checkout and any other housekeeping tasks.
 
         This currently leaves behind the internal .repo/ cache state.  This
@@ -1747,7 +1752,7 @@ class Project:
         at some point.
 
         Args:
-            quiet: Whether to hide normal messages.
+            verbose: Whether to show verbose messages.
             force: Always delete tree even if dirty.
 
         Returns:
@@ -1768,7 +1773,7 @@ class Project:
                 logger.error(msg)
                 raise DeleteDirtyWorktreeError(msg, project=self)
 
-        if not quiet:
+        if verbose:
             print(f"{self.RelPath(local=False)}: Deleting obsolete checkout.")
 
         # Unlock and delink from the main worktree.  We don't use git's worktree
@@ -3900,13 +3905,13 @@ class RepoProject(MetaProject):
 class ManifestProject(MetaProject):
     """The MetaProject for manifests."""
 
-    def MetaBranchSwitch(self, submodules=False):
+    def MetaBranchSwitch(self, submodules=False, verbose=False):
         """Prepare for manifest branch switch."""
 
         # detach and delete manifest branch, allowing a new
         # branch to take over
         syncbuf = SyncBuffer(self.config, detach_head=True)
-        self.Sync_LocalHalf(syncbuf, submodules=submodules)
+        self.Sync_LocalHalf(syncbuf, submodules=submodules, verbose=verbose)
         syncbuf.Finish()
 
         return (
@@ -4437,10 +4442,10 @@ class ManifestProject(MetaProject):
                 return False
 
             if manifest_branch:
-                self.MetaBranchSwitch(submodules=submodules)
+                self.MetaBranchSwitch(submodules=submodules, verbose=verbose)
 
             syncbuf = SyncBuffer(self.config)
-            self.Sync_LocalHalf(syncbuf, submodules=submodules)
+            self.Sync_LocalHalf(syncbuf, submodules=submodules, verbose=verbose)
             syncbuf.Finish()
 
             if is_new or self.CurrentBranch is None:
