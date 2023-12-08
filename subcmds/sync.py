@@ -956,7 +956,7 @@ later is required to fix a server side protocol bug.
 
         return _FetchMainResult(all_projects)
 
-    def _CheckoutOne(self, detach_head, force_sync, project):
+    def _CheckoutOne(self, detach_head, force_sync, verbose, project):
         """Checkout work tree for one project
 
         Args:
@@ -975,7 +975,7 @@ later is required to fix a server side protocol bug.
         errors = []
         try:
             project.Sync_LocalHalf(
-                syncbuf, force_sync=force_sync, errors=errors
+                syncbuf, force_sync=force_sync, errors=errors, verbose=verbose
             )
             success = syncbuf.Finish()
         except GitError as e:
@@ -1042,7 +1042,7 @@ later is required to fix a server side protocol bug.
         proc_res = self.ExecuteInParallel(
             opt.jobs_checkout,
             functools.partial(
-                self._CheckoutOne, opt.detach_head, opt.force_sync
+                self._CheckoutOne, opt.detach_head, opt.force_sync, opt.verbose
             ),
             all_projects,
             callback=_ProcessResults,
@@ -1288,7 +1288,7 @@ later is required to fix a server side protocol bug.
                             groups=None,
                         )
                         project.DeleteWorktree(
-                            quiet=opt.quiet, force=opt.force_remove_dirty
+                            verbose=opt.verbose, force=opt.force_remove_dirty
                         )
 
         new_project_paths.sort()
@@ -1533,7 +1533,7 @@ later is required to fix a server side protocol bug.
             syncbuf = SyncBuffer(mp.config)
             start = time.time()
             mp.Sync_LocalHalf(
-                syncbuf, submodules=mp.manifest.HasSubmodules, errors=errors
+                syncbuf, submodules=mp.manifest.HasSubmodules, errors=errors, verbose=opt.verbose
             )
             clean = syncbuf.Finish()
             self.event_log.AddSync(
