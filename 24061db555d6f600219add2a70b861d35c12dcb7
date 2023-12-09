@@ -86,6 +86,24 @@
       "parentUuid": "e3779eec_974ad7c8",
       "revId": "24061db555d6f600219add2a70b861d35c12dcb7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4804813_d3d6c36a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-09T01:25:37Z",
+      "side": 1,
+      "message": "we don\u0027t submit in this repo.  please see our docs:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/SUBMITTING_PATCHES.md#cq",
+      "parentUuid": "be8d02c9_dc55b1f1",
+      "revId": "24061db555d6f600219add2a70b861d35c12dcb7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
