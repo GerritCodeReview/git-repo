@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04f003ce_2a37dcdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-12T20:52:32Z",
+      "side": 1,
+      "message": "we basically can\u0027t win.  we had feedback that some systems only had `python` (as Python 3).  some distros already default `python -\u003e python3` as a symlink.  so we\u0027ll prob just ride it out.",
+      "revId": "6b7eddd920a01622de6f632667766ff9376f2757",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
