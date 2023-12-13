@@ -34,6 +34,24 @@
       "parentUuid": "04f003ce_2a37dcdf",
       "revId": "6b7eddd920a01622de6f632667766ff9376f2757",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92a3a6d2_b2bd2b61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-13T20:22:37Z",
+      "side": 1,
+      "message": "distros that ship a repo package do the modification during install to customize based on their env/configs.  it helps align policy choices.  it doesn\u0027t help if you want to ship a distro-independent wrapper though :/.\n\ni think the automatic re-exec for python3 is still helpful.  it bridges the gap if `python` or `python3` on the system is an older version, but a newer one is installed.  this will be recurring for us as we move Python 3 versions.  we had 3.4, then 3.5, and now 3.6 as the min version.  we won\u0027t be on 3.6 forever.  it might be that right now we\u0027re using 3.6-specific syntax that 3.5 and older don\u0027t recognize, but that isn\u0027t always the case.",
+      "parentUuid": "62ed545f_50ebb21d",
+      "revId": "6b7eddd920a01622de6f632667766ff9376f2757",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
