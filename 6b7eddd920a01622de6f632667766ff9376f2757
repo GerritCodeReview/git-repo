@@ -52,6 +52,24 @@
       "parentUuid": "62ed545f_50ebb21d",
       "revId": "6b7eddd920a01622de6f632667766ff9376f2757",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "516cdaf5_94a0fb12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2023-12-13T20:58:18Z",
+      "side": 1,
+      "message": "That should already be handled by the code on line 84-97. I cannot see that the removed code did anything that isn\u0027t already handled by the code that is left.",
+      "parentUuid": "92a3a6d2_b2bd2b61",
+      "revId": "6b7eddd920a01622de6f632667766ff9376f2757",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
