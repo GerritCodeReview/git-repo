@@ -70,6 +70,24 @@
       "parentUuid": "92a3a6d2_b2bd2b61",
       "revId": "6b7eddd920a01622de6f632667766ff9376f2757",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae93248d_7908cb92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-13T22:18:49Z",
+      "side": 1,
+      "message": "if you ran repo via `python3.4` and `python3` was actually Python-3.6 but there is no `python3.6` installed ...\n\nbut i agree, i haven\u0027t really of this particular edge case, so i\u0027m fine letting it go.",
+      "parentUuid": "516cdaf5_94a0fb12",
+      "revId": "6b7eddd920a01622de6f632667766ff9376f2757",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
