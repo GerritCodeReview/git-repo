@@ -16,6 +16,24 @@
       "message": "It is too long between I work on `git-repo`. Do I need to do anything else to have the patches submitted?",
       "revId": "4b63a08bc4db0d79eb256adae5e33efcc7f8954e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f6c3a40_bf4e65d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-14T17:31:32Z",
+      "side": 1,
+      "message": "we have a CQ now:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/SUBMITTING_PATCHES.md#cq",
+      "parentUuid": "df80b8d1_794cb068",
+      "revId": "4b63a08bc4db0d79eb256adae5e33efcc7f8954e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
