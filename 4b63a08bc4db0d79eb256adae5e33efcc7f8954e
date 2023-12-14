@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df80b8d1_794cb068",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2023-12-14T16:27:34Z",
+      "side": 1,
+      "message": "It is too long between I work on `git-repo`. Do I need to do anything else to have the patches submitted?",
+      "revId": "4b63a08bc4db0d79eb256adae5e33efcc7f8954e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
