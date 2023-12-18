@@ -1139,6 +1139,17 @@ class NormalizeUrlTests(ManifestParseTestCase):
             "http://foo.com/bar/baz", manifest_xml.normalize_url(url)
         )
 
+    def test_has_leading_slash(self):
+        """SCP-like syntax except a / comes before the : which git disallows."""
+        url = "/git@foo.com:bar/baf"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
+        url = "gi/t@foo.com:bar/baf"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
+        url = "git@fo/o.com:bar/baf"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
     def test_has_no_scheme(self):
         """Deal with cases where we have no scheme, but we also
         aren't dealing with the git SCP-like syntax
