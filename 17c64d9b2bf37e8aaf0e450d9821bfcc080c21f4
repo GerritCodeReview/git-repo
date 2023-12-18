@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52bb00b0_f30d7532",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-18T21:50:40Z",
+      "side": 1,
+      "message": "what patch ?  this change, or a diff one ?  normally we say \"this change\" to make it clear.",
+      "revId": "17c64d9b2bf37e8aaf0e450d9821bfcc080c21f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "507095b8_c198937f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-18T21:50:40Z",
+      "side": 1,
+      "message": "are you sure this example is correct ?  pretty sure if you init to `git@github.com:org/manifest.git`, we set that as the remote, and git itself takes care of syncing it.  we don\u0027t turn it into `ssh://`.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 52
+      },
+      "revId": "17c64d9b2bf37e8aaf0e450d9821bfcc080c21f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57cbe458_2908c142",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-18T21:50:40Z",
+      "side": 1,
+      "message": "your patch seems to address this",
+      "revId": "17c64d9b2bf37e8aaf0e450d9821bfcc080c21f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdcc26bd_174aad66",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-18T21:50:40Z",
+      "side": 1,
+      "message": "there\u0027s no point in making it optional.  we only use this regex to check the start of the string.  deleting the last `/` is the same as writing `/?`.\n\n\n```suggestion\n    scp_like_url_re \u003d r\"^[^:]+@[^:]+:[^/]+\"\n```",
+      "revId": "17c64d9b2bf37e8aaf0e450d9821bfcc080c21f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
