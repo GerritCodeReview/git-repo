@@ -1139,6 +1139,9 @@ class NormalizeUrlTests(ManifestParseTestCase):
             "http://foo.com/bar/baz", manifest_xml.normalize_url(url)
         )
 
+        url = "http://foo.com/bar/"
+        self.assertEqual("http://foo.com/bar", manifest_xml.normalize_url(url))
+
     def test_has_no_scheme(self):
         """Deal with cases where we have no scheme, but we also
         aren't dealing with the git SCP-like syntax
@@ -1146,7 +1149,13 @@ class NormalizeUrlTests(ManifestParseTestCase):
         url = "foo.com/baf/bat"
         self.assertEqual(url, manifest_xml.normalize_url(url))
 
+        url = "foo.com/baf"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
         url = "git@foo.com/baf/bat"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
+        url = "git@foo.com/baf"
         self.assertEqual(url, manifest_xml.normalize_url(url))
 
         url = "/file/path/here"
@@ -1156,4 +1165,9 @@ class NormalizeUrlTests(ManifestParseTestCase):
         url = "git@foo.com:bar/baf"
         self.assertEqual(
             "ssh://git@foo.com/bar/baf", manifest_xml.normalize_url(url)
+        )
+
+        url = "git@foo.com:bar/"
+        self.assertEqual(
+            "ssh://git@foo.com/bar", manifest_xml.normalize_url(url)
         )
