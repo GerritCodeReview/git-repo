@@ -134,7 +134,7 @@ def normalize_url(url: str) -> str:
     parsed_url = urllib.parse.urlparse(url)
 
     # This matches patterns like "git@github.com:foo/bar".
-    scp_like_url_re = r"^[^:]+@[^:]+:[^/]+/"
+    scp_like_url_re = r"^[^/:]+@[^/:]+:[^/]+/"
 
     # If our URL is missing a schema and matches git's
     # SCP-like syntax we should convert it to a proper

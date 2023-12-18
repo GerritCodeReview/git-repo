@@ -1157,3 +1157,12 @@ class NormalizeUrlTests(ManifestParseTestCase):
         self.assertEqual(
             "ssh://git@foo.com/bar/baf", manifest_xml.normalize_url(url)
         )
+
+        url = "/git@foo.com:bar/baf"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
+        url = "gi/t@foo.com:bar/baf"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
+
+        url = "git@fo/o.com:bar/baf"
+        self.assertEqual(url, manifest_xml.normalize_url(url))
