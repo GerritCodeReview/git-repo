@@ -288,7 +288,7 @@ class GitCommand:
         gitdir=None,
         objdir=None,
         verify_command=False,
-        add_event_log=True,
+        add_event_log=False,
         log_as_error=True,
     ):
         if project:
