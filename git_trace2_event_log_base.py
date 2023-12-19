@@ -37,6 +37,8 @@ import sys
 import tempfile
 import threading
 
+# Timeout when sending events via socket (applies to connect, send)
+SOCK_TIMEOUT = 0.5  # in seconds
 
 # BaseEventLog __init__ Counter that is consistent within the same process
 p_init_count = 0
@@ -296,6 +298,7 @@ class BaseEventLog:
                     with socket.socket(
                         socket.AF_UNIX, socket.SOCK_STREAM
                     ) as sock:
+                        sock.settimeout(SOCK_TIMEOUT)
                         sock.connect(path)
                         self._WriteLog(sock.sendall)
                     return f"af_unix:stream:{path}"
