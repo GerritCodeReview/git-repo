@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48d877cd_bc239411",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1067044
+      },
+      "writtenOn": "2023-12-19T14:30:15Z",
+      "side": 1,
+      "message": "Before a6413f5d:\n1) git checkout 8c35d948\n2) ./run_tests tests/test_project.py\nResult: 20 passed, 1 warning\n\n\nCurrently in main before the change:\n./run_tests tests/test_project.py\n\nResult:\ngit_command.py:552: GitCommandError\n1 failed, 19 passed",
+      "revId": "25c05c30de7eed69cedc35da0a86d709e1cadbf2",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
