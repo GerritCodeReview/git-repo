@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "710a95c1_bd846f3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-19T18:33:42Z",
+      "side": 1,
+      "message": "you\u0027ll need to rebase as i made a change in the same codepath after i noticed other problems reading your change",
+      "revId": "bed3c37850d19a41dee6f00cf4aa93724cba9943",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66a256c3_b7f04bad",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1192,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2023-12-19T18:33:42Z",
+      "side": 1,
+      "message": "please inline these with the generation above.  that\u0027s the style we\u0027ve used in other tests.\n\n```\nremote \u003d manifest_xml._XmlRemote(...)\nself.assertEqual(..., remote.resolvedFetchUrl)\n\nremote \u003d manifest_xml._XmlRemote(...)\nself.assertEqual(..., remote.resolvedFetchUrl)\n```",
+      "revId": "bed3c37850d19a41dee6f00cf4aa93724cba9943",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
