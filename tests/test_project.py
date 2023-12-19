@@ -72,6 +72,10 @@ class ReviewableBranchTests(unittest.TestCase):
         with TempGitTree() as tempdir:
             fakeproj = FakeProject(tempdir)
 
+            # Configure a user identity.
+            fakeproj.config.SetString("user.name", "Foo Bar")
+            fakeproj.config.SetString("user.email", "foo@bar.baz")
+
             # Generate some commits.
             with open(os.path.join(tempdir, "readme"), "w") as fp:
                 fp.write("txt")
