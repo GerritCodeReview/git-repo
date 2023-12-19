@@ -72,3 +72,12 @@ def tmp_home_dir(monkeypatch, tmp_path_factory):
     the function scope.
     """
     return _set_home(monkeypatch, tmp_path_factory.mktemp("home"))
+
+
+@pytest.fixture(autouse=True)
+def setup_user_identity(monkeysession):
+    """Set env variables for author and committer name and email."""
+    monkeysession.setenv("GIT_AUTHOR_NAME", "Foo Bar")
+    monkeysession.setenv("GIT_COMMITTER_NAME", "Foo Bar")
+    monkeysession.setenv("GIT_AUTHOR_EMAIL", "foo@bar.baz")
+    monkeysession.setenv("GIT_COMMITTER_EMAIL", "foo@bar.baz")
