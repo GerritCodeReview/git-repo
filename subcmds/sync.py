@@ -1544,9 +1544,7 @@ later is required to fix a server side protocol bug.
                 mp, event_log.TASK_SYNC_LOCAL, start, time.time(), clean
             )
             if not clean:
-                raise UpdateManifestError(
-                    aggregate_errors=errors, project=mp.name
-                )
+                raise UpdateManifestError(aggregate_errors=errors)
             self._ReloadManifest(manifest_name, mp.manifest)
 
     def ValidateOptions(self, opt, args):
