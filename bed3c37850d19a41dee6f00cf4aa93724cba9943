@@ -33,6 +33,24 @@
       "message": "please inline these with the generation above.  that\u0027s the style we\u0027ve used in other tests.\n\n```\nremote \u003d manifest_xml._XmlRemote(...)\nself.assertEqual(..., remote.resolvedFetchUrl)\n\nremote \u003d manifest_xml._XmlRemote(...)\nself.assertEqual(..., remote.resolvedFetchUrl)\n```",
       "revId": "bed3c37850d19a41dee6f00cf4aa93724cba9943",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f2e8a42_d3ca4092",
+        "filename": "tests/test_manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1192,
+      "author": {
+        "id": 1067044
+      },
+      "writtenOn": "2023-12-20T07:38:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "66a256c3_b7f04bad",
+      "revId": "bed3c37850d19a41dee6f00cf4aa93724cba9943",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
