@@ -104,6 +104,24 @@
       "message": "```suggestion\n                # https://issues.gerritcodereview.com/40013418 for more\n```",
       "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "796bdde6_5bdb08d8",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-01-03T22:19:22Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "e933a385_74df58c5",
+      "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
