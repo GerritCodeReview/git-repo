@@ -33,6 +33,24 @@
       "message": "ping",
       "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "755f204d_d84749ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-03T20:30:54Z",
+      "side": 1,
+      "message": "you added my `@chromium.org` and Google bans use of that in this host, so i don\u0027t/can\u0027t monitor it",
+      "parentUuid": "920ce042_f4782c52",
+      "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
