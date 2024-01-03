@@ -87,6 +87,23 @@
       "parentUuid": "ca717805_56ff31a7",
       "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e933a385_74df58c5",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1284,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-03T22:18:14Z",
+      "side": 1,
+      "message": "```suggestion\n                # https://issues.gerritcodereview.com/40013418 for more\n```",
+      "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
