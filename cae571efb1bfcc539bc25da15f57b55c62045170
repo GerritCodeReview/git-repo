@@ -69,6 +69,24 @@
       "parentUuid": "755f204d_d84749ab",
       "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "525d8675_26a2507f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-01-03T20:38:27Z",
+      "side": 1,
+      "message": "Hmm, for some reason only vapier@chromium.org was offered to me.",
+      "parentUuid": "ca717805_56ff31a7",
+      "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
