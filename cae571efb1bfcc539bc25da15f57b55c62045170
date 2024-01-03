@@ -51,6 +51,24 @@
       "parentUuid": "920ce042_f4782c52",
       "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca717805_56ff31a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-01-03T20:36:45Z",
+      "side": 1,
+      "message": "Uhm, vapier@google.com is not a valid user for me.",
+      "parentUuid": "755f204d_d84749ab",
+      "revId": "cae571efb1bfcc539bc25da15f57b55c62045170",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
