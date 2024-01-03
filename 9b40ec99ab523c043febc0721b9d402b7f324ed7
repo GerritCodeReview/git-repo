@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69420e29_db74a958",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-03T20:26:18Z",
+      "side": 1,
+      "message": "please stick to `tag:` style, not `[TAG]`.  git treats `[TAG]` differently and can choose to strip it out automatically at times.  it\u0027s also not the style we\u0027ve been using in git-repo.",
+      "revId": "9b40ec99ab523c043febc0721b9d402b7f324ed7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
