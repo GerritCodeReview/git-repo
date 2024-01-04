@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c0a7ca9_b1566097",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-04T17:07:03Z",
+      "side": 1,
+      "message": "correct.  older versions of python3 happened to work, but we weren\u0027t going out of our way to support them.  it\u0027s documented here:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/docs/python-support.md#repo-launcher\n\nit has some tips/advice for how to handle your situation.  obviously our recommendation is to update your distro since, if it\u0027s defaulting to python3.5, it\u0027s quite old at this point.",
+      "parentUuid": "6ed57746_a81c004b",
+      "revId": "71977632fb30633b13b0893dd74f0a0738dfdb4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "14e282eb_6efc47a2",
         "filename": "repo",
         "patchSetId": 2
