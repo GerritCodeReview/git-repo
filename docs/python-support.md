@@ -1,5 +1,8 @@
 # Supported Python Versions
 
+> **Warning: The "master" branch is no longer used.  Use "main" instead.**<br>
+> https://gerrit.googlesource.com/git-repo/+/HEAD/docs/python-support.md
+
 With Python 2.7 officially going EOL on [01 Jan 2020](https://pythonclock.org/),
 we need a support plan for the repo project itself.
 Inevitably, there will be a long tail of users who still want to use Python 2 on

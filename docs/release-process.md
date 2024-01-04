@@ -1,5 +1,8 @@
 # repo release process
 
+> **Warning: The "master" branch is no longer used.  Use "main" instead.**<br>
+> https://gerrit.googlesource.com/git-repo/+/HEAD/docs/release-process.md
+
 This is the process for creating a new release of repo, as well as all the
 related topics and flows.
 
