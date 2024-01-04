@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49b6d11c_683bcfc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-04T02:52:31Z",
+      "side": 1,
+      "message": "sorry, but we aren\u0027t supporting 3.5 anymore.  we\u0027ve been issuing warnings at runtime that 3.5 is deprecated for almost 3 years now.  that\u0027s plenty of time to migrate.\n\nwe\u0027ve adopted 3.6 syntax in the rest of the code base, and use of f-strings \u0026 typing is only going to increase.",
+      "revId": "71977632fb30633b13b0893dd74f0a0738dfdb4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14e282eb_6efc47a2",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-04T02:52:31Z",
+      "side": 1,
+      "message": "we\u0027ve already declared 3.6 as the min hard version",
+      "revId": "71977632fb30633b13b0893dd74f0a0738dfdb4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
