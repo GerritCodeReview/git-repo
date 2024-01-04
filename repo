@@ -85,7 +85,7 @@ def check_python_version():
         # bridge the gap.  This is the fallback anyways so perf isn't critical.
         min_major, min_minor = MIN_PYTHON_VERSION_SOFT
         for inc in range(0, 10):
-            reexec(f"python{min_major}.{min_minor + inc}")
+            reexec("python%d.%d" %(min_major, min_minor + inc))
 
         # Fallback to older versions if possible.
         for inc in range(
@@ -94,7 +94,7 @@ def check_python_version():
             # Don't downgrade, and don't reexec ourselves (which would infinite loop).
             if (min_major, min_minor - inc) <= (major, minor):
                 break
-            reexec(f"python{min_major}.{min_minor - inc}")
+            reexec("python%d.%d" %(min_major, min_minor + inc))
 
         # We're still here, so diagnose things for the user.
         if (major, minor) < MIN_PYTHON_VERSION_HARD:
