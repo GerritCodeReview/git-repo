@@ -45,6 +45,30 @@
       },
       "revId": "013893134128485109d37d3dff072d582de201f1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1934cb4b_cd827c78",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-04T17:19:10Z",
+      "side": 1,
+      "message": "i verified that git is dirtied if a submodule has been initialized ... git won\u0027t accept the symlink.\n\n```\n$ git status\n$ rmdir vbootrom\n$ git status\n D vbootrom\n$ mkdir x\n$ ln -s x vbootrom\n$ git status\n T vbootrom\n```\n\nrepo supports submodules via `repo init --submodules` so your manifest wouldn\u0027t need to list/stomp things like this.  why doesn\u0027t that work for you ?",
+      "parentUuid": "1edc52e8_9ddf4dd4",
+      "range": {
+        "startLine": 10,
+        "startChar": 10,
+        "endLine": 10,
+        "endChar": 24
+      },
+      "revId": "013893134128485109d37d3dff072d582de201f1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
