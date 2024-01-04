@@ -1,5 +1,8 @@
 # repo Manifest Format
 
+> **Warning: The "master" branch is no longer used.  Please use "main" instead.
+> https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
+
 A repo manifest describes the structure of a repo client; that is
 the directories that are visible and where they should be obtained
 from with git.

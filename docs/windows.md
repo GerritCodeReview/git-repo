@@ -1,5 +1,8 @@
 # Microsoft Windows Details
 
+> **Warning: The "master" branch is no longer used.  Please use "main" instead.
+> https://gerrit.googlesource.com/git-repo/+/HEAD/docs/windows.md
+
 Repo is primarily developed on Linux with a lot of users on macOS.
 Windows is, unfortunately, not a common platform.
 There is support in repo for Windows, but there might be some rough edges.

@@ -1,3 +1,6 @@
+> **Warning: The "master" branch is no longer used.  Please use "main" instead.
+> https://gerrit.googlesource.com/git-repo/+/HEAD/SUBMITTING_PATCHES.md
+
 [TOC]
 
 # Short Version
