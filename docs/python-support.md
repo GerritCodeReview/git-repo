@@ -33,9 +33,8 @@ you have newer versions installed, your choices are:
 
 *   Modify the [repo launcher]'s shebang to suite your environment.
 *   Download an older version of the [repo launcher] and don't upgrade it.
-    Be aware that there is no guarantee old repo launchers are WILL work with
-    current versions of repo.  Bug reports using old launchers will not be
-    accepted.
+    Be aware that we do not guarantee old repo launchers will work with current
+    versions of repo.  Bug reports using old launchers will not be accepted.
 
 ## When to drop support
 
