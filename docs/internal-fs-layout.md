@@ -1,5 +1,8 @@
 # Repo internal filesystem layout
 
+> **Warning: The "master" branch is no longer used.  Use "main" instead.**<br>
+> https://gerrit.googlesource.com/git-repo/+/HEAD/docs/internal-fs-layout.md
+
 A reference to the `.repo/` tree in repo client checkouts.
 Hopefully it's complete & up-to-date, but who knows!
 

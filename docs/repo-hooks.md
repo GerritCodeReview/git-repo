@@ -1,5 +1,8 @@
 # repo hooks
 
+> **Warning: The "master" branch is no longer used.  Use "main" instead.**<br>
+> https://gerrit.googlesource.com/git-repo/+/HEAD/docs/repo-hooks.md
+
 [TOC]
 
 Repo provides a mechanism to hook specific stages of the runtime with custom
