@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ed57746_a81c004b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3247556
+      },
+      "writtenOn": "2024-01-04T03:24:25Z",
+      "side": 1,
+      "message": "Oh, got your point, python3.5 is not a supported even for bootstrap.",
+      "parentUuid": "5feff7c8_4fbccaab",
+      "revId": "71977632fb30633b13b0893dd74f0a0738dfdb4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "14e282eb_6efc47a2",
         "filename": "repo",
         "patchSetId": 2
