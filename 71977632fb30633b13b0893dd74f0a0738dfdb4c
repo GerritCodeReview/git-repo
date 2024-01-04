@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5feff7c8_4fbccaab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3247556
+      },
+      "writtenOn": "2024-01-04T03:21:40Z",
+      "side": 1,
+      "message": "Hi Mike, considering two python installed, one is 3.5, another is 3.6, and 3.5 is the default one. when running repo bootstrap with 3.5, repo will try to re-exec with 3.6, but 3.5 don\u0027t support f-strings, which will cause a fatal error",
+      "parentUuid": "49b6d11c_683bcfc5",
+      "revId": "71977632fb30633b13b0893dd74f0a0738dfdb4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "14e282eb_6efc47a2",
         "filename": "repo",
         "patchSetId": 2
