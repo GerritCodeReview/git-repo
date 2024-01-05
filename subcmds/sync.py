@@ -618,7 +618,7 @@ later is required to fix a server side protocol bug.
 
             if not use_super:
                 continue
-            m.superproject.SetQuiet(opt.quiet)
+            m.superproject.SetQuiet(not opt.verbose)
             print_messages = git_superproject.PrintMessages(
                 opt.use_superproject, m
             )
@@ -1501,7 +1501,7 @@ later is required to fix a server side protocol bug.
             buf = TeeStringIO(sys.stdout)
             try:
                 result = mp.Sync_NetworkHalf(
-                    quiet=opt.quiet,
+                    quiet=not opt.verbose,
                     output_redir=buf,
                     verbose=opt.verbose,
                     current_branch_only=self._GetCurrentBranchOnly(

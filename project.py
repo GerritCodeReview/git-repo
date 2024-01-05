@@ -1636,9 +1636,9 @@ class Project:
             elif pub == head:
                 # All published commits are merged, and thus we are a
                 # strict subset.  We can fast-forward safely.
-                syncbuf.later1(self, _doff)
+                syncbuf.later1(self, _doff, not verbose)
                 if submodules:
-                    syncbuf.later1(self, _dosubmodules)
+                    syncbuf.later1(self, _dosubmodules, not verbose)
                 return
 
         # Examine the local commits not in the remote.  Find the
@@ -1697,10 +1697,10 @@ class Project:
             def _dorebase():
                 self._Rebase(upstream="%s^1" % last_mine, onto=revid)
 
-            syncbuf.later2(self, _dorebase)
+            syncbuf.later2(self, _dorebase, not verbose)
             if submodules:
-                syncbuf.later2(self, _dosubmodules)
-            syncbuf.later2(self, _docopyandlink)
+                syncbuf.later2(self, _dosubmodules, not verbose)
+            syncbuf.later2(self, _docopyandlink, not verbose)
         elif local_changes:
             try:
                 self._ResetHard(revid)
@@ -1711,9 +1711,9 @@ class Project:
                 fail(e)
                 return
         else:
-            syncbuf.later1(self, _doff)
+            syncbuf.later1(self, _doff, not verbose)
             if submodules:
-                syncbuf.later1(self, _dosubmodules)
+                syncbuf.later1(self, _dosubmodules, not verbose)
 
     def AddCopyFile(self, src, dest, topdir):
         """Mark |src| for copying to |dest| (relative to |topdir|).
@@ -2883,10 +2883,12 @@ class Project:
         if GitCommand(self, cmd).Wait() != 0:
             raise GitError(f"{self.name} rebase {upstream} ", project=self.name)
 
-    def _FastForward(self, head, ffonly=False):
+    def _FastForward(self, head, ffonly=False, quiet=True):
         cmd = ["merge", "--no-stat", head]
         if ffonly:
             cmd.append("--ff-only")
+        if quiet:
+            cmd.append("-q")
         if GitCommand(self, cmd).Wait() != 0:
             raise GitError(f"{self.name} merge {head} ", project=self.name)
 
@@ -3759,17 +3761,20 @@ class _Failure:
 
 
 class _Later:
-    def __init__(self, project, action):
+    def __init__(self, project, action, quiet):
         self.project = project
         self.action = action
+        self.quiet = quiet
 
     def Run(self, syncbuf):
         out = syncbuf.out
-        out.project("project %s/", self.project.RelPath(local=False))
-        out.nl()
+        if not self.quiet:
+            out.project("project %s/", self.project.RelPath(local=False))
+            out.nl()
         try:
             self.action()
-            out.nl()
+            if not self.quiet:
+                out.nl()
             return True
         except GitError:
             out.nl()
@@ -3805,11 +3810,11 @@ class SyncBuffer:
         self._failures.append(_Failure(project, err))
         self._MarkUnclean()
 
-    def later1(self, project, what):
-        self._later_queue1.append(_Later(project, what))
+    def later1(self, project, what, quiet):
+        self._later_queue1.append(_Later(project, what, quiet))
 
-    def later2(self, project, what):
-        self._later_queue2.append(_Later(project, what))
+    def later2(self, project, what, quiet):
+        self._later_queue2.append(_Later(project, what, quiet))
 
     def Finish(self):
         self._PrintMessages()
