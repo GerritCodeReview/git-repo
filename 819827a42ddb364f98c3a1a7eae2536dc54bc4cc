@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "896c0385_c300e4ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1145261
+      },
+      "writtenOn": "2024-01-24T04:38:33Z",
+      "side": 1,
+      "message": "Verify git-repo CL",
+      "revId": "819827a42ddb364f98c3a1a7eae2536dc54bc4cc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
