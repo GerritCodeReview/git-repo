@@ -1835,7 +1835,7 @@ class Project:
                     platform_utils.remove(path)
                 except OSError as e:
                     if e.errno != errno.ENOENT:
-                        logger.error("error: %s: Failed to remove: %s", path, e)
+                        logger.warning("%s: Failed to remove: %s", path, e)
                         failed = True
                         errors.append(e)
             dirs[:] = [
@@ -1854,7 +1854,7 @@ class Project:
                     platform_utils.remove(d)
                 except OSError as e:
                     if e.errno != errno.ENOENT:
-                        logger.error("error: %s: Failed to remove: %s", d, e)
+                        logger.warning("%s: Failed to remove: %s", d, e)
                         failed = True
                         errors.append(e)
             elif not platform_utils.listdir(d):
@@ -1862,18 +1862,30 @@ class Project:
                     platform_utils.rmdir(d)
                 except OSError as e:
                     if e.errno != errno.ENOENT:
-                        logger.error("error: %s: Failed to remove: %s", d, e)
+                        logger.warning("%s: Failed to remove: %s", d, e)
                         failed = True
                         errors.append(e)
         if failed:
-            logger.error(
-                "error: %s: Failed to delete obsolete checkout.",
-                self.RelPath(local=False),
+            rename_path = (
+                f"{self.worktree}_repo_to_be_deleted_{int(time.time())}"
             )
-            logger.error(
-                "       Remove manually, then run `repo sync -l`.",
-            )
-            raise DeleteWorktreeError(aggregate_errors=errors)
+            try:
+                platform_utils.rename(self.worktree, rename_path)
+                logger.warning(
+                    "warning: renamed %s to %s. You can delete it, but you "
+                    "will need elevated permissions (e.g. root)",
+                    self.worktree,
+                    rename_path,
+                )
+                # Rename successful! Clear the errors.
+                errors = []
+            except OSError:
+                logger.error(
+                    "%s: Failed to delete obsolete checkout.\n",
+                    "       Remove manually, then run `repo sync -l`.",
+                    self.RelPath(local=False),
+                )
+                raise DeleteWorktreeError(aggregate_errors=errors)
 
         # Try deleting parent dirs if they are empty.
         path = self.worktree
