@@ -16,6 +16,24 @@
       "message": "```suggestion\n                    \"might need elevated permissions (e.g. root)\",\n```",
       "revId": "d312e2538959650035dbf953fc24fbb0a7477b58",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f16ba1_c8448478",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1876,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-01-25T21:32:44Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "c6b1787d_0b5bb8e8",
+      "revId": "d312e2538959650035dbf953fc24fbb0a7477b58",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
