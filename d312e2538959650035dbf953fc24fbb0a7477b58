@@ -1,0 +1,12 @@
+{
+  "checks": {
+    "zuul-check:git-repo": {
+      "state": "SCHEDULED",
+      "message": "Change has been enqueued in check",
+      "url": "https://ci.gerritcodereview.com/t/gerrit/status/change/404372,2",
+      "started": "2024-01-25T16:28:03Z",
+      "created": "2024-01-25T16:28:03Z",
+      "updated": "2024-01-25T16:28:03Z"
+    }
+  }
+}
