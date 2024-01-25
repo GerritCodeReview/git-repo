@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbb00e3d_7af9f951",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-25T06:02:22Z",
+      "side": 1,
+      "message": "why the switch to f-strings ?  logging APIs should still pass as args.\n\nalso, not a new issue, but the \"error:\" and \"warning:\" prefix is redundant -- the logging module already includes that info.\n\nalso, there\u0027s no need to use 2 f-strings.  `f\"...\" f\"...\"` is just `f\"......\"`.",
+      "revId": "972f9987eeef1cf095ff5a4a61f95a463e6e24e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c65ec54_66f5624b",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-01-25T06:02:22Z",
+      "side": 1,
+      "message": "it\u0027s used once, so inline it ?",
+      "revId": "972f9987eeef1cf095ff5a4a61f95a463e6e24e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
