@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8d4832d5_c71cc576",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1839,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-01-25T16:27:32Z",
+      "side": 1,
+      "message": "\u003e also, there\u0027s no need to use 2 f-strings. f\"...\" f\"...\" is just f\"......\".\n\nUsed to be two lines, but formatter decided to merge them.\n\nIn any case, I\u0027ll switch back to passing args",
+      "parentUuid": "dbb00e3d_7af9f951",
+      "revId": "972f9987eeef1cf095ff5a4a61f95a463e6e24e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4c65ec54_66f5624b",
         "filename": "project.py",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-01-25T06:02:22Z",
       "side": 1,
       "message": "it\u0027s used once, so inline it ?",
+      "revId": "972f9987eeef1cf095ff5a4a61f95a463e6e24e6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cd81673_da101eed",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1871,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-01-25T16:27:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c65ec54_66f5624b",
       "revId": "972f9987eeef1cf095ff5a4a61f95a463e6e24e6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
