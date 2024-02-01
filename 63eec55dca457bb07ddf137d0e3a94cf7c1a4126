@@ -141,6 +141,24 @@
       "parentUuid": "8149339c_061c9e33",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38c5a96b_f408c530",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-01T23:05:11Z",
+      "side": 1,
+      "message": "We have received various bugs due to having `/usr/bin/env python`. While having `python3` may not be ideal, IMO, it solves more problems than it creates. This is more true now that repo no longer works with py2. And, this is another testament that py2 to py3 has been quite challenging and complicated.\n\nWith that said, I vote we move forward with this patch (two years after it was created...).\n\n@rosh@debian.org, if you are still interested, please rebase your change due to merge conflict. Otherwise, I\u0027ll create a new patch next week.",
+      "parentUuid": "53bd1f0c_683131b0",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
