@@ -133,3 +133,25 @@ def main(project_list, worktree_list=None, **kwargs):
       kwargs: Leave this here for forward-compatibility.
     """
 ```
+
+### post-sync
+
+This hook runs after people run `repo sync`. It is important to note that the hook runs only after the completed sync command.
+
+The `posy-sync.py` file should be defined like:
+
+```py
+def main(project_list, worktree_list=None, **kwargs):
+    """Main function invoked directly by repo.
+
+    We must use the name "main" as that is what repo requires.
+
+    Args:
+      project_list: List of projects to run on.
+      worktree_list: A list of directories.  It should be the same length as
+          project_list, so that each entry in project_list matches with a
+          directory in worktree_list.  If None, we will attempt to calculate
+          the directories automatically.
+      kwargs: Leave this here for forward-compatibility.
+    """
+```

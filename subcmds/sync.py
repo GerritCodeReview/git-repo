@@ -66,6 +66,7 @@ from git_config import GetUrlCookieFile
 from git_refs import HEAD
 from git_refs import R_HEADS
 import git_superproject
+from hooks import RepoHook
 import platform_utils
 from progress import elapsed_str
 from progress import jobs_str
@@ -515,6 +516,7 @@ later is required to fix a server side protocol bug.
             action="store_true",
             help=optparse.SUPPRESS_HELP,
         )
+        RepoHook.AddOptionGroup(p, "post-sync")
 
     def _GetBranch(self, manifest_project):
         """Returns the branch name for getting the approved smartsync manifest.
@@ -1854,6 +1856,17 @@ later is required to fix a server side protocol bug.
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
+
+        for m in self.ManifestList(opt):
+            worktrees = [project.worktree for project in all_projects]
+            hook = RepoHook.FromSubcmd(
+                hook_type="post-sync",
+                manifest=manifest,
+                opt=opt,
+                abort_if_user_denies=True,
+            )
+            if not hook.Run(project_list=all_projects, worktree_list=worktrees):
+                return 1
 
 
 def _PostRepoUpgrade(manifest, quiet=False):
