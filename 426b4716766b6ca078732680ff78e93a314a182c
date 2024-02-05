@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f216e48d_c667e42f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1159376
+      },
+      "writtenOn": "2024-02-05T23:20:15Z",
+      "side": 1,
+      "message": "Hey Josip,\n\nResponding to the bug you sent my way.\n\nThanks!",
+      "revId": "426b4716766b6ca078732680ff78e93a314a182c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
