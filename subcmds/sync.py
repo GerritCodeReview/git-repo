@@ -1628,7 +1628,7 @@ later is required to fix a server side protocol bug.
         errors = []
         try:
             self._ExecuteHelper(opt, args, errors)
-        except RepoExitError:
+        except (RepoExitError, RepoChangedException):
             raise
         except (KeyboardInterrupt, Exception) as e:
             raise RepoUnhandledExceptionError(e, aggregate_errors=errors)
