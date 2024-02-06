@@ -159,6 +159,23 @@
       "parentUuid": "53bd1f0c_683131b0",
       "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88265a0c_3ed66b74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-06T22:36:45Z",
+      "side": 1,
+      "message": "moving with a different CL: https://gerrit-review.googlesource.com/c/git-repo/+/407497",
+      "revId": "63eec55dca457bb07ddf137d0e3a94cf7c1a4126",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
