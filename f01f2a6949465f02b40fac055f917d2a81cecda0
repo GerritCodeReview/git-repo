@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f5ea29_1b69b925",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-06T22:46:23Z",
+      "side": 1,
+      "message": "Jason, any concerns on your side?",
+      "revId": "f01f2a6949465f02b40fac055f917d2a81cecda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ade29629_b45f04e0",
@@ -14,6 +31,30 @@
       "writtenOn": "2024-02-06T22:43:26Z",
       "side": 1,
       "message": "any reason this isn\u0027t 41?",
+      "range": {
+        "startLine": 127,
+        "startChar": 14,
+        "endLine": 127,
+        "endChar": 16
+      },
+      "revId": "f01f2a6949465f02b40fac055f917d2a81cecda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9049014_939af8f2",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-06T22:46:23Z",
+      "side": 1,
+      "message": "The next repo release will be 2.42, so it should be in sync with it.",
+      "parentUuid": "ade29629_b45f04e0",
       "range": {
         "startLine": 127,
         "startChar": 14,
