@@ -16,6 +16,24 @@
       "message": "Hm. Odd, for some reason I don\u0027t have permission to submit this CL despite CR+2. I also see no buttons for CQ. Mike, can you please send this CL to CQ or submit it directly?q",
       "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d1460d3_6d402e75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160011
+      },
+      "writtenOn": "2024-02-06T10:06:57Z",
+      "side": 1,
+      "message": "Friendly ping.",
+      "parentUuid": "0ab52054_bbb3e155",
+      "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
