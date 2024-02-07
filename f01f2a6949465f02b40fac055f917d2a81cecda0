@@ -18,6 +18,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67509720_eefa884c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3281102
+      },
+      "writtenOn": "2024-02-07T17:22:39Z",
+      "side": 1,
+      "message": "Thank you very much! I hope it will be merged soon and that many workarounds can be removed for using the shebang with Python 3.",
+      "revId": "f01f2a6949465f02b40fac055f917d2a81cecda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ade29629_b45f04e0",
