@@ -16,6 +16,7 @@ import errno
 import filecmp
 import glob
 import os
+from pathlib import Path
 import platform
 import random
 import re
@@ -26,7 +27,7 @@ import sys
 import tarfile
 import tempfile
 import time
-from typing import List, NamedTuple
+from typing import Iterable, List, NamedTuple
 import urllib.parse
 
 from color import Coloring
@@ -880,6 +881,25 @@ class Project:
     def HasChanges(self):
         """Returns true if there are uncommitted changes."""
         return bool(self.UncommitedFiles(get_all=False))
+
+    def _IsInsideOtherProject(self, other: "Project") -> bool:
+        """Returns true if this project is checked out inside the other.
+
+        Note: For the purposes of this function, if the two projects have the
+        same path, that is not considered "inside", so this will return False.
+        """
+        if self.relpath == other.relpath:
+            return False
+        try:
+            Path(self.relpath).relative_to(Path(other.relpath))
+        except ValueError:
+            return False
+        else:
+            return True
+
+    def IsInsideAnyOtherProject(self, others: Iterable["Project"]) -> bool:
+        """Returns true if this project is checked out inside any other."""
+        return any(self._IsInsideOtherProject(other) for other in others)
 
     def PrintWorkTreeStatus(self, output_redir=None, quiet=False, local=False):
         """Prints the status of the repository to stdout.

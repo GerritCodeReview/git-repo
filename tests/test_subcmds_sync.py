@@ -14,18 +14,22 @@
 """Unittests for the subcmds/sync.py module."""
 
 import os
+from pathlib import Path
 import shutil
 import tempfile
 import time
+from typing import List
 import unittest
 from unittest import mock
 
+import py
 import pytest
 
 import command
 from error import GitError
 from error import RepoExitError
-from project import SyncNetworkHalfResult
+import manifest_xml
+import project
 from subcmds import sync
 
 
@@ -384,7 +388,9 @@ class SyncCommand(unittest.TestCase):
         )
 
         def Sync_NetworkHalf(*args, **kwargs):
-            return SyncNetworkHalfResult(True, self.sync_network_half_error)
+            return project.SyncNetworkHalfResult(
+                True, self.sync_network_half_error
+            )
 
         def Sync_LocalHalf(*args, **kwargs):
             if self.sync_local_half_error:
@@ -438,3 +444,60 @@ class SyncCommand(unittest.TestCase):
             self.cmd.Execute(self.opt, [])
             self.assertIn(self.sync_local_half_error, e.aggregate_errors)
             self.assertIn(self.sync_network_half_error, e.aggregate_errors)
+
+
+@pytest.mark.parametrize(
+    "unsorted_paths,expected_result_paths",
+    [
+        (["foo", "bar"], ["foo", "bar"]),
+        (["outer", "outer/inner"], ["outer", "outer/inner"]),
+        (["outer/inner", "outer"], ["outer", "outer/inner"]),
+        (
+            ["outer/middle/inner", "outer/middle", "outer"],
+            ["outer", "outer/middle", "outer/middle/inner"],
+        ),
+    ],
+)
+def test_sort_projects(
+    unsorted_paths: List[str],
+    expected_result_paths: List[str],
+    tmpdir: py.path.local,
+) -> None:
+    """Test SortProjectsOuterThenInner().
+
+    Args:
+        unsorted_paths: The checkout paths Command.GetProjects() will return,
+            in the order they'll be given.
+        expected_result_paths: The checkout paths that we expect to see after
+            sorting.
+        tmpdir: Pytest's built-in tmpdir fixture.
+    """
+    # Set up some objects we'll use for creating projects.
+    repo_dir = Path(tmpdir) / ".repo"
+    manifest_dir = repo_dir / "manifests"
+    manifest_file = manifest_dir / manifest_xml.MANIFEST_FILE_NAME
+    repo_dir.mkdir()
+    manifest_dir.mkdir()
+    manifest = manifest_xml.XmlManifest(str(repo_dir), str(manifest_file))
+
+    unsorted_projects = [
+        # The only important part here is relpath=checkout_path.
+        project.Project(
+            manifest=manifest,
+            name=checkout_path.rsplit("/")[-1],
+            remote=project.RemoteSpec("origin"),
+            gitdir=str(tmpdir / checkout_path / ".git"),
+            objdir=str(tmpdir / checkout_path / "objects"),
+            worktree=tmpdir,
+            relpath=checkout_path,
+            revisionExpr="HEAD",
+            revisionId=None,
+        )
+        for checkout_path in unsorted_paths
+    ]
+    with mock.patch(
+        "command.Command.GetProjects", return_value=unsorted_projects
+    ):
+        sorted_projects = sync.SortProjectsOuterThenInner(unsorted_projects)
+    actual_result_paths = [project.relpath for project in sorted_projects]
+    assert actual_result_paths == expected_result_paths

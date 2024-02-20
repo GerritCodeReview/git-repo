@@ -24,7 +24,7 @@ import os
 import sys
 import tempfile
 import time
-from typing import List, NamedTuple, Set, Union
+from typing import Any, Iterable, List, NamedTuple, Set, Union
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -539,6 +539,25 @@ later is required to fix a server side protocol bug.
             git_superproject.UseSuperproject(opt.use_superproject, manifest)
             or opt.current_branch_only
         )
+
+    def GetProjects(
+        self,
+        *args: Any,
+        sort_for_syncing: bool = False,
+        **kwargs: Any,
+    ) -> List[Project]:
+        """Return the projects that should be synced.
+
+        Args:
+            args: Positional arguments to pass to Command.GetProjects.
+            sort_for_syncing: If True, sort the projects in the order that they
+                should be synced in.
+            kwargs: Keyword arguments to pass to Command.GetProjects.
+        """
+        projects = super().GetProjects(*args, **kwargs)
+        if sort_for_syncing:
+            projects = SortProjectsOuterThenInner(projects)
+        return projects
 
     def _UpdateProjectsRevisionId(
         self, opt, args, superproject_logging_data, manifest
@@ -1700,6 +1719,7 @@ later is required to fix a server side protocol bug.
             submodules_ok=opt.fetch_submodules,
             manifest=manifest,
             all_manifests=not opt.this_manifest_only,
+            sort_for_syncing=True,
         )
 
         err_network_sync = False
@@ -1776,6 +1796,11 @@ later is required to fix a server side protocol bug.
                     )
                     raise SyncFailFastError(aggregate_errors=errors)
 
+        # TODO: b/325119758 - Before updating checkouts, delete any checkout
+        # directories representing deleted projects. That way, if a different
+        # project needs to check out files at the deleted project's checkout
+        # location, it won't hit a FileExistsError.
+
         err_results = []
         # NB: We don't exit here because this is the last step.
         err_checkout = not self._Checkout(
@@ -1839,6 +1864,70 @@ later is required to fix a server side protocol bug.
 
         if not opt.quiet:
             print("repo sync has finished successfully.")
+
+
+def SortProjectsOuterThenInner(projects: Iterable[Project]) -> List[Project]:
+    """Sort the projects with outer checkouts before inner checkouts.
+
+    There are some tricky situations that can arise when projects are nested.
+    Suppose that before syncing, we have one project checked out: outer_project,
+    at `/outer`. That project contains one file, `./inner`. In the updated
+    manifest, there is a second project, inner_project, checked out at
+    `outer/inner`; and in the updated revision for outer_project, the file at
+    `./inner` has been deleted. If we sync outer_project before inner_project,
+    this is fine. But if we try to sync inner_project first, we'll hit an
+    exception, since there's already a file at `/outer/inner`.
+
+    To address that problem, we make sure to sync all outer checkouts before
+    inner checkouts.
+
+    (N.B. The reverse scenario is also a problem: if we want to delete the
+    inner_project checkout and add the new hash of outer_project contains a
+    file at `./inner`, then syncing outer_project first will raise a
+    FileExistsError. We handle that elsewhere by removing obsolete checkouts
+    before syncing.)
+
+    Args:
+        projects: An iterable of Projects to sync. (This list will not be
+            modified in-place.)
+
+    Returns:
+        A list containing the same projects as were passed in, but with any
+        nested checkouts occurring after their parent checkouts.
+    """
+    # sorted_projects is the list we'll eventually return. Ultimately, it should
+    # contain the same elements as projects, but with the constraint that no
+    # project should have a checkout location inside a later project's checkout.
+    sorted_projects = []
+
+    # The algorithm is:
+    # Iterate through not_yet_sorted_projects. For each project, if it's not
+    # inside any other not_yet_sorted_projects, append it to sorted_projects.
+    # (It's OK if it's inside any members of sorted_projects.)
+    # However, if it is relative to another not_yet_sorted_project, push it to
+    # the end of not_yet_sorted_projects. By the time we return to it, its
+    # outermost parent project will be processed and removed from the list,
+    # so we might be able to sort it on the second pass.
+    # If a project is nested multiple layers deep, it might require multiple
+    # rounds.
+    #
+    # One benefit of this algorithm is that order will be preserved besides
+    # sending nested checkouts to the end. That isn't required by the function's
+    # contract, but it's nice.
+    not_yet_sorted_projects = collections.deque(projects)
+    while not_yet_sorted_projects:
+        project = not_yet_sorted_projects.popleft()
+        if project.IsInsideAnyOtherProject(not_yet_sorted_projects):
+            not_yet_sorted_projects.append(project)
+        else:
+            sorted_projects.append(project)
+
+    assert len(sorted_projects) == len(projects)
+    assert set(sorted_projects) == set(projects)
+    for i, project in enumerate(sorted_projects):
+        assert not project.IsInsideAnyOtherProject(sorted_projects[i + 1 :])
+
+    return sorted_projects
 
 
 def _PostRepoUpgrade(manifest, quiet=False):
