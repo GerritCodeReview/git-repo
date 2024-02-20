@@ -34,6 +34,24 @@
       "parentUuid": "0ab52054_bbb3e155",
       "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca3177de_feaf69d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-02-20T07:36:58Z",
+      "side": 1,
+      "message": "there is no CQ button.  you need to change the label in the reply dialog like any other label (e.g. Verified).  Gerrit says you have access to CQ+2.",
+      "parentUuid": "1d1460d3_6d402e75",
+      "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
