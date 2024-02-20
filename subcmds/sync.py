@@ -82,11 +82,6 @@ from wrapper import Wrapper
 
 _ONE_DAY_S = 24 * 60 * 60
 
-# Env var to implicitly turn auto-gc back on.  This was added to allow a user to
-# revert a change in default behavior in v2.29.9.  Remove after 2023-04-01.
-_REPO_AUTO_GC = "REPO_AUTO_GC"
-_AUTO_GC = os.environ.get(_REPO_AUTO_GC) == "1"
-
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
 logger = RepoLogger(__file__)
@@ -1574,16 +1569,6 @@ later is required to fix a server side protocol bug.
 
         if opt.prune is None:
             opt.prune = True
-
-        if opt.auto_gc is None and _AUTO_GC:
-            logger.error(
-                "Will run `git gc --auto` because %s is set. %s is deprecated "
-                "and will be removed in a future release.  Use `--auto-gc` "
-                "instead.",
-                _REPO_AUTO_GC,
-                _REPO_AUTO_GC,
-            )
-            opt.auto_gc = True
 
     def _ValidateOptionsWithManifest(self, opt, mp):
         """Like ValidateOptions, but after we've updated the manifest.
