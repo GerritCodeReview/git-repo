@@ -16,6 +16,23 @@
       "message": "R\u003dchops source trooper primary.\n\nI\u0027m hoping to submit a more meaningful change (http://b/325119758), but this seemed like good practice for contributing to a new repository.",
       "revId": "fc34a33b7d2450feec65c66c144bcf69622b85ec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "627eac95_62ac31f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1128015
+      },
+      "writtenOn": "2024-02-20T19:08:52Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "fc34a33b7d2450feec65c66c144bcf69622b85ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
