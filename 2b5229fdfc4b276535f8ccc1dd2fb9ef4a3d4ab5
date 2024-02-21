@@ -50,6 +50,24 @@
       "message": "The runtime is worth talking about. We\u0027re checking whether every project is relative to every other project. This runs in O(n^2) time (where `n\u003dlen(projects)`). ChromeOS has 1,000 projects. That\u0027s... gnarly.\n\nOne way we could improve this is by introducing an annotation to the manifest XML, like `\u003cannotation name\u003d\"is_nested\" value\u003d\"true\"\u003e`. Runtime would decrease to O(n + k*n), where `k` is the number of nested projects. Assuming `k` is very small, it\u0027s just O(n).\n\nThe downside of this approach is that we wouldn\u0027t proactively catch this problem every time; manifest maintainers would be responsible for annotating their own nested checkouts. I don\u0027t think we can expect all users to do that rigorously.",
       "revId": "2b5229fdfc4b276535f8ccc1dd2fb9ef4a3d4ab5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a138dc79_be121d30",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1869,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-21T19:24:38Z",
+      "side": 1,
+      "message": "I believe this solves the problem when jobs are executed sequentially, but it can fail when jobs are executed concurrently.\n\nI believe we\u0027ll have to construct a tree to fully address this problem.",
+      "parentUuid": "2dc4094e_84cbaa71",
+      "revId": "2b5229fdfc4b276535f8ccc1dd2fb9ef4a3d4ab5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
