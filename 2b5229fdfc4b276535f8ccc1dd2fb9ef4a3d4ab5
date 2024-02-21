@@ -68,6 +68,24 @@
       "parentUuid": "2dc4094e_84cbaa71",
       "revId": "2b5229fdfc4b276535f8ccc1dd2fb9ef4a3d4ab5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "685b2ccd_4af57290",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1869,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-21T23:13:04Z",
+      "side": 1,
+      "message": "Ugh, you\u0027re right.",
+      "parentUuid": "a138dc79_be121d30",
+      "revId": "2b5229fdfc4b276535f8ccc1dd2fb9ef4a3d4ab5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
