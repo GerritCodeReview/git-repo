@@ -270,10 +270,14 @@ class _Repo:
             self._PrintHelp(short=True)
             return 1
 
-        run = lambda: self._RunLong(name, gopts, argv) or 0
+        git_trace2_event_log = EventLog()
+        run = (
+            lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0
+        )
         with Trace(
-            "starting new command: %s",
+            "starting new command: %s [sid=%s]",
             ", ".join([name] + argv),
+            git_trace2_event_log.full_sid,
             first_trace=True,
         ):
             if gopts.trace_python:
@@ -290,12 +294,11 @@ class _Repo:
                 result = run()
         return result
 
-    def _RunLong(self, name, gopts, argv):
+    def _RunLong(self, name, gopts, argv, git_trace2_event_log):
         """Execute the (longer running) requested subcommand."""
         result = 0
         SetDefaultColoring(gopts.color)
 
-        git_trace2_event_log = EventLog()
         outer_client = RepoClient(self.repodir)
         repo_client = outer_client
         if gopts.submanifest_path:
