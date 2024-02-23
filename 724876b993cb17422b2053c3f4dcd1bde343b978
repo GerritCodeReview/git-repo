@@ -84,6 +84,24 @@
       "message": "At a high level, this approach introduces needless bottlenecks. For example, if we have 1,000 projects, including a nested trio of `/outer`, `/outer/middle`, and `/outer/middle/inner`, then we\u0027re going to have one layer of 998 projects, and two layers of one project each. That\u0027s not the end of the world, but I think we can be more efficient.\n\nAs an alternative, I\u0027ve been toying with the idea of using `threading.Barrier`s to prevent the race condition you suggested in my CL. We would just need a flat-sorted list to make sure we approach the outer projects before their nested products, and each inner project would be blocked during `_CheckoutOne` until all its outer projects clear their barriers.\n\nWDYT -- is the bottleneck a concern we should work around?",
       "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1980dee_b543c174",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T18:06:49Z",
+      "side": 1,
+      "message": "Just saw your benchmarks. A 100ms \u003d 2.5% difference on ChromeOS is acceptable.\n\nHowever, I think it\u0027ll be worse for a first-time or stale sync. When you\u0027re rerunning `repo sync` on a freshly synced checkout, the bottleneck hardly needs to do any work at all. When you\u0027re running it on a stale checkout, each layer of `_SafeCheckoutOrder` adds genuine work in serial.",
+      "parentUuid": "f2f6749e_64d6cc2e",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
