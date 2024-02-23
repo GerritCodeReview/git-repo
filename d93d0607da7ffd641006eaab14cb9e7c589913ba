@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc3887dc_29663357",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-23T01:02:06Z",
+      "side": 1,
+      "message": "On ChromiumOS repository:\n\n```\nhyperfine -r5 \"~/source/git-repo/repo sync --no-manifest-update -l\" \"repo sync --no-manifest-update -l\"\nBenchmark 1: ~/source/git-repo/repo sync --no-manifest-update -l\n  Time (mean ± σ):      6.083 s ±  0.444 s    [User: 9.884 s, System: 6.505 s]\n  Range (min … max):    5.351 s …  6.474 s    5 runs\n \nBenchmark 2: repo sync --no-manifest-update -l\n  Time (mean ± σ):      5.929 s ±  0.147 s    [User: 9.945 s, System: 6.087 s]\n  Range (min … max):    5.826 s …  6.183 s    5 runs\n \nSummary\n  repo sync --no-manifest-update -l ran\n    1.03 ± 0.08 times faster than ~/source/git-repo/repo sync --no-manifest-update -l\n```\n\nrepo sync is old code. The difference is order of +100ms for ~1k repos.",
+      "revId": "d93d0607da7ffd641006eaab14cb9e7c589913ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
