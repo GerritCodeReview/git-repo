@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4589a1cd_2783b046",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-23T18:30:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7840fe9f_900c6231",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "046527d3_634121e2",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-02-23T18:00:25Z",
       "side": 1,
       "message": "I\u0027m not sure what `depth_stack` is supposed to represent -- could you please add a comment?\n\n(Note: without understanding that, I don\u0027t fully understand the algorithm so I can\u0027t provide high-level feedback on this function yet)",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a62911_c032d9d9",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-23T18:30:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "046527d3_634121e2",
       "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e23375f2_e3a1017b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-23T18:30:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f89b65ac_e63e3b96",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "baf02e8d_3ae20300",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-02-23T18:00:25Z",
       "side": 1,
       "message": "Probably worth documenting why the `ValueError` is meaningful here",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e90be99a_e72bcb4b",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-23T18:30:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baf02e8d_3ae20300",
       "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -99,6 +171,24 @@
       "writtenOn": "2024-02-23T18:06:49Z",
       "side": 1,
       "message": "Just saw your benchmarks. A 100ms \u003d 2.5% difference on ChromeOS is acceptable.\n\nHowever, I think it\u0027ll be worse for a first-time or stale sync. When you\u0027re rerunning `repo sync` on a freshly synced checkout, the bottleneck hardly needs to do any work at all. When you\u0027re running it on a stale checkout, each layer of `_SafeCheckoutOrder` adds genuine work in serial.",
+      "parentUuid": "f2f6749e_64d6cc2e",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1100c8fa_e1972136",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-23T18:30:03Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s worth the effort. If you also account for networking to fetch the latest code, checkout is just a tiny portion of repo sync time.\n\nAlso, the goal for ChromeOS is to unnest everything, and Android is already there. That means we won\u0027t see any performance benefits once we are done with that project. I can also see us reverting this change once we are fully done with unnesting + a buffer of a few months.",
       "parentUuid": "f2f6749e_64d6cc2e",
       "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
