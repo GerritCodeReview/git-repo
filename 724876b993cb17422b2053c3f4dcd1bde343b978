@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7840fe9f_900c6231",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T18:00:25Z",
+      "side": 1,
+      "message": "Document what the intended return value is and why it matters",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "046527d3_634121e2",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T18:00:25Z",
+      "side": 1,
+      "message": "I\u0027m not sure what `depth_stack` is supposed to represent -- could you please add a comment?\n\n(Note: without understanding that, I don\u0027t fully understand the algorithm so I can\u0027t provide high-level feedback on this function yet)",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f89b65ac_e63e3b96",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T18:00:25Z",
+      "side": 1,
+      "message": "nit: per go/pystyle#exceptions-decision, minimize the amount of code in a `try` block.\n\n```\ntry:\n    Path(checkout.relpath).relative_to(Path(depth_stack[-1].relpath))\nexcept ValueError:\n    depth_stack.pop()\nelse:\n    if len(depth_stack) \u003e\u003d len(res):\n        res.append([])\n    break\n```",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baf02e8d_3ae20300",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T18:00:25Z",
+      "side": 1,
+      "message": "Probably worth documenting why the `ValueError` is meaningful here",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2f6749e_64d6cc2e",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T18:00:25Z",
+      "side": 1,
+      "message": "At a high level, this approach introduces needless bottlenecks. For example, if we have 1,000 projects, including a nested trio of `/outer`, `/outer/middle`, and `/outer/middle/inner`, then we\u0027re going to have one layer of 998 projects, and two layers of one project each. That\u0027s not the end of the world, but I think we can be more efficient.\n\nAs an alternative, I\u0027ve been toying with the idea of using `threading.Barrier`s to prevent the race condition you suggested in my CL. We would just need a flat-sorted list to make sure we approach the outer projects before their nested products, and each inner project would be blocked during `_CheckoutOne` until all its outer projects clear their barriers.\n\nWDYT -- is the bottleneck a concern we should work around?",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
