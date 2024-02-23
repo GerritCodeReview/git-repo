@@ -304,6 +304,32 @@ class LocalSyncState(unittest.TestCase):
         self.assertEqual(self.state.GetFetchTime(projA), 5)
 
 
+class SafeCheckoutOrder(unittest.TestCase):
+    def test_no_nested(self):
+        p_f = mock.MagicMock(relpath="f")
+        p_foo = mock.MagicMock(relpath="foo")
+        out = sync._SafeCheckoutOrder([p_f, p_foo])
+        self.assertEqual(out, [[p_f, p_foo]])
+
+    def test_basic_nested(self):
+        p_foo = p_foo = mock.MagicMock(relpath="foo")
+        p_foo_bar = mock.MagicMock(relpath="foo/bar")
+        out = sync._SafeCheckoutOrder([p_foo, p_foo_bar])
+        self.assertEqual(out, [[p_foo], [p_foo_bar]])
+
+    def test_complex_nested(self):
+        p_foo = mock.MagicMock(relpath="foo")
+        p_foo_bar = mock.MagicMock(relpath="foo/bar")
+        p_foo_bar_baz_baq = mock.MagicMock(relpath="foo/bar/baz/baq")
+        p_bar = mock.MagicMock(relpath="bar")
+        out = sync._SafeCheckoutOrder(
+            [p_foo_bar_baz_baq, p_foo, p_foo_bar, p_bar]
+        )
+        self.assertEqual(
+            out, [[p_bar, p_foo], [p_foo_bar], [p_foo_bar_baz_baq]]
+        )
+
+
 class GetPreciousObjectsState(unittest.TestCase):
     """Tests for _GetPreciousObjectsState."""
 
