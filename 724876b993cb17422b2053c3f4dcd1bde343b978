@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "618c0e60_3f8562ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T20:18:32Z",
+      "side": 1,
+      "message": "I see that you marked several comments \"Done\" but didn\u0027t upload a new patch set. Did you forget to upload?",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7840fe9f_900c6231",
@@ -190,6 +207,24 @@
       "side": 1,
       "message": "I don\u0027t think it\u0027s worth the effort. If you also account for networking to fetch the latest code, checkout is just a tiny portion of repo sync time.\n\nAlso, the goal for ChromeOS is to unnest everything, and Android is already there. That means we won\u0027t see any performance benefits once we are done with that project. I can also see us reverting this change once we are fully done with unnesting + a buffer of a few months.",
       "parentUuid": "f2f6749e_64d6cc2e",
+      "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2a0c3af_9da42107",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1062,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-02-23T20:18:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1100c8fa_e1972136",
       "revId": "724876b993cb17422b2053c3f4dcd1bde343b978",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
