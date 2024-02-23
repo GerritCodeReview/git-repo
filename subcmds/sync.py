@@ -21,6 +21,7 @@ import multiprocessing
 import netrc
 import optparse
 import os
+from pathlib import Path
 import sys
 import tempfile
 import time
@@ -85,6 +86,45 @@ _ONE_DAY_S = 24 * 60 * 60
 _REPO_ALLOW_SHALLOW = os.environ.get("REPO_ALLOW_SHALLOW")
 
 logger = RepoLogger(__file__)
+
+
+def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
+    """Generate a sequence of checkouts that is safe to perform. The client
+    should checkout everything from n-th index finishes before moving to n+1.
+
+    This is only useful if manifest contains nested projects.
+
+    E.g. if foo, foo/bar and foo/bar/baz are project paths, then foo needs to
+    finish before foo/bar can proceed, and foo/bar needs to finish before
+    foo/bar/baz."""
+    res = [[]]
+    current = res[0]
+
+    # depth_stack contains a current stack of parent projects.
+    depth_stack = []
+    # checkouts are iterated in asc order by relpath. That way, it can easily be
+    # determined if the previous checkout is parent of the current checkout.
+    for checkout in sorted(checkouts, key=lambda x: x.relpath):
+        while depth_stack:
+            try:
+                Path(checkout.relpath).relative_to(
+                    Path(depth_stack[-1].relpath)
+                )
+            except ValueError:
+                # Path.relative_to returns ValueError if paths are not relative.
+                # TODO(sokcevic): Switch to is_relative_to once min supported
+                # version is py3.9.
+                depth_stack.pop()
+            else:
+                if len(depth_stack) >= len(res):
+                    res.append([])
+                break
+
+        current = res[len(depth_stack)]
+        current.append(checkout)
+        depth_stack.append(checkout)
+
+    return res
 
 
 class _FetchOneResult(NamedTuple):
@@ -1035,15 +1075,21 @@ later is required to fix a server side protocol bug.
                 pm.update(msg=project.name)
             return ret
 
-        proc_res = self.ExecuteInParallel(
-            opt.jobs_checkout,
-            functools.partial(
-                self._CheckoutOne, opt.detach_head, opt.force_sync, opt.verbose
-            ),
-            all_projects,
-            callback=_ProcessResults,
-            output=Progress("Checking out", len(all_projects), quiet=opt.quiet),
-        )
+        for projects in _SafeCheckoutOrder(all_projects):
+            proc_res = self.ExecuteInParallel(
+                opt.jobs_checkout,
+                functools.partial(
+                    self._CheckoutOne,
+                    opt.detach_head,
+                    opt.force_sync,
+                    opt.verbose,
+                ),
+                projects,
+                callback=_ProcessResults,
+                output=Progress(
+                    "Checking out", len(all_projects), quiet=opt.quiet
+                ),
+            )
 
         self._local_sync_state.Save()
         return proc_res and not err_results
