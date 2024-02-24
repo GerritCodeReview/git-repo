@@ -135,6 +135,8 @@ def GetEventTargetPath():
     if retval == 0:
         # Strip trailing carriage-return in path.
         path = p.stdout.rstrip("\n")
+        if path == "":
+            return None
     elif retval != 1:
         # `git config --get` is documented to produce an exit status of `1`
         # if the requested variable is not present in the configuration.
