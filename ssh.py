@@ -25,6 +25,7 @@ import tempfile
 import time
 
 import platform_utils
+from git_command import git
 from repo_trace import Trace
 
 
@@ -211,7 +212,33 @@ class ProxyManager:
                 # and print to the log there.
                 pass
 
-        command = command_base[:1] + ["-M", "-N"] + command_base[1:]
+        # Git protocol V2 is a new feature in git 2.18.0, made default in
+        # git 2.26.0
+        # It is faster and more efficient than V1.
+        # To enable it when using SSH, the environment variable GIT_PROTOCOL
+        # must be set in the SSH side channel when establishing the connection
+        # to the git server.
+        # See https://git-scm.com/docs/protocol-v2#_ssh_and_file_transport
+        # Normally git does this by itself. But here, where the SSH connection
+        # is established manually over ControlMaster via the repo-tool, it must
+        # be passed in explicitly instead.
+        # Based on https://git-scm.com/docs/gitprotocol-pack#_extra_parameters,
+        # GIT_PROTOCOL is considered an "Extra Parameter" and must be ignored
+        # by servers that do not understand it. This means that it is safe to
+        # set it even when connecting to older servers.
+        # It should also be safe to set the environment variable for older
+        # local git versions, since it is only part of the ssh side channel.
+        git_protocol_version = _get_git_protocol_version()
+        ssh_git_protocol_args = [
+            "-o",
+            f"SetEnv GIT_PROTOCOL=version={git_protocol_version}",
+        ]
+
+        command = (
+            command_base[:1]
+            + ["-M", "-N", *ssh_git_protocol_args]
+            + command_base[1:]
+        )
         p = None
         try:
             with Trace("Call to ssh: %s", " ".join(command)):
@@ -293,3 +320,29 @@ class ProxyManager:
                 tempfile.mkdtemp("", "ssh-", tmp_dir), "master-" + tokens
             )
         return self._sock_path
+
+
+@functools.lru_cache(maxsize=1)
+def _get_git_protocol_version() -> str:
+    """
+    Get git protocol version based on git config, with fallback to
+    deducing the default value based on the git version.
+    https://git-scm.com/docs/gitprotocol-v2
+    """
+    try:
+        return subprocess.check_output(
+            ["git", "config", "--get", "--global", "protocol.version"],
+            encoding="utf-8",
+            stderr=subprocess.PIPE,
+        ).strip()
+    except subprocess.CalledProcessError as e:
+        if e.returncode == 1:
+            # Exit code 1 means that the git config key was not found.
+            # Try to imitate the defaults that git would have used.
+            git_version = git.version_tuple()
+            if git_version >= (2, 26, 0):
+                # Since git version 2.26, protocol v2 is the default.
+                return "2"
+            return "1"
+        # Other exit codes indicate error with reading the config.
+        raise
