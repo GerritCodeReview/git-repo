@@ -278,6 +278,11 @@ directories if they have previously been linked to a different
 object directory. WARNING: This may cause data to be lost since
 refs may be removed when overwriting.
 
+The --force-checkout option can be used to force git to switch revs even if the
+index or the working tree differs from HEAD, and if there are untracked files.
+WARNING: This may cause data to be lost since uncommitted changes may be
+removed.
+
 The --force-remove-dirty option can be used to remove previously used
 projects with uncommitted changes. WARNING: This may cause data to be
 lost since uncommitted changes may be removed with projects that no longer
@@ -374,6 +379,14 @@ later is required to fix a server side protocol bug.
             help="overwrite an existing git directory if it needs to "
             "point to a different object directory. WARNING: this "
             "may cause loss of data",
+        )
+        p.add_option(
+            "--force-checkout",
+            dest="force_checkout",
+            action="store_true",
+            help="force checkout even if it results in throwing away "
+            "uncommitted modifications. "
+            "WARNING: this may cause loss of data",
         )
         p.add_option(
             "--force-remove-dirty",
@@ -991,12 +1004,17 @@ later is required to fix a server side protocol bug.
 
         return _FetchMainResult(all_projects)
 
-    def _CheckoutOne(self, detach_head, force_sync, verbose, project):
+    def _CheckoutOne(
+        self, detach_head, force_sync, force_checkout, verbose, project
+    ):
         """Checkout work tree for one project
 
         Args:
             detach_head: Whether to leave a detached HEAD.
-            force_sync: Force checking out of the repo.
+            force_sync: Force checking out of .git directory (e.g. overwrite
+            existing git directory that was previously linked to a different
+            object directory).
+            force_checkout: Force checking out of the repo content.
             verbose: Whether to show verbose messages.
             project: Project object for the project to checkout.
 
@@ -1011,7 +1029,11 @@ later is required to fix a server side protocol bug.
         errors = []
         try:
             project.Sync_LocalHalf(
-                syncbuf, force_sync=force_sync, errors=errors, verbose=verbose
+                syncbuf,
+                force_sync=force_sync,
+                force_checkout=force_checkout,
+                errors=errors,
+                verbose=verbose,
             )
             success = syncbuf.Finish()
         except GitError as e:
@@ -1082,6 +1104,7 @@ later is required to fix a server side protocol bug.
                     self._CheckoutOne,
                     opt.detach_head,
                     opt.force_sync,
+                    opt.force_checkout,
                     opt.verbose,
                 ),
                 projects,

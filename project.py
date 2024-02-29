@@ -1483,6 +1483,7 @@ class Project:
         self,
         syncbuf,
         force_sync=False,
+        force_checkout=False,
         submodules=False,
         errors=None,
         verbose=False,
@@ -1570,7 +1571,7 @@ class Project:
                     syncbuf.info(self, "discarding %d commits", len(lost))
 
             try:
-                self._Checkout(revid, quiet=True)
+                self._Checkout(revid, force_checkout=force_checkout, quiet=True)
                 if submodules:
                     self._SyncSubmodules(quiet=True)
             except GitError as e:
@@ -2825,10 +2826,12 @@ class Project:
         except OSError:
             return False
 
-    def _Checkout(self, rev, quiet=False):
+    def _Checkout(self, rev, force_checkout=False, quiet=False):
         cmd = ["checkout"]
         if quiet:
             cmd.append("-q")
+        if force_checkout:
+            cmd.append("-f")
         cmd.append(rev)
         cmd.append("--")
         if GitCommand(self, cmd).Wait() != 0:
