@@ -1019,9 +1019,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
     def SetManifestOverride(self, path):
         """Override manifestFile.  The caller must call Unload()"""
-        self._outer_client.manifest.manifestFileOverrides[
-            self.path_prefix
-        ] = path
+        self._outer_client.manifest.manifestFileOverrides[self.path_prefix] = (
+            path
+        )
 
     @property
     def UseLocalManifests(self):

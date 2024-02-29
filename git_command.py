@@ -249,9 +249,9 @@ def _build_env(
             s = p + " " + s
         env["GIT_CONFIG_PARAMETERS"] = s
     if "GIT_ALLOW_PROTOCOL" not in env:
-        env[
-            "GIT_ALLOW_PROTOCOL"
-        ] = "file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc"
+        env["GIT_ALLOW_PROTOCOL"] = (
+            "file:git:http:https:ssh:persistent-http:persistent-https:sso:rpc"
+        )
     env["GIT_HTTP_USER_AGENT"] = user_agent.git
 
     if objdir:
@@ -358,9 +358,9 @@ class GitCommand:
                         "Project": e.project,
                         "CommandName": command_name,
                         "Message": str(e),
-                        "ReturnCode": str(e.git_rc)
-                        if e.git_rc is not None
-                        else None,
+                        "ReturnCode": (
+                            str(e.git_rc) if e.git_rc is not None else None
+                        ),
                         "IsError": log_as_error,
                     }
                 )
