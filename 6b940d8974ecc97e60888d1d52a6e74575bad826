@@ -33,6 +33,24 @@
       "message": "Need docstring here.",
       "revId": "6b940d8974ecc97e60888d1d52a6e74575bad826",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd9d07f_89a9b874",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1016,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-02-29T21:31:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "187d517c_1eb832ec",
+      "revId": "6b940d8974ecc97e60888d1d52a6e74575bad826",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
