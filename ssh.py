@@ -207,7 +207,18 @@ class ProxyManager:
                 # and print to the log there.
                 pass
 
-        command = command_base[:1] + ["-M", "-N"] + command_base[1:]
+        git_protocol_version = get_git_protocol_version()
+
+        command = (
+            command_base[:1]
+            + [
+                "-M",
+                "-N",
+                "-o",
+                f"SetEnv GIT_PROTOCOL=version={git_protocol_version}",
+            ]
+            + command_base[1:]
+        )
         p = None
         try:
             with Trace("Call to ssh: %s", " ".join(command)):
@@ -289,3 +300,19 @@ class ProxyManager:
                 tempfile.mkdtemp("", "ssh-", tmp_dir), "master-" + tokens
             )
         return self._sock_path
+
+
+def get_git_protocol_version():
+    try:
+        return subprocess.check_output(
+            ["git", "config", "--get", "--global", "protocol.version"],
+            encoding="utf-8",
+            stderr=subprocess.PIPE,
+        ).strip()
+    except subprocess.CalledProcessError as e:
+        # 1 means the key was not found
+        if e.returncode == 1:
+            # Since git version 2.26, protocol v2 is the default,
+            # safe to assume that's the default if unset
+            return "2"
+        raise
