@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5577b5d9_39d77413",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3330425
+      },
+      "writtenOn": "2024-03-01T22:42:50Z",
+      "side": 1,
+      "message": "export REPO\u003d$(mktemp /tmp/repo.XXXXXXXXX)\ncurl -o ${REPO} https://storage.googleapis.com/git-repo-downloads/repo\ngpg --recv-key 8BB9AD793E8E6153AF0F9A4416530D5E920F5C65\ncurl -s https://storage.googleapis.com/git-repo-downloads/repo.asc | gpg --verify - ${REPO} \u0026\u0026 install -m 755 ${REPO} ~/bin/repo",
+      "revId": "0888a083ec6a23a75d3e681f08ef242acd862573",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
