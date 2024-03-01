@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ecfdbbc_66b2f337",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2024-03-01T00:20:46Z",
+      "side": 1,
+      "message": "even smaller nits",
+      "revId": "360e0c02e0ab637f9c51583cb78eb60c64ab4785",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04ed9c33_63d78c19",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2024-03-01T00:20:46Z",
+      "side": 1,
+      "message": "```suggestion\nindex or the working tree differs from HEAD, and if there are untracked files.\n```",
+      "range": {
+        "startLine": 282,
+        "startChar": 62,
+        "endLine": 282,
+        "endChar": 70
+      },
+      "revId": "360e0c02e0ab637f9c51583cb78eb60c64ab4785",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13e0a821_5a6d6dd8",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2024-03-01T00:20:46Z",
+      "side": 1,
+      "message": "```suggestion\n            \"uncommitted modifications. \"\n```",
+      "range": {
+        "startLine": 388,
+        "startChar": 12,
+        "endLine": 388,
+        "endChar": 40
+      },
+      "revId": "360e0c02e0ab637f9c51583cb78eb60c64ab4785",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
