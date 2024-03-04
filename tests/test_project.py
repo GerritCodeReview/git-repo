@@ -107,6 +107,16 @@ class ReviewableBranchTests(unittest.TestCase):
             self.assertTrue(rb.date)
 
 
+class ProjectTests(unittest.TestCase):
+    """Check Project behavior."""
+
+    def test_encode_patchset_description(self):
+        self.assertEqual(
+            project.Project._encode_patchset_description("abcd00!! +"),
+            "abcd00%21%21_%2b",
+        )
+
+
 class CopyLinkTestCase(unittest.TestCase):
     """TestCase for stub repo client checkouts.
 
