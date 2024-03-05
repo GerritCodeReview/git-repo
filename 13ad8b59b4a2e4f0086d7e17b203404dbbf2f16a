@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "371fa55b_db4706b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-05T18:24:18Z",
+      "side": 1,
+      "message": "please scope commit messages like `ssh:`",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7188af65_38ee92d8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-05T18:24:18Z",
+      "side": 1,
+      "message": "this info should be in ssh.py right above where it sets this var",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85373a9f_0ce1a4a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-05T18:24:18Z",
+      "side": 1,
+      "message": "please document what happens when talking to an older server that only supports v0 or v0+v1",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3067fbf9_248a3b37",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-05T18:24:18Z",
+      "side": 1,
+      "message": "new functions should have docstrings \u0026 typing info",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6385fdaf_42aa3a21",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-05T18:24:18Z",
+      "side": 1,
+      "message": "this is an internal function to this module, so it should have a `_` prefix",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08e72c10_794f4dcb",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-05T18:24:18Z",
+      "side": 1,
+      "message": "comments are full sentences, and full sentences end in periods",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a19c49_813ed82c",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-05T18:24:18Z",
+      "side": 1,
+      "message": "why is that safe ?  look at requirements.json -- our min git version is 1.7.2.",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
