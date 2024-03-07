@@ -102,9 +102,13 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
 
     # depth_stack contains a current stack of parent paths.
     depth_stack = []
-    # checkouts are iterated in asc order by relpath. That way, it can easily be
-    # determined if the previous checkout is parent of the current checkout.
-    for checkout in sorted(checkouts, key=lambda x: x.relpath):
+    # Checkouts are iterated in the hierarchical order. That way, it can easily
+    # be determined if the previous checkout is parent of the current checkout.
+    # We are splitting by the path separator so the final result is
+    # hierarchical, and not just lexicographical. For example, if the projects
+    # are: foo, foo/bar, foo-bar, lexicographical order produces foo, foo-bar
+    # and foo/bar, which doesn't work.
+    for checkout in sorted(checkouts, key=lambda x: x.relpath.split("/")):
         checkout_path = Path(checkout.relpath)
         while depth_stack:
             try:
