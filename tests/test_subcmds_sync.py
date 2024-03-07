@@ -304,29 +304,54 @@ class LocalSyncState(unittest.TestCase):
         self.assertEqual(self.state.GetFetchTime(projA), 5)
 
 
+class FakeProject:
+    def __init__(self, relpath):
+        self.relpath = relpath
+
+    def __str__(self):
+        return f"project: {self.relpath}"
+
+    def __repr__(self):
+        return str(self)
+
+
 class SafeCheckoutOrder(unittest.TestCase):
     def test_no_nested(self):
-        p_f = mock.MagicMock(relpath="f")
-        p_foo = mock.MagicMock(relpath="foo")
+        p_f = FakeProject("f")
+        p_foo = FakeProject("foo")
         out = sync._SafeCheckoutOrder([p_f, p_foo])
         self.assertEqual(out, [[p_f, p_foo]])
 
     def test_basic_nested(self):
-        p_foo = p_foo = mock.MagicMock(relpath="foo")
-        p_foo_bar = mock.MagicMock(relpath="foo/bar")
+        p_foo = p_foo = FakeProject("foo")
+        p_foo_bar = FakeProject("foo/bar")
         out = sync._SafeCheckoutOrder([p_foo, p_foo_bar])
         self.assertEqual(out, [[p_foo], [p_foo_bar]])
 
     def test_complex_nested(self):
-        p_foo = mock.MagicMock(relpath="foo")
-        p_foo_bar = mock.MagicMock(relpath="foo/bar")
-        p_foo_bar_baz_baq = mock.MagicMock(relpath="foo/bar/baz/baq")
-        p_bar = mock.MagicMock(relpath="bar")
+        p_foo = FakeProject("foo")
+        p_foobar = FakeProject("foobar")
+        p_foo_dash_bar = FakeProject("foo-bar")
+        p_foo_bar = FakeProject("foo/bar")
+        p_foo_bar_baz_baq = FakeProject("foo/bar/baz/baq")
+        p_bar = FakeProject("bar")
         out = sync._SafeCheckoutOrder(
-            [p_foo_bar_baz_baq, p_foo, p_foo_bar, p_bar]
+            [
+                p_foo_bar_baz_baq,
+                p_foo,
+                p_foobar,
+                p_foo_dash_bar,
+                p_foo_bar,
+                p_bar,
+            ]
         )
         self.assertEqual(
-            out, [[p_bar, p_foo], [p_foo_bar], [p_foo_bar_baz_baq]]
+            out,
+            [
+                [p_bar, p_foo, p_foo_dash_bar, p_foobar],
+                [p_foo_bar],
+                [p_foo_bar_baz_baq],
+            ],
         )
 
 
