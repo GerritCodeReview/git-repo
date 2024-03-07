@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c041f5c_08ccc76f",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1098470
+      },
+      "writtenOn": "2024-03-07T22:58:32Z",
+      "side": 1,
+      "message": "I guess I\u0027ve convinced myself this works, we\u0027re going to compare arrays instead...\n\n```\n\u003e\u003e\u003e a \u003d [\"a\", \"a/b\", \"a-b\"]\n\u003e\u003e\u003e sorted(a, key\u003dlambda x: x.split(\u0027/\u0027))\n[\u0027a\u0027, \u0027a/b\u0027, \u0027a-b\u0027]\n```\n\nSorry for the basic question, but the intent is to compare sub arrays. How sure are we this works in all cases?",
+      "revId": "5840e0b2e9bc70e49ee8e538f1ceb5a6c196ab74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
