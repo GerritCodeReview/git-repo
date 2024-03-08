@@ -247,6 +247,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         p.add_option(
             "--pd",
             "--patchset-description",
+            dest="patchset_description",
             help="description for patchset",
         )
         p.add_option(
