@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3189879_ead7a78a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-08T01:24:03Z",
+      "side": 1,
+      "message": "this is breaking for me\n\n```\n$ repo upload --cbr . -y --dry-run\n...\nTraceback (most recent call last):\n  File \".../repo/main.py\", line 874, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n  File \".../repo/main.py\", line 850, in _Main\n    result \u003d repo._Run(name, gopts, argv) or 0\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \".../repo/main.py\", line 294, in _Run\n    result \u003d run()\n             ^^^^^\n  File \".../repo/main.py\", line 275, in \u003clambda\u003e\n    lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \".../repo/main.py\", line 442, in _RunLong\n    execute_command()\n  File \".../repo/main.py\", line 408, in execute_command\n    execute_command_helper()\n  File \".../repo/main.py\", line 374, in execute_command_helper\n    result \u003d cmd.Execute(copts, cargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \".../repo/subcmds/upload.py\", line 827, in Execute\n    self._SingleBranch(opt, pending[0][1][0], people)\n  File \".../repo/subcmds/upload.py\", line 433, in _SingleBranch\n    self._UploadAndReport(opt, [branch], people)\n  File \".../repo/subcmds/upload.py\", line 673, in _UploadAndReport\n    self._UploadBranch(opt, branch, people)\n  File \".../repo/subcmds/upload.py\", line 663, in _UploadBranch\n    patchset_description\u003dopt.patchset_description,\n                         ^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: \u0027Values\u0027 object has no attribute \u0027patchset_description\u0027\n```",
+      "revId": "96edb9b573d6c58b1990090c467ce0c2809bc0b1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
