@@ -70,6 +70,24 @@
       "parentUuid": "02bd1738_97e965c5",
       "revId": "5840e0b2e9bc70e49ee8e538f1ceb5a6c196ab74",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa717fbc_779540e0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-03-08T17:15:13Z",
+      "side": 1,
+      "message": "Good idea :) I added a test that failed in the old code, and passes with the new one.",
+      "parentUuid": "c97fc410_dd135ca6",
+      "revId": "5840e0b2e9bc70e49ee8e538f1ceb5a6c196ab74",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
