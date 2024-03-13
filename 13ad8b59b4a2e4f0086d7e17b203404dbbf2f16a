@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24c1fc39_cd2f7c96",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-13T09:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "371fa55b_db4706b5",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7188af65_38ee92d8",
@@ -35,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3db7e56_85032c09",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-13T09:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7188af65_38ee92d8",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85373a9f_0ce1a4a9",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-03-05T18:24:18Z",
       "side": 1,
       "message": "please document what happens when talking to an older server that only supports v0 or v0+v1",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a34e75b9_32d7fb52",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-13T09:54:03Z",
+      "side": 1,
+      "message": "Done. Added description where variable is set.\n\n-----------------\n\nFor fun, here is comparision with how jgit does it: https://git.eclipse.org/c/jgit/jgit.git/commit/?id\u003d0853a2410f22c8bd97a179dec14e3c083a27abbb \n\nThey always try first with v2 and if the server does not accept, it falls back to v1. Doing that here would be very difficult",
+      "parentUuid": "85373a9f_0ce1a4a9",
       "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -86,6 +140,42 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be9fa13e_7f0c87f0",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-13T09:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6385fdaf_42aa3a21",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87c5a51b_9eb44fc5",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-13T09:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3067fbf9_248a3b37",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08e72c10_794f4dcb",
@@ -103,6 +193,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ef9c7ef_16ca16ea",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 313,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-13T09:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08e72c10_794f4dcb",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4a19c49_813ed82c",
@@ -116,6 +224,24 @@
       "writtenOn": "2024-03-05T18:24:18Z",
       "side": 1,
       "message": "why is that safe ?  look at requirements.json -- our min git version is 1.7.2.",
+      "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "391c3264_8f3538b0",
+        "filename": "ssh.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-13T09:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4a19c49_813ed82c",
       "revId": "13ad8b59b4a2e4f0086d7e17b203404dbbf2f16a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
