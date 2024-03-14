@@ -1813,11 +1813,11 @@ class Project:
                 )
             else:
                 msg = (
-                    "error: %s: Cannot remove project: uncommitted"
+                    "error: %s: Cannot remove project: uncommitted "
                     "changes are present.\n" % self.RelPath(local=False)
                 )
                 logger.error(msg)
-                raise DeleteDirtyWorktreeError(msg, project=self)
+                raise DeleteDirtyWorktreeError(msg, project=self.name)
 
         if verbose:
             print(f"{self.RelPath(local=False)}: Deleting obsolete checkout.")

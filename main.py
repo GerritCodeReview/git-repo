@@ -425,7 +425,7 @@ class _Repo:
                         error_info = json.dumps(
                             {
                                 "ErrorType": type(error).__name__,
-                                "Project": project,
+                                "Project": str(project),
                                 "Message": str(error),
                             }
                         )
