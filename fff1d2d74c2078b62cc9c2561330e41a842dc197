@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b56cc507_f174bb30",
+        "filename": "ssh.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-03-19T08:03:40Z",
+      "side": 0,
+      "message": "I\u0027m wondering if this whole mechanism of manually establishing and closing the ControlMaster can be replaced by just setting ssh options\n\n```\nControlMaster auto \nControlPersist 10m\nControlPath ...something%r@%h-%p\n``` \n\nThen the first connection will automatically create the master and subsequent connection use it.\n\nIf holding the connection open 10min after a sync is too much, it can be force closed with `ssh -O exit` \n\n----------------\n\nBy doing that, the first connection will be created by git and any environment variables set by git forwarded there, without extra logic added below.\n\n--------------\n\nMaybe this is not the best place to discuss. Should i open a ticket or create a second patch with such proposal? Or do you already know if this path has been explored before and is a dead end?",
+      "range": {
+        "startLine": 161,
+        "startChar": 7,
+        "endLine": 161,
+        "endChar": 69
+      },
+      "revId": "fff1d2d74c2078b62cc9c2561330e41a842dc197",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
