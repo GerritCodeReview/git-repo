@@ -50,8 +50,12 @@
   # git-1.7.10 is in Debian Wheezy.
   # git-1.9.1 is in Ubuntu Trusty.
   # git-2.1.4 is in Debian Jessie.
+  # git-2.7.4 is in Ubuntu Xenial.
+  # git-2.11.0 is in Debian Stretch.
+  # git-2.17.0 is in Ubuntu Bionic.
+  # git-2.20.1 is in Debian Buster.
   "git": {
     "hard": [1, 7, 9],
-    "soft": [1, 9, 1]
+    "soft": [2, 7, 4]
   }
 }

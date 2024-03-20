@@ -241,7 +241,7 @@ Things in italics are things we used to care about but probably don't anymore.
 | Feb 2014 | *Dec 2014*   | **1.9.0**    |                 |              | *14.04 Trusty* |
 | Mar 2014 | *Mar 2019*   |              | *3.4.0*         |              | *14.04 Trusty* - 15.10 Wily / *Jessie* |
 | Mar 2014 |              |              |                 | 6.6          | *14.04 Trusty* - 14.10 Utopic |
-| Apr 2014 | *Apr 2022*   |              |                 |              | *14.04 Trusty*       | 1.9.1    | 2.7.5 3.4.0  | 6.6 |
+| Apr 2014 | *Apr 2024*   |              |                 |              | *14.04 Trusty*       | 1.9.1    | 2.7.5 3.4.0  | 6.6 |
 | May 2014 | *Dec 2014*   | 2.0.0        |
 | Aug 2014 | *Dec 2014*   | *2.1.0*      |                 |              | 14.10 Utopic - 15.04 Vivid / *Jessie* |
 | Oct 2014 |              |              |                 | 6.7          | 15.04 Vivid |
@@ -262,7 +262,7 @@ Things in italics are things we used to care about but probably don't anymore.
 | Jan 2016 | *Jul 2017*   | *2.7.0*      |                 |              | *16.04 Xenial* |
 | Feb 2016 |              |              |                 | 7.2          | *16.04 Xenial* |
 | Mar 2016 | *Jul 2017*   | 2.8.0        |
-| Apr 2016 | *Apr 2024*   |              |                 |              | *16.04 Xenial*       | 2.7.4    | 2.7.11 3.5.1 | 7.2 |
+| Apr 2016 | *Apr 2026*   |              |                 |              | *16.04 Xenial*       | 2.7.4    | 2.7.11 3.5.1 | 7.2 |
 | Jun 2016 | *Jul 2017*   | 2.9.0        |                 |              | 16.10 Yakkety |
 | Jul 2016 |              |              |                 | 7.3          | 16.10 Yakkety |
 | Sep 2016 | *Sep 2017*   | 2.10.0       |
@@ -319,10 +319,11 @@ Things in italics are things we used to care about but probably don't anymore.
 | Aug 2021 |              | 2.33.0       |                 | 8.7          |
 | Aug 2021 | **Aug 2026** |              |                 |              | **Debian 11 Bullseye** | 2.30.2 | 2.7.18 3.9.2 | 8.4 |
 | Sep 2021 |              |              |                 | 8.8          |
-| Oct 2021 |              | 2.34.0       | 3.10.0          |
+| Oct 2021 |              | 2.34.0       | 3.10.0          |              | **22.04 Jammy** |
 | Jan 2022 |              | 2.35.0       |
-| Feb 2022 |              |              |                 | 8.9          |
+| Feb 2022 |              |              |                 | 8.9          | **22.04 Jammy** |
 | Apr 2022 |              | 2.36.0       |                 | 9.0          |
+| Apr 2022 | **Apr 2032** |              |                 |              | **22.04 Jammy**      | 2.34.1 | 2.7.18 3.10.6 | 8.9 |
 | Jun 2022 |              | 2.37.0       |
 | Oct 2022 |              | 2.38.0       |                 | 9.1          |
 | Oct 2022 |              |              | 3.11.0          |              | **Bookworm** |
@@ -346,7 +347,7 @@ Things in italics are things we used to care about but probably don't anymore.
 [rel-g]: https://en.wikipedia.org/wiki/Git#Releases
 [rel-o]: https://www.openssh.com/releasenotes.html
 [rel-p]: https://en.wikipedia.org/wiki/History_of_Python#Table_of_versions
-[rel-u]: https://en.wikipedia.org/wiki/Ubuntu_version_history#Table_of_versions
+[rel-u]: https://wiki.ubuntu.com/Releases
 [example announcement]: https://groups.google.com/d/topic/repo-discuss/UGBNismWo1M/discussion
 [repo-discuss@googlegroups.com]: https://groups.google.com/forum/#!forum/repo-discuss
 [go/repo-release]: https://goto.google.com/repo-release
