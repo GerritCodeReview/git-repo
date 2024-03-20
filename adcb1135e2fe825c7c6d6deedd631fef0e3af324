@@ -16,6 +16,24 @@
       "message": "is 2030 correct? shouldn\u0027t it be 2025?",
       "revId": "adcb1135e2fe825c7c6d6deedd631fef0e3af324",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fffa417a_f3a44b24",
+        "filename": "docs/release-process.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-20T19:48:38Z",
+      "side": 1,
+      "message": "2025 is end of standard support.  2030 is EOL.  Ubuntu offers an additional 5 years support for pure security fixes.\n\nhttps://wiki.ubuntu.com/Releases",
+      "parentUuid": "36a991e4_8e2654ed",
+      "revId": "adcb1135e2fe825c7c6d6deedd631fef0e3af324",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
