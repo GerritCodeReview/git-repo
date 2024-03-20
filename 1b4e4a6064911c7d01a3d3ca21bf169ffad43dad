@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5cd8c213_1913b524",
+        "filename": "ssh.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-20T16:48:40Z",
+      "side": 1,
+      "message": "please follow PEP-257 style.  here\u0027s some examples:\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "1b4e4a6064911c7d01a3d3ca21bf169ffad43dad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ac65eb41_93af7d90",
         "filename": "ssh.py",
         "patchSetId": 8
@@ -14,6 +31,24 @@
       "writtenOn": "2024-03-18T07:55:56Z",
       "side": 1,
       "message": "I have another idea how to do this without trying to imitate git behavior. Below should be backwards and forwards compatible with whatever behavior git might have. With the compromise of fiddling with shell and ssh-variant.\n\n```py\ndef _get_git_protocol_version2() -\u003e str:\n    with tempfile.TemporaryDirectory() as tempdir:\n        outfile \u003d os.path.join(tempdir, \"protocol.txt\")\n        fake_ssh_capturing_envvar \u003d f\"\"\"/usr/bin/sh -c \u0027\n            echo \"$GIT_PROTOCOL\" \u003e {shlex.quote(outfile)}\n            false\u0027\n        \"\"\"\n        \n        # Don\u0027t check exit code, it is expected to fail\n        subprocess.call(\n            [\"git\", \"clone\", \"ssh://any_domain/any_path\"],\n            env\u003d{\n                \"GIT_SSH_COMMAND\": fake_ssh_capturing_envvar,\n                \"GIT_SSH_VARIANT\": \"ssh\",\n            },\n            stderr\u003dsubprocess.PIPE,\n        )\n        return Path(outfile).read_text().strip()\n```\n\nLet me know what you think.",
+      "revId": "1b4e4a6064911c7d01a3d3ca21bf169ffad43dad",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e8e1d4e_4fae4802",
+        "filename": "ssh.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-20T16:48:40Z",
+      "side": 1,
+      "message": "i suspect this will be slower and have OS incompatibilities (e.g. Windows and /usr/bin/sh).  so let\u0027s go with what you have now.",
+      "parentUuid": "ac65eb41_93af7d90",
       "revId": "1b4e4a6064911c7d01a3d3ca21bf169ffad43dad",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

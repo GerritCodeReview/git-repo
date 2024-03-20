@@ -22,6 +22,30 @@
       },
       "revId": "fff1d2d74c2078b62cc9c2561330e41a842dc197",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80b04496_675385eb",
+        "filename": "ssh.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-20T16:48:40Z",
+      "side": 0,
+      "message": "a bug would be good as it\u0027ll be a better paper trail\n\npart of the problem we try to cater to people who are not that savvy.  often times they\u0027re given some insns to copy \u0026 paste and they don\u0027t really understand what\u0027s going on.  trying to get them to configure ssh_config for automatic master support is prob too much for many.\n\nthat said, if there\u0027s something in newer tools that we can switch to, perhaps with degrading much older tools, i think we\u0027d be open to that.  i see git-2.3.0 supports `GIT_SSH_COMMAND` and that was released in 2015.  our soft requirement is git-1.9.1 from 2014.  so making that range less optimal, but still functional, is OK.\n\nbut let\u0027s land this CL as it\u0027s a bit less intrusive.",
+      "parentUuid": "b56cc507_f174bb30",
+      "range": {
+        "startLine": 161,
+        "startChar": 7,
+        "endLine": 161,
+        "endChar": 69
+      },
+      "revId": "fff1d2d74c2078b62cc9c2561330e41a842dc197",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
