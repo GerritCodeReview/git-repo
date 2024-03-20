@@ -70,6 +70,24 @@
       "parentUuid": "ca3177de_feaf69d2",
       "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c861bbe_1270d3ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-20T15:10:40Z",
+      "side": 1,
+      "message": "we don\u0027t link accounts on the gerrit GoB, only chromium \u0026 chrome-internal.  so you need to pick one account and use it here if you want things to be consistent.\n\ngitcookies can specify multiple hosts so you can use diff account on diff hosts.\n\nyou can also use `gerrit -g gerrit label-cq ...` on the CLI.",
+      "parentUuid": "80d54b83_a55d5b5e",
+      "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
