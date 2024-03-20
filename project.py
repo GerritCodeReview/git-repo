@@ -3341,7 +3341,7 @@ class Project:
         if not platform_utils.islink(dotgit) and platform_utils.isdir(dotgit):
             self._MigrateOldWorkTreeGitDir(dotgit, project=self.name)
 
-        init_dotgit = not os.path.exists(dotgit)
+        init_dotgit = not os.path.lexists(dotgit)
         if self.use_git_worktrees:
             if init_dotgit:
                 self._InitGitWorktree()
