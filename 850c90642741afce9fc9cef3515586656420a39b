@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009fa1ec_29a415b9",
+        "filename": "requirements.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-03-20T19:40:40Z",
+      "side": 1,
+      "message": "All those listed releases no longer have support. \n\nUbuntu Focal Fossa - git-2.25.1 (https://packages.ubuntu.com/focal/git)\nDebian Buster - git-2.20.1 (https://packages.debian.org/buster/git)\n\nShould we just do a major bump and say 2.20.1 (released on Dec 20218) is a hard requirement?",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 34
+      },
+      "revId": "850c90642741afce9fc9cef3515586656420a39b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
