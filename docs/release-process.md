@@ -202,7 +202,7 @@ still support them.
 Things in italics are things we used to care about but probably don't anymore.
 
 |   Date   |     EOL      | [Git][rel-g] | [Python][rel-p] | [SSH][rel-o] | [Ubuntu][rel-u] / [Debian][rel-d] | Git | Python | SSH |
-|:--------:|:------------:|:------------:|:---------------:|:------------:|-----------------------------------|-----|--------|-----|
+|:--------:|:------------:|:------------:|:---------------:|:------------:|-----------------------------------|:---:|:------:|:---:|
 | Apr 2008 |              |              |                 | 5.0          |
 | Jun 2008 |              |              |                 | 5.1          |
 | Oct 2008 | *Oct 2013*   |              | 2.6.0           |              | *10.04 Lucid* - 10.10 Maverick / *Squeeze* |
@@ -312,14 +312,32 @@ Things in italics are things we used to care about but probably don't anymore.
 | Oct 2020 |              |              |                 |              | 20.10 Groovy         | 2.27.0   | 2.7.18 3.8.6 | 8.3 |
 | Oct 2020 | **Oct 2025** |              | 3.9.0           |              | 21.04 Hirsute / **Bullseye** |
 | Dec 2020 | *Mar 2021*   | 2.30.0       |                 |              | 21.04 Hirsute / **Bullseye** |
-| Mar 2021 |              | 2.31.0       |
-| Mar 2021 |              |              |                 | 8.5          |
+| Mar 2021 |              | 2.31.0       |                 | 8.5          |
 | Apr 2021 |              |              |                 | 8.6          |
 | Apr 2021 | *Jan 2022*   |              |                 |              | 21.04 Hirsute        | 2.30.2   | 2.7.18 3.9.4 | 8.4 |
 | Jun 2021 |              | 2.32.0       |
-| Aug 2021 |              | 2.33.0       |
-| Aug 2021 |              |              |                 | 8.7          |
+| Aug 2021 |              | 2.33.0       |                 | 8.7          |
 | Aug 2021 | **Aug 2026** |              |                 |              | **Debian 11 Bullseye** | 2.30.2 | 2.7.18 3.9.2 | 8.4 |
+| Sep 2021 |              |              |                 | 8.8          |
+| Oct 2021 |              | 2.34.0       | 3.10.0          |
+| Jan 2022 |              | 2.35.0       |
+| Feb 2022 |              |              |                 | 8.9          |
+| Apr 2022 |              | 2.36.0       |                 | 9.0          |
+| Jun 2022 |              | 2.37.0       |
+| Oct 2022 |              | 2.38.0       |                 | 9.1          |
+| Oct 2022 |              |              | 3.11.0          |              | **Bookworm** |
+| Dec 2022 |              | 2.39.0       |                 |              | **Bookworm** |
+| Feb 2023 |              |              |                 | 9.2          | **Bookworm** |
+| Mar 2023 |              | 2.40.0       |                 | 9.3          |
+| Jun 2023 |              | 2.41.0       |
+| Jun 2023 | **Jun 2028** |              |                 |              | **Debian 12 Bookworm** | 2.39.2 | 3.11.2 | 9.2 |
+| Aug 2023 |              | 2.42.0       |                 | 9.4          |
+| Oct 2023 |              |              | 3.12.0          | 9.5          |
+| Nov 2022 |              | 2.43.0       |
+| Dec 2023 |              |              |                 | 9.6          |
+| Feb 2024 |              | 2.44.0       |
+| Mar 2024 |              |              |                 | 9.7          |
+| Oct 2024 |              |              | 3.13.0          |
 | **Date** |   **EOL**    | **[Git][rel-g]** | **[Python][rel-p]** | **[SSH][rel-o]** | **[Ubuntu][rel-u] / [Debian][rel-d]** | **Git** | **Python** | **SSH** |
 
 
