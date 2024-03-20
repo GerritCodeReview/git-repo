@@ -46,6 +46,30 @@
       },
       "revId": "fff1d2d74c2078b62cc9c2561330e41a842dc197",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b9619be_613298d8",
+        "filename": "ssh.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-20T20:23:25Z",
+      "side": 0,
+      "message": "once we land https://gerrit-review.googlesource.com/c/415137 it\u0027ll give us cover to move forward relying on `GIT_SSH_COMMAND`.  people with pre-2.3.0 git will still work, just not get better perf via automatic control master.\n\nbut let\u0027s still do this more targeted fix first.",
+      "parentUuid": "80b04496_675385eb",
+      "range": {
+        "startLine": 161,
+        "startChar": 7,
+        "endLine": 161,
+        "endChar": 69
+      },
+      "revId": "fff1d2d74c2078b62cc9c2561330e41a842dc197",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
