@@ -46,12 +46,12 @@
 
   # Supported git versions.
   #
-  # git-1.7.2 is in Debian Squeeze.
   # git-1.7.9 is in Ubuntu Precise.
-  # git-1.9.1 is in Ubuntu Trusty.
   # git-1.7.10 is in Debian Wheezy.
+  # git-1.9.1 is in Ubuntu Trusty.
+  # git-2.1.4 is in Debian Jessie.
   "git": {
-    "hard": [1, 7, 2],
+    "hard": [1, 7, 9],
     "soft": [1, 9, 1]
   }
 }

@@ -124,7 +124,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 42)
+VERSION = (2, 45)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -210,9 +210,8 @@ GIT = "git"  # our git command
 # NB: The version of git that the repo launcher requires may be much older than
 # the version of git that the main repo source tree requires.  Keeping this at
 # an older version also makes it easier for users to upgrade/rollback as needed.
-#
-# git-1.7 is in (EOL) Ubuntu Precise.
-MIN_GIT_VERSION = (1, 7, 2)  # minimum supported git version
+# See requirements.json for versions.
+MIN_GIT_VERSION = (1, 7, 9)  # minimum supported git version
 repodir = ".repo"  # name of repo's private directory
 S_repo = "repo"  # special repo repository
 S_manifests = "manifests"  # special manifest repository
