@@ -52,6 +52,24 @@
       "parentUuid": "1d1460d3_6d402e75",
       "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80d54b83_a55d5b5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160011
+      },
+      "writtenOn": "2024-03-20T15:05:51Z",
+      "side": 1,
+      "message": "I think there is a bug in Gerrit when working with linked @google.com and @chromium.org accounts. My CLs are created using @chromium.org since this is what I have in my .gitcookies file and is my preference. However, I can only login with @google.com since my accounts are linked. Hence, I can\u0027t vote CQ+2. As a workaround, I found a way to set CQ bit from the command line: \u0027git cl upload -c\u0027.",
+      "parentUuid": "ca3177de_feaf69d2",
+      "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
