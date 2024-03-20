@@ -22,6 +22,30 @@
       },
       "revId": "850c90642741afce9fc9cef3515586656420a39b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b29f0ea8_29c7c3fb",
+        "filename": "requirements.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-20T19:46:19Z",
+      "side": 1,
+      "message": "i grok that these are all EOL.  we can\u0027t jump the hard version past the soft version as that\u0027d break people immediately rather than giving them a warning period for them to prepare and/or provide feedback.  i figured we\u0027d slowly pull the versions up across multiple releases rather than doing one big jump.",
+      "parentUuid": "009fa1ec_29a415b9",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 34
+      },
+      "revId": "850c90642741afce9fc9cef3515586656420a39b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
