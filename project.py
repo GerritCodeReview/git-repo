@@ -1145,8 +1145,7 @@ class Project:
         # This stops git from pushing all reachable annotated tags when
         # push.followTags is configured. Gerrit does not accept any tags
         # pushed to a CL.
-        if git_require((1, 8, 3)):
-            cmd.append("--no-follow-tags")
+        cmd.append("--no-follow-tags")
 
         for push_option in push_options or []:
             cmd.append("-o")
@@ -2565,12 +2564,7 @@ class Project:
             branch = None
         else:
             branch = self.revisionExpr
-        if (
-            not self.manifest.IsMirror
-            and is_sha1
-            and depth
-            and git_require((1, 8, 3))
-        ):
+        if not self.manifest.IsMirror and is_sha1 and depth:
             # Shallow checkout of a specific commit, fetch from that commit and
             # not the heads only as the commit might be deeper in the history.
             spec.append(branch)
