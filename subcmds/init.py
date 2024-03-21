@@ -21,10 +21,9 @@ from command import MirrorSafeCommand
 from error import RepoUnhandledExceptionError
 from error import UpdateManifestError
 from git_command import git_require
-from git_command import MIN_GIT_VERSION_HARD
-from git_command import MIN_GIT_VERSION_SOFT
 from repo_logging import RepoLogger
 from wrapper import Wrapper
+from wrapper import WrapperDir
 
 
 logger = RepoLogger(__file__)
@@ -331,13 +330,17 @@ to update the working directory files.
                 self.OptionParser.error("too many arguments to init")
 
     def Execute(self, opt, args):
-        git_require(MIN_GIT_VERSION_HARD, fail=True)
-        if not git_require(MIN_GIT_VERSION_SOFT):
+        wrapper = Wrapper()
+
+        reqs = wrapper.Requirements.from_dir(WrapperDir())
+        git_require(reqs.get_hard_ver("git"), fail=True)
+        min_git_version_soft = reqs.get_soft_ver("git")
+        if not git_require(min_git_version_soft):
             logger.warning(
                 "repo: warning: git-%s+ will soon be required; "
                 "please upgrade your version of git to maintain "
                 "support.",
-                ".".join(str(x) for x in MIN_GIT_VERSION_SOFT),
+                ".".join(str(x) for x in min_git_version_soft),
             )
 
         rp = self.manifest.repoProject
@@ -350,7 +353,6 @@ to update the working directory files.
 
         # Handle new --repo-rev requests.
         if opt.repo_rev:
-            wrapper = Wrapper()
             try:
                 remote_ref, rev = wrapper.check_repo_rev(
                     rp.worktree,
