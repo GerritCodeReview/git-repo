@@ -16,6 +16,24 @@
       "message": "bump this to 46?",
       "revId": "b0384cdddbf1afb49d67ab109e8ed3b3f68bb7bc",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ebc9af2_998cdf65",
+        "filename": "repo",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-03-21T20:00:46Z",
+      "side": 1,
+      "message": "generally we\u0027ve followed the comment above here -- if there\u0027s important/user facing changes, we bump.  otherwise we leave it be.  there\u0027s nothing wrong with bumping it other than churn in the release.\n\nfor this CL, i only changed internal Requirements API, so for users running `repo`, there\u0027s no diff.",
+      "parentUuid": "cafc16cd_3a6d4e88",
+      "revId": "b0384cdddbf1afb49d67ab109e8ed3b3f68bb7bc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
