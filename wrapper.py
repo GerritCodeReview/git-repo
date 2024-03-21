@@ -18,8 +18,12 @@ import importlib.util
 import os
 
 
+def WrapperDir():
+    return os.path.dirname(__file__)
+
+
 def WrapperPath():
-    return os.path.join(os.path.dirname(__file__), "repo")
+    return os.path.join(WrapperDir(), "repo")
 
 
 @functools.lru_cache(maxsize=None)

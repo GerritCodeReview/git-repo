@@ -210,7 +210,6 @@ GIT = "git"  # our git command
 # NB: The version of git that the repo launcher requires may be much older than
 # the version of git that the main repo source tree requires.  Keeping this at
 # an older version also makes it easier for users to upgrade/rollback as needed.
-# See requirements.json for versions.
 MIN_GIT_VERSION = (1, 7, 9)  # minimum supported git version
 repodir = ".repo"  # name of repo's private directory
 S_repo = "repo"  # special repo repository
@@ -1237,13 +1236,13 @@ class Requirements:
 
         return cls(json_data)
 
-    def _get_soft_ver(self, pkg):
+    def get_soft_ver(self, pkg):
         """Return the soft version for |pkg| if it exists."""
-        return self.requirements.get(pkg, {}).get("soft", ())
+        return tuple(self.requirements.get(pkg, {}).get("soft", ()))
 
-    def _get_hard_ver(self, pkg):
+    def get_hard_ver(self, pkg):
         """Return the hard version for |pkg| if it exists."""
-        return self.requirements.get(pkg, {}).get("hard", ())
+        return tuple(self.requirements.get(pkg, {}).get("hard", ()))
 
     @staticmethod
     def _format_ver(ver):
@@ -1253,8 +1252,8 @@ class Requirements:
     def assert_ver(self, pkg, curr_ver):
         """Verify |pkg|'s |curr_ver| is new enough."""
         curr_ver = tuple(curr_ver)
-        soft_ver = tuple(self._get_soft_ver(pkg))
-        hard_ver = tuple(self._get_hard_ver(pkg))
+        soft_ver = tuple(self.get_soft_ver(pkg))
+        hard_ver = tuple(self.get_hard_ver(pkg))
         if curr_ver < hard_ver:
             print(
                 f'repo: error: Your version of "{pkg}" '
