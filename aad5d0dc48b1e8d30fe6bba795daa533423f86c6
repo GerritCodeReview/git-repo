@@ -88,6 +88,24 @@
       "parentUuid": "80d54b83_a55d5b5e",
       "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58d78834_d19df82b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1160011
+      },
+      "writtenOn": "2024-03-21T15:54:51Z",
+      "side": 1,
+      "message": "I like using my @chromium.org account and this is what I use in .gitcookies. Unfortunately, when I try to switch accounts on this site and pick @chromium.org, nothing happens, i.e. page reloads, but still lists both accounts asking me to choose one. Looks like a bug to me, but I am not certain where to report it and whether it\u0027ll ever get fixed. May be just specific to my account and I do have a workaround.",
+      "parentUuid": "5c861bbe_1270d3ea",
+      "revId": "aad5d0dc48b1e8d30fe6bba795daa533423f86c6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
