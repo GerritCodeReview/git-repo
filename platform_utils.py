@@ -17,6 +17,7 @@ import os
 import platform
 import shutil
 import stat
+import sys
 
 
 def isWindows():
@@ -259,7 +260,11 @@ def realpath(path):
 
     Availability: Windows, Unix.
     """
-    if isWindows():
+    py_version = sys.version_info
+    has_py_3_8 = py_version.major == 3 and py_version.minor >= 8
+    # os.path.realpath doesn't fully support Windows until 3.8
+    if isWindows() and not has_py_3_8:
+        # This implementation is buggy for driver mounted to a directory
         current_path = os.path.abspath(path)
         path_tail = []
         for c in range(0, 100):  # Avoid cycles
