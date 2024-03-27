@@ -259,24 +259,4 @@ def realpath(path):
 
     Availability: Windows, Unix.
     """
-    if isWindows():
-        current_path = os.path.abspath(path)
-        path_tail = []
-        for c in range(0, 100):  # Avoid cycles
-            if islink(current_path):
-                target = readlink(current_path)
-                current_path = os.path.join(
-                    os.path.dirname(current_path), target
-                )
-            else:
-                basename = os.path.basename(current_path)
-                if basename == "":
-                    path_tail.append(current_path)
-                    break
-                path_tail.append(basename)
-                current_path = os.path.dirname(current_path)
-        path_tail.reverse()
-        result = os.path.normpath(os.path.join(*path_tail))
-        return result
-    else:
-        return os.path.realpath(path)
+    return os.path.realpath(path)
