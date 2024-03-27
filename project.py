@@ -145,7 +145,7 @@ def _ProjectHooks():
     """
     global _project_hook_list
     if _project_hook_list is None:
-        d = platform_utils.realpath(os.path.abspath(os.path.dirname(__file__)))
+        d = os.path.realpath(os.path.abspath(os.path.dirname(__file__)))
         d = os.path.join(d, "hooks")
         _project_hook_list = [
             os.path.join(d, x) for x in platform_utils.listdir(d)
@@ -1826,7 +1826,7 @@ class Project:
         # remove because it will recursively delete projects -- we handle that
         # ourselves below.  https://crbug.com/git/48
         if self.use_git_worktrees:
-            needle = platform_utils.realpath(self.gitdir)
+            needle = os.path.realpath(self.gitdir)
             # Find the git worktree commondir under .repo/worktrees/.
             output = self.bare_git.worktree("list", "--porcelain").splitlines()[
                 0
@@ -1840,7 +1840,7 @@ class Project:
                 with open(gitdir) as fp:
                     relpath = fp.read().strip()
                 # Resolve the checkout path and see if it matches this project.
-                fullpath = platform_utils.realpath(
+                fullpath = os.path.realpath(
                     os.path.join(configs, name, relpath)
                 )
                 if fullpath == needle:
@@ -2975,14 +2975,12 @@ class Project:
                             "Retrying clone after deleting %s", self.gitdir
                         )
                         try:
-                            platform_utils.rmtree(
-                                platform_utils.realpath(self.gitdir)
-                            )
+                            platform_utils.rmtree(os.path.realpath(self.gitdir))
                             if self.worktree and os.path.exists(
-                                platform_utils.realpath(self.worktree)
+                                os.path.realpath(self.worktree)
                             ):
                                 platform_utils.rmtree(
-                                    platform_utils.realpath(self.worktree)
+                                    os.path.realpath(self.worktree)
                                 )
                             return self._InitGitDir(
                                 mirror_git=mirror_git,
@@ -3068,7 +3066,7 @@ class Project:
             self._InitHooks(quiet=quiet)
 
     def _InitHooks(self, quiet=False):
-        hooks = platform_utils.realpath(os.path.join(self.objdir, "hooks"))
+        hooks = os.path.realpath(os.path.join(self.objdir, "hooks"))
         if not os.path.exists(hooks):
             os.makedirs(hooks)
 
@@ -3211,9 +3209,9 @@ class Project:
             dst_path = os.path.join(destdir, name)
             src_path = os.path.join(srcdir, name)
 
-            dst = platform_utils.realpath(dst_path)
+            dst = os.path.realpath(dst_path)
             if os.path.lexists(dst):
-                src = platform_utils.realpath(src_path)
+                src = os.path.realpath(src_path)
                 # Fail if the links are pointing to the wrong place.
                 if src != dst:
                     logger.error(
@@ -3249,10 +3247,10 @@ class Project:
         if copy_all:
             to_copy = platform_utils.listdir(gitdir)
 
-        dotgit = platform_utils.realpath(dotgit)
+        dotgit = os.path.realpath(dotgit)
         for name in set(to_copy).union(to_symlink):
             try:
-                src = platform_utils.realpath(os.path.join(gitdir, name))
+                src = os.path.realpath(os.path.join(gitdir, name))
                 dst = os.path.join(dotgit, name)
 
                 if os.path.lexists(dst):
@@ -3349,9 +3347,7 @@ class Project:
         else:
             if not init_dotgit:
                 # See if the project has changed.
-                if platform_utils.realpath(
-                    self.gitdir
-                ) != platform_utils.realpath(dotgit):
+                if os.path.realpath(self.gitdir) != os.path.realpath(dotgit):
                     platform_utils.remove(dotgit)
 
             if init_dotgit or not os.path.exists(dotgit):

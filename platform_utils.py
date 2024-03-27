@@ -251,12 +251,3 @@ def readlink(path):
         return platform_utils_win32.readlink(_makelongpath(path))
     else:
         return os.readlink(path)
-
-
-def realpath(path):
-    """Return the canonical path of the specified filename, eliminating
-    any symbolic links encountered in the path.
-
-    Availability: Windows, Unix.
-    """
-    return os.path.realpath(path)
