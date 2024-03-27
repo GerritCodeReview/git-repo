@@ -16,6 +16,24 @@
       "message": "Python3.7 reached its EOL last year (https://devguide.python.org/versions/). What\u0027s the use case here?",
       "revId": "676b42dac6039a9167ffad372e8166f90d2c7043",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8369c6fa_c791b4b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3349839
+      },
+      "writtenOn": "2024-03-27T13:56:15Z",
+      "side": 1,
+      "message": "I see. Then let\u0027s just remove the old Windows implementation entirely.",
+      "parentUuid": "6430a216_c2468ac0",
+      "revId": "676b42dac6039a9167ffad372e8166f90d2c7043",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
