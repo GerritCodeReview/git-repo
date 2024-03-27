@@ -34,6 +34,24 @@
       "parentUuid": "6430a216_c2468ac0",
       "revId": "676b42dac6039a9167ffad372e8166f90d2c7043",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "845a0ef7_e1dbf809",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1081020
+      },
+      "writtenOn": "2024-03-27T14:12:05Z",
+      "side": 1,
+      "message": "In that case this function isn\u0027t necessary. I\u0027d prefer to just replace all instances of `platform_utils.realpath` with directly calling `os.path.realpath`.",
+      "parentUuid": "8369c6fa_c791b4b5",
+      "revId": "676b42dac6039a9167ffad372e8166f90d2c7043",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
