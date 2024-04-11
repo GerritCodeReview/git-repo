@@ -1462,8 +1462,6 @@ class Project:
         self._InitHooks()
 
     def _CopyAndLinkFiles(self):
-        if self.client.isGitcClient:
-            return
         for copyfile in self.copyfiles:
             copyfile._Copy()
         for linkfile in self.linkfiles:
