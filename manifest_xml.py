@@ -435,11 +435,6 @@ class XmlManifest:
         self.parent_groups = parent_groups
         self.default_groups = default_groups
 
-        if outer_client and self.isGitcClient:
-            raise ManifestParseError(
-                "Multi-manifest is incompatible with `gitc-init`"
-            )
-
         if submanifest_path and not outer_client:
             # If passing a submanifest_path, there must be an outer_client.
             raise ManifestParseError(f"Bad call to {self.__class__.__name__}")
@@ -2290,7 +2285,6 @@ class RepoClient(XmlManifest):
             submanifest_path: The submanifest root relative to the repo root.
             **kwargs: Additional keyword arguments, passed to XmlManifest.
         """
-        self.isGitcClient = False
         submanifest_path = submanifest_path or ""
         if submanifest_path:
             self._CheckLocalPath(submanifest_path)
