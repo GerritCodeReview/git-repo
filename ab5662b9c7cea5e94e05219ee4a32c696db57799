@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "1124c49b_bece115f",
         "filename": "subcmds/init.py",
@@ -14,10 +15,10 @@
       "side": 1,
       "message": "nit: indentation should be two spaces",
       "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "e9c30b55_36dd2153",
         "filename": "subcmds/init.py",
@@ -32,10 +33,28 @@
       "message": "Done, nice find!",
       "parentUuid": "1124c49b_bece115f",
       "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": false
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b557d910_d90703c3",
+        "filename": "subcmds/init.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 3380163
+      },
+      "writtenOn": "2024-04-15T01:07:53Z",
+      "side": 1,
+      "message": "\u003e Done, nice find!",
+      "parentUuid": "e9c30b55_36dd2153",
+      "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "9a20f06b_01f31247",
         "filename": "subcmds/init.py",
@@ -49,10 +68,10 @@
       "side": 1,
       "message": "optional: could set this unconditionally (i.e. pull it out of the `else`)",
       "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "669c0e2e_da20a507",
         "filename": "subcmds/init.py",
@@ -67,10 +86,10 @@
       "message": "Saving \u0027false\u0027 was intentional (to allow --no-clone-bundle to persist too).",
       "parentUuid": "9a20f06b_01f31247",
       "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": false
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "56f3046e_4c77780b",
         "filename": "subcmds/init.py",
@@ -85,8 +104,7 @@
       "message": "Sure, what I mean is\n\n if opt.clone_bundle is None:\n   ...\n m.config.SetString(...)\n\nsince after that \"if\", opt.clone_bundle would always be set.",
       "parentUuid": "669c0e2e_da20a507",
       "revId": "ab5662b9c7cea5e94e05219ee4a32c696db57799",
-      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
-      "unresolved": true
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
