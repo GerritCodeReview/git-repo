@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43c4801a_1ac7c710",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-04-23T18:31:04Z",
+      "side": 1,
+      "message": "this CL should be sent to upstream git if you want to keep it. we\u0027ll be rolling it back as we automate the git-\u003egit-repo hook import.\n\nhttps://github.com/git/git/",
+      "revId": "6a927c5d1990a9391242baa00c5ac71490c50c28",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
