@@ -32,6 +32,7 @@ def run_black():
     extra_programs = [
         "repo",
         "run_tests",
+        "release/update-hooks",
         "release/update-manpages",
     ]
     return subprocess.run(
