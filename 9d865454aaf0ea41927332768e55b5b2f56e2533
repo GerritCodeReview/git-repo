@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9d62480_18cf4503",
+        "filename": "hooks/pre-auto-gc",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-04-23T18:31:37Z",
+      "side": 0,
+      "message": "i left a comment on the original CL if they want to send this upstream.  it only affects Windows running on a laptop, and repo itself no longer forces auto-gc, so it shouldn\u0027t be that big of a deal to drop.\n\nhttps://gerrit-review.googlesource.com/c/98991",
+      "revId": "9d865454aaf0ea41927332768e55b5b2f56e2533",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e5f9f09_3b527320",
+        "filename": "hooks/pre-auto-gc",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-04-23T18:31:37Z",
+      "side": 0,
+      "message": "i left a comment on the original CL if they want to send this upstream.  it only affects Linux running on a laptop, and it\u0027s the last check after many other sysfs/tools, and repo itself no longer forces auto-gc, so it shouldn\u0027t be that big of a deal to drop.\n\nhttps://gerrit-review.googlesource.com/c/35570",
+      "revId": "9d865454aaf0ea41927332768e55b5b2f56e2533",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
