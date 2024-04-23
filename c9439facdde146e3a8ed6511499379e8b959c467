@@ -16,6 +16,24 @@
       "message": "this CL should be sent to upstream git if you want to keep it.  we\u0027ll be rolling it back as we automate the git-\u003egit-repo hook import.\n\nhttps://github.com/git/git/",
       "revId": "c9439facdde146e3a8ed6511499379e8b959c467",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54069b98_75db40ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1015513
+      },
+      "writtenOn": "2024-04-23T18:35:32Z",
+      "side": 1,
+      "message": "I won\u0027t go through the hassle of contributing to git/git anymore, I\u0027ve stopped that for quite some time now. Feel free to drop this change.",
+      "parentUuid": "ff586732_b68e5cc2",
+      "revId": "c9439facdde146e3a8ed6511499379e8b959c467",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
