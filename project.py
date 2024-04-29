@@ -727,11 +727,25 @@ class Project:
         return None
 
     def IsRebaseInProgress(self):
+        """Returns true if a rebase or "am" is in progress """
+        # "rebase-apply" is used for "git rebase".
+        # "rebase-merge" is used for "git am".
         return (
             os.path.exists(self.work_git.GetDotgitPath("rebase-apply"))
             or os.path.exists(self.work_git.GetDotgitPath("rebase-merge"))
             or os.path.exists(os.path.join(self.worktree, ".dotest"))
         )
+
+    def IsCherryPickInProgress(self):
+        """Returns True if a cherry-pick is in progress. """
+        return os.path.exists(self.work_git.GetDotgitPath("CHERRY_PICK_HEAD"))
+
+    def _AbortRebase(self):
+        """Abort ongoing rebase, cherry-pick or patch apply, if any are in progress. """
+        # Ignore return code, in case there was no rebase in progress.
+        GitCommand(self, ("cherry-pick", "--abort"), log_as_error=False).Wait()
+        GitCommand(self, ("rebase", "--abort"), log_as_error=False).Wait()
+        GitCommand(self, ("am", "--abort"), log_as_error=False).Wait()
 
     def IsDirty(self, consider_untracked=True):
         """Is the working directory modified in some way?"""
@@ -1583,7 +1597,15 @@ class Project:
         if branch is None or syncbuf.detach_head:
             # Currently on a detached HEAD.  The user is assumed to
             # not have any local modifications worth worrying about.
-            if self.IsRebaseInProgress():
+            rebase_in_progress = (
+                self.IsRebaseInProgress() or self.IsCherryPickInProgress()
+            )
+            if rebase_in_progress and force_checkout:
+                self._AbortRebase()
+                rebase_in_progress = (
+                    self.IsRebaseInProgress() or self.IsCherryPickInProgress()
+                )
+            if rebase_in_progress:
                 fail(_PriorSyncFailedError(project=self.name))
                 return
 
