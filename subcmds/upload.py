@@ -549,37 +549,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         people = copy.deepcopy(original_people)
         self._AppendAutoList(branch, people)
 
-        # Check if there are local changes that may have been forgotten.
-        changes = branch.project.UncommitedFiles()
-        if opt.ignore_untracked_files:
-            untracked = set(branch.project.UntrackedFiles())
-            changes = [x for x in changes if x not in untracked]
-
-        if changes:
-            key = "review.%s.autoupload" % branch.project.remote.review
-            answer = branch.project.config.GetBoolean(key)
-
-            # If they want to auto upload, let's not ask because it
-            # could be automated.
-            if answer is None:
-                print()
-                print(
-                    "Uncommitted changes in %s (did you forget to "
-                    "amend?):" % branch.project.name
-                )
-                print("\n".join(changes))
-                print("Continue uploading? (y/N) ", end="", flush=True)
-                if opt.yes:
-                    print("<--yes>")
-                    a = "yes"
-                else:
-                    a = sys.stdin.readline().strip().lower()
-                if a not in ("y", "yes", "t", "true", "on"):
-                    print("skipping upload", file=sys.stderr)
-                    branch.uploaded = False
-                    branch.error = "User aborted"
-                    return
-
         # Check if topic branches should be sent to the server during
         # upload.
         if opt.auto_topic is not True:
