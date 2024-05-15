@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3faf7a41_d9dc4e44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-05-15T09:00:18Z",
+      "side": 1,
+      "message": "How can we move this change forward? I do not have permissions to submit.",
+      "revId": "d54b5bf33b4001bf4b1f45757b596be91388fec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
