@@ -16,6 +16,24 @@
       "message": "How can we move this change forward? I do not have permissions to submit.",
       "revId": "d54b5bf33b4001bf4b1f45757b596be91388fec4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52fb0e65_f53af7f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-15T15:11:46Z",
+      "side": 1,
+      "message": "we don\u0027t submit directly.  use the CQ to test+submit for you.  please see the docs in the repo:\nhttps://gerrit.googlesource.com/git-repo/+/HEAD/SUBMITTING_PATCHES.md#cq",
+      "parentUuid": "3faf7a41_d9dc4e44",
+      "revId": "d54b5bf33b4001bf4b1f45757b596be91388fec4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
