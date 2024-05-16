@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b03a391_de4881bb",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-05-16T13:36:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e17dfca_13045b07",
+      "revId": "10877a5ba39181f365289f81f52cb97ed11a8c47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bca24093_2d17dc76",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c6ef094_72b8718d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 741,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-05-16T13:36:26Z",
+      "side": 1,
+      "message": "Ok. I also decided to unroll the loop, it\u0027s both shorter and provides better debugging and tracebacks, in case one of the elements would for some reason raise.",
+      "parentUuid": "bca24093_2d17dc76",
+      "revId": "10877a5ba39181f365289f81f52cb97ed11a8c47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9b2d30a_144a1147",
@@ -65,6 +101,24 @@
       "writtenOn": "2024-05-06T12:50:42Z",
       "side": 1,
       "message": "periods at the end of sentences",
+      "revId": "10877a5ba39181f365289f81f52cb97ed11a8c47",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d77b8e34_ad753dfd",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2024-05-16T13:36:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9b2d30a_144a1147",
       "revId": "10877a5ba39181f365289f81f52cb97ed11a8c47",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
