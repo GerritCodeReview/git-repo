@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3783fdf_87914c63",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 744,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-16T15:05:38Z",
+      "side": 1,
+      "message": "please stick to PEP-257.  here\u0027s some examples:\n\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "cb496aacc11cf2ddccc823b9e7496bacb9fd2243",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d9389f_bd4a400e",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-16T15:05:38Z",
+      "side": 1,
+      "message": "move this inside the func since that\u0027s where the logic lives",
+      "revId": "cb496aacc11cf2ddccc823b9e7496bacb9fd2243",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d53ee79_49a6cd15",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-16T15:05:38Z",
+      "side": 1,
+      "message": "```suggestion\n        def _git(*args):\n```",
+      "revId": "cb496aacc11cf2ddccc823b9e7496bacb9fd2243",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
