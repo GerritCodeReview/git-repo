@@ -11,3 +11,9 @@
 	intk = 10k
 	intm = 10m
 	intg = 10g
+
+[color "status"]
+	text = black red ul
+	reset = reset
+	none
+	empty =
