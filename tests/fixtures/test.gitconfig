@@ -11,3 +11,11 @@
 	intk = 10k
 	intm = 10m
 	intg = 10g
+
+[color "status"]
+	one = yellow
+	two = magenta cyan
+	three = black red ul
+	reset = reset
+	none
+	empty =
