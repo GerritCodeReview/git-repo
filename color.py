@@ -210,6 +210,7 @@ class Coloring:
                 if have_fg:
                     bg = a
                 else:
+                    have_fg = True
                     fg = a
             elif is_attr(a):
                 attr = a
