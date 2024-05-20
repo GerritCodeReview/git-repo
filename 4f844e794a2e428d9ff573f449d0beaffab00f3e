@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2905bf60_ee54662f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-20T04:45:34Z",
+      "side": 1,
+      "message": "please fix your ~/.gitconfig to set proper name info",
+      "revId": "4f844e794a2e428d9ff573f449d0beaffab00f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "676e584f_7f2788ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-20T04:45:34Z",
+      "side": 1,
+      "message": "just \"color:\" as prefix",
+      "revId": "4f844e794a2e428d9ff573f449d0beaffab00f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e6d65a6_888e835d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-20T04:45:34Z",
+      "side": 1,
+      "message": "please add some details",
+      "revId": "4f844e794a2e428d9ff573f449d0beaffab00f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bccab6d5_f7371ef1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-20T04:45:34Z",
+      "side": 1,
+      "message": "please add a tests/test_color.py file with coverage for whatever failure mode you saw",
+      "revId": "4f844e794a2e428d9ff573f449d0beaffab00f3e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
