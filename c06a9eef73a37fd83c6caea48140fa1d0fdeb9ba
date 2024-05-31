@@ -16,6 +16,24 @@
       "message": "can we scope \u0026 line wrap like a proper git commit message ?\n\nsuperproject: ...",
       "revId": "c06a9eef73a37fd83c6caea48140fa1d0fdeb9ba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47000328_a434804e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2024-05-31T20:29:28Z",
+      "side": 1,
+      "message": "good nit\n\nwe should automate the enforcement of this\nhttps://g3doc.corp.google.com/wireless/android/busytown/ayeaye/analyzers/commit_match/README.md?cl\u003dhead\n\nhuman driven linting is non-scalable.\n\nFiled a ticket to scale this\nb/344010146 | P1 | commit_match linter should take an optional inter for line length enforcement",
+      "parentUuid": "2a44a65e_a433da5c",
+      "revId": "c06a9eef73a37fd83c6caea48140fa1d0fdeb9ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
