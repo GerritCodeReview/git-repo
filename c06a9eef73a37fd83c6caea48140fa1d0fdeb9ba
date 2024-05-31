@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a44a65e_a433da5c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-05-31T20:21:39Z",
+      "side": 1,
+      "message": "can we scope \u0026 line wrap like a proper git commit message ?\n\nsuperproject: ...",
+      "revId": "c06a9eef73a37fd83c6caea48140fa1d0fdeb9ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
