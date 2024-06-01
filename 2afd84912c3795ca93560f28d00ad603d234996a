@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e815348e_7c353b03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3446657
+      },
+      "writtenOn": "2024-06-01T01:01:10Z",
+      "side": 1,
+      "message": "done.\nI try run \u0027black --check tests/test_color.py -v --diff\u0027 and then got the format error lines.\n\ntks, hi mike, can you help to review this again.",
+      "parentUuid": "30310a17_2ab08bf4",
+      "revId": "2afd84912c3795ca93560f28d00ad603d234996a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "06acc7ca_4e898487",
