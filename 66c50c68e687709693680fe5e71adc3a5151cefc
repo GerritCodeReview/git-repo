@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7d1e923_4e690ca4",
+        "filename": "tests/test_color.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-06-01T03:36:08Z",
+      "side": 1,
+      "message": "```suggestion\n# Copyright (C) 2024 The Android Open Source Project\n```",
+      "revId": "66c50c68e687709693680fe5e71adc3a5151cefc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e3dc003_1ce5aa7f",
+        "filename": "tests/test_color.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-06-01T03:36:08Z",
+      "side": 1,
+      "message": "you should call `color.SetDefaultColoring(True)` first to make sure the env or gitconfig settings don\u0027t change test behavior on us",
+      "revId": "66c50c68e687709693680fe5e71adc3a5151cefc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b43e1830_ad63ac0b",
+        "filename": "tests/test_color.py",
+        "patchSetId": 18
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-06-01T03:36:08Z",
+      "side": 1,
+      "message": "please one-line the first line of the docstring.  keep it within 80 cols.\n\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "66c50c68e687709693680fe5e71adc3a5151cefc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
