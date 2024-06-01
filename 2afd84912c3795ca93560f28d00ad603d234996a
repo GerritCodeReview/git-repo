@@ -59,6 +59,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "382990f6_a154dae7",
+        "filename": "tests/test_color.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 3446657
+      },
+      "writtenOn": "2024-06-01T00:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "06acc7ca_4e898487",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 12
+      },
+      "revId": "2afd84912c3795ca93560f28d00ad603d234996a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c251e1c0_2a10886b",
@@ -76,6 +100,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f4d537c_dd14414b",
+        "filename": "tests/test_color.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3446657
+      },
+      "writtenOn": "2024-06-01T00:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c251e1c0_2a10886b",
+      "revId": "2afd84912c3795ca93560f28d00ad603d234996a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a06cdaa4_37d35168",
@@ -89,6 +131,24 @@
       "writtenOn": "2024-05-28T14:35:58Z",
       "side": 1,
       "message": "don\u0027t document the exact values.  just keep it high level like \"Check fg \u0026 bg\" or \"Check fg \u0026 bg \u0026 attrs\".",
+      "revId": "2afd84912c3795ca93560f28d00ad603d234996a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8de63b18_c1ab2034",
+        "filename": "tests/test_color.py",
+        "patchSetId": 15
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 3446657
+      },
+      "writtenOn": "2024-06-01T00:57:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a06cdaa4_37d35168",
       "revId": "2afd84912c3795ca93560f28d00ad603d234996a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
