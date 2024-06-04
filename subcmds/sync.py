@@ -1826,18 +1826,6 @@ later is required to fix a server side protocol bug.
                 continue
 
             try:
-                self.UpdateProjectList(opt, m)
-            except Exception as e:
-                err_event.set()
-                err_update_projects = True
-                errors.append(e)
-                if isinstance(e, DeleteWorktreeError):
-                    errors.extend(e.aggregate_errors)
-                if opt.fail_fast:
-                    logger.error("error: Local checkouts *not* updated.")
-                    raise SyncFailFastError(aggregate_errors=errors)
-
-            try:
                 self.UpdateCopyLinkfileList(m)
             except Exception as e:
                 err_update_linkfiles = True
@@ -1847,6 +1835,18 @@ later is required to fix a server side protocol bug.
                     logger.error(
                         "error: Local update copyfile or linkfile failed."
                     )
+                    raise SyncFailFastError(aggregate_errors=errors)
+
+            try:
+                self.UpdateProjectList(opt, m)
+            except Exception as e:
+                err_event.set()
+                err_update_projects = True
+                errors.append(e)
+                if isinstance(e, DeleteWorktreeError):
+                    errors.extend(e.aggregate_errors)
+                if opt.fail_fast:
+                    logger.error("error: Local checkouts *not* updated.")
                     raise SyncFailFastError(aggregate_errors=errors)
 
         err_results = []
