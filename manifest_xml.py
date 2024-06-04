@@ -34,6 +34,7 @@ from project import ManifestProject
 from project import Project
 from project import RemoteSpec
 from project import RepoProject
+from project import _CopyFile
 from wrapper import Wrapper
 
 
@@ -259,8 +260,12 @@ class _XmlSubmanifest:
           submanifest.
       default_groups: a list of strings, the default groups to sync.
       path: a string, the relative path for the submanifest checkout.
+      local_manifest: a string, a path relative to the parent manifest's
+          directory that will be copied into the local_manifest directory
+          of the submanifest.
       parent: an XmlManifest, the parent manifest.
       annotations: (derived) a list of annotations.
+      copyfiles: (derived) a list of file copy instructions.
       present: (derived) a boolean, whether the sub manifest file is present.
     """
 
@@ -274,6 +279,7 @@ class _XmlSubmanifest:
         groups=None,
         default_groups=None,
         path=None,
+        local_manifest=None,
         parent=None,
     ):
         self.name = name
@@ -284,8 +290,11 @@ class _XmlSubmanifest:
         self.groups = groups
         self.default_groups = default_groups
         self.path = path
+        self.local_manifest_src = local_manifest
+        self.local_manifest_dest = None
         self.parent = parent
         self.annotations = []
+        self.copyfiles = []
         outer_client = parent._outer_client or parent
         if self.remote and not self.project:
             raise ManifestParseError(
@@ -301,6 +310,24 @@ class _XmlSubmanifest:
         linkFile = parent.SubmanifestInfoDir(
             os.path.join(parent.path_prefix, self.relpath), MANIFEST_FILE_NAME
         )
+
+        if self.local_manifest_src:
+            local_manifest_dest = os.path.basename(self.local_manifest_src)
+            local_manifest_dest_dir = os.path.join(
+                self.parent.SubmanifestInfoDir(
+                    self.parent.path_prefix, SUBMANIFEST_DIR
+                ),
+                self.relpath,
+                LOCAL_MANIFESTS_DIR_NAME,
+            )
+            self.AddCopyFile(
+                self.local_manifest_src,
+                local_manifest_dest,
+                local_manifest_dest_dir,
+            )
+
+        self._CopyFiles()
+
         self.repo_client = RepoClient(
             parent.repodir,
             linkFile,
@@ -329,6 +356,29 @@ class _XmlSubmanifest:
 
     def __ne__(self, other):
         return not self.__eq__(other)
+
+    def _CopyFiles(self):
+        for copyfile in self.copyfiles:
+            copyfile._Copy()
+
+    def AddCopyFile(self, src, dest, topdir):
+        """Mark |src| for copying to |dest| (relative to |topdir|).
+
+        No filesystem changes occur here.  Actual copying happens later on.
+
+        Paths should have basic validation run on them before being queued.
+        Further checking will be handled when the actual copy happens.
+        """
+        self.copyfiles.append(
+            _CopyFile(
+                self.parent.SubmanifestInfoDir(
+                    self.parent.path_prefix, "manifests"
+                ),
+                src,
+                topdir,
+                dest,
+            )
+        )
 
     def ToSubmanifestSpec(self):
         """Return a SubmanifestSpec object, populating attributes"""
@@ -1802,6 +1852,17 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     f'<submanifest> invalid "path": {path}: {msg}'
                 )
 
+        local_manifest = node.getAttribute("local-manifest")
+        if local_manifest == "":
+            local_manifest = None
+        else:
+            msg = self._CheckLocalPath(local_manifest)
+            if msg:
+                raise ManifestInvalidPathError(
+                    f'<submanifest> invalid "local-manifest": '
+                    f"{local_manifest}: {msg}"
+                )
+
         submanifest = _XmlSubmanifest(
             name,
             remote,
@@ -1811,6 +1872,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             groups,
             default_groups,
             path,
+            local_manifest,
             self,
         )
 
