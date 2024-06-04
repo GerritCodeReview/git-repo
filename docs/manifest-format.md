@@ -67,6 +67,7 @@ following DTD:
   <!ATTLIST submanifest path           CDATA #IMPLIED>
   <!ATTLIST submanifest groups         CDATA #IMPLIED>
   <!ATTLIST submanifest default-groups CDATA #IMPLIED>
+  <!ATTLIST submanifest local-manifest CDATA #IMPLIED>
 
   <!ELEMENT project (annotation*,
                      project*,
@@ -310,6 +311,10 @@ Same syntax as the corresponding element of `project`.
 Attribute `default-groups`: The list of manifest groups to sync if no
 `--groups=` parameter was specified at init.  When that list is empty, use this
 list instead of "default" as the list of groups to sync.
+
+Attribute `local-manifest`: A relative path to a file in the parent manifest's git,
+that is to be copied into the submainifest's local_manifests directory.  This allows
+the parent manifest to modifyt the child in a reproducable way.
 
 ### Element project
 
