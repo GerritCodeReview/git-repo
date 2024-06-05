@@ -16,6 +16,24 @@
       "message": "can this be accomplished with the existing manifest \u003cinclude\u003e directive ?",
       "revId": "0ec036f46d2edc53ded52e8f030cdfafec638bdb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06ab827d_b81c4e31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3467641
+      },
+      "writtenOn": "2024-06-05T13:58:58Z",
+      "side": 1,
+      "message": "No, it can not be done via \u0027include\u0027.  That would require that upstream manifest be in the same git as the parent.\n\nIn the use case I\u0027m looking at, the derivative project is using the upstream project with permission, but not it\u0027s co-operation.  The derivative project needs an independent git for the storage of it\u0027s manifest, and it needs to download the upstream manifest\u0027s git via the \u0027submanifest\u0027 mechanism.",
+      "parentUuid": "12d868ab_64fb1eb5",
+      "revId": "0ec036f46d2edc53ded52e8f030cdfafec638bdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
