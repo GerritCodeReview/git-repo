@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fe9437fc_6ffa6418",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3467641
+      },
+      "writtenOn": "2024-06-05T18:51:20Z",
+      "side": 1,
+      "message": "We have tried to maintain a manifest fork for several years now.  It causes regular breakages when the upstream manifest changes and we aren\u0027t quick enough to mirror the changes,  I\u0027m trying to implement a more elegant solution.\n\nThe parent manifest, in addition to adding repositories, needs to substitute one upstream repository (credentials we can\u0027t reuse), and change the revision on a few others (greater stability).",
+      "parentUuid": "20fe8b83_c327b7e2",
+      "revId": "0ec036f46d2edc53ded52e8f030cdfafec638bdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d554935_5fc79d11",
         "filename": "docs/manifest-format.md",
         "patchSetId": 4
@@ -67,6 +85,30 @@
       "writtenOn": "2024-06-05T16:18:32Z",
       "side": 1,
       "message": "```suggestion\nAttribute `local-manifest`: A relative path to a file in the parent manifest\u0027s git,\nthat is to be copied into the submanifest\u0027s local_manifests directory.  This allows\nthe parent manifest to modify the child in a reproducible way.\n```",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 317,
+        "endChar": 63
+      },
+      "revId": "0ec036f46d2edc53ded52e8f030cdfafec638bdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a404e12_b560a0cb",
+        "filename": "docs/manifest-format.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 3467641
+      },
+      "writtenOn": "2024-06-05T18:51:20Z",
+      "side": 1,
+      "message": "will fix",
+      "parentUuid": "0d554935_5fc79d11",
       "range": {
         "startLine": 315,
         "startChar": 0,
