@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12d868ab_64fb1eb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-06-05T12:51:02Z",
+      "side": 1,
+      "message": "can this be accomplished with the existing manifest \u003cinclude\u003e directive ?",
+      "revId": "0ec036f46d2edc53ded52e8f030cdfafec638bdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
