@@ -33,6 +33,23 @@
       "message": "/COMMIT_MSG",
       "revId": "562cea77580d5f217be73f21757c7d5b32d2d11f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cf2a986_8805b334",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3430487
+      },
+      "writtenOn": "2024-06-05T10:29:48Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/c/gerrit/+/425808/comments/b6a9d394_35b7ba23",
+      "revId": "562cea77580d5f217be73f21757c7d5b32d2d11f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
