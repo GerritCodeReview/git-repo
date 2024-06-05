@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908114ef_23c28452",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-06-05T18:45:13Z",
+      "side": 1,
+      "message": "iirc, i think we discussed \"promoting\" superproject in the past.  we pushed back a bit because it hasn\u0027t really been documented, and that seemed like a reasonable requirement in order to move forward.\n\nb/40014420 is tracking that.",
+      "revId": "5bcd3c0dd753674a659be82df24ff57196a60829",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

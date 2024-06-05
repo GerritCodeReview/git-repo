@@ -52,6 +52,24 @@
       "parentUuid": "47000328_a434804e",
       "revId": "c06a9eef73a37fd83c6caea48140fa1d0fdeb9ba",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f22ac35c_dc92808e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-06-05T18:45:13Z",
+      "side": 1,
+      "message": "you\u0027re trying to make me redundant then, i see, thx",
+      "parentUuid": "3cce2acc_17e95ce4",
+      "revId": "c06a9eef73a37fd83c6caea48140fa1d0fdeb9ba",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
