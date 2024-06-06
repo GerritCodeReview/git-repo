@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a887d77f_5b22a6b2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3467641
+      },
+      "writtenOn": "2024-06-06T17:48:13Z",
+      "side": 1,
+      "message": "As to not overriding files, I was thinking on that...\n\nSuppose the parent repo has a pre-existing local-manifest to override some aspect of the submanifest.  An edit to the overriding manifest is published via a commit to the parent.  Other developers do a repo sync, we would expect the manifests changes to take effect.  The new overriding manifest MUST overwrite the previous copy within the local_manifests directory of the submanifest.  So either we just document the behavior, or we find an implementation that use the overriding manifest \u0027in place\u0027 without a copy into the  local_manifests directory.\n\nThoughts?",
+      "parentUuid": "fe9437fc_6ffa6418",
+      "revId": "0ec036f46d2edc53ded52e8f030cdfafec638bdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d554935_5fc79d11",
         "filename": "docs/manifest-format.md",
         "patchSetId": 4
