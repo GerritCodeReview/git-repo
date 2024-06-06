@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b55e440_a526b66d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-06-06T22:21:55Z",
+      "side": 1,
+      "message": "\u003e We have tried to maintain a manifest fork for several years now. It causes regular breakages when the upstream manifest changes and we aren\u0027t quick enough to mirror the changes, I\u0027m trying to implement a more elegant solution.\n\nI obviously don\u0027t have enough context, but I believe this would make it only worse. For example, if you don\u0027t pin submanifest to a particular commit, and there\u0027s a change in the submanifest that is not compatible with your modifications, everyone who syncs will have a broken state.\n\nIf you pin to a commit, that is likely to result in similar experience you have today - someone will need to maintain and ensure stability before the pin is updated. At that point, it might be easier to maintain just a fork, instead of local manifest, local overrides + remote repository.\n\nI\u0027m not convinced this is a good feature in repo, and I also think it can easily be abused and be harder for users to understand what repo is doing.",
+      "parentUuid": "a887d77f_5b22a6b2",
+      "revId": "0ec036f46d2edc53ded52e8f030cdfafec638bdb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0d554935_5fc79d11",
         "filename": "docs/manifest-format.md",
         "patchSetId": 4
