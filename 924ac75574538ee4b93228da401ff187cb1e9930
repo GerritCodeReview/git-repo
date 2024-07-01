@@ -33,6 +33,24 @@
       "message": "can we add unittest coverage ?",
       "revId": "924ac75574538ee4b93228da401ff187cb1e9930",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b997a7e_7ffa1c8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3237319
+      },
+      "writtenOn": "2024-07-01T19:02:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47fb0f37_f2ebb94f",
+      "revId": "924ac75574538ee4b93228da401ff187cb1e9930",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
