@@ -16,6 +16,23 @@
       "message": "Hit this when doing repo sync in ChromeOS.\n\nAdd Mike as the original reviewer of the regression CL (https://gerrit-review.git.corp.google.com/c/git-repo/+/385514)",
       "revId": "924ac75574538ee4b93228da401ff187cb1e9930",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47fb0f37_f2ebb94f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-07-01T17:22:24Z",
+      "side": 1,
+      "message": "can we add unittest coverage ?",
+      "revId": "924ac75574538ee4b93228da401ff187cb1e9930",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
