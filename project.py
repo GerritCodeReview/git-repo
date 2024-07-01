@@ -257,7 +257,7 @@ class ReviewableBranch:
         self,
         people,
         dryrun=False,
-        auto_topic=False,
+        topic=None,
         hashtags=(),
         labels=(),
         private=False,
@@ -273,7 +273,7 @@ class ReviewableBranch:
             branch=self.name,
             people=people,
             dryrun=dryrun,
-            auto_topic=auto_topic,
+            topic=topic,
             hashtags=hashtags,
             labels=labels,
             private=private,
@@ -1104,7 +1104,7 @@ class Project:
         branch=None,
         people=([], []),
         dryrun=False,
-        auto_topic=False,
+        topic=None,
         hashtags=(),
         labels=(),
         private=False,
@@ -1180,8 +1180,8 @@ class Project:
 
         ref_spec = f"{R_HEADS + branch.name}:refs/for/{dest_branch}"
         opts = []
-        if auto_topic:
-            opts += ["topic=" + branch.name]
+        if topic is not None:
+            opts += [f"topic={topic}"]
         opts += ["t=%s" % p for p in hashtags]
         # NB: No need to encode labels as they've been validated above.
         opts += ["l=%s" % p for p in labels]
