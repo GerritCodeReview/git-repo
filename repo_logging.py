@@ -39,8 +39,8 @@ class _LogColoring(Coloring):
 
     def __init__(self, config):
         super().__init__(config, "logs")
-        self.error = self.colorer("error", fg="red")
-        self.warning = self.colorer("warn", fg="yellow")
+        self.error = self.nofmt_colorer("error", fg="red")
+        self.warning = self.nofmt_colorer("warn", fg="yellow")
         self.levelMap = {
             "WARNING": self.warning,
             "ERROR": self.error,
