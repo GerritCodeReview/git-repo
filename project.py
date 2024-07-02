@@ -2806,6 +2806,8 @@ class Project:
     def _FetchBundle(self, srcUrl, tmpPath, dstPath, quiet, verbose):
         platform_utils.remove(dstPath, missing_ok=True)
 
+        # We do not use curl's --retry option since it generally doesn't
+        # actually retry anything; code 18 for example, it will not retry on.
         cmd = ["curl", "--fail", "--output", tmpPath, "--netrc", "--location"]
         if quiet:
             cmd += ["--silent", "--show-error"]
@@ -2842,11 +2844,18 @@ class Project:
             (output, _) = proc.communicate()
             curlret = proc.returncode
 
-            if curlret == 22:
+            if curlret in (22, 35, 56, 92):
+                # We use --fail so curl exits with unique status.
                 # From curl man page:
-                # 22: HTTP page not retrieved. The requested url was not found
-                # or returned another error with the HTTP error code being 400
-                # or above. This return code only appears if -f, --fail is used.
+                # 22: HTTP page not retrieved.  The requested url was not found
+                #     or returned another error with the HTTP error code being
+                #     400 or above.
+                # 35: SSL connect error.  The SSL handshaking failed.  This can
+                #     be thrown by Google storage sometimes.
+                # 56: Failure in receiving network data.  This shows up with
+                #     HTTP/404 on Google storage.
+                # 92: Stream error in HTTP/2 framing layer.  Basically the same
+                #     as 22 -- Google storage sometimes throws 500's.
                 if verbose:
                     print(
                         "%s: Unable to retrieve clone.bundle; ignoring."
