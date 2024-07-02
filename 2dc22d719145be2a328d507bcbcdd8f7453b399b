@@ -1,0 +1,126 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b8f2c77_590d72c0",
+        "filename": "tests/test_repo_logging.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-07-02T04:23:58Z",
+      "side": 1,
+      "message": "not a new issue, but while you\u0027re here, blank line after the module docstring",
+      "fixSuggestions": [
+        {
+          "fixId": "db54cff4_02b9be0d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_repo_logging.py",
+              "range": {
+                "startLine": 16,
+                "startChar": 0,
+                "endLine": 16,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2dc22d719145be2a328d507bcbcdd8f7453b399b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "65201973_61a235e9",
+        "filename": "tests/test_repo_logging.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-07-02T04:23:58Z",
+      "side": 1,
+      "message": "since you rely on colors, pretty sure you want to call Coloring.SetDefaultColoring to make sure ambient env/git settings don\u0027t break us",
+      "revId": "2dc22d719145be2a328d507bcbcdd8f7453b399b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52b4af95_ca9b3be0",
+        "filename": "tests/test_repo_logging.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-07-02T04:23:58Z",
+      "side": 1,
+      "message": "use tuples with constant data",
+      "fixSuggestions": [
+        {
+          "fixId": "383eb13d_ac700887",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_repo_logging.py",
+              "range": {
+                "startLine": 80,
+                "startChar": 0,
+                "endLine": 81,
+                "endChar": 0
+              },
+              "replacement": "        for level in (logging.INFO, logging.WARN, logging.ERROR):\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2dc22d719145be2a328d507bcbcdd8f7453b399b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46a8694d_61b90d40",
+        "filename": "tests/test_repo_logging.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-07-02T04:23:58Z",
+      "side": 1,
+      "message": "use an f-string",
+      "fixSuggestions": [
+        {
+          "fixId": "5430addc_7da77199",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_repo_logging.py",
+              "range": {
+                "startLine": 92,
+                "startChar": 0,
+                "endLine": 93,
+                "endChar": 0
+              },
+              "replacement": "                    f\"^{opt_color}100% pass{opt_color}$\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2dc22d719145be2a328d507bcbcdd8f7453b399b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
