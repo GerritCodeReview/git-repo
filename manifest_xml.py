@@ -1433,7 +1433,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     % (project.relpath, self.manifestFile)
                 )
             for tree in submanifest_paths:
-                if project.relpath.startswith(tree):
+                if project.relpath == tree:
                     raise ManifestParseError(
                         "project %s conflicts with submanifest path %s"
                         % (project.relpath, tree)
