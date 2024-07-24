@@ -417,6 +417,14 @@ later is required to fix a server side protocol bug.
             "(do not update to the latest revision)",
         )
         p.add_option(
+            "--only-manifest-update",
+            "--omu",
+            dest="omp_update",
+            action="store_true",
+            help="only update the manifest repository, skipping fetch and checkout. "
+            "(do not update the projects)",
+        )
+        p.add_option(
             "-n",
             "--network-only",
             dest="network_only",
@@ -1639,6 +1647,8 @@ later is required to fix a server side protocol bug.
                 opt.manifest_server_password,
             ]:
                 self.OptionParser.error("both -u and -p must be given")
+        if opt.omp_update and not opt.mp_update:
+            self.OptionParser.error("cannot combine --nmu and --omu")
 
         if opt.prune is None:
             opt.prune = True
@@ -1757,6 +1767,10 @@ later is required to fix a server side protocol bug.
             self._UpdateAllManifestProjects(opt, mp, manifest_name, errors)
         else:
             print("Skipping update of local manifest project.")
+
+        if opt.omp_update:
+            print("Skipping update projects.")
+            return
 
         # Now that the manifests are up-to-date, setup options whose defaults
         # might be in the manifest.
