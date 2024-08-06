@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93ef8512_7d6e8804",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2024-08-06T17:04:05Z",
+      "side": 1,
+      "message": "Is there a bug that you can link to here?",
+      "revId": "d893f38edf819a36d9fa2d313809ec21bb583880",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62826518_06f2be99",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1640,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2024-08-06T17:04:05Z",
+      "side": 1,
+      "message": "Add validation for `--omu` and `--nmu`",
+      "range": {
+        "startLine": 1640,
+        "startChar": 0,
+        "endLine": 1640,
+        "endChar": 72
+      },
+      "revId": "d893f38edf819a36d9fa2d313809ec21bb583880",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
