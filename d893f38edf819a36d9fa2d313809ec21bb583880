@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5a7ec714_3eefbc65",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3547171
+      },
+      "writtenOn": "2024-08-07T18:25:59Z",
+      "side": 1,
+      "message": "No? Do you want a bug to be created?",
+      "parentUuid": "93ef8512_7d6e8804",
+      "revId": "d893f38edf819a36d9fa2d313809ec21bb583880",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "62826518_06f2be99",
         "filename": "subcmds/sync.py",
         "patchSetId": 1
