@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd4eaef2_0acc0c58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2024-08-07T18:33:19Z",
+      "side": 1,
+      "message": "No, just wondering if there was one. If there isn\u0027t then I think this change is small enough to skip it.",
+      "parentUuid": "5a7ec714_3eefbc65",
+      "revId": "d893f38edf819a36d9fa2d313809ec21bb583880",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "62826518_06f2be99",
