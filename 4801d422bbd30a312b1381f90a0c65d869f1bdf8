@@ -3,6 +3,74 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2ffb1487_c2528202",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-08T18:00:22Z",
+      "side": 1,
+      "message": "repository",
+      "revId": "4801d422bbd30a312b1381f90a0c65d869f1bdf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3649348a_42dde505",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-08T18:00:22Z",
+      "side": 1,
+      "message": "replace with \"but not the projects specified.\"",
+      "revId": "4801d422bbd30a312b1381f90a0c65d869f1bdf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce22ef8e_2add91bb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-08T18:00:22Z",
+      "side": 1,
+      "message": "projects",
+      "revId": "4801d422bbd30a312b1381f90a0c65d869f1bdf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d63fe7a_a03197bd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-08T18:00:22Z",
+      "side": 1,
+      "message": "Gerrit\n\nthe manifest repo doesn\u0027t necessarily need to be hosted on Gerrit, right?",
+      "revId": "4801d422bbd30a312b1381f90a0c65d869f1bdf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c49f5087_79ae3dbc",
         "filename": "subcmds/sync.py",
         "patchSetId": 2
