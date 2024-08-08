@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c49f5087_79ae3dbc",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 424,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-08T17:58:28Z",
+      "side": 1,
+      "message": "replace with `repository`.",
+      "revId": "4801d422bbd30a312b1381f90a0c65d869f1bdf8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
