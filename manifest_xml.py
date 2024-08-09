@@ -1471,6 +1471,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     remote = self._get_remote(node)
                 dest_branch = node.getAttribute("dest-branch")
                 upstream = node.getAttribute("upstream")
+                clone_depth = node.getAttribute("clone-depth")
 
                 named_projects = self._projects[name]
                 if dest_path and not path and len(named_projects) > 1:
@@ -1492,6 +1493,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         p.dest_branch = dest_branch
                     if upstream:
                         p.upstream = upstream
+                    if clone_depth:
+                        p.clone_depth = clone_depth
 
                     if dest_path:
                         del self._paths[p.relpath]

@@ -107,6 +107,7 @@ following DTD:
   <!ATTLIST extend-project remote CDATA #IMPLIED>
   <!ATTLIST extend-project dest-branch CDATA #IMPLIED>
   <!ATTLIST extend-project upstream CDATA #IMPLIED>
+  <!ATTLIST extend-project clone-depth CDATA #IMPLIED>
 
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name     CDATA #IMPLIED>
@@ -431,6 +432,9 @@ Attribute `dest-branch`: If specified, overrides the dest-branch of the original
 project.  Same syntax as the corresponding element of `project`.
 
 Attribute `upstream`: If specified, overrides the upstream of the original
+project.  Same syntax as the corresponding element of `project`.
+
+Attribute `clone-depth`: If specified, overrides the clone-depth of the original
 project.  Same syntax as the corresponding element of `project`.
 
 ### Element annotation
