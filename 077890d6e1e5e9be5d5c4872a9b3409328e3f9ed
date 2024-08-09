@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a6bbee6_1ebce085",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-09T19:00:02Z",
+      "side": 1,
+      "message": "previous similar changes:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/310962\nhttps://gerrit-review.googlesource.com/c/git-repo/+/345144",
+      "revId": "077890d6e1e5e9be5d5c4872a9b3409328e3f9ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
