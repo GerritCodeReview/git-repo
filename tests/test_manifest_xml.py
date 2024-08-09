@@ -1129,6 +1129,22 @@ class ExtendProjectElementTests(ManifestParseTestCase):
         self.assertEqual(len(manifest.projects), 1)
         self.assertEqual(manifest.projects[0].upstream, "bar")
 
+    def test_extend_project_clone_depth(self):
+        manifest = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="myproject" />
+  <extend-project name="myproject" clone-depth="42" />
+</manifest>
+"""
+        )
+        self.assertEqual(len(manifest.projects), 1)
+        self.assertEqual(manifest.projects[0].clone_depth, "42")
+
+
+
 
 class NormalizeUrlTests(ManifestParseTestCase):
     """Tests for normalize_url() in manifest_xml.py"""
