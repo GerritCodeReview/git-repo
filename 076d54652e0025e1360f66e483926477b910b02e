@@ -16,6 +16,23 @@
       "message": "flagged as causing a defect in https://bugs.chromium.org/p/gerrit/issues/detail?id\u003d16193#c8\n\nspecifically during the double repo init workflow \nhttps://bugs.chromium.org/p/gerrit/issues/detail?id\u003d16358",
       "revId": "076d54652e0025e1360f66e483926477b910b02e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d03fee0b_ab58a0a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3586277
+      },
+      "writtenOn": "2024-08-14T22:36:52Z",
+      "side": 1,
+      "message": "$TOP_DIR/.repo/local_manifests/*.xml",
+      "revId": "076d54652e0025e1360f66e483926477b910b02e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
