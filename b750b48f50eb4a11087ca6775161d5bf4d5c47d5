@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "03ef5b65_be293fc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-14T17:24:29Z",
+      "side": 1,
+      "message": "If repo is set up using `repo init --manifest-depth\u003d1`, the initial clone of the manifest git repo is a shallow clone with just one commit fetched from the tip of the branch (as expected). \n\nHowever, any subsequent `repo sync` without the `--no-manifest-update` option passed then fetch the entire history. \n\nThis is unlike the behavior that happens with you set the `clone-depth\u003d1` xml attribute for a project element in the manifest (where the `repo` tool _always_ maintains one commit in all future `repo syncs`). \n\nThoughts on this? Does it make sense to change `--manifest-depth\u003d1` to act like `clone-depth\u003d1` for the manifest project?",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc8770f4_3371721e",
         "filename": "repo",
         "patchSetId": 5
