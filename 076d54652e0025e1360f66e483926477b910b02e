@@ -33,6 +33,23 @@
       "message": "$TOP_DIR/.repo/local_manifests/*.xml",
       "revId": "076d54652e0025e1360f66e483926477b910b02e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba385d14_7660c680",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3586277
+      },
+      "writtenOn": "2024-08-14T23:15:12Z",
+      "side": 1,
+      "message": "$ ls .repo/local_manifests\nlocal_manifest.xml\nanother_local_manifest.xml\n\n$ cat .repo/local_manifests/local_manifest.xml\n\u003c?xml version\u003d\"1.0\" encoding\u003d\"UTF-8\"?\u003e\n\u003cmanifest\u003e\n  \u003cproject path\u003d\"manifest\"\n           name\u003d\"tools/manifest\" /\u003e\n  \u003cproject path\u003d\"platform-manifest\"\n           name\u003d\"platform/manifest\" /\u003e\n\u003c/manifest\u003e",
+      "revId": "076d54652e0025e1360f66e483926477b910b02e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
