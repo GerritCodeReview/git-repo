@@ -54,6 +54,23 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77f80321_42880cb4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3586277
+      },
+      "writtenOn": "2024-08-14T22:49:43Z",
+      "side": 1,
+      "message": "another_local_manifest.xml",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc8770f4_3371721e",
@@ -85,6 +102,24 @@
       "side": 1,
       "message": "Fixed in Ie01ea8475b978f950471b0a52fc576e59060c6c5.  OTOH, that sets it to `(2, 30)`, but won\u0027t be present in a repo tag until the following release.",
       "parentUuid": "dc8770f4_3371721e",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "774d61f1_45eff4a8",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3586277
+      },
+      "writtenOn": "2024-08-14T22:49:43Z",
+      "side": 1,
+      "message": "```suggestion\nVERSION \u003d (2, 29)\n```",
+      "parentUuid": "74ff72a8_9cd56dda",
       "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -138,6 +173,24 @@
       "side": 1,
       "message": "we only need to bump the version if we make a change to the launcher.  if there are no changes, no need to bump.\n\nideally it would be part of the tag, but it\u0027s not strictly a hard requirement.  signing \u0026 releasing the launcher is a manual process, so we could fake it with any value.  if things are out of sync though, it leads to confusion for everyone involved.",
       "parentUuid": "446781ec_167c0345",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce70c76d_4a11c41c",
+        "filename": "repo",
+        "patchSetId": 5
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 3586277
+      },
+      "writtenOn": "2024-08-14T22:49:43Z",
+      "side": 1,
+      "message": "```suggestion\n  group.add_option(\u0027--manifest-depth\u0027, type\u003d\u0027int\u0027, default\u003d1, metavar\u003d\u0027DEPTH\u0027,\n``git clone https://gerrit.googlesource.com/Core-Plugins",
+      "parentUuid": "5381b271_dc6ab846",
       "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
