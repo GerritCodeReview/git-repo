@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "33b8a0a7_a894e9c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1162586
+      },
+      "writtenOn": "2024-08-14T18:59:13Z",
+      "side": 1,
+      "message": "thanks, just did: https://issues.gerritcodereview.com/issues/359912064",
+      "parentUuid": "d2187c3c_82248886",
+      "revId": "b750b48f50eb4a11087ca6775161d5bf4d5c47d5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dc8770f4_3371721e",
