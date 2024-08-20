@@ -401,6 +401,13 @@ later is required to fix a server side protocol bug.
             "WARNING: this may cause loss of data",
         )
         p.add_option(
+            "--rebase",
+            dest="force_rebase",
+            action="store_true",
+            help="rebase local commits regardless of whether they are "
+            "published",
+        )
+        p.add_option(
             "-l",
             "--local-only",
             dest="local_only",
@@ -1009,7 +1016,7 @@ later is required to fix a server side protocol bug.
         return _FetchMainResult(all_projects)
 
     def _CheckoutOne(
-        self, detach_head, force_sync, force_checkout, verbose, project
+        self, detach_head, force_sync, force_checkout, force_rebase, verbose, project
     ):
         """Checkout work tree for one project
 
@@ -1019,6 +1026,7 @@ later is required to fix a server side protocol bug.
             existing git directory that was previously linked to a different
             object directory).
             force_checkout: Force checking out of the repo content.
+            force_rebase: Force rebase.
             verbose: Whether to show verbose messages.
             project: Project object for the project to checkout.
 
@@ -1036,6 +1044,7 @@ later is required to fix a server side protocol bug.
                 syncbuf,
                 force_sync=force_sync,
                 force_checkout=force_checkout,
+                force_rebase=force_rebase,
                 errors=errors,
                 verbose=verbose,
             )
@@ -1109,6 +1118,7 @@ later is required to fix a server side protocol bug.
                     opt.detach_head,
                     opt.force_sync,
                     opt.force_checkout,
+                    opt.force_rebase,
                     opt.verbose,
                 ),
                 projects,
