@@ -1535,6 +1535,7 @@ class Project:
         syncbuf,
         force_sync=False,
         force_checkout=False,
+        force_rebase=False,
         submodules=False,
         errors=None,
         verbose=False,
@@ -1680,14 +1681,15 @@ class Project:
         if pub:
             not_merged = self._revlist(not_rev(revid), pub)
             if not_merged:
-                if upstream_gain:
+                if upstream_gain and not force_rebase:
                     # The user has published this branch and some of those
                     # commits are not yet merged upstream.  We do not want
                     # to rewrite the published commits so we punt.
                     fail(
                         LocalSyncFail(
                             "branch %s is published (but not merged) and is "
-                            "now %d commits behind"
+                            "now %d commits behind. Fix this manually or rerun "
+                            "with the --rebase option to force a rebase."
                             % (branch.name, len(upstream_gain)),
                             project=self.name,
                         )
