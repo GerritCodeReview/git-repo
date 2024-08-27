@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a773479d_bea5a172",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3592256
+      },
+      "writtenOn": "2024-08-27T10:00:28Z",
+      "side": 1,
+      "message": "mkelly@ PTAL since the reviewer of the original CL (vapier@) is OOO.\nI did discuss this with the original author (jasonnc@, in cc), and he has no problem with me pushing this forward.",
+      "revId": "806485995f8d9ca8243da91ce3bb2193df6203f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
