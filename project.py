@@ -749,7 +749,7 @@ class Project:
 
         def _git(*args):
             # Ignore return code, in case there was no rebase in progress.
-            GitCommand(self, *args, log_as_error=False).Wait()
+            GitCommand(self, args, log_as_error=False).Wait()
 
         _git("cherry-pick", "--abort")
         _git("rebase", "--abort")
