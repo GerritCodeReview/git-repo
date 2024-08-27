@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9402d9e0_049a6371",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1692,
+      "author": {
+        "id": 3592256
+      },
+      "writtenOn": "2024-08-27T09:35:31Z",
+      "side": 1,
+      "message": "Note: This is something I added which was not present in the original CL, but I feel this helps users discover this option.",
+      "range": {
+        "startLine": 1691,
+        "startChar": 50,
+        "endLine": 1692,
+        "endChar": 73
+      },
+      "revId": "9c0974689dc97211052ea6cad4f83f2c462bd787",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
