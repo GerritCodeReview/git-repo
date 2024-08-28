@@ -33,6 +33,29 @@
       "message": "@sokcevic@google.com PTAL since the reviewer of the original CL (vapier@) is OOO.\nI did discuss this with the original author (jasonnc@, in cc), and he has no problem with me pushing this forward.",
       "revId": "806485995f8d9ca8243da91ce3bb2193df6203f5",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eae85086_e8601e86",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-08-28T16:37:21Z",
+      "side": 1,
+      "message": "nit: use rebase as destination instead of force_rebase.",
+      "range": {
+        "startLine": 405,
+        "startChar": 18,
+        "endLine": 405,
+        "endChar": 30
+      },
+      "revId": "806485995f8d9ca8243da91ce3bb2193df6203f5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
