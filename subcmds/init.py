@@ -123,6 +123,7 @@ to update the working directory files.
         return {
             "REPO_MANIFEST_URL": "manifest_url",
             "REPO_MIRROR_LOCATION": "reference",
+            "REPO_GIT_LFS": "git_lfs",
         }
 
     def _SyncManifest(self, opt):
