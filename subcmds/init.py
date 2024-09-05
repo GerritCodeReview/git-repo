@@ -135,6 +135,7 @@ to update the working directory files.
         # manifest project is special and is created when instantiating the
         # manifest which happens before we parse options.
         self.manifest.manifestProject.clone_depth = opt.manifest_depth
+        self.manifest.manifestProject.upstream = opt.manifest_upstream_branch
         clone_filter_for_depth = (
             "blob:none" if (_REPO_ALLOW_SHALLOW == "0") else None
         )
