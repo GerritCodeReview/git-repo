@@ -124,7 +124,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 45)
+VERSION = (2, 48)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -281,6 +281,12 @@ def InitParser(parser):
         "--manifest-branch",
         metavar="REVISION",
         help="manifest branch or revision (use HEAD for default)",
+    )
+    group.add_option(
+        "--manifest-upstream-branch",
+        help="when a commit is provided to --manifest-branch, this "
+        "is the name of the git ref in which the commit can be found",
+        metavar="BRANCH",
     )
     group.add_option(
         "-m",
