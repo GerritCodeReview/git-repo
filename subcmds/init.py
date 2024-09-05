@@ -52,6 +52,10 @@ The optional -b argument can be used to select the manifest branch
 to checkout and use.  If no branch is specified, the remote's default
 branch is used.  This is equivalent to using -b HEAD.
 
+The optional --manifest-upstream-branch argument can be used when a commit is
+provided to --manifest-branch (or -b), to specify the name of the git ref in
+which the commit can be found.
+
 The optional -m argument can be used to specify an alternate manifest
 to be used. If no manifest is specified, the manifest default.xml
 will be used.
@@ -135,6 +139,7 @@ to update the working directory files.
         # manifest project is special and is created when instantiating the
         # manifest which happens before we parse options.
         self.manifest.manifestProject.clone_depth = opt.manifest_depth
+        self.manifest.manifestProject.upstream = opt.manifest_upstream_branch
         clone_filter_for_depth = (
             "blob:none" if (_REPO_ALLOW_SHALLOW == "0") else None
         )
@@ -315,6 +320,12 @@ to update the working directory files.
             self.OptionParser.error(
                 "--manifest-branch and --manifest-name cannot"
                 " be used with --standalone-manifest."
+            )
+
+        if opt.manifest_upstream_branch and opt.manifest_branch is None:
+            self.OptionParser.error(
+                "--manifest-upstream-branch cannot be used without "
+                "--manifest-branch."
             )
 
         if args:
