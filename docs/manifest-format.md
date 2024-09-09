@@ -107,11 +107,13 @@ following DTD:
   <!ATTLIST extend-project remote CDATA #IMPLIED>
   <!ATTLIST extend-project dest-branch CDATA #IMPLIED>
   <!ATTLIST extend-project upstream CDATA #IMPLIED>
+  <!ATTLIST extend-project base-rev CDATA #IMPLIED>
 
   <!ELEMENT remove-project EMPTY>
   <!ATTLIST remove-project name     CDATA #IMPLIED>
   <!ATTLIST remove-project path     CDATA #IMPLIED>
   <!ATTLIST remove-project optional CDATA #IMPLIED>
+  <!ATTLIST remove-project base-rev CDATA #IMPLIED>
 
   <!ELEMENT repo-hooks EMPTY>
   <!ATTLIST repo-hooks in-project CDATA #REQUIRED>
@@ -433,6 +435,14 @@ project.  Same syntax as the corresponding element of `project`.
 Attribute `upstream`: If specified, overrides the upstream of the original
 project.  Same syntax as the corresponding element of `project`.
 
+Attribute `base-rev`: If specified, adds a check against the revision
+to be extended. Manifest parse will fail and give a list of mismatch extends
+if the revisions being extended have changed since base-rev was set.
+Intended for use with layered manifests using hash revisions to prevent
+patch branches hiding newer upstream revisions. Also compares named refs
+like branches or tags but is misleading if branches are used as base-rev.
+Same syntax as the corresponding element of `project`.
+
 ### Element annotation
 
 Zero or more annotation elements may be specified as children of a
@@ -495,6 +505,14 @@ name. Logic otherwise behaves like both are specified.
 
 Attribute `optional`: Set to true to ignore remove-project elements with no
 matching `project` element.
+
+Attribute `base-rev`: If specified, adds a check against the revision
+to be removed. Manifest parse will fail and give a list of mismatch removes
+if the revisions being removed have changed since base-rev was set.
+Intended for use with layered manifests using hash revisions to prevent
+patch branches hiding newer upstream revisions. Also compares named refs
+like branches or tags but is misleading if branches are used as base-rev.
+Same syntax as the corresponding element of `project`.
 
 ### Element repo-hooks
 
