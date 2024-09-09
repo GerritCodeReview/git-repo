@@ -1445,6 +1445,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         repo_hooks_project = None
         enabled_repo_hooks = None
+        failed_revision_changes = []
         for node in itertools.chain(*node_list):
             if node.nodeName == "project":
                 project = self._ParseProject(node)
@@ -1471,6 +1472,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     remote = self._get_remote(node)
                 dest_branch = node.getAttribute("dest-branch")
                 upstream = node.getAttribute("upstream")
+                base = node.getAttribute("base")
 
                 named_projects = self._projects[name]
                 if dest_path and not path and len(named_projects) > 1:
@@ -1484,6 +1486,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     if groups:
                         p.groups.extend(groups)
                     if revision:
+                        if base:
+                            if p.revisionExpr and p.revisionExpr != base:
+                                failed_revision_changes.append(
+                                    "extend-project name %s mismatch base "
+                                    "%s vs revision %s"
+                                    % (name, base, p.revisionExpr)
+                                )
                         p.SetRevision(revision)
 
                     if remote_name:
@@ -1558,6 +1567,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             if node.nodeName == "remove-project":
                 name = node.getAttribute("name")
                 path = node.getAttribute("path")
+                base = node.getAttribute("base")
 
                 # Name or path needed.
                 if not name and not path:
@@ -1571,6 +1581,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 for projname, projects in list(self._projects.items()):
                     for p in projects:
                         if name == projname and not path:
+                            if base:
+                                if p.revisionExpr and p.revisionExpr != base:
+                                    failed_revision_changes.append(
+                                        "remove-project name %s mismatch base "
+                                        "%s vs revision %s"
+                                        % (name, base, p.revisionExpr)
+                                    )
                             del self._paths[p.relpath]
                             if not removed_project:
                                 del self._projects[name]
@@ -1578,6 +1595,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         elif path == p.relpath and (
                             name == projname or not name
                         ):
+                            if base:
+                                if p.revisionExpr and p.revisionExpr != base:
+                                    failed_revision_changes.append(
+                                        "remove-project path %s mismatch base "
+                                        "%s vs revision %s"
+                                        % (p.relpath, base, p.revisionExpr)
+                                    )
                             self._projects[projname].remove(p)
                             del self._paths[p.relpath]
                             removed_project = p.name
@@ -1596,6 +1620,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         "remove-project element specifies non-existent "
                         "project: %s" % node.toxml()
                     )
+
+        if failed_revision_changes:
+            raise ManifestParseError(
+                "revision base check failed, rebase patches and update "
+                "base hashes for: ",
+                failed_revision_changes,
+            )
 
         # Store repo hooks project information.
         if repo_hooks_project:

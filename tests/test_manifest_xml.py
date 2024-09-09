@@ -1049,6 +1049,78 @@ class RemoveProjectElementTests(ManifestParseTestCase):
         self.assertTrue(found_proj1_path1)
         self.assertTrue(found_proj2)
 
+    def test_base_revision_checks_on_patching(self):
+        manifest_fail_wrong_tag = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="release_tag_002" />
+  <project name="project1" path="tests/path1" />
+  <extend-project name="project1" revision="new_hash" base="release_tag_001" />
+</manifest>
+"""
+        )
+        with self.assertRaises(error.ManifestParseError):
+            manifest_fail_wrong_tag.ToXml()
+
+        manifest_fail_remove = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="project1" path="tests/path1" revision="hash1" />
+  <remove-project name="project1" base="wrong_hash" />
+</manifest>
+"""
+        )
+        with self.assertRaises(error.ManifestParseError):
+            manifest_fail_remove.ToXml()
+
+        manifest_fail_extend = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="project1" path="tests/path1" revision="hash1" />
+  <extend-project name="project1" revision="new_hash" base="wrong_hash" />
+</manifest>
+"""
+        )
+        with self.assertRaises(error.ManifestParseError):
+            manifest_fail_extend.ToXml()
+
+        manifest_ok = self.getXmlManifest(
+            """
+<manifest>
+  <remote name="default-remote" fetch="http://localhost" />
+  <default remote="default-remote" revision="refs/heads/main" />
+  <project name="project1" path="tests/path1" revision="hash1" />
+  <project name="project2" path="tests/path2" revision="hash2" />
+  <project name="project3" path="tests/path3" revision="hash3" />
+  <project name="project4" path="tests/path4" revision="hash4" />
+
+  <remove-project name="project1" />
+  <remove-project name="project2" base="hash2" />
+  <project name="project2" path="tests/path2" revision="new_hash2" />
+  <extend-project name="project3" base="hash3" revision="new_hash3" />
+  <extend-project name="project3" base="new_hash3" revision="newer_hash3" />
+  <remove-project path="tests/path4" base="hash4" />
+</manifest>
+"""
+        )
+        found_proj2 = False
+        found_proj3 = False
+        for proj in manifest_ok.projects:
+            if proj.name == "project2":
+                found_proj2 = True
+            if proj.name == "project3":
+                found_proj3 = True
+            self.assertNotEqual(proj.name, "project1")
+            self.assertNotEqual(proj.name, "project4")
+        self.assertTrue(found_proj2)
+        self.assertTrue(found_proj3)
+        self.assertTrue(len(manifest_ok.projects) == 2)
+
 
 class ExtendProjectElementTests(ManifestParseTestCase):
     """Tests for <extend-project>."""
