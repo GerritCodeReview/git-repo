@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10ec4f5d_a87ea756",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-09-10T11:09:30Z",
+      "side": 1,
+      "message": "Ran tests with local manifests as well as the UT included",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
