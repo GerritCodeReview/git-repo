@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cbb1d3f_518ddfdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-09-10T22:53:10Z",
+      "side": 1,
+      "message": "Do you need to update `main.py` too?",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1983699_d87c58d4",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-09-10T22:53:10Z",
+      "side": 1,
+      "message": "Is it worth adding `--manifest-revision` as an alias for `--manifest-branch`?",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bf67517_a453002d",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-09-10T22:53:10Z",
+      "side": 1,
+      "message": "Also document it here?",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55735b66_21cce9a4",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-09-10T22:53:10Z",
+      "side": 1,
+      "message": "Should it be an error to use `--manifest-upstream-branch` without `--manifest-branch`?",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
