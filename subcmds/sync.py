@@ -1499,6 +1499,19 @@ later is required to fix a server side protocol bug.
                 elif (
                     "TARGET_PRODUCT" in os.environ
                     and "TARGET_BUILD_VARIANT" in os.environ
+                    and "TARGET_RELEASE" in os.environ
+                ):
+                    target = "%s-%s-%s" % (
+                        os.environ["TARGET_PRODUCT"],
+                        os.environ["TARGET_RELEASE"],
+                        os.environ["TARGET_BUILD_VARIANT"],
+                    )
+                    [success, manifest_str] = server.GetApprovedManifest(
+                        branch, target
+                    )
+                elif (
+                    "TARGET_PRODUCT" in os.environ
+                    and "TARGET_BUILD_VARIANT" in os.environ
                 ):
                     target = "%s-%s" % (
                         os.environ["TARGET_PRODUCT"],
