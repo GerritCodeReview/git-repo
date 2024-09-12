@@ -2659,6 +2659,17 @@ class Project:
                 # Fallthru to sleep+retry logic at the bottom.
                 pass
 
+            # TODO(b/360889369#comment24): git may gc commits incorrectly.
+            # Until the root cause is fixed, retry fetch with --refetch which
+            # will bring the repository into a good state.
+            elif gitcmd.stdout and "could not parse commit" in gitcmd.stdout:
+                cmd.insert(1, "--refetch")
+                print(
+                    "could not parse commit error, retrying with refetch",
+                    file=output_redir,
+                )
+                continue
+
             # Try to prune remote branches once in case there are conflicts.
             # For example, if the remote had refs/heads/upstream, but deleted
             # that and now has refs/heads/upstream/foo.
