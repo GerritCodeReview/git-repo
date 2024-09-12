@@ -16,6 +16,23 @@
       "message": "Hi Yiwei, thanks for volunteering to review or reroute for me.",
       "revId": "e3ebe041c44b92f23166ab30d75d98ef5c17305d",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5a14f07_efa6cad5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1128015
+      },
+      "writtenOn": "2024-09-12T16:10:54Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "e3ebe041c44b92f23166ab30d75d98ef5c17305d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
