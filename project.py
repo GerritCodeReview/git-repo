@@ -1694,6 +1694,8 @@ class Project:
                             project=self.name,
                         )
                     )
+                    return
+                syncbuf.later1(self, _doff, not verbose)
                 return
             elif pub == head:
                 # All published commits are merged, and thus we are a
