@@ -1694,6 +1694,8 @@ class Project:
                             project=self.name,
                         )
                     )
+                    return
+                self._CopyAndLinkFiles()
                 return
             elif pub == head:
                 # All published commits are merged, and thus we are a
@@ -1701,6 +1703,7 @@ class Project:
                 syncbuf.later1(self, _doff, not verbose)
                 if submodules:
                     syncbuf.later1(self, _dosubmodules, not verbose)
+                self._CopyAndLinkFiles()
                 return
 
         # Examine the local commits not in the remote.  Find the
