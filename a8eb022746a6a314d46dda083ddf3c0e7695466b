@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b856aa2_f43bf297",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-09-18T20:00:07Z",
+      "side": 1,
+      "message": "I was suggesting anytime a file is placed inside another repository.\n\nLet\u0027s say you have\n```\n\u003cproject path\u003d\"foo\"\u003e\u003c/project\u003e\n\u003cproject path\u003d\"bar\"\u003e\u003c/project\u003e\n```\nand someone updates project path bar:\n```\n\u003cproject path\u003d\"bar\"\u003e\n  \u003clinkfile src\u003d\"BAZ.txt\" dest\u003d\"foo/BAZ.txt\"\u003e\n\u003c/project\u003e\n```\n\nIf you have BAZ.txt file in foo that you are actively working on, linkfile could override it with this patch. For example, line 1724 checks if IsDirty and bails if dirty.\n\n\u003e Can you clarify what exactly you\u0027d like tested? Something like the untracked and tracked examples I outline above?\n\n\nYup, that\u0027d be great!\n\n\u003e Dumb question: aren\u0027t we already in LocalHalf here?\n\nAh, yes - we are! Sorry for confusion. It\u0027s still better to use syncbuf to be consistent.",
+      "parentUuid": "4726b109_dfcbd4a9",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18f012b5_eed45dad",
         "filename": "project.py",
         "patchSetId": 2
