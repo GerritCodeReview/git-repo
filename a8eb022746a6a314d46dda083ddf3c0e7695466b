@@ -89,6 +89,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a719258_32f3552e",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-09-18T23:18:08Z",
+      "side": 1,
+      "message": "Thanks for looking into it, I think that\u0027s good enough to accept this patch.",
+      "parentUuid": "2c8aa95b_d42730ff",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f012b5_eed45dad",
