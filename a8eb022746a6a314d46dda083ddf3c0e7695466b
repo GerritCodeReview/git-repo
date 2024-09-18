@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4726b109_dfcbd4a9",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1032832
+      },
+      "writtenOn": "2024-09-18T17:39:50Z",
+      "side": 1,
+      "message": "\u003e I think this is problematic - it\u0027s possible that _CopyAndLinkFiles overrides some local changes (e.g. your commit has added a file that is not part of manifest). It\u0027s likely an extreme case, but could still be problematic.\n\nWhat do you mean, precisely? My working model (and the use case in Pixel, where I\u0027m testing this) is to link a project file into a non-project location, like the tree root. For example, a `$ROOT/private/.../build_foo.sh` script getting linked to `$ROOT/build_foo.sh` for ease of use. That shouldn\u0027t really interact with \"local [git project] changes\".\n\nAre you suggesting use cases like `$ROOT/.../foo-project/bar.sh` linked to `$ROOT/.../foo-project/baz.sh`? And that may conflict with local changes that introduced a new (non-link / copy) `.../foo-project/baz.sh`?\n\nIf so, I didn\u0027t really think about that. If it\u0027s an untracked file ... it\u0027d be hard to tell what to do with it. It could be untracked simply because it\u0027s an old copy that needs updated, or it could be untracked because the developer is adding it.\n\nIf it\u0027s tracked, then it sounds more like an invalid state where we should throw an error. But all in all, this does sound like room for weird corner cases...\n\n\u003e If the action is revertible so there\u0027s no data loss, it\u0027s probably okay to keep it. Could you test it?\n\nCan you clarify what exactly you\u0027d like tested? Something like the untracked and tracked examples I outline above?\n\n\u003e Note that we should schedule this in Sync_LocalHalf, and not NetworkHalf using:\n\nDumb question: aren\u0027t we already in LocalHalf here?\n\n\u003e ```\n\u003e  syncbuf.later1(self, _doff, not verbose)\n\u003e  ```\n\nUpdated to this.",
+      "parentUuid": "921ff705_234e552c",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18f012b5_eed45dad",
         "filename": "project.py",
         "patchSetId": 2
@@ -48,6 +66,24 @@
       "writtenOn": "2024-09-18T17:21:35Z",
       "side": 1,
       "message": "This line instructs Sync_LocalHalf part to invoke _CopyAndLinkFiles (via _doff). So line 1706 is not needed.",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a527427_a075d6ea",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1703,
+      "author": {
+        "id": 1032832
+      },
+      "writtenOn": "2024-09-18T17:39:50Z",
+      "side": 1,
+      "message": "ack, sorry, I missed what some of this was doing. I really care about the other branch anyway, not this one.\n\ndropped",
+      "parentUuid": "18f012b5_eed45dad",
       "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
