@@ -16,6 +16,40 @@
       "message": "I\u0027m a little wary of this code, but I\u0027m fairly sure I\u0027ve identified a bug here at least.\n\nJosip, are you an appropriate reviewer here?",
       "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921ff705_234e552c",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-09-18T17:21:35Z",
+      "side": 1,
+      "message": "I think this is problematic - it\u0027s possible that _CopyAndLinkFiles overrides some local changes (e.g. your commit has added a file that is not part of manifest). It\u0027s likely an extreme case, but could still be problematic.\n\nIf the action is revertible so there\u0027s no data loss, it\u0027s probably okay to keep it. Could you test it?\n\nNote that we should schedule this in Sync_LocalHalf, and not NetworkHalf using:\n\n```\n syncbuf.later1(self, _doff, not verbose)\n ```",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18f012b5_eed45dad",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1703,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-09-18T17:21:35Z",
+      "side": 1,
+      "message": "This line instructs Sync_LocalHalf part to invoke _CopyAndLinkFiles (via _doff). So line 1706 is not needed.",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
