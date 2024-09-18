@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2c8aa95b_d42730ff",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1032832
+      },
+      "writtenOn": "2024-09-18T23:08:25Z",
+      "side": 1,
+      "message": "\u003e I was suggesting anytime a file is placed inside another repository.\n...\n\u003e If you have BAZ.txt file in foo that you are actively working on, linkfile could override it with this patch.\n\nIt would before this patch too, actually. (I just tested it.) In all cases (tracked, untracked, committed), it will clobber.\n\nWhat this patch \"fixes\" (and/or breaks, if you\u0027re considering this an unexpected clobbering) is when you have active work on project \"bar\" too. *And* you also have to have previously uploaded the work from project \"bar\" to Gerrit (see the `if pub:` condition). I forgot to add that part from the description (now I\u0027ve added it).\n\nSo, I don\u0027t really think this is materially changing what things we\u0027ll clobber. There are plenty of cases we\u0027ll clobber things already. If we want to make that behavior more consistent, then I think we have several other existing cases to consider. Basically, you\u0027re playing with fire if you use this feature to link or copy files between projects.\n\nI can still run through some more cases if you\u0027d like. But so far, after a few more explorations, I don\u0027t think I\u0027m materially changing the types of corner cases that already allow clobberring; I\u0027m just fixing a case that (silently) refuses to sync the intended links.",
+      "parentUuid": "0b856aa2_f43bf297",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18f012b5_eed45dad",
         "filename": "project.py",
         "patchSetId": 2
