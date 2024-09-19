@@ -107,6 +107,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7660c87_f6709c7e",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1032832
+      },
+      "writtenOn": "2024-09-19T00:11:46Z",
+      "side": 1,
+      "message": "thanks!\n\ndo you think any of this clobbering behavior is worth filing a bug over? I can at least enter it in the bug tracker in case it causes problems down the road, or if someone wants to tackle it.",
+      "parentUuid": "6a719258_32f3552e",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f012b5_eed45dad",
