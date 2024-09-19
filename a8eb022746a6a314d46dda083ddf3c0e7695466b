@@ -125,6 +125,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a2bc3ba_0e29aaa1",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1698,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-09-19T15:45:32Z",
+      "side": 1,
+      "message": "Yeah, a tracking bug would be nice (go/repo-bug). Thanks!",
+      "parentUuid": "c7660c87_f6709c7e",
+      "revId": "a8eb022746a6a314d46dda083ddf3c0e7695466b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18f012b5_eed45dad",
