@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cdbd4771_3e1fca54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-09-20T04:03:41Z",
+      "side": 1,
+      "message": "Ok. I think you run `release/update_manpages.py` to update the man pages.",
+      "parentUuid": "76404ed1_651051c7",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1983699_d87c58d4",
         "filename": "repo",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "I don\u0027t see a lot of value to it. However, it should be done in a followup change if we decide to do it.",
       "parentUuid": "d1983699_d87c58d4",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d320ef43_660890d2",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-09-20T04:03:41Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "982957ea_d23bc0ea",
       "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
