@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "76404ed1_651051c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-09-20T00:01:59Z",
+      "side": 1,
+      "message": "I looked at a few other changes that added new options to init and they didn\u0027t have any updates to main.py. However, I think we need to update man (using help2man). Not sure how yet.",
+      "parentUuid": "0cbb1d3f_518ddfdf",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d1983699_d87c58d4",
         "filename": "repo",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2024-09-10T22:53:10Z",
       "side": 1,
       "message": "Is it worth adding `--manifest-revision` as an alias for `--manifest-branch`?",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "982957ea_d23bc0ea",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-09-20T00:01:59Z",
+      "side": 1,
+      "message": "I don\u0027t see a lot of value to it. However, it should be done in a followup change if we decide to do it.",
+      "parentUuid": "d1983699_d87c58d4",
       "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9115950f_bd87474b",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-09-20T00:01:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bf67517_a453002d",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "55735b66_21cce9a4",
@@ -65,6 +119,24 @@
       "writtenOn": "2024-09-10T22:53:10Z",
       "side": 1,
       "message": "Should it be an error to use `--manifest-upstream-branch` without `--manifest-branch`?",
+      "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad0ce74e_0b2ca4e7",
+        "filename": "subcmds/init.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-09-20T00:01:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "55735b66_21cce9a4",
       "revId": "d76ddaa25272c9adcfec10993a555a73fe0a3b54",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
