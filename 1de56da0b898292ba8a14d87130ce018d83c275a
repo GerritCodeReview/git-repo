@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "068205ee_ac0bca98",
+        "filename": "repo",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-09-25T20:59:02Z",
+      "side": 1,
+      "message": "Let\u0027s set this to v2.48, which will be our next release version\n\n```suggestion\nVERSION \u003d (2, 48)\n```",
+      "revId": "1de56da0b898292ba8a14d87130ce018d83c275a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
