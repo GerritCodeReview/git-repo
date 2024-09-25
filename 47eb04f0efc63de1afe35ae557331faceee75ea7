@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8e683eb_b7ae5955",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-09-25T21:32:11Z",
+      "side": 1,
+      "message": "Could you set verified flag if you tested this and works well? You should be able to set Commit-Queue to +2 to submit too, but let me know if you can\u0027t",
+      "revId": "47eb04f0efc63de1afe35ae557331faceee75ea7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
