@@ -2695,6 +2695,16 @@ class Project:
                 )
                 # Continue right away so we don't sleep as we shouldn't need to.
                 continue
+            elif (ret == 128 and gitcmd.stdout
+                  and "fatal: could not read Username" in gitcmd.stdout):
+                # User needs to be authenticated, and Git wants to prompt for
+                # username and password.
+                print(
+                    "git requires authentication, but repo cannot perform "
+                    "interactive authentication. Check git credentials.",
+                    file=output_redir,
+                )
+                break
             elif current_branch_only and is_sha1 and ret == 128:
                 # Exit code 128 means "couldn't find the ref you asked for"; if
                 # we're in sha1 mode, we just tried sync'ing from the upstream
