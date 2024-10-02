@@ -603,19 +603,22 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             full_dest = destination
             if not full_dest.startswith(R_HEADS):
                 full_dest = R_HEADS + full_dest
+            full_revision = branch.project.revisionExpr
+            if not full_revision.startswith(R_HEADS):
+                full_revision = R_HEADS + full_revision
 
             # If the merge branch of the local branch is different from
             # the project's revision AND destination, this might not be
             # intentional.
             if (
                 merge_branch
-                and merge_branch != branch.project.revisionExpr
+                and merge_branch != full_revision
                 and merge_branch != full_dest
             ):
                 print(
                     f"For local branch {branch.name}: merge branch "
                     f"{merge_branch} does not match destination branch "
-                    f"{destination}"
+                    f"{destination} and revision {branch.project.revisionExpr}"
                 )
                 print("skipping upload.")
                 print(
