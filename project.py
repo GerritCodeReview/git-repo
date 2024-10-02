@@ -2664,7 +2664,10 @@ class Project:
             # TODO(b/360889369#comment24): git may gc commits incorrectly.
             # Until the root cause is fixed, retry fetch with --refetch which
             # will bring the repository into a good state.
-            elif gitcmd.stdout and "could not parse commit" in gitcmd.stdout:
+            elif gitcmd.stdout and (
+                "could not parse commit" in gitcmd.stdout
+                or "unable to parse commit" in gitcmd.stdout
+            ):
                 cmd.insert(1, "--refetch")
                 print(
                     "could not parse commit error, retrying with refetch",
