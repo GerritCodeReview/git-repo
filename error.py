@@ -107,6 +107,10 @@ class GitError(RepoError):
         return self.message
 
 
+class GitAuthError(RepoExitError):
+    """Cannot talk to remote due to auth issue."""
+
+
 class GitcUnsupportedError(RepoExitError):
     """Gitc no longer supported."""
 

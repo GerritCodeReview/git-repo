@@ -32,6 +32,7 @@ import urllib.parse
 
 from color import Coloring
 from error import DownloadError
+from error import GitAuthError
 from error import GitError
 from error import ManifestInvalidPathError
 from error import ManifestInvalidRevisionError
@@ -2712,6 +2713,20 @@ class Project:
                     "interactive authentication. Check git credentials.",
                     file=output_redir,
                 )
+                break
+            elif (
+                ret == 128
+                and gitcmd.stdout
+                and "remote helper 'sso' aborted session" in gitcmd.stdout
+            ):
+                # User needs to be authenticated, and Git wants to prompt for
+                # username and password.
+                print(
+                    "git requires authentication, but repo cannot perform "
+                    "interactive authentication.",
+                    file=output_redir,
+                )
+                raise GitAuthError(gitcmd.stdout)
                 break
             elif current_branch_only and is_sha1 and ret == 128:
                 # Exit code 128 means "couldn't find the ref you asked for"; if
