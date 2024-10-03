@@ -16,6 +16,24 @@
       "message": "do we also want to `raise GitAuthError` here too?",
       "revId": "82fe40f273b511b79e13fe5129ac079a6548e600",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d02070e3_1854c168",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2715,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-03T20:47:43Z",
+      "side": 1,
+      "message": "That one is a bit trickier since there could be multiple remotes in manifest, and user may have access only to some. git sso is more straightforward.\n\nWe can revisit once we get better understanding how it affects sso users.",
+      "parentUuid": "27813399_87960ea1",
+      "revId": "82fe40f273b511b79e13fe5129ac079a6548e600",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
