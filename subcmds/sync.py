@@ -895,28 +895,15 @@ later is required to fix a server side protocol bug.
             ):
                 ret = False
         else:
-            # Favor throughput over responsiveness when quiet.  It seems that
-            # imap() will yield results in batches relative to chunksize, so
-            # even as the children finish a sync, we won't see the result until
-            # one child finishes ~chunksize jobs.  When using a large --jobs
-            # with large chunksize, this can be jarring as there will be a large
-            # initial delay where repo looks like it isn't doing anything and
-            # sits at 0%, but then suddenly completes a lot of jobs all at once.
-            # Since this code is more network bound, we can accept a bit more
-            # CPU overhead with a smaller chunksize so that the user sees more
-            # immediate & continuous feedback.
-            if opt.quiet:
-                chunksize = WORKER_BATCH_SIZE
-            else:
+            if not opt.quiet:
                 pm.update(inc=0, msg="warming up")
-                chunksize = 4
             with multiprocessing.Pool(
                 jobs, initializer=self._FetchInitChild, initargs=(ssh_proxy,)
             ) as pool:
                 results = pool.imap_unordered(
                     functools.partial(self._FetchProjectList, opt),
                     projects_list,
-                    chunksize=chunksize,
+                    chunksize=WORKER_BATCH_SIZE,
                 )
                 if not _ProcessResults(results):
                     ret = False
