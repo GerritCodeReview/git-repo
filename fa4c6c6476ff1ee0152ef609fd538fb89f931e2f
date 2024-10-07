@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b980938_a0cb112d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-07T17:35:22Z",
+      "side": 1,
+      "message": "@gavinmak@google.com could you PTAL? I noticed this change may penalize projects with relatively low project count, e.g. if project count is less than 32, all projects will be assigned to one process regardless of number of jobs.",
+      "revId": "fa4c6c6476ff1ee0152ef609fd538fb89f931e2f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
