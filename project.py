@@ -2396,26 +2396,25 @@ class Project:
         try:
             # if revision (sha or tag) is not present then following function
             # throws an error.
+            revs = [f"{self.revisionExpr}^0"]
+            upstream_rev = None
+            if self.upstream:
+                upstream_rev = self.GetRemote().ToLocal(self.upstream)
+                revs.append(upstream_rev)
+
             self.bare_git.rev_list(
                 "-1",
                 "--missing=allow-any",
-                "%s^0" % self.revisionExpr,
+                *revs,
                 "--",
                 log_as_error=False,
             )
+
             if self.upstream:
-                rev = self.GetRemote().ToLocal(self.upstream)
-                self.bare_git.rev_list(
-                    "-1",
-                    "--missing=allow-any",
-                    "%s^0" % rev,
-                    "--",
-                    log_as_error=False,
-                )
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
-                    rev,
+                    upstream_rev,
                     log_as_error=False,
                 )
             return True
