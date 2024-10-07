@@ -355,6 +355,30 @@ class SafeCheckoutOrder(unittest.TestCase):
         )
 
 
+class Chunksize(unittest.TestCase):
+    """Tests for _chunksize."""
+
+    def test_single_project(self):
+        """Single project."""
+        self.assertEqual(sync._chunksize(1, 1), 1)
+
+    def test_low_project_count(self):
+        """Multiple projects, low number of projects to sync."""
+        self.assertEqual(sync._chunksize(10, 1), 10)
+        self.assertEqual(sync._chunksize(10, 2), 5)
+        self.assertEqual(sync._chunksize(10, 4), 2)
+        self.assertEqual(sync._chunksize(10, 8), 1)
+        self.assertEqual(sync._chunksize(10, 16), 1)
+
+    def test_high_project_count(self):
+        """Multiple projects, high number of projects to sync."""
+        self.assertEqual(sync._chunksize(2800, 1), 32)
+        self.assertEqual(sync._chunksize(2800, 16), 32)
+        self.assertEqual(sync._chunksize(2800, 32), 32)
+        self.assertEqual(sync._chunksize(2800, 64), 32)
+        self.assertEqual(sync._chunksize(2800, 128), 21)
+
+
 class GetPreciousObjectsState(unittest.TestCase):
     """Tests for _GetPreciousObjectsState."""
 

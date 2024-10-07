@@ -131,6 +131,11 @@ def _SafeCheckoutOrder(checkouts: List[Project]) -> List[List[Project]]:
     return res
 
 
+def _chunksize(projects: int, jobs: int) -> int:
+    """Calculate chunk size for the given number of projects and jobs."""
+    return min(max(1, projects // jobs), WORKER_BATCH_SIZE)
+
+
 class _FetchOneResult(NamedTuple):
     """_FetchOne return value.
 
@@ -819,7 +824,6 @@ later is required to fix a server side protocol bug.
     def _Fetch(self, projects, opt, err_event, ssh_proxy, errors):
         ret = True
 
-        jobs = opt.jobs_network
         fetched = set()
         remote_fetched = set()
         pm = Progress(
@@ -848,6 +852,8 @@ later is required to fix a server side protocol bug.
         for project in projects:
             objdir_project_map.setdefault(project.objdir, []).append(project)
         projects_list = list(objdir_project_map.values())
+
+        jobs = min(opt.jobs_network, len(projects_list))
 
         def _ProcessResults(results_sets):
             ret = True
@@ -888,35 +894,22 @@ later is required to fix a server side protocol bug.
         Sync.ssh_proxy = None
 
         # NB: Multiprocessing is heavy, so don't spin it up for one job.
-        if len(projects_list) == 1 or jobs == 1:
+        if jobs == 1:
             self._FetchInitChild(ssh_proxy)
             if not _ProcessResults(
                 self._FetchProjectList(opt, x) for x in projects_list
             ):
                 ret = False
         else:
-            # Favor throughput over responsiveness when quiet.  It seems that
-            # imap() will yield results in batches relative to chunksize, so
-            # even as the children finish a sync, we won't see the result until
-            # one child finishes ~chunksize jobs.  When using a large --jobs
-            # with large chunksize, this can be jarring as there will be a large
-            # initial delay where repo looks like it isn't doing anything and
-            # sits at 0%, but then suddenly completes a lot of jobs all at once.
-            # Since this code is more network bound, we can accept a bit more
-            # CPU overhead with a smaller chunksize so that the user sees more
-            # immediate & continuous feedback.
-            if opt.quiet:
-                chunksize = WORKER_BATCH_SIZE
-            else:
+            if not opt.quiet:
                 pm.update(inc=0, msg="warming up")
-                chunksize = 4
             with multiprocessing.Pool(
                 jobs, initializer=self._FetchInitChild, initargs=(ssh_proxy,)
             ) as pool:
                 results = pool.imap_unordered(
                     functools.partial(self._FetchProjectList, opt),
                     projects_list,
-                    chunksize=chunksize,
+                    chunksize=_chunksize(len(projects_list), jobs),
                 )
                 if not _ProcessResults(results):
                     ret = False
