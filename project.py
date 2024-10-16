@@ -2293,7 +2293,9 @@ class Project:
 
         try:
             rev = self.GetRevisionId()
-        except GitError:
+        except (GitError, ManifestInvalidRevisionError):
+            # The git repo may be outdated (i.e. not fetched yet) and querying
+            # its submodules using the revision may not work; so return here.
             return []
         return get_submodules(self.gitdir, rev)
 
