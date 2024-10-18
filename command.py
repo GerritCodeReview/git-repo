@@ -70,6 +70,9 @@ class Command:
     # migrated subcommands can set it to False.
     MULTI_MANIFEST_SUPPORT = True
 
+    # Shared data across parallel execution workers.
+    parallel_context = None
+
     def __init__(
         self,
         repodir=None,
@@ -242,9 +245,20 @@ class Command:
         """Perform the action, after option parsing is complete."""
         raise NotImplementedError
 
-    @staticmethod
+    @classmethod
+    def SetParallelContext(cls, context):
+        cls.parallel_context = context
+
+    @classmethod
     def ExecuteInParallel(
-        jobs, func, inputs, callback, output=None, ordered=False
+        cls,
+        jobs,
+        func,
+        inputs,
+        callback,
+        output=None,
+        ordered=False,
+        chunksize=None,
     ):
         """Helper for managing parallel execution boiler plate.
 
@@ -269,6 +283,8 @@ class Command:
             output: An output manager. May be progress.Progess or
                 color.Coloring.
             ordered: Whether the jobs should be processed in order.
+            chunksize: The number of jobs processed in batch by parallel
+                workers. Default is WORKER_BATCH_SIZE.
 
         Returns:
             The |callback| function's results are returned.
@@ -278,12 +294,20 @@ class Command:
             if len(inputs) == 1 or jobs == 1:
                 return callback(None, output, (func(x) for x in inputs))
             else:
-                with multiprocessing.Pool(jobs) as pool:
+                with multiprocessing.Pool(
+                    jobs,
+                    initializer=cls.SetParallelContext,
+                    initargs=(cls.parallel_context,),
+                ) as pool:
                     submit = pool.imap if ordered else pool.imap_unordered
                     return callback(
                         pool,
                         output,
-                        submit(func, inputs, chunksize=WORKER_BATCH_SIZE),
+                        submit(
+                            func,
+                            inputs,
+                            chunksize=chunksize or WORKER_BATCH_SIZE,
+                        ),
                     )
         finally:
             if isinstance(output, progress.Progress):

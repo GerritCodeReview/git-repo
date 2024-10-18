@@ -149,7 +149,7 @@ class _FetchOneResult(NamedTuple):
 
     success: bool
     errors: List[Exception]
-    project: Project
+    project_idx: int
     start: float
     finish: float
     remote_fetched: bool
@@ -189,7 +189,7 @@ class _CheckoutOneResult(NamedTuple):
 
     success: bool
     errors: List[Exception]
-    project: Project
+    project_idx: int
     start: float
     finish: float
 
@@ -592,7 +592,8 @@ later is required to fix a server side protocol bug.
             branch = branch[len(R_HEADS) :]
         return branch
 
-    def _GetCurrentBranchOnly(self, opt, manifest):
+    @classmethod
+    def _GetCurrentBranchOnly(cls, opt, manifest):
         """Returns whether current-branch or use-superproject options are
         enabled.
 
@@ -710,7 +711,8 @@ later is required to fix a server side protocol bug.
         if need_unload:
             m.outer_client.manifest.Unload()
 
-    def _FetchProjectList(self, opt, projects):
+    @classmethod
+    def _FetchProjectList(cls, opt, projects):
         """Main function of the fetch worker.
 
         The projects we're given share the same underlying git object store, so
@@ -722,9 +724,10 @@ later is required to fix a server side protocol bug.
             opt: Program options returned from optparse.  See _Options().
             projects: Projects to fetch.
         """
-        return [self._FetchOne(opt, x) for x in projects]
+        return [cls._FetchOne(opt, x) for x in projects]
 
-    def _FetchOne(self, opt, project):
+    @classmethod
+    def _FetchOne(cls, opt, project_idx):
         """Fetch git objects for a single project.
 
         Args:
@@ -734,9 +737,10 @@ later is required to fix a server side protocol bug.
         Returns:
             Whether the fetch was successful.
         """
+        project = cls.parallel_context["projects"][project_idx]
         start = time.time()
         k = f"{project.name} @ {project.relpath}"
-        self._sync_dict[k] = start
+        cls.parallel_context["sync_dict"][k] = start
         success = False
         remote_fetched = False
         errors = []
@@ -746,7 +750,7 @@ later is required to fix a server side protocol bug.
                 quiet=opt.quiet,
                 verbose=opt.verbose,
                 output_redir=buf,
-                current_branch_only=self._GetCurrentBranchOnly(
+                current_branch_only=cls._GetCurrentBranchOnly(
                     opt, project.manifest
                 ),
                 force_sync=opt.force_sync,
@@ -756,7 +760,7 @@ later is required to fix a server side protocol bug.
                 optimized_fetch=opt.optimized_fetch,
                 retry_fetches=opt.retry_fetches,
                 prune=opt.prune,
-                ssh_proxy=self.ssh_proxy,
+                ssh_proxy=cls.parallel_context["ssh_proxy"],
                 clone_filter=project.manifest.CloneFilter,
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
                 clone_filter_for_depth=project.manifest.CloneFilterForDepth,
@@ -788,24 +792,20 @@ later is required to fix a server side protocol bug.
                 type(e).__name__,
                 e,
             )
-            del self._sync_dict[k]
+            del cls.parallel_context["sync_dict"][k]
             errors.append(e)
             raise
 
         finish = time.time()
-        del self._sync_dict[k]
+        del cls.parallel_context["sync_dict"][k]
         return _FetchOneResult(
-            success, errors, project, start, finish, remote_fetched
+            success, errors, project_idx, start, finish, remote_fetched
         )
-
-    @classmethod
-    def _FetchInitChild(cls, ssh_proxy):
-        cls.ssh_proxy = ssh_proxy
 
     def _GetSyncProgressMessage(self):
         earliest_time = float("inf")
         earliest_proj = None
-        items = self._sync_dict.items()
+        items = self.parallel_context["sync_dict"].items()
         for project, t in items:
             if t < earliest_time:
                 earliest_time = t
@@ -813,7 +813,7 @@ later is required to fix a server side protocol bug.
 
         if not earliest_proj:
             # This function is called when sync is still running but in some
-            # cases (by chance), _sync_dict can contain no entries. Return some
+            # cases (by chance), sync_dict can contain no entries. Return some
             # text to indicate that sync is still working.
             return "..working.."
 
@@ -835,7 +835,9 @@ later is required to fix a server side protocol bug.
             elide=True,
         )
 
-        self._sync_dict = multiprocessing.Manager().dict()
+        context = {}
+        context["sync_dict"] = multiprocessing.Manager().dict()
+        self.SetParallelContext(context)
         sync_event = _threading.Event()
 
         def _MonitorSyncLoop():
@@ -849,9 +851,10 @@ later is required to fix a server side protocol bug.
         sync_progress_thread.start()
 
         objdir_project_map = dict()
-        for project in projects:
-            objdir_project_map.setdefault(project.objdir, []).append(project)
+        for index, project in enumerate(projects):
+            objdir_project_map.setdefault(project.objdir, []).append(index)
         projects_list = list(objdir_project_map.values())
+        context["projects"] = projects
 
         jobs = min(opt.jobs_network, len(projects_list))
 
@@ -860,7 +863,7 @@ later is required to fix a server side protocol bug.
             for results in results_sets:
                 for result in results:
                     success = result.success
-                    project = result.project
+                    project = projects[result.project_idx]
                     start = result.start
                     finish = result.finish
                     self._fetch_times.Set(project, finish - start)
@@ -891,11 +894,10 @@ later is required to fix a server side protocol bug.
         # multiprocessing to pickle it up when spawning children.  We can't pass
         # it as an argument to _FetchProjectList below as multiprocessing is
         # unable to pickle those.
-        Sync.ssh_proxy = None
+        context["ssh_proxy"] = ssh_proxy
 
         # NB: Multiprocessing is heavy, so don't spin it up for one job.
         if jobs == 1:
-            self._FetchInitChild(ssh_proxy)
             if not _ProcessResults(
                 self._FetchProjectList(opt, x) for x in projects_list
             ):
@@ -904,22 +906,19 @@ later is required to fix a server side protocol bug.
             if not opt.quiet:
                 pm.update(inc=0, msg="warming up")
             with multiprocessing.Pool(
-                jobs, initializer=self._FetchInitChild, initargs=(ssh_proxy,)
+                jobs, initializer=self.SetParallelContext, initargs=(context,)
             ) as pool:
                 results = pool.imap_unordered(
                     functools.partial(self._FetchProjectList, opt),
                     projects_list,
-                    chunksize=_chunksize(len(projects_list), jobs),
+                    # Use chunksize=1 to avoid the chance that some workers are
+                    # idle while some workers still have more than one job in
+                    # their chunk queue.
+                    chunksize=1,
                 )
                 if not _ProcessResults(results):
                     ret = False
                     pool.close()
-
-        # Cleanup the reference now that we're done with it, and we're going to
-        # release any resources it points to.  If we don't, later
-        # multiprocessing usage (e.g. checkouts) will try to pickle and then
-        # crash.
-        del Sync.ssh_proxy
 
         sync_event.set()
         pm.end()
@@ -1008,14 +1007,15 @@ later is required to fix a server side protocol bug.
 
         return _FetchMainResult(all_projects)
 
+    @classmethod
     def _CheckoutOne(
-        self,
+        cls,
         detach_head,
         force_sync,
         force_checkout,
         force_rebase,
         verbose,
-        project,
+        project_idx,
     ):
         """Checkout work tree for one project
 
@@ -1032,6 +1032,7 @@ later is required to fix a server side protocol bug.
         Returns:
             Whether the fetch was successful.
         """
+        project = cls.parallel_context[project_idx]
         start = time.time()
         syncbuf = SyncBuffer(
             project.manifest.manifestProject.config, detach_head=detach_head
@@ -1065,7 +1066,7 @@ later is required to fix a server side protocol bug.
         if not success:
             logger.error("error: Cannot checkout %s", project.name)
         finish = time.time()
-        return _CheckoutOneResult(success, errors, project, start, finish)
+        return _CheckoutOneResult(success, errors, project_idx, start, finish)
 
     def _Checkout(self, all_projects, opt, err_results, checkout_errors):
         """Checkout projects listed in all_projects
@@ -1083,7 +1084,7 @@ later is required to fix a server side protocol bug.
             ret = True
             for result in results:
                 success = result.success
-                project = result.project
+                project = self.parallel_context[result.project_idx]
                 start = result.start
                 finish = result.finish
                 self.event_log.AddSync(
@@ -1110,6 +1111,7 @@ later is required to fix a server side protocol bug.
             return ret
 
         for projects in _SafeCheckoutOrder(all_projects):
+            self.SetParallelContext(projects)
             proc_res = self.ExecuteInParallel(
                 opt.jobs_checkout,
                 functools.partial(
@@ -1120,11 +1122,15 @@ later is required to fix a server side protocol bug.
                     opt.rebase,
                     opt.verbose,
                 ),
-                projects,
+                range(len(projects)),
                 callback=_ProcessResults,
                 output=Progress(
                     "Checking out", len(all_projects), quiet=opt.quiet
                 ),
+                # Use chunksize=1 to avoid the chance that some workers are
+                # idle while some workers still have more than one job in
+                # their chunk queue.
+                chunksize=1,
             )
 
         self._local_sync_state.Save()
