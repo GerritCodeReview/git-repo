@@ -45,7 +45,6 @@ DEFAULT_LOCAL_JOBS = min(os.cpu_count(), 8)
 class UsageError(RepoExitError):
     """Exception thrown with invalid command usage."""
 
-
 class Command:
     """Base class for any command line action in repo."""
 
@@ -69,6 +68,8 @@ class Command:
     # This is only checked after calling ValidateOptions, so that partially
     # migrated subcommands can set it to False.
     MULTI_MANIFEST_SUPPORT = True
+
+    parallel_context = None
 
     def __init__(
         self,
@@ -242,9 +243,16 @@ class Command:
         """Perform the action, after option parsing is complete."""
         raise NotImplementedError
 
-    @staticmethod
+    @classmethod
+    def SetParallelContext(cls, context):
+      cls.parallel_context = context
+
+    @classmethod
     def ExecuteInParallel(
-        jobs, func, inputs, callback, output=None, ordered=False
+        cls,
+        jobs, func, inputs, callback, output=None, ordered=False,
+        chunksize=None,
+        context=None,
     ):
         """Helper for managing parallel execution boiler plate.
 
@@ -278,12 +286,19 @@ class Command:
             if len(inputs) == 1 or jobs == 1:
                 return callback(None, output, (func(x) for x in inputs))
             else:
-                with multiprocessing.Pool(jobs) as pool:
+                if multiprocessing.get_start_method() == 'fork':
+                    initializer = None
+                    initargs = None
+                else:
+                    initializer = cls.SetParallelContext
+                    initargs = (cls.parallel_context, )
+                with multiprocessing.Pool(jobs, initializer=initializer,
+                                          initargs=initargs) as pool:
                     submit = pool.imap if ordered else pool.imap_unordered
                     return callback(
                         pool,
                         output,
-                        submit(func, inputs, chunksize=WORKER_BATCH_SIZE),
+                        submit(func, inputs, chunksize=chunksize or WORKER_BATCH_SIZE),
                     )
         finally:
             if isinstance(output, progress.Progress):
