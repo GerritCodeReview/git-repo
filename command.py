@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import contextlib
 import multiprocessing
 import optparse
 import os
@@ -69,6 +70,14 @@ class Command:
     # This is only checked after calling ValidateOptions, so that partially
     # migrated subcommands can set it to False.
     MULTI_MANIFEST_SUPPORT = True
+
+    # Shared data across parallel execution workers.
+    _parallel_context = None
+
+    @classmethod
+    @property
+    def parallel_context(cls):
+        return cls._parallel_context
 
     def __init__(
         self,
@@ -242,9 +251,37 @@ class Command:
         """Perform the action, after option parsing is complete."""
         raise NotImplementedError
 
-    @staticmethod
+    @classmethod
+    @contextlib.contextmanager
+    def ParallelContext(cls):
+        """Obtains the context, which is shared to ExecuteInParallel workers.
+
+        Callers can store data in the context dict before invocation of
+        ExecuteInParallel. The dict will then be shared to child workers of
+        ExecuteInParallel. The worker functions can access the context via the
+        parallel_context class variable.
+        """
+        assert cls._parallel_context is None
+        cls._parallel_context = {}
+        try:
+            yield cls._parallel_context
+        finally:
+            cls._parallel_context = None
+
+    @classmethod
+    def _SetParallelContext(cls, context):
+        cls._parallel_context = context
+
+    @classmethod
     def ExecuteInParallel(
-        jobs, func, inputs, callback, output=None, ordered=False
+        cls,
+        jobs,
+        func,
+        inputs,
+        callback,
+        output=None,
+        ordered=False,
+        chunksize=WORKER_BATCH_SIZE,
     ):
         """Helper for managing parallel execution boiler plate.
 
@@ -269,6 +306,8 @@ class Command:
             output: An output manager. May be progress.Progess or
                 color.Coloring.
             ordered: Whether the jobs should be processed in order.
+            chunksize: The number of jobs processed in batch by parallel
+                workers.
 
         Returns:
             The |callback| function's results are returned.
@@ -278,12 +317,16 @@ class Command:
             if len(inputs) == 1 or jobs == 1:
                 return callback(None, output, (func(x) for x in inputs))
             else:
-                with multiprocessing.Pool(jobs) as pool:
+                with multiprocessing.Pool(
+                    jobs,
+                    initializer=cls._SetParallelContext,
+                    initargs=(cls.parallel_context,),
+                ) as pool:
                     submit = pool.imap if ordered else pool.imap_unordered
                     return callback(
                         pool,
                         output,
-                        submit(func, inputs, chunksize=WORKER_BATCH_SIZE),
+                        submit(func, inputs, chunksize=chunksize),
                     )
         finally:
             if isinstance(output, progress.Progress):
