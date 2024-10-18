@@ -244,7 +244,8 @@ class Command:
 
     @staticmethod
     def ExecuteInParallel(
-        jobs, func, inputs, callback, output=None, ordered=False
+        jobs, func, inputs, callback, output=None, ordered=False,
+        chunksize=None
     ):
         """Helper for managing parallel execution boiler plate.
 
@@ -283,7 +284,7 @@ class Command:
                     return callback(
                         pool,
                         output,
-                        submit(func, inputs, chunksize=WORKER_BATCH_SIZE),
+                        submit(func, inputs, chunksize=chunksize or WORKER_BATCH_SIZE),
                     )
         finally:
             if isinstance(output, progress.Progress):

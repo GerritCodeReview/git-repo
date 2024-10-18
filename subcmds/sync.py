@@ -149,7 +149,7 @@ class _FetchOneResult(NamedTuple):
 
     success: bool
     errors: List[Exception]
-    project: Project
+    project_idx: int
     start: float
     finish: float
     remote_fetched: bool
@@ -189,7 +189,7 @@ class _CheckoutOneResult(NamedTuple):
 
     success: bool
     errors: List[Exception]
-    project: Project
+    project_idx: int
     start: float
     finish: float
 
@@ -592,7 +592,8 @@ later is required to fix a server side protocol bug.
             branch = branch[len(R_HEADS) :]
         return branch
 
-    def _GetCurrentBranchOnly(self, opt, manifest):
+    @classmethod
+    def _GetCurrentBranchOnly(cls, opt, manifest):
         """Returns whether current-branch or use-superproject options are
         enabled.
 
@@ -710,7 +711,8 @@ later is required to fix a server side protocol bug.
         if need_unload:
             m.outer_client.manifest.Unload()
 
-    def _FetchProjectList(self, opt, projects):
+    @classmethod
+    def _FetchProjectList(cls, opt, projects):
         """Main function of the fetch worker.
 
         The projects we're given share the same underlying git object store, so
@@ -722,9 +724,10 @@ later is required to fix a server side protocol bug.
             opt: Program options returned from optparse.  See _Options().
             projects: Projects to fetch.
         """
-        return [self._FetchOne(opt, x) for x in projects]
+        return [cls._FetchOne(opt, x) for x in projects]
 
-    def _FetchOne(self, opt, project):
+    @classmethod
+    def _FetchOne(cls, opt, project_idx):
         """Fetch git objects for a single project.
 
         Args:
@@ -734,9 +737,10 @@ later is required to fix a server side protocol bug.
         Returns:
             Whether the fetch was successful.
         """
+        project = cls.syncing_projects[project_idx]
         start = time.time()
         k = f"{project.name} @ {project.relpath}"
-        self._sync_dict[k] = start
+        cls._sync_dict[k] = start
         success = False
         remote_fetched = False
         errors = []
@@ -746,7 +750,7 @@ later is required to fix a server side protocol bug.
                 quiet=opt.quiet,
                 verbose=opt.verbose,
                 output_redir=buf,
-                current_branch_only=self._GetCurrentBranchOnly(
+                current_branch_only=cls._GetCurrentBranchOnly(
                     opt, project.manifest
                 ),
                 force_sync=opt.force_sync,
@@ -756,7 +760,7 @@ later is required to fix a server side protocol bug.
                 optimized_fetch=opt.optimized_fetch,
                 retry_fetches=opt.retry_fetches,
                 prune=opt.prune,
-                ssh_proxy=self.ssh_proxy,
+                ssh_proxy=cls.ssh_proxy,
                 clone_filter=project.manifest.CloneFilter,
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
                 clone_filter_for_depth=project.manifest.CloneFilterForDepth,
@@ -788,14 +792,14 @@ later is required to fix a server side protocol bug.
                 type(e).__name__,
                 e,
             )
-            del self._sync_dict[k]
+            del cls._sync_dict[k]
             errors.append(e)
             raise
 
         finish = time.time()
-        del self._sync_dict[k]
+        del cls._sync_dict[k]
         return _FetchOneResult(
-            success, errors, project, start, finish, remote_fetched
+            success, errors, project_idx, start, finish, remote_fetched
         )
 
     @classmethod
@@ -835,7 +839,7 @@ later is required to fix a server side protocol bug.
             elide=True,
         )
 
-        self._sync_dict = multiprocessing.Manager().dict()
+        Sync._sync_dict = multiprocessing.Manager().dict()
         sync_event = _threading.Event()
 
         def _MonitorSyncLoop():
@@ -849,9 +853,10 @@ later is required to fix a server side protocol bug.
         sync_progress_thread.start()
 
         objdir_project_map = dict()
-        for project in projects:
-            objdir_project_map.setdefault(project.objdir, []).append(project)
+        for i, project in enumerate(projects):
+            objdir_project_map.setdefault(project.objdir, []).append(i)
         projects_list = list(objdir_project_map.values())
+        Sync.syncing_projects = projects
 
         jobs = min(opt.jobs_network, len(projects_list))
 
@@ -860,7 +865,7 @@ later is required to fix a server side protocol bug.
             for results in results_sets:
                 for result in results:
                     success = result.success
-                    project = result.project
+                    project = projects[result.project_idx]
                     start = result.start
                     finish = result.finish
                     self._fetch_times.Set(project, finish - start)
@@ -909,7 +914,7 @@ later is required to fix a server side protocol bug.
                 results = pool.imap_unordered(
                     functools.partial(self._FetchProjectList, opt),
                     projects_list,
-                    chunksize=_chunksize(len(projects_list), jobs),
+                    chunksize=1, #_chunksize(len(projects_list), jobs),
                 )
                 if not _ProcessResults(results):
                     ret = False
@@ -1008,14 +1013,15 @@ later is required to fix a server side protocol bug.
 
         return _FetchMainResult(all_projects)
 
+    @classmethod
     def _CheckoutOne(
-        self,
+        cls,
         detach_head,
         force_sync,
         force_checkout,
         force_rebase,
         verbose,
-        project,
+        project_idx,
     ):
         """Checkout work tree for one project
 
@@ -1032,6 +1038,7 @@ later is required to fix a server side protocol bug.
         Returns:
             Whether the fetch was successful.
         """
+        project = cls.syncing_projects[project_idx]
         start = time.time()
         syncbuf = SyncBuffer(
             project.manifest.manifestProject.config, detach_head=detach_head
@@ -1065,7 +1072,7 @@ later is required to fix a server side protocol bug.
         if not success:
             logger.error("error: Cannot checkout %s", project.name)
         finish = time.time()
-        return _CheckoutOneResult(success, errors, project, start, finish)
+        return _CheckoutOneResult(success, errors, project_idx, start, finish)
 
     def _Checkout(self, all_projects, opt, err_results, checkout_errors):
         """Checkout projects listed in all_projects
@@ -1083,7 +1090,7 @@ later is required to fix a server side protocol bug.
             ret = True
             for result in results:
                 success = result.success
-                project = result.project
+                project = Sync.syncing_projects[result.project_idx]
                 start = result.start
                 finish = result.finish
                 self.event_log.AddSync(
@@ -1110,6 +1117,7 @@ later is required to fix a server side protocol bug.
             return ret
 
         for projects in _SafeCheckoutOrder(all_projects):
+            Sync.syncing_projects = projects
             proc_res = self.ExecuteInParallel(
                 opt.jobs_checkout,
                 functools.partial(
@@ -1120,11 +1128,12 @@ later is required to fix a server side protocol bug.
                     opt.rebase,
                     opt.verbose,
                 ),
-                projects,
+                range(len(projects)),
                 callback=_ProcessResults,
                 output=Progress(
                     "Checking out", len(all_projects), quiet=opt.quiet
                 ),
+                chunksize=1,
             )
 
         self._local_sync_state.Save()
