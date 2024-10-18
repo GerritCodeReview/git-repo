@@ -848,10 +848,10 @@ def _Main(argv):
             SetTraceToStderr()
 
         result = repo._Run(name, gopts, argv) or 0
-    except RepoExitError as e:
-        if not isinstance(e, SilentRepoExitError):
-            logger.log_aggregated_errors(e)
-        result = e.exit_code
+    #except RepoExitError as e:
+    #    if not isinstance(e, SilentRepoExitError):
+    #        logger.log_aggregated_errors(e)
+    #    result = e.exit_code
     except KeyboardInterrupt:
         print("aborted by user", file=sys.stderr)
         result = KEYBOARD_INTERRUPT_EXIT
