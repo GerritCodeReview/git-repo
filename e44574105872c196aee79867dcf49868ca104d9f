@@ -1,0 +1,175 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19b63589_04d141ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-21T15:24:24Z",
+      "side": 1,
+      "message": "Thanks for doing this. The approach looks good, adding mostly nits.\n\nUse `tox -e format` to format py changes (see SUBMITTING_PATCHES.md).",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8138e2ba_d688b00c",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-21T15:24:24Z",
+      "side": 1,
+      "message": "could you document this field? I also suggest to make it private, and have @property where we can assert that `parallel_context` is set.",
+      "fixSuggestions": [
+        {
+          "fixId": "fe6def2f_c3d1fa78",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 72,
+                "startChar": 0,
+                "endLine": 73,
+                "endChar": 0
+              },
+              "replacement": "    # The multiprocessing.context.BaseContext to use for parallel execution.\n    # This is set by SetParallelContext.\n    _parallel_context \u003d None\n"
+            },
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 248,
+                "startChar": 0,
+                "endLine": 249,
+                "endChar": 0
+              },
+              "replacement": "      cls._parallel_context \u003d context\n\n    @property\n    def parallel_context(self):\n      assert self._parallel_context is not None\n      return self._parallel_context\n"
+            },
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 294,
+                "startChar": 0,
+                "endLine": 295,
+                "endChar": 0
+              },
+              "replacement": "                    initargs \u003d (cls._parallel_context, )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09cf12a1_060072c6",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-21T15:24:24Z",
+      "side": 1,
+      "message": "Could this use contextmanager instead? assert that parallel_context is None on start.",
+      "fixSuggestions": [
+        {
+          "fixId": "fd35a74f_49ca906b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 15,
+                "startChar": 0,
+                "endLine": 15,
+                "endChar": 0
+              },
+              "replacement": "import contextlib\n"
+            },
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 72,
+                "startChar": 0,
+                "endLine": 74,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 246,
+                "startChar": 0,
+                "endLine": 249,
+                "endChar": 0
+              },
+              "replacement": "    @contextlib.contextmanager\n    def _ParallelContext(self, context):\n      assert context is not None\n      self.parallel_context \u003d context\n      try:\n        yield\n      finally:\n        self.parallel_context \u003d None\n"
+            },
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 293,
+                "startChar": 0,
+                "endLine": 295,
+                "endChar": 0
+              },
+              "replacement": "                    initializer \u003d cls._ParallelContext\n                    initargs \u003d (cls(), )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e1b6eec_0e6d7b0d",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-21T15:24:24Z",
+      "side": 1,
+      "message": "Could you leave a comment why this is needed.",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7970c4c3_dddb7e82",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-21T15:24:24Z",
+      "side": 1,
+      "message": "nit: use \"string\" to be consistent.",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
