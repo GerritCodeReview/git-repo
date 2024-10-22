@@ -958,7 +958,9 @@ later is required to fix a server side protocol bug.
         if not success:
             err_event.set()
 
-        _PostRepoFetch(rp, opt.repo_verify)
+        # Call self update, unless requested not to
+        if os.environ.get("REPO_SKIP_SELF_UPDATE") is None:
+            _PostRepoFetch(rp, opt.repo_verify)
         if opt.network_only:
             # Bail out now; the rest touches the working tree.
             if err_event.is_set():
