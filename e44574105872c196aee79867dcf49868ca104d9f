@@ -73,6 +73,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9069c285_55f2a895",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1088397
+      },
+      "writtenOn": "2024-10-22T09:03:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8138e2ba_d688b00c",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09cf12a1_060072c6",
@@ -138,6 +156,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6ade13e_ec30fa75",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1088397
+      },
+      "writtenOn": "2024-10-22T09:03:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09cf12a1_060072c6",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e1b6eec_0e6d7b0d",
@@ -155,6 +191,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fb56475_c38aa9c5",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1088397
+      },
+      "writtenOn": "2024-10-22T09:03:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e1b6eec_0e6d7b0d",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7970c4c3_dddb7e82",
@@ -168,6 +222,24 @@
       "writtenOn": "2024-10-21T15:24:24Z",
       "side": 1,
       "message": "nit: use \"string\" to be consistent.",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9414dcc6_23a14d89",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 740,
+      "author": {
+        "id": 1088397
+      },
+      "writtenOn": "2024-10-22T09:03:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7970c4c3_dddb7e82",
       "revId": "e44574105872c196aee79867dcf49868ca104d9f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
