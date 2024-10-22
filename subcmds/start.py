@@ -21,7 +21,6 @@ from error import RepoExitError
 from git_command import git
 from git_config import IsImmutable
 from progress import Progress
-from project import Project
 from repo_logging import RepoLogger
 
 
@@ -29,7 +28,7 @@ logger = RepoLogger(__file__)
 
 
 class ExecuteOneResult(NamedTuple):
-    project: Project
+    project_idx: int
     error: Exception
 
 
@@ -80,18 +79,20 @@ revision specified in the manifest.
         if not git.check_ref_format("heads/%s" % nb):
             self.OptionParser.error("'%s' is not a valid name" % nb)
 
-    def _ExecuteOne(self, revision, nb, project):
+    @classmethod
+    def _ExecuteOne(cls, revision, nb, default_revisionExpr, project_idx):
         """Start one project."""
         # If the current revision is immutable, such as a SHA1, a tag or
         # a change, then we can't push back to it. Substitute with
         # dest_branch, if defined; or with manifest default revision instead.
         branch_merge = ""
         error = None
+        project = cls.get_parallel_context()["projects"][project_idx]
         if IsImmutable(project.revisionExpr):
             if project.dest_branch:
                 branch_merge = project.dest_branch
             else:
-                branch_merge = self.manifest.default.revisionExpr
+                branch_merge = default_revisionExpr
 
         try:
             project.StartBranch(
@@ -100,7 +101,7 @@ revision specified in the manifest.
         except Exception as e:
             logger.error("error: unable to checkout %s: %s", project.name, e)
             error = e
-        return ExecuteOneResult(project, error)
+        return ExecuteOneResult(project_idx, error)
 
     def Execute(self, opt, args):
         nb = args[0]
@@ -120,19 +121,28 @@ revision specified in the manifest.
         def _ProcessResults(_pool, pm, results):
             for result in results:
                 if result.error:
-                    err_projects.append(result.project)
+                    project = all_projects[result.project_idx]
+                    err_projects.append(project)
                     err.append(result.error)
                 pm.update(msg="")
 
-        self.ExecuteInParallel(
-            opt.jobs,
-            functools.partial(self._ExecuteOne, opt.revision, nb),
-            all_projects,
-            callback=_ProcessResults,
-            output=Progress(
-                f"Starting {nb}", len(all_projects), quiet=opt.quiet
-            ),
-        )
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = all_projects
+            self.ExecuteInParallel(
+                opt.jobs,
+                functools.partial(
+                    self._ExecuteOne,
+                    opt.revision,
+                    nb,
+                    self.manifest.default.revisionExpr,
+                ),
+                range(len(all_projects)),
+                callback=_ProcessResults,
+                output=Progress(
+                    f"Starting {nb}", len(all_projects), quiet=opt.quiet
+                ),
+                chunksize=1,
+            )
 
         if err_projects:
             for p in err_projects:
