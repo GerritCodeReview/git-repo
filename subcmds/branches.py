@@ -98,6 +98,22 @@ is shown, then the branch appears in all projects.
 """
     PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
+    @classmethod
+    def _ExpandProjectToBranches(cls, project_idx):
+        """Expands a project into a list of branch names & associated information.
+
+        Args:
+            project_idx: project.Project index
+
+        Returns:
+            List[Tuple[str, git_config.Branch]]
+        """
+        branches = []
+        project = cls.get_parallel_context()["projects"][project_idx]
+        for name, b in project.GetBranches().items():
+            branches.append((name, b, project_idx))
+        return branches
+
     def Execute(self, opt, args):
         projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
@@ -107,17 +123,20 @@ is shown, then the branch appears in all projects.
         project_cnt = len(projects)
 
         def _ProcessResults(_pool, _output, results):
-            for name, b in itertools.chain.from_iterable(results):
+            for name, b, project_idx in itertools.chain.from_iterable(results):
+                b.project = projects[project_idx]
                 if name not in all_branches:
                     all_branches[name] = BranchInfo(name)
                 all_branches[name].add(b)
 
-        self.ExecuteInParallel(
-            opt.jobs,
-            expand_project_to_branches,
-            projects,
-            callback=_ProcessResults,
-        )
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = projects
+            self.ExecuteInParallel(
+                opt.jobs,
+                self._ExpandProjectToBranches,
+                range(len(projects)),
+                callback=_ProcessResults,
+            )
 
         names = sorted(all_branches)
 
@@ -191,19 +210,3 @@ is shown, then the branch appears in all projects.
             else:
                 out.write(" in all projects")
             out.nl()
-
-
-def expand_project_to_branches(project):
-    """Expands a project into a list of branch names & associated information.
-
-    Args:
-        project: project.Project
-
-    Returns:
-        List[Tuple[str, git_config.Branch]]
-    """
-    branches = []
-    for name, b in project.GetBranches().items():
-        b.project = project
-        branches.append((name, b))
-    return branches

@@ -40,7 +40,8 @@ to the Unix 'patch' command.
             help="paths are relative to the repository root",
         )
 
-    def _ExecuteOne(self, absolute, local, project):
+    @classmethod
+    def _ExecuteOne(cls, absolute, local, project_idx):
         """Obtains the diff for a specific project.
 
         Args:
@@ -48,12 +49,13 @@ to the Unix 'patch' command.
             local: a boolean, if True, the path is relative to the local
                 (sub)manifest.  If false, the path is relative to the outermost
                 manifest.
-            project: Project to get status of.
+            project_idx: Project index to get status of.
 
         Returns:
             The status of the project.
         """
         buf = io.StringIO()
+        project = cls.get_parallel_context()["projects"][project_idx]
         ret = project.PrintWorkTreeDiff(absolute, output_redir=buf, local=local)
         return (ret, buf.getvalue())
 
@@ -71,12 +73,15 @@ to the Unix 'patch' command.
                     ret = 1
             return ret
 
-        return self.ExecuteInParallel(
-            opt.jobs,
-            functools.partial(
-                self._ExecuteOne, opt.absolute, opt.this_manifest_only
-            ),
-            all_projects,
-            callback=_ProcessResults,
-            ordered=True,
-        )
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = all_projects
+            return self.ExecuteInParallel(
+                opt.jobs,
+                functools.partial(
+                    self._ExecuteOne, opt.absolute, opt.this_manifest_only
+                ),
+                range(len(all_projects)),
+                callback=_ProcessResults,
+                ordered=True,
+                chunksize=1,
+            )

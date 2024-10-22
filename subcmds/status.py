@@ -88,7 +88,8 @@ the following meanings:
             "projects",
         )
 
-    def _StatusHelper(self, quiet, local, project):
+    @classmethod
+    def _StatusHelper(cls, quiet, local, project_idx):
         """Obtains the status for a specific project.
 
         Obtains the status for a project, redirecting the output to
@@ -99,12 +100,13 @@ the following meanings:
             local: a boolean, if True, the path is relative to the local
                 (sub)manifest.  If false, the path is relative to the outermost
                 manifest.
-            project: Project to get status of.
+            project_idx: Project index to get status of.
 
         Returns:
             The status of the project.
         """
         buf = io.StringIO()
+        project = cls.get_parallel_context()["projects"][project_idx]
         ret = project.PrintWorkTreeStatus(
             quiet=quiet, output_redir=buf, local=local
         )
@@ -143,15 +145,18 @@ the following meanings:
                     ret += 1
             return ret
 
-        counter = self.ExecuteInParallel(
-            opt.jobs,
-            functools.partial(
-                self._StatusHelper, opt.quiet, opt.this_manifest_only
-            ),
-            all_projects,
-            callback=_ProcessResults,
-            ordered=True,
-        )
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = all_projects
+            counter = self.ExecuteInParallel(
+                opt.jobs,
+                functools.partial(
+                    self._StatusHelper, opt.quiet, opt.this_manifest_only
+                ),
+                range(len(all_projects)),
+                callback=_ProcessResults,
+                ordered=True,
+                chunksize=1,
+            )
 
         if not opt.quiet and len(all_projects) == counter:
             print("nothing to commit (working directory clean)")

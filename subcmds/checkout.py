@@ -20,7 +20,6 @@ from command import DEFAULT_LOCAL_JOBS
 from error import GitError
 from error import RepoExitError
 from progress import Progress
-from project import Project
 from repo_logging import RepoLogger
 
 
@@ -30,7 +29,7 @@ logger = RepoLogger(__file__)
 class CheckoutBranchResult(NamedTuple):
     # Whether the Project is on the branch (i.e. branch exists and no errors)
     result: bool
-    project: Project
+    project_idx: int
     error: Exception
 
 
@@ -62,15 +61,17 @@ The command is equivalent to:
         if not args:
             self.Usage()
 
-    def _ExecuteOne(self, nb, project):
+    @classmethod
+    def _ExecuteOne(cls, nb, project_idx):
         """Checkout one project."""
         error = None
         result = None
+        project = cls.get_parallel_context()["projects"][project_idx]
         try:
             result = project.CheckoutBranch(nb)
         except GitError as e:
             error = e
-        return CheckoutBranchResult(result, project, error)
+        return CheckoutBranchResult(result, project_idx, error)
 
     def Execute(self, opt, args):
         nb = args[0]
@@ -83,22 +84,25 @@ The command is equivalent to:
 
         def _ProcessResults(_pool, pm, results):
             for result in results:
+                project = all_projects[result.project_idx]
                 if result.error is not None:
                     err.append(result.error)
-                    err_projects.append(result.project)
+                    err_projects.append(project)
                 elif result.result:
-                    success.append(result.project)
+                    success.append(project)
                 pm.update(msg="")
 
-        self.ExecuteInParallel(
-            opt.jobs,
-            functools.partial(self._ExecuteOne, nb),
-            all_projects,
-            callback=_ProcessResults,
-            output=Progress(
-                f"Checkout {nb}", len(all_projects), quiet=opt.quiet
-            ),
-        )
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = all_projects
+            self.ExecuteInParallel(
+                opt.jobs,
+                functools.partial(self._ExecuteOne, nb),
+                range(len(all_projects)),
+                callback=_ProcessResults,
+                output=Progress(
+                    f"Checkout {nb}", len(all_projects), quiet=opt.quiet
+                ),
+            )
 
         if err_projects:
             for p in err_projects:

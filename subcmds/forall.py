@@ -15,7 +15,6 @@
 import errno
 import functools
 import io
-import multiprocessing
 import os
 import re
 import signal
@@ -26,7 +25,6 @@ from color import Coloring
 from command import Command
 from command import DEFAULT_LOCAL_JOBS
 from command import MirrorSafeCommand
-from command import WORKER_BATCH_SIZE
 from error import ManifestInvalidRevisionError
 from repo_logging import RepoLogger
 
@@ -241,7 +239,6 @@ without iterating through the remaining projects.
                     cmd.insert(cmd.index(cn) + 1, "--color")
 
         mirror = self.manifest.IsMirror
-        rc = 0
 
         smart_sync_manifest_name = "smart_sync_override.xml"
         smart_sync_manifest_path = os.path.join(
@@ -264,32 +261,41 @@ without iterating through the remaining projects.
 
         os.environ["REPO_COUNT"] = str(len(projects))
 
+        def _ProcessResults(_pool, _output, results):
+            rc = 0
+            first = True
+            for r, output in results:
+                if output:
+                    if first:
+                        first = False
+                    elif opt.project_header:
+                        print()
+                    # To simplify the DoWorkWrapper, take care of automatic
+                    # newlines.
+                    end = "\n"
+                    if output[-1] == "\n":
+                        end = ""
+                    print(output, end=end)
+                rc = rc or r
+                if r != 0 and opt.abort_on_errors:
+                    raise Exception("Aborting due to previous error")
+                return rc
+
         try:
             config = self.manifest.manifestProject.config
-            with multiprocessing.Pool(opt.jobs, InitWorker) as pool:
-                results_it = pool.imap(
+            with self.ParallelContext():
+                self.get_parallel_context()["projects"] = projects
+                rc = self.ExecuteInParallel(
+                    opt.jobs,
                     functools.partial(
-                        DoWorkWrapper, mirror, opt, cmd, shell, config
+                        self.DoWorkWrapper, mirror, opt, cmd, shell, config
                     ),
-                    enumerate(projects),
-                    chunksize=WORKER_BATCH_SIZE,
+                    range(len(projects)),
+                    callback=_ProcessResults,
+                    ordered=True,
+                    initializer=self.InitWorker,
+                    chunksize=1,
                 )
-                first = True
-                for r, output in results_it:
-                    if output:
-                        if first:
-                            first = False
-                        elif opt.project_header:
-                            print()
-                        # To simplify the DoWorkWrapper, take care of automatic
-                        # newlines.
-                        end = "\n"
-                        if output[-1] == "\n":
-                            end = ""
-                        print(output, end=end)
-                    rc = rc or r
-                    if r != 0 and opt.abort_on_errors:
-                        raise Exception("Aborting due to previous error")
         except (KeyboardInterrupt, WorkerKeyboardInterrupt):
             # Catch KeyboardInterrupt raised inside and outside of workers
             rc = rc or errno.EINTR
@@ -304,29 +310,29 @@ without iterating through the remaining projects.
         if rc != 0:
             sys.exit(rc)
 
+    @classmethod
+    def InitWorker(cls):
+        signal.signal(signal.SIGINT, signal.SIG_IGN)
+
+    @classmethod
+    def DoWorkWrapper(cls, mirror, opt, cmd, shell, config, project_idx):
+        """A wrapper around the DoWork() method.
+
+        Catch the KeyboardInterrupt exceptions here and re-raise them as a
+        different, ``Exception``-based exception to stop it flooding the console
+        with stacktraces and making the parent hang indefinitely.
+
+        """
+        project = cls.get_parallel_context()["projects"][project_idx]
+        try:
+            return DoWork(project, mirror, opt, cmd, shell, project_idx, config)
+        except KeyboardInterrupt:
+            print("%s: Worker interrupted" % project.name)
+            raise WorkerKeyboardInterrupt()
+
 
 class WorkerKeyboardInterrupt(Exception):
     """Keyboard interrupt exception for worker processes."""
-
-
-def InitWorker():
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
-
-
-def DoWorkWrapper(mirror, opt, cmd, shell, config, args):
-    """A wrapper around the DoWork() method.
-
-    Catch the KeyboardInterrupt exceptions here and re-raise them as a
-    different, ``Exception``-based exception to stop it flooding the console
-    with stacktraces and making the parent hang indefinitely.
-
-    """
-    cnt, project = args
-    try:
-        return DoWork(project, mirror, opt, cmd, shell, cnt, config)
-    except KeyboardInterrupt:
-        print("%s: Worker interrupted" % project.name)
-        raise WorkerKeyboardInterrupt()
 
 
 def DoWork(project, mirror, opt, cmd, shell, cnt, config):

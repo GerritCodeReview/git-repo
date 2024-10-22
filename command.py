@@ -268,8 +268,10 @@ class Command:
             cls._parallel_context = None
 
     @classmethod
-    def _SetParallelContext(cls, context):
+    def _InitParallelWorker(cls, context, initializer):
         cls._parallel_context = context
+        if initializer:
+            initializer()
 
     @classmethod
     def ExecuteInParallel(
@@ -281,6 +283,7 @@ class Command:
         output=None,
         ordered=False,
         chunksize=WORKER_BATCH_SIZE,
+        initializer=None,
     ):
         """Helper for managing parallel execution boiler plate.
 
@@ -307,6 +310,7 @@ class Command:
             ordered: Whether the jobs should be processed in order.
             chunksize: The number of jobs processed in batch by parallel
                 workers.
+            initializer: Worker initializer.
 
         Returns:
             The |callback| function's results are returned.
@@ -318,8 +322,8 @@ class Command:
             else:
                 with multiprocessing.Pool(
                     jobs,
-                    initializer=cls._SetParallelContext,
-                    initargs=(cls._parallel_context,),
+                    initializer=cls._InitParallelWorker,
+                    initargs=(cls._parallel_context, initializer),
                 ) as pool:
                     submit = pool.imap if ordered else pool.imap_unordered
                     return callback(
