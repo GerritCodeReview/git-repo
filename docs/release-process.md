@@ -96,6 +96,9 @@ If that tag is valid, then repo will warn and use that commit instead.
 
 If that tag cannot be verified, it gives up and forces the user to resolve.
 
+If env variable `REPO_SKIP_SELF_UPDATE` is defined, this will
+bypass the self update algorithm.
+
 ### Force an update
 
 The `repo selfupdate` command can be used to force an immediate update.
