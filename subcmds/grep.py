@@ -23,7 +23,6 @@ from error import GitError
 from error import InvalidArgumentsError
 from error import SilentRepoExitError
 from git_command import GitCommand
-from project import Project
 from repo_logging import RepoLogger
 
 
@@ -40,7 +39,7 @@ class GrepColoring(Coloring):
 class ExecuteOneResult(NamedTuple):
     """Result from an execute instance."""
 
-    project: Project
+    project_idx: int
     rc: int
     stdout: str
     stderr: str
@@ -262,8 +261,10 @@ contain a line that matches both expressions:
             help="Show only file names not containing matching lines",
         )
 
-    def _ExecuteOne(self, cmd_argv, project):
+    @classmethod
+    def _ExecuteOne(cls, cmd_argv, project_idx):
         """Process one project."""
+        project = cls.get_parallel_context()["projects"][project_idx]
         try:
             p = GitCommand(
                 project,
@@ -274,7 +275,7 @@ contain a line that matches both expressions:
                 verify_command=True,
             )
         except GitError as e:
-            return ExecuteOneResult(project, -1, None, str(e), e)
+            return ExecuteOneResult(project_idx, -1, None, str(e), e)
 
         try:
             error = None
@@ -282,10 +283,12 @@ contain a line that matches both expressions:
         except GitError as e:
             rc = 1
             error = e
-        return ExecuteOneResult(project, rc, p.stdout, p.stderr, error)
+        return ExecuteOneResult(project_idx, rc, p.stdout, p.stderr, error)
 
     @staticmethod
-    def _ProcessResults(full_name, have_rev, opt, _pool, out, results):
+    def _ProcessResults(
+        full_name, have_rev, opt, projects, _pool, out, results
+    ):
         git_failed = False
         bad_rev = False
         have_match = False
@@ -293,9 +296,10 @@ contain a line that matches both expressions:
         errors = []
 
         for result in results:
+            project = projects[result.project_idx]
             if result.rc < 0:
                 git_failed = True
-                out.project("--- project %s ---" % _RelPath(result.project))
+                out.project("--- project %s ---" % _RelPath(project))
                 out.nl()
                 out.fail("%s", result.stderr)
                 out.nl()
@@ -311,9 +315,7 @@ contain a line that matches both expressions:
                     ):
                         bad_rev = True
                     else:
-                        out.project(
-                            "--- project %s ---" % _RelPath(result.project)
-                        )
+                        out.project("--- project %s ---" % _RelPath(project))
                         out.nl()
                         out.fail("%s", result.stderr.strip())
                         out.nl()
@@ -331,13 +333,13 @@ contain a line that matches both expressions:
                     rev, line = line.split(":", 1)
                     out.write("%s", rev)
                     out.write(":")
-                    out.project(_RelPath(result.project))
+                    out.project(_RelPath(project))
                     out.write("/")
                     out.write("%s", line)
                     out.nl()
             elif full_name:
                 for line in r:
-                    out.project(_RelPath(result.project))
+                    out.project(_RelPath(project))
                     out.write("/")
                     out.write("%s", line)
                     out.nl()
@@ -381,16 +383,19 @@ contain a line that matches both expressions:
             cmd_argv.extend(opt.revision)
         cmd_argv.append("--")
 
-        git_failed, bad_rev, have_match, errors = self.ExecuteInParallel(
-            opt.jobs,
-            functools.partial(self._ExecuteOne, cmd_argv),
-            projects,
-            callback=functools.partial(
-                self._ProcessResults, full_name, have_rev, opt
-            ),
-            output=out,
-            ordered=True,
-        )
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = projects
+            git_failed, bad_rev, have_match, errors = self.ExecuteInParallel(
+                opt.jobs,
+                functools.partial(self._ExecuteOne, cmd_argv),
+                range(len(projects)),
+                callback=functools.partial(
+                    self._ProcessResults, full_name, have_rev, opt, projects
+                ),
+                output=out,
+                ordered=True,
+                chunksize=1,
+            )
 
         if git_failed:
             raise GrepCommandError(

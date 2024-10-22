@@ -27,8 +27,10 @@ class Prune(PagedCommand):
 """
     PARALLEL_JOBS = DEFAULT_LOCAL_JOBS
 
-    def _ExecuteOne(self, project):
+    @classmethod
+    def _ExecuteOne(cls, project_idx):
         """Process one project."""
+        project = cls.get_parallel_context()["projects"][project_idx]
         return project.PruneHeads()
 
     def Execute(self, opt, args):
@@ -41,13 +43,15 @@ class Prune(PagedCommand):
         def _ProcessResults(_pool, _output, results):
             return list(itertools.chain.from_iterable(results))
 
-        all_branches = self.ExecuteInParallel(
-            opt.jobs,
-            self._ExecuteOne,
-            projects,
-            callback=_ProcessResults,
-            ordered=True,
-        )
+        with self.ParallelContext():
+            self.get_parallel_context()["projects"] = projects
+            all_branches = self.ExecuteInParallel(
+                opt.jobs,
+                self._ExecuteOne,
+                range(len(projects)),
+                callback=_ProcessResults,
+                ordered=True,
+            )
 
         if not all_branches:
             return
