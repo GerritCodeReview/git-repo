@@ -1,0 +1,91 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db039139_a854a9bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-22T15:55:02Z",
+      "side": 1,
+      "message": "Numbers look great. Final nits added",
+      "revId": "f0b16fa048e3b1753e11946b90d41b6c0f711433",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ea86100_8a21740d",
+        "filename": "command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-22T15:55:02Z",
+      "side": 1,
+      "message": "assert cls._parallel_context is not None",
+      "fixSuggestions": [
+        {
+          "fixId": "65b4b787_fc73477d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 79,
+                "startChar": 0,
+                "endLine": 79,
+                "endChar": 0
+              },
+              "replacement": "        assert cls._parallel_context is not None\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f0b16fa048e3b1753e11946b90d41b6c0f711433",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa21d4d8_d6e54cd8",
+        "filename": "command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-22T15:55:02Z",
+      "side": 1,
+      "message": "just `yield`",
+      "fixSuggestions": [
+        {
+          "fixId": "31a530c7_26615c08",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "command.py",
+              "range": {
+                "startLine": 265,
+                "startChar": 0,
+                "endLine": 266,
+                "endChar": 0
+              },
+              "replacement": "            yield\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f0b16fa048e3b1753e11946b90d41b6c0f711433",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
