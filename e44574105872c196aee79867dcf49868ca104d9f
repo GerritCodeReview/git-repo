@@ -109,6 +109,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54e24d78_1127896a",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-23T02:57:10Z",
+      "side": 1,
+      "message": "I get_parallel_context is good enough.",
+      "parentUuid": "9ec1769b_594f6273",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09cf12a1_060072c6",
