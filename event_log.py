@@ -168,8 +168,10 @@ class EventLog:
                 f.write("\n")
 
 
-# An integer id that is unique across this invocation of the program.
-_EVENT_ID = multiprocessing.Value("i", 1)
+# An integer id that is unique across this invocation of the program, to be set
+# by the first Add event. We can't set it here since it results in leaked
+# resources (see: https://issues.gerritcodereview.com/353656374).
+_EVENT_ID = None
 
 
 def _NextEventId():
@@ -178,6 +180,12 @@ def _NextEventId():
     Returns:
         A unique, to this invocation of the program, integer id.
     """
+    global _EVENT_ID
+    if _EVENT_ID is None:
+        # There is a small chance of race condition (two parallel processes
+        # setting up _EVENT_ID. However, we expect TASK_COMMAND to happen before
+        # mp kicks in.
+        _EVENT_ID = multiprocessing.Value("i", 1)
     with _EVENT_ID.get_lock():
         val = _EVENT_ID.value
         _EVENT_ID.value += 1
