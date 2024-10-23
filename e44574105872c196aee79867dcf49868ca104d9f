@@ -93,6 +93,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ec1769b_594f6273",
+        "filename": "command.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1088397
+      },
+      "writtenOn": "2024-10-23T02:49:49Z",
+      "side": 1,
+      "message": "Unfortunately, @classmethod is not able to be chained with @property. ref: https://stackoverflow.com/a/64738850\n\nNow I use get_parallel_context() instead. Do you have any better idea?",
+      "parentUuid": "9069c285_55f2a895",
+      "revId": "e44574105872c196aee79867dcf49868ca104d9f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "09cf12a1_060072c6",
         "filename": "command.py",
         "patchSetId": 2
