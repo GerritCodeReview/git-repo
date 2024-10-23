@@ -53,6 +53,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18ea8943_6981d846",
+        "filename": "command.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1088397
+      },
+      "writtenOn": "2024-10-23T02:50:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ea86100_8a21740d",
+      "revId": "f0b16fa048e3b1753e11946b90d41b6c0f711433",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa21d4d8_d6e54cd8",
