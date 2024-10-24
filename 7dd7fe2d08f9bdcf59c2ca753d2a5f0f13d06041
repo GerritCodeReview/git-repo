@@ -33,6 +33,63 @@
       "message": "Hanging for a month and a half? Mike is on some proper vacation or something? \u003d)\n\nIs it ok if I add you Josip? I see you approved some other reviews from externals? Cheers ...",
       "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aa688c0_c3b2ce94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-24T21:40:55Z",
+      "side": 1,
+      "message": "I\u0027m on a fence about adding this functionality to repo as it could be misguiding (e.g. when refs are used), and can also break when the parent manifest is updated. However, given that argument is optional, I suppose it can be a reasonable guardrail. \n\nIf you still want to pursue this, please address comments, as well as update ./docs/manifest-format.md.",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7491cf7e_2e82d057",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-24T21:40:55Z",
+      "side": 1,
+      "message": "unclear based on just the attribute name what is this, renamed to \"base-revision\" or \"parent-revision\".",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38317d88_5ea9bca7",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-24T21:40:55Z",
+      "side": 1,
+      "message": "I think this should be dropped too - if revision is not defined in project, but extended project **expects** it, the code should still error out.",
+      "range": {
+        "startLine": 1490,
+        "startChar": 31,
+        "endLine": 1490,
+        "endChar": 45
+      },
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
