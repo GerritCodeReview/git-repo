@@ -16,6 +16,23 @@
       "message": "Ran tests with local manifests as well as the UT included",
       "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6a49436_79453411",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-10-24T06:29:29Z",
+      "side": 1,
+      "message": "Hanging for a month and a half? Mike is on some proper vacation or something? \u003d)\n\nIs it ok if I add you Josip? I see you approved some other reviews from externals? Cheers ...",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
