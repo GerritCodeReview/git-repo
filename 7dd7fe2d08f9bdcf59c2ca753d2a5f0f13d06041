@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0aea9b74_b0d5dd69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-10-25T08:36:22Z",
+      "side": 1,
+      "message": "Thanks for the feedback, I added some more info to caution against using branch names as base-rev, I hope that is ok with you?\n\nAs for \"breaks when parent manifest is updated\" ... depending on what you mean, that is kind of the point of the change, to break if parent manifest changes and the downstream party has like undead patches hiding the upstream manifest updates. \u003d)\n\nPlease ping again if there is something I misunderstood perhaps.",
+      "parentUuid": "9aa688c0_c3b2ce94",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7491cf7e_2e82d057",
         "filename": "manifest_xml.py",
         "patchSetId": 2
@@ -71,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "db48e359_5f04cc9d",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-10-25T08:36:22Z",
+      "side": 1,
+      "message": "Sure, that will also be more unique when greping for than just \"base\", so good for that reason as well.\n\nI was hoping to not add too many chars though since that will then add to manifest text mass, but I changed to \"base-rev\" instead of \"base-revision\", is that ok?",
+      "parentUuid": "7491cf7e_2e82d057",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "38317d88_5ea9bca7",
         "filename": "manifest_xml.py",
         "patchSetId": 2
@@ -82,6 +118,30 @@
       "writtenOn": "2024-10-24T21:40:55Z",
       "side": 1,
       "message": "I think this should be dropped too - if revision is not defined in project, but extended project **expects** it, the code should still error out.",
+      "range": {
+        "startLine": 1490,
+        "startChar": 31,
+        "endLine": 1490,
+        "endChar": 45
+      },
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70655f2c_ef365b38",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-10-25T08:36:22Z",
+      "side": 1,
+      "message": "I agreed and changed it to also fail if None ... but then when testing it occurred to me that it will fail earlier anyway with \"no revision for project\" when adding it first time, so I just removed that. Ok with that?",
+      "parentUuid": "38317d88_5ea9bca7",
       "range": {
         "startLine": 1490,
         "startChar": 31,
