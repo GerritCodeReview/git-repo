@@ -33,6 +33,41 @@
       "message": "Thanks for your help on the base checker Josip! Any chance of getting this reviewed also?",
       "revId": "2a925dc0a6b38ea027e5d99ce9f341d2c7047a5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baef85c2_941a1432",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 962,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-28T17:27:46Z",
+      "side": 1,
+      "message": "default to string 0, check if is equal to zero.",
+      "fixSuggestions": [
+        {
+          "fixId": "9beb51cb_619d12a3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 962,
+                "startChar": 0,
+                "endLine": 963,
+                "endChar": 0
+              },
+              "replacement": "        if os.environ.get(\"REPO_SKIP_SELF_UPDATE\", \"0\") \u003d\u003d \"0\":\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2a925dc0a6b38ea027e5d99ce9f341d2c7047a5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
