@@ -16,6 +16,23 @@
       "message": "Updates (sometimes fails) if variable is not set.\n\nLess error prone and faster sync when defined, without needing to resort to new init with hard coded versions or similar and repo version is reliably handled outside sync step.",
       "revId": "2a925dc0a6b38ea027e5d99ce9f341d2c7047a5c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4801523_775fb83b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-10-28T17:23:49Z",
+      "side": 1,
+      "message": "Thanks for your help on the base checker Josip! Any chance of getting this reviewed also?",
+      "revId": "2a925dc0a6b38ea027e5d99ce9f341d2c7047a5c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
