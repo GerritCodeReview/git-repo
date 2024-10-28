@@ -70,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "325dda31_68361638",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-28T16:53:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0aea9b74_b0d5dd69",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7491cf7e_2e82d057",
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "Sure, that will also be more unique when greping for than just \"base\", so good for that reason as well.\n\nI was hoping to not add too many chars though since that will then add to manifest text mass, but I changed to \"base-rev\" instead of \"base-revision\", is that ok?",
       "parentUuid": "7491cf7e_2e82d057",
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a71fbdc9_378443f0",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1475,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-28T16:53:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "db48e359_5f04cc9d",
       "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -142,6 +178,30 @@
       "side": 1,
       "message": "I agreed and changed it to also fail if None ... but then when testing it occurred to me that it will fail earlier anyway with \"no revision for project\" when adding it first time, so I just removed that. Ok with that?",
       "parentUuid": "38317d88_5ea9bca7",
+      "range": {
+        "startLine": 1490,
+        "startChar": 31,
+        "endLine": 1490,
+        "endChar": 45
+      },
+      "revId": "7dd7fe2d08f9bdcf59c2ca753d2a5f0f13d06041",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "83437041_cba2dd3f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1490,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-28T16:53:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70655f2c_ef365b38",
       "range": {
         "startLine": 1490,
         "startChar": 31,
