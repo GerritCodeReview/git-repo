@@ -16,6 +16,24 @@
       "message": "I believe git_worktree_path is always relative on creation, and certainly is on update (L3390).",
       "revId": "2e79bf3bcd148866894d3939ffa9d0a1f7359d5f",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0dd8f014_90db9031",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3379,
+      "author": {
+        "id": 1112056
+      },
+      "writtenOn": "2024-10-29T20:56:18Z",
+      "side": 1,
+      "message": "Hmm, that is odd, because I don\u0027t see how this ever worked.",
+      "parentUuid": "c3a6efd8_9c898f44",
+      "revId": "2e79bf3bcd148866894d3939ffa9d0a1f7359d5f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
