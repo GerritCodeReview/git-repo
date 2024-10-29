@@ -3375,24 +3375,29 @@ class Project:
             setting = fp.read()
             assert setting.startswith("gitdir:")
             git_worktree_path = setting.split(":", 1)[1].strip()
-        # Some platforms (e.g. Windows) won't let us update dotgit in situ
-        # because of file permissions.  Delete it and recreate it from scratch
-        # to avoid.
-        platform_utils.remove(dotgit)
-        # Use relative path from checkout->worktree & maintain Unix line endings
-        # on all OS's to match git behavior.
-        with open(dotgit, "w", newline="\n") as fp:
-            print(
-                "gitdir:",
-                os.path.relpath(git_worktree_path, self.worktree),
-                file=fp,
-            )
-        # Use relative path from worktree->checkout & maintain Unix line endings
-        # on all OS's to match git behavior.
-        with open(
-            os.path.join(git_worktree_path, "gitdir"), "w", newline="\n"
-        ) as fp:
-            print(os.path.relpath(dotgit, git_worktree_path), file=fp)
+
+        # `gitdir` maybe be either relative or absolute depending on the
+        # behavior of the local copy of git, so only convert the path to
+        # relative if it needs to be converted.
+        if os.path.isabs(git_worktree_path):
+            # Some platforms (e.g. Windows) won't let us update dotgit in situ
+            # because of file permissions.  Delete it and recreate it from
+            # scratch to avoid.
+            platform_utils.remove(dotgit)
+            # Use relative path from checkout->worktree & maintain Unix line
+            # endings on all OS's to match git behavior.
+            with open(dotgit, "w", newline="\n") as fp:
+                print(
+                    "gitdir:",
+                    os.path.relpath(git_worktree_path, self.worktree),
+                    file=fp,
+                )
+            # Use relative path from worktree->checkout & maintain Unix line
+            # endings on all OS's to match git behavior.
+            with open(
+                os.path.join(git_worktree_path, "gitdir"), "w", newline="\n"
+            ) as fp:
+                print(os.path.relpath(dotgit, git_worktree_path), file=fp)
 
         self._InitMRef()
 
