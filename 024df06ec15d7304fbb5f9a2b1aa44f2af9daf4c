@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51d88635_e980fdb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3693981
+      },
+      "writtenOn": "2024-10-30T00:50:07Z",
+      "side": 1,
+      "message": "$mkdir - p ~/ .bin$ \nPATH \u003d \" $ { HOME}/.bin:$ { PATH } \" $ curl \nhttps : // almacenamiento.googleapis.com/git-repo-descargas/repo \u003e ~ / .bin / repo \n$ chmod a + rx ~/. bin / repositorio",
+      "revId": "024df06ec15d7304fbb5f9a2b1aa44f2af9daf4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
