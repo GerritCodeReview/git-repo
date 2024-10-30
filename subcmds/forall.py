@@ -279,7 +279,7 @@ without iterating through the remaining projects.
                 rc = rc or r
                 if r != 0 and opt.abort_on_errors:
                     raise Exception("Aborting due to previous error")
-                return rc
+            return rc
 
         try:
             config = self.manifest.manifestProject.config
@@ -298,7 +298,7 @@ without iterating through the remaining projects.
                 )
         except (KeyboardInterrupt, WorkerKeyboardInterrupt):
             # Catch KeyboardInterrupt raised inside and outside of workers
-            rc = rc or errno.EINTR
+            rc = errno.EINTR
         except Exception as e:
             # Catch any other exceptions raised
             logger.error(
@@ -306,7 +306,7 @@ without iterating through the remaining projects.
                 type(e).__name__,
                 e,
             )
-            rc = rc or getattr(e, "errno", 1)
+            rc = getattr(e, "errno", 1)
         if rc != 0:
             sys.exit(rc)
 
