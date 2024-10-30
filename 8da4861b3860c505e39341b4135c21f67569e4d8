@@ -16,6 +16,24 @@
       "message": "Are you guys having issues with repo forall after this commit?\n\n\nWhen I try this on 39ffd99, it works:\nrepo forall -c \u0027echo $REPO_RREV\u0027\n\nWhen I try same thing on 8da4861, I just get one rev echoed, the first one.",
       "revId": "8da4861b3860c505e39341b4135c21f67569e4d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fe740aa_80e02422",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-30T15:29:22Z",
+      "side": 1,
+      "message": "Thanks for catching this, I can reproduce it too. Tracking fix in https://issues.gerritcodereview.com/376454189",
+      "parentUuid": "616d747a_802d9284",
+      "revId": "8da4861b3860c505e39341b4135c21f67569e4d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
