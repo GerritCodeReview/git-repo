@@ -51,6 +51,24 @@
       "message": "Hi Kuang-che and Josip, \n\n`repo upload` is broken for me after this change. Can you help take a look? Here\u0027s the error message:\n\n```\nTraceback (most recent call last):\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/main.py\", line 874, in \u003cmodule\u003e\n    _Main(sys.argv[1:])\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/main.py\", line 850, in _Main\n    result \u003d repo._Run(name, gopts, argv) or 0\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/main.py\", line 294, in _Run\n    result \u003d run()\n             ^^^^^\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/main.py\", line 275, in \u003clambda\u003e\n    lambda: self._RunLong(name, gopts, argv, git_trace2_event_log) or 0\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/main.py\", line 442, in _RunLong\n    execute_command()\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/main.py\", line 408, in execute_command\n    execute_command_helper()\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/main.py\", line 374, in execute_command_helper\n    result \u003d cmd.Execute(copts, cargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/subcmds/upload.py\", line 770, in Execute\n    manifests \u003d {\n                ^\n  File \"/usr/local/google/home/conradchen/Android/androidx-main/.repo/repo/subcmds/upload.py\", line 771, in \u003cdictcomp\u003e\n    project.manifest.topdir: project.manifest\n    ^^^^^^^^^^^^^^^^\nAttributeError: \u0027int\u0027 object has no attribute \u0027manifest\u0027\n```",
       "revId": "8da4861b3860c505e39341b4135c21f67569e4d8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0ee29db_a1bf5122",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-10-31T20:43:19Z",
+      "side": 1,
+      "message": "Thanks, I rolled stable from  v2.49.1 to 2.48. See https://crbug.com/gerrit/376731172 for more details.",
+      "parentUuid": "52ca43ee_c2768d70",
+      "revId": "8da4861b3860c505e39341b4135c21f67569e4d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
