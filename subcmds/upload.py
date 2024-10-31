@@ -737,8 +737,8 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             pending = []
             for result in results:
                 project_idx, avail = result
+                project = projects[project_idx]
                 if avail is None:
-                    project = projects[project_idx]
                     logger.error(
                         'repo: error: %s: Unable to upload branch "%s". '
                         "You might be able to fix the branch by running:\n"
@@ -748,7 +748,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                         project.manifest.branch,
                     )
                 elif avail:
-                    pending.append(result)
+                    pending.append((project, avail))
             return pending
 
         with self.ParallelContext():
