@@ -821,6 +821,16 @@ later is required to fix a server side protocol bug.
         jobs = jobs_str(len(items))
         return f"{jobs} | {elapsed_str(elapsed)} {earliest_proj}"
 
+    @classmethod
+    def InitWorker(cls):
+        # Force connect to the manager server now.
+        # This is good because workers are initialized one by one. Without this,
+        # multiple workers may connect to the manager when handling the first
+        # job at the same time. Then the connection may fail if too many
+        # connections are pending and execeeded the socket listening backlog,
+        # especially on MacOS.
+        len(cls.get_parallel_context()["sync_dict"])
+
     def _Fetch(self, projects, opt, err_event, ssh_proxy, errors):
         ret = True
 
@@ -913,6 +923,7 @@ later is required to fix a server side protocol bug.
                     # idle while other workers still have more than one job in
                     # their chunk queue.
                     chunksize=1,
+                    initializer=self.InitWorker,
                 )
             finally:
                 sync_event.set()
