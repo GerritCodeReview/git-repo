@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13412360_c12c56fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3520137
+      },
+      "writtenOn": "2024-11-09T10:45:03Z",
+      "side": 1,
+      "message": "Setup.py,comform link from Cybersecurity IT for setting secure codes.",
+      "revId": "ec1f0a6376d2ae81f9da77bf7652dba12438e8be",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
