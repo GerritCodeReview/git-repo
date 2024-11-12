@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ace83be_bbb82775",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3520137
+      },
+      "writtenOn": "2024-11-12T11:00:57Z",
+      "side": 1,
+      "message": "kemaskini untuk maklumat Apple icloud saya juga",
+      "revId": "b5fb85fa78beb06f15d841a72c68be0d5a31df31",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
