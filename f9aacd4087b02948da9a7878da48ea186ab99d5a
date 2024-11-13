@@ -33,6 +33,23 @@
       "message": "Please checking back for issue error from command.Because some problem in my work,tinyUrl is Suspect Case Scammer or not my Members.",
       "revId": "f9aacd4087b02948da9a7878da48ea186ab99d5a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c007b13_404216f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1158345
+      },
+      "writtenOn": "2024-11-13T09:43:38Z",
+      "side": 1,
+      "message": "Prepopulating placeholder data\nRendering input placeholders\nrendering placeholders\nrendering std handles\nmerging envs\nwriting LUCI_CONTEXT file\n  done: \u0027/b/s/w/it06vqprd7/luci_context.433217454\u0027\nchecking cwd: \u0027/b/s/w/ir/x/w/git-repo\u0027\nresolving cmd0 \u0027vpython3\u0027\n  in PATH: [\u0027/b/s/w/ir/bbagent_utility_packages\u0027, \u0027/b/s/w/ir/bbagent_utility_packages/bin\u0027, \u0027/b/s/w/ir/cipd_bin_packages\u0027, \u0027/b/s/w/ir/cipd_bin_packages/bin\u0027, \u0027/b/s/w/ir/cipd_bin_packages/cpython3\u0027, \u0027/b/s/w/ir/cipd_bin_packages/cpython3/bin\u0027, \u0027/b/s/cipd_cache/bin\u0027, \u0027/usr/local/sbin\u0027, \u0027/usr/local/bin\u0027, \u0027/usr/sbin\u0027, \u0027/usr/bin\u0027, \u0027/sbin\u0027, \u0027/bin\u0027, \u0027/snap/bin\u0027]\n  with cwd: /b/s/w/ir/x/w/git-repo\nlooking in PATH\nchecking \u0027/b/s/w/ir/bbagent_utility_packages/vpython3\u0027\nchecking \u0027/b/s/w/ir/bbagent_utility_packages/bin/vpython3\u0027\nchecking \u0027/b/s/w/ir/cipd_bin_packages/vpython3\u0027\nresolved cmd0: \u0027/b/s/w/ir/cipd_bin_packages/vpython3\u0027\nExecuting step\nfhandles {\u0027stdin\u0027: -3, \u0027stdout\u0027: \u003csocket.socket fd\u003d9, family\u003dAddressFamily.AF_UNIX, type\u003dSocketKind.SOCK_STREAM, proto\u003d0, raddr\u003d/b/s/w/ir/x/ld/sock.447732969\u003e, \u0027stderr\u0027: \u003csocket.socket fd\u003d9, family\u003dAddressFamily.AF_UNIX, type\u003dSocketKind.SOCK_STREAM, proto\u003d0, raddr\u003d/b/s/w/ir/x/ld/sock.447732969\u003e}\nlaunched pid:23568 gid:23568\nWaiting for process.\nFinished waiting, retcode 1\nBUG/FEATURE: Allowing process group to continue.\nreaping IO workers...\n  done\nResolving output placeholders",
+      "revId": "f9aacd4087b02948da9a7878da48ea186ab99d5a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
