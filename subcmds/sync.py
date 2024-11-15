@@ -79,6 +79,7 @@ from repo_logging import RepoLogger
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
+import perfetto
 
 
 _ONE_DAY_S = 24 * 60 * 60
@@ -746,6 +747,48 @@ later is required to fix a server side protocol bug.
         errors = []
         buf = TeeStringIO(sys.stdout if opt.verbose else None)
         try:
+<<<<<<< PATCH SET (c4b886 Add Perfetto tracing to repo - DO NOT SUBMIT)
+            with perfetto.trace_event(f"sync_network_half {project.name}"):
+                sync_result = project.Sync_NetworkHalf(
+                    quiet=opt.quiet,
+                    verbose=opt.verbose,
+                    output_redir=buf,
+                    current_branch_only=self._GetCurrentBranchOnly(
+                        opt, project.manifest
+                    ),
+                    force_sync=opt.force_sync,
+                    clone_bundle=opt.clone_bundle,
+                    tags=opt.tags,
+                    archive=project.manifest.IsArchive,
+                    optimized_fetch=opt.optimized_fetch,
+                    retry_fetches=opt.retry_fetches,
+                    prune=opt.prune,
+                    ssh_proxy=self.ssh_proxy,
+                    clone_filter=project.manifest.CloneFilter,
+                    partial_clone_exclude=project.manifest.PartialCloneExclude,
+                    clone_filter_for_depth=project.manifest.CloneFilterForDepth,
+                )
+||||||| BASE
+            sync_result = project.Sync_NetworkHalf(
+                quiet=opt.quiet,
+                verbose=opt.verbose,
+                output_redir=buf,
+                current_branch_only=self._GetCurrentBranchOnly(
+                    opt, project.manifest
+                ),
+                force_sync=opt.force_sync,
+                clone_bundle=opt.clone_bundle,
+                tags=opt.tags,
+                archive=project.manifest.IsArchive,
+                optimized_fetch=opt.optimized_fetch,
+                retry_fetches=opt.retry_fetches,
+                prune=opt.prune,
+                ssh_proxy=self.ssh_proxy,
+                clone_filter=project.manifest.CloneFilter,
+                partial_clone_exclude=project.manifest.PartialCloneExclude,
+                clone_filter_for_depth=project.manifest.CloneFilterForDepth,
+            )
+=======
             sync_result = project.Sync_NetworkHalf(
                 quiet=opt.quiet,
                 verbose=opt.verbose,
@@ -765,6 +808,7 @@ later is required to fix a server side protocol bug.
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
                 clone_filter_for_depth=project.manifest.CloneFilterForDepth,
             )
+>>>>>>> BASE      (b7ffe3 Make repo installation work without .git)
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched
             if sync_result.error:
@@ -896,6 +940,38 @@ later is required to fix a server side protocol bug.
                 "sync_dict"
             ] = multiprocessing.Manager().dict()
 
+<<<<<<< PATCH SET (c4b886 Add Perfetto tracing to repo - DO NOT SUBMIT)
+        # NB: Multiprocessing is heavy, so don't spin it up for one job.
+        if len(projects_list) == 1 or jobs == 1:
+            self._FetchInitChild(ssh_proxy)
+            if not _ProcessResults(
+                self._FetchProjectList(opt, x) for x in projects_list
+            ):
+                ret = False
+        else:
+            chunksize = WORKER_BATCH_SIZE
+||||||| BASE
+        # NB: Multiprocessing is heavy, so don't spin it up for one job.
+        if len(projects_list) == 1 or jobs == 1:
+            self._FetchInitChild(ssh_proxy)
+            if not _ProcessResults(
+                self._FetchProjectList(opt, x) for x in projects_list
+            ):
+                ret = False
+        else:
+            # Favor throughput over responsiveness when quiet.  It seems that
+            # imap() will yield results in batches relative to chunksize, so
+            # even as the children finish a sync, we won't see the result until
+            # one child finishes ~chunksize jobs.  When using a large --jobs
+            # with large chunksize, this can be jarring as there will be a large
+            # initial delay where repo looks like it isn't doing anything and
+            # sits at 0%, but then suddenly completes a lot of jobs all at once.
+            # Since this code is more network bound, we can accept a bit more
+            # CPU overhead with a smaller chunksize so that the user sees more
+            # immediate & continuous feedback.
+            if opt.quiet:
+                chunksize = WORKER_BATCH_SIZE
+=======
             objdir_project_map = dict()
             for index, project in enumerate(projects):
                 objdir_project_map.setdefault(project.objdir, []).append(index)
@@ -910,11 +986,25 @@ later is required to fix a server side protocol bug.
             self.get_parallel_context()["ssh_proxy"] = ssh_proxy
 
             sync_progress_thread.start()
+>>>>>>> BASE      (b7ffe3 Make repo installation work without .git)
             if not opt.quiet:
                 pm.update(inc=0, msg="warming up")
+<<<<<<< PATCH SET (c4b886 Add Perfetto tracing to repo - DO NOT SUBMIT)
+            with multiprocessing.Pool(
+                jobs, initializer=self._FetchInitChild, initargs=(ssh_proxy,)
+            ) as pool:
+                results = pool.imap_unordered(
+||||||| BASE
+                chunksize = 4
+            with multiprocessing.Pool(
+                jobs, initializer=self._FetchInitChild, initargs=(ssh_proxy,)
+            ) as pool:
+                results = pool.imap_unordered(
+=======
             try:
                 ret = self.ExecuteInParallel(
                     jobs,
+>>>>>>> BASE      (b7ffe3 Make repo installation work without .git)
                     functools.partial(self._FetchProjectList, opt),
                     projects_list,
                     callback=_ProcessResults,
@@ -962,7 +1052,8 @@ later is required to fix a server side protocol bug.
         to_fetch.extend(all_projects)
         to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
-        result = self._Fetch(to_fetch, opt, err_event, ssh_proxy, errors)
+        with perfetto.trace_event("repo_fetch_main"):
+            result = self._Fetch(to_fetch, opt, err_event, ssh_proxy, errors)
         success = result.success
         fetched = result.projects
 
@@ -1891,9 +1982,10 @@ later is required to fix a server side protocol bug.
 
         err_results = []
         # NB: We don't exit here because this is the last step.
-        err_checkout = not self._Checkout(
-            all_projects, opt, err_results, errors
-        )
+        with perfetto.trace_event("checkout"):
+            err_checkout = not self._Checkout(
+                all_projects, opt, err_results, errors
+            )
         if err_checkout:
             err_event.set()
 
