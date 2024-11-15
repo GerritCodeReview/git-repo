@@ -30,6 +30,7 @@ from repo_trace import IsTrace
 from repo_trace import REPO_TRACE
 from repo_trace import Trace
 from wrapper import Wrapper
+import perfetto
 
 
 GIT = "git"
@@ -331,17 +332,18 @@ class GitCommand:
         )
 
         try:
-            self._RunCommand(
-                command,
-                env,
-                capture_stdout=capture_stdout,
-                capture_stderr=capture_stderr,
-                merge_output=merge_output,
-                ssh_proxy=ssh_proxy,
-                cwd=cwd,
-                input=input,
-            )
-            self.VerifyCommand()
+            with perfetto.trace_event("git " + command_name, command):
+                self._RunCommand(
+                    command,
+                    env,
+                    capture_stdout=capture_stdout,
+                    capture_stderr=capture_stderr,
+                    merge_output=merge_output,
+                    ssh_proxy=ssh_proxy,
+                    cwd=cwd,
+                    input=input,
+                )
+                self.VerifyCommand()
         except GitCommandError as e:
             if event_log is not None:
                 error_info = json.dumps(

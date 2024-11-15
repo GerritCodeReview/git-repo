@@ -79,6 +79,7 @@ from repo_logging import RepoLogger
 from repo_trace import Trace
 import ssh
 from wrapper import Wrapper
+import perfetto
 
 
 _ONE_DAY_S = 24 * 60 * 60
@@ -746,25 +747,26 @@ later is required to fix a server side protocol bug.
         errors = []
         buf = TeeStringIO(sys.stdout if opt.verbose else None)
         try:
-            sync_result = project.Sync_NetworkHalf(
-                quiet=opt.quiet,
-                verbose=opt.verbose,
-                output_redir=buf,
-                current_branch_only=cls._GetCurrentBranchOnly(
-                    opt, project.manifest
-                ),
-                force_sync=opt.force_sync,
-                clone_bundle=opt.clone_bundle,
-                tags=opt.tags,
-                archive=project.manifest.IsArchive,
-                optimized_fetch=opt.optimized_fetch,
-                retry_fetches=opt.retry_fetches,
-                prune=opt.prune,
-                ssh_proxy=cls.get_parallel_context()["ssh_proxy"],
-                clone_filter=project.manifest.CloneFilter,
-                partial_clone_exclude=project.manifest.PartialCloneExclude,
-                clone_filter_for_depth=project.manifest.CloneFilterForDepth,
-            )
+            with perfetto.trace_event(f"sync_network_half {project.name}"):
+                sync_result = project.Sync_NetworkHalf(
+                    quiet=opt.quiet,
+                    verbose=opt.verbose,
+                    output_redir=buf,
+                    current_branch_only=cls._GetCurrentBranchOnly(
+                        opt, project.manifest
+                    ),
+                    force_sync=opt.force_sync,
+                    clone_bundle=opt.clone_bundle,
+                    tags=opt.tags,
+                    archive=project.manifest.IsArchive,
+                    optimized_fetch=opt.optimized_fetch,
+                    retry_fetches=opt.retry_fetches,
+                    prune=opt.prune,
+                    ssh_proxy=cls.get_parallel_context()["ssh_proxy"],
+                    clone_filter=project.manifest.CloneFilter,
+                    partial_clone_exclude=project.manifest.PartialCloneExclude,
+                    clone_filter_for_depth=project.manifest.CloneFilterForDepth,
+                )
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched
             if sync_result.error:
@@ -962,7 +964,8 @@ later is required to fix a server side protocol bug.
         to_fetch.extend(all_projects)
         to_fetch.sort(key=self._fetch_times.Get, reverse=True)
 
-        result = self._Fetch(to_fetch, opt, err_event, ssh_proxy, errors)
+        with perfetto.trace_event("repo_fetch_main"):
+            result = self._Fetch(to_fetch, opt, err_event, ssh_proxy, errors)
         success = result.success
         fetched = result.projects
 
@@ -1891,9 +1894,10 @@ later is required to fix a server side protocol bug.
 
         err_results = []
         # NB: We don't exit here because this is the last step.
-        err_checkout = not self._Checkout(
-            all_projects, opt, err_results, errors
-        )
+        with perfetto.trace_event("checkout"):
+            err_checkout = not self._Checkout(
+                all_projects, opt, err_results, errors
+            )
         if err_checkout:
             err_event.set()
 
