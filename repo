@@ -124,7 +124,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 48)
+VERSION = (2, 50)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -1335,10 +1335,11 @@ def _Help(args):
 
 def _Version():
     """Show version information."""
+    git_version = ParseGitVersion()
     print("<repo not installed>")
     print(f"repo launcher version {'.'.join(str(x) for x in VERSION)}")
     print(f"       (from {__file__})")
-    print(f"git {ParseGitVersion().full}")
+    print(f"git {git_version.full}" if git_version else "git not installed")
     print(f"Python {sys.version}")
     uname = platform.uname()
     print(f"OS {uname.system} {uname.release} ({uname.version})")
@@ -1371,11 +1372,11 @@ def _RunSelf(wrapper_path):
     my_main = os.path.join(my_dir, "main.py")
     my_git = os.path.join(my_dir, ".git")
 
-    if os.path.isfile(my_main) and os.path.isdir(my_git):
+    if os.path.isfile(my_main):
         for name in ["git_config.py", "project.py", "subcmds"]:
             if not os.path.exists(os.path.join(my_dir, name)):
                 return None, None
-        return my_main, my_git
+        return my_main, my_git if os.path.isdir(my_git) else None
     return None, None
 
 
