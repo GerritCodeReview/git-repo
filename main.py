@@ -40,6 +40,8 @@ try:
 except ImportError:
     kerberos = None
 
+import perfetto
+
 from color import SetDefaultColoring
 from command import InteractiveCommand
 from command import MirrorSafeCommand
@@ -73,6 +75,7 @@ from wrapper import WrapperPath
 
 
 logger = RepoLogger(__file__)
+perfetto.init_tracing("/tmp/repo.perfetto-trace")
 
 
 # NB: These do not need to be kept in sync with the repo launcher script.
@@ -847,7 +850,8 @@ def _Main(argv):
         if gopts.trace_to_stderr:
             SetTraceToStderr()
 
-        result = repo._Run(name, gopts, argv) or 0
+        with perfetto.trace_event("repo"):
+            result = repo._Run(name, gopts, argv) or 0
     except RepoExitError as e:
         if not isinstance(e, SilentRepoExitError):
             logger.log_aggregated_errors(e)
@@ -865,10 +869,11 @@ def _Main(argv):
             print("fatal: cannot restart repo after upgrade", file=sys.stderr)
             print("fatal: %s" % e, file=sys.stderr)
             result = 128
+    finally:
+        perfetto.stop_tracing()
 
     TerminatePager()
     sys.exit(result)
-
 
 if __name__ == "__main__":
     _Main(sys.argv[1:])
