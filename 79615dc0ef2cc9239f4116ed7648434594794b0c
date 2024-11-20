@@ -1,0 +1,66 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "038ed301_5dac9656",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-11-20T22:03:08Z",
+      "side": 1,
+      "message": "Thanks for patching it!",
+      "revId": "79615dc0ef2cc9239f4116ed7648434594794b0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "963f16b0_4ef1caaa",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-11-20T22:03:08Z",
+      "side": 1,
+      "message": "instead of setting jobs to 1, can we just return early if len(projects_list) \u003d\u003d 0 at the beginning of the function?",
+      "fixSuggestions": [
+        {
+          "fixId": "6bf3b6e7_ac11cf9d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 837,
+                "startChar": 0,
+                "endLine": 837,
+                "endChar": 0
+              },
+              "replacement": "        if not projects:\n            return _FetchResult(ret, set())\n\n"
+            },
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 904,
+                "startChar": 0,
+                "endLine": 905,
+                "endChar": 0
+              },
+              "replacement": "            jobs \u003d min(opt.jobs_network, len(projects_list))\n"
+            }
+          ]
+        }
+      ],
+      "revId": "79615dc0ef2cc9239f4116ed7648434594794b0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
