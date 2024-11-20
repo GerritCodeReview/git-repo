@@ -901,7 +901,7 @@ later is required to fix a server side protocol bug.
                 objdir_project_map.setdefault(project.objdir, []).append(index)
             projects_list = list(objdir_project_map.values())
 
-            jobs = min(opt.jobs_network, len(projects_list))
+            jobs = max(1, min(opt.jobs_network, len(projects_list)))
 
             # We pass the ssh proxy settings via the class.  This allows
             # multiprocessing to pickle it up when spawning children.  We can't
