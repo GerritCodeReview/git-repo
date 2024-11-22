@@ -150,7 +150,7 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         <start event>
         """
-        self._event_log_module.StartEvent()
+        self._event_log_module.StartEvent([])
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
             log_path = self._event_log_module.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
@@ -382,17 +382,17 @@ class EventLogTestCase(unittest.TestCase):
             socket_path = os.path.join(tempdir, "server.sock")
             server_ready = threading.Condition()
             # Start "server" listening on Unix domain socket at socket_path.
+            server_thread = threading.Thread(
+                target=serverLoggingThread,
+                args=(socket_path, server_ready, received_traces),
+            )
             try:
-                server_thread = threading.Thread(
-                    target=serverLoggingThread,
-                    args=(socket_path, server_ready, received_traces),
-                )
                 server_thread.start()
 
                 with server_ready:
                     server_ready.wait(timeout=120)
 
-                self._event_log_module.StartEvent()
+                self._event_log_module.StartEvent([])
                 path = self._event_log_module.Write(
                     path=f"af_unix:{socket_path}"
                 )
