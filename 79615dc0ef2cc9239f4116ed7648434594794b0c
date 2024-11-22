@@ -61,6 +61,24 @@
       ],
       "revId": "79615dc0ef2cc9239f4116ed7648434594794b0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d65511fa_c55ff9b0",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 1135531
+      },
+      "writtenOn": "2024-11-22T18:21:36Z",
+      "side": 1,
+      "message": "I honestly do not know. That was my initial idea too, but I realized that I had no idea if there is anything in the processing that _Fetch() does that needs to be done even if no projects are actually being fetched. Thus I opted for the safe solution. However, I would be more than happy with changing it to return early if that is deemed safe.",
+      "parentUuid": "963f16b0_4ef1caaa",
+      "revId": "79615dc0ef2cc9239f4116ed7648434594794b0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
