@@ -167,7 +167,10 @@ is shown, then the branch appears in all projects.
             else:
                 published = " "
 
-            hdr("%c%c %-*s" % (current, published, width, name))
+            # A branch name can contain a percent sign, so we need to escape it.
+            # Escape after f-string formatting to properly account for leading
+            # spaces.
+            hdr(f"{current}{published} {name:{width}}".replace("%", "%%"))
             out.write(" |")
 
             _RelPath = lambda p: p.RelPath(local=opt.this_manifest_only)
