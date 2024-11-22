@@ -130,10 +130,10 @@ class BaseEventLog:
             "time": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         }
 
-    def StartEvent(self):
+    def StartEvent(self, argv):
         """Append a 'start' event to the current log."""
         start_event = self._CreateEventDict("start")
-        start_event["argv"] = sys.argv
+        start_event["argv"] = argv
         self._log.append(start_event)
 
     def ExitEvent(self, result):
@@ -159,9 +159,11 @@ class BaseEventLog:
             name: Name of the primary command (ex: repo, git)
             subcommands: List of the sub-commands (ex: version, init, sync)
         """
-        command_event = self._CreateEventDict("command")
+        command_event = self._CreateEventDict("cmd_name")
+        name = f"{name}-"
+        name += "-".join(subcommands)
         command_event["name"] = name
-        command_event["subcommands"] = subcommands
+        command_event["hierarchy"] = name
         self._log.append(command_event)
 
     def LogConfigEvents(self, config, event_dict_name):
