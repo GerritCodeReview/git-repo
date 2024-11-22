@@ -150,7 +150,7 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         <start event>
         """
-        self._event_log_module.StartEvent()
+        self._event_log_module.StartEvent([])
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
             log_path = self._event_log_module.Write(path=tempdir)
             self._log_data = self.readLog(log_path)
@@ -213,10 +213,8 @@ class EventLogTestCase(unittest.TestCase):
         <version event>
         <command event>
         """
-        name = "repo"
-        subcommands = ["init" "this"]
         self._event_log_module.CommandEvent(
-            name="repo", subcommands=subcommands
+            name="repo", subcommands=["init", "this"]
         )
         with tempfile.TemporaryDirectory(prefix="event_log_tests") as tempdir:
             log_path = self._event_log_module.Write(path=tempdir)
@@ -225,12 +223,10 @@ class EventLogTestCase(unittest.TestCase):
         self.assertEqual(len(self._log_data), 2)
         command_event = self._log_data[1]
         self.verifyCommonKeys(self._log_data[0], expected_event_name="version")
-        self.verifyCommonKeys(command_event, expected_event_name="command")
+        self.verifyCommonKeys(command_event, expected_event_name="cmd_name")
         # Check for 'command' event specific fields.
         self.assertIn("name", command_event)
-        self.assertIn("subcommands", command_event)
-        self.assertEqual(command_event["name"], name)
-        self.assertEqual(command_event["subcommands"], subcommands)
+        self.assertEqual(command_event["name"], "repo-init-this")
 
     def test_def_params_event_repo_config(self):
         """Test 'def_params' event data outputs only repo config keys.
@@ -382,17 +378,17 @@ class EventLogTestCase(unittest.TestCase):
             socket_path = os.path.join(tempdir, "server.sock")
             server_ready = threading.Condition()
             # Start "server" listening on Unix domain socket at socket_path.
+            server_thread = threading.Thread(
+                target=serverLoggingThread,
+                args=(socket_path, server_ready, received_traces),
+            )
             try:
-                server_thread = threading.Thread(
-                    target=serverLoggingThread,
-                    args=(socket_path, server_ready, received_traces),
-                )
                 server_thread.start()
 
                 with server_ready:
                     server_ready.wait(timeout=120)
 
-                self._event_log_module.StartEvent()
+                self._event_log_module.StartEvent([])
                 path = self._event_log_module.Write(
                     path=f"af_unix:{socket_path}"
                 )
