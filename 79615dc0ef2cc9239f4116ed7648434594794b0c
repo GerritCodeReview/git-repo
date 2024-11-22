@@ -79,6 +79,24 @@
       "parentUuid": "963f16b0_4ef1caaa",
       "revId": "79615dc0ef2cc9239f4116ed7648434594794b0c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0608ab2f_34f35c97",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-11-22T18:42:05Z",
+      "side": 1,
+      "message": "I don\u0027t think it matters that much (e.g. saving fetch times, or last sync state), since nothing is synced. But, probably not worth risking some edge case. \n\nLGTM",
+      "parentUuid": "d65511fa_c55ff9b0",
+      "revId": "79615dc0ef2cc9239f4116ed7648434594794b0c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
