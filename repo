@@ -215,8 +215,6 @@ repodir = ".repo"  # name of repo's private directory
 S_repo = "repo"  # special repo repository
 S_manifests = "manifests"  # special manifest repository
 REPO_MAIN = S_repo + "/main.py"  # main script
-GITC_CONFIG_FILE = "/gitc/.config"
-GITC_FS_ROOT_DIR = "/gitc/manifest-rw/"
 
 
 import collections
@@ -235,12 +233,9 @@ home_dot_repo = os.path.join(repo_config_dir, ".repoconfig")
 gpg_dir = os.path.join(home_dot_repo, "gnupg")
 
 
-def GetParser(gitc_init=False):
+def GetParser():
     """Setup the CLI parser."""
-    if gitc_init:
-        sys.exit("repo: fatal: GITC not supported.")
-    else:
-        usage = "repo init [options] [-u] url"
+    usage = "repo init [options] [-u] url"
 
     parser = optparse.OptionParser(usage=usage)
     InitParser(parser)
@@ -557,49 +552,6 @@ def run_command(cmd, **kwargs):
     return ret
 
 
-_gitc_manifest_dir = None
-
-
-def get_gitc_manifest_dir():
-    global _gitc_manifest_dir
-    if _gitc_manifest_dir is None:
-        _gitc_manifest_dir = ""
-        try:
-            with open(GITC_CONFIG_FILE) as gitc_config:
-                for line in gitc_config:
-                    match = re.match("gitc_dir=(?P<gitc_manifest_dir>.*)", line)
-                    if match:
-                        _gitc_manifest_dir = match.group("gitc_manifest_dir")
-        except OSError:
-            pass
-    return _gitc_manifest_dir
-
-
-def gitc_parse_clientdir(gitc_fs_path):
-    """Parse a path in the GITC FS and return its client name.
-
-    Args:
-        gitc_fs_path: A subdirectory path within the GITC_FS_ROOT_DIR.
-
-    Returns:
-        The GITC client name.
-    """
-    if gitc_fs_path == GITC_FS_ROOT_DIR:
-        return None
-    if not gitc_fs_path.startswith(GITC_FS_ROOT_DIR):
-        manifest_dir = get_gitc_manifest_dir()
-        if manifest_dir == "":
-            return None
-        if manifest_dir[-1] != "/":
-            manifest_dir += "/"
-        if gitc_fs_path == manifest_dir:
-            return None
-        if not gitc_fs_path.startswith(manifest_dir):
-            return None
-        return gitc_fs_path.split(manifest_dir)[1].split("/")[0]
-    return gitc_fs_path.split(GITC_FS_ROOT_DIR)[1].split("/")[0]
-
-
 class CloneFailure(Exception):
 
     """Indicate the remote clone of repo itself failed."""
@@ -638,9 +590,9 @@ def check_repo_rev(dst, rev, repo_verify=True, quiet=False):
     return (remote_ref, rev)
 
 
-def _Init(args, gitc_init=False):
+def _Init(args):
     """Installs repo by cloning it over the network."""
-    parser = GetParser(gitc_init=gitc_init)
+    parser = GetParser()
     opt, args = parser.parse_args(args)
     if args:
         if not opt.manifest_url:
@@ -1164,7 +1116,7 @@ class _Options:
 def _ExpandAlias(name):
     """Look up user registered aliases."""
     # We don't resolve aliases for existing subcommands.  This matches git.
-    if name in {"gitc-init", "help", "init"}:
+    if name in {"help", "init"}:
         return name, []
 
     alias = _GetRepoConfig(f"alias.{name}")
@@ -1292,10 +1244,6 @@ class Requirements:
 
 
 def _Usage():
-    gitc_usage = ""
-    if get_gitc_manifest_dir():
-        gitc_usage = "  gitc-init Initialize a GITC Client.\n"
-
     print(
         """usage: repo COMMAND [ARGS]
 
@@ -1304,9 +1252,7 @@ repo is not yet installed.  Use "repo init" to install it here.
 The most commonly used repo commands are:
 
   init      Install repo in the current working directory
-"""
-        + gitc_usage
-        + """  help      Display detailed help on a command
+  help      Display detailed help on a command
 
 For access to the full online help, install repo ("repo init").
 """
@@ -1317,8 +1263,8 @@ For access to the full online help, install repo ("repo init").
 
 def _Help(args):
     if args:
-        if args[0] in {"init", "gitc-init"}:
-            parser = GetParser(gitc_init=args[0] == "gitc-init")
+        if args[0] in {"init"}:
+            parser = GetParser()
             parser.print_help()
             sys.exit(0)
         else:
@@ -1407,23 +1353,11 @@ def main(orig_args):
     # We run this early as we run some git commands ourselves.
     SetGitTrace2ParentSid()
 
-    repo_main, rel_repo_dir = None, None
-    # Don't use the local repo copy, make sure to switch to the gitc client first.
-    if cmd != "gitc-init":
-        repo_main, rel_repo_dir = _FindRepo()
+    repo_main, rel_repo_dir = _FindRepo()
 
     wrapper_path = os.path.abspath(__file__)
     my_main, my_git = _RunSelf(wrapper_path)
 
-    cwd = os.getcwd()
-    if get_gitc_manifest_dir() and cwd.startswith(get_gitc_manifest_dir()):
-        print(
-            "error: repo cannot be used in the GITC local manifest directory."
-            "\nIf you want to work on this GITC client please rerun this "
-            "command from the corresponding client under /gitc/",
-            file=sys.stderr,
-        )
-        sys.exit(1)
     if not repo_main:
         # Only expand aliases here since we'll be parsing the CLI ourselves.
         # If we had repo_main, alias expansion would happen in main.py.
@@ -1438,11 +1372,11 @@ def main(orig_args):
             _Version()
         if not cmd:
             _NotInstalled()
-        if cmd == "init" or cmd == "gitc-init":
+        if cmd == "init":
             if my_git:
                 _SetDefaultsTo(my_git)
             try:
-                _Init(args, gitc_init=(cmd == "gitc-init"))
+                _Init(args)
             except CloneFailure:
                 path = os.path.join(repodir, S_repo)
                 print(
