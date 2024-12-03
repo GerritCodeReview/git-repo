@@ -547,7 +547,3 @@ class MirrorSafeCommand:
     """Command permits itself to run within a mirror, and does not require a
     working directory.
     """
-
-
-class GitcClientCommand:
-    """Command that requires the local client to be a GITC client."""

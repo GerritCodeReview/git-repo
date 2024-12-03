@@ -45,7 +45,6 @@ from command import InteractiveCommand
 from command import MirrorSafeCommand
 from editor import Editor
 from error import DownloadError
-from error import GitcUnsupportedError
 from error import InvalidProjectGroupsError
 from error import ManifestInvalidRevisionError
 from error import ManifestParseError
@@ -307,10 +306,6 @@ class _Repo:
                 submanifest_path=gopts.submanifest_path,
                 outer_client=outer_client,
             )
-
-        if Wrapper().gitc_parse_clientdir(os.getcwd()):
-            logger.error("GITC is not supported.")
-            raise GitcUnsupportedError()
 
         try:
             cmd = self.commands[name](
