@@ -111,10 +111,6 @@ class GitAuthError(RepoExitError):
     """Cannot talk to remote due to auth issue."""
 
 
-class GitcUnsupportedError(RepoExitError):
-    """Gitc no longer supported."""
-
-
 class UploadError(RepoError):
     """A bundle upload to Gerrit did not succeed."""
 
