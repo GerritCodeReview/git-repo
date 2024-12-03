@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ec9ec26_478fc5d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2024-12-03T22:03:46Z",
+      "side": 1,
+      "message": "TIL about gitc. always nice to remove code",
+      "revId": "88f635df8ebcd509ad59c9bda924bb7de07ed78b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
