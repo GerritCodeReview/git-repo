@@ -1826,6 +1826,9 @@ later is required to fix a server side protocol bug.
             "repo.newprojectcount", str(len(all_projects) - len(existing))
         )
 
+        for p in all_projects:
+            p._MigrateOldSubprojectDirs()
+
         self._fetch_times = _FetchTimes(manifest)
         self._local_sync_state = LocalSyncState(manifest)
         if not opt.local_only:
