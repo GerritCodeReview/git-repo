@@ -308,10 +308,6 @@ class _Repo:
                 outer_client=outer_client,
             )
 
-        if Wrapper().gitc_parse_clientdir(os.getcwd()):
-            logger.error("GITC is not supported.")
-            raise GitcUnsupportedError()
-
         try:
             cmd = self.commands[name](
                 repodir=self.repodir,

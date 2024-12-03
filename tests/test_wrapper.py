@@ -72,83 +72,10 @@ class RepoWrapperUnitTest(RepoWrapperTestCase):
 
     def test_init_parser(self):
         """Make sure 'init' GetParser works."""
-        parser = self.wrapper.GetParser(gitc_init=False)
+        parser = self.wrapper.GetParser()
         opts, args = parser.parse_args([])
         self.assertEqual([], args)
         self.assertIsNone(opts.manifest_url)
-
-    def test_gitc_init_parser(self):
-        """Make sure 'gitc-init' GetParser raises."""
-        with self.assertRaises(SystemExit):
-            self.wrapper.GetParser(gitc_init=True)
-
-    def test_get_gitc_manifest_dir_no_gitc(self):
-        """
-        Test reading a missing gitc config file
-        """
-        self.wrapper.GITC_CONFIG_FILE = fixture("missing_gitc_config")
-        val = self.wrapper.get_gitc_manifest_dir()
-        self.assertEqual(val, "")
-
-    def test_get_gitc_manifest_dir(self):
-        """
-        Test reading the gitc config file and parsing the directory
-        """
-        self.wrapper.GITC_CONFIG_FILE = fixture("gitc_config")
-        val = self.wrapper.get_gitc_manifest_dir()
-        self.assertEqual(val, "/test/usr/local/google/gitc")
-
-    def test_gitc_parse_clientdir_no_gitc(self):
-        """
-        Test parsing the gitc clientdir without gitc running
-        """
-        self.wrapper.GITC_CONFIG_FILE = fixture("missing_gitc_config")
-        self.assertEqual(self.wrapper.gitc_parse_clientdir("/something"), None)
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir("/gitc/manifest-rw/test"), "test"
-        )
-
-    def test_gitc_parse_clientdir(self):
-        """
-        Test parsing the gitc clientdir
-        """
-        self.wrapper.GITC_CONFIG_FILE = fixture("gitc_config")
-        self.assertEqual(self.wrapper.gitc_parse_clientdir("/something"), None)
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir("/gitc/manifest-rw/test"), "test"
-        )
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir("/gitc/manifest-rw/test/"), "test"
-        )
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir("/gitc/manifest-rw/test/extra"),
-            "test",
-        )
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir(
-                "/test/usr/local/google/gitc/test"
-            ),
-            "test",
-        )
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir(
-                "/test/usr/local/google/gitc/test/"
-            ),
-            "test",
-        )
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir(
-                "/test/usr/local/google/gitc/test/extra"
-            ),
-            "test",
-        )
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir("/gitc/manifest-rw/"), None
-        )
-        self.assertEqual(
-            self.wrapper.gitc_parse_clientdir("/test/usr/local/google/gitc/"),
-            None,
-        )
 
 
 class SetGitTrace2ParentSid(RepoWrapperTestCase):
