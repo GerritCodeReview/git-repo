@@ -642,6 +642,10 @@ class Project:
         # project containing repo hooks.
         self.enabled_repo_hooks = []
 
+        # This will be updated later if the project has subprojects and
+        # if they will be synced
+        self.has_subprojects = False
+
     def RelPath(self, local=True):
         """Return the path for the project relative to a manifest.
 
@@ -1272,6 +1276,9 @@ class Project:
         """Perform only the network IO portion of the sync process.
         Local working directory/branch state is not affected.
         """
+
+        self._MigrateOldSubprojectDirs()
+
         if archive and not isinstance(self, MetaProject):
             if self.remote.url.startswith(("http://", "https://")):
                 msg_template = (
@@ -1477,6 +1484,25 @@ class Project:
             )
         return SyncNetworkHalfResult(remote_fetched)
 
+    def _MigrateOldSubprojectDirs(self):
+        """Move the old 'subprojects' and 'subproject-objects' dirs to
+        'modules' and 'module-objects' respectively as bare checkouts of
+        sub-projects are now in the module* dirs.
+        """
+        subprojects = os.path.join(self.gitdir, "subprojects")
+        modules = os.path.join(self.gitdir, "modules")
+        subproject_objects = os.path.join(self.gitdir, "subproject-objects")
+        module_objects = os.path.join(self.gitdir, "module-objects")
+        if (
+            self.has_subprojects
+            and os.path.isdir(subprojects)
+            and os.path.isdir(subproject_objects)
+            and not os.path.isdir(modules)
+            and not os.path.isdir(module_objects)
+        ):
+            platform_utils.rename(subprojects, modules)
+            platform_utils.rename(subproject_objects, module_objects)
+
     def PostRepoUpgrade(self):
         self._InitHooks()
 
@@ -1560,6 +1586,10 @@ class Project:
             return
 
         self._InitWorkTree(force_sync=force_sync, submodules=submodules)
+        # Avoid doing an init when using worktrees as the support for
+        # submodules is incomplete.
+        if self.has_subprojects and not self.use_git_worktrees:
+            self._InitSubmodules()
         all_refs = self.bare_ref.all
         self.CleanPublishedCache(all_refs)
         revid = self.GetRevisionId(all_refs)
@@ -2347,6 +2377,8 @@ class Project:
             )
             result.append(subproject)
             result.extend(subproject.GetDerivedSubprojects())
+        if result:
+            self.has_subprojects = True
         return result
 
     def EnableRepositoryExtension(self, key, value="true", version=1):
@@ -2997,6 +3029,16 @@ class Project:
                 project=self.name,
             )
 
+    def _InitSubmodules(self, quiet=True):
+        cmd = ["submodule", "init"]
+        if quiet:
+            cmd.append("-q")
+        if GitCommand(self, cmd).Wait() != 0:
+            raise GitError(
+                "%s submodule init" % self.name,
+                project=self.name,
+            )
+
     def _Rebase(self, upstream, onto=None):
         cmd = ["rebase"]
         if onto is not None:
@@ -3425,20 +3467,25 @@ class Project:
                 self._InitGitWorktree()
                 self._CopyAndLinkFiles()
         else:
+            # Remove old dir symb links for subprojects
+            if (
+                self.parent
+                and os.path.exists(dotgit)
+                and platform_utils.islink(dotgit)
+            ):
+                platform_utils.remove(dotgit)
+                init_dotgit = True
+
             if not init_dotgit:
                 # See if the project has changed.
-                if os.path.realpath(self.gitdir) != os.path.realpath(dotgit):
-                    platform_utils.remove(dotgit)
+                self._removeBadGitDirLink(dotgit)
 
             if init_dotgit or not os.path.exists(dotgit):
-                os.makedirs(self.worktree, exist_ok=True)
-                platform_utils.symlink(
-                    os.path.relpath(self.gitdir, self.worktree), dotgit
-                )
+                self._createGitDirLink(dotgit)
 
             if init_dotgit:
                 _lwrite(
-                    os.path.join(dotgit, HEAD), "%s\n" % self.GetRevisionId()
+                    os.path.join(self.gitdir, HEAD), "%s\n" % self.GetRevisionId()
                 )
 
                 # Finish checking out the worktree.
@@ -3452,6 +3499,31 @@ class Project:
                 if submodules:
                     self._SyncSubmodules(quiet=True)
                 self._CopyAndLinkFiles()
+
+    def _createGitDirLink(self, dotgit):
+        os.makedirs(self.worktree, exist_ok=True)
+        if self.parent:
+            with open(dotgit, "w", newline="\n") as fp:
+                print(
+                    "gitdir:",
+                    os.path.relpath(self.gitdir, self.worktree),
+                    file=fp,
+                )
+        else:
+            platform_utils.symlink(
+                os.path.relpath(self.gitdir, self.worktree), dotgit
+            )
+
+    def _removeBadGitDirLink(self, dotgit):
+        if self.parent and os.path.isfile(dotgit):
+            with open(dotgit) as fp:
+                setting = fp.read()
+                assert setting.startswith("gitdir:")
+                dotgit_path = setting.split(":", 1)[1].strip()
+        else:
+            dotgit_path = dotgit
+        if os.path.realpath(self.gitdir) != os.path.realpath(dotgit_path):
+            platform_utils.remove(dotgit)
 
     @classmethod
     def _MigrateOldWorkTreeGitDir(cls, dotgit, project=None):
