@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45f0888f_c67f1edf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-04T01:59:48Z",
+      "side": 1,
+      "message": "nit\n\n```suggestion\nAllow Git\u0027s \u0027recurse submodules\u0027 opts to work with synced submodules\n```",
+      "range": {
+        "startLine": 7,
+        "startChar": 51,
+        "endLine": 7,
+        "endChar": 57
+      },
+      "revId": "43e188ecf9c446da79f371cee48126baec39e66e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d84a92c2_2b35aa6d",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1589,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-04T01:59:48Z",
+      "side": 1,
+      "message": "```suggestion\n        # Avoid doing a submodule init when using worktrees as the support for\n```\n\nAlso, do existing calls to `_SyncSubmodules()` have the same protection?",
+      "range": {
+        "startLine": 1589,
+        "startChar": 22,
+        "endLine": 1589,
+        "endChar": 29
+      },
+      "revId": "43e188ecf9c446da79f371cee48126baec39e66e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8152e283_6c37f941",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3470,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-04T01:59:48Z",
+      "side": 1,
+      "message": "nit: No need to abbreviate\n```suggestion\n            # Remove old directory symbolic links for subprojects\n```",
+      "revId": "43e188ecf9c446da79f371cee48126baec39e66e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7354d252_dedd4004",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3503,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-04T01:59:48Z",
+      "side": 1,
+      "message": "This doesn\u0027t always create a link. Maybe rename it?\n```suggestion\n    def _createDotGit(self, dotgit):\n```",
+      "range": {
+        "startLine": 3503,
+        "startChar": 8,
+        "endLine": 3503,
+        "endChar": 25
+      },
+      "revId": "43e188ecf9c446da79f371cee48126baec39e66e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
