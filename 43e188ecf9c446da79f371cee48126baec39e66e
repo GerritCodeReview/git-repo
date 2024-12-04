@@ -95,6 +95,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6300b06d_9522be1c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 1589,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-04T20:40:08Z",
+      "side": 1,
+      "message": "\u003e Yes, sort of. `_SyncSubmodules()` seems to be only used for syncing submodules in the manifest project, i.e `repo init` with `--submodules`. And, `--worktree` is incompatible with `--submodules` (see L4552).\n\nAck.",
+      "parentUuid": "34a0d157_ad622ddc",
+      "range": {
+        "startLine": 1589,
+        "startChar": 22,
+        "endLine": 1589,
+        "endChar": 29
+      },
+      "revId": "43e188ecf9c446da79f371cee48126baec39e66e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8152e283_6c37f941",
