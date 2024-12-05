@@ -34,6 +34,24 @@
       "parentUuid": "cdfa0dec_efe7638b",
       "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94e91f06_ce0a12d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-05T18:37:58Z",
+      "side": 1,
+      "message": "\u003e I don\u0027t know if there\u0027s such need, but my guess would be no.\n\nAck.\n\n\u003e \n\u003e Stepping back a bit, I don\u0027t like the idea of silently ignoring link directives. If manifest contains a link entry and the file doesn\u0027t exist, I feel repo should still create it, or at least error out.\n\nThat makes sense to me too. I think different behavior would be ok if we make it something the user opts into (like a `--skip-non-existent-src-links`). Would that make sense to you?\n\n\u003e \n\u003e Could you elaborate a bit more, in the commit message, why this change is desired?\n\nThe simple answer (that we can also add to the commit message) is that we have some teams that were pinned to an old repo version (in that 2015-2020 timeframe) and are finally trying to update, but they have older manifest files they don\u0027t want to have new (breaking) behavior with. Having the links created results in invalid workspaces for them, so they want a way to avoid that in a new repo version.",
+      "parentUuid": "17baa63e_2753caf9",
+      "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
