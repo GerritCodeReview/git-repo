@@ -496,7 +496,8 @@ class _LinkFile:
             # of the symlink is relative in the context of the repo client
             # checkout.
             relpath = os.path.relpath(src, os.path.dirname(dest))
-            self.__linkIt(relpath, dest)
+            if os.path.exists(src):
+                self.__linkIt(relpath, dest)
         else:
             dest = _SafeExpandPath(self.topdir, self.dest)
             # Entity contains a wild card.
