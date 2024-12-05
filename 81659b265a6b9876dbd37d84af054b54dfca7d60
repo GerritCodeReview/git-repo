@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdfa0dec_efe7638b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-05T17:53:40Z",
+      "side": 1,
+      "message": "I looked at this introducing change a bit more and I\u0027m a bit concerned it was an intentional change to support non-existent sources (maybe @apetkov86@gmail.com can clarify?). However, if so, that\u0027s a change of behavior from 5 years prior to that change since the existence check was added in [change 68241](https://gerrit-review.googlesource.com/c/git-repo/+/68241). Both of those had a risk of breaking existing users, as does this change.\n\nGiven that, I think you want to phrase this as a sentence and refer to both changes by number and explain how the newer change causes a regression for some users:\n```\nThis issue was introduced by change 265736 which modified the behavior\nintroduced as a side effect of change 68241. Thus, from 2008 until June\n2015 links from non-existent files would be created, then from June 2015\nuntil May 2020 links would not be created, and then since May 2020 links\nare created. This change returns to the 2015-2020 behavior.\n```\n\n@sokcevic@google.com and @gavinmak@google.com do you know if there are clients expecting to create links from non-existent files? If there are any, we probably want to control this behavior with a command line flag.",
+      "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
