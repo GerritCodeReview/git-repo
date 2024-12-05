@@ -110,6 +110,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb42b685_e3011077",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002666
+      },
+      "writtenOn": "2024-12-05T20:58:27Z",
+      "side": 1,
+      "message": "\u003e I would avoid adding a opt-in flag since it\u0027s very hard to remove it later on - we don\u0027t know if there is any usage, and when it\u0027s safe to remove.\n\nAck.\n\n\u003e I suppose updating those manifests is not trivial work, is it? Are there any post-sync scripts / pre-build scripts that can cleanup broken symlinks for such broken manifest?\n\nFixing the files isn\u0027t too bad, but there\u0027s no good way to fix old tagged versions of the files that track previous releases.\n\n\u003e no one will use that option. if they forget to specify it even a single time when syncing, the link is going to be created.\n\nAck.",
+      "parentUuid": "840ffeff_8bca0b92",
+      "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "628f0f72_e5b3d60e",
         "filename": "project.py",
         "patchSetId": 1
