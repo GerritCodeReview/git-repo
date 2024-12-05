@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import errno
 import collections
 import functools
 import http.cookiejar as cookielib
@@ -1443,6 +1444,16 @@ later is required to fix a server side protocol bug.
                 # Try to remove the updated copyfile or linkfile.
                 # So, if the file is not exist, nothing need to do.
                 platform_utils.remove(need_remove_file, missing_ok=True)
+
+                # Try deleting parent dirs if they are empty.
+                path = os.path.dirname(need_remove_file)
+                while path != '':
+                    try:
+                        platform_utils.rmdir(path)
+                    except OSError as e:
+                        if e.errno != errno.ENOENT:
+                            break
+                    path = os.path.dirname(path)
 
         # Create copy-link-files.json, save dest path of "copyfile" and
         # "linkfile".
