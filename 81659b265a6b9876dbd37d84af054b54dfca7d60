@@ -52,6 +52,64 @@
       "parentUuid": "17baa63e_2753caf9",
       "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12aee43b_cbbd967e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-05T18:56:15Z",
+      "side": 1,
+      "message": "\u003e \u003e I don\u0027t know if there\u0027s such need, but my guess would be no.\n\u003e \n\u003e Ack.\n\u003e \n\u003e \u003e \n\u003e \u003e Stepping back a bit, I don\u0027t like the idea of silently ignoring link directives. If manifest contains a link entry and the file doesn\u0027t exist, I feel repo should still create it, or at least error out.\n\u003e \n\u003e That makes sense to me too. I think different behavior would be ok if we make it something the user opts into (like a `--skip-non-existent-src-links`). Would that make sense to you?\n\n+1\n\n\u003e \n\u003e \u003e \n\u003e \u003e Could you elaborate a bit more, in the commit message, why this change is desired?\n\u003e \n\u003e The simple answer (that we can also add to the commit message) is that we have some teams that were pinned to an old repo version (in that 2015-2020 timeframe) and are finally trying to update, but they have older manifest files they don\u0027t want to have new (breaking) behavior with. Having the links created results in invalid workspaces for them, so they want a way to avoid that in a new repo version.",
+      "parentUuid": "94e91f06_ce0a12d9",
+      "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "628f0f72_e5b3d60e",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 500,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-05T18:56:15Z",
+      "side": 1,
+      "message": "```suggestion\n\n        if not glob.has_magic(src):\n            if os.path.exists(src):\n                # Entity does not contain a wild card so just a simple one to one\n                # link operation.\n                dest \u003d _SafeExpandPath(self.topdir, self.dest, skipfinal\u003dTrue)\n                # dest \u0026 src are absolute paths at this point.  Make sure the target\n                # of the symlink is relative in the context of the repo client\n                # checkout.\n                relpath \u003d os.path.relpath(src, os.path.dirname(dest))\n                self.__linkIt(relpath, dest)\n```",
+      "range": {
+        "startLine": 490,
+        "startChar": 0,
+        "endLine": 500,
+        "endChar": 44
+      },
+      "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d87d3642_c4088439",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 523,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-05T18:56:15Z",
+      "side": 1,
+      "message": "You will need a similar check here too?",
+      "revId": "81659b265a6b9876dbd37d84af054b54dfca7d60",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
