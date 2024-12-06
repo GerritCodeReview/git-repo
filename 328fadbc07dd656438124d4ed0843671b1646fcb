@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd32be49_abe61a0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3760254
+      },
+      "writtenOn": "2024-12-06T14:34:25Z",
+      "side": 1,
+      "message": "https://source.chromium.org/chromium/chromium/src/+/6abc98ba042e6ba4a5d8f639ea99ef822922b32c:chrome/test/android/javatests/src/org/chromium/chrome/test/batch/BlankCTATabInitialStateRule.java",
+      "revId": "328fadbc07dd656438124d4ed0843671b1646fcb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
