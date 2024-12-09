@@ -16,6 +16,24 @@
       "message": "What kind of testing have you done with this?",
       "revId": "b2f764d02c5a333ea963584814952d56a13a6996",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10bcddce_66750de1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-09T20:52:41Z",
+      "side": 1,
+      "message": "I did some basic sanity for a couple of scenarios.\n\nScenarios:\n1. Scratch sync with _old_ repo, followed by incremental sync with _new_ repo\n2. Scratch sync with _new_ repo, followed by incremental sync with _new_ repo\n\nTests for each scenario:\n- For a manifest containing one or more projects with submodules:\n  - repo sync with submodules\n  - repo sync without submodules\n- For a manifest containing no projects with submodules:\n  - repo sync with submodules\n  - repo sync without submodules",
+      "parentUuid": "27cd2ebe_d493d450",
+      "revId": "b2f764d02c5a333ea963584814952d56a13a6996",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
