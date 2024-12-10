@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe03e5b1_7f7b8f77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3783824
+      },
+      "writtenOn": "2024-12-10T04:15:21Z",
+      "side": 1,
+      "message": "ممكن تحديث",
+      "revId": "d6952ae531b57b5562fc1c810ee9e9144a5e2d66",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
