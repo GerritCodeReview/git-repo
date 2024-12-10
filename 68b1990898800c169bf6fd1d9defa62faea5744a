@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0462471d_0dc8b900",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-10T16:40:42Z",
+      "side": 1,
+      "message": "Passes on main, fails on v2.49 as intended",
+      "revId": "68b1990898800c169bf6fd1d9defa62faea5744a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
