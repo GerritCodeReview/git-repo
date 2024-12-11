@@ -16,6 +16,23 @@
       "message": "Test fails without this commit when REPO_TRACE\u003d0, passes with this commit",
       "revId": "8c01d4b1a3e5b627083d649daa709fe782458d4b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "787fb685_d939fab2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T15:27:55Z",
+      "side": 1,
+      "message": "setUp is leaky.  it will modify the runtime env for all tests.  it\u0027s why all the tests in here use context managers -- to avoid polluting other executions.\n\nmodify the repo_trace.SetTrace API to take an optional setting that defaults to True, and then you can call `repo_trace.SetTrace(False)` in `setUpClass` in this module.\n\nhow pytest/tox do multiprocessing muddles the water, but we can ignore that.",
+      "revId": "8c01d4b1a3e5b627083d649daa709fe782458d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
