@@ -25,6 +25,9 @@ def test_trace_max_size_enforced(monkeypatch: pytest.MonkeyPatch) -> None:
     """Check Trace behavior."""
     content = "git chicken"
 
+    # Enable trace for the test, in case users have it disabled.
+    monkeypatch.setattr(repo_trace, "_TRACE", True)
+
     with repo_trace.Trace(content, first_trace=True):
         pass
     first_trace_size = os.path.getsize(repo_trace._TRACE_FILE)

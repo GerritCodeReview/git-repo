@@ -26,6 +26,7 @@ import repo_trace
 @pytest.fixture(autouse=True)
 def disable_repo_trace(tmp_path):
     """Set an environment marker to relax certain strict checks for test code."""  # noqa: E501
+    repo_trace.SetTrace(False)
     repo_trace._TRACE_FILE = str(tmp_path / "TRACE_FILE_from_test")
 
 
