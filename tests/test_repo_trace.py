@@ -24,6 +24,11 @@ import repo_trace
 class TraceTests(unittest.TestCase):
     """Check Trace behavior."""
 
+    def setUp(self):
+        # Enables trace for this test only, if user disabled it, to avoid fail.
+        if not repo_trace.IsTrace():
+            repo_trace.SetTrace()
+
     def testTrace_MaxSizeEnforced(self):
         content = "git chicken"
 
