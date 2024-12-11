@@ -57,10 +57,10 @@ def SetTraceToStderr():
     _TRACE_TO_STDERR = True
 
 
-def SetTrace():
-    """Enables tracing."""
+def SetTrace(value=True):
+    """Enables by default, or disables tracing."""
     global _TRACE
-    _TRACE = True
+    _TRACE = value
 
 
 def _SetTraceFile(quiet):
