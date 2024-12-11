@@ -52,6 +52,24 @@
       "parentUuid": "10bcddce_66750de1",
       "revId": "b2f764d02c5a333ea963584814952d56a13a6996",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42e1ab1e_b94afc76",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-11T23:09:23Z",
+      "side": 1,
+      "message": "Yeah, ran these:\n\n* repo list --all\n* repo start new --all\n* repo forall -c \u0027git config --get remote.rname.url \u0026\u0026 git log --oneline -1 \u0026\u0026 git branch\u0027\n\nAnd, tested that `git fetch` and `git checkout` (with `--recurse-submodules`) of a Gerrit change (which bumps a submodule)  works as expected.",
+      "parentUuid": "6e950200_67f7c79a",
+      "revId": "b2f764d02c5a333ea963584814952d56a13a6996",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
