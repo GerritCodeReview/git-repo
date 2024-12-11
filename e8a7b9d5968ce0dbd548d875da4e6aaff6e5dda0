@@ -1,0 +1,277 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "346a9e07_9e617970",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "we import modules, not members.\n\ni know there\u0027s a lot of bad prior art with repo modules, but we should avoid that with stdlib at least.",
+      "fixSuggestions": [
+        {
+          "fixId": "c8da16da_11911802",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 17,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "import io\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": "import shutil\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 51,
+                "startChar": 0,
+                "endLine": 52,
+                "endChar": 0
+              },
+              "replacement": "        shutil.rmtree(self.tempdir, ignore_errors\u003dTrue)\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 122,
+                "startChar": 0,
+                "endLine": 123,
+                "endChar": 0
+              },
+              "replacement": "    @unittest.mock.patch(\"sys.stdout\", new_callable\u003dio.StringIO)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce158fc9_21303873",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "new code should be using pathlib, not os.path",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1690eb6_f46fdabe",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "`self.tempdirobj.cleanup()`",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8839d29_8b369376",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "this really needs refactoring into common code instead of duplicating it across all our tests.  you can add a fixture in tests/conftest.py and then use that.",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "675b1a30_f692d844",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "this docstring style is incorrect.  see these docs for extended details/examples:\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0515ec50_f7019ca4",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "comments are full sentences, and those should end in periods",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc87ba75_c7acffaf",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "use f-strings instead of concatenation",
+      "fixSuggestions": [
+        {
+          "fixId": "ccc5bfc5_a7a637d5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": "                    self.repodir, f\"projects/tests/path{x}.git\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 113,
+                "startChar": 0,
+                "endLine": 114,
+                "endChar": 0
+              },
+              "replacement": "                    self.repodir, f\"project-objects/project{x}.git\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 116,
+                "startChar": 0,
+                "endLine": 117,
+                "endChar": 0
+              },
+              "replacement": "            git_path \u003d os.path.join(self.tempdir, f\"tests/path{x}\")\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 144,
+                "startChar": 0,
+                "endLine": 145,
+                "endChar": 0
+              },
+              "replacement": "                self.assertIn(f\"project{x}\", mock_stdout.getvalue())\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a05e1d3_8f669420",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "pythonic way is to test truthiness",
+      "fixSuggestions": [
+        {
+          "fixId": "37b0a310_076da247",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 152,
+                "startChar": 0,
+                "endLine": 153,
+                "endChar": 0
+              },
+              "replacement": "                if line:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c865bcb_69012c88",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-11T17:25:26Z",
+      "side": 1,
+      "message": "isn\u0027t this loop just:\n\n```\nline_count \u003d sum(1 if x else 0 for x in mock_stdout.getvalue().splitlines())\n```",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 35
+      },
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
