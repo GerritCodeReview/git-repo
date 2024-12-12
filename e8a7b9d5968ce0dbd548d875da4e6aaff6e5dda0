@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb81dcef_c846a957",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Improve commit here:\nhttps://gerrit-review.googlesource.com/c/git-repo/+/445781",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "346a9e07_9e617970",
@@ -66,6 +83,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "927eb0f1_32b5dbdb",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "346a9e07_9e617970",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ce158fc9_21303873",
@@ -83,6 +118,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e327bf32_df104044",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ce158fc9_21303873",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d1690eb6_f46fdabe",
@@ -96,6 +149,24 @@
       "writtenOn": "2024-12-11T17:25:26Z",
       "side": 1,
       "message": "`self.tempdirobj.cleanup()`",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "685415e7_ee7a2239",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1690eb6_f46fdabe",
       "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -147,6 +218,24 @@
       "writtenOn": "2024-12-11T17:25:26Z",
       "side": 1,
       "message": "comments are full sentences, and those should end in periods",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "650d1158_da2d4072",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0515ec50_f7019ca4",
       "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -216,6 +305,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe21818f_9151c301",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc87ba75_c7acffaf",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a05e1d3_8f669420",
@@ -251,6 +358,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d634d38e_6e17f3a9",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a05e1d3_8f669420",
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c865bcb_69012c88",
@@ -264,6 +389,30 @@
       "writtenOn": "2024-12-11T17:25:26Z",
       "side": 1,
       "message": "isn\u0027t this loop just:\n\n```\nline_count \u003d sum(1 if x else 0 for x in mock_stdout.getvalue().splitlines())\n```",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 35
+      },
+      "revId": "e8a7b9d5968ce0dbd548d875da4e6aaff6e5dda0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bbeb4cb_b371cd22",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-12T14:35:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c865bcb_69012c88",
       "range": {
         "startLine": 147,
         "startChar": 0,
