@@ -14,9 +14,9 @@
 
 """Unittests for the forall subcmd."""
 
-from io import StringIO
+import io
 import os
-from shutil import rmtree
+from pathlib import Path
 import subprocess
 import tempfile
 import unittest
@@ -34,21 +34,20 @@ class AllCommands(unittest.TestCase):
     def setUp(self):
         """Common setup."""
         self.tempdirobj = tempfile.TemporaryDirectory(prefix="forall_tests")
-        self.tempdir = self.tempdirobj.name
-        self.repodir = os.path.join(self.tempdir, ".repo")
-        self.manifest_dir = os.path.join(self.repodir, "manifests")
-        self.manifest_file = os.path.join(
-            self.repodir, manifest_xml.MANIFEST_FILE_NAME
+        self.tempdir = Path(self.tempdirobj.name)
+        self.repodir = self.tempdir / ".repo"
+        self.manifest_dir = self.repodir / "manifests"
+        self.manifest_file = str(self.repodir / manifest_xml.MANIFEST_FILE_NAME)
+        self.local_manifest_dir = self.repodir / (
+            manifest_xml.LOCAL_MANIFESTS_DIR_NAME
         )
-        self.local_manifest_dir = os.path.join(
-            self.repodir, manifest_xml.LOCAL_MANIFESTS_DIR_NAME
-        )
+
         os.mkdir(self.repodir)
         os.mkdir(self.manifest_dir)
 
     def tearDown(self):
         """Common teardown."""
-        rmtree(self.tempdir, ignore_errors=True)
+        self.tempdirobj.cleanup()
 
     def initTempGitTree(self, git_dir):
         """Create a new empty git checkout for testing."""
@@ -59,23 +58,25 @@ class AllCommands(unittest.TestCase):
         if git_command.git_require((2, 28, 0)):
             cmd += ["--initial-branch=main"]
         else:
-            # Use template dir for init
-            templatedir = os.path.join(self.tempdirobj.name, ".test-template")
+            # Use template dir for init.
+            templatedir = self.tempdirobj.name / ".test-template"
             os.makedirs(templatedir)
-            with open(os.path.join(templatedir, "HEAD"), "w") as fp:
+            with open(templatedir / "HEAD", "w") as fp:
                 fp.write("ref: refs/heads/main\n")
             cmd += ["--template", templatedir]
         cmd += [git_dir]
         subprocess.check_call(cmd)
 
     def getXmlManifestWith8Projects(self):
-        """Create and return a setup of 8 projects with enough dummy
-        files and setup to execute forall."""
+        """Create and return a setup of 8 projects.
 
-        # Set up a manifest git dir for parsing to work
-        gitdir = os.path.join(self.repodir, "manifests.git")
+        The setup includes enough stub files and setup to execute forall.
+        """
+
+        # Set up a manifest git dir for parsing to work.
+        gitdir = self.repodir / "manifests.git"
         os.mkdir(gitdir)
-        with open(os.path.join(gitdir, "config"), "w") as fp:
+        with open(gitdir / "config", "w") as fp:
             fp.write(
                 """[remote "origin"]
                     url = https://localhost:0/manifest
@@ -83,7 +84,7 @@ class AllCommands(unittest.TestCase):
                 """
             )
 
-        # Add the manifest data
+        # Add the manifest data.
         manifest_data = """
                 <manifest>
                     <remote name="origin" fetch="http://localhost" />
@@ -101,25 +102,17 @@ class AllCommands(unittest.TestCase):
         with open(self.manifest_file, "w", encoding="utf-8") as fp:
             fp.write(manifest_data)
 
-        # Set up 8 empty projects to match the manifest
+        # Set up 8 empty projects to match the manifest.
         for x in range(1, 9):
-            os.makedirs(
-                os.path.join(
-                    self.repodir, "projects/tests/path" + str(x) + ".git"
-                )
-            )
-            os.makedirs(
-                os.path.join(
-                    self.repodir, "project-objects/project" + str(x) + ".git"
-                )
-            )
-            git_path = os.path.join(self.tempdir, "tests/path" + str(x))
+            os.makedirs(self.repodir / f"projects/tests/path{x}.git")
+            os.makedirs(self.repodir / f"project-objects/project{x}.git")
+            git_path = self.tempdir / f"tests/path{x}"
             self.initTempGitTree(git_path)
 
         return manifest_xml.XmlManifest(self.repodir, self.manifest_file)
 
-    # Use mock to capture stdout from the forall run
-    @unittest.mock.patch("sys.stdout", new_callable=StringIO)
+    # Use mock to capture stdout from the forall run.
+    @unittest.mock.patch("sys.stdout", new_callable=io.StringIO)
     def test_forall_all_projects_called_once(self, mock_stdout):
         """Test that all projects get a command run once each."""
 
@@ -128,29 +121,25 @@ class AllCommands(unittest.TestCase):
         cmd = subcmds.forall.Forall()
         cmd.manifest = manifest_with_8_projects
 
-        # Use echo project names as the test of forall
+        # Use echo project names as the test of forall.
         opts, args = cmd.OptionParser.parse_args(["-c", "echo $REPO_PROJECT"])
         opts.verbose = False
 
-        # Mock to not have the Execute fail on remote check
+        # Mock to not have the Execute fail on remote check.
         with mock.patch.object(
             project.Project, "GetRevisionId", return_value="refs/heads/main"
         ):
-            # Run the forall command
+            # Run the forall command.
             cmd.Execute(opts, args)
 
-            # Verify that we got every project name in the prints
+            # Verify that we got every project name in the prints.
             for x in range(1, 9):
-                self.assertIn("project" + str(x), mock_stdout.getvalue())
+                self.assertIn(f"project{x}", mock_stdout.getvalue())
 
-            # Split the captured output into lines to count them
-            line_count = 0
-            for line in mock_stdout.getvalue().split("\n"):
-                # A commented out print to stderr as a reminder
-                # that stdout is mocked, include sys and uncomment if needed
-                # print(line, file=sys.stderr)
-                if len(line) > 0:
-                    line_count += 1
+            # Split the captured output into lines to count them.
+            line_count = sum(
+                1 if x else 0 for x in mock_stdout.getvalue().splitlines()
+            )
 
-            # Verify that we didn't get more lines than expected
+            # Verify that we didn't get more lines than expected.
             assert line_count == 8
