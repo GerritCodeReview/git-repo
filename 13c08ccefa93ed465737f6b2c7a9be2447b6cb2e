@@ -16,6 +16,218 @@
       "message": "Fixed most comments you had in this one.\n\nThe \"make TempGitTree common and break it out from three existing locations\" I agree with, but sounds big enough for a separate commit?\n\nAlso the documentation wish was a bit unclear, like I used same format as in the other tests, you wanted more of like input/output and a bunch of stuff or something else?",
       "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43357c04_77bf0d93",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-13T16:49:23Z",
+      "side": 1,
+      "message": "joinpath is OK, but i think `/` is simpler",
+      "fixSuggestions": [
+        {
+          "fixId": "e47ae95e_68f5ae4f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 38,
+                "startChar": 0,
+                "endLine": 40,
+                "endChar": 0
+              },
+              "replacement": "        self.repodir \u003d self.tempdir / \".repo\"\n        self.manifest_dir \u003d self.repodir / \"manifests\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 41,
+                "startChar": 0,
+                "endLine": 42,
+                "endChar": 0
+              },
+              "replacement": "            self.repodir / manifest_xml.MANIFEST_FILE_NAME\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 44,
+                "endChar": 0
+              },
+              "replacement": "        self.local_manifest_dir \u003d self.repodir / (\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 64,
+                "startChar": 0,
+                "endLine": 65,
+                "endChar": 0
+              },
+              "replacement": "            templatedir \u003d self.tempdirobj.name / \".test-template\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 66,
+                "startChar": 0,
+                "endLine": 67,
+                "endChar": 0
+              },
+              "replacement": "            with open(templatedir / \"HEAD\", \"w\") as fp:\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 78,
+                "startChar": 0,
+                "endLine": 79,
+                "endChar": 0
+              },
+              "replacement": "        gitdir \u003d self.repodir / \"manifests.git\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 80,
+                "startChar": 0,
+                "endLine": 81,
+                "endChar": 0
+              },
+              "replacement": "        with open(gitdir / \"config\", \"w\") as fp:\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": "            os.makedirs(self.repodir / f\"projects/tests/path{x}.git\")\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 110,
+                "startChar": 0,
+                "endLine": 111,
+                "endChar": 0
+              },
+              "replacement": "                self.repodir / f\"project-objects/project{x}.git\"\n"
+            },
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 112,
+                "startChar": 0,
+                "endLine": 113,
+                "endChar": 0
+              },
+              "replacement": "            git_path \u003d self.tempdir / f\"tests/path{x}\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93481951_2c92c8d9",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-13T16:49:23Z",
+      "side": 1,
+      "message": "Path objects have an open method\n\nbut they also have a write_text to oneline the whole thing",
+      "fixSuggestions": [
+        {
+          "fixId": "13691f72_a59add8c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 66,
+                "startChar": 0,
+                "endLine": 68,
+                "endChar": 0
+              },
+              "replacement": "            templatedir.joinpath(\"HEAD\").write_text(\"ref: refs/heads/main\\n\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8125f222_457f12e9",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-13T16:49:23Z",
+      "side": 1,
+      "message": "the first line has to be 1 line.  if the content doesn\u0027t fit, make it terser, or split it off into a 2nd sentence that can have a gap.\n\nalso, avoid terms like \"dummy\".  stick with \"stub\" or \"skeleton\" instead.",
+      "fixSuggestions": [
+        {
+          "fixId": "9361664d_14e8319e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_subcmds_forall.py",
+              "range": {
+                "startLine": 73,
+                "startChar": 0,
+                "endLine": 75,
+                "endChar": 0
+              },
+              "replacement": "        \"\"\"Create and return a setup of 8 projects.\n\n        The setup includes enough stub files and setup to execute forall.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbde5a48_7c38d56b",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-13T16:49:23Z",
+      "side": 1,
+      "message": "Path objects have mkdir methods\n\n```suggestion\n            (self.repodir / f\"projects/tests/path{x}.git\").mkdir()\n```",
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
