@@ -1442,7 +1442,10 @@ later is required to fix a server side protocol bug.
             for need_remove_file in need_remove_files:
                 # Try to remove the updated copyfile or linkfile.
                 # So, if the file is not exist, nothing need to do.
-                platform_utils.remove(need_remove_file, missing_ok=True)
+                platform_utils.remove(
+                    os.path.join(self.client.topdir, need_remove_file),
+                    missing_ok=True,
+                )
 
         # Create copy-link-files.json, save dest path of "copyfile" and
         # "linkfile".
