@@ -16,6 +16,24 @@
       "message": "Mike, Josip, can you take a look please? Let us know if there\u0027s a good way to add test coverage for this.",
       "revId": "49765c70be9334312550850f32d62845125022c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18aae6f8_f0dbdb59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T01:44:48Z",
+      "side": 1,
+      "message": "Sorry for the delay, I\u0027ll review this tomorrow. afaiu, this will not impact AOSP since submodules are prohibited there, and I believe it\u0027s not used in ChromiumOS either.",
+      "parentUuid": "b8b945dc_2ff79dd1",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
