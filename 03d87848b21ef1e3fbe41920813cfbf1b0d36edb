@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "671ebee7_cda253e8",
+        "filename": "repo_trace.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-13T16:43:58Z",
+      "side": 1,
+      "message": "```suggestion\ndef SetTrace(value: bool \u003d True) -\u003e None:\n```\n\ni know it\u0027s a long road, but have to start somewhere",
+      "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba7563d1_14bd24f9",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-13T16:43:58Z",
+      "side": 1,
+      "message": "i don\u0027t think we need to save/restore.  just disable it unconditionally in setUpClass.",
+      "fixSuggestions": [
+        {
+          "fixId": "819384bb_bd36c1cb",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/test_repo_trace.py",
+              "range": {
+                "startLine": 27,
+                "startChar": 0,
+                "endLine": 38,
+                "endChar": 0
+              },
+              "replacement": "    @classmethod\n    def setUpClass(cls):\n        # Disable trace to avoid test fail.\n        repo_trace.SetTrace(False)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
