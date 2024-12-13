@@ -34,6 +34,23 @@
       "parentUuid": "b8b945dc_2ff79dd1",
       "revId": "49765c70be9334312550850f32d62845125022c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ad6c62f_8ccb842c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-13T17:00:34Z",
+      "side": 1,
+      "message": "this feels like too many changes to pack into 1 commit when a lot of this has a history of being fragile.  i understand that some of these are probably small in isolation, but that\u0027s better for review \u0026 bisecting \u0026 reverting if need be.\n\nin general, if we can get repo to stop doing as much non-standard surgery on .git/ content, the better.",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
