@@ -51,6 +51,231 @@
       "message": "this feels like too many changes to pack into 1 commit when a lot of this has a history of being fragile.  i understand that some of these are probably small in isolation, but that\u0027s better for review \u0026 bisecting \u0026 reverting if need be.\n\nin general, if we can get repo to stop doing as much non-standard surgery on .git/ content, the better.",
       "revId": "49765c70be9334312550850f32d62845125022c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be6d4f7e_8c91c7eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "If we can just use `git submodule update --init` that would be the ideal state IMO.\n\nAlso, I feel we could split this CL into two to make it easier to review + bisect in the future.",
+      "parentUuid": "8ad6c62f_8ccb842c",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46c91724_50e3611a",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2059,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "use path directly",
+      "range": {
+        "startLine": 2059,
+        "startChar": 56,
+        "endLine": 2059,
+        "endChar": 67
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "45b81e40_cd2ce8e0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 2059,
+                "startChar": 0,
+                "endLine": 2060,
+                "endChar": 0
+              },
+              "replacement": "        gitdir \u003d os.path.join(parent.gitdir, \"modules\", path)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc649e3_df127afe",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2060,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "use f-string",
+      "range": {
+        "startLine": 2060,
+        "startChar": 63,
+        "endLine": 2060,
+        "endChar": 78
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "55507c77_e4006358",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "manifest_xml.py",
+              "range": {
+                "startLine": 2060,
+                "startChar": 0,
+                "endLine": 2061,
+                "endChar": 0
+              },
+              "replacement": "        objdir \u003d os.path.join(parent.gitdir, \"module-objects\", f\"{name}.git\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88c87071_c1c611c1",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "this is hard to follow. I suggest to get invert if on line 1507 and exit early. Then, simplify the loops; add consider using helper functions.",
+      "range": {
+        "startLine": 1507,
+        "startChar": 0,
+        "endLine": 1524,
+        "endChar": 43
+      },
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cca8b31d_1efd8b61",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "This seems problematic - is there a bug you can link, or provide more evidence where the problem is. Ideally we revisit this once git is patched.",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7105c978_f1422539",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 3052,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "this is never set, so remove the \"quiet\" parameter and always use -q.",
+      "range": {
+        "startLine": 3052,
+        "startChar": 28,
+        "endLine": 3052,
+        "endChar": 40
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "d0b1673b_33abcea3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1612,
+                "startChar": 0,
+                "endLine": 1613,
+                "endChar": 0
+              },
+              "replacement": "            self._InitSubmodules(quiet\u003dTrue)\n"
+            },
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3052,
+                "startChar": 0,
+                "endLine": 3056,
+                "endChar": 0
+              },
+              "replacement": "    def _InitSubmodules(self):\n        cmd \u003d [\"submodule\", \"init\", \"-q\"]\n"
+            }
+          ]
+        }
+      ],
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c809c8_829d4ee2",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 3490,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "Maybe I misunderstand logic, but this is tied to work in _MigrateOldSubprojectDirs? It feels odd to have it too far away (leaving repo in invalid state until this part executes); could you combine it?",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95e509e1_c8f1ebfd",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1830,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-13T21:19:51Z",
+      "side": 1,
+      "message": "Relevant to the comment above - this becomes problematic if user runs repo sync with just network half - that would leave repository in a broken state.",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
