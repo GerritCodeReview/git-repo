@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81d81a65_7938d4e1",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T18:34:48Z",
+      "side": 1,
+      "message": "i would generalize to \"Cleaning up internal repo state.\"",
+      "fixSuggestions": [
+        {
+          "fixId": "fc9eddf4_0181e947",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/gc.py",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 25,
+                "endChar": 0
+              },
+              "replacement": "    helpSummary \u003d \"Cleaning up internal repo state.\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a52b676_f93afbf1",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T18:34:48Z",
+      "side": 1,
+      "message": "docstring one-liners should be one line\n\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be25fad2_cb3b5d18",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T18:34:48Z",
+      "side": 1,
+      "message": "should include the base directory that we\u0027re scanning",
+      "fixSuggestions": [
+        {
+          "fixId": "ba10d43f_47daf0ac",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/gc.py",
+              "range": {
+                "startLine": 50,
+                "startChar": 0,
+                "endLine": 51,
+                "endChar": 0
+              },
+              "replacement": "        print(f\"Scanning filesystem under {self.repodir}...\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04cd3f2c_67ab0754",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T18:34:48Z",
+      "side": 1,
+      "message": "should return non-zero right ?",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0f550dc_16ffaf4f",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T18:34:48Z",
+      "side": 1,
+      "message": "seems like this could use a --dry-run flag",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4facf6e1_38d494c7",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T18:34:48Z",
+      "side": 1,
+      "message": "we should rename it before deleting.  if the user interrupts a removal operation, it could wedge that directory.",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

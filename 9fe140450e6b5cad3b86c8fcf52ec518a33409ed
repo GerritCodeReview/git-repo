@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a47f7048_297e11f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T18:34:48Z",
+      "side": 1,
+      "message": "please run `./release/update-manpages`",
+      "revId": "9fe140450e6b5cad3b86c8fcf52ec518a33409ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a43670cf_62ee358d",
         "filename": "subcmds/gc.py",
         "patchSetId": 4
