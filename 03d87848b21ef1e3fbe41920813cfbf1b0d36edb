@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bdfd6d6_ab51951a",
+        "filename": "repo_trace.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-16T13:36:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "671ebee7_cda253e8",
+      "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba7563d1_14bd24f9",
@@ -66,6 +84,24 @@
           ]
         }
       ],
+      "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef4fe649_87b49d2d",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-16T13:36:33Z",
+      "side": 1,
+      "message": "Maybe you misunderstood, or miss-typed?\n\nTry this (without my commit):\nREPO_TRACE\u003d0\n./run_tests\n\nSo I cannot set it to False, then it fails for everyone.\n\nIf I instead assume you meant SetTrace(True), then the API change wasnt really needed, but I can go with that too I guess.",
+      "parentUuid": "ba7563d1_14bd24f9",
       "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
