@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4dfc4f9_6d1e118b",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T19:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "81d81a65_7938d4e1",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a52b676_f93afbf1",
@@ -49,6 +67,24 @@
       "writtenOn": "2024-12-16T18:34:48Z",
       "side": 1,
       "message": "docstring one-liners should be one line\n\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53b16ab4_177eccfc",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T19:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a52b676_f93afbf1",
       "revId": "bd6aebb84b54500894d7319876710680a0099c88",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -88,6 +124,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "806004bb_55e60d51",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T19:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be25fad2_cb3b5d18",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04cd3f2c_67ab0754",
@@ -101,6 +155,24 @@
       "writtenOn": "2024-12-16T18:34:48Z",
       "side": 1,
       "message": "should return non-zero right ?",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd769244_0af9da09",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T19:02:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04cd3f2c_67ab0754",
       "revId": "bd6aebb84b54500894d7319876710680a0099c88",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -122,6 +194,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "075ce654_d8e6142b",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T19:02:05Z",
+      "side": 1,
+      "message": "Hmm, I don\u0027t think it would be useful since we print all directories that would be deleted a few lines above.",
+      "parentUuid": "d0f550dc_16ffaf4f",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4facf6e1_38d494c7",
@@ -135,6 +225,24 @@
       "writtenOn": "2024-12-16T18:34:48Z",
       "side": 1,
       "message": "we should rename it before deleting.  if the user interrupts a removal operation, it could wedge that directory.",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6e31ae0_e4c6c18d",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T19:02:05Z",
+      "side": 1,
+      "message": "The risk of rename is that we could leave renamed directory around too. But, in any case, we are trying to remove unwanted directory. If the user interrupts the process, they can unwedge by re-running `repo gc`. Maybe a simple signal handler to let user know about the interruption outcome would be enough?",
+      "parentUuid": "4facf6e1_38d494c7",
       "revId": "bd6aebb84b54500894d7319876710680a0099c88",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
