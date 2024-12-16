@@ -143,6 +143,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7752f02f_19297b74",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-16T15:16:41Z",
+      "side": 1,
+      "message": "Sure, it just dawned on me that joinpath is hardly used in git-repo.",
+      "parentUuid": "43357c04_77bf0d93",
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93481951_2c92c8d9",
@@ -174,6 +192,24 @@
           ]
         }
       ],
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5a2a7f2_983e314d",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-16T15:16:41Z",
+      "side": 1,
+      "message": "I dont use pathlib for manipulating files and folders though, I think it violates separation of concern and becomes inconsistent when doing os.bla for most stuff and then path.bla for a handful of others, it doesnt help readability.",
+      "parentUuid": "93481951_2c92c8d9",
       "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -213,6 +249,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7aa0b213_7a0f7cac",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-16T15:16:41Z",
+      "side": 1,
+      "message": "Sure, thanks for explanation!",
+      "parentUuid": "8125f222_457f12e9",
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbde5a48_7c38d56b",
@@ -226,6 +280,24 @@
       "writtenOn": "2024-12-13T16:49:23Z",
       "side": 1,
       "message": "Path objects have mkdir methods\n\n```suggestion\n            (self.repodir / f\"projects/tests/path{x}.git\").mkdir()\n```",
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c0f89f08_609bf62d",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 3610353
+      },
+      "writtenOn": "2024-12-16T15:16:41Z",
+      "side": 1,
+      "message": "Same here, this (bla).send_email() type of stuff isn\u0027t something I want to start with.",
+      "parentUuid": "cbde5a48_7c38d56b",
       "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
