@@ -230,6 +230,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8009ba40_3e82f293",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T21:50:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4f44796_d5788a58",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4facf6e1_38d494c7",
@@ -279,6 +297,24 @@
       "side": 1,
       "message": "renamed dirs wouldn\u0027t get in the way of future syncs.  we can create a dedicated `to-be-deleted/` dir to move them to first.\n\nhitting Ctrl+C on an operation shouldn\u0027t leave a tree broken.  otherwise you\u0027re saying that the user has to manually inspect the entire internal state (no one will), or they have to let `repo gc` fully finish -- which might not be what they want if they realize/change their mind mid-way.",
       "parentUuid": "c6e31ae0_e4c6c18d",
+      "revId": "bd6aebb84b54500894d7319876710680a0099c88",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2df74bc_dd6b657b",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-16T21:50:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1189e429_4b0237f5",
       "revId": "bd6aebb84b54500894d7319876710680a0099c88",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
