@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ccbf112_01e5acad",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-16T20:49:20Z",
+      "side": 1,
+      "message": "this loop could use a progress display.  some of these dirs could be O(GB) in size or O(100\u0027s) in number of files.  some OS\u0027s/filesystems are slow here.",
+      "revId": "1b63cde67f1d871f927b20e24c97a4475019faff",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
