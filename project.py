@@ -3415,6 +3415,10 @@ class Project:
         """
         dotgit = os.path.join(self.worktree, ".git")
 
+        # If bare checkouts of submodules are stored under the subproject dirs,
+        # migrate them.
+        self._MigrateOldSubmoduleDirs()
+
         # If using an old layout style (a directory), migrate it.
         if not platform_utils.islink(dotgit) and platform_utils.isdir(dotgit):
             self._MigrateOldWorkTreeGitDir(dotgit, project=self.name)
@@ -3540,6 +3544,52 @@ class Project:
             os.path.relpath(gitdir, os.path.dirname(os.path.realpath(dotgit))),
             dotgit,
         )
+
+    def _MigrateOldSubmoduleDirs(self):
+        """Attempt to move the old 'subprojects' and 'subproject-objects' dirs
+        to 'modules' and 'module-objects' respectively as bare checkouts of
+        submodules are now in the module dirs.
+        """
+        old = os.path.join(self.gitdir, "subprojects")
+        old_objs = os.path.join(self.gitdir, "subproject-objects")
+
+        if not all(map(platform_utils.isdir, [old, old_objs])):
+            return
+
+        new = os.path.join(self.gitdir, "modules")
+        new_objs = os.path.join(self.gitdir, "module-objects")
+
+        # If both new and old exist, delete the old dirs
+        if all(map(platform_utils.isdir, [new, new_objs])):
+            platform_utils.rmtree(old, ignore_errors=True)
+            platform_utils.rmtree(old_objs, ignore_errors=True)
+            return
+
+        platform_utils.rename(old_objs, new_objs)
+        for module_name in platform_utils.listdir(old):
+            module_path = os.path.join(old, module_name)
+            self._MigrateSubprojectLinks(module_path)
+            self._RenameSubprojectName(module_path)
+        platform_utils.rename(old, new)
+
+    def _MigrateSubprojectLinks(self, path):
+        """Re-create links like 'objects', 'hooks' and 'rr-cache' to point to
+        the new module-objects dir.
+        """
+        for file in platform_utils.listdir(path):
+            file_path = os.path.join(path, file)
+            if platform_utils.islink(file_path):
+                target = platform_utils.readlink(file_path)
+                if "subproject-objects" in target:
+                    new_target = target.replace(
+                        "subproject-objects", "module-objects"
+                    )
+                    platform_utils.remove(file_path)
+                    platform_utils.symlink(new_target, file_path)
+
+    def _RenameSubprojectName(self, path):
+        """Rename modules like 'sample.git' to 'sample'"""
+        platform_utils.rename(path, os.path.splitext(path)[0])
 
     def _get_symlink_error_message(self):
         if platform_utils.isWindows():
