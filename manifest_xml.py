@@ -2056,10 +2056,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         path = path.rstrip("/")
         name = name.rstrip("/")
         relpath = self._JoinRelpath(parent.relpath, path)
-        gitdir = os.path.join(parent.gitdir, "subprojects", "%s.git" % path)
-        objdir = os.path.join(
-            parent.gitdir, "subproject-objects", "%s.git" % name
-        )
+        gitdir = os.path.join(parent.gitdir, "modules", path)
+        objdir = os.path.join(parent.gitdir, "module-objects", f"{name}.git")
         if self.IsMirror:
             worktree = None
         else:

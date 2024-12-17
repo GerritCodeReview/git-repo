@@ -141,8 +141,8 @@ Instead, you should use standard Git workflows like [git worktree] or
     (e.g. a local mirror & a public review server) while avoiding duplicating
     the content.  However, this can run into problems if different remotes use
     the same path on their respective servers.  Best to avoid that.
-*   `subprojects/`: Like `projects/`, but for git submodules.
-*   `subproject-objects/`: Like `project-objects/`, but for git submodules.
+*   `modules/`: Like `projects/`, but for git submodules.
+*   `module-objects/`: Like `project-objects/`, but for git submodules.
 *   `worktrees/`: Bare checkouts of every project synced by the manifest.  The
     filesystem layout matches the `<project name=...` setting in the manifest
     (i.e. the path on the remote server) with a `.git` suffix.  This has the
