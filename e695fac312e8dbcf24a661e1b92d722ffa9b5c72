@@ -16,6 +16,24 @@
       "message": "```suggestion\n        directories that end with \".git\" that are not in the `to_keep` set.\n        \"\"\"\n```",
       "revId": "e695fac312e8dbcf24a661e1b92d722ffa9b5c72",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6654632_dac21bea",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-17T02:08:30Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "3d64999e_0d1aac97",
+      "revId": "e695fac312e8dbcf24a661e1b92d722ffa9b5c72",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
