@@ -3415,6 +3415,11 @@ class Project:
         """
         dotgit = os.path.join(self.worktree, ".git")
 
+        # If bare checkout of the submodule is stored under the subproject dir,
+        # migrate it.
+        if self.parent:
+            self._MigrateOldSubmoduleDir()
+
         # If using an old layout style (a directory), migrate it.
         if not platform_utils.islink(dotgit) and platform_utils.isdir(dotgit):
             self._MigrateOldWorkTreeGitDir(dotgit, project=self.name)
@@ -3540,6 +3545,28 @@ class Project:
             os.path.relpath(gitdir, os.path.dirname(os.path.realpath(dotgit))),
             dotgit,
         )
+
+    def _MigrateOldSubmoduleDir(self):
+        """Move the old bare checkout in 'subprojects' to 'modules'
+        as bare checkouts of submodules are now in 'modules' dir.
+        """
+        subprojects = os.path.join(self.parent.gitdir, "subprojects")
+        if not platform_utils.isdir(subprojects):
+            return
+
+        modules = os.path.join(self.parent.gitdir, "modules")
+        old = self.gitdir
+        new = os.path.splitext(self.gitdir.replace(subprojects, modules))[0]
+
+        if all(map(platform_utils.isdir, [old, new])):
+            platform_utils.rmtree(old, ignore_errors=True)
+        else:
+            os.makedirs(modules, exist_ok=True)
+            platform_utils.rename(old, new)
+        self.gitdir = new
+        self.UpdatePaths(self.relpath, self.worktree, self.gitdir, self.objdir)
+        if not os.listdir(subprojects):
+            platform_utils.rmdir(subprojects)
 
     def _get_symlink_error_message(self):
         if platform_utils.isWindows():

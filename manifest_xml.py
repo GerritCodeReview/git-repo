@@ -2056,7 +2056,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         path = path.rstrip("/")
         name = name.rstrip("/")
         relpath = self._JoinRelpath(parent.relpath, path)
-        gitdir = os.path.join(parent.gitdir, "subprojects", "%s.git" % path)
+        subprojects = os.path.join(parent.gitdir, "subprojects", f"{path}.git")
+        modules = os.path.join(parent.gitdir, "modules", path)
+        if platform_utils.isdir(subprojects):
+            gitdir = subprojects
+        else:
+            gitdir = modules
         objdir = os.path.join(
             parent.gitdir, "subproject-objects", "%s.git" % name
         )
