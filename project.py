@@ -3429,20 +3429,22 @@ class Project:
                 self._InitGitWorktree()
                 self._CopyAndLinkFiles()
         else:
+            # Remove old directory symbolic links for submodules
+            if self.parent and platform_utils.islink(dotgit):
+                platform_utils.remove(dotgit)
+                init_dotgit = True
+
             if not init_dotgit:
                 # See if the project has changed.
-                if os.path.realpath(self.gitdir) != os.path.realpath(dotgit):
-                    platform_utils.remove(dotgit)
+                self._removeBadGitDirLink(dotgit)
 
             if init_dotgit or not os.path.exists(dotgit):
-                os.makedirs(self.worktree, exist_ok=True)
-                platform_utils.symlink(
-                    os.path.relpath(self.gitdir, self.worktree), dotgit
-                )
+                self._createDotGit(dotgit)
 
             if init_dotgit:
                 _lwrite(
-                    os.path.join(dotgit, HEAD), "%s\n" % self.GetRevisionId()
+                    os.path.join(self.gitdir, HEAD),
+                    "%s\n" % self.GetRevisionId(),
                 )
 
                 # Finish checking out the worktree.
@@ -3456,6 +3458,32 @@ class Project:
                 if submodules:
                     self._SyncSubmodules(quiet=True)
                 self._CopyAndLinkFiles()
+
+    def _createDotGit(self, dotgit):
+        os.makedirs(self.worktree, exist_ok=True)
+        if self.parent:
+            _lwrite(
+                dotgit,
+                "gitdir: " + os.path.relpath(self.gitdir, self.worktree) + "\n",
+            )
+        else:
+            platform_utils.symlink(
+                os.path.relpath(self.gitdir, self.worktree), dotgit
+            )
+
+    def _removeBadGitDirLink(self, dotgit):
+        if self.parent and os.path.isfile(dotgit):
+            with open(dotgit) as fp:
+                setting = fp.read()
+                assert setting.startswith("gitdir:")
+                gitdir = setting.split(":", 1)[1].strip()
+                dotgit_path = os.path.normpath(
+                    os.path.join(self.worktree, gitdir)
+                )
+        else:
+            dotgit_path = os.path.realpath(dotgit)
+        if os.path.realpath(self.gitdir) != dotgit_path:
+            platform_utils.remove(dotgit)
 
     @classmethod
     def _MigrateOldWorkTreeGitDir(cls, dotgit, project=None):
