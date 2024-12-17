@@ -216,6 +216,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9436d4cb_e7777a1a",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-17T04:47:49Z",
+      "side": 1,
+      "message": "i don\u0027t disagree that inconsistency isn\u0027t great, but i don\u0027t see us doing a mass conversion of all code to address it (especially considering the risk with low test coverage).  instead, writing new code with pathlib, especially when it can be done on function or module boundaries, is a lot more tractible.\n\npathlib is better for path manipulation than strings.  it has many builtin APIs that make things easier to read because of their conciseness.  like a write_text helper than gets rid of a context manager block.",
+      "parentUuid": "e5a2a7f2_983e314d",
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8125f222_457f12e9",
         "filename": "tests/test_subcmds_forall.py",
         "patchSetId": 1
@@ -298,6 +316,24 @@
       "side": 1,
       "message": "Same here, this (bla).send_email() type of stuff isn\u0027t something I want to start with.",
       "parentUuid": "cbde5a48_7c38d56b",
+      "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fd9e258_c60bdd79",
+        "filename": "tests/test_subcmds_forall.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-17T04:47:49Z",
+      "side": 1,
+      "message": "feel free to create variables if you prefer",
+      "parentUuid": "c0f89f08_609bf62d",
       "revId": "13c08ccefa93ed465737f6b2c7a9be2447b6cb2e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
