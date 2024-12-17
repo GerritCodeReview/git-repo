@@ -104,6 +104,24 @@
       "parentUuid": "ba7563d1_14bd24f9",
       "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b400176_ab0f3373",
+        "filename": "tests/test_repo_trace.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-17T05:06:52Z",
+      "side": 1,
+      "message": "what i wrote is what i meant.  the problem is that our trace module is currently \"temporarily\" always enabled, and it\u0027s not handling this mismatch.\n\ni think we can go simpler.  instead of this CL, what about this one line change:\n```\n--- a/tests/conftest.py\n+++ b/tests/conftest.py\n@@ -25,6 +25,7 @@ import repo_trace\n @pytest.fixture(autouse\u003dTrue)\n def disable_repo_trace(tmp_path):\n     \"\"\"Set an environment marker to relax certain strict checks for test code.\"\"\"  # noqa: E501\n+    repo_trace._TRACE \u003d True\n     repo_trace._TRACE_FILE \u003d str(tmp_path / \"TRACE_FILE_from_test\")\n \n \n```",
+      "parentUuid": "ef4fe649_87b49d2d",
+      "revId": "03d87848b21ef1e3fbe41920813cfbf1b0d36edb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
