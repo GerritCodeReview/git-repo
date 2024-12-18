@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96bd6fc0_3a6af4a2",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3465,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2024-12-18T18:58:35Z",
+      "side": 1,
+      "message": "use _lwrite",
+      "fixSuggestions": [
+        {
+          "fixId": "1a65b55a_a1dcb26b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3465,
+                "startChar": 0,
+                "endLine": 3471,
+                "endChar": 0
+              },
+              "replacement": "            _lwrite(\n                dotgit,\n                \"gitdir:\" + os.path.relpath(self.gitdir, self.worktree) + \"\\n\",\n            )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9d962b1a6501e1cc082af5d0436ed846e0d778e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
