@@ -71,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0c92e6e_ae6ba96e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "\u003e If we can just use `git submodule update --init` that would be the ideal state IMO.\n\u003e \n\nYes, that would indeed be good, but I didn\u0027t do it for these reasons:\n1. The objects will be in the `modules` dir as opposed to a separate `*-objects` dir, which will be inconsistent with how repo\u0027s fs layout of bare checkouts.\n2. `git submodule update` can\u0027t be used without a working tree. So, if someone were to use a network-only sync, submodules won\u0027t be synced/updated.\n\n\u003e this feels like too many changes to pack into 1 commit \n\u003e Also, I feel we could split this CL into two to make it easier to review + bisect in the future.\n\nDone. Split into 3 changes now.",
+      "parentUuid": "be6d4f7e_8c91c7eb",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46c91724_50e3611a",
@@ -108,6 +126,30 @@
           ]
         }
       ],
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3daf8362_f8376e19",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2059,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46c91724_50e3611a",
+      "range": {
+        "startLine": 2059,
+        "startChar": 56,
+        "endLine": 2059,
+        "endChar": 67
+      },
       "revId": "49765c70be9334312550850f32d62845125022c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -153,6 +195,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5da447f_de12e8eb",
+        "filename": "manifest_xml.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 2060,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdc649e3_df127afe",
+      "range": {
+        "startLine": 2060,
+        "startChar": 63,
+        "endLine": 2060,
+        "endChar": 78
+      },
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88c87071_c1c611c1",
@@ -176,6 +242,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8af6b84d_591a4e7c",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1524,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "I have attempted to improve this.",
+      "parentUuid": "88c87071_c1c611c1",
+      "range": {
+        "startLine": 1507,
+        "startChar": 0,
+        "endLine": 1524,
+        "endChar": 43
+      },
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cca8b31d_1efd8b61",
@@ -189,6 +279,24 @@
       "writtenOn": "2024-12-13T21:19:51Z",
       "side": 1,
       "message": "This seems problematic - is there a bug you can link, or provide more evidence where the problem is. Ideally we revisit this once git is patched.",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f63d51b_8e3dad1d",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1612,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "Done.\nhttps://git-scm.com/docs/git-worktree#_bugs",
+      "parentUuid": "cca8b31d_1efd8b61",
       "revId": "49765c70be9334312550850f32d62845125022c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -244,6 +352,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e882927d_9b3d6b29",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 3052,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7105c978_f1422539",
+      "range": {
+        "startLine": 3052,
+        "startChar": 28,
+        "endLine": 3052,
+        "endChar": 40
+      },
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "92c809c8_829d4ee2",
@@ -261,6 +393,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e86e95f_3dc22145",
+        "filename": "project.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 3490,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92c809c8_829d4ee2",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95e509e1_c8f1ebfd",
@@ -274,6 +424,24 @@
       "writtenOn": "2024-12-13T21:19:51Z",
       "side": 1,
       "message": "Relevant to the comment above - this becomes problematic if user runs repo sync with just network half - that would leave repository in a broken state.",
+      "revId": "49765c70be9334312550850f32d62845125022c8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eda255b_8982c102",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 4
+      },
+      "lineNbr": 1830,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T18:13:39Z",
+      "side": 1,
+      "message": "Done. Moved to `_InitWorkTree`.",
+      "parentUuid": "95e509e1_c8f1ebfd",
       "revId": "49765c70be9334312550850f32d62845125022c8",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
