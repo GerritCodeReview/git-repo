@@ -1831,7 +1831,7 @@ later is required to fix a server side protocol bug.
 
         self._fetch_times = _FetchTimes(manifest)
         self._local_sync_state = LocalSyncState(manifest)
-        if not opt.local_only:
+        if not opt.local_only and not opt.repo_upgraded:
             with multiprocessing.Manager() as manager:
                 with ssh.ProxyManager(manager) as ssh_proxy:
                     # Initialize the socket dir once in the parent.
