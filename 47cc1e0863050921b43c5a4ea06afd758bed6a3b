@@ -16,6 +16,24 @@
       "message": "While unlikely, a user could have `subproject-objects` in their repo checkout path. Let\u0027s handle that case.",
       "revId": "47cc1e0863050921b43c5a4ea06afd758bed6a3b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff9f3369_457ca9a0",
+        "filename": "project.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 3583,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T22:16:32Z",
+      "side": 1,
+      "message": "Attempted in next patchset.",
+      "parentUuid": "f31d2d6d_a6b5cf7b",
+      "revId": "47cc1e0863050921b43c5a4ea06afd758bed6a3b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
