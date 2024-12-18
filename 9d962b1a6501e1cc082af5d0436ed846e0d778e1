@@ -34,6 +34,24 @@
       ],
       "revId": "9d962b1a6501e1cc082af5d0436ed846e0d778e1",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce02609_2a7cede1",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 3465,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-18T22:16:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "96bd6fc0_3a6af4a2",
+      "revId": "9d962b1a6501e1cc082af5d0436ed846e0d778e1",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
