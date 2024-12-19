@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5dc98c26_4389c5e6",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-19T23:09:37Z",
+      "side": 1,
+      "message": "If we decide not to rename `subproject-objects` (currently done for consistency), the migration will be simpler. However, we would be left with inconsistent names. Do you guys think, this might be acceptable since it is internal to repo, and `docs/internal-fs-layout.md` has good docs for repo devs?",
+      "parentUuid": "ba7e0f1a_f03e4e54",
+      "range": {
+        "startLine": 3567,
+        "startChar": 0,
+        "endLine": 3573,
+        "endChar": 39
+      },
+      "revId": "8ea36c36deec8bb01524da38b177d6b31caa3676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3f9a4d8_693600d0",
         "filename": "project.py",
         "patchSetId": 6
