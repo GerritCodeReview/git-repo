@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61782525_ce19005e",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3462,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-19T16:32:10Z",
+      "side": 1,
+      "message": "all new funcs should have at least a one-line docstring",
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63133b7d_793dfee5",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3467,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-19T16:32:10Z",
+      "side": 1,
+      "message": "use f-strings",
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "645a7d35_9e47137d",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3478,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-19T16:32:10Z",
+      "side": 1,
+      "message": "don\u0027t use `assert` in real code.  this should triage with a proper error message, including context (the path that failed, and the content it had).",
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c21d940_07c5f0b9",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3482,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2024-12-19T16:32:10Z",
+      "side": 1,
+      "message": "unindent one level -- they don\u0027t need to be inside the with block",
+      "range": {
+        "startLine": 3479,
+        "startChar": 0,
+        "endLine": 3482,
+        "endChar": 17
+      },
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
