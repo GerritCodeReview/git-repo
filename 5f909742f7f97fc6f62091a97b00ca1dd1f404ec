@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6ceb34a_dcc20494",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3462,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-19T20:38:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "61782525_ce19005e",
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63133b7d_793dfee5",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-19T16:32:10Z",
       "side": 1,
       "message": "use f-strings",
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7222f4ff_2b65dc91",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3467,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-19T20:38:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63133b7d_793dfee5",
       "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -52,6 +88,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05bfa64e_44f3fabc",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3478,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-19T20:38:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "645a7d35_9e47137d",
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7c21d940_07c5f0b9",
@@ -65,6 +119,30 @@
       "writtenOn": "2024-12-19T16:32:10Z",
       "side": 1,
       "message": "unindent one level -- they don\u0027t need to be inside the with block",
+      "range": {
+        "startLine": 3479,
+        "startChar": 0,
+        "endLine": 3482,
+        "endChar": 17
+      },
+      "revId": "5f909742f7f97fc6f62091a97b00ca1dd1f404ec",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91a3121a_cae54b55",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3482,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-19T20:38:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7c21d940_07c5f0b9",
       "range": {
         "startLine": 3479,
         "startChar": 0,
