@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78e162cc_4d8455b2",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2024-12-21T00:00:36Z",
+      "side": 1,
+      "message": "\u003e When one runs git submodule init (or submodule update --quiet), I believe there is no module-objects and all data object data is inside modules. Is that correct? \n\u003e \n\nYes\n\n\u003e If so, we probably want to move to that direction. It\u0027s probably okay to leave old checkouts with symlinks (in that case, subproject-objects is okay with me), but new ones should respect curernt git behavior.\n\nWe\u0027d like to support using git submodule cmds to fetch/checkout subprojects and avoid any required migration. We did spend a couple of hrs talking about this internally, but we have a few concerns still and we are not sure on the right approach to solve. Here\u0027s some of them:\n\n- breaks existing functionality where submodules can be given as args for repo sync, for example `repo sync \u003cpath-to-submodule\u003e`\n- complicated and big refactor to determine old vs new behavior\n- repo worktree functionality will need additional changes to support using git submodule cmds to fetch/checkout subprojects.\n\nCan you share your ideas on how we can handle them?",
+      "parentUuid": "ea38ccf3_20a3de42",
+      "range": {
+        "startLine": 3567,
+        "startChar": 0,
+        "endLine": 3573,
+        "endChar": 39
+      },
+      "revId": "8ea36c36deec8bb01524da38b177d6b31caa3676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3f9a4d8_693600d0",
         "filename": "project.py",
         "patchSetId": 6
