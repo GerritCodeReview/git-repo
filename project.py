@@ -2409,7 +2409,7 @@ class Project:
                 log_as_error=False,
             )
 
-            if self.upstream:
+            if self.upstream and not self._IsShallowClone():
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
@@ -2790,9 +2790,7 @@ class Project:
         return ok
 
     def _ApplyCloneBundle(self, initial=False, quiet=False, verbose=False):
-        if initial and (
-            self.manifest.manifestProject.depth or self.clone_depth
-        ):
+        if initial and self._IsShallowClone():
             return False
 
         remote = self.GetRemote()
@@ -2932,6 +2930,9 @@ class Project:
                     return False
         except OSError:
             return False
+
+    def _IsShallowClone(self):
+        return self.manifest.manifestProject.depth or self.clone_depth
 
     def _Checkout(self, rev, force_checkout=False, quiet=False):
         cmd = ["checkout"]
