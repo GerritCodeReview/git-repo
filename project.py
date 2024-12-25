@@ -2409,7 +2409,9 @@ class Project:
                 log_as_error=False,
             )
 
-            if self.upstream:
+            if self.upstream and not (
+                self.clone_depth or self.manifest.manifestProject.depth
+            ):
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
