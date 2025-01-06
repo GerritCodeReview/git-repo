@@ -146,6 +146,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ef802e5e_7f51c9e9",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-06T22:10:29Z",
+      "side": 1,
+      "message": "\u003e If someone interrupts this in this section, the remaining state will be corrupted. I don\u0027t have a solution to this that will be efficient. vapier@, any suggestions?\n\n\nPS8 does not actually attempt to use `submodule update`. I was trying to address the above quoted concern by making the migration less complex, specifically by not renaming `subproject-objects` to `module-objects`.\n\nAdditionally, the if-else statement in `manifest_xml.py` at L2061 fixes a problem I discovered with PS7. In PS7, the first repo sync (with this change) would fetch into the `modules` directory, but it should actually continue to fetch into `subprojects` and then perform the checkout in `modules` after the migration.\n\nTo summarize, PS8 fixes the problem I discovered and also simplifies the migration process.\n\nThe concerns I laid out in my previous comment still stand with PS8 though.",
+      "parentUuid": "6d61a220_4f44ce6e",
+      "range": {
+        "startLine": 3567,
+        "startChar": 0,
+        "endLine": 3573,
+        "endChar": 39
+      },
+      "revId": "8ea36c36deec8bb01524da38b177d6b31caa3676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3f9a4d8_693600d0",
         "filename": "project.py",
         "patchSetId": 6
