@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27f0163a_3e60a42d",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-06T21:40:19Z",
+      "side": 1,
+      "message": "we should make a note it may not exist if managed by `git submodule` itself.",
+      "range": {
+        "startLine": 145,
+        "startChar": 17,
+        "endLine": 145,
+        "endChar": 18
+      },
+      "revId": "1df171282638f0187f75f9d8569a532c6882ab15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d755731_5de33250",
+        "filename": "manifest_xml.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 2065,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-06T21:40:19Z",
+      "side": 1,
+      "message": "I believe this is incorrect since it may not exist. We should either return valid location (e.g. return subprojects again) or return None if objdir doesn\u0027t exist.",
+      "revId": "1df171282638f0187f75f9d8569a532c6882ab15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}

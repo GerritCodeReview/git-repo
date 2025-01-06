@@ -122,6 +122,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6d61a220_4f44ce6e",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-06T21:40:19Z",
+      "side": 1,
+      "message": "I believe your second concern is fully addressed with PS8.\n\nWe need to address your first concern - repo should be aware of all git submodules. I believe, if project-objects path is fixed (as I requested in the other comment), it should work again.\n\nAs for the third option, worktree is still experimental, so I\u0027m okay if we explicitly state submodules can\u0027t be used with worktrees (detecting such state early could be a bit tricky).",
+      "parentUuid": "61b2ad5d_c7e63a72",
+      "range": {
+        "startLine": 3567,
+        "startChar": 0,
+        "endLine": 3573,
+        "endChar": 39
+      },
+      "revId": "8ea36c36deec8bb01524da38b177d6b31caa3676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3f9a4d8_693600d0",
         "filename": "project.py",
         "patchSetId": 6
