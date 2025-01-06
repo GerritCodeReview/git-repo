@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25109003_36cddf5c",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2413,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-06T22:02:38Z",
+      "side": 1,
+      "message": "nit: Similar check is in _ApplyCloneBundle, let\u0027s extract this to a method and reuse.",
+      "range": {
+        "startLine": 2413,
+        "startChar": 16,
+        "endLine": 2413,
+        "endChar": 71
+      },
+      "revId": "8f3841d6aa29e07ec0a904665abc880283bc93af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
