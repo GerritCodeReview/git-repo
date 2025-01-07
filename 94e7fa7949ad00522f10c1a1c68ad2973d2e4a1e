@@ -1,0 +1,143 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2951718a_f3e19d5f",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T16:28:22Z",
+      "side": 1,
+      "message": "```suggestion\n        # if they will be synced.\n```",
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "927c892d_0b64e906",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1570,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T16:28:22Z",
+      "side": 1,
+      "message": "should this check `if submodules` too ?",
+      "fixSuggestions": [
+        {
+          "fixId": "de43bc99_51b3932e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 1570,
+                "startChar": 0,
+                "endLine": 1571,
+                "endChar": 0
+              },
+              "replacement": "        if submodules and self.has_subprojects and not self.use_git_worktrees:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c5ade82_de7815a3",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3011,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T16:28:22Z",
+      "side": 1,
+      "message": "docstring please",
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49c41544_8ab7fda9",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3012,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T16:28:22Z",
+      "side": 1,
+      "message": "`-q` should be used only if `quiet` is set (see above wrt sync)",
+      "fixSuggestions": [
+        {
+          "fixId": "aa0fc6ae_68021fc2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3011,
+                "startChar": 0,
+                "endLine": 3013,
+                "endChar": 0
+              },
+              "replacement": "    def _InitSubmodules(self, quiet\u003dTrue):\n        cmd \u003d [\"submodule\", \"init\"]\n        if quiet:\n            cmd.append(\"-q\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0839cf6_42741fb5",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3015,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T16:28:22Z",
+      "side": 1,
+      "message": "f-string in new code please",
+      "fixSuggestions": [
+        {
+          "fixId": "d944475c_05d7e920",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3015,
+                "startChar": 0,
+                "endLine": 3016,
+                "endChar": 0
+              },
+              "replacement": "                f\"{self.name} submodule init\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
