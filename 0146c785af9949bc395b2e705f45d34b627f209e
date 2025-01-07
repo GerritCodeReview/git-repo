@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19615cfd_d5686fb0",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3432,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T15:57:31Z",
+      "side": 1,
+      "message": "```suggestion\n            # Remove old directory symbolic links for submodules.\n```",
+      "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5ccdb8c_2f2c757c",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3463,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T15:57:31Z",
+      "side": 1,
+      "message": "this isn\u0027t a one-liner.  please see these docs for examples:\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings\n\nthe first line could be \"Initialize .git path.\", and the extended details would be in the paragraph afterwords.\n\nalso, typo here.",
+      "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62e6a25c_ce6e7c47",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3477,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-07T15:57:31Z",
+      "side": 1,
+      "message": "not a one-liner.  you can phrase it:\n\n`Verify .git is initialized correctly, otherwise delete it.`",
+      "fixSuggestions": [
+        {
+          "fixId": "8e560b20_805b6f2f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.py",
+              "range": {
+                "startLine": 3477,
+                "startChar": 0,
+                "endLine": 3479,
+                "endChar": 0
+              },
+              "replacement": "        \"\"\"Verify .git is initialized correctly, otherwise delete it.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
