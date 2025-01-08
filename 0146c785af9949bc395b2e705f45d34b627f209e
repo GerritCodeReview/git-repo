@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d568bf61_0c8e2cea",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3432,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T22:51:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19615cfd_d5686fb0",
+      "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5ccdb8c_2f2c757c",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-01-07T15:57:31Z",
       "side": 1,
       "message": "this isn\u0027t a one-liner.  please see these docs for examples:\nhttps://www.chromium.org/chromium-os/developer-library/reference/style-guides/python/#describing-arguments-in-docstrings\n\nthe first line could be \"Initialize .git path.\", and the extended details would be in the paragraph afterwords.\n\nalso, typo here.",
+      "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4309c6f1_ebf05f55",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3463,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T22:51:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5ccdb8c_2f2c757c",
       "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -66,6 +102,24 @@
           ]
         }
       ],
+      "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8121f75c_7f43eaa9",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3477,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T22:51:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "62e6a25c_ce6e7c47",
       "revId": "0146c785af9949bc395b2e705f45d34b627f209e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
