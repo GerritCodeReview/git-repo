@@ -1058,6 +1058,8 @@ later is required to fix a server side protocol bug.
                 verbose=verbose,
             )
             success = syncbuf.Finish()
+        except KeyboardInterrupt:
+            logger.error("Keyboard interrupt while processing %s", project.name)
         except GitError as e:
             logger.error(
                 "error.GitError: Cannot checkout %s: %s", project.name, e
