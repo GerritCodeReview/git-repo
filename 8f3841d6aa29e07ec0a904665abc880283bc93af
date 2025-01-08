@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "293f6b64_9725df29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T00:29:03Z",
+      "side": 1,
+      "message": "\u003e i don\u0027t think this is the right trade-off.  the point of repo is to get a source checkout and let people develop it, and keep it up to date.  if they make a change and it\u0027s merged, they shouldn\u0027t silently get into a wedged state.  the referenced change is addressing that exact scenario.  it isn\u0027t that people are trying to run git rebase themselves.\n\u003e \n\u003e 1. start a branch\n\u003e 2. create+upload a change\n\nUploading changes does not work anyway when a project is shallow cloned? In most cases folks don\u0027t expect this scenario to work when they ask repo to shallow clone a project. The change I referenced (Ie34c5d860) essentially broke shallow clones with repo when revision is a stale SHA as it ends up doing a full fetch.\n\n\u003e 3. change is merged\n\u003e 4. local branch never updates because it can\u0027t rebase onto the newer one\n\u003e \n\u003e now the dev has a project that is wedged.  repo sync doesn\u0027t fix it, nor does it error.\n\u003e \n\u003e i made https://issuetracker.google.com/issues/193798453 public since it doesn\u0027t really have any secret details in it.  that way you can see the discussion that lead to the previous change.",
+      "parentUuid": "4b9bda98_4c6d56de",
+      "revId": "8f3841d6aa29e07ec0a904665abc880283bc93af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "25109003_36cddf5c",
         "filename": "project.py",
         "patchSetId": 1
