@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf07fa11_bc025ade",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T23:01:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2951718a_f3e19d5f",
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "927c892d_0b64e906",
@@ -53,6 +71,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9c434be_9a1f1409",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 1570,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T23:01:19Z",
+      "side": 1,
+      "message": "No, `submodules` seems to be used for the manifest project only and its submodules are initialized in `_InitWorkTree`.",
+      "parentUuid": "927c892d_0b64e906",
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8c5ade82_de7815a3",
@@ -66,6 +102,24 @@
       "writtenOn": "2025-01-07T16:28:22Z",
       "side": 1,
       "message": "docstring please",
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6696a75b_f1c986a8",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3011,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T23:01:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c5ade82_de7815a3",
       "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -105,6 +159,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecf9e315_97f14161",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3012,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T23:01:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49c41544_8ab7fda9",
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0839cf6_42741fb5",
@@ -136,6 +208,24 @@
           ]
         }
       ],
+      "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "653998a7_dabf4bdc",
+        "filename": "project.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 3015,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-08T23:01:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0839cf6_42741fb5",
       "revId": "94e7fa7949ad00522f10c1a1c68ad2973d2e4a1e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
