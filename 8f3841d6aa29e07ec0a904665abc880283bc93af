@@ -74,6 +74,30 @@
       },
       "revId": "8f3841d6aa29e07ec0a904665abc880283bc93af",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc7146db_b7034632",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2413,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-09T16:59:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "25109003_36cddf5c",
+      "range": {
+        "startLine": 2413,
+        "startChar": 16,
+        "endLine": 2413,
+        "endChar": 71
+      },
+      "revId": "8f3841d6aa29e07ec0a904665abc880283bc93af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
