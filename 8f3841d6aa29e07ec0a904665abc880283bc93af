@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ea161f3_00b231ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-13T20:59:25Z",
+      "side": 1,
+      "message": "\u003e \u003e Uploading changes does not work anyway when a project is shallow cloned? \n\u003e \n\u003e Hmm, I don\u0027t think this is correct - you should be able to create new commits and push them to remote, therefore you should be able to create Gerrit changes.\n\nYou are right. I assumed Gerrit didn\u0027t allow that.\n\n\u003e \n\u003e Let\u0027s step back a bit - in the commit message, you mentioned that \"this check will fail when the upstream ref becomes stale\" - could you file a bug that contains a bit more information about the issue you are trying to fix? e.g. is it purerly to skip fetching unneeded data, or there\u0027s actual error.\n\nDone. https://issues.gerritcodereview.com/issues/389729362\nIt is mainly to skip fetching unwanted data. This bug is particularly painful in use-cases such as in CI where a *huge* project is configured to be shallow cloned in the manifest, but ends up being fetched fully.\n\n\u003e We can move discussion there and see if it makes sense to move forward with this CL or not.",
+      "parentUuid": "6880e1bd_9752d117",
+      "revId": "8f3841d6aa29e07ec0a904665abc880283bc93af",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "25109003_36cddf5c",
         "filename": "project.py",
         "patchSetId": 1
