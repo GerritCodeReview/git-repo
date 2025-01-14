@@ -1,0 +1,85 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc413915_b67fafe4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-01-14T20:20:04Z",
+      "side": 1,
+      "message": "LGTM, but it\u0027d be good if this CL includes tests.",
+      "revId": "0544b169d6f9f7498e86ba48991697366a679f5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59e1c0b7_2cac2379",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-01-14T20:20:04Z",
+      "side": 1,
+      "message": "missing dot(.)?",
+      "range": {
+        "startLine": 147,
+        "startChar": 57,
+        "endLine": 147,
+        "endChar": 59
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b4f84e56_979c4f20",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/gc.py",
+              "range": {
+                "startLine": 147,
+                "startChar": 0,
+                "endLine": 148,
+                "endChar": 0
+              },
+              "replacement": "                with open(os.path.join(root, f\"{file[:-4]}.promisor\"), \"w\"):\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0544b169d6f9f7498e86ba48991697366a679f5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50b7c34f_47ebcd8e",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-01-14T20:20:04Z",
+      "side": 1,
+      "message": "super-nit; I\u0027d break this if condition to make the codes more patternized with L156.\n\n```\nfor project in projects:\n    if project.config.GetBooleanm(..):\n        continue\n    if not project.clone_depth:\n        continue\n    if not project.manifest.CloneFilterForDepth \u003d\u003d \"blob:none\":\n        continue\n        \n    repack_projects.append(project)\n```",
+      "range": {
+        "startLine": 159,
+        "startChar": 12,
+        "endLine": 162,
+        "endChar": 14
+      },
+      "revId": "0544b169d6f9f7498e86ba48991697366a679f5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
