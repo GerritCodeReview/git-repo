@@ -16,6 +16,7 @@ import os
 from typing import Set
 
 from command import Command
+from git_command import GitCommand
 import platform_utils
 from progress import Progress
 from project import Project
@@ -23,7 +24,7 @@ from project import Project
 
 class Gc(Command):
     COMMON = True
-    helpSummary = "Cleaning up internal repo state."
+    helpSummary = "Cleaning up internal repo and Git state."
     helpUsage = """
 %prog
 """
@@ -43,6 +44,13 @@ class Gc(Command):
             default=False,
             action="store_true",
             help="answer yes to all safe prompts",
+        )
+        p.add_option(
+            "--repack",
+            default=False,
+            action="store_true",
+            help="repack all projects that use partial clone with "
+            "filter=blob:none",
         )
 
     def _find_git_to_delete(
@@ -126,9 +134,159 @@ class Gc(Command):
 
         return 0
 
+    def _generate_promisor_files(self, pack_dir: str):
+        """Generates promisor files for all pack files in the given directory.
+
+        Promisor files are empty files with the same name as the corresponding
+        pack file but with the ".promisor" extension. They are used by Git.
+        """
+        for root, _, files in platform_utils.walk(pack_dir):
+            for file in files:
+                if not file.endswith(".pack"):
+                    continue
+                with open(os.path.join(root, f"{file[:-4]}promisor"), "w"):
+                    pass
+
+    def repack_projects(self, projects: list[Project], opt):
+        repack_projects = []
+        # Find all projects eligible for repacking:
+        # - can't be shared
+        # - have a specific fetch filter
+        for project in projects:
+            if project.config.GetBoolean("extensions.preciousObjects"):
+                continue
+
+            if (
+                project.clone_depth
+                and project.manifest.CloneFilterForDepth == "blob:none"
+            ):
+                repack_projects.append(project)
+
+        if opt.dryrun:
+            print(f"Would have repacked {len(repack_projects)} projects.")
+            return 0
+
+        pm = Progress(
+            "Repacking (this will take a while)",
+            len(repack_projects),
+            delay=False,
+            quiet=opt.quiet,
+            show_elapsed=True,
+            elide=True,
+        )
+
+        for project in repack_projects:
+            pm.update(msg=f"{project.name}")
+
+            pack_dir = os.path.join(project.gitdir, "tmp_repo_repack")
+            if os.path.isdir(pack_dir):
+                platform_utils.rmtree(pack_dir)
+            os.mkdir(pack_dir)
+
+            # Prepare workspace for repacking - remove all unreachable refs and
+            # their objects.
+            GitCommand(
+                project,
+                ["reflog", "expire", "--expire-unreachable=all"],
+                verify_command=True,
+            ).Wait()
+            pm.update(msg=f"{project.name} | gc", inc=0)
+            GitCommand(
+                project,
+                ["gc"],
+                verify_command=True,
+            ).Wait()
+
+            # Get all objects that are reachable from the remote, and pack them.
+            pm.update(msg=f"{project.name} | generating list of objects", inc=0)
+            remote_objects_cmd = GitCommand(
+                project,
+                [
+                    "rev-list",
+                    "--objects",
+                    f"--remotes={project.remote.name}",
+                    "--filter=blob:none",
+                ],
+                capture_stdout=True,
+                verify_command=True,
+            )
+
+            # Get all local objects and pack them.
+            local_head_objects_cmd = GitCommand(
+                project,
+                ["rev-list", "--objects", "HEAD^{tree}"],
+                capture_stdout=True,
+                verify_command=True,
+            )
+            local_objects_cmd = GitCommand(
+                project,
+                [
+                    "rev-list",
+                    "--objects",
+                    "--all",
+                    "--reflog",
+                    "--indexed-objects",
+                    "--not",
+                    f"--remotes={project.remote.name}",
+                ],
+                capture_stdout=True,
+                verify_command=True,
+            )
+
+            remote_objects_cmd.Wait()
+
+            pm.update(msg=f"{project.name} | remote repack", inc=0)
+            GitCommand(
+                project,
+                ["pack-objects", os.path.join(pack_dir, "pack")],
+                input=remote_objects_cmd.stdout,
+                capture_stderr=True,
+                capture_stdout=True,
+                verify_command=True,
+            ).Wait()
+
+            # create promisor file for each pack file
+            self._generate_promisor_files(pack_dir)
+
+            local_head_objects_cmd.Wait()
+            local_objects_cmd.Wait()
+
+            pm.update(msg=f"{project.name} | local repack", inc=0)
+            GitCommand(
+                project,
+                ["pack-objects", os.path.join(pack_dir, "pack")],
+                input=local_head_objects_cmd.stdout + local_objects_cmd.stdout,
+                capture_stderr=True,
+                capture_stdout=True,
+                verify_command=True,
+            ).Wait()
+
+            # Swap the old pack directory with the new one.
+            platform_utils.rename(
+                os.path.join(project.objdir, "objects", "pack"),
+                os.path.join(project.objdir, "objects", "pack_old"),
+            )
+            platform_utils.rename(
+                pack_dir,
+                os.path.join(project.objdir, "objects", "pack"),
+            )
+            platform_utils.rmtree(
+                os.path.join(project.objdir, "objects", "pack_old")
+            )
+
+        pm.end()
+        return 0
+
     def Execute(self, opt, args):
         projects: list[Project] = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )
 
-        return self.delete_unused_projects(projects, opt)
+        ret = self.delete_unused_projects(projects, opt)
+        if ret != 0:
+            return ret
+
+        if not opt.repack:
+            return
+
+        return self.repack_projects(projects, opt)
