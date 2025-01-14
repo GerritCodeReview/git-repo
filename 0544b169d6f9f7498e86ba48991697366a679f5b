@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5809212f_f52ccf12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-14T20:48:37Z",
+      "side": 1,
+      "message": "We\u0027d need integration test for this since unit tests would be mocking and assume too much, and we don\u0027t have a good framework for that.\n\nI could add unit tests for some isolated methods, such as adding promisor files; but it won\u0027t cover the core functionality.",
+      "parentUuid": "dc413915_b67fafe4",
+      "revId": "0544b169d6f9f7498e86ba48991697366a679f5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59e1c0b7_2cac2379",
@@ -59,6 +77,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0ea32ea_4fd15af7",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-14T20:48:37Z",
+      "side": 1,
+      "message": "it doesn\u0027t, we remove \"pack\" frome filename, and not \".pack\".",
+      "parentUuid": "59e1c0b7_2cac2379",
+      "range": {
+        "startLine": 147,
+        "startChar": 57,
+        "endLine": 147,
+        "endChar": 59
+      },
+      "revId": "0544b169d6f9f7498e86ba48991697366a679f5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "50b7c34f_47ebcd8e",
@@ -72,6 +114,30 @@
       "writtenOn": "2025-01-14T20:20:04Z",
       "side": 1,
       "message": "super-nit; I\u0027d break this if condition to make the codes more patternized with L156.\n\n```\nfor project in projects:\n    if project.config.GetBooleanm(..):\n        continue\n    if not project.clone_depth:\n        continue\n    if not project.manifest.CloneFilterForDepth \u003d\u003d \"blob:none\":\n        continue\n        \n    repack_projects.append(project)\n```",
+      "range": {
+        "startLine": 159,
+        "startChar": 12,
+        "endLine": 162,
+        "endChar": 14
+      },
+      "revId": "0544b169d6f9f7498e86ba48991697366a679f5b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c28d8fae_5ef44378",
+        "filename": "subcmds/gc.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-14T20:48:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50b7c34f_47ebcd8e",
       "range": {
         "startLine": 159,
         "startChar": 12,
