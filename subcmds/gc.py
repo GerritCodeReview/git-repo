@@ -13,11 +13,12 @@
 # limitations under the License.
 
 import os
-from typing import Set
+from typing import List, Set
 
 from command import Command
 import platform_utils
 from progress import Progress
+from project import Project
 
 
 class Gc(Command):
@@ -64,10 +65,7 @@ class Gc(Command):
 
         return to_delete
 
-    def Execute(self, opt, args):
-        projects = self.GetProjects(
-            args, all_manifests=not opt.this_manifest_only
-        )
+    def delete_unused_projects(self, projects: List[Project], opt):
         print(f"Scanning filesystem under {self.repodir}...")
 
         project_paths = set()
@@ -90,11 +88,11 @@ class Gc(Command):
 
         if not to_delete:
             print("Nothing to clean up.")
-            return
+            return 0
 
         print("Identified the following projects are no longer used:")
         print("\n".join(to_delete))
-        print("\n")
+        print("")
         if not opt.yes:
             print(
                 "If you proceed, any local commits in those projects will be "
@@ -125,3 +123,12 @@ class Gc(Command):
                 platform_utils.rmtree(tmp_path)
             pm.update(msg=path)
         pm.end()
+
+        return 0
+
+    def Execute(self, opt, args):
+        projects: List[Project] = self.GetProjects(
+            args, all_manifests=not opt.this_manifest_only
+        )
+
+        return self.delete_unused_projects(projects, opt)
