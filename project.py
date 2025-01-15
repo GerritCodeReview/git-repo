@@ -3443,11 +3443,18 @@ class Project:
 
                 # Finish checking out the worktree.
                 cmd = ["read-tree", "--reset", "-u", "-v", HEAD]
-                if GitCommand(self, cmd).Wait() != 0:
-                    raise GitError(
-                        "Cannot initialize work tree for " + self.name,
-                        project=self.name,
-                    )
+                try:
+                    if GitCommand(self, cmd).Wait() != 0:
+                        raise GitError(
+                            "Cannot initialize work tree for " + self.name,
+                            project=self.name,
+                        )
+                except Exception as e:
+                    # Something went wrong with read-tree (perhaps fetching
+                    # missing blobs), so remove .git to avoid half initialized
+                    # workspace from which repo can't recover on its own.
+                    platform_utils.remove(dotgit)
+                    raise e
 
                 if submodules:
                     self._SyncSubmodules(quiet=True)
