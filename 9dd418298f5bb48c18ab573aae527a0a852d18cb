@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d0c6a6b_6e4e1ac3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3851543
+      },
+      "writtenOn": "2025-01-23T17:51:14Z",
+      "side": 1,
+      "message": "That bug seems to be about repo\u0027s own files, such as .repoconfig, which is different from this patch. Should it still be linked to that bug?",
+      "parentUuid": "9aeeb7c5_1fc5b73f",
+      "revId": "9dd418298f5bb48c18ab573aae527a0a852d18cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6ab26d73_30b62bcc",
         "filename": "git_config.py",
         "patchSetId": 1
