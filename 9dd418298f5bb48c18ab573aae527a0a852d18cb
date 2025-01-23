@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aeeb7c5_1fc5b73f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-23T14:37:53Z",
+      "side": 1,
+      "message": "this is https://issues.gerritcodereview.com/40012444 so please use `Bug: 40012444` here",
+      "revId": "9dd418298f5bb48c18ab573aae527a0a852d18cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ab26d73_30b62bcc",
+        "filename": "git_config.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-01-23T14:37:53Z",
+      "side": 1,
+      "message": "please add a docstring and link to the git docs\nhttps://git-scm.com/docs/git-config#FILES\n\n```suggestion\n    def _getUserConfig():\n        \"\"\"Get the user-specific config file.\n\n        This matches git:\n        https://git-scm.com/docs/git-config#FILES\n        \"\"\"\n```",
+      "revId": "9dd418298f5bb48c18ab573aae527a0a852d18cb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
