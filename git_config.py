@@ -90,6 +90,20 @@ class GitConfig:
 
     @staticmethod
     def _getUserConfig():
+        """Get the user-specific config file.
+
+        Prefers the XDG config location if available, with fallback to
+        ~/.gitconfig
+
+        This matches git behavior:
+        https://git-scm.com/docs/git-config#FILES
+        """
+        xdg_config_home = os.getenv(
+            "XDG_CONFIG_HOME", os.path.expanduser("~/.config")
+        )
+        xdg_config_file = os.path.join(xdg_config_home, "git", "config")
+        if os.path.exists(xdg_config_file):
+            return xdg_config_file
         return os.path.expanduser("~/.gitconfig")
 
     @classmethod
