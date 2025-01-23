@@ -90,6 +90,12 @@ class GitConfig:
 
     @staticmethod
     def _getUserConfig():
+        xdg_config_home = os.getenv(
+            "XDG_CONFIG_HOME", os.path.expanduser("~/.config")
+        )
+        xdg_config_file = os.path.join(xdg_config_home, "git", "config")
+        if os.path.exists(xdg_config_file):
+            return xdg_config_file
         return os.path.expanduser("~/.gitconfig")
 
     @classmethod
