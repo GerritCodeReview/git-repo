@@ -170,6 +170,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f6fa0bd_9719d36d",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-27T22:26:31Z",
+      "side": 1,
+      "message": "@sokcevic@chromium.org any thoughts?",
+      "parentUuid": "ef802e5e_7f51c9e9",
+      "range": {
+        "startLine": 3567,
+        "startChar": 0,
+        "endLine": 3573,
+        "endChar": 39
+      },
+      "revId": "8ea36c36deec8bb01524da38b177d6b31caa3676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3f9a4d8_693600d0",
         "filename": "project.py",
         "patchSetId": 6
