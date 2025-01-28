@@ -141,7 +141,7 @@ to update the working directory files.
         self.manifest.manifestProject.clone_depth = opt.manifest_depth
         self.manifest.manifestProject.upstream = opt.manifest_upstream_branch
         clone_filter_for_depth = (
-            "blob:none" if (_REPO_ALLOW_SHALLOW == "0") else None
+            None if (_REPO_ALLOW_SHALLOW == "1") else "blob:none"
         )
         if not self.manifest.manifestProject.Sync(
             manifest_url=opt.manifest_url,
