@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39c9c9ed_f815db52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1021072
+      },
+      "writtenOn": "2025-01-28T03:11:20Z",
+      "side": 1,
+      "message": "This is true for internal-to-Google Android use cases, but repo is used in many other situations inside and outside Google where this may not be true.",
+      "revId": "6570b3bbf7e7590411eaf8829fbcc9aa2ebb3911",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
