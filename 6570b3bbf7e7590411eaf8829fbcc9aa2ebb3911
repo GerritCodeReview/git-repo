@@ -16,6 +16,24 @@
       "message": "This is true for internal-to-Google Android use cases, but repo is used in many other situations inside and outside Google where this may not be true.",
       "revId": "6570b3bbf7e7590411eaf8829fbcc9aa2ebb3911",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e7654a3_ca55e376",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-28T04:39:25Z",
+      "side": 1,
+      "message": "Yeah, that\u0027s my concern too. Some Git servers may not offer this feature, and so we may need a new set of arguments instead.\n\nI have http://b/392710627 to track this work and investigation.",
+      "parentUuid": "39c9c9ed_f815db52",
+      "revId": "6570b3bbf7e7590411eaf8829fbcc9aa2ebb3911",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
