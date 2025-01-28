@@ -194,6 +194,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b2f717e1_3beebd3e",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-01-28T00:07:03Z",
+      "side": 1,
+      "message": "Sorry for the delay, I lost track of this CL. I think I expected submodule update to be in play at some point, but it\u0027s okay if we leave it out. I would still suggest to make repo a bit more robust and to check if subproject-objects exists or not. Since git won\u0027t ever create `module-objects`, it doesn\u0027t make sense to worry about that one.\n\nThis is nit and optional, the rest lgtm.",
+      "parentUuid": "2f6fa0bd_9719d36d",
+      "range": {
+        "startLine": 3567,
+        "startChar": 0,
+        "endLine": 3573,
+        "endChar": 39
+      },
+      "revId": "8ea36c36deec8bb01524da38b177d6b31caa3676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c3f9a4d8_693600d0",
         "filename": "project.py",
         "patchSetId": 6
