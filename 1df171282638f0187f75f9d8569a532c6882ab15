@@ -24,6 +24,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21fb32ab_d1c0ec82",
+        "filename": "docs/internal-fs-layout.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-31T16:40:31Z",
+      "side": 1,
+      "message": "Use of `git submodule` will not be attempted in this series. See https://gerrit-review.googlesource.com/c/git-repo/+/444881/comment/ba7e0f1a_f03e4e54/",
+      "parentUuid": "27f0163a_3e60a42d",
+      "range": {
+        "startLine": 145,
+        "startChar": 17,
+        "endLine": 145,
+        "endChar": 18
+      },
+      "revId": "1df171282638f0187f75f9d8569a532c6882ab15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d755731_5de33250",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-01-06T21:40:19Z",
       "side": 1,
       "message": "I believe this is incorrect since it may not exist. We should either return valid location (e.g. return subprojects again) or return None if objdir doesn\u0027t exist.",
+      "revId": "1df171282638f0187f75f9d8569a532c6882ab15",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df67962d_036e8b96",
+        "filename": "manifest_xml.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 2065,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-31T16:40:31Z",
+      "side": 1,
+      "message": "The usage of `subproject-objects` is not updated in this change. Also, here we are only returning the paths, which will be used later to place the submodule and its objects.",
+      "parentUuid": "5d755731_5de33250",
       "revId": "1df171282638f0187f75f9d8569a532c6882ab15",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

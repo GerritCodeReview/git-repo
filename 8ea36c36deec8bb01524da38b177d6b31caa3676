@@ -216,6 +216,30 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a0d866d_9955a156",
+        "filename": "project.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 3573,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-01-31T16:40:31Z",
+      "side": 1,
+      "message": "\u003e I would still suggest to make repo a bit more robust and to check if subproject-objects exists or not.\n\nI dont think we need that as this change does not rename `subproject-objects`. It will be used as it was, prior to this change.",
+      "parentUuid": "b2f717e1_3beebd3e",
+      "range": {
+        "startLine": 3567,
+        "startChar": 0,
+        "endLine": 3573,
+        "endChar": 39
+      },
+      "revId": "8ea36c36deec8bb01524da38b177d6b31caa3676",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c3f9a4d8_693600d0",
