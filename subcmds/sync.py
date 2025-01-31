@@ -1502,6 +1502,7 @@ later is required to fix a server side protocol bug.
         if manifest_server.startswith("persistent-"):
             manifest_server = manifest_server[len("persistent-") :]
 
+        # Changes in behavior should update docs/smart-sync.md accordingly.
         try:
             server = xmlrpc.client.Server(manifest_server, transport=transport)
             if opt.smart_sync:
