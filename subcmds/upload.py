@@ -83,7 +83,7 @@ def _VerifyPendingCommits(branches: List[ReviewableBranch]) -> bool:
             )
         logger.warning(
             "YOU PROBABLY DO NOT MEAN TO DO THIS. (Did you rebase across "
-            "branches?)"
+            "branches? If so, rerun with `repo upload --fetch`.)"
         )
         answer = input(
             "If you are sure you intend to do this, type 'yes': "
