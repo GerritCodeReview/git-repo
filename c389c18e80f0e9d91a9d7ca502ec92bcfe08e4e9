@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b18a048c_0ed94d1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1012457
+      },
+      "writtenOn": "2025-02-04T16:06:41Z",
+      "side": 1,
+      "message": "Patchset 9 contains a minor update to better handle a project with multiple submodules.",
+      "revId": "c389c18e80f0e9d91a9d7ca502ec92bcfe08e4e9",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
