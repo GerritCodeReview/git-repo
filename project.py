@@ -2197,24 +2197,27 @@ class Project:
 
         def get_submodules(gitdir, rev):
             # Parse .gitmodules for submodule sub_paths and sub_urls.
-            sub_paths, sub_urls = parse_gitmodules(gitdir, rev)
+            sub_paths, sub_urls, sub_shallows = parse_gitmodules(gitdir, rev)
             if not sub_paths:
                 return []
             # Run `git ls-tree` to read SHAs of submodule object, which happen
             # to be revision of submodule repository.
             sub_revs = git_ls_tree(gitdir, rev, sub_paths)
             submodules = []
-            for sub_path, sub_url in zip(sub_paths, sub_urls):
+            for sub_path, sub_url, sub_shallow in zip(
+                sub_paths, sub_urls, sub_shallows
+            ):
                 try:
                     sub_rev = sub_revs[sub_path]
                 except KeyError:
                     # Ignore non-exist submodules.
                     continue
-                submodules.append((sub_rev, sub_path, sub_url))
+                submodules.append((sub_rev, sub_path, sub_url, sub_shallow))
             return submodules
 
         re_path = re.compile(r"^submodule\.(.+)\.path=(.*)$")
         re_url = re.compile(r"^submodule\.(.+)\.url=(.*)$")
+        re_shallow = re.compile(r"^submodule\.(.+)\.shallow=(.*)$")
 
         def parse_gitmodules(gitdir, rev):
             cmd = ["cat-file", "blob", "%s:.gitmodules" % rev]
@@ -2228,9 +2231,9 @@ class Project:
                     gitdir=gitdir,
                 )
             except GitError:
-                return [], []
+                return [], [], []
             if p.Wait() != 0:
-                return [], []
+                return [], [], []
 
             gitmodules_lines = []
             fd, temp_gitmodules_path = tempfile.mkstemp()
@@ -2247,16 +2250,17 @@ class Project:
                     gitdir=gitdir,
                 )
                 if p.Wait() != 0:
-                    return [], []
+                    return [], [], []
                 gitmodules_lines = p.stdout.split("\n")
             except GitError:
-                return [], []
+                return [], [], []
             finally:
                 platform_utils.remove(temp_gitmodules_path)
 
             names = set()
             paths = {}
             urls = {}
+            shallows = {}
             for line in gitmodules_lines:
                 if not line:
                     continue
@@ -2270,10 +2274,16 @@ class Project:
                     names.add(m.group(1))
                     urls[m.group(1)] = m.group(2)
                     continue
+                m = re_shallow.match(line)
+                if m:
+                    names.add(m.group(1))
+                    shallows[m.group(1)] = m.group(2)
+                    continue
             names = sorted(names)
             return (
                 [paths.get(name, "") for name in names],
                 [urls.get(name, "") for name in names],
+                [shallows.get(name, "") for name in names],
             )
 
         def git_ls_tree(gitdir, rev, paths):
@@ -2314,7 +2324,7 @@ class Project:
             # If git repo does not exist yet, querying its submodules will
             # mess up its states; so return here.
             return result
-        for rev, path, url in self._GetSubmodules():
+        for rev, path, url, shallow in self._GetSubmodules():
             name = self.manifest.GetSubprojectName(self, path)
             (
                 relpath,
@@ -2336,6 +2346,7 @@ class Project:
                 review=self.remote.review,
                 revision=self.remote.revision,
             )
+            clone_depth = 1 if shallow.lower() == "true" else None
             subproject = Project(
                 manifest=self.manifest,
                 name=name,
@@ -2352,6 +2363,7 @@ class Project:
                 sync_s=self.sync_s,
                 sync_tags=self.sync_tags,
                 parent=self,
+                clone_depth=clone_depth,
                 is_derived=True,
             )
             result.append(subproject)
