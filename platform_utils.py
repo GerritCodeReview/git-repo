@@ -156,6 +156,12 @@ def remove(path, missing_ok=False):
                 os.rmdir(longpath)
             else:
                 os.remove(longpath)
+        elif (
+            e.errno == errno.EROFS
+            and missing_ok
+            and not os.path.exists(longpath)
+        ):
+            pass
         elif missing_ok and e.errno == errno.ENOENT:
             pass
         else:
