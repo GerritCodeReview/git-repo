@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1aa6337_ae81ca38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3914724
+      },
+      "writtenOn": "2025-03-11T08:47:35Z",
+      "side": 1,
+      "message": "Changed commit message",
+      "revId": "a9b0e00f5643f6958b14cb9d638cc5055bc08afb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
