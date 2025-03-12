@@ -1999,6 +1999,8 @@ def _PostRepoFetch(rp, repo_verify=True, verbose=False):
             # We also have to make sure this will switch to an older commit if
             # that's the latest tag in order to support release rollback.
             try:
+                # Refresh index since reset --keep won't do it.
+                rp.work_git.update_index("-q", "--refresh")
                 rp.work_git.reset("--keep", new_rev)
             except GitError as e:
                 raise RepoUnhandledExceptionError(e)
