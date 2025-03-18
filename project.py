@@ -3107,6 +3107,13 @@ class Project:
                 def _expanded_ref_dirs():
                     """Iterate through possible git reference dir paths."""
                     name = self.name + ".git"
+                    if self.parent:
+                        parent = self.parent
+                        submodule_name = name
+                        while parent:
+                            submodule_name = submodule_name.replace(parent.name, parent.name + ".git/subprojects")
+                            parent = parent.parent
+                        yield os.path.join(ref_dir, submodule_name)
                     yield mirror_git or os.path.join(ref_dir, name)
                     for prefix in "", self.remote.name:
                         yield os.path.join(
