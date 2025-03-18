@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19735d75_64075b38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-03-18T22:23:13Z",
+      "side": 1,
+      "message": "would you be able to add a unit test, emulating this particular case\n\nhttps://source.corp.google.com/h/gerrit/git-repo/+/main:tests/test_project.py",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 37
+      },
+      "revId": "5b4c8a8606519696dec4250f0b361cc5a2d21855",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3086614_01f10375",
         "filename": "project.py",
         "patchSetId": 2
