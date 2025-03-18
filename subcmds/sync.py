@@ -319,6 +319,9 @@ exist on the remote.
 The --auto-gc option can be used to trigger garbage collection on all
 projects. By default, repo does not run garbage collection.
 
+The --ignore-upstream option can be used for sync only specified revisions,
+ignoring any upstream branches.
+
 # SSH Connections
 
 If at least one project remote URL uses an SSH connection (ssh://,
@@ -548,6 +551,12 @@ later is required to fix a server side protocol bug.
             action="store_false",
             help="do not run garbage collection on any projects (default)",
         )
+        p.add_option(
+            "--ignore-upstream",
+            dest="ignore_upstream",
+            action="store_true",
+            help="sync only the specified revisions, ignoring upstream branches",
+        )
         if show_smart:
             p.add_option(
                 "-s",
@@ -764,6 +773,7 @@ later is required to fix a server side protocol bug.
                 clone_filter=project.manifest.CloneFilter,
                 partial_clone_exclude=project.manifest.PartialCloneExclude,
                 clone_filter_for_depth=project.manifest.CloneFilterForDepth,
+                ignore_upstream=opt.ignore_upstream
             )
             success = sync_result.success
             remote_fetched = sync_result.remote_fetched
@@ -1629,6 +1639,7 @@ later is required to fix a server side protocol bug.
                     clone_filter=mp.manifest.CloneFilter,
                     partial_clone_exclude=mp.manifest.PartialCloneExclude,
                     clone_filter_for_depth=mp.manifest.CloneFilterForDepth,
+                    ignore_upstream=opt.ignore_upstream,
                 )
                 if result.error:
                     errors.append(result.error)
