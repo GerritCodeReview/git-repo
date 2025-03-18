@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9adde983_c16b75c7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-03-18T22:27:32Z",
+      "side": 1,
+      "message": "Please consider adding unit tests. Those tests will be helpful for ensuring that new changes don\u0027t break existing features, when somone makes a change.",
+      "range": {
+        "startLine": 7,
+        "startChar": 15,
+        "endLine": 7,
+        "endChar": 32
+      },
+      "revId": "1f7d62c587c401bc77a0a201883dcb5c0aec80e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fbb9cd99_138d5bbf",
         "filename": "/COMMIT_MSG",
         "patchSetId": 3
