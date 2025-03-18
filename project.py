@@ -1272,6 +1272,7 @@ class Project:
         clone_filter=None,
         partial_clone_exclude=set(),
         clone_filter_for_depth=None,
+        ignore_upstream=False,
     ):
         """Perform only the network IO portion of the sync process.
         Local working directory/branch state is not affected.
@@ -1432,6 +1433,7 @@ class Project:
                     ssh_proxy=ssh_proxy,
                     clone_filter=clone_filter,
                     retry_fetches=retry_fetches,
+                    ignore_upstream=ignore_upstream,
                 ):
                     return SyncNetworkHalfResult(
                         remote_fetched,
@@ -2414,13 +2416,13 @@ class Project:
 
         return None
 
-    def _CheckForImmutableRevision(self):
+    def _CheckForImmutableRevision(self, ignore_upstream=False):
         try:
             # if revision (sha or tag) is not present then following function
             # throws an error.
             revs = [f"{self.revisionExpr}^0"]
             upstream_rev = None
-            if self.upstream:
+            if self.upstream and not ignore_upstream:
                 upstream_rev = self.GetRemote().ToLocal(self.upstream)
                 revs.append(upstream_rev)
 
@@ -2432,7 +2434,7 @@ class Project:
                 log_as_error=False,
             )
 
-            if self.upstream:
+            if self.upstream and not ignore_upstream:
                 self.bare_git.merge_base(
                     "--is-ancestor",
                     self.revisionExpr,
@@ -2479,6 +2481,7 @@ class Project:
         retry_fetches=2,
         retry_sleep_initial_sec=4.0,
         retry_exp_factor=2.0,
+        ignore_upstream=False,
     ) -> bool:
         tag_name = None
         # The depth should not be used when fetching to a mirror because
@@ -2624,7 +2627,7 @@ class Project:
             # Shallow checkout of a specific commit, fetch from that commit and
             # not the heads only as the commit might be deeper in the history.
             spec.append(branch)
-            if self.upstream:
+            if self.upstream and not ignore_upstream:
                 spec.append(self.upstream)
         else:
             if is_sha1:
@@ -2793,7 +2796,7 @@ class Project:
             # We just synced the upstream given branch; verify we
             # got what we wanted, else trigger a second run of all
             # refs.
-            if not self._CheckForImmutableRevision():
+            if not self._CheckForImmutableRevision(ignore_upstream):
                 # Sync the current branch only with depth set to None.
                 # We always pass depth=None down to avoid infinite recursion.
                 return self._RemoteFetch(
