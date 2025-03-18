@@ -1,0 +1,110 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbb9cd99_138d5bbf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-03-18T16:23:52Z",
+      "side": 1,
+      "message": "period at the end",
+      "revId": "1f7d62c587c401bc77a0a201883dcb5c0aec80e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31a6baf6_799ed222",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-03-18T16:23:52Z",
+      "side": 1,
+      "message": "the commit message is great for explaining your needs.  i agree your use case (basically one-shot CI syncs) makes sense, and would be helpful to support.\n\nunfortunately i\u0027m going to bikeshed the name.  `--ignore-upstream` is not clear as to what it\u0027s doing.  are you using this option in conjunction with `repo init --depth\u003d1` ?  or some other method ?",
+      "revId": "1f7d62c587c401bc77a0a201883dcb5c0aec80e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d7fee54_8f6fd759",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-03-18T16:23:52Z",
+      "side": 1,
+      "message": "stylewise, boolean options should be positive, and have a `no-` prefix to negate.  see auto-gc above as an example.",
+      "revId": "1f7d62c587c401bc77a0a201883dcb5c0aec80e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5eddd781_b4089a16",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 556,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-03-18T16:23:52Z",
+      "side": 1,
+      "message": "redundant -\u003e delete",
+      "fixSuggestions": [
+        {
+          "fixId": "5f61e521_dfea06d4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 556,
+                "startChar": 0,
+                "endLine": 557,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 777,
+                "startChar": 0,
+                "endLine": 778,
+                "endChar": 0
+              },
+              "replacement": "                ignore_upstream\u003dopt.ignore_upstream\n"
+            },
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1643,
+                "startChar": 0,
+                "endLine": 1644,
+                "endChar": 0
+              },
+              "replacement": "                    ignore_upstream\u003dopt.ignore_upstream\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1f7d62c587c401bc77a0a201883dcb5c0aec80e3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
