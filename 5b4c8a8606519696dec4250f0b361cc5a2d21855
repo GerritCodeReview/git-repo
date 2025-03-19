@@ -39,6 +39,24 @@
       "message": "did you mean to yield inside the while loop ?  otherwise, constantly calulcating submodule_name inside the while loop doesn\u0027t make sense.",
       "revId": "5b4c8a8606519696dec4250f0b361cc5a2d21855",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "431279dc_52afb82e",
+        "filename": "project.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 3118,
+      "author": {
+        "id": 3936165
+      },
+      "writtenOn": "2025-03-19T07:21:15Z",
+      "side": 1,
+      "message": "The while loop is needed when a submodule has its own submodules, which can have their own submodules. Example: path/to/project includes path1/to1/sumbodule1, which includes path2/to2/submodule 2. Then the output from the loop will be path/to/project.git/subprojects/path1/to1/sumbodule1.git/subprojects/path2/to2/submodule2.git - the path to the mirror for submodule2. If you do yield inside the while loop, then intermediate directories will also be returned, for example, path1/to1/sumbodule1.git/subprojects/path2/to2/submodule2.git, which is redundant, since the submodule mirror created by repo will never be located at this path.",
+      "parentUuid": "b3086614_01f10375",
+      "revId": "5b4c8a8606519696dec4250f0b361cc5a2d21855",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
