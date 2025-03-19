@@ -3649,7 +3649,7 @@ class Project:
             return (
                 "Unable to create symbolic link. Please re-run the command as "
                 "Administrator, or see "
-                "https://github.com/git-for-windows/git/wiki/Symbolic-Links "
+                "https://gitforwindows.org/symbolic-links "
                 "for other options."
             )
         return "filesystem must support symlinks"
