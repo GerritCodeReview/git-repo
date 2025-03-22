@@ -17,6 +17,7 @@
 import io
 import os
 import re
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -358,8 +359,8 @@ class VerifyRev(RepoWrapperTestCase):
 
     def test_verify_passes(self):
         """Check when we have a valid signed tag."""
-        desc_result = self.wrapper.RunResult(0, "v1.0\n", "")
-        gpg_result = self.wrapper.RunResult(0, "", "")
+        desc_result = subprocess.CompletedProcess([], 0, "v1.0\n", "")
+        gpg_result = subprocess.CompletedProcess([], 0, "", "")
         with mock.patch.object(
             self.wrapper, "run_git", side_effect=(desc_result, gpg_result)
         ):
@@ -370,8 +371,8 @@ class VerifyRev(RepoWrapperTestCase):
 
     def test_unsigned_commit(self):
         """Check we fall back to signed tag when we have an unsigned commit."""
-        desc_result = self.wrapper.RunResult(0, "v1.0-10-g1234\n", "")
-        gpg_result = self.wrapper.RunResult(0, "", "")
+        desc_result = subprocess.CompletedProcess([], 0, "v1.0-10-g1234\n", "")
+        gpg_result = subprocess.CompletedProcess([], 0, "", "")
         with mock.patch.object(
             self.wrapper, "run_git", side_effect=(desc_result, gpg_result)
         ):
@@ -382,7 +383,7 @@ class VerifyRev(RepoWrapperTestCase):
 
     def test_verify_fails(self):
         """Check we fall back to signed tag when we have an unsigned commit."""
-        desc_result = self.wrapper.RunResult(0, "v1.0-10-g1234\n", "")
+        desc_result = subprocess.CompletedProcess([], 0, "v1.0-10-g1234\n", "")
         gpg_result = Exception
         with mock.patch.object(
             self.wrapper, "run_git", side_effect=(desc_result, gpg_result)

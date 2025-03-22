@@ -124,7 +124,7 @@ if not REPO_REV:
 BUG_URL = "https://issues.gerritcodereview.com/issues/new?component=1370071"
 
 # increment this whenever we make important changes to this script
-VERSION = (2, 50)
+VERSION = (2, 54)
 
 # increment this if the MAINTAINER_KEYS block is modified
 KEYRING_VERSION = (2, 3)
@@ -483,11 +483,6 @@ def InitParser(parser):
 
 
 # This is a poor replacement for subprocess.run until we require Python 3.6+.
-RunResult = collections.namedtuple(
-    "RunResult", ("returncode", "stdout", "stderr")
-)
-
-
 class RunError(Exception):
     """Error when running a command failed."""
 
@@ -526,7 +521,9 @@ def run_command(cmd, **kwargs):
     elif stderr == subprocess.STDOUT:
         dbg += " 2>&1"
     trace.print(dbg)
-    ret = RunResult(proc.returncode, decode(stdout), decode(stderr))
+    ret = subprocess.CompletedProcess(
+        cmd, proc.returncode, decode(stdout), decode(stderr)
+    )
 
     # If things failed, print useful debugging output.
     if check and ret.returncode:
@@ -553,7 +550,6 @@ def run_command(cmd, **kwargs):
 
 
 class CloneFailure(Exception):
-
     """Indicate the remote clone of repo itself failed."""
 
 
