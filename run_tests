@@ -36,20 +36,7 @@ def is_ci() -> bool:
 def run_pytest(argv: List[str]) -> int:
     """Returns the exit code from pytest."""
     if is_ci():
-        # TODO(b/266734831): Find out why smoke tests fail.
-        # TODO(b/266734831): Find out why each superproject test takes 8m+.
-        tests_to_skip = (
-            "test_smoke_repo",
-            "test_smoke_git",
-            "test_superproject_get_superproject_invalid_branch",
-            "test_superproject_get_superproject_invalid_url",
-        )
-
-        print("WARNING: Skipping tests:", tests_to_skip)
-        argv = [
-            "-k",
-            " and ".join(f"not {x}" for x in tests_to_skip),
-        ] + argv
+        argv = ["-m", "not skip_cq"] + argv
 
     return pytest.main(argv)
 
