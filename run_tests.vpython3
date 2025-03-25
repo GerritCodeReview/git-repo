@@ -56,40 +56,40 @@ wheel: <
 
 wheel: <
   name: "infra/python/wheels/black-py3"
-  version: "version:23.1.0"
+  version: "version:25.1.0"
 >
 
-# Required by black==23.1.0
+# Required by black==25.1.0
 wheel: <
   name: "infra/python/wheels/mypy-extensions-py3"
   version: "version:0.4.3"
 >
 
-# Required by black==23.1.0
+# Required by black==25.1.0
 wheel: <
   name: "infra/python/wheels/tomli-py3"
   version: "version:2.0.1"
 >
 
-# Required by black==23.1.0
+# Required by black==25.1.0
 wheel: <
   name: "infra/python/wheels/platformdirs-py3"
   version: "version:2.5.2"
 >
 
-# Required by black==23.1.0
+# Required by black==25.1.0
 wheel: <
   name: "infra/python/wheels/pathspec-py3"
   version: "version:0.9.0"
 >
 
-# Required by black==23.1.0
+# Required by black==25.1.0
 wheel: <
   name: "infra/python/wheels/typing-extensions-py3"
   version: "version:4.3.0"
 >
 
-# Required by black==23.1.0
+# Required by black==25.1.0
 wheel: <
   name: "infra/python/wheels/click-py3"
   version: "version:8.0.3"
