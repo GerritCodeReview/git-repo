@@ -63,7 +63,9 @@ def main(argv):
         run_flake8,
         run_isort,
     )
-    return 0 if all(not c() for c in checks) else 1
+    # Run all the tests all the time to get full feedback.  Don't exit on the
+    # first error as that makes it more difficult to iterate in the CQ.
+    return 0 if not sum(c() for c in checks) else 1
 
 
 if __name__ == "__main__":
