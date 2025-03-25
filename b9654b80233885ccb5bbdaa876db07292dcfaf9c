@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddc87e4f_3d43212f",
+        "filename": "run_tests",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-03-25T17:05:32Z",
+      "side": 1,
+      "message": "nit; I feel that it\u0027d be more readable and intuitive w/o not.",
+      "range": {
+        "startLine": 68,
+        "startChar": 11,
+        "endLine": 68,
+        "endChar": 51
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a777db00_43f8eccd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "run_tests",
+              "range": {
+                "startLine": 68,
+                "startChar": 0,
+                "endLine": 69,
+                "endChar": 0
+              },
+              "replacement": "    return 1 if sum(c() for c in checks) else 0\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b9654b80233885ccb5bbdaa876db07292dcfaf9c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
