@@ -233,9 +233,9 @@ synced and their revisions won't be found.
             )
             self.printRevision = self.out.nofmt_printer("revision", fg="yellow")
         else:
-            self.printProject = (
-                self.printAdded
-            ) = self.printRemoved = self.printRevision = self.printText
+            self.printProject = self.printAdded = self.printRemoved = (
+                self.printRevision
+            ) = self.printText
 
         manifest1 = RepoClient(self.repodir)
         manifest1.Override(args[0], load_local_manifests=False)

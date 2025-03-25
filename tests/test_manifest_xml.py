@@ -51,7 +51,7 @@ INVALID_FS_PATHS = (
     "foo~",
     "blah/foo~",
     # Block Unicode characters that get normalized out by filesystems.
-    "foo\u200Cbar",
+    "foo\u200cbar",
     # Block newlines.
     "f\n/bar",
     "f\r/bar",
