@@ -1,1 +1,2 @@
-black<24
+# NB: Keep in sync with run_tests.vpython3.
+black<26

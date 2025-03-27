@@ -54,6 +54,7 @@ wheel: <
   version: "version:21.4.0"
 >
 
+# NB: Keep in sync with constraints.txt.
 wheel: <
   name: "infra/python/wheels/black-py3"
   version: "version:25.1.0"
