@@ -482,11 +482,6 @@ def InitParser(parser):
     return parser
 
 
-# This is a poor replacement for subprocess.run until we require Python 3.6+.
-class RunError(Exception):
-    """Error when running a command failed."""
-
-
 def run_command(cmd, **kwargs):
     """Run |cmd| and return its output."""
     check = kwargs.pop("check", False)
@@ -544,7 +539,8 @@ def run_command(cmd, **kwargs):
 
         _print_output("stdout", ret.stdout)
         _print_output("stderr", ret.stderr)
-        raise RunError(ret)
+        # This will raise subprocess.CalledProcessError for us.
+        ret.check_returncode()
 
     return ret
 
@@ -668,7 +664,7 @@ def run_git(*args, **kwargs):
             file=sys.stderr,
         )
         sys.exit(1)
-    except RunError:
+    except subprocess.CalledProcessError:
         raise CloneFailure()
 
 
@@ -850,7 +846,8 @@ def _GetRepoConfig(name):
             f"repo: error: git {' '.join(cmd)} failed:\n{ret.stderr}",
             file=sys.stderr,
         )
-        raise RunError()
+        # This will raise subprocess.CalledProcessError for us.
+        ret.check_returncode()
 
 
 def _InitHttp():
