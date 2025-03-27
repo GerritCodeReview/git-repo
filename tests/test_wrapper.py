@@ -126,7 +126,7 @@ class RunCommand(RepoWrapperTestCase):
         self.wrapper.run_command(["true"], check=False)
         self.wrapper.run_command(["true"], check=True)
         self.wrapper.run_command(["false"], check=False)
-        with self.assertRaises(self.wrapper.RunError):
+        with self.assertRaises(subprocess.CalledProcessError):
             self.wrapper.run_command(["false"], check=True)
 
 
