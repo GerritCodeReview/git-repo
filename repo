@@ -27,6 +27,7 @@ import platform
 import shlex
 import subprocess
 import sys
+from typing import NamedTuple
 
 
 # These should never be newer than the main.py version since this needs to be a
@@ -217,7 +218,6 @@ S_manifests = "manifests"  # special manifest repository
 REPO_MAIN = S_repo + "/main.py"  # main script
 
 
-import collections
 import errno
 import json
 import optparse
@@ -672,11 +672,16 @@ def run_git(*args, **kwargs):
         raise CloneFailure()
 
 
-# The git version info broken down into components for easy analysis.
-# Similar to Python's sys.version_info.
-GitVersion = collections.namedtuple(
-    "GitVersion", ("major", "minor", "micro", "full")
-)
+class GitVersion(NamedTuple):
+    """The git version info broken down into components for easy analysis.
+
+    Similar to Python's sys.version_info.
+    """
+
+    major: int
+    minor: int
+    micro: int
+    full: int
 
 
 def ParseGitVersion(ver_str=None):
