@@ -27,7 +27,7 @@ wheel: <
 # Required by pytest==8.3.4
 wheel: <
   name: "infra/python/wheels/packaging-py3"
-  version: "version:23.0"
+  version: "version:24.2"
 >
 
 # Required by pytest==8.3.4
@@ -75,7 +75,7 @@ wheel: <
 # Required by black==25.1.0
 wheel: <
   name: "infra/python/wheels/platformdirs-py3"
-  version: "version:2.5.2"
+  version: "version:3.10.0"
 >
 
 # Required by black==25.1.0
@@ -122,4 +122,58 @@ wheel: <
 wheel: <
   name: "infra/python/wheels/isort-py3"
   version: "version:5.10.1"
+>
+
+wheel: <
+  name: "infra/python/wheels/tox-py2_py3"
+  version: "version:4.4.4"
+>
+
+# Required by tox==4.4.4
+
+wheel: <
+  name: "infra/python/wheels/cachetools-py3"
+  version: "version:5.3.3"
+>
+
+# Required by tox==4.4.4
+
+wheel: <
+  name: "infra/python/wheels/chardet-py3"
+  version: "version:5.2.0"
+>
+
+# Required by tox==4.4.4
+
+wheel: <
+  name: "infra/python/wheels/colorama-py2_py3"
+  version: "version:0.4.6"
+>
+
+# Required by tox==4.4.4
+
+wheel: <
+  name: "infra/python/wheels/filelock-py3"
+  version: "version:3.12.2"
+>
+
+# Required by tox==4.4.4
+
+wheel: <
+  name: "infra/python/wheels/pyproject-api-py3"
+  version: "version:1.9.0"
+>
+
+# Required by tox==4.4.4
+
+wheel: <
+  name: "infra/python/wheels/virtualenv-py3"
+  version: "version:20.24.2"
+>
+
+# Required by tox==4.4.4
+
+wheel: <
+  name: "infra/python/wheels/distlib-py3"
+  version: "version:0.3.7"
 >
