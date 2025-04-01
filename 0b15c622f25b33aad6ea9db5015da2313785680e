@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33758218_9c8c600e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-04-01T18:43:23Z",
+      "side": 1,
+      "message": "LGTM assuming that the test failure is fixed",
+      "revId": "0b15c622f25b33aad6ea9db5015da2313785680e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a05b1a5d_843d7c6f",
+        "filename": "repo",
+        "patchSetId": 1
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-04-01T18:43:23Z",
+      "side": 1,
+      "message": "check_returncode?\n\nhttps://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess.check_returncode",
+      "range": {
+        "startLine": 543,
+        "startChar": 12,
+        "endLine": 543,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a82b28f1_929a62b4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "repo",
+              "range": {
+                "startLine": 543,
+                "startChar": 0,
+                "endLine": 544,
+                "endChar": 0
+              },
+              "replacement": "        ret.check_returncode()\n"
+            },
+            {
+              "path": "repo",
+              "range": {
+                "startLine": 850,
+                "startChar": 0,
+                "endLine": 851,
+                "endChar": 0
+              },
+              "replacement": "        ret.check_returncode()\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0b15c622f25b33aad6ea9db5015da2313785680e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
