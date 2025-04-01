@@ -51,6 +51,23 @@
       "message": "\"The original `startswith` check was too broad, preventing valid project nesting within submanifest directories. The `\u003d\u003d` change enforces an exact match, resolving path conflicts while allowing projects to exist in subdirectories of submanifest paths.\n\nFor example, with this manifest content:\n\n\u003cmanifest\u003e\n  \u003csubmanifest name\u003d\"base-os\" project\u003d\"os-manifest\" manifest-name\u003d\"os.xml\" path\u003d\"os\" remote\u003d\"os_remote\" revision\u003d\"main\" /\u003e\n  \u003cproject name\u003d\"os-tools\" path\u003d\"os/tools\" remote\u003d\"os_remote\" revision\u003d\"main\" /\u003e\n\u003c/manifest\u003e\n\nThe original `startswith` logic would incorrectly flag \u0027os/tools\u0027 as a conflict with the \u0027os\u0027 submanifest. The change to `\u003d\u003d` fixes this, allowing \u0027os/tools\u0027 to reside within the \u0027os\u0027 directory while preventing conflicts when a project and submanifest have identical paths.\"",
       "revId": "0aa79e2c3720fb74bf20baea5c2f2f0aa81d3d2e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38d9fd54_284590bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3523103
+      },
+      "writtenOn": "2025-04-01T07:13:03Z",
+      "side": 1,
+      "message": "could you please review the change and let me know your thoughts.",
+      "revId": "0aa79e2c3720fb74bf20baea5c2f2f0aa81d3d2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
