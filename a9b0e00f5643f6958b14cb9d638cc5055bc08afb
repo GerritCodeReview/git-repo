@@ -16,6 +16,23 @@
       "message": "Changed commit message",
       "revId": "a9b0e00f5643f6958b14cb9d638cc5055bc08afb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a16c9f1a_e7365348",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-02T02:56:18Z",
+      "side": 1,
+      "message": "assuming you want to merge this, please set Verified+1 and Commit-Queue+2",
+      "revId": "a9b0e00f5643f6958b14cb9d638cc5055bc08afb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
