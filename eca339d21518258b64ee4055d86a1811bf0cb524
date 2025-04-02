@@ -34,6 +34,24 @@
       "parentUuid": "81bed7b2_9ad2caeb",
       "revId": "eca339d21518258b64ee4055d86a1811bf0cb524",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7fe3586_b533b524",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-02T17:23:57Z",
+      "side": 1,
+      "message": "the point of using tox is to quickly setup clean virtualenv\u0027s with specific python versions.  it then executes run_tests/etc... inside that.  that way you can run `tox` and quickly get coverage for a variety of python versions.\n\ni\u0027m not a heavy tox user, but my understanding is that it does not provide python runtimes for you.  tox.ini lists the versions you want to test against, and then tox will search for those.  if it finds a matching version, it uses it, but if it\u0027s not already installed, then it skips it.\n\nit looks like the SOP is to use pyenv to provide specific versions, and then tox will pick it up from that.  pyenv, iiuc, will download \u0026 build Python versions on the fly which is not ideal -- building each version takes a couple of minutes.\n\nso vpython is filling the gap of pyenv, and doing the same as tox to create the virtualenv with the specified packages.  the diff is that vpython uses our infra, and will use prebuilts, so it\u0027ll be much faster.",
+      "parentUuid": "520afb4a_7285daf8",
+      "revId": "eca339d21518258b64ee4055d86a1811bf0cb524",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
