@@ -41,6 +41,28 @@ def run_pytest(argv: List[str]) -> int:
     return pytest.main(argv)
 
 
+def run_pytest_py38(argv: List[str]) -> int:
+    """Returns the exit code from pytest under Python 3.8."""
+    if is_ci():
+        argv = ["-m", "not skip_cq"] + argv
+
+    try:
+        return subprocess.run(
+            [
+                "vpython3",
+                "-vpython-spec",
+                "run_tests.vpython3.8",
+                "-m",
+                "pytest",
+            ]
+            + argv,
+            check=False,
+        ).returncode
+    except FileNotFoundError:
+        # Skip if the user doesn't have vpython from depot_tools.
+        return 0
+
+
 def run_black():
     """Returns the exit code from black."""
     # Black by default only matches .py files.  We have to list standalone
@@ -75,6 +97,7 @@ def main(argv):
     """The main entry."""
     checks = (
         functools.partial(run_pytest, argv),
+        functools.partial(run_pytest_py38, argv),
         run_black,
         run_flake8,
         run_isort,
