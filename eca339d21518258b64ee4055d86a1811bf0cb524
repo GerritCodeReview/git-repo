@@ -16,6 +16,24 @@
       "message": "this is an alternative approach for getting multiple python version coverage w/out using tox.  wdyt ?",
       "revId": "eca339d21518258b64ee4055d86a1811bf0cb524",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "520afb4a_7285daf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-04-02T16:57:57Z",
+      "side": 1,
+      "message": "this is fine by me, but is there a reason to not use tox?",
+      "parentUuid": "81bed7b2_9ad2caeb",
+      "revId": "eca339d21518258b64ee4055d86a1811bf0cb524",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
