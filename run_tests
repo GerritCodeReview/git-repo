@@ -21,8 +21,6 @@ import subprocess
 import sys
 from typing import List
 
-import pytest
-
 
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -38,7 +36,11 @@ def run_pytest(argv: List[str]) -> int:
     if is_ci():
         argv = ["-m", "not skip_cq"] + argv
 
-    return pytest.main(argv)
+    return subprocess.run(
+        [sys.executable, "-m", "pytest"] + argv,
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
 
 
 def run_pytest_py38(argv: List[str]) -> int:
@@ -57,6 +59,7 @@ def run_pytest_py38(argv: List[str]) -> int:
             ]
             + argv,
             check=False,
+            cwd=ROOT_DIR,
         ).returncode
     except FileNotFoundError:
         # Skip if the user doesn't have vpython from depot_tools.
@@ -76,20 +79,25 @@ def run_black():
     return subprocess.run(
         [sys.executable, "-m", "black", "--check", ROOT_DIR] + extra_programs,
         check=False,
+        cwd=ROOT_DIR,
     ).returncode
 
 
 def run_flake8():
     """Returns the exit code from flake8."""
     return subprocess.run(
-        [sys.executable, "-m", "flake8", ROOT_DIR], check=False
+        [sys.executable, "-m", "flake8", ROOT_DIR],
+        check=False,
+        cwd=ROOT_DIR,
     ).returncode
 
 
 def run_isort():
     """Returns the exit code from isort."""
     return subprocess.run(
-        [sys.executable, "-m", "isort", "--check", ROOT_DIR], check=False
+        [sys.executable, "-m", "isort", "--check", ROOT_DIR],
+        check=False,
+        cwd=ROOT_DIR,
     ).returncode
 
 
