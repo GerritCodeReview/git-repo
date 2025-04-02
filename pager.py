@@ -40,7 +40,7 @@ def RunPager(globalConfig):
 
 
 def TerminatePager():
-    global pager_process, old_stdout, old_stderr
+    global pager_process
     if pager_process:
         sys.stdout.flush()
         sys.stderr.flush()
