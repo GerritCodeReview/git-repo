@@ -1340,13 +1340,28 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         f"failed parsing included manifest {name}: {e}"
                     )
             else:
-                if parent_groups and node.nodeName == "project":
-                    nodeGroups = parent_groups
-                    if node.hasAttribute("groups"):
-                        nodeGroups = (
-                            node.getAttribute("groups") + "," + nodeGroups
+                if node.nodeName == "project":
+                    if parent_groups:
+                        nodeGroups = parent_groups
+                        if node.hasAttribute("groups"):
+                            nodeGroups = (
+                                node.getAttribute("groups") + "," + nodeGroups
+                            )
+                        node.setAttribute("groups", nodeGroups)
+
+                    if self.default_groups:
+                        project_groups_attr = node.getAttribute("groups")
+                        project_groups = set(
+                            g.strip()
+                            for g in project_groups_attr.split(",")
+                            if g.strip()
                         )
-                    node.setAttribute("groups", nodeGroups)
+
+                        if not project_groups.intersection(self.default_groups):
+                            project_groups.add("notdefault")
+                            node.setAttribute(
+                                "groups", ",".join(sorted(project_groups))
+                            )
                 if (
                     parent_node
                     and node.nodeName == "project"
