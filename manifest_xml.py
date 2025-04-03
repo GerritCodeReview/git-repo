@@ -1299,6 +1299,8 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         nodes = []
         for node in manifest.childNodes:
+            if not isinstance(node, xml.dom.minidom.Element):
+                continue
             if node.nodeName == "include":
                 name = self._reqatt(node, "name")
                 if restrict_includes:
