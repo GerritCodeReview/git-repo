@@ -2755,6 +2755,14 @@ class Project:
                 # field; it doesn't exist, thus abort the optimization attempt
                 # and do a full sync.
                 break
+            elif depth and is_sha1 and ret == 1:
+                # In sha1 mode, when depth is enabled, syncing the revision
+                # from upstream may not work because some servers only allow
+                # fetching named refs. Fetching a specific sha1 may result
+                # in an error like 'server does not allow request for
+                # unadvertised object'. In this case, attempt a full sync
+                # without depth.
+                break
             elif ret < 0:
                 # Git died with a signal, exit immediately.
                 break
