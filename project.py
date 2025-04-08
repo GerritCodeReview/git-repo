@@ -2755,6 +2755,10 @@ class Project:
                 # field; it doesn't exist, thus abort the optimization attempt
                 # and do a full sync.
                 break
+            elif depth and is_sha1 and ret == 1:
+                # In sha1 mode when depth is enabled, syncing the revision from
+                # upstream may not work, fallback to full sync.
+                break
             elif ret < 0:
                 # Git died with a signal, exit immediately.
                 break
