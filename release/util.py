@@ -16,6 +16,7 @@
 
 import os
 import re
+import shlex
 import subprocess
 import sys
 
@@ -35,12 +36,7 @@ KEYID_ECC = "E1F9040D7A3F6DAFAC897CD3D3B95DA243E48A39"
 
 def cmdstr(cmd):
     """Get a nicely quoted shell command."""
-    ret = []
-    for arg in cmd:
-        if not re.match(r"^[a-zA-Z0-9/_.=-]+$", arg):
-            arg = f'"{arg}"'
-        ret.append(arg)
-    return " ".join(ret)
+    return " ".join(shlex.quote(x) for x in cmd)
 
 
 def run(opts, cmd, check=True, **kwargs):
