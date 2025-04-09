@@ -57,9 +57,14 @@ class Trace:
 trace = Trace()
 
 
+def cmdstr(cmd):
+    """Get a nicely quoted shell command."""
+    return " ".join(shlex.quote(x) for x in cmd)
+
+
 def exec_command(cmd):
     """Execute |cmd| or return None on failure."""
-    trace.print(":", " ".join(cmd))
+    trace.print(":", cmdstr(cmd))
     try:
         if platform.system() == "Windows":
             ret = subprocess.call(cmd)
@@ -506,7 +511,7 @@ def run_command(cmd, **kwargs):
     # Run & package the results.
     proc = subprocess.Popen(cmd, **kwargs)
     (stdout, stderr) = proc.communicate(input=cmd_input)
-    dbg = ": " + " ".join(cmd)
+    dbg = ": " + cmdstr(cmd)
     if cmd_input is not None:
         dbg += " 0<|"
     if stdout == subprocess.PIPE:
@@ -843,7 +848,7 @@ def _GetRepoConfig(name):
         return None
     else:
         print(
-            f"repo: error: git {' '.join(cmd)} failed:\n{ret.stderr}",
+            f"repo: error: git {cmdstr(cmd)} failed:\n{ret.stderr}",
             file=sys.stderr,
         )
         # This will raise subprocess.CalledProcessError for us.
