@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77df3993_d86c0210",
+        "filename": "subcmds/sync.py",
+        "patchSetId": 6
+      },
+      "lineNbr": 1735,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-09T21:43:28Z",
+      "side": 1,
+      "message": "use a tuple",
+      "fixSuggestions": [
+        {
+          "fixId": "93098193_cf2714ad",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1735,
+                "startChar": 0,
+                "endLine": 1736,
+                "endChar": 0
+              },
+              "replacement": "        job_options_to_check \u003d (\n"
+            },
+            {
+              "path": "subcmds/sync.py",
+              "range": {
+                "startLine": 1739,
+                "startChar": 0,
+                "endLine": 1740,
+                "endChar": 0
+              },
+              "replacement": "        )\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bd353e7df098bacc854ed065a2e112ffc960abcd",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
