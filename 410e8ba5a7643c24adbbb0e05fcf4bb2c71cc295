@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a98b706c_4152068d",
+        "filename": "tests/conftest.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 4000235
+      },
+      "writtenOn": "2025-04-09T05:04:04Z",
+      "side": 1,
+      "message": "angelcortiz28@gmail.com\n```suggestion\n@pytest.fixture(autouse\u003dTrue)\n```",
+      "parentUuid": "33ff3cb2_35bc7bf3",
+      "revId": "410e8ba5a7643c24adbbb0e05fcf4bb2c71cc295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9458f0ce_b6b13775",

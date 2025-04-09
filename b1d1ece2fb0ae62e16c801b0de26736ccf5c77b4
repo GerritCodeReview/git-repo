@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "771bf246_337ff92c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4000235
+      },
+      "writtenOn": "2025-04-09T05:04:04Z",
+      "side": 1,
+      "message": "@pytest.fixture(autouse\u003dfalce)",
+      "revId": "b1d1ece2fb0ae62e16c801b0de26736ccf5c77b4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
