@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6842eff1_e6f85e3e",
+        "filename": "tests/conftest.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 4000235
+      },
+      "writtenOn": "2025-04-09T05:11:48Z",
+      "side": 1,
+      "message": "\u003e angelcortiz28@gmail.com\n\u003e ```suggestion\n\u003e @pytest.fixture(autouse\u003dTrue)\n\u003e ```",
+      "parentUuid": "a98b706c_4152068d",
+      "revId": "410e8ba5a7643c24adbbb0e05fcf4bb2c71cc295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9458f0ce_b6b13775",
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "Yes, we need both of them. Omitting either of the variable pairs raises the exception",
       "parentUuid": "9458f0ce_b6b13775",
+      "revId": "410e8ba5a7643c24adbbb0e05fcf4bb2c71cc295",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5724f73_f7664b1c",
+        "filename": "tests/conftest.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 4000235
+      },
+      "writtenOn": "2025-04-09T05:11:48Z",
+      "side": 1,
+      "message": "\u003e Yes, we need both of them. Omitting either of the variable pairs raises the exception",
+      "parentUuid": "735f72e8_ff0b2551",
       "revId": "410e8ba5a7643c24adbbb0e05fcf4bb2c71cc295",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
