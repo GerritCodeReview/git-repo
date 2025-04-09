@@ -350,6 +350,8 @@ later is required to fix a server side protocol bug.
     # value later on.
     PARALLEL_JOBS = 0
 
+    _JOBS_WARN_THRESHOLD = 100
+
     def _Options(self, p, show_smart=True):
         p.add_option(
             "--jobs-network",
@@ -1727,6 +1729,24 @@ later is required to fix a server side protocol bug.
         opt.jobs = min(opt.jobs, jobs_soft_limit)
         opt.jobs_network = min(opt.jobs_network, jobs_soft_limit)
         opt.jobs_checkout = min(opt.jobs_checkout, jobs_soft_limit)
+
+        # Warn once if effective job counts seem excessively high.
+        # Prioritize --jobs, then --jobs-network, then --jobs-checkout.
+        job_options_to_check = (
+            ("--jobs", opt.jobs),
+            ("--jobs-network", opt.jobs_network),
+            ("--jobs-checkout", opt.jobs_checkout),
+        )
+        for name, value in job_options_to_check:
+            if value > self._JOBS_WARN_THRESHOLD:
+                logger.warning(
+                    "High job count (%d > %d) specified for %s; this may "
+                    "lead to excessive resource usage or diminishing returns.",
+                    value,
+                    self._JOBS_WARN_THRESHOLD,
+                    name,
+                )
+                break
 
     def Execute(self, opt, args):
         errors = []
