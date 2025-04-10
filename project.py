@@ -2875,7 +2875,14 @@ class Project:
 
         # We do not use curl's --retry option since it generally doesn't
         # actually retry anything; code 18 for example, it will not retry on.
-        cmd = ["curl", "--fail", "--output", tmpPath, "--netrc", "--location"]
+        cmd = [
+            "curl",
+            "--fail",
+            "--output",
+            tmpPath,
+            "--netrc-optional",
+            "--location",
+        ]
         if quiet:
             cmd += ["--silent", "--show-error"]
         if os.path.exists(tmpPath):
