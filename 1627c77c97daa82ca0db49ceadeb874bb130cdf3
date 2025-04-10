@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3c324c0_9b3e5da3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-10T18:22:47Z",
+      "side": 1,
+      "message": "should note the version of curl that introduced this option so we know it\u0027s \"safe\"\n\nupstream history says 7.9.8 released in Jun 2002.  that should be plenty of time.",
+      "revId": "1627c77c97daa82ca0db49ceadeb874bb130cdf3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
