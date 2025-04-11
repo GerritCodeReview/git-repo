@@ -133,6 +133,10 @@ class SubmanifestGroupsTest(unittest.TestCase):
         manifest_path = rs["manifest_path"]
         subm_dir = rs["submanifest_dir"]
 
+        print("[DEBUG] repo_root =", rs["repo_root"])
+        print("[DEBUG] manifest_path =", manifest_path)
+        print("[DEBUG] submanifest directory =", subm_dir)
+
         # Update main manifest: include a <submanifest> element.
         submanifest_line = """
       <submanifest name="my-submanifest" project="dummy/project"
@@ -140,6 +144,7 @@ class SubmanifestGroupsTest(unittest.TestCase):
         """
         with open(manifest_path, "w", encoding="utf-8") as f:
             f.write(get_main_manifest(submanifest_line))
+        print("[DEBUG] Main manifest updated with <submanifest> element.")
 
         # Prepare submanifest's .git config (for remote "origin")
         submanifest_git = os.path.join(subm_dir, "manifests.git")
@@ -168,15 +173,23 @@ class SubmanifestGroupsTest(unittest.TestCase):
         )
         with open(submanifest_file, "w", encoding="utf-8") as f:
             f.write(submanifest_xml)
+        print("[DEBUG] Submanifest file written at:", submanifest_file)
+        print(
+            "[DEBUG] Submanifest file exists:", os.path.isfile(submanifest_file)
+        )
 
         # Create the link file manifest.xml in subm_dir.
         link_file = os.path.join(subm_dir, "manifest.xml")
         shutil.copyfile(submanifest_file, link_file)
 
+        print("[DEBUG] Link file created at:", link_file)
+        print("[DEBUG] Link file exists:", os.path.isfile(link_file))
+
         # Initialize XmlManifest.
         manifest = XmlManifest(rs["repodir"], manifest_path)
         all_projects = manifest.all_projects
         project_names = [p.name for p in all_projects]
+        print("[DEBUG] all_projects:", project_names)
 
         # Check that all expected projects are loaded.
         self.assertIn(
@@ -192,6 +205,9 @@ class SubmanifestGroupsTest(unittest.TestCase):
         g_sub1 = parse_groups(sub1)
         g_sub2 = parse_groups(sub2)
         g_sub3 = parse_groups(sub3)
+        print("[DEBUG] sub1.groups =", g_sub1)
+        print("[DEBUG] sub2.groups =", g_sub2)
+        print("[DEBUG] sub3.groups =", g_sub3)
 
         # Check that sub1 and sub2 have their declared groups
         # and inherit parent's "g1".
@@ -265,6 +281,7 @@ class SubmanifestGroupsTest(unittest.TestCase):
 
         subman_obj = submanifests["my-submanifest"]
         dg_str = subman_obj.GetDefaultGroupsStr()
+        print("[DEBUG] Submanifest GetDefaultGroupsStr() returned:", dg_str)
         self.assertEqual(
             dg_str,
             "dg1,dg2",
@@ -272,6 +289,7 @@ class SubmanifestGroupsTest(unittest.TestCase):
         )
 
         xml_str = manifest.ToXml().toxml()
+        print("[DEBUG] Serialized manifest XML:", xml_str)
         self.assertIn(
             'default-groups="dg1,dg2"',
             xml_str,
