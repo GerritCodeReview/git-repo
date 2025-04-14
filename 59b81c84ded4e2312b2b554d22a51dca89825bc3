@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f51befdc_c6982fd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3999844
+      },
+      "writtenOn": "2025-04-14T00:34:36Z",
+      "side": 1,
+      "message": "repo init --partial-clone --no-use-superproject -b android-latest-release -u https://android.googlesource.com/platform/manifest",
+      "revId": "59b81c84ded4e2312b2b554d22a51dca89825bc3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
