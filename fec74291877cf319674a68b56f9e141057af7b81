@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e8fa3c0_988dc21b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-16T04:31:16Z",
+      "side": 1,
+      "message": "same as below, \"may not work\" is way too vague.  please provide more details here.",
+      "revId": "fec74291877cf319674a68b56f9e141057af7b81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "946e4bc0_2aa0a333",
+        "filename": "project.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 2760,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-16T04:31:16Z",
+      "side": 1,
+      "message": "needs more detail than \"may not work\".  mention that some servers only allow fetching named refs, not specific objects (commits).",
+      "revId": "fec74291877cf319674a68b56f9e141057af7b81",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
