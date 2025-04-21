@@ -1328,12 +1328,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     )
                 # should isolate this to the exact exception, but that's
                 # tricky.  actual parsing implementation may vary.
-                except (
-                    KeyboardInterrupt,
-                    RuntimeError,
-                    SystemExit,
-                    ManifestParseError,
-                ):
+                except (RuntimeError, ManifestParseError):
                     raise
                 except Exception as e:
                     raise ManifestParseError(
