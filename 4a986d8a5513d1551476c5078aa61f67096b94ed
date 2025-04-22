@@ -33,6 +33,24 @@
       "message": "Some of these changes came when running `update-manpages` script.",
       "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a22b9966_7f5cdd3e",
+        "filename": "man/repo-manifest.1",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-22T18:13:43Z",
+      "side": 1,
+      "message": "let me update our CQ to detect this and refresh independently\n\nhttp://gerrit-review.googlesource.com/c/469741",
+      "parentUuid": "f4e7a549_0badc424",
+      "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
