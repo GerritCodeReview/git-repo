@@ -1389,11 +1389,13 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         tree: List[IncludeTree],
         parent_groups="",
         parent_node=None,
+        include_chain=None,
     ) -> List[Element]:
         """Recursivelly convert tree of includes into a flat list of Nodes.
 
         This step forwards attributes inherited from the parent <include>
-        to the affected child projects, such as "groups" and "revision".
+        to the affected child projects, such as "groups", "revision" and
+        "includechain".
         Note that this is not a full canonicalization of the manifest (for
         that see ToXml), this meerly adds the required information that
         should be inheretied from a parent <include>.
@@ -1412,9 +1414,11 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             List of XML nodes.
         """
 
+        include_chain = include_chain or []
         nodes: List[Element] = []
 
         for elemtype, node, path, children in tree:
+            chain = [*include_chain, path]
             if elemtype == "include":
                 include_groups = ""
                 if parent_groups:
@@ -1423,9 +1427,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     include_groups = (
                         node.getAttribute("groups") + "," + include_groups
                     )
-                nodes.extend(self._FlattenIncludes(
-                    children, include_groups, parent_node=node
-                ))
+                nodes.extend(
+                    self._FlattenIncludes(
+                        children,
+                        include_groups,
+                        parent_node=node,
+                        include_chain=chain,
+                    )
+                )
             else:
                 if parent_groups and node.nodeName == "project":
                     nodeGroups = parent_groups
@@ -1442,6 +1451,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     node.setAttribute(
                         "revision", parent_node.getAttribute("revision")
                     )
+                node.includechain = chain
                 nodes.append(node)
         return nodes
 
@@ -1608,6 +1618,23 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             for subproject in project.subprojects:
                 recursively_add_projects(subproject)
 
+        def format_base_rev_error(orig_project, extend_node, base_rev):
+            prev_incchain = " -> ".join(
+                orig_project.prev_definition.includechain
+            )
+            curr_includechain = " -> ".join(extend_node.includechain)
+            project_fragment = (
+                f"<{orig_project.prev_definition.nodeName} ... "
+                f'"revision="{orig_project.revisionExpr}" />'
+            )
+            curr_incmsg = f"(included via {curr_includechain})"
+            prev_incmsg = f"(included via {prev_incchain})"
+            return (
+                f"{extend_node.nodeName} mismatch for name '{name}'\n"
+                f'    ├──Mismatching base-rev="{base_rev}" {curr_incmsg}\n'
+                f"    └──Previous definition: {project_fragment} {prev_incmsg}"
+            )
+
         repo_hooks_project = None
         enabled_repo_hooks = None
         failed_revision_changes = []
@@ -1651,14 +1678,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     if groups:
                         p.groups.extend(groups)
                     if revision:
-                        if base_revision:
-                            if p.revisionExpr != base_revision:
-                                failed_revision_changes.append(
-                                    "extend-project name %s mismatch base "
-                                    "%s vs revision %s"
-                                    % (name, base_revision, p.revisionExpr)
-                                )
-                        p.SetRevision(revision)
+                        if base_revision and p.revisionExpr != base_revision:
+                            failed_revision_changes.append(
+                                format_base_rev_error(p, node, base_revision)
+                            )
+
+                        p.SetRevision(revision, prev_definition=node)
 
                     if remote_name:
                         p.remote = remote.ToRemoteSpec(name)
@@ -1746,13 +1771,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 for projname, projects in list(self._projects.items()):
                     for p in projects:
                         if name == projname and not path:
-                            if base_revision:
-                                if p.revisionExpr != base_revision:
-                                    failed_revision_changes.append(
-                                        "remove-project name %s mismatch base "
-                                        "%s vs revision %s"
-                                        % (name, base_revision, p.revisionExpr)
+                            if (
+                                base_revision
+                                and p.revisionExpr != base_revision
+                            ):
+                                failed_revision_changes.append(
+                                    format_base_rev_error(
+                                        p, node, base_revision
                                     )
+                                )
                             del self._paths[p.relpath]
                             if not removed_project:
                                 del self._projects[name]
@@ -1760,17 +1787,15 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         elif path == p.relpath and (
                             name == projname or not name
                         ):
-                            if base_revision:
-                                if p.revisionExpr != base_revision:
-                                    failed_revision_changes.append(
-                                        "remove-project path %s mismatch base "
-                                        "%s vs revision %s"
-                                        % (
-                                            p.relpath,
-                                            base_revision,
-                                            p.revisionExpr,
-                                        )
+                            if (
+                                base_revision
+                                and p.revisionExpr != base_revision
+                            ):
+                                failed_revision_changes.append(
+                                    format_base_rev_error(
+                                        p, node, base_revision
                                     )
+                                )
                             self._projects[projname].remove(p)
                             del self._paths[p.relpath]
                             removed_project = p.name
@@ -1793,8 +1818,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if failed_revision_changes:
             raise ManifestParseError(
                 "revision base check failed, rebase patches and update "
-                "base revs for: ",
-                failed_revision_changes,
+                "base-rev for:\n" + "\n".join(failed_revision_changes),
             )
 
         # Store repo hooks project information.
@@ -2129,6 +2153,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             use_git_worktrees=use_git_worktrees,
             **extra_proj_attrs,
         )
+        project.prev_definition = node
 
         for n in node.childNodes:
             if n.nodeName == "copyfile":
