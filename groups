@@ -1,5 +1,6 @@
 # UUID                                  	Group Name
 #
+b97887aaa85f9b33a4252e189de8c250dad58037	luci_scoped_account
 2af154f112a8390d647a0817543c7991883d4fdc	repo-maintainer
 66e2d1d3d40162bd52e828b19c7de7dfcbe4cc54	repo-contributor
 global:Change-Owner                     	Change Owner
