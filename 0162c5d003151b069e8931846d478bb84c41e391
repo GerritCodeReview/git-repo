@@ -16,6 +16,47 @@
       "message": "not sure if there\u0027s a better way of blocking non-repo-maintainer \"Change Owner\" from submitting.  i had to copy the relevant settings from the parent \"Public-Projects\" which is the luci_scoped_account setting.  on the upside, i don\u0027t think that changes often, so maybe manual syncing isn\u0027t a big deal.",
       "revId": "0162c5d003151b069e8931846d478bb84c41e391",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "785b35d5_f68fb30f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-04-22T22:09:20Z",
+      "side": 1,
+      "message": "we could also consider adding a new submit requirement like:\n```\n[submit-requirement \"Submitter-Is-Maintainer-Or-LUCI\"]\n\tdescription \u003d Submitter must be LUCI SA or a repo maintainer.\n\tsubmittableIf \u003d uploaderin:repo-maintainer OR uploaderin:luci_scoped_account\n```\n\nhttps://gerrit-review.googlesource.com/Documentation/user-search.html:\n```\nuploaderin:\u0027GROUP\u0027\nChanges where the latest patch set was uploaded by a user in \u0027GROUP\u0027\n```\n\ni haven\u0027t tested whether the last commit by LUCI from the \"Rebase Always\" strategy meets this requirement. if that doesn\u0027t work, then i think this CL is the best we can do",
+      "parentUuid": "bbd6009e_3611e785",
+      "revId": "0162c5d003151b069e8931846d478bb84c41e391",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab434480_64f58fa1",
+        "filename": "groups",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-04-22T22:09:20Z",
+      "side": 1,
+      "message": "i\u0027m getting a 404 on https://gerrit-review.git.corp.google.com/admin/groups/b97887aaa85f9b33a4252e189de8c250dad58037, is this the right group?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 40
+      },
+      "revId": "0162c5d003151b069e8931846d478bb84c41e391",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
