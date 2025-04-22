@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbd6009e_3611e785",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-22T18:46:04Z",
+      "side": 1,
+      "message": "not sure if there\u0027s a better way of blocking non-repo-maintainer \"Change Owner\" from submitting.  i had to copy the relevant settings from the parent \"Public-Projects\" which is the luci_scoped_account setting.  on the upside, i don\u0027t think that changes often, so maybe manual syncing isn\u0027t a big deal.",
+      "revId": "0162c5d003151b069e8931846d478bb84c41e391",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
