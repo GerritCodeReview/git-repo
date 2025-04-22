@@ -15,6 +15,7 @@
 """Unittests for the manifest_xml.py module."""
 
 import os
+from pathlib import Path
 import platform
 import re
 import tempfile
@@ -555,6 +556,69 @@ class IncludeElementTests(ManifestParseTestCase):
 
             with self.assertRaises(error.ManifestInvalidPathError):
                 parse(path)
+
+    def _includetree_example_structure(self):
+        root = Path(self.manifest_dir)
+        defaultxml = root / "default.xml"
+        level1_a = root / "level1a.xml"
+        level1_b = root / "level1b.xml"
+        level2 = root / "level2.xml"
+
+        defaultxml.write_text(
+            """<manifest>
+              <remote name="test-remote" fetch="http://localhost" />
+              <default remote="test-remote" revision="refs/heads/main" />
+              <include name="level1a.xml" groups="a-groups" />
+              <include name="level1b.xml" />
+              <project name="root-name1" path="root-path1" />
+              <project name="root-name2" path="root-path2" />
+            </manifest>
+        """
+        )
+        level1_a.write_text(
+            """<manifest>
+          <include name="level2.xml" />
+          <project name="level1-name1" path="level1-path1" />
+        </manifest>"""
+        )
+        level1_b.write_text("""<manifest></manifest>""")
+        level2.write_text(
+            """<manifest>
+          <project name="level2-name1" path="level2-path1" />
+        </manifest>
+        """
+        )
+        return defaultxml
+
+    def test_format_includetree(self):
+        defaultxml = self._includetree_example_structure()
+        include_m = manifest_xml.XmlManifest(self.repodir, str(defaultxml))
+        output_lines = include_m.FormatIncludeTree(full=False).splitlines()
+        # With full=False, no element tags are displayed, only include names
+        assert output_lines == [
+            "default.xml",
+            "├── level1a.xml",
+            "│   └── level2.xml",
+            "└── level1b.xml",
+        ]
+
+    def test_format_includetree_full(self):
+        defaultxml = self._includetree_example_structure()
+        include_m = manifest_xml.XmlManifest(self.repodir, str(defaultxml))
+        output_lines = include_m.FormatIncludeTree(full=True).splitlines()
+        # With full=True, all elements are displayed. Without inheriting groups
+        assert output_lines == [
+            "default.xml",
+            '├── <remote name="test-remote" fetch="http://localhost"/>',
+            '├── <default remote="test-remote" revision="refs/heads/main"/>',
+            '├── <include name="level1a.xml" groups="a-groups"/>',
+            '│   ├── <include name="level2.xml"/>',
+            '│   │   └── <project name="level2-name1" path="level2-path1"/>',
+            '│   └── <project name="level1-name1" path="level1-path1"/>',
+            '├── <include name="level1b.xml"/>',
+            '├── <project name="root-name1" path="root-path1"/>',
+            '└── <project name="root-name2" path="root-path2"/>',
+        ]
 
 
 class ProjectElementTests(ManifestParseTestCase):

@@ -13,13 +13,17 @@
 # limitations under the License.
 
 import collections
+import contextlib
 import itertools
 import os
 import platform
 import re
 import sys
+from typing import Generator, List, NamedTuple, Optional
 import urllib.parse
+from xml.dom import Node
 import xml.dom.minidom
+from xml.dom.minidom import Element
 
 from error import ManifestInvalidPathError
 from error import ManifestInvalidRevisionError
@@ -382,6 +386,135 @@ class SubmanifestSpec:
         self.revision = revision
         self.path = path
         self.groups = groups or []
+
+
+class _IncludeTree(NamedTuple):
+    """One node in the manifest, with includes recuresively expanded"""
+
+    node: Node  # Current node
+    # If the node is an <include>, children will contain all elements of
+    # the included manifest.
+    children: List["_IncludeTree"]
+
+
+# TODO(py3.7): Use contextlib.nullcontext
+@contextlib.contextmanager
+def nullcontext():
+    yield
+
+
+class IncludeTreeCollector:
+    """Recursive hierarchy of <include> and their manifest contents
+
+    Used during manifest parsing to collect the raw elements of each
+    manifest and record the hierarchy of <include>s, in order to print
+    this in a tree-like structure for inspection.
+    """
+
+    def __init__(self):
+        self._current: List[_IncludeTree] = []
+
+    def collect(self, node: Node) -> None:
+        if node.nodeType != node.ELEMENT_NODE:
+            # Filter out whitespace and comments.
+            return
+        self._current.append(_IncludeTree(node, []))
+
+    @contextlib.contextmanager
+    def indent(self):
+        # Reading [-1] should be safe since collect() is always expected
+        # to be called before indent.
+        next_indent_parent = self._current[-1]
+        prev = self._current
+        self._current = next_indent_parent.children
+        yield
+        self._current = prev
+
+    def format(
+        self,
+        *,
+        full: bool,
+        filter_values: Optional[str] = None,
+    ) -> Generator[str, None, None]:
+        """Print the hierarchy of all recursivelly included manifest files
+
+        Args:
+        full: If True, print all elements in the tree. If False, only
+            print <include>'s
+        filter_values: Only include elements where any of the attribute
+            values match the included filter. Note that <include> tags
+            are always shown unconditionally.
+        indentation: The current indentation level for printing.
+        """
+        return self._format_recurse(
+            tree=self._current,
+            full=full,
+            filter_values=filter_values,
+            indentation="",
+        )
+
+    def _format_recurse(
+        self,
+        tree: List[_IncludeTree],
+        full: bool,
+        filter_values: Optional[str] = None,
+        indentation="",
+    ) -> Generator[str, None, None]:
+        """Helper function for format()
+
+        Recursively iterate all <include> elements and print them in a
+        tree-like format.
+
+        Args:
+            tree: The list of IncludeTree objects to iterate over.
+            full: If True, print all elements in the tree. If False, only
+                print <include>'s
+            filter_values: Only include elements where any of the attribute
+                values match the included filter. Note that <include> tags
+                are always shown unconditionally.
+            indentation: The current indentation level for printing.
+
+        """
+
+        def elem_to_str(elem: Element) -> str:
+            if not full and not filter_values:
+                # When only showing includes, it's enough to show the name.
+                return elem.getAttribute("name")
+            # Exclude children, it was difficult to get the indentation to
+            # match the outline, otherwise no particular reason to exlclude.
+            # The node should already be copied before being passed into
+            # collect() so this shouldn't have side-effects.
+            elem.childNodes = []
+            return elem.toprettyxml(newl="")
+
+        def filterfunc(node):
+            return any(
+                filter_values in attr.value for attr in node.attributes.values()
+            )
+
+        if filter_values:
+            filtered_tree = [
+                e
+                for e in tree
+                if e.node.nodeName == "include" or filterfunc(e.node)
+            ]
+        elif not full:
+            filtered_tree = [e for e in tree if e.node.nodeName == "include"]
+        else:
+            filtered_tree = tree
+
+        for i, (node, children) in enumerate(filtered_tree):
+            is_last = i == len(filtered_tree) - 1
+            prefix = "└── " if is_last else "├── "
+            yield f"{indentation}{prefix}{elem_to_str(node)}"
+            if len(children) > 0:
+                next_indent = "    " if is_last else "│   "
+                yield from self._format_recurse(
+                    tree=children,
+                    full=full,
+                    filter_values=filter_values,
+                    indentation=indentation + next_indent,
+                )
 
 
 class XmlManifest:
@@ -849,6 +982,39 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         doc = self.ToXml(**kwargs)
         doc.writexml(fd, "", "  ", "\n", "UTF-8")
 
+    def FormatIncludeTree(
+        self, full: bool, filter_values: Optional[str] = None
+    ):
+        """Print the hierarchy of all recursivelly included manifest files
+
+        Args:
+            full: If True, print all elements in the tree. If False, only print
+                includes.
+            filter_values: Only include elements where any of the attribute
+                values match the provided filter.
+        """
+
+        include_tree_collector = IncludeTreeCollector()
+
+        override = self._outer_client.manifestFileOverrides.get(
+            self.path_prefix
+        )
+        manifest_file = override or self.manifestFile
+        _ = self._ParseManifestXml(
+            manifest_file,
+            self.manifestProject.worktree,
+            restrict_includes=False,
+            include_tree=include_tree_collector,
+        )
+        return "\n".join(
+            [
+                os.path.relpath(manifest_file, self.manifestProject.worktree),
+                *include_tree_collector.format(
+                    full=full, filter_values=filter_values
+                ),
+            ]
+        )
+
     def _output_manifest_project_extras(self, p, e):
         """Manifests can modify e if they support extra project attributes."""
 
@@ -1265,6 +1431,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         parent_groups="",
         restrict_includes=True,
         parent_node=None,
+        include_tree: IncludeTreeCollector = None,
     ):
         """Parse a manifest XML and return the computed nodes.
 
@@ -1299,6 +1466,10 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
 
         nodes = []
         for node in manifest.childNodes:
+            if include_tree and node.nodeType == node.ELEMENT_NODE:
+                # Copy the node because it is mutated below and the
+                # IncludeTreeCollector requires the original node.
+                include_tree.collect(copy_node(node))
             if node.nodeName == "include":
                 name = self._reqatt(node, "name")
                 if restrict_includes:
@@ -1320,12 +1491,20 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         "include [%s/]%s doesn't exist or isn't a file"
                         % (include_root, name)
                     )
+                indent_include = (
+                    include_tree.indent if include_tree else nullcontext
+                )
                 try:
-                    nodes.extend(
-                        self._ParseManifestXml(
-                            fp, include_root, include_groups, parent_node=node
+                    with indent_include():
+                        nodes.extend(
+                            self._ParseManifestXml(
+                                fp,
+                                include_root,
+                                include_groups,
+                                parent_node=node,
+                                include_tree=include_tree,
+                            )
                         )
-                    )
                 # should isolate this to the exact exception, but that's
                 # tricky.  actual parsing implementation may vary.
                 except (RuntimeError, ManifestParseError):
@@ -2354,3 +2533,11 @@ class RepoClient(XmlManifest):
 
         # TODO: Completely separate manifest logic out of the client.
         self.manifest = self
+
+
+def copy_node(node: Node) -> Node:
+    """Deep copy a xml node"""
+    # copy.copy doesn't copy attributes
+    # copy.deepcopy ends up in an infinite loop, probably due to
+    # parent-attributes
+    return xml.dom.minidom.parseString(node.toxml()).childNodes[0]
