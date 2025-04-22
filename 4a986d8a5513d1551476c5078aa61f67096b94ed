@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "699480f7_a3399b26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-22T17:58:35Z",
+      "side": 1,
+      "message": "can you file a bug with example manifests \u0026 output for us to look at ?\n\nnew subcommands should be scrutinized, but maybe we could extend the manifest subcommand with a different output/debug option to get what you want.  but it\u0027s hard to tell without some concrete examples.",
+      "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4e7a549_0badc424",
         "filename": "man/repo-manifest.1",
         "patchSetId": 5
