@@ -17,6 +17,7 @@
 
 import functools
 import os
+import shutil
 import subprocess
 import sys
 from typing import List
@@ -101,6 +102,19 @@ def run_isort():
     ).returncode
 
 
+def run_update_manpages() -> int:
+    """Returns the exit code from release/update-manpages."""
+    if not shutil.which("help2mafn"):
+        print("update-manpages: help2man not found; skipping test")
+        return 0
+
+    return subprocess.run(
+        [sys.executable, "release/update-manpages", "--check"],
+        check=False,
+        cwd=ROOT_DIR,
+    ).returncode
+
+
 def main(argv):
     """The main entry."""
     checks = (
@@ -109,6 +123,7 @@ def main(argv):
         run_black,
         run_flake8,
         run_isort,
+        run_update_manpages,
     )
     # Run all the tests all the time to get full feedback.  Don't exit on the
     # first error as that makes it more difficult to iterate in the CQ.
