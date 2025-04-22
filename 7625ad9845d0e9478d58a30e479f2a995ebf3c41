@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "af9e69e6_327f46f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-22T18:32:12Z",
+      "side": 1,
+      "message": "oof, builder doesn\u0027t have `help2man` installed.  let me see if i can switch to a Python version.",
+      "revId": "7625ad9845d0e9478d58a30e479f2a995ebf3c41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
