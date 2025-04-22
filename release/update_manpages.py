@@ -27,9 +27,11 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from typing import List
 
 
-TOPDIR = Path(__file__).resolve().parent.parent
+THIS_FILE = Path(__file__).resolve()
+TOPDIR = THIS_FILE.parent.parent
 MANDIR = TOPDIR.joinpath("man")
 
 # Load repo local modules.
@@ -42,9 +44,23 @@ def worker(cmd, **kwargs):
     subprocess.run(cmd, **kwargs)
 
 
-def main(argv):
+def get_parser() -> argparse.ArgumentParser:
+    """Get argument parser."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args(argv)
+    parser.add_argument(
+        "-n",
+        "--check",
+        "--dry-run",
+        action="store_const",
+        const=True,
+        help="Check if changes are necessary; don't actually change files",
+    )
+    return parser
+
+
+def main(argv: List[str]) -> int:
+    parser = get_parser()
+    opts = parser.parse_args(argv)
 
     if not shutil.which("help2man"):
         sys.exit("Please install help2man to continue.")
@@ -117,6 +133,7 @@ def main(argv):
                 functools.partial(worker, cwd=tempdir, check=True), cmdlist
             )
 
+    ret = 0
     for tmp_path in MANDIR.glob("*.1.tmp"):
         path = tmp_path.parent / tmp_path.stem
         old_data = path.read_text() if path.exists() else ""
@@ -133,7 +150,17 @@ def main(argv):
         )
         new_data = re.sub(r'^(\.TH REPO "1" ")([^"]+)', r"\1", data, flags=re.M)
         if old_data != new_data:
-            path.write_text(data)
+            if opts.check:
+                ret = 1
+                print(
+                    f"{THIS_FILE.name}: {path.name}: "
+                    "man page needs regenerating",
+                    file=sys.stderr,
+                )
+            else:
+                path.write_text(data)
+
+    return ret
 
 
 def replace_regex(data):
