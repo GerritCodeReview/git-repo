@@ -20,6 +20,10 @@ import re
 import sys
 import urllib.parse
 import xml.dom.minidom
+from copy import copy
+from typing import List, NamedTuple, Optional
+from xml.dom import Node
+from xml.dom.minidom import Element
 
 from error import ManifestInvalidPathError
 from error import ManifestInvalidRevisionError
@@ -382,6 +386,15 @@ class SubmanifestSpec:
         self.revision = revision
         self.path = path
         self.groups = groups or []
+
+
+class IncludeTree(NamedTuple):
+    """List of elements in the manifest, with includes recuresively expanded"""
+
+    elemtype: str  # "include" or "project"
+    node: Node  # Current node
+    path: str  # Path to the xml file
+    children: List["IncludeTree"]  # Empty when elemtype is "project"
 
 
 class XmlManifest:
@@ -849,6 +862,92 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         doc = self.ToXml(**kwargs)
         doc.writexml(fd, "", "  ", "\n", "UTF-8")
 
+    def FormatIncludeTree(self, full: bool, filter: Optional[str] = None):
+        """Print the hierarchy of all recursivelly included manifest files
+
+        Args:
+            full: If True, print all elements in the tree. If False, only print
+            includes.
+        """
+        override = self._outer_client.manifestFileOverrides.get(
+            self.path_prefix
+        )
+        manifest_file = override or self.manifestFile
+        tree = self._WalkManifestIncludesRaw(
+            manifest_file,
+            self.manifestProject.worktree,
+            restrict_includes=False,
+        )
+        return "\n".join(
+            [
+                manifest_file,
+                *self._FormatIncludeTreeRecurse(full, tree, filter=filter),
+            ]
+        )
+
+    def _FormatIncludeTreeRecurse(
+        self,
+        full: bool,
+        tree: List[IncludeTree],
+        indentation: str = "",
+        *,
+        filter: Optional[str] = None,
+    ):
+        """Helper function for FormatIncludeTree
+
+        Recuresivelly iterate all <include> elements and print them in a
+        tree-like format.
+
+        Args:
+            full: If True, print all elements in the tree. If False, only
+                print <include>'s
+            tree: The list of IncludeTree objects to iterate over. Typically
+                provided by _WalkManifestIncludesRaw.
+            indentation: The current indentation level for printing.
+        """
+
+        def elem_to_str(elem: Element) -> str:
+            if not full and not filter:
+                # When only showing includes, it's enough to show the name.
+                return elem.getAttribute("name")
+            elem = copy(elem)
+            # Exclude children, it was difficult to get the indentation to
+            # match the outline, otherwise no particular reason to exlclude.
+            elem.childNodes = []
+            return elem.toprettyxml(newl="")
+
+        def filterfunc(node):
+            return any(
+                filter in attr.value for attr in node.attributes.values()
+            )
+
+        filtered_tree = [
+            e for e in tree if e.node.nodeType == e.node.ELEMENT_NODE
+        ]  # Remove xml comments and whitespace
+
+        if filter:
+            filtered_tree = [
+                e
+                for e in filtered_tree
+                if e.elemtype == "include" or filterfunc(e.node)
+            ]
+        elif not full:
+            filtered_tree = [
+                e for e in filtered_tree if e.elemtype == "include"
+            ]
+
+        for i, (elemtype, node, child_path, children) in enumerate(
+            filtered_tree
+        ):
+            is_last = i == len(filtered_tree) - 1
+            prefix = "└── " if is_last else "├── "
+            yield f"{indentation}{prefix}{elem_to_str(node)}"
+            if elemtype == "include":
+                next_indent = "    " if is_last else "│   "
+                yield from self._FormatIncludeTreeRecurse(
+                    full, children, indentation + next_indent, filter=filter
+                )
+
     def _output_manifest_project_extras(self, p, e):
         """Manifests can modify e if they support extra project attributes."""
 
@@ -1265,7 +1364,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         parent_groups="",
         restrict_includes=True,
         parent_node=None,
-    ):
+    ) -> List[Element]:
         """Parse a manifest XML and return the computed nodes.
 
         Args:
@@ -1280,33 +1379,43 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         Returns:
             List of XML nodes.
         """
-        try:
-            root = xml.dom.minidom.parse(path)
-        except (OSError, xml.parsers.expat.ExpatError) as e:
-            raise ManifestParseError(f"error parsing manifest {path}: {e}")
+        tree = self._WalkManifestIncludesRaw(
+            path, include_root=include_root, restrict_includes=restrict_includes
+        )
+        return self._FlattenIncludes(tree, parent_groups, parent_node)
 
-        if not root or not root.childNodes:
-            raise ManifestParseError(f"no root node in {path}")
+    def _FlattenIncludes(
+        self,
+        tree: List[IncludeTree],
+        parent_groups="",
+        parent_node=None,
+    ) -> List[Element]:
+        """Recursivelly convert tree of includes into a flat list of Nodes.
 
-        for manifest in root.childNodes:
-            if (
-                manifest.nodeType == manifest.ELEMENT_NODE
-                and manifest.nodeName == "manifest"
-            ):
-                break
-        else:
-            raise ManifestParseError(f"no <manifest> in {path}")
+        This step forwards attributes inherited from the parent <include>
+        to the affected child projects, such as "groups" and "revision".
+        Note that this is not a full canonicalization of the manifest (for
+        that see ToXml), this meerly adds the required information that
+        should be inheretied from a parent <include>.
 
-        nodes = []
-        for node in manifest.childNodes:
-            if node.nodeName == "include":
-                name = self._reqatt(node, "name")
-                if restrict_includes:
-                    msg = self._CheckLocalPath(name)
-                    if msg:
-                        raise ManifestInvalidPathError(
-                            f'<include> invalid "name": {name}: {msg}'
-                        )
+        Args:
+            tree: The XML file to read & parse. Usually computed using
+                _WalkManifestIncludesRaw.
+            parent_groups: The groups to apply to this projects.
+            parent_node: The parent include node, to apply attribute to this
+                projects.
+            include_chain: List of xml files that were traversed via <include>
+                elements before reaching this file. (Mainly intended for error
+                diagnostics).
+
+        Returns:
+            List of XML nodes.
+        """
+
+        nodes: List[Element] = []
+
+        for elemtype, node, path, children in tree:
+            if elemtype == "include":
                 include_groups = ""
                 if parent_groups:
                     include_groups = parent_groups
@@ -1314,26 +1423,9 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     include_groups = (
                         node.getAttribute("groups") + "," + include_groups
                     )
-                fp = os.path.join(include_root, name)
-                if not os.path.isfile(fp):
-                    raise ManifestParseError(
-                        "include [%s/]%s doesn't exist or isn't a file"
-                        % (include_root, name)
-                    )
-                try:
-                    nodes.extend(
-                        self._ParseManifestXml(
-                            fp, include_root, include_groups, parent_node=node
-                        )
-                    )
-                # should isolate this to the exact exception, but that's
-                # tricky.  actual parsing implementation may vary.
-                except (RuntimeError, ManifestParseError):
-                    raise
-                except Exception as e:
-                    raise ManifestParseError(
-                        f"failed parsing included manifest {name}: {e}"
-                    )
+                nodes.extend(self._FlattenIncludes(
+                    children, include_groups, parent_node=node
+                ))
             else:
                 if parent_groups and node.nodeName == "project":
                     nodeGroups = parent_groups
@@ -1353,7 +1445,85 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                 nodes.append(node)
         return nodes
 
-    def _ParseManifest(self, node_list):
+    def _WalkManifestIncludesRaw(
+        self,
+        path: str,
+        include_root: str,
+        restrict_includes=True,
+    ) -> List[IncludeTree]:
+        """Parse manifest XML and all recursivelly included manifests
+
+        Notably this function does not perform any transformation of the nodes,
+        for this use the _FlattenIncludes. Here, only the xml is parsed and
+        all include names are checked for validity.
+
+        Args:
+            path: The XML file to read & parse.
+            include_root: The path to interpret include "name"s relative to.
+            restrict_includes: Whether to constrain the "name" attribute of
+                includes.
+
+        Returns:
+            List of IncludeTree's, containing all nodes of the manifest file
+            and recursive manifests for include nodes.
+        """
+        path_relative = os.path.relpath(path, include_root)
+        try:
+            root = xml.dom.minidom.parse(path)
+        except (OSError, xml.parsers.expat.ExpatError) as e:
+            raise ManifestParseError(f"error parsing manifest {path}: {e}")
+
+        if not root or not root.childNodes:
+            raise ManifestParseError(f"no root node in {path}")
+
+        for manifest in root.childNodes:
+            if (
+                manifest.nodeType == manifest.ELEMENT_NODE
+                and manifest.nodeName == "manifest"
+            ):
+                break
+        else:
+            raise ManifestParseError(f"no <manifest> in {path}")
+
+        tree = []
+        for node in manifest.childNodes:
+            if node.nodeName == "include":
+                name = self._reqatt(node, "name")
+                if restrict_includes:
+                    msg = self._CheckLocalPath(name)
+                    if msg:
+                        raise ManifestInvalidPathError(
+                            f'<include> invalid "name": {name}: {msg}'
+                        )
+
+                fp = os.path.join(include_root, name)
+                if not os.path.isfile(fp):
+                    raise ManifestParseError(
+                        "include [%s/]%s doesn't exist or isn't a file"
+                        % (include_root, name)
+                    )
+                try:
+                    tree.append(
+                        IncludeTree(
+                            "include",
+                            node,
+                            path_relative,
+                            self._WalkManifestIncludesRaw(fp, include_root),
+                        )
+                    )
+                # should isolate this to the exact exception, but that's
+                # tricky.  actual parsing implementation may vary.
+                except (RuntimeError, ManifestParseError):
+                    raise
+                except Exception as e:
+                    raise ManifestParseError(
+                        f"failed parsing included manifest {name}: {e}"
+                    )
+            else:
+                tree.append(IncludeTree("element", node, path_relative, []))
+        return tree
+
+    def _ParseManifest(self, node_list: List[List[Element]]):
         for node in itertools.chain(*node_list):
             if node.nodeName == "remote":
                 remote = self._ParseRemote(node)
