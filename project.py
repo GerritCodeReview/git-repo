@@ -658,13 +658,14 @@ class Project:
             return self.relpath
         return os.path.join(self.manifest.path_prefix, self.relpath)
 
-    def SetRevision(self, revisionExpr, revisionId=None):
+    def SetRevision(self, revisionExpr, revisionId=None, prev_definition=None):
         """Set revisionId based on revision expression and id"""
         self.revisionExpr = revisionExpr
         if revisionId is None and revisionExpr and IsId(revisionExpr):
             self.revisionId = self.revisionExpr
         else:
             self.revisionId = revisionId
+        self.prev_definition = prev_definition
 
     def UpdatePaths(self, relpath, worktree, gitdir, objdir):
         """Update paths used by this project"""
