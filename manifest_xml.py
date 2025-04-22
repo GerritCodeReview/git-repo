@@ -1372,6 +1372,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         nodes: List[Element] = []
 
         for elemtype, node, path, children in tree:
+            chain = [*include_chain, path]
             if elemtype == "include":
                 include_groups = ""
                 if parent_groups:
@@ -1381,7 +1382,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         node.getAttribute("groups") + "," + include_groups
                     )
                 nodes.extend(self._FlattenIncludes(
-                    children, include_groups, parent_node=node, include_chain=[*copy(include_chain), path]
+                    children, include_groups, parent_node=node, include_chain=chain
                 ))
             else:
                 if parent_groups and node.nodeName == "project":
@@ -1399,7 +1400,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     node.setAttribute(
                         "revision", parent_node.getAttribute("revision")
                     )
-                node.includechain = include_chain
+                node.includechain = chain
                 nodes.append(node)
         return nodes
 
@@ -1611,12 +1612,14 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                     if revision:
                         if base_revision:
                             if p.revisionExpr != base_revision:
+                                prev_includechain = " -> ".join(p.prev_definition.includechain)
+                                curr_includechain = " -> ".join(node.includechain)
                                 failed_revision_changes.append(
-                                    "extend-project name %s mismatch base "
-                                    "%s vs revision %s"
-                                    % (name, base_revision, p.revisionExpr)
+                                    f"extend-project mismatch for name '{name}'\n"
+                                    f'    ├──Mismatching base-rev="{base_revision}" (included via {curr_includechain})\n'
+                                    f'    └──Previous definition: <{p.prev_definition.nodeName} ... revision="{p.revisionExpr}" /> (included via {prev_includechain})'
                                 )
-                        p.SetRevision(revision)
+                        p.SetRevision(revision, prev_definition=node)
 
                     if remote_name:
                         p.remote = remote.ToRemoteSpec(name)
@@ -1720,14 +1723,12 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
                         ):
                             if base_revision:
                                 if p.revisionExpr != base_revision:
+                                    prev_includechain = " -> ".join(p.prev_definition.includechain)
+                                    curr_includechain = " -> ".join(node.includechain)
                                     failed_revision_changes.append(
-                                        "remove-project path %s mismatch base "
-                                        "%s vs revision %s"
-                                        % (
-                                            p.relpath,
-                                            base_revision,
-                                            p.revisionExpr,
-                                        )
+                                        f"remove-project mismatch for name '{name}'\n"
+                                        f'    ├──Mismatching base-rev="{base_revision}" (included via {curr_includechain})\n'
+                                        f'    └──Previous definition: <{p.prev_definition.nodeName} ... revision="{p.revisionExpr}" /> (included via {prev_includechain})'
                                     )
                             self._projects[projname].remove(p)
                             del self._paths[p.relpath]
@@ -1751,8 +1752,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
         if failed_revision_changes:
             raise ManifestParseError(
                 "revision base check failed, rebase patches and update "
-                "base revs for: ",
-                failed_revision_changes,
+                "base-rev for:\n" + "\n".join(failed_revision_changes),
             )
 
         # Store repo hooks project information.
@@ -2087,6 +2087,7 @@ https://gerrit.googlesource.com/git-repo/+/HEAD/docs/manifest-format.md
             use_git_worktrees=use_git_worktrees,
             **extra_proj_attrs,
         )
+        project.prev_definition = node
 
         for n in node.childNodes:
             if n.nodeName == "copyfile":
