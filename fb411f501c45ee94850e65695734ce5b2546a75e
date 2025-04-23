@@ -22,6 +22,30 @@
       },
       "revId": "fb411f501c45ee94850e65695734ce5b2546a75e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85ed3bbe_84a39cd1",
+        "filename": "manifest_xml.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 1336,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2025-04-23T08:37:58Z",
+      "side": 0,
+      "message": "NA after PS6.",
+      "parentUuid": "0521755c_385b5eb7",
+      "range": {
+        "startLine": 1329,
+        "startChar": 14,
+        "endLine": 1336,
+        "endChar": 21
+      },
+      "revId": "fb411f501c45ee94850e65695734ce5b2546a75e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }

@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59254db2_e4e089b7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2025-04-23T08:37:58Z",
+      "side": 1,
+      "message": "I\u0027ve done a complete refactor now that has a lot smaller footprint on the existing `_ParseManifestXml`, by introducing `IncludeTreeCollector`. It\u0027s still a new command. (PS5 is the last with the old structure)",
+      "parentUuid": "64429daa_1f49dc87",
+      "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4e7a549_0badc424",
         "filename": "man/repo-manifest.1",
         "patchSetId": 5
@@ -85,6 +103,24 @@
       "side": 1,
       "message": "Thanks",
       "parentUuid": "a22b9966_7f5cdd3e",
+      "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "888086b0_c825a393",
+        "filename": "man/repo-manifest.1",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2025-04-23T08:37:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e57c5f5_8cc0af27",
       "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
