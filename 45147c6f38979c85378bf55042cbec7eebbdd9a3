@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d444e8cc_7c8ebc39",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2025-04-23T08:40:20Z",
+      "side": 1,
+      "message": "Need to rebase this on top of latest version of [manifest: Add new subcommand for printing include tree](https://gerrit-review.googlesource.com/c/git-repo/+/469602) once it is ready. Please hold until then.",
+      "revId": "45147c6f38979c85378bf55042cbec7eebbdd9a3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
