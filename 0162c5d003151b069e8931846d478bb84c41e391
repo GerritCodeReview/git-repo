@@ -36,6 +36,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b827660_60f8d2ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-23T00:14:17Z",
+      "side": 1,
+      "message": "i guess my biggest concern was duplicating logic from Public-Projects that we\u0027d have to keep in sync.  in that regard, i think both methods accomplish the goal.  i would lean towards using ACLs vs submit requirements as i think the UI is a little more discoverable \u0026 easy to update since it\u0027s how everything else works.",
+      "parentUuid": "785b35d5_f68fb30f",
+      "revId": "0162c5d003151b069e8931846d478bb84c41e391",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab434480_64f58fa1",
@@ -49,6 +67,30 @@
       "writtenOn": "2025-04-22T22:09:20Z",
       "side": 1,
       "message": "i\u0027m getting a 404 on https://gerrit-review.git.corp.google.com/admin/groups/b97887aaa85f9b33a4252e189de8c250dad58037, is this the right group?",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 3,
+        "endChar": 40
+      },
+      "revId": "0162c5d003151b069e8931846d478bb84c41e391",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "638b0de6_6be04daa",
+        "filename": "groups",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-23T00:14:17Z",
+      "side": 1,
+      "message": "it is ... i can\u0027t view the group either.  you can find the UUID\u003c-\u003ename mapping in other project.config files though.",
+      "parentUuid": "ab434480_64f58fa1",
       "range": {
         "startLine": 3,
         "startChar": 0,
