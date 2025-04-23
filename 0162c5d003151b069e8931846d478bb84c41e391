@@ -140,6 +140,30 @@
       ],
       "revId": "0162c5d003151b069e8931846d478bb84c41e391",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79fca7cb_fed605e5",
+        "filename": "project.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-23T08:18:24Z",
+      "side": 1,
+      "message": "ah i meant to only put it there and not refs/meta/config.  i used the Gerrit UI just to generate this line for syntax purposes but added to the wrong block.",
+      "parentUuid": "951e355f_fbbc0c78",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 35
+      },
+      "revId": "0162c5d003151b069e8931846d478bb84c41e391",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
