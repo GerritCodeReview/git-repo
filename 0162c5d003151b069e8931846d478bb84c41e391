@@ -99,6 +99,47 @@
       },
       "revId": "0162c5d003151b069e8931846d478bb84c41e391",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "951e355f_fbbc0c78",
+        "filename": "project.config",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-04-23T00:23:20Z",
+      "side": 1,
+      "message": "also add `exclusiveGroupPermissions \u003d submit` to the `refs/heads/*` block",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 35
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7e68e446_50f27481",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "project.config",
+              "range": {
+                "startLine": 50,
+                "startChar": 0,
+                "endLine": 50,
+                "endChar": 0
+              },
+              "replacement": "\texclusiveGroupPermissions \u003d submit\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0162c5d003151b069e8931846d478bb84c41e391",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
