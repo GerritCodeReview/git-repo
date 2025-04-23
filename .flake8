@@ -12,5 +12,6 @@ extend-ignore =
     # E731: do not assign a lambda expression, use a def
     E731,
 exclude =
+    .venv,
     venv,
     .tox,
