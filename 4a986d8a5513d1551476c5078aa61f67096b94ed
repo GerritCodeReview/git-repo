@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "64429daa_1f49dc87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2025-04-23T06:29:03Z",
+      "side": 1,
+      "message": "Sure, see https://partnerissuetracker.corp.google.com/issues/412725063. The unit tests should also provide example input/outputs.\n\n-----------------------\n\nI did consider extending `repo manifest` command but it modifies the nodes along the way (see my other comment) which makes it difficult. I guess one could let it accumulate the output along the way before it mutates the nodes, i can take another attempt on that, i\u0027m also not super happy about the intermediate `list[IncludeTree]` representation.\n\ntbh, the whole thing could be implemented naively like this\n```\ndef print_manifest_include_tree(xml_file, indentation_level, last):\n    root \u003d ET.parse(xml_file).getroot()\n    prefix \u003d \"└──\" if last else \"├──\"\n    print(indentation_level + prefix + os.path.basename(xml_file))\n    children \u003d list(root.findall(\"include\"))\n    for i, child in enumerate(children):\n        is_last \u003d i \u003d\u003d len(children) - 1\n        print_manifest_include_tree(child.attrib[\"name\"], indentation_level + \"│    \", is_last)\n```\nThis is a local script i\u0027ve been using for years to serve the same purpose, now i finally decided this deserved to upstreamed. This doesn\u0027t consider things like `_CheckLocalPath` which allows it to be simpler. It also doesn\u0027t have the filtering features.",
+      "parentUuid": "699480f7_a3399b26",
+      "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4e7a549_0badc424",
         "filename": "man/repo-manifest.1",
         "patchSetId": 5
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "let me update our CQ to detect this and refresh independently\n\nhttp://gerrit-review.googlesource.com/c/469741",
       "parentUuid": "f4e7a549_0badc424",
+      "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e57c5f5_8cc0af27",
+        "filename": "man/repo-manifest.1",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2025-04-23T06:29:03Z",
+      "side": 1,
+      "message": "Thanks",
+      "parentUuid": "a22b9966_7f5cdd3e",
       "revId": "4a986d8a5513d1551476c5078aa61f67096b94ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }

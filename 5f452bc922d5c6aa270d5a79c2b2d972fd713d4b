@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bca0292_b0b8749f",
+        "filename": "manifest_xml.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 1351,
+      "author": {
+        "id": 1141766
+      },
+      "writtenOn": "2025-04-23T06:29:03Z",
+      "side": 0,
+      "message": "This is the part i don\u0027t want to happen in `repo includetree`. There i want to show the raw contents of the file, nothing inherited based on the parent `\u003cinclude groups\u003d...\u003e`",
+      "range": {
+        "startLine": 1342,
+        "startChar": 20,
+        "endLine": 1351,
+        "endChar": 72
+      },
+      "revId": "5f452bc922d5c6aa270d5a79c2b2d972fd713d4b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
