@@ -16,6 +16,24 @@
       "message": "oof, builder doesn\u0027t have `help2man` installed.  let me see if i can switch to a Python version.",
       "revId": "7625ad9845d0e9478d58a30e479f2a995ebf3c41",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50377ac4_e64005da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-26T01:54:58Z",
+      "side": 1,
+      "message": "i tried some python alternatives but they didn\u0027t pan out\n\ni don\u0027t know if we can customize the bot image or install the package on the fly, but for now, i\u0027ll have it auto-skip if it\u0027s not found.  hopefully this will provide some encouragement for devs running tests locally.",
+      "parentUuid": "af9e69e6_327f46f2",
+      "revId": "7625ad9845d0e9478d58a30e479f2a995ebf3c41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
