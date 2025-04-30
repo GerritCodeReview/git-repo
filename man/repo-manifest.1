@@ -30,8 +30,8 @@ if in \fB\-r\fR mode, do not write the dest\-branch field
 (only of use if the branch names for a sha1 manifest
 are sensitive)
 .TP
-\fB\-\-json\fR
-output manifest in JSON format (experimental)
+\fB\-\-format\fR=\fI\,FORMAT\/\fR
+output format: xml, json (default: xml)
 .TP
 \fB\-\-pretty\fR
 format output for humans to read
@@ -77,6 +77,10 @@ they don't follow a particular branch. In this case, the 'upstream' attribute is
 set to the ref we were on when the manifest was generated. The 'dest\-branch'
 attribute is set to indicate the remote ref to push changes to via 'repo
 upload'.
+.PP
+Multiple output formats are supported via \fB\-\-format\fR. The default output is XML,
+and formats are generally "condensed". Use \fB\-\-pretty\fR for more human\-readable
+variations.
 .PP
 repo Manifest Format
 .PP
