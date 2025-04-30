@@ -104,7 +104,8 @@ def run_isort():
 
 def run_update_manpages() -> int:
     """Returns the exit code from release/update-manpages."""
-    if not shutil.which("help2mafn"):
+    # Allow this to fail on CI, but not local devs.
+    if is_ci() and not shutil.which("help2man"):
         print("update-manpages: help2man not found; skipping test")
         return 0
 
