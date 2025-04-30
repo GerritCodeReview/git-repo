@@ -50,6 +50,82 @@
       ],
       "revId": "a76e66bae070c2ed688d1bd5a5eb613cdcb1b971",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26201223_4d58c539",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-30T19:24:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "86e79986_d4032f9a",
+      "range": {
+        "startLine": 150,
+        "startChar": 8,
+        "endLine": 150,
+        "endChar": 14
+      },
+      "revId": "a76e66bae070c2ed688d1bd5a5eb613cdcb1b971",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f5ce862_6430decf",
+        "filename": "subcmds/manifest.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-04-30T19:24:32Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "86e79986_d4032f9a",
+      "range": {
+        "startLine": 150,
+        "startChar": 8,
+        "endLine": 150,
+        "endChar": 14
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "362403d7_350a99e8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/manifest.py",
+              "range": {
+                "startLine": 150,
+                "startChar": 0,
+                "endLine": 151,
+                "endChar": 0
+              },
+              "replacement": "        output_format \u003d OutputFormat[opt.format.upper()]\n"
+            },
+            {
+              "path": "subcmds/manifest.py",
+              "range": {
+                "startLine": 166,
+                "startChar": 0,
+                "endLine": 167,
+                "endChar": 0
+              },
+              "replacement": "            if output_format \u003d\u003d OutputFormat.JSON:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a76e66bae070c2ed688d1bd5a5eb613cdcb1b971",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
