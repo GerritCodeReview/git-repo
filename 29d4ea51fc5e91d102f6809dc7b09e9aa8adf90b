@@ -18,6 +18,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "653c4624_0d407138",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-05-05T21:35:39Z",
+      "side": 1,
+      "message": "I think it\u0027s a good idea, added you on a thread to discuss further: https://docs.google.com/document/d/17jpUwtCnQAIxWoGNwrXh92qzxiJ7apreTT5fdpPeEiw/edit?resourcekey\u003d0--kuzj3MFbSiAjAdpkCP8XA\u0026disco\u003dAAABg3iS-cM",
+      "parentUuid": "d441fff6_3a2f733d",
+      "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b6b3d4b_d27329fa",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-05-05T19:02:59Z",
       "side": 1,
       "message": "Is this tested? https://gerrit-review.googlesource.com/Documentation/user-upload.html#custom_keyed_values says the option name is `custom-keyed-value`.",
+      "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "921f9235_37260c0c",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-05-05T21:35:39Z",
+      "side": 1,
+      "message": "I wasn\u0027t able to find a way to test this without mocking everything so I tested this manually (everything lg minus `keyed`), but stopped short of actually letting push go through. fixed, and re-tested w/ a new change that has this metadata attached: http://shortn/_tR4EoUmLWr",
+      "parentUuid": "5b6b3d4b_d27329fa",
       "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
@@ -82,6 +118,30 @@
           ]
         }
       ],
+      "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e924fc3_ad66997e",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 1088583
+      },
+      "writtenOn": "2025-05-05T21:35:39Z",
+      "side": 1,
+      "message": "moved to a new `def repo_id(self):` property",
+      "parentUuid": "61c7b72f_969e2fb5",
+      "range": {
+        "startLine": 636,
+        "startChar": 0,
+        "endLine": 646,
+        "endChar": 21
+      },
       "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
