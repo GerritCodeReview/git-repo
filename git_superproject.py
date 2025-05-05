@@ -28,6 +28,7 @@ import os
 import sys
 import time
 from typing import NamedTuple
+import urllib.parse
 
 from git_command import git_require
 from git_command import GitCommand
@@ -139,6 +140,23 @@ class Superproject:
         return (
             self._manifest_path if os.path.exists(self._manifest_path) else None
         )
+
+    @property
+    def repo_id(self):
+        """Returns the repo ID for the superproject.
+
+        For example, if the superproject points to:
+            https://android-review.googlesource.com/platform/superproject/
+        Then the repo_id would be:
+            android/platform/superproject
+        """
+        if review_url := self.remote.review:
+            parsed_url = urllib.parse.urlparse(review_url)
+            if netloc := parsed_url.netloc:
+                parts = netloc.split("-review", 1)
+                host = parts[0]
+                return f"{host}/{self.name}"
+        return None
 
     def _LogMessage(self, fmt, *inputs):
         """Logs message to stderr and _git_event_log."""
