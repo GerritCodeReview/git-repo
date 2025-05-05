@@ -33,6 +33,57 @@
       "message": "Is this tested? https://gerrit-review.googlesource.com/Documentation/user-upload.html#custom_keyed_values says the option name is `custom-keyed-value`.",
       "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61c7b72f_969e2fb5",
+        "filename": "subcmds/upload.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 1096638
+      },
+      "writtenOn": "2025-05-05T19:16:34Z",
+      "side": 1,
+      "message": "nit - this should be a method in class Superproject (git_superprojec.py). Maybe name it `def GetPushMetadata`, or just `def RepoID`",
+      "range": {
+        "startLine": 636,
+        "startChar": 0,
+        "endLine": 646,
+        "endChar": 21
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "879f9e83_32eb9e1a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/upload.py",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "subcmds/upload.py",
+              "range": {
+                "startLine": 636,
+                "startChar": 0,
+                "endLine": 647,
+                "endChar": 0
+              },
+              "replacement": "            if repo_id :\u003d manifest.superproject.GetRepoId():\n                push_options.append(f\"custom-key-value\u003drootRepo:{repo_id}\")\n"
+            }
+          ]
+        }
+      ],
+      "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
