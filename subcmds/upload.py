@@ -628,6 +628,13 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 branch.uploaded = False
                 return
 
+        # If using superproject, add the root repo as a push option.
+        manifest = branch.project.manifest
+        push_options = list(opt.push_options)
+        sp = manifest.superproject
+        if sp and sp.repo_id and manifest.manifestProject.use_superproject:
+            push_options.append(f"custom-keyed-value=rootRepo:{sp.repo_id}")
+
         branch.UploadForReview(
             people,
             dryrun=opt.dryrun,
@@ -640,7 +647,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             ready=opt.ready,
             dest_branch=destination,
             validate_certs=opt.validate_certs,
-            push_options=opt.push_options,
+            push_options=push_options,
             patchset_description=opt.patchset_description,
         )
 
