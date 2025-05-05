@@ -18,6 +18,7 @@ import optparse
 import re
 import sys
 from typing import List
+import urllib.parse
 
 from command import DEFAULT_LOCAL_JOBS
 from command import InteractiveCommand
@@ -628,6 +629,22 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
                 branch.uploaded = False
                 return
 
+        # If using superproject, add the root repo as a push option.
+        manifest = branch.project.manifest
+        push_options = list(opt.push_options)
+        if manifest.superproject and manifest.manifestProject.use_superproject:
+            sp = manifest.superproject
+            sp_name = sp.name
+            sp_remote = sp.remote
+            if review_url := sp_remote.review:
+                parsed_url = urllib.parse.urlparse(review_url)
+                if netloc := parsed_url.netloc:
+                    parts = netloc.split("-review", 1)
+                    host = parts[0]
+                    push_options.append(
+                        f"custom-key-value=rootRepo:{host}/{sp_name}"
+                    )
+
         branch.UploadForReview(
             people,
             dryrun=opt.dryrun,
@@ -640,7 +657,7 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             ready=opt.ready,
             dest_branch=destination,
             validate_certs=opt.validate_certs,
-            push_options=opt.push_options,
+            push_options=push_options,
             patchset_description=opt.patchset_description,
         )
 
