@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d441fff6_3a2f733d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2025-05-05T19:04:16Z",
+      "side": 1,
+      "message": "Could we also push the superproject commit id? That would unlock some amazing possibilities (being able to find the baseline a change was built against).",
+      "revId": "29d4ea51fc5e91d102f6809dc7b09e9aa8adf90b",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b6b3d4b_d27329fa",
         "filename": "subcmds/upload.py",
         "patchSetId": 5
