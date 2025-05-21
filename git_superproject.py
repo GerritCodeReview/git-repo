@@ -130,6 +130,30 @@ class Superproject:
         self._print_messages = value
 
     @property
+    def commit_id(self):
+        """Returns the commit ID of the superproject checkout."""
+        cmd = ["rev-parse", self.revision]
+        p = GitCommand(
+            None,  # project
+            cmd,
+            gitdir=self._work_git,
+            bare=True,
+            capture_stdout=True,
+            capture_stderr=True,
+          )
+        retval = p.Wait()
+        if retval == 0:
+            data = p.stdout
+        else:
+            self._LogWarning(
+                "git rev-parse call failed, command: git {}, "
+                "return code: {}, stderr: {}",
+                cmd,
+                p.stdwerr,
+            )
+        return data
+
+    @property
     def project_commit_ids(self):
         """Returns a dictionary of projects and their commit ids."""
         return self._project_commit_ids
