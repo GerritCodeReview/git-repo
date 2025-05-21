@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6de9b7f_9602614d",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-21T23:38:26Z",
+      "side": 1,
+      "message": "```\n$ repo status\nproject art/                                    branch and_test\n...\n\n$ repo status --superproject-hash\nSuperproject Hash: cc89a6821ae620d4b9f027306994b56a3244b48f\n```",
+      "range": {
+        "startLine": 144,
+        "startChar": 12,
+        "endLine": 144,
+        "endChar": 46
+      },
+      "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
