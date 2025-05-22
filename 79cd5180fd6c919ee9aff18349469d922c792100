@@ -54,6 +54,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e4f9c56_73465c65",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-22T17:18:51Z",
+      "side": 1,
+      "message": "I see. updated to `--superproject-rev`",
+      "parentUuid": "ba1c1375_8aa1bb46",
+      "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "831e9fb8_775f4c18",
@@ -85,6 +103,24 @@
           ]
         }
       ],
+      "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a8c292b_34990a5b",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-22T17:18:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "831e9fb8_775f4c18",
       "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
