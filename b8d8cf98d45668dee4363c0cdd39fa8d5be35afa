@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50f5881f_094f5963",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-22T18:33:51Z",
+      "side": 1,
+      "message": "`status:` seems like an appropriate prefix since this is for the status command",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33788578_8c05cb5d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-22T18:33:51Z",
+      "side": 1,
+      "message": "Change-Id footer should be last",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6eae58_32d1aea2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-22T18:33:51Z",
+      "side": 1,
+      "message": "`repo status` is equiv to `git status`.  putting this option here doesn\u0027t feel like it aligns with that.  seems like `repo info` would be better ?  and at that point, do we need an option at all or should we just always include it in the initial summary header ?",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97158d56_7c044fcf",
+        "filename": "git_superproject.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-22T18:33:51Z",
+      "side": 1,
+      "message": "`data` isn\u0027t defined in this code path which will cause an exception below when it tries to return",
+      "revId": "b8d8cf98d45668dee4363c0cdd39fa8d5be35afa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
