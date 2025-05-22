@@ -60,7 +60,6 @@ If no project is specified try to use current directory as a project.
         p.add_option(
             "-r",
             "--revert",
-            dest="revert",
             action="store_true",
             help="revert instead of checkout",
         )

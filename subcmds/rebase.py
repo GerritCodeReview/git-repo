@@ -47,21 +47,18 @@ branch but need to incorporate new upstream changes "underneath" them.
         g.add_option(
             "-i",
             "--interactive",
-            dest="interactive",
             action="store_true",
             help="interactive rebase (single project only)",
         )
 
         p.add_option(
             "--fail-fast",
-            dest="fail_fast",
             action="store_true",
             help="stop rebasing after first error is hit",
         )
         p.add_option(
             "-f",
             "--force-rebase",
-            dest="force_rebase",
             action="store_true",
             help="pass --force-rebase to git rebase",
         )
@@ -74,27 +71,23 @@ branch but need to incorporate new upstream changes "underneath" them.
         )
         p.add_option(
             "--autosquash",
-            dest="autosquash",
             action="store_true",
             help="pass --autosquash to git rebase",
         )
         p.add_option(
             "--whitespace",
-            dest="whitespace",
             action="store",
             metavar="WS",
             help="pass --whitespace to git rebase",
         )
         p.add_option(
             "--auto-stash",
-            dest="auto_stash",
             action="store_true",
             help="stash local modifications before starting",
         )
         p.add_option(
             "-m",
             "--onto-manifest",
-            dest="onto_manifest",
             action="store_true",
             help="rebase onto the manifest version instead of upstream "
             "HEAD (this helps to make sure the local tree stays "

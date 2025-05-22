@@ -120,7 +120,6 @@ contain a line that matches both expressions:
         g.add_option(
             "-r",
             "--revision",
-            dest="revision",
             action="append",
             metavar="TREEish",
             help="Search TREEish, instead of the work tree",

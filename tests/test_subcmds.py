@@ -89,3 +89,44 @@ class AllCommands(unittest.TestCase):
                         msg=f"subcmds/{name}.py: {opt}: only use dashes in "
                         "options, not underscores",
                     )
+
+    def test_cli_option_dest(self):
+        """Block redundant dest= arguments."""
+
+        def _check_dest(opt):
+            if opt.dest is None or not opt._long_opts:
+                return
+
+            long = opt._long_opts[0]
+            assert long.startswith("--")
+            # This matches optparse's behavior.
+            implicit_dest = long[2:].replace("-", "_")
+            if implicit_dest == opt.dest:
+                bad_opts.append((str(opt), opt.dest))
+
+        # Hook the option check list.
+        optparse.Option.CHECK_METHODS.insert(0, _check_dest)
+
+        # Gather all the bad options up front so people can see all bad options
+        # instead of failing at the first one.
+        all_bad_opts = {}
+        for name, cls in subcmds.all_commands.items():
+            bad_opts = all_bad_opts[name] = []
+            cmd = cls()
+            # Trigger construction of parser.
+            cmd.OptionParser
+
+        errmsg = None
+        for name, bad_opts in sorted(all_bad_opts.items()):
+            if bad_opts:
+                if not errmsg:
+                    errmsg = "Omit redundant dest= when defining options.\n"
+                errmsg += f"\nSubcommand {name} (subcmds/{name}.py):\n"
+                errmsg += "".join(
+                    f"    {opt}: dest='{dest}'\n" for opt, dest in bad_opts
+                )
+        if errmsg:
+            self.fail(errmsg)
+
+        # Make sure we aren't popping the wrong stuff.
+        assert optparse.Option.CHECK_METHODS.pop(0) is _check_dest

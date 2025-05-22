@@ -54,7 +54,6 @@ need to be performed by an end-user.
         )
         g.add_option(
             "--repo-upgraded",
-            dest="repo_upgraded",
             action="store_true",
             help=optparse.SUPPRESS_HELP,
         )

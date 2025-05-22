@@ -134,7 +134,6 @@ human-readable variations.
         p.add_option(
             "-o",
             "--output-file",
-            dest="output_file",
             default="-",
             help="file to save the manifest to. (Filename prefix for "
             "multi-tree.)",
