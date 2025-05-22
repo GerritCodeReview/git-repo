@@ -373,19 +373,16 @@ later is required to fix a server side protocol bug.
         p.add_option(
             "-f",
             "--force-broken",
-            dest="force_broken",
             action="store_true",
             help="obsolete option (to be deleted in the future)",
         )
         p.add_option(
             "--fail-fast",
-            dest="fail_fast",
             action="store_true",
             help="stop syncing after first error is hit",
         )
         p.add_option(
             "--force-sync",
-            dest="force_sync",
             action="store_true",
             help="overwrite an existing git directory if it needs to "
             "point to a different object directory. WARNING: this "
@@ -393,7 +390,6 @@ later is required to fix a server side protocol bug.
         )
         p.add_option(
             "--force-checkout",
-            dest="force_checkout",
             action="store_true",
             help="force checkout even if it results in throwing away "
             "uncommitted modifications. "
@@ -401,7 +397,6 @@ later is required to fix a server side protocol bug.
         )
         p.add_option(
             "--force-remove-dirty",
-            dest="force_remove_dirty",
             action="store_true",
             help="force remove projects with uncommitted modifications if "
             "projects no longer exist in the manifest. "
@@ -409,7 +404,6 @@ later is required to fix a server side protocol bug.
         )
         p.add_option(
             "--rebase",
-            dest="rebase",
             action="store_true",
             help="rebase local commits regardless of whether they are "
             "published",
@@ -417,7 +411,6 @@ later is required to fix a server side protocol bug.
         p.add_option(
             "-l",
             "--local-only",
-            dest="local_only",
             action="store_true",
             help="only update working tree, don't fetch",
         )
@@ -433,7 +426,6 @@ later is required to fix a server side protocol bug.
         p.add_option(
             "-n",
             "--network-only",
-            dest="network_only",
             action="store_true",
             help="fetch only, don't update working tree",
         )
@@ -460,7 +452,6 @@ later is required to fix a server side protocol bug.
         p.add_option(
             "-m",
             "--manifest-name",
-            dest="manifest_name",
             help="temporary manifest to use for this sync",
             metavar="NAME.xml",
         )
@@ -479,19 +470,16 @@ later is required to fix a server side protocol bug.
             "-u",
             "--manifest-server-username",
             action="store",
-            dest="manifest_server_username",
             help="username to authenticate with the manifest server",
         )
         p.add_option(
             "-p",
             "--manifest-server-password",
             action="store",
-            dest="manifest_server_password",
             help="password to authenticate with the manifest server",
         )
         p.add_option(
             "--fetch-submodules",
-            dest="fetch_submodules",
             action="store_true",
             help="fetch submodules from server",
         )
@@ -515,7 +503,6 @@ later is required to fix a server side protocol bug.
         )
         p.add_option(
             "--optimized-fetch",
-            dest="optimized_fetch",
             action="store_true",
             help="only fetch projects fixed to sha1 if revision does not exist "
             "locally",
@@ -554,7 +541,6 @@ later is required to fix a server side protocol bug.
             p.add_option(
                 "-s",
                 "--smart-sync",
-                dest="smart_sync",
                 action="store_true",
                 help="smart sync using manifest from the latest known good "
                 "build",
@@ -562,7 +548,6 @@ later is required to fix a server side protocol bug.
             p.add_option(
                 "-t",
                 "--smart-tag",
-                dest="smart_tag",
                 action="store",
                 help="smart sync using manifest from a known tag",
             )
@@ -577,7 +562,6 @@ later is required to fix a server side protocol bug.
         )
         g.add_option(
             "--repo-upgraded",
-            dest="repo_upgraded",
             action="store_true",
             help=optparse.SUPPRESS_HELP,
         )

@@ -46,7 +46,6 @@ The '%prog' command stages files to prepare the next commit.
         g.add_option(
             "-i",
             "--interactive",
-            dest="interactive",
             action="store_true",
             help="use interactive staging",
         )

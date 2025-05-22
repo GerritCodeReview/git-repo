@@ -48,7 +48,6 @@ It is equivalent to "git branch -D <branchname>".
     def _Options(self, p):
         p.add_option(
             "--all",
-            dest="all",
             action="store_true",
             help="delete all branches in all projects",
         )

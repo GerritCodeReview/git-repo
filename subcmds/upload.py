@@ -267,7 +267,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             "--cc",
             type="string",
             action="append",
-            dest="cc",
             help="also send email to these email addresses",
         )
         p.add_option(
@@ -281,7 +280,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
         p.add_option(
             "-c",
             "--current-branch",
-            dest="current_branch",
             action="store_true",
             help="upload current git branch",
         )
@@ -310,7 +308,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             "-p",
             "--private",
             action="store_true",
-            dest="private",
             default=False,
             help="upload as a private change (deprecated; use --wip)",
         )
@@ -318,7 +315,6 @@ Gerrit Code Review:  https://www.gerritcodereview.com/
             "-w",
             "--wip",
             action="store_true",
-            dest="wip",
             default=False,
             help="upload as a work-in-progress change",
         )
