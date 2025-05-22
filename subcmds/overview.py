@@ -37,7 +37,6 @@ are displayed.
         p.add_option(
             "-c",
             "--current-branch",
-            dest="current_branch",
             action="store_true",
             help="consider only checked out branches",
         )

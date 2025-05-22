@@ -82,7 +82,6 @@ the following meanings:
         p.add_option(
             "-o",
             "--orphans",
-            dest="orphans",
             action="store_true",
             help="include objects in working directory outside of repo "
             "projects",

@@ -43,14 +43,12 @@ class Info(PagedCommand):
         p.add_option(
             "-o",
             "--overview",
-            dest="overview",
             action="store_true",
             help="show overview of all local commits",
         )
         p.add_option(
             "-c",
             "--current-branch",
-            dest="current_branch",
             action="store_true",
             help="consider only checked out branches",
         )

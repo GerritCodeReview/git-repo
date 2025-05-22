@@ -51,7 +51,6 @@ revision specified in the manifest.
     def _Options(self, p):
         p.add_option(
             "--all",
-            dest="all",
             action="store_true",
             help="begin branch in all projects",
         )

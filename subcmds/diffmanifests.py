@@ -67,7 +67,9 @@ synced and their revisions won't be found.
 
     def _Options(self, p):
         p.add_option(
-            "--raw", dest="raw", action="store_true", help="display raw diff"
+            "--raw",
+            action="store_true",
+            help="display raw diff",
         )
         p.add_option(
             "--no-color",
@@ -78,7 +80,6 @@ synced and their revisions won't be found.
         )
         p.add_option(
             "--pretty-format",
-            dest="pretty_format",
             action="store",
             metavar="<FORMAT>",
             help="print the log using a custom git pretty format string",

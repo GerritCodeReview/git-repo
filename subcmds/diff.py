@@ -35,7 +35,6 @@ to the Unix 'patch' command.
         p.add_option(
             "-u",
             "--absolute",
-            dest="absolute",
             action="store_true",
             help="paths are relative to the repository root",
         )
