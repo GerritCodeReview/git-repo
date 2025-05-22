@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5852f61_844b716e",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1142791
+      },
+      "writtenOn": "2025-05-22T16:44:10Z",
+      "side": 1,
+      "message": "Superproject is using `revision` to refer the branch name.\n- https://source.corp.google.com/h/gerrit/git-repo/+/main:git_superproject.py;l\u003d92\nhttps://googleplex-- android.googlesource.com/platform/manifest/+/refs/heads/main/default.xml#43\n\nMaybe, git_superproject is using the term incorrectly. I\u0027m on the fence.",
+      "parentUuid": "25f7ac1f_7a5a3257",
+      "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "831e9fb8_775f4c18",
         "filename": "subcmds/status.py",
         "patchSetId": 5
