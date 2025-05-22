@@ -87,6 +87,11 @@ the following meanings:
             help="include objects in working directory outside of repo "
             "projects",
         )
+        p.add_option(
+            "--superproject-rev",
+            action="store_true",
+            help="print the superproject reivsion",
+        )
 
     @classmethod
     def _StatusHelper(cls, quiet, local, project_idx):
@@ -132,6 +137,12 @@ the following meanings:
             outstring.append("".join([status_header, item, "/"]))
 
     def Execute(self, opt, args):
+        if opt.superproject_rev:
+            sp = self.manifest.superproject
+            srev = sp.commit_id if sp else "None"
+            print("Superproject Revision:", srev)
+            return
+
         all_projects = self.GetProjects(
             args, all_manifests=not opt.this_manifest_only
         )
