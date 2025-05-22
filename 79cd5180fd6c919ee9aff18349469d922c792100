@@ -3,6 +3,58 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "25f7ac1f_7a5a3257",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-22T16:37:27Z",
+      "side": 1,
+      "message": "we\u0027ve largely used the term \"revision\" in the code base with user facing parts, not \"hash\".  can we stay consistent in terminology ?",
+      "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "831e9fb8_775f4c18",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-22T16:37:27Z",
+      "side": 1,
+      "message": "redundant -\u003e delete",
+      "fixSuggestions": [
+        {
+          "fixId": "2d0bfe7f_d9182db0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "subcmds/status.py",
+              "range": {
+                "startLine": 92,
+                "startChar": 0,
+                "endLine": 93,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6de9b7f_9602614d",
         "filename": "subcmds/status.py",
         "patchSetId": 5
