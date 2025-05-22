@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ba1c1375_8aa1bb46",
+        "filename": "subcmds/status.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1007145
+      },
+      "writtenOn": "2025-05-22T16:54:24Z",
+      "side": 1,
+      "message": "manifest revision can be a named ref or it can be a commit id\n\nhttps://chromium.googlesource.com/chromiumos/manifest/+/9cdd78250a113d962e3eb8c4c07384d8694d3895/snapshot.xml#14",
+      "parentUuid": "f5852f61_844b716e",
+      "revId": "79cd5180fd6c919ee9aff18349469d922c792100",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "831e9fb8_775f4c18",
         "filename": "subcmds/status.py",
         "patchSetId": 5
