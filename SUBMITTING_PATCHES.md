@@ -1,29 +1,6 @@
-# Submitting Changes
-
-Here's a short overview of the process.
-
-*   Make small logical changes.
-*   [Provide a meaningful commit message][commit-message-style].
-*   Make sure all code is under the Apache License, 2.0.
-*   Publish your changes for review.
-    *   `git push origin HEAD:refs/for/main`
-*   Make corrections if requested.
-*   [Verify your changes on Gerrit.](#verify)
-*   [Send to the commit queue for testing & merging.](#cq)
-
-[TOC]
-
-## Long Version
-
-I wanted a file describing how to submit patches for repo,
-so I started with the one found in the core Git distribution
-(Documentation/SubmittingPatches), which itself was based on the
-patch submission guidelines for the Linux kernel.
-
-However there are some differences, so please review and familiarize
-yourself with the following relevant bits.
-
-
+here's a short overview of the process.  Make small logical changes.   [Provide a meaningful commit message][commit-message-style].   Make sure all code is under the Apache License, 2.0.  Publish your changes for review.  `git push origin HEAD:refs/for/main`   Make corrections if requested.   [Verify your changes on Gerrit.](#verify)   [Send to the commit queue for testing & merging.](#cq[TOC] Long Version wanted a file describing how to submit patches for repo,o I started with the one found in the core Git distribution(Documentation/SubmittingPatches), which itself was based on the
+However there are some differences, so please review and familiariz
+yourself
 ## Make separate commits for logically separate changes.
 
 Unless your patch is really trivial, you should not be sending out a patch that
