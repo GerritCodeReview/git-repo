@@ -155,7 +155,8 @@ class Superproject:
             if netloc := parsed_url.netloc:
                 parts = netloc.split("-review", 1)
                 host = parts[0]
-                return f"{host}/{self.name}"
+                rev = GitRefs(self._work_git).get("HEAD")
+                return f"{host}/{self.name}@{rev}"
         return None
 
     def _LogMessage(self, fmt, *inputs):
